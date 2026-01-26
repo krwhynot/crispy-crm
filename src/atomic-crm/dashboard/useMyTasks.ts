@@ -8,6 +8,7 @@ import { taskKeys, opportunityKeys, activityKeys } from "@/atomic-crm/queryKeys"
 import { useCurrentSale } from "./useCurrentSale";
 import type { TaskItem, TaskStatus, TaskApiResponse } from "./types";
 import { parseDateSafely } from "@/lib/date-utils";
+import { MAX_PAGE_SIZE } from "@/atomic-crm/constants";
 
 /**
  * useMyTasks - Hook for managing current user's tasks

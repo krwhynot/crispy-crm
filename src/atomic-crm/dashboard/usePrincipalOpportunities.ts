@@ -2,6 +2,7 @@ import { useMemo } from "react";
 import { useGetList } from "react-admin";
 import type { OpportunityApiResponse } from "./types";
 import { parseDateSafely } from "@/lib/date-utils";
+import { MAX_PAGE_SIZE } from "@/atomic-crm/constants";
 
 /**
  * Opportunity summary for drill-down display
@@ -46,7 +47,7 @@ export function usePrincipalOpportunities({
         principal_organization_id: principalId,
       },
       sort: { field: "estimated_close_date", order: "ASC" },
-      pagination: { page: 1, perPage: 50 },
+      pagination: { page: 1, perPage: MAX_PAGE_SIZE },
     },
     {
       enabled: enabled && !!principalId,

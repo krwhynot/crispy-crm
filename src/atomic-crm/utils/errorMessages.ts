@@ -77,6 +77,27 @@ export const FIELD_LABELS: Record<string, string> = {
 };
 
 /**
+ * Human-readable resource labels for error messages
+ * Maps resource names to singular display labels
+ */
+export const RESOURCE_LABELS: Record<string, string> = {
+  contacts: "contact",
+  organizations: "organization",
+  opportunities: "opportunity",
+  activities: "activity",
+  tasks: "task",
+  products: "product",
+  tags: "tag",
+  segments: "segment",
+  notes: "note",
+  sales: "sales representative",
+  users: "user",
+  product_distributors: "product distributor",
+  organization_distributors: "organization distributor",
+  distributor_authorizations: "distributor authorization",
+};
+
+/**
  * Maps database constraint names to user-friendly error messages
  * Provides specific, actionable messages for constraint violations
  */
@@ -137,8 +158,10 @@ export function mapErrorToUserMessage(error: unknown, context?: ErrorContext): s
 
 /**
  * Sanitize a raw error message string into user-friendly format
+ * @param message - The raw error message to sanitize
+ * @param context - Optional context about the resource and action
  */
-function sanitizeMessage(message: string): string {
+function sanitizeMessage(message: string, context?: ErrorContext): string {
   const msg = message.toLowerCase();
 
   // ============================================
