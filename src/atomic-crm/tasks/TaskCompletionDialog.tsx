@@ -145,7 +145,15 @@ export const TaskCompletionDialog = ({
         onOpenChange={setShowActivityDialog}
         entityContext={entityContext}
         config={{
-          activityType: activityType as "Call" | "Email" | "Meeting" | "Demo" | "Sample" | "Note" | "Check-in" | "Follow-up",
+          activityType: activityType as
+            | "Call"
+            | "Email"
+            | "Meeting"
+            | "Demo"
+            | "Sample"
+            | "Note"
+            | "Check-in"
+            | "Follow-up",
           enableDraftPersistence: false,
         }}
       />

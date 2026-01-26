@@ -6,16 +6,20 @@
  *
  * Features:
  * - Fetches last 10-20 activities across all team members
- * - Includes sales user info (first_name, last_name, avatar_url) via join
+ * - Batch fetches sales user info (first_name, last_name, avatar_url) via useGetMany
  * - Ordered by activity_date DESC (most recent first)
  * - Excludes soft-deleted activities
  *
  * Data Flow:
- * activities JOIN sales ON created_by = sales.id
+ * 1. Fetch activities with useGetList
+ * 2. Extract unique sales IDs from created_by fields
+ * 3. Batch fetch sales records with useGetMany (auto-deduplication)
+ * 4. Merge sales data into activities (O(1) lookup via Map)
  */
 
-import { useCallback } from "react";
-import { useGetList } from "react-admin";
+import { useCallback, useMemo } from "react";
+import { useGetList, useGetMany } from "react-admin";
+import type { Sale } from "@/atomic-crm/validation/sales";
 
 // Activity record with joined sales user data
 export interface TeamActivity {
@@ -55,8 +59,7 @@ const DEFAULT_LIMIT = 15;
  * @returns Activities array, loading state, error state, and refetch function
  */
 export function useTeamActivities(limit: number = DEFAULT_LIMIT): UseTeamActivitiesResult {
-  // Fetch activities with sales user data via React Admin's useGetList
-  // The unifiedDataProvider handles the join via Supabase
+  // Step 1: Fetch activities from React Admin's useGetList
   const {
     data: activities = [],
     isPending: loading,
@@ -71,33 +74,49 @@ export function useTeamActivities(limit: number = DEFAULT_LIMIT): UseTeamActivit
         // Only non-deleted activities
         "deleted_at@is": null,
       },
-      meta: {
-        // Request sales user data via select query
-        select: `
-          id,
-          type,
-          subject,
-          activity_date,
-          description,
-          created_by,
-          contact_id,
-          organization_id,
-          opportunity_id,
-          sales:created_by (
-            id,
-            first_name,
-            last_name,
-            email,
-            avatar_url
-          )
-        `,
-      },
     },
     {
       staleTime: 5 * 60 * 1000, // Cache for 5 minutes
       refetchOnWindowFocus: true, // Refresh when user tabs back
     }
   );
+
+  // Step 2: Extract unique sales IDs (with memoization to prevent unnecessary re-fetches)
+  const salesIds = useMemo(
+    () => [...new Set(activities?.map((a) => a.created_by).filter(Boolean))],
+    // Use JSON.stringify for deep comparison of array contents
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [JSON.stringify(activities?.map((a) => a.created_by))]
+  );
+
+  // Step 3: Batch fetch sales data using useGetMany (automatic deduplication & caching)
+  const { data: salesRecords } = useGetMany<Sale>(
+    "sales",
+    { ids: salesIds as number[] },
+    { enabled: !loading && salesIds.length > 0 }
+  );
+
+  // Step 4: Merge activities with sales data
+  const activitiesWithSales = useMemo(() => {
+    if (!activities || !salesRecords) return activities || [];
+
+    // Create lookup map for O(1) access
+    const salesMap = new Map(salesRecords.map((s) => [s.id, s]));
+
+    // Merge sales data into activities
+    return activities.map((activity) => ({
+      ...activity,
+      sales: activity.created_by
+        ? {
+            id: salesMap.get(activity.created_by)?.id || 0,
+            first_name: salesMap.get(activity.created_by)?.first_name || null,
+            last_name: salesMap.get(activity.created_by)?.last_name || null,
+            email: salesMap.get(activity.created_by)?.email || null,
+            avatar_url: salesMap.get(activity.created_by)?.avatar_url || null,
+          }
+        : undefined,
+    }));
+  }, [activities, salesRecords]);
 
   // Convert error to Error type for consistent interface
   const error = queryError ? new Error(String(queryError)) : null;
@@ -108,7 +127,7 @@ export function useTeamActivities(limit: number = DEFAULT_LIMIT): UseTeamActivit
   }, [refetch]);
 
   return {
-    activities,
+    activities: activitiesWithSales,
     loading,
     error,
     refetch: refetchActivities,

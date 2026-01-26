@@ -14,7 +14,6 @@ import { Loading } from "@/components/ra-wrappers/loading";
  */
 
 const ActivityListLazy = React.lazy(() => import("./ActivityList"));
-const ActivityCreateLazy = React.lazy(() => import("./ActivityCreate"));
 const ActivityEditLazy = React.lazy(() =>
   import("./ActivityEdit").then((module) => ({ default: module.ActivityEdit }))
 );
@@ -25,14 +24,6 @@ export const ActivityListView = () => (
   <ResourceErrorBoundary resource="activities" page="list">
     <React.Suspense fallback={<Loading />}>
       <ActivityListLazy />
-    </React.Suspense>
-  </ResourceErrorBoundary>
-);
-
-export const ActivityCreateView = () => (
-  <ResourceErrorBoundary resource="activities" page="create">
-    <React.Suspense fallback={<Loading />}>
-      <ActivityCreateLazy />
     </React.Suspense>
   </ResourceErrorBoundary>
 );
@@ -61,9 +52,9 @@ const activityRecordRepresentation = (record: ActivityRecord) =>
   }`;
 
 // React Admin resource configuration
+// Note: No create view - activity creation uses QuickLogActivityDialog instead
 export default {
   list: ActivityListView,
-  create: ActivityCreateView,
   edit: ActivityEditView,
   show: ActivityShowView,
   recordRepresentation: activityRecordRepresentation,
