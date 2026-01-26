@@ -1,13 +1,11 @@
 # E2E Field Validation Test: Activities
 
-**URL:** http://localhost:5173/#/activities
+**URL:** https://crm.kjrcloud.com/#/activities
 **Goal:** Verify all Activity data fields display, accept input, validate, and persist correctly. This includes the full Activity form AND the QuickLogActivityDialog for rapid entry.
 
 ## Pre-Test Setup
 
-1. Ensure dev server is running (`just dev`)
-2. Confirm test data exists (`just seed-e2e` if needed)
-3. Ensure at least one Contact, Organization, and Opportunity exist for relationship testing
+Ensure at least one Contact, Organization, and Opportunity exist for relationship testing
 
 ---
 

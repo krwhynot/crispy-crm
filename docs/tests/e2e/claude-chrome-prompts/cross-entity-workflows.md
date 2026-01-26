@@ -5,8 +5,7 @@
 
 ## Pre-Test Setup
 
-1. Ensure dev server is running (`just dev`)
-2. Confirm test data exists (`just seed-e2e` if needed)
+
 3. Log in as a sales rep with appropriate permissions
 
 ---
