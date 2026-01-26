@@ -54,6 +54,22 @@ interface SnapshotMetrics {
   stale_deals_count: number;
 }
 
+/**
+ * Supabase query result type for count queries
+ */
+interface SupabaseCountResult {
+  count: number | null;
+}
+
+/**
+ * Opportunity data for stale deals calculation
+ */
+interface OpportunityStaleData {
+  id: string;
+  stage: string;
+  updated_at: string;
+}
+
 // Per-stage stale thresholds (PRD Section 6.3)
 const STALE_THRESHOLDS: Record<string, number> = {
   new_lead: 7,
