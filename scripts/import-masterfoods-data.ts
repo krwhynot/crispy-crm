@@ -94,6 +94,24 @@ interface DistributorRow {
   is_primary: string;
 }
 
+/**
+ * Email record structure for contact email array
+ */
+interface EmailRecord {
+  address: string;
+  type: "work" | "personal" | "other";
+  primary: boolean;
+}
+
+/**
+ * Phone record structure for contact phone array
+ */
+interface PhoneRecord {
+  number: string;
+  type: "work" | "mobile" | "home" | "other";
+  primary: boolean;
+}
+
 interface TransformedOrg {
   id: number;
   name: string;
@@ -117,8 +135,8 @@ interface TransformedContact {
   first_name: string | null;
   last_name: string | null;
   organization_id: number;
-  email: any[];
-  phone: any[];
+  email: EmailRecord[];
+  phone: PhoneRecord[];
   title: string | null;
   linkedin_url: string | null;
   address: string | null;
@@ -313,12 +331,13 @@ function resolvePlaybookCategoryId(
   return null;
 }
 
-function parseJSONB(value: string): any[] {
+function parseJSONB<T = EmailRecord | PhoneRecord>(value: string): T[] {
   if (!value || value === "[]" || value.trim() === "") {
     return [];
   }
   try {
-    return JSON.parse(value);
+    const parsed = JSON.parse(value);
+    return Array.isArray(parsed) ? parsed : [];
   } catch {
     return [];
   }
@@ -585,8 +604,8 @@ function transformContacts(
       first_name: contact.first_name?.trim() || null,
       last_name: contact.last_name?.trim() || null,
       organization_id: entry.id,
-      email: parseJSONB(contact.email),
-      phone: parseJSONB(contact.phone),
+      email: parseJSONB<EmailRecord>(contact.email),
+      phone: parseJSONB<PhoneRecord>(contact.phone),
       title: contact.title?.trim() || null,
       linkedin_url: contact.linkedin_url?.trim() || null,
       address: contact.address?.trim() || null,

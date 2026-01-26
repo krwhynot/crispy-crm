@@ -172,7 +172,7 @@ async function calculateUserMetrics(
   ]);
 
   // Extract counts with fallback to 0
-  const getCount = (result: PromiseSettledResult<any>): number => {
+  const getCount = (result: PromiseSettledResult<SupabaseCountResult>): number => {
     if (result.status === "fulfilled" && result.value.count !== null) {
       return result.value.count;
     }
@@ -182,10 +182,10 @@ async function calculateUserMetrics(
   // Calculate stale deals count
   let staleDealsCount = 0;
   if (staleDealsResult.status === "fulfilled" && staleDealsResult.value.data) {
-    const deals = staleDealsResult.value.data;
+    const deals = staleDealsResult.value.data as OpportunityStaleData[];
     const now = snapshotDate.getTime();
 
-    staleDealsCount = deals.filter((deal: any) => {
+    staleDealsCount = deals.filter((deal: OpportunityStaleData) => {
       const threshold = STALE_THRESHOLDS[deal.stage] || 14; // Default 14 days
       const lastUpdate = new Date(deal.updated_at).getTime();
       const daysSinceUpdate = (now - lastUpdate) / (1000 * 60 * 60 * 24);
