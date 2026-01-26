@@ -90,6 +90,128 @@ describe("opportunitiesCallbacks", () => {
     });
   });
 
+  describe("beforeUpdate - stage transition logging", () => {
+    it("should create activity when stage changes", async () => {
+      const params = {
+        id: 1,
+        data: { stage: "demo_scheduled" },
+        previousData: {
+          id: 1,
+          stage: "sample_visit_offered",
+          contact_ids: [101],
+          principal_organization_id: 5,
+        } as RaRecord,
+      };
+
+      await opportunitiesCallbacks.beforeUpdate!(params, mockDataProvider);
+
+      expect(mockDataProvider.create).toHaveBeenCalledWith("activities", {
+        data: expect.objectContaining({
+          activity_type: "interaction",
+          type: "note",
+          subject: "Stage changed: sample_visit_offered → demo_scheduled",
+          opportunity_id: 1,
+          contact_id: 101,
+          organization_id: 5,
+        }),
+      });
+    });
+
+    it("should not create activity when stage is unchanged", async () => {
+      const params = {
+        id: 1,
+        data: { name: "Updated Name" },
+        previousData: {
+          id: 1,
+          stage: "prospecting",
+          name: "Original Name",
+        } as RaRecord,
+      };
+
+      await opportunitiesCallbacks.beforeUpdate!(params, mockDataProvider);
+
+      expect(mockDataProvider.create).not.toHaveBeenCalled();
+    });
+
+    it("should handle missing previousData stage gracefully", async () => {
+      const params = {
+        id: 1,
+        data: { stage: "demo_scheduled" },
+        previousData: {
+          id: 1,
+          name: "Big Deal",
+        } as RaRecord,
+      };
+
+      await opportunitiesCallbacks.beforeUpdate!(params, mockDataProvider);
+
+      expect(mockDataProvider.create).not.toHaveBeenCalled();
+    });
+
+    it("should not block update if activity creation fails", async () => {
+      mockDataProvider.create = vi.fn().mockRejectedValue(new Error("Activity creation failed"));
+
+      const params = {
+        id: 1,
+        data: { stage: "closed_won" },
+        previousData: {
+          id: 1,
+          stage: "demo_scheduled",
+          contact_ids: [101],
+        } as RaRecord,
+      };
+
+      // Should not throw - returns params unchanged
+      const result = await opportunitiesCallbacks.beforeUpdate!(params, mockDataProvider);
+
+      expect(result).toEqual(params);
+    });
+
+    it("should use first contact_id if multiple contacts exist", async () => {
+      const params = {
+        id: 1,
+        data: { stage: "closed_won" },
+        previousData: {
+          id: 1,
+          stage: "demo_scheduled",
+          contact_ids: [101, 102, 103],
+          customer_organization_id: 7,
+        } as RaRecord,
+      };
+
+      await opportunitiesCallbacks.beforeUpdate!(params, mockDataProvider);
+
+      expect(mockDataProvider.create).toHaveBeenCalledWith("activities", {
+        data: expect.objectContaining({
+          contact_id: 101,
+          organization_id: 7,
+        }),
+      });
+    });
+
+    it("should handle null contact_ids gracefully", async () => {
+      const params = {
+        id: 1,
+        data: { stage: "closed_lost" },
+        previousData: {
+          id: 1,
+          stage: "proposal",
+          contact_ids: null,
+          principal_organization_id: 5,
+        } as RaRecord,
+      };
+
+      await opportunitiesCallbacks.beforeUpdate!(params, mockDataProvider);
+
+      expect(mockDataProvider.create).toHaveBeenCalledWith("activities", {
+        data: expect.objectContaining({
+          contact_id: null,
+          organization_id: 5,
+        }),
+      });
+    });
+  });
+
   describe("beforeGetList - filter cleaning", () => {
     it("should add soft delete filter by default", async () => {
       const params = {

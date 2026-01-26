@@ -27,10 +27,11 @@
  * Pattern: Factory + custom overrides (hybrid approach for complex resources)
  */
 
-import type { RaRecord, GetListParams, DataProvider, DeleteParams } from "ra-core";
+import type { RaRecord, GetListParams, DataProvider, DeleteParams, UpdateParams } from "ra-core";
 import { createResourceCallbacks, type ResourceCallbacks } from "./createResourceCallbacks";
 import type { Opportunity } from "../../../types";
 import { supabase } from "../supabase";
+import { logger } from "@/lib/logger";
 
 /**
  * Type-safe computed fields that exist on the Opportunity type
@@ -259,6 +260,58 @@ async function opportunitiesBeforeGetList(
 }
 
 /**
+ * Custom beforeUpdate: Log stage transitions as activities
+ *
+ * WHY CUSTOM: When opportunity stage changes, create an audit trail activity
+ * to track the transition. This provides visibility into opportunity progression.
+ *
+ * @param params - Update parameters with data and previousData
+ * @param dataProvider - React Admin data provider for creating activity
+ * @returns Unchanged params (activity creation is side effect)
+ */
+async function opportunitiesBeforeUpdate(
+  params: UpdateParams,
+  dataProvider: DataProvider
+): Promise<UpdateParams> {
+  const { data, previousData } = params;
+
+  // Check if stage changed
+  if (previousData?.stage && data.stage && previousData.stage !== data.stage) {
+    try {
+      // Log stage transition activity
+      await dataProvider.create("activities", {
+        data: {
+          activity_type: "interaction",
+          type: "note",
+          subject: `Stage changed: ${previousData.stage} → ${data.stage}`,
+          description: `Opportunity stage transitioned from ${previousData.stage} to ${data.stage}`,
+          opportunity_id: params.id,
+          contact_id: previousData.contact_ids?.[0] || null,
+          organization_id:
+            previousData.principal_organization_id || previousData.customer_organization_id || null,
+          activity_date: new Date().toISOString(),
+        },
+      });
+    } catch (error) {
+      // Log but don't block update if activity creation fails
+      // Stage update is the primary action, activity is side effect
+      logger.warn(
+        "Failed to create stage transition activity",
+        error instanceof Error ? error : new Error(String(error)),
+        {
+          feature: "opportunities",
+          opportunityId: params.id,
+          fromStage: previousData.stage,
+          toStage: data.stage,
+        }
+      );
+    }
+  }
+
+  return params;
+}
+
+/**
  * Custom beforeSave: Strip fields + handle stage-only updates
  *
  * WHY CUSTOM: Beyond standard computed field stripping, opportunities needs:
@@ -335,6 +388,7 @@ export const opportunitiesCallbacks: ResourceCallbacks = {
   // Override with custom implementations
   beforeDelete: opportunitiesBeforeDelete,
   beforeGetList: opportunitiesBeforeGetList,
+  beforeUpdate: opportunitiesBeforeUpdate,
   beforeSave: opportunitiesBeforeSave,
   // afterRead is inherited from base (no-op since opportunities has no JSONB arrays)
 };

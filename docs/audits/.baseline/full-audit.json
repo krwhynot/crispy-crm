@@ -4,18 +4,19 @@
   "mode": "quick",
   "duration_minutes": 21,
   "totals": {
-    "critical": 17,
+    "critical": 16,
     "high": 80,
     "medium": 83,
-    "total": 251
+    "total": 250
   },
   "by_layer": {
     "L1_database": {
-      "critical": 6,
+      "critical": 5,
       "high": 12,
       "medium": 7,
       "status": "CRITICAL",
-      "primary_concerns": "USING(true) RLS policies (product_distributors, summary views, junction tables), hard DELETE in RPC, WITH CHECK(true) policies"
+      "primary_concerns": "USING(true) RLS policies (product_distributors, summary views, contact_organizations needs company isolation), hard DELETE in RPC, WITH CHECK(true) policies",
+      "note": "Junction table RLS partially false alarm - participant tables intentionally team-shared"
     },
     "L2_domain": {
       "critical": 4,
@@ -48,11 +49,11 @@
   },
   "by_category": {
     "security": {
-      "critical": 3,
+      "critical": 2,
       "high": 5,
       "medium": 4,
-      "status": "CRITICAL",
-      "note": "USING(true) RLS on product_distributors, summary views, junction tables. Missing Zod .max() limits. Client storage concerns."
+      "status": "WARN",
+      "note": "USING(true) RLS on product_distributors, summary views. contact_organizations needs company isolation. Participant tables intentionally team-shared. Missing Zod .max() limits. Client storage concerns."
     },
     "data-integrity": {
       "critical": 2,
@@ -150,11 +151,21 @@
       "rank": 3,
       "layer": "L1",
       "category": "security",
-      "issue": "USING(true) RLS - Junction Tables",
-      "location": "20251129170506_harden_participant_tables.sql:410-425",
-      "impact": "Users can link unauthorized records",
-      "fix": "Implement dual foreign key authorization with EXISTS checks",
-      "status": "OPEN"
+      "issue": "USING(true) RLS - Junction Tables (PARTIAL FALSE ALARM)",
+      "location": "Multiple migrations",
+      "impact": "Mixed: participant tables intentional for team collab, contact_organizations lacks company isolation",
+      "fix": "contact_organizations needs dual-auth pattern (auth + company_id). Participants OK (team-shared design).",
+      "status": "PARTIAL_FIX_NEEDED",
+      "verification": {
+        "date": "2026-01-26",
+        "verified_by": "Task 3.6 RLS Verification",
+        "findings": {
+          "opportunity_participants": "FALSE_ALARM - Lines 410-425 in ROLLBACK section only. Active policies (230,240,290,300) intentionally use USING(true) for team SELECT/INSERT. UPDATE/DELETE properly restricted.",
+          "interaction_participants": "FALSE_ALARM - Same as opportunity_participants. Intentional team collaboration design.",
+          "opportunity_contacts": "FIXED - 20260126010000_fix_opportunity_contacts_select_bypass.sql dropped permissive policy.",
+          "contact_organizations": "REAL_ISSUE - Uses auth.uid() IS NOT NULL (no company isolation). Needs dual-auth with company_id check."
+        }
+      }
     },
     {
       "rank": 4,

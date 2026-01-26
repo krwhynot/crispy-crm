@@ -1,6 +1,6 @@
 {
   "chunk_name": "organizations",
-  "generated_at": "2026-01-25T22:38:31.278Z",
+  "generated_at": "2026-01-26T17:00:30.693Z",
   "item_count": 9,
   "items": [
     {
@@ -472,7 +472,7 @@
           "optional": false,
           "nullable": false,
           "hasTransform": false,
-          "hasDefault": true
+          "hasDefault": false
         },
         {
           "name": "status_reason",

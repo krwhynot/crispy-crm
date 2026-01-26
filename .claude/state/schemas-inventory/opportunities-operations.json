@@ -1,6 +1,6 @@
 {
   "chunk_name": "opportunities-operations",
-  "generated_at": "2026-01-25T22:38:31.277Z",
+  "generated_at": "2026-01-26T17:00:30.690Z",
   "item_count": 6,
   "items": [
     {
@@ -267,7 +267,7 @@
     {
       "name": "closeOpportunityBaseSchema",
       "file": "src/atomic-crm/validation/opportunities/opportunities-operations.ts",
-      "line": 517,
+      "line": 538,
       "schemaType": "strictObject",
       "fields": [
         {
@@ -316,6 +316,15 @@
           "constraints": [
             "max(500, \"Close reason notes must be 500 characters or less\")"
           ],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "actual_close_date",
+          "zodType": "coerce.date",
+          "constraints": [],
           "optional": true,
           "nullable": true,
           "hasTransform": false,

@@ -1,6 +1,6 @@
 {
   "chunk_name": "opportunities",
-  "generated_at": "2026-01-25T22:38:34.029Z",
+  "generated_at": "2026-01-26T17:00:39.528Z",
   "items": {
     "nodes": [
       {
@@ -22480,10 +22480,73 @@
       },
       {
         "source": "src/atomic-crm/opportunities/useBulkActionsState.ts:38:useBulkActionsState",
+        "target": "map",
+        "targetName": "map",
+        "edgeType": "call",
+        "line": 190,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/useBulkActionsState.ts:38:useBulkActionsState",
+        "target": "find",
+        "targetName": "find",
+        "edgeType": "call",
+        "line": 191,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/useBulkActionsState.ts:38:useBulkActionsState",
+        "target": "create",
+        "targetName": "create",
+        "edgeType": "call",
+        "line": 195,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/useBulkActionsState.ts:38:useBulkActionsState",
+        "target": "toISOString",
+        "targetName": "toISOString",
+        "edgeType": "call",
+        "line": 200,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/useBulkActionsState.ts:38:useBulkActionsState",
+        "target": "warn",
+        "targetName": "warn",
+        "edgeType": "call",
+        "line": 206,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/useBulkActionsState.ts:38:useBulkActionsState",
+        "target": "String",
+        "targetName": "String",
+        "edgeType": "call",
+        "line": 209,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/useBulkActionsState.ts:38:useBulkActionsState",
+        "target": "allSettled",
+        "targetName": "allSettled",
+        "edgeType": "call",
+        "line": 216,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/useBulkActionsState.ts:38:useBulkActionsState",
         "target": "notify",
         "targetName": "notify",
         "edgeType": "call",
-        "line": 188,
+        "line": 219,
         "conditional": false,
         "inLoop": false
       },
@@ -22492,7 +22555,7 @@
         "target": "invalidateQueries",
         "targetName": "invalidateQueries",
         "edgeType": "call",
-        "line": 193,
+        "line": 224,
         "conditional": false,
         "inLoop": false
       },
@@ -22501,7 +22564,7 @@
         "target": "refresh",
         "targetName": "refresh",
         "edgeType": "call",
-        "line": 194,
+        "line": 225,
         "conditional": false,
         "inLoop": false
       },
@@ -22510,7 +22573,7 @@
         "target": "onUnselectItems",
         "targetName": "onUnselectItems",
         "edgeType": "call",
-        "line": 195,
+        "line": 226,
         "conditional": false,
         "inLoop": false
       },
@@ -22519,7 +22582,7 @@
         "target": "handleCloseDialog",
         "targetName": "handleCloseDialog",
         "edgeType": "call",
-        "line": 196,
+        "line": 227,
         "conditional": false,
         "inLoop": false
       },
@@ -22528,7 +22591,7 @@
         "target": "notify",
         "targetName": "notify",
         "edgeType": "call",
-        "line": 198,
+        "line": 229,
         "conditional": false,
         "inLoop": false
       },
@@ -22537,7 +22600,7 @@
         "target": "setIsProcessing",
         "targetName": "setIsProcessing",
         "edgeType": "call",
-        "line": 203,
+        "line": 234,
         "conditional": false,
         "inLoop": false
       },
@@ -22546,7 +22609,7 @@
         "target": "useCallback",
         "targetName": "useCallback",
         "edgeType": "hook",
-        "line": 216,
+        "line": 248,
         "conditional": false,
         "inLoop": false
       },

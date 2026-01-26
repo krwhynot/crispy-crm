@@ -1,6 +1,6 @@
 {
   "chunk_name": "providers",
-  "generated_at": "2026-01-25T22:38:34.049Z",
+  "generated_at": "2026-01-26T17:00:39.590Z",
   "items": {
     "nodes": [
       {
@@ -175,46 +175,55 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/providers/supabase/callbacks/opportunitiesCallbacks.ts:156:stripComputedFields",
+        "id": "src/atomic-crm/providers/supabase/callbacks/opportunitiesCallbacks.ts:158:stripComputedFields",
         "name": "stripComputedFields",
         "file": "src/atomic-crm/providers/supabase/callbacks/opportunitiesCallbacks.ts",
-        "line": 156,
+        "line": 158,
         "nodeType": "function",
         "exported": true,
         "async": false
       },
       {
-        "id": "src/atomic-crm/providers/supabase/callbacks/opportunitiesCallbacks.ts:187:mergeCreateDefaults",
+        "id": "src/atomic-crm/providers/supabase/callbacks/opportunitiesCallbacks.ts:189:mergeCreateDefaults",
         "name": "mergeCreateDefaults",
         "file": "src/atomic-crm/providers/supabase/callbacks/opportunitiesCallbacks.ts",
-        "line": 187,
+        "line": 189,
         "nodeType": "function",
         "exported": true,
         "async": false
       },
       {
-        "id": "src/atomic-crm/providers/supabase/callbacks/opportunitiesCallbacks.ts:210:opportunitiesBeforeDelete",
+        "id": "src/atomic-crm/providers/supabase/callbacks/opportunitiesCallbacks.ts:212:opportunitiesBeforeDelete",
         "name": "opportunitiesBeforeDelete",
         "file": "src/atomic-crm/providers/supabase/callbacks/opportunitiesCallbacks.ts",
-        "line": 210,
+        "line": 212,
         "nodeType": "function",
         "exported": false,
         "async": true
       },
       {
-        "id": "src/atomic-crm/providers/supabase/callbacks/opportunitiesCallbacks.ts:243:opportunitiesBeforeGetList",
+        "id": "src/atomic-crm/providers/supabase/callbacks/opportunitiesCallbacks.ts:245:opportunitiesBeforeGetList",
         "name": "opportunitiesBeforeGetList",
         "file": "src/atomic-crm/providers/supabase/callbacks/opportunitiesCallbacks.ts",
-        "line": 243,
+        "line": 245,
         "nodeType": "function",
         "exported": false,
         "async": true
       },
       {
-        "id": "src/atomic-crm/providers/supabase/callbacks/opportunitiesCallbacks.ts:269:opportunitiesBeforeSave",
+        "id": "src/atomic-crm/providers/supabase/callbacks/opportunitiesCallbacks.ts:272:opportunitiesBeforeUpdate",
+        "name": "opportunitiesBeforeUpdate",
+        "file": "src/atomic-crm/providers/supabase/callbacks/opportunitiesCallbacks.ts",
+        "line": 272,
+        "nodeType": "function",
+        "exported": false,
+        "async": true
+      },
+      {
+        "id": "src/atomic-crm/providers/supabase/callbacks/opportunitiesCallbacks.ts:323:opportunitiesBeforeSave",
         "name": "opportunitiesBeforeSave",
         "file": "src/atomic-crm/providers/supabase/callbacks/opportunitiesCallbacks.ts",
-        "line": 269,
+        "line": 323,
         "nodeType": "function",
         "exported": false,
         "async": true
@@ -940,73 +949,64 @@
         "async": true
       },
       {
-        "id": "src/atomic-crm/providers/supabase/wrappers/withErrorLogging.ts:79:logError",
+        "id": "src/atomic-crm/providers/supabase/wrappers/withErrorLogging.ts:80:logError",
         "name": "logError",
         "file": "src/atomic-crm/providers/supabase/wrappers/withErrorLogging.ts",
-        "line": 79,
+        "line": 80,
         "nodeType": "function",
         "exported": false,
         "async": false
       },
       {
-        "id": "src/atomic-crm/providers/supabase/wrappers/withErrorLogging.ts:145:transformSupabaseError",
+        "id": "src/atomic-crm/providers/supabase/wrappers/withErrorLogging.ts:146:transformSupabaseError",
         "name": "transformSupabaseError",
         "file": "src/atomic-crm/providers/supabase/wrappers/withErrorLogging.ts",
-        "line": 145,
+        "line": 146,
         "nodeType": "function",
         "exported": false,
         "async": false
       },
       {
-        "id": "src/atomic-crm/providers/supabase/wrappers/withErrorLogging.ts:177:isSupabaseError",
+        "id": "src/atomic-crm/providers/supabase/wrappers/withErrorLogging.ts:178:isSupabaseError",
         "name": "isSupabaseError",
         "file": "src/atomic-crm/providers/supabase/wrappers/withErrorLogging.ts",
-        "line": 177,
+        "line": 178,
         "nodeType": "function",
         "exported": false,
         "async": false
       },
       {
-        "id": "src/atomic-crm/providers/supabase/wrappers/withErrorLogging.ts:198:sanitizeDatabaseError",
-        "name": "sanitizeDatabaseError",
-        "file": "src/atomic-crm/providers/supabase/wrappers/withErrorLogging.ts",
-        "line": 198,
-        "nodeType": "function",
-        "exported": false,
-        "async": false
-      },
-      {
-        "id": "src/atomic-crm/providers/supabase/wrappers/withErrorLogging.ts:233:isAlreadyDeletedError",
+        "id": "src/atomic-crm/providers/supabase/wrappers/withErrorLogging.ts:187:isAlreadyDeletedError",
         "name": "isAlreadyDeletedError",
         "file": "src/atomic-crm/providers/supabase/wrappers/withErrorLogging.ts",
-        "line": 233,
+        "line": 187,
         "nodeType": "function",
         "exported": false,
         "async": false
       },
       {
-        "id": "src/atomic-crm/providers/supabase/wrappers/withErrorLogging.ts:241:isReactAdminValidationError",
+        "id": "src/atomic-crm/providers/supabase/wrappers/withErrorLogging.ts:195:isReactAdminValidationError",
         "name": "isReactAdminValidationError",
         "file": "src/atomic-crm/providers/supabase/wrappers/withErrorLogging.ts",
-        "line": 241,
+        "line": 195,
         "nodeType": "function",
         "exported": false,
         "async": false
       },
       {
-        "id": "src/atomic-crm/providers/supabase/wrappers/withErrorLogging.ts:256:logSuccess",
+        "id": "src/atomic-crm/providers/supabase/wrappers/withErrorLogging.ts:210:logSuccess",
         "name": "logSuccess",
         "file": "src/atomic-crm/providers/supabase/wrappers/withErrorLogging.ts",
-        "line": 256,
+        "line": 210,
         "nodeType": "function",
         "exported": false,
         "async": false
       },
       {
-        "id": "src/atomic-crm/providers/supabase/wrappers/withErrorLogging.ts:291:withErrorLogging",
+        "id": "src/atomic-crm/providers/supabase/wrappers/withErrorLogging.ts:245:withErrorLogging",
         "name": "withErrorLogging",
         "file": "src/atomic-crm/providers/supabase/wrappers/withErrorLogging.ts",
-        "line": 291,
+        "line": 245,
         "nodeType": "function",
         "exported": true,
         "async": false
@@ -1554,56 +1554,92 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/callbacks/opportunitiesCallbacks.ts:210:opportunitiesBeforeDelete",
+        "source": "src/atomic-crm/providers/supabase/callbacks/opportunitiesCallbacks.ts:212:opportunitiesBeforeDelete",
         "target": "Number",
         "targetName": "Number",
         "edgeType": "call",
-        "line": 215,
+        "line": 217,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/callbacks/opportunitiesCallbacks.ts:210:opportunitiesBeforeDelete",
+        "source": "src/atomic-crm/providers/supabase/callbacks/opportunitiesCallbacks.ts:212:opportunitiesBeforeDelete",
         "target": "isInteger",
         "targetName": "isInteger",
         "edgeType": "call",
-        "line": 216,
+        "line": 218,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/callbacks/opportunitiesCallbacks.ts:210:opportunitiesBeforeDelete",
+        "source": "src/atomic-crm/providers/supabase/callbacks/opportunitiesCallbacks.ts:212:opportunitiesBeforeDelete",
         "target": "rpc",
         "targetName": "rpc",
         "edgeType": "call",
-        "line": 222,
+        "line": 224,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/callbacks/opportunitiesCallbacks.ts:269:opportunitiesBeforeSave",
+        "source": "src/atomic-crm/providers/supabase/callbacks/opportunitiesCallbacks.ts:272:opportunitiesBeforeUpdate",
+        "target": "create",
+        "targetName": "create",
+        "edgeType": "call",
+        "line": 282,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/callbacks/opportunitiesCallbacks.ts:272:opportunitiesBeforeUpdate",
+        "target": "toISOString",
+        "targetName": "toISOString",
+        "edgeType": "call",
+        "line": 292,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/callbacks/opportunitiesCallbacks.ts:272:opportunitiesBeforeUpdate",
+        "target": "warn",
+        "targetName": "warn",
+        "edgeType": "call",
+        "line": 298,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/callbacks/opportunitiesCallbacks.ts:272:opportunitiesBeforeUpdate",
+        "target": "String",
+        "targetName": "String",
+        "edgeType": "call",
+        "line": 300,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/callbacks/opportunitiesCallbacks.ts:323:opportunitiesBeforeSave",
         "target": "stripComputedFields",
         "targetName": "stripComputedFields",
         "edgeType": "call",
-        "line": 281,
+        "line": 335,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/callbacks/opportunitiesCallbacks.ts:269:opportunitiesBeforeSave",
+        "source": "src/atomic-crm/providers/supabase/callbacks/opportunitiesCallbacks.ts:323:opportunitiesBeforeSave",
         "target": "isArray",
         "targetName": "isArray",
         "edgeType": "call",
-        "line": 287,
+        "line": 341,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/callbacks/opportunitiesCallbacks.ts:269:opportunitiesBeforeSave",
+        "source": "src/atomic-crm/providers/supabase/callbacks/opportunitiesCallbacks.ts:323:opportunitiesBeforeSave",
         "target": "mergeCreateDefaults",
         "targetName": "mergeCreateDefaults",
         "edgeType": "call",
-        "line": 295,
+        "line": 349,
         "conditional": true,
         "inLoop": false
       },
@@ -5910,236 +5946,182 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/wrappers/withErrorLogging.ts:79:logError",
+        "source": "src/atomic-crm/providers/supabase/wrappers/withErrorLogging.ts:80:logError",
         "target": "error",
         "targetName": "error",
         "edgeType": "call",
-        "line": 104,
+        "line": 105,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/wrappers/withErrorLogging.ts:79:logError",
+        "source": "src/atomic-crm/providers/supabase/wrappers/withErrorLogging.ts:80:logError",
         "target": "String",
         "targetName": "String",
         "edgeType": "call",
-        "line": 106,
+        "line": 107,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/wrappers/withErrorLogging.ts:79:logError",
+        "source": "src/atomic-crm/providers/supabase/wrappers/withErrorLogging.ts:80:logError",
         "target": "debug",
         "targetName": "debug",
         "edgeType": "call",
-        "line": 112,
+        "line": 113,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/wrappers/withErrorLogging.ts:79:logError",
+        "source": "src/atomic-crm/providers/supabase/wrappers/withErrorLogging.ts:80:logError",
         "target": "debug",
         "targetName": "debug",
         "edgeType": "call",
-        "line": 118,
+        "line": 119,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/wrappers/withErrorLogging.ts:79:logError",
+        "source": "src/atomic-crm/providers/supabase/wrappers/withErrorLogging.ts:80:logError",
         "target": "debug",
         "targetName": "debug",
         "edgeType": "call",
-        "line": 124,
+        "line": 125,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/wrappers/withErrorLogging.ts:79:logError",
+        "source": "src/atomic-crm/providers/supabase/wrappers/withErrorLogging.ts:80:logError",
         "target": "debug",
         "targetName": "debug",
         "edgeType": "call",
-        "line": 130,
+        "line": 131,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/wrappers/withErrorLogging.ts:145:transformSupabaseError",
+        "source": "src/atomic-crm/providers/supabase/wrappers/withErrorLogging.ts:146:transformSupabaseError",
         "target": "sanitizeDatabaseError",
         "targetName": "sanitizeDatabaseError",
         "edgeType": "call",
-        "line": 150,
+        "line": 151,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/wrappers/withErrorLogging.ts:145:transformSupabaseError",
+        "source": "src/atomic-crm/providers/supabase/wrappers/withErrorLogging.ts:146:transformSupabaseError",
         "target": "match",
         "targetName": "match",
         "edgeType": "call",
-        "line": 156,
+        "line": 157,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/wrappers/withErrorLogging.ts:145:transformSupabaseError",
+        "source": "src/atomic-crm/providers/supabase/wrappers/withErrorLogging.ts:146:transformSupabaseError",
         "target": "replace",
         "targetName": "replace",
         "edgeType": "call",
-        "line": 159,
+        "line": 160,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/wrappers/withErrorLogging.ts:198:sanitizeDatabaseError",
-        "target": "match",
-        "targetName": "match",
+        "source": "src/atomic-crm/providers/supabase/wrappers/withErrorLogging.ts:187:isAlreadyDeletedError",
+        "target": "includes",
+        "targetName": "includes",
         "edgeType": "call",
-        "line": 200,
+        "line": 189,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/wrappers/withErrorLogging.ts:198:sanitizeDatabaseError",
-        "target": "replace",
-        "targetName": "replace",
-        "edgeType": "call",
-        "line": 203,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/providers/supabase/wrappers/withErrorLogging.ts:198:sanitizeDatabaseError",
-        "target": "match",
-        "targetName": "match",
-        "edgeType": "call",
-        "line": 208,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/providers/supabase/wrappers/withErrorLogging.ts:198:sanitizeDatabaseError",
-        "target": "match",
-        "targetName": "match",
-        "edgeType": "call",
-        "line": 214,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/providers/supabase/wrappers/withErrorLogging.ts:198:sanitizeDatabaseError",
-        "target": "replace",
-        "targetName": "replace",
-        "edgeType": "call",
-        "line": 217,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/providers/supabase/wrappers/withErrorLogging.ts:198:sanitizeDatabaseError",
+        "source": "src/atomic-crm/providers/supabase/wrappers/withErrorLogging.ts:210:logSuccess",
         "target": "includes",
         "targetName": "includes",
         "edgeType": "call",
-        "line": 222,
+        "line": 219,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/wrappers/withErrorLogging.ts:233:isAlreadyDeletedError",
+        "source": "src/atomic-crm/providers/supabase/wrappers/withErrorLogging.ts:210:logSuccess",
         "target": "includes",
         "targetName": "includes",
         "edgeType": "call",
-        "line": 235,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/providers/supabase/wrappers/withErrorLogging.ts:256:logSuccess",
-        "target": "includes",
-        "targetName": "includes",
-        "edgeType": "call",
-        "line": 265,
+        "line": 219,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/wrappers/withErrorLogging.ts:256:logSuccess",
-        "target": "includes",
-        "targetName": "includes",
-        "edgeType": "call",
-        "line": 265,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/providers/supabase/wrappers/withErrorLogging.ts:256:logSuccess",
+        "source": "src/atomic-crm/providers/supabase/wrappers/withErrorLogging.ts:210:logSuccess",
         "target": "info",
         "targetName": "info",
         "edgeType": "call",
-        "line": 269,
+        "line": 223,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/wrappers/withErrorLogging.ts:291:withErrorLogging",
+        "source": "src/atomic-crm/providers/supabase/wrappers/withErrorLogging.ts:245:withErrorLogging",
         "target": "call",
         "targetName": "call",
         "edgeType": "call",
-        "line": 315,
+        "line": 269,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/wrappers/withErrorLogging.ts:291:withErrorLogging",
+        "source": "src/atomic-crm/providers/supabase/wrappers/withErrorLogging.ts:245:withErrorLogging",
         "target": "logSuccess",
         "targetName": "logSuccess",
         "edgeType": "call",
-        "line": 322,
+        "line": 276,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/wrappers/withErrorLogging.ts:291:withErrorLogging",
+        "source": "src/atomic-crm/providers/supabase/wrappers/withErrorLogging.ts:245:withErrorLogging",
         "target": "logError",
         "targetName": "logError",
         "edgeType": "call",
-        "line": 327,
+        "line": 281,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/wrappers/withErrorLogging.ts:291:withErrorLogging",
+        "source": "src/atomic-crm/providers/supabase/wrappers/withErrorLogging.ts:245:withErrorLogging",
         "target": "isAlreadyDeletedError",
         "targetName": "isAlreadyDeletedError",
         "edgeType": "call",
-        "line": 331,
+        "line": 285,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/wrappers/withErrorLogging.ts:291:withErrorLogging",
+        "source": "src/atomic-crm/providers/supabase/wrappers/withErrorLogging.ts:245:withErrorLogging",
         "target": "isReactAdminValidationError",
         "targetName": "isReactAdminValidationError",
         "edgeType": "call",
-        "line": 337,
+        "line": 291,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/wrappers/withErrorLogging.ts:291:withErrorLogging",
+        "source": "src/atomic-crm/providers/supabase/wrappers/withErrorLogging.ts:245:withErrorLogging",
         "target": "isSupabaseError",
         "targetName": "isSupabaseError",
         "edgeType": "call",
-        "line": 342,
+        "line": 296,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/wrappers/withErrorLogging.ts:291:withErrorLogging",
+        "source": "src/atomic-crm/providers/supabase/wrappers/withErrorLogging.ts:245:withErrorLogging",
         "target": "transformSupabaseError",
         "targetName": "transformSupabaseError",
         "edgeType": "call",
-        "line": 343,
+        "line": 297,
         "conditional": true,
         "inLoop": false
       },
