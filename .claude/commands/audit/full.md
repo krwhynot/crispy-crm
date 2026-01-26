@@ -781,9 +781,36 @@ Read: docs/audits/.baseline/full-audit.json
       "id": "C1-001",
       "severity": "critical",
       "location": "file:line",
-      "firstSeen": "2025-01-08"
+      "firstSeen": "2025-01-08",
+      "status": "open"
     }
   ]
+}
+```
+
+### Finding Status Values
+
+| Status | Description | Counts in Totals? |
+|--------|-------------|-------------------|
+| `open` | Active finding requiring attention | Yes |
+| `VERIFIED_INTENTIONAL` | Reviewed, confirmed as intentional design | No |
+| `historical` | From migration before cutoff date (2026-01-01) | No |
+| `allowlisted` | Matches entry in allowlist.json | No |
+| `fixed` | Previously existed, now resolved | No |
+
+**Verified Intentional Example:**
+```json
+{
+  "source_audit": "security",
+  "id": "C1-003",
+  "severity": "critical",
+  "location": "harden_participant_tables.sql:410",
+  "check": "USING(true) RLS",
+  "status": "VERIFIED_INTENTIONAL",
+  "verificationNote": "Participant tables intentionally team-shared per RFC-123",
+  "verifiedBy": "Task 3.6 RLS Verification",
+  "verifiedDate": "2026-01-26",
+  "reviewDue": "2026-04-26"
 }
 ```
 
@@ -1245,7 +1272,10 @@ Write updated baseline to: `docs/audits/.baseline/full-audit.json`
   "totals": {
     "critical": [TOTAL_CRITICAL],
     "high": [TOTAL_HIGH],
-    "medium": [TOTAL_MEDIUM]
+    "medium": [TOTAL_MEDIUM],
+    "historical": [TOTAL_HISTORICAL],
+    "allowlisted": [TOTAL_ALLOWLISTED],
+    "verified_intentional": [TOTAL_VERIFIED]
   },
   "by_layer": {
     "L1_database": {
@@ -1295,13 +1325,18 @@ Write updated baseline to: `docs/audits/.baseline/full-audit.json`
     {
       "source_audit": "[category]",
       "id": "[id]",
-      "severity": "[critical|high|medium]",
+      "severity": "[critical|high|medium|historical]",
       "layer": "[L1|L2|L3|L4|L5]",
       "check": "[check name]",
       "location": "[file:line]",
       "description": "[description]",
       "firstSeen": "[date]",
-      "status": "open"
+      "status": "open|VERIFIED_INTENTIONAL|historical|allowlisted",
+      "allowlistId": "[if allowlisted, the entry ID]",
+      "verificationNote": "[if VERIFIED_INTENTIONAL, why]",
+      "verifiedBy": "[if VERIFIED_INTENTIONAL, who/what verified]",
+      "verifiedDate": "[if VERIFIED_INTENTIONAL, when]",
+      "reviewDue": "[if VERIFIED_INTENTIONAL, when to re-verify]"
     }
   ]
 }

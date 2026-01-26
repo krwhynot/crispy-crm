@@ -72,6 +72,42 @@ ELSE:
 
 ---
 
+## Phase 1.5: Load Allowlist and Apply Context Filters
+
+### Load Allowlist
+
+```bash
+cat docs/audits/.baseline/allowlist.json 2>/dev/null || echo "{}"
+```
+
+### SQL Context Filters for RLS Checks
+
+**1. ROLLBACK Section Exclusion:**
+```bash
+# USING(true) in ROLLBACK sections is undo code, not active policies
+rg "USING\s*\(\s*true\s*\)" supabase/migrations/ | rg -v "ROLLBACK|-- Rollback|DO \$\$ BEGIN.*ROLLBACK"
+```
+
+**2. Comment Exclusion:**
+```bash
+# Exclude SQL comments (COMMENT ON statements, inline comments)
+rg "USING\s*\(\s*true\s*\)" supabase/migrations/ | rg -v "^--" | rg -v "COMMENT ON"
+```
+
+**3. Historical Migration Filter:**
+```bash
+# Migrations before 2026-01-01 are historical
+# Date prefix extraction: YYYYMMDD from filename
+# If < 20260101, mark severity as "Historical" instead of "Critical"
+```
+
+**4. Intentional Design Pattern (Allowlisted):**
+Per allowlist, these USING(true) patterns are intentional:
+- `opportunity_participants` / `interaction_participants`: Team collaboration design
+- `segments` table: Public reference data for all authenticated users
+
+---
+
 ## Phase 2: Migration File Checks (Always Run)
 
 **Run these searches in parallel:**

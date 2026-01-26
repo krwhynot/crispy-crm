@@ -1,0 +1,84 @@
+{
+  "audit": "workflow-gaps",
+  "mode": "quick",
+  "timestamp": "2026-01-26T00:00:00Z",
+  "critical": 0,
+  "high": 4,
+  "medium": 2,
+  "findings": [
+    {
+      "id": "WF-001",
+      "severity": "high",
+      "check": "Silent Status Defaults - Product Category",
+      "location": "src/atomic-crm/validation/products.ts:36",
+      "description": "productCategorySchema has .default('beverages') - silently assigns category if omitted. Form users may not realize a default was applied, creating unexpected product data.",
+      "fix": "Remove .default() from productCategorySchema. Make category explicitly required with error message. Users must actively select category, not fall back to silent default.",
+      "status": "open",
+      "confidence": "95%"
+    },
+    {
+      "id": "WF-002",
+      "severity": "high",
+      "check": "Silent Status Defaults - Product Status",
+      "location": "src/atomic-crm/validation/products.ts:63",
+      "description": "productStatusSchema has .default('active') - silently marks products as active if omitted. Prevents users from intentionally creating dormant products. Creates silent workflow bypass.",
+      "fix": "Remove .default('active'). Require explicit status selection. Only use defaults in database column constraints, not form validation.",
+      "status": "open",
+      "confidence": "90%"
+    },
+    {
+      "id": "WF-003",
+      "severity": "high",
+      "check": "Incomplete State Transitions - Opportunity Close Without Prerequisites",
+      "location": "src/atomic-crm/validation/opportunities/opportunities-operations.ts:518-531",
+      "description": "Close stage transitions validate actual_close_date requirement BUT do not validate related prerequisite records (activities, notes, decision criteria populated). Opportunities can reach closed_won/lost without documented reasoning chain.",
+      "fix": "Add refinement to check: (1) At least one activity exists for this opportunity, (2) close_reason_notes is populated when win/loss_reason='other', (3) decision_criteria is set. Fail-fast before allowing close.",
+      "status": "open",
+      "confidence": "85%"
+    },
+    {
+      "id": "WF-004",
+      "severity": "high",
+      "check": "Missing Activity Logging - Task Completion Without Audit Trail",
+      "location": "src/atomic-crm/providers/supabase/callbacks/activitiesCallbacks.ts:93-118",
+      "description": "Task completion (completed=true) sets completed_at timestamp BUT does not create an audit activity log entry. When tasks are marked done, no record of completion appears in activity timeline.",
+      "fix": "In handleTaskCompletionTimestamp transform, when completed transitions from false→true, queue creation of an 'engagement' activity recording task completion: subject='Task completed: [task title]', activity_date=now().",
+      "status": "open",
+      "confidence": "80%"
+    },
+    {
+      "id": "WF-005",
+      "severity": "medium",
+      "check": "Required Field Fallback - Sample Activities Without Follow-up Enforcement Gap",
+      "location": "src/atomic-crm/validation/activities/schemas.ts:139-160",
+      "description": "Sample activities with active statuses (pending_sample, sample_sent, awaiting_feedback) REQUIRE follow_up_required=true AND follow_up_date. Validation is correct BUT no lifecycle callback enforces automatic follow-up task creation. Users can pass validation but then fail to follow up.",
+      "fix": "In afterCreate callback for activities with type='sample' and sample_status in SAMPLE_ACTIVE_STATUSES: automatically create a task with due_date=follow_up_date, title='Follow up on sample [opportunity_name]', owner=current_sales_id.",
+      "status": "open",
+      "confidence": "75%"
+    },
+    {
+      "id": "WF-006",
+      "severity": "medium",
+      "check": "Hardcoded Pipeline Stages (Partial Mitigation)",
+      "location": "src/atomic-crm/validation/opportunities/opportunities-operations.ts:32-40",
+      "description": "VALID_STAGE_TRANSITIONS hardcodes stage values (new_lead, initial_outreach, etc.) but these ARE sourced from opportunityStageSchema enum (good pattern). However, CLOSED_STAGES constant in opportunities-operations.ts:521 uses [...CLOSED_STAGES] which imports from /opportunities/constants - potential drift if constants not synchronized.",
+      "fix": "Create single source of truth: export VALID_STAGE_TRANSITIONS from opportunities-core.ts (alongside schema), import in operations.ts. Add integration test verifying constants match schema enum values.",
+      "status": "open",
+      "confidence": "70%"
+    }
+  ],
+  "summary": "0 critical, 4 high, 2 medium issues found. Primary gaps: (1) Silent status defaults in products schema bypass user intent, (2) Opportunity close validation missing activity/reasoning prerequisites, (3) Task completion and sample follow-up lack audit trail workflows. No silent catch blocks detected - error handling is explicit with logging.",
+  "strengths": [
+    "Stage transition validation is well-enforced via VALID_STAGE_TRANSITIONS map (WF-H1-004)",
+    "Win/loss reason requirements are defense-in-depth (both Zod and DB constraints)",
+    "Sample activity follow-up is validated at form boundary",
+    "No empty catch handlers found - all error handling includes logging",
+    "Task completion timestamp is properly set (completed_at)"
+  ],
+  "architecture_notes": {
+    "validation_layer": "src/atomic-crm/validation/ - API boundary validation is strong",
+    "lifecycle_callbacks": "src/atomic-crm/providers/supabase/callbacks/ - Missing audit trail creation for state transitions",
+    "database_constraints": "CHECK constraints enforce win/loss requirements (database layer)",
+    "workflow_entry_points": "Stage transitions logged via opportunitiesBeforeUpdate (good), but task completion has no equivalent"
+  }
+}
