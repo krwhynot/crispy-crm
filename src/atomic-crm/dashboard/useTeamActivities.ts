@@ -81,6 +81,15 @@ export function useTeamActivities(limit: number = DEFAULT_LIMIT): UseTeamActivit
     }
   );
 
+  // DIAGNOSTIC: Log raw activities data immediately after fetch
+  console.log("[useTeamActivities] 🔍 STEP 1 - Raw useGetList result:", {
+    loading,
+    activitiesCount: activities?.length,
+    hasActivities: !!activities,
+    firstActivity: activities?.[0],
+    error: queryError,
+  });
+
   // Step 2: Extract unique sales IDs (with memoization to prevent unnecessary re-fetches)
   const salesIds = useMemo(
     () => [...new Set(activities?.map((a) => a.created_by).filter(Boolean))],
@@ -89,12 +98,26 @@ export function useTeamActivities(limit: number = DEFAULT_LIMIT): UseTeamActivit
     [JSON.stringify(activities?.map((a) => a.created_by))]
   );
 
+  // DIAGNOSTIC: Log extracted sales IDs
+  console.log("[useTeamActivities] 🔍 STEP 2 - Extracted sales IDs:", {
+    salesIds,
+    salesIdsCount: salesIds.length,
+    uniqueCreatedByValues: [...new Set(activities?.map((a) => a.created_by))],
+  });
+
   // Step 3: Batch fetch sales data using useGetMany (automatic deduplication & caching)
   const { data: salesRecords } = useGetMany<Sale>(
     "sales",
     { ids: salesIds as number[] },
     { enabled: !loading && salesIds.length > 0 }
   );
+
+  // DIAGNOSTIC: Log useGetMany result
+  console.log("[useTeamActivities] 🔍 STEP 3 - useGetMany result:", {
+    enabled: !loading && salesIds.length > 0,
+    salesRecordsCount: salesRecords?.length,
+    salesRecords,
+  });
 
   // Step 4: Merge activities with sales data
   const activitiesWithSales = useMemo(() => {
