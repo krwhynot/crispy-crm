@@ -145,14 +145,15 @@ function logError(
  * Attempts to extract field name from error details
  *
  * @param error - The Supabase error
+ * @param context - Optional context about the resource and action
  * @returns Validation error in React Admin format
  */
-function transformSupabaseError(error: SupabaseError): ValidationError {
+function transformSupabaseError(error: SupabaseError, context?: ErrorContext): ValidationError {
   const fieldErrors: Record<string, string> = {};
   const errorMessage = error.details || error.message || "Operation failed";
 
   // Try to sanitize using our pattern matchers
-  const sanitized = sanitizeDatabaseError(errorMessage);
+  const sanitized = sanitizeDatabaseError(errorMessage, context);
 
   if (sanitized) {
     fieldErrors[sanitized.field] = sanitized.message;
@@ -298,7 +299,12 @@ export function withErrorLogging<T extends DataProvider>(provider: T): T {
 
           // For Supabase errors, try to extract field-specific errors
           if (isSupabaseError(error)) {
-            throw transformSupabaseError(error as SupabaseError);
+            // Create error context from current operation
+            const errorContext: ErrorContext = {
+              resource,
+              action: method === "create" ? "create" : method === "update" ? "update" : "delete",
+            };
+            throw transformSupabaseError(error as SupabaseError, errorContext);
           }
 
           // Pass through other errors

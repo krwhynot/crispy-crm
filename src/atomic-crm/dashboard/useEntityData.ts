@@ -105,7 +105,7 @@ export function useEntityData({
   const { data: contacts = [], isPending: contactsLoading } = useGetList<Contact>(
     "contacts",
     {
-      pagination: { page: 1, perPage: shouldSearchContacts ? 50 : INITIAL_PAGE_SIZE },
+      pagination: { page: 1, perPage: shouldSearchContacts ? MAX_PAGE_SIZE : DEFAULT_PAGE_SIZE },
       sort: { field: "name", order: "ASC" },
       filter: contactFilter,
     },
@@ -120,7 +120,7 @@ export function useEntityData({
   const { data: organizations = [], isPending: organizationsLoading } = useGetList<Organization>(
     "organizations",
     {
-      pagination: { page: 1, perPage: shouldSearchOrgs ? 50 : INITIAL_PAGE_SIZE },
+      pagination: { page: 1, perPage: shouldSearchOrgs ? MAX_PAGE_SIZE : DEFAULT_PAGE_SIZE },
       sort: { field: "name", order: "ASC" },
       filter: orgFilter,
     },
@@ -135,7 +135,7 @@ export function useEntityData({
   const { data: opportunities = [], isPending: opportunitiesLoading } = useGetList<Opportunity>(
     "opportunities",
     {
-      pagination: { page: 1, perPage: shouldSearchOpps ? 50 : INITIAL_PAGE_SIZE },
+      pagination: { page: 1, perPage: shouldSearchOpps ? MAX_PAGE_SIZE : DEFAULT_PAGE_SIZE },
       sort: { field: "name", order: "ASC" },
       filter: oppFilter,
     },
