@@ -63,10 +63,11 @@
   - [ ] Change role from rep to manager -> Save -> Verify
   - [ ] Test disabled toggle -> Save -> Verify user disabled
   - [ ] Re-enable user -> Save -> Verify
-- [ ] **Preferences Tab (if applicable):**
-  - [ ] Verify timezone field (default "America/Chicago")
-  - [ ] Test digest_opt_in toggle
+- [ ] **Profile/Settings:**
+  - [ ] Verify timezone field (default "America/Chicago") - saved with profile
+  - [ ] Test digest_opt_in toggle (default: true) - saved with profile
   - [ ] Change timezone -> Save -> Verify persisted
+  - [ ] Note: timezone and digest_opt_in persist with user profile, not separate preferences form
 
 ### Phase 4: User SlideOver/Detail View
 

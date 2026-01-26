@@ -7,6 +7,10 @@
 
 1. Ensure dev server is running (`just dev`)
 2. Confirm test data exists (`just seed-e2e` if needed)
+3. **IMPORTANT (Jan 2026)**: Tasks are now stored in the `activities` table with `activity_type='task'`
+   - The old `tasks` table is deprecated (renamed to `tasks_deprecated` in DB)
+   - UI continues to use `/tasks` routes but queries activities table via handler
+   - All task functionality works normally - this is an internal migration
 
 ---
 
@@ -32,12 +36,12 @@
   - [ ] Delete option
 - [ ] Screenshot any display issues
 
-### Phase 2: Create Task Form (Tabbed)
+### Phase 2: Create Task Form
 
 - [ ] Click "Create" button
-- [ ] Verify tabbed form displays with General tab and Details tab
+- [ ] Verify form displays with collapsible General section and Details section
 
-#### General Tab Fields:
+#### General Section Fields:
 
 | Field | Test Invalid | Test Valid | Expected Behavior |
 |-------|-------------|------------|-------------------|
@@ -48,7 +52,7 @@
 | Reminder Date | - | Select date | Optional date picker |
 | Assigned To (sales_id) | empty | Select from dropdown | **REQUIRED** - dropdown populates with sales reps |
 
-#### Details Tab Fields:
+#### Details Section Fields:
 
 | Field | Test Invalid | Test Valid | Expected Behavior |
 |-------|-------------|------------|-------------------|
@@ -67,7 +71,7 @@
 ### Phase 3: Edit Task Form
 
 - [ ] Open existing task from list
-- [ ] Verify all fields pre-populated correctly across both tabs
+- [ ] Verify all fields pre-populated correctly across both sections
 - [ ] Test edit scenarios:
   - [ ] Change title -> Save -> Reload -> Verify persisted
   - [ ] Change type -> Save -> Verify persisted
@@ -76,7 +80,7 @@
   - [ ] Add/change contact association -> Save -> Verify persisted
   - [ ] Add/change opportunity association -> Save -> Verify persisted
   - [ ] Clear required field (title) -> Verify error appears on save
-- [ ] Test Snooze functionality:
+- [ ] Test Snooze functionality (Verified: TaskActionMenu implements postpone actions):
   - [ ] Use "Postpone to Tomorrow" -> Verify snooze_until set to tomorrow
   - [ ] Use "Postpone to Next Week" -> Verify snooze_until set to next week
   - [ ] Verify snoozed task appears with snooze indicator
@@ -85,7 +89,7 @@
 ### Phase 4: Task SlideOver/Detail View
 
 - [ ] Click task row to open SlideOver (if applicable)
-- [ ] Verify Details tab displays:
+- [ ] Verify Details section displays:
   - [ ] Title
   - [ ] Type badge
   - [ ] Priority badge (color-coded)
@@ -94,7 +98,7 @@
   - [ ] Description
   - [ ] Assigned To name
   - [ ] Completed status
-- [ ] Verify Related Items tab displays:
+- [ ] Verify Related Items section displays:
   - [ ] Contact link (clickable)
   - [ ] Opportunity link (clickable)
   - [ ] Organization link (clickable)
@@ -103,11 +107,11 @@
 
 ### Phase 5: Accessibility Audit
 
-- [ ] Tab through form - all fields reachable across both tabs
+- [ ] Tab through form - all fields reachable across both sections
 - [ ] Focus states visible on all inputs, buttons, and tabs
 - [ ] Buttons/clickable areas >= 44px tall (check with dev tools)
 - [ ] Error messages readable (not just color-coded)
-- [ ] Tab navigation works correctly (General <-> Details)
+- [ ] Section navigation works correctly (General <-> Details)
 - [ ] Done checkbox in list is keyboard accessible
 - [ ] Actions menu dropdown is keyboard navigable
 - [ ] Priority badges have accessible color contrast

@@ -165,6 +165,15 @@
 | credit_limit | number | NO | non-negative |
 | territory | string | NO | max 100 |
 
+**System/Audit Fields (Not UI-Editable):**
+| Field | Type | Required | Notes |
+|-------|------|----------|-------|
+| import_session_id | UUID | NO | Tracks import batch (system-only) |
+| playbook_category_id | UUID | NO | Internal categorization |
+| cuisine | string (max 100) | NO | Restaurant cuisine type |
+| needs_review | boolean | NO | Flags for manual review |
+| sector | string (max 100) | NO | Industry sector classification |
+
 ---
 
 ## Report Issues As

@@ -50,6 +50,10 @@
 | distributor_ids | Multi-select distributors | Array of distributor org IDs |
 | product_distributors | Vendor item numbers | Record<distributor_id, { vendor_item_number }> |
 
+**Note on Distributor Fields**: Form accepts distributor selections, but these are processed by
+`productsHandler` and stored in `product_distributors` junction table. The fields are stripped
+from the main product record before database save.
+
 - [ ] Submit empty form - verify required field errors
 - [ ] Verify error styling: red border, error text visible
 - [ ] Verify `aria-invalid="true"` on invalid fields

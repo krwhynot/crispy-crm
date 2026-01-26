@@ -38,11 +38,13 @@
 |-------|-------------|------------|-------------------|
 | Subject | empty, whitespace-only, >255 chars | "Follow-up call with prospect" | Required error, max length enforced |
 | Type | - | Select from dropdown | Dropdown shows all 13 types (call, email, meeting, demo, proposal, follow_up, trade_show, site_visit, contract_review, check_in, social, note, sample) |
-| Activity Type | - | Select "engagement" or "interaction" | Default "interaction", controls opportunity_id requirement |
+| Activity Type | - | Select "engagement", "interaction", or "task" | Default "interaction", controls opportunity_id requirement |
 | Activity Date | - | Date picker | Default to today |
-| Contact | - | Select from dropdown | **Conditional** - required if no organization |
-| Organization | - | Select from dropdown | **Conditional** - required if no contact |
+| Contact | - | Select from dropdown | **Conditional** - required if no organization (EXCEPT for tasks) |
+| Organization | - | Select from dropdown | **Conditional** - required if no contact (EXCEPT for tasks) |
 | Opportunity | - | Select from dropdown | **Required for interactions**, must be empty for engagements |
+
+**Note**: Tasks (activity_type='task') can exist independently without contact/organization. All other activity types must have at least one.
 | Duration (minutes) | negative, decimal | 30 | Positive integer only |
 | Description | >5000 chars | "Discussed pricing options" | Max length enforced, HTML sanitized |
 | Outcome | >2000 chars | "Agreed to schedule demo" | Max length enforced, HTML sanitized |

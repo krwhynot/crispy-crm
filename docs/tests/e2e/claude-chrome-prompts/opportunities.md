@@ -63,7 +63,11 @@
 
 | Field | Test | Expected Behavior |
 |-------|------|-------------------|
-| Contact IDs | Multi-select contacts | Array of valid contact IDs, rejects invalid strings |
+| Primary Contact | Select single contact | **NEW 2026-01-25**: Single primary contact (decision maker) |
+| Contact IDs | Multi-select contacts | Array of valid contact IDs, rejects invalid strings (DEPRECATED - use Primary Contact) |
+
+**Note**: The schema is migrating from `contact_ids` array to single `primary_contact_id`.
+Track additional stakeholders in activities/notes.
 
 - [ ] Complete wizard and submit
 - [ ] Verify opportunity appears in correct stage column
@@ -147,7 +151,8 @@
 | principal_organization_id | number | YES | valid org FK |
 | distributor_organization_id | number | NO | valid org FK |
 | account_manager_id | number | NO | valid sales FK |
-| contact_ids | number[] | NO | array of valid contact FKs |
+| primary_contact_id | number | NO | valid contact FK (NEW 2026-01-25) - single decision maker |
+| contact_ids | number[] | NO | array of valid contact FKs (DEPRECATED - use primary_contact_id) |
 | campaign | string | NO | max 100 |
 | related_opportunity_id | number | NO | valid opportunity FK |
 | notes | text | NO | max 5000, HTML sanitized |

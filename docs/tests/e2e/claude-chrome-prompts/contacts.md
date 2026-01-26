@@ -32,11 +32,11 @@
 |-------|-------------|------------|-------------------|
 | First Name | empty, whitespace-only, >100 chars | "John" | Required error, max length enforced |
 | Last Name | empty, whitespace-only, >100 chars | "Smith" | Required error, max length enforced |
-| Email (JSONB array) | empty array, "notanemail", "test@" | "john@example.com" | At least one valid email required |
-| Phone (JSONB array) | >30 chars per entry | "555-123-4567" | Max length enforced |
+| Email (JSONB array) | "notanemail", "test@" | {value: "john@example.com", type: "work"} | Optional - each email has value + type (work/home/other) |
+| Phone (JSONB array) | >30 chars per entry | {value: "555-123-4567", type: "work"} | Each phone has value + type (work/home/other), max 30 chars per value |
 | Title | >100 chars | "Sales Manager" | Max length enforced |
 | Department | >100 chars | "Operations" | Max length enforced |
-| Department Type | - | Select from dropdown | Dropdown populates (operations, purchasing, culinary, management, executive, other) |
+| Department Type | - | Select from dropdown | Dropdown populates (senior_management, sales_management, district_management, area_sales, sales_specialist, sales_support, procurement) |
 | LinkedIn URL | "notaurl", "google.com" | "https://linkedin.com/in/john" | Must be linkedin.com domain |
 | Organization | - | Select from dropdown | **REQUIRED** - dropdown populates |
 | Sales Rep | - | Select from dropdown | **REQUIRED** - dropdown populates |
@@ -83,7 +83,7 @@
 
 ### Phase 6: Edge Cases
 
-- [ ] Create contact with minimum required fields only (first_name, last_name, email, organization, sales_id)
+- [ ] Create contact with minimum required fields only (first_name, last_name, organization_id, sales_id)
 - [ ] Create contact with all fields filled
 - [ ] Test contact with multiple emails and phones
 - [ ] Search for contact with special characters in name (O'Brien, McDonald's)
@@ -98,11 +98,11 @@
 |-------|------|----------|------------------|
 | first_name | string | YES | max 100, not empty/whitespace |
 | last_name | string | YES | max 100, not empty/whitespace |
-| email | JSONB array | YES (min 1) | valid email format per entry |
+| email | JSONB array | NO | valid email format per entry if provided |
 | phone | JSONB array | NO | max 30 chars per entry |
 | title | string | NO | max 100 |
 | department | string | NO | max 100 |
-| department_type | enum | NO | operations, purchasing, culinary, management, executive, other |
+| department_type | enum | NO | senior_management, sales_management, district_management, area_sales, sales_specialist, sales_support, procurement |
 | linkedin_url | string | NO | must be linkedin.com domain, max 2048 |
 | organization_id | number | YES | valid org FK |
 | sales_id | number | YES | valid sales FK |
@@ -128,7 +128,7 @@
 
 ## Success Criteria
 
-- [ ] All required fields enforce validation (first_name, last_name, email, organization_id, sales_id)
+- [ ] All required fields enforce validation (first_name, last_name, organization_id, sales_id)
 - [ ] JSONB email/phone arrays work correctly (add, remove, edit entries)
 - [ ] All fields save and persist correctly
 - [ ] List displays all data without errors

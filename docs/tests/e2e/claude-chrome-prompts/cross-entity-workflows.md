@@ -344,6 +344,12 @@
   - `subject=Follow up on Q1 Beverage proposal`
   - `opportunity_id=[id]` (if task linked to opportunity)
 
+**Type Parameter Mapping:**
+- Task type "Follow-up" → activity URL param `type=follow_up` (snake_case)
+- Task type "Call" → activity URL param `type=call`
+- Task type "Email" → activity URL param `type=email`
+- Task type "Meeting" → activity URL param `type=meeting`
+
 **Validation Checkpoint B3:**
 - [ ] Activity form opens with pre-filled data
 - [ ] Type field shows "Follow-up"
