@@ -12,6 +12,7 @@ import { Badge } from "@/components/ui/badge";
 import type { ActivityLogInput } from "@/atomic-crm/validation/activities";
 import type { Contact, Organization, Opportunity } from "../types";
 import { useRecentSearches } from "@/atomic-crm/hooks/useRecentSearches";
+import { contactKeys, organizationKeys, opportunityKeys } from "@/atomic-crm/queryKeys";
 import {
   loadDraft,
   saveDraft,

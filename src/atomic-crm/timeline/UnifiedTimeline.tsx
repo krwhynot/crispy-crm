@@ -7,7 +7,7 @@
  */
 
 import { useState } from "react";
-import { Plus } from "lucide-react";
+import { Plus, RefreshCw } from "lucide-react";
 import { useGetList } from "ra-core";
 import { AdminButton } from "@/components/admin/AdminButton";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -79,7 +79,15 @@ export const UnifiedTimeline = ({
   }
 
   if (error) {
-    return <div className="text-center py-8 text-destructive">Failed to load timeline</div>;
+    return (
+      <div className="flex flex-col items-center justify-center py-8 text-center">
+        <p className="text-sm text-destructive mb-3">Failed to load timeline</p>
+        <AdminButton onClick={() => refetch()} variant="outline" size="sm" className="gap-2">
+          <RefreshCw className="size-4" aria-hidden="true" />
+          Try Again
+        </AdminButton>
+      </div>
+    );
   }
 
   const entries = data || [];
