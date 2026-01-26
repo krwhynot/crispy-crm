@@ -18,44 +18,20 @@ export const activitySteps: TutorialStep[] = [
     navigateTo: "/activities",
   },
   {
-    element: '[data-tutorial="create-activity-btn"]',
+    element: '[data-tutorial="log-activity-fab"]',
     popover: {
-      title: "Log New Activity",
-      description: "Let's log an activity. You should do this in under 30 seconds!",
-      side: "bottom",
+      title: "Quick Log Activity",
+      description:
+        "Use this floating button to log activities from anywhere. Opens a quick dialog for 30-second logging!",
+      side: "left",
     },
+    navigateTo: "/",
   },
   {
-    element: '[data-tutorial="activity-type"]',
     popover: {
-      title: "Activity Type",
-      description: "Select the type: Call, Email, Meeting, Demo, Sample, Site Visit, and more.",
-      side: "right",
-    },
-    navigateTo: "/activities/create",
-  },
-  {
-    element: '[data-tutorial="activity-description"]',
-    popover: {
-      title: "Description",
-      description: "Brief notes about what happened. Keep it short!",
-      side: "right",
-    },
-  },
-  {
-    element: '[data-tutorial="activity-opportunity"]',
-    popover: {
-      title: "Related Opportunity",
-      description: "Link this activity to an opportunity in your pipeline.",
-      side: "right",
-    },
-  },
-  {
-    element: '[data-tutorial="activity-save-btn"]',
-    popover: {
-      title: "Save Activity",
-      description: "Click Save to log this activity.",
-      side: "top",
+      title: "Activity Dialog",
+      description:
+        "The quick log dialog lets you select type (Call, Email, Meeting, etc.), add notes, and link to contacts/opportunities.",
     },
   },
   {

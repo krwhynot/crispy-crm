@@ -248,6 +248,8 @@ export const CRM = ({
           <Route path="/products/:id/show" element={<ProductShowRedirect />} />
           <Route path="/organizations/:id/show" element={<OrganizationShowRedirect />} />
           <Route path="/opportunities/:id/show" element={<OpportunityShowRedirect />} />
+          {/* Activities create redirects to list - use QuickLogActivityDialog instead */}
+          <Route path="/activities/create" element={<Navigate to="/activities" replace />} />
         </CustomRoutes>
         <Resource name={RESOURCES.OPPORTUNITIES} {...opportunities} />
         <Resource name={RESOURCES.CONTACTS} {...contacts} />

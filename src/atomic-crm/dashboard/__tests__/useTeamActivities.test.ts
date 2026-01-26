@@ -19,10 +19,11 @@ import { useTeamActivities } from "../useTeamActivities";
 
 // Create stable mock functions
 const mockGetList = vi.fn();
+const mockGetMany = vi.fn();
 
 /**
- * Mock useGetList hook that uses React state to properly simulate async behavior.
- * This allows tests to control responses via mockGetList.mockResolvedValueOnce().
+ * Mock useGetList and useGetMany hooks that use React state to properly simulate async behavior.
+ * This allows tests to control responses via mockGetList/mockGetMany.mockResolvedValueOnce().
  */
 vi.mock("react-admin", async () => {
   // Import React for hooks - must be inside the mock factory
@@ -81,6 +82,56 @@ vi.mock("react-admin", async () => {
         refetch: fetchData,
       };
     },
+    useGetMany: (resource: string, params: { ids: number[] }, options?: { enabled?: boolean }) => {
+      const [state, setState] = React.useState<{
+        data: any[];
+        isLoading: boolean;
+        error: Error | null;
+      }>({
+        data: [],
+        isLoading: false,
+        error: null,
+      });
+
+      const enabled = options?.enabled !== false;
+      const idsKey = JSON.stringify(params.ids);
+
+      const fetchData = React.useCallback(async () => {
+        if (!enabled || params.ids.length === 0) {
+          setState({ data: [], isLoading: false, error: null });
+          return;
+        }
+
+        setState((s) => ({ ...s, isLoading: true, error: null }));
+        try {
+          const result = await mockGetMany(resource, params);
+          setState({
+            data: result.data || [],
+            isLoading: false,
+            error: null,
+          });
+        } catch (e) {
+          const errorMessage = e instanceof Error ? e.message : "Failed to fetch records";
+          setState({
+            data: [],
+            isLoading: false,
+            error: new Error(errorMessage),
+          });
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+      }, [resource, idsKey, enabled]);
+
+      React.useEffect(() => {
+        fetchData();
+      }, [fetchData]);
+
+      return {
+        data: state.data,
+        isLoading: state.isLoading,
+        error: state.error,
+        refetch: fetchData,
+      };
+    },
   };
 });
 
@@ -96,11 +147,22 @@ const createMockActivity = (overrides: Partial<TeamActivity> = {}): TeamActivity
     id: 42,
     first_name: "John",
     last_name: "Doe",
+    email: "john.doe@example.com",
     avatar_url: "https://example.com/avatar.jpg",
   },
   contact_id: 100,
   organization_id: 200,
   opportunity_id: 300,
+  ...overrides,
+});
+
+// Helper to create mock sales user
+const createMockSales = (id: number, overrides: Partial<any> = {}) => ({
+  id,
+  first_name: `User${id}`,
+  last_name: `Last${id}`,
+  email: `user${id}@example.com`,
+  avatar_url: `https://example.com/avatar${id}.jpg`,
   ...overrides,
 });
 
