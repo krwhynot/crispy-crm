@@ -1,5 +1,5 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
-import { createClient } from "jsr:@supabase/supabase-js@2";
+import { createClient, type User } from "jsr:@supabase/supabase-js@2";
 import { createCorsHeaders } from "../_shared/cors-config.ts";
 import { supabaseAdmin } from "../_shared/supabaseAdmin.ts";
 
@@ -10,7 +10,7 @@ function createErrorResponse(status: number, message: string, corsHeaders: Recor
   });
 }
 
-async function updatePassword(user: any, corsHeaders: Record<string, string>) {
+async function updatePassword(user: User, corsHeaders: Record<string, string>) {
   const { data, error } = await supabaseAdmin.auth.resetPasswordForEmail(user.email);
 
   if (!data || error) {
