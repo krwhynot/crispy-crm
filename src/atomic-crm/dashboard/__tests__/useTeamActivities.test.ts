@@ -443,9 +443,11 @@ describe("useTeamActivities", () => {
     it("should handle null description", async () => {
       const mockActivity = createMockActivity({
         description: null,
+        created_by: 42,
       });
 
       mockGetList.mockResolvedValueOnce({ data: [mockActivity], total: 1 });
+      mockGetMany.mockResolvedValueOnce({ data: [createMockSales(42)] });
 
       const { result } = renderHook(() => useTeamActivities());
 

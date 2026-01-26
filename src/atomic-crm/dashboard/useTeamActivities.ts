@@ -103,6 +103,17 @@ export function useTeamActivities(limit: number = DEFAULT_LIMIT): UseTeamActivit
     // Create lookup map for O(1) access
     const salesMap = new Map(salesRecords.map((s) => [s.id, s]));
 
+    // Debug logging - ALWAYS log to help diagnose "Team Member" issues
+    console.log("[useTeamActivities] Data merge debug:", {
+      activitiesCount: activities.length,
+      requestedUserIds: salesIds,
+      fetchedUsers: salesRecords?.map((s) => ({
+        id: s.id,
+        name: `${s.first_name} ${s.last_name}`.trim() || s.email || 'No name'
+      })),
+      salesMapSize: salesMap.size,
+    });
+
     // Debug logging to identify missing sales users
     const missingUserIds: number[] = [];
 
@@ -133,13 +144,12 @@ export function useTeamActivities(limit: number = DEFAULT_LIMIT): UseTeamActivit
     // Log missing users to help debug "Team Member" fallbacks
     if (missingUserIds.length > 0) {
       console.warn(
-        "[useTeamActivities] Sales users not found for activities:",
+        "[useTeamActivities] ⚠️ Sales users not found for activities:",
         [...new Set(missingUserIds)],
-        "Requested IDs:",
-        salesIds,
-        "Fetched users:",
-        salesRecords?.map((s) => ({ id: s.id, name: `${s.first_name} ${s.last_name}` }))
+        "\nThis causes 'Team Member' fallback in UI."
       );
+    } else {
+      console.log("[useTeamActivities] ✅ All sales users found successfully");
     }
 
     return merged;
