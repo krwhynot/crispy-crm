@@ -248,15 +248,21 @@ describe("useTeamActivities", () => {
         id: 1,
         type: "meeting",
         subject: "Quarterly review",
-        sales: {
-          id: 42,
-          first_name: "Jane",
-          last_name: "Smith",
-          avatar_url: "https://example.com/jane.jpg",
-        },
+        created_by: 42,
       });
 
       mockGetList.mockResolvedValueOnce({ data: [mockActivity], total: 1 });
+      mockGetMany.mockResolvedValueOnce({
+        data: [
+          {
+            id: 42,
+            first_name: "Jane",
+            last_name: "Smith",
+            email: "jane.smith@example.com",
+            avatar_url: "https://example.com/jane.jpg",
+          },
+        ],
+      });
 
       const { result } = renderHook(() => useTeamActivities());
 

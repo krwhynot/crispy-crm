@@ -9,25 +9,25 @@ Patterns for activity logging, filtering, sample tracking, and data export in Cr
                     │     React Admin Routes      │
                     └─────────────────────────────┘
                                │
-          ┌────────────────────┼────────────────────┐
-          ▼                    ▼                    ▼
-    ActivityList        ActivityCreate       ActivityEdit
-          │                    │                    │
-          │                    └────────┬───────────┘
-          │                             ▼
-          │                   ActivitySinglePage
-          │                   (Shared Form Fields)
+          ┌────────────────────┴────────────────────┐
+          ▼                                         ▼
+    ActivityList                              ActivityEdit
+          │                                         │
+          │                                         ▼
+          │                              ActivitySinglePage
+          │                              (Shared Form Fields)
           ▼
     ActivityListFilter
     (Sidebar Filters)
 
 ┌─────────────────────────────────────────────────────────────┐
-│              Quick Logging (Standalone Dialogs)              │
+│      Quick Logging (Dialogs - Primary Activity Creation)     │
 └─────────────────────────────────────────────────────────────┘
                             │
        ┌────────────────────┼────────────────────┐
        ▼                    ▼                    ▼
-QuickLogActivity    QuickLogActivity     ActivityTimeline
+QuickLogActivity  TaskCompletionDialog   ActivityTimeline
+  Dialog              (Task→Activity)       (History View)
 Dialog (reusable)   (task completion)    Entry (display)
        │
        └─→ QuickLogForm (lazy-loaded)

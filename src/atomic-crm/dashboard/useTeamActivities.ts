@@ -103,10 +103,18 @@ export function useTeamActivities(limit: number = DEFAULT_LIMIT): UseTeamActivit
     // Create lookup map for O(1) access
     const salesMap = new Map(salesRecords.map((s) => [s.id, s]));
 
+    // Debug logging to identify missing sales users
+    const missingUserIds: number[] = [];
+
     // Merge sales data into activities
-    return activities.map((activity) => {
+    const merged = activities.map((activity) => {
       // Look up the sales user - only create sales object if user exists
       const salesUser = activity.created_by ? salesMap.get(activity.created_by) : undefined;
+
+      // Track missing users for debugging
+      if (activity.created_by && !salesUser) {
+        missingUserIds.push(activity.created_by);
+      }
 
       return {
         ...activity,
@@ -121,7 +129,21 @@ export function useTeamActivities(limit: number = DEFAULT_LIMIT): UseTeamActivit
           : undefined,
       };
     });
-  }, [activities, salesRecords]);
+
+    // Log missing users to help debug "Team Member" fallbacks
+    if (missingUserIds.length > 0) {
+      console.warn(
+        "[useTeamActivities] Sales users not found for activities:",
+        [...new Set(missingUserIds)],
+        "Requested IDs:",
+        salesIds,
+        "Fetched users:",
+        salesRecords?.map((s) => ({ id: s.id, name: `${s.first_name} ${s.last_name}` }))
+      );
+    }
+
+    return merged;
+  }, [activities, salesRecords, salesIds]);
 
   // Convert error to Error type for consistent interface
   const error = queryError ? new Error(String(queryError)) : null;
