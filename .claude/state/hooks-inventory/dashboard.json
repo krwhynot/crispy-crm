@@ -1,6 +1,6 @@
 {
   "chunk_name": "dashboard",
-  "generated_at": "2026-01-26T17:00:29.870Z",
+  "generated_at": "2026-01-26T17:59:17.370Z",
   "item_count": 13,
   "items": [
     {
@@ -33,7 +33,7 @@
     {
       "name": "useEntityData",
       "file": "src/atomic-crm/dashboard/useEntityData.ts",
-      "line": 55,
+      "line": 53,
       "parameters": [
         "{\n  form,\n  selectedOrganizationId,\n  selectedContactId,\n  selectedOpportunityId,\n}"
       ],
@@ -106,7 +106,7 @@
     {
       "name": "useMyTasks",
       "file": "src/atomic-crm/dashboard/useMyTasks.ts",
-      "line": 20,
+      "line": 21,
       "parameters": [],
       "returnType": "{ tasks: { id: number; subject: string; dueDate: Date; priority: import(\"/home/krwhynot/projects/crispy-crm/src/atomic-crm/dashboard/types\").Priority; taskType: import(\"/home/krwhynot/projects/crispy-crm/src/atomic-crm/dashboard/types\").TaskType; relatedTo: import(\"/home/krwhynot/projects/crispy-crm/src/atomic-crm/dashboard/types\").RelatedEntity; status: TaskStatus; owner?: string; notes: string; snoozeUntil: Date; deleted?: boolean; }[]; loading: boolean; error: Error; completeTask: (taskId: number) => Promise<void>; snoozeTask: (taskId: number) => Promise<void>; deleteTask: (taskId: number) => Promise<void>; viewTask: (taskId: number) => void; updateTaskDueDate: (taskId: number, newDueDate: Date) => Promise<void>; updateTaskLocally: (taskId: number, updates: Partial<TaskItem>) => void; rollbackTask: (taskId: number, _previousState: TaskItem) => void; calculateStatus: (dueDate: Date) => TaskStatus; }",
       "dependencies": [
@@ -138,7 +138,7 @@
     {
       "name": "usePrincipalOpportunities",
       "file": "src/atomic-crm/dashboard/usePrincipalOpportunities.ts",
-      "line": 30,
+      "line": 31,
       "parameters": [
         "{\n  principalId,\n  enabled = true,\n}"
       ],

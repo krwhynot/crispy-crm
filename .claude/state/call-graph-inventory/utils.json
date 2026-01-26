@@ -1,6 +1,6 @@
 {
   "chunk_name": "utils",
-  "generated_at": "2026-01-26T17:00:39.631Z",
+  "generated_at": "2026-01-26T17:59:23.979Z",
   "items": {
     "nodes": [
       {
@@ -265,55 +265,55 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/utils/errorMessages.ts:121:mapErrorToUserMessage",
+        "id": "src/atomic-crm/utils/errorMessages.ts:266:mapErrorToUserMessage",
         "name": "mapErrorToUserMessage",
         "file": "src/atomic-crm/utils/errorMessages.ts",
-        "line": 121,
+        "line": 266,
         "nodeType": "function",
         "exported": true,
         "async": false
       },
       {
-        "id": "src/atomic-crm/utils/errorMessages.ts:141:sanitizeMessage",
+        "id": "src/atomic-crm/utils/errorMessages.ts:288:sanitizeMessage",
         "name": "sanitizeMessage",
         "file": "src/atomic-crm/utils/errorMessages.ts",
-        "line": 141,
+        "line": 288,
         "nodeType": "function",
         "exported": false,
         "async": false
       },
       {
-        "id": "src/atomic-crm/utils/errorMessages.ts:299:getActionErrorMessage",
+        "id": "src/atomic-crm/utils/errorMessages.ts:515:getActionErrorMessage",
         "name": "getActionErrorMessage",
         "file": "src/atomic-crm/utils/errorMessages.ts",
-        "line": 299,
+        "line": 515,
         "nodeType": "function",
         "exported": true,
         "async": false
       },
       {
-        "id": "src/atomic-crm/utils/errorMessages.ts:324:isNetworkError",
+        "id": "src/atomic-crm/utils/errorMessages.ts:540:isNetworkError",
         "name": "isNetworkError",
         "file": "src/atomic-crm/utils/errorMessages.ts",
-        "line": 324,
+        "line": 540,
         "nodeType": "function",
         "exported": true,
         "async": false
       },
       {
-        "id": "src/atomic-crm/utils/errorMessages.ts:339:isAuthError",
+        "id": "src/atomic-crm/utils/errorMessages.ts:555:isAuthError",
         "name": "isAuthError",
         "file": "src/atomic-crm/utils/errorMessages.ts",
-        "line": 339,
+        "line": 555,
         "nodeType": "function",
         "exported": true,
         "async": false
       },
       {
-        "id": "src/atomic-crm/utils/errorMessages.ts:362:sanitizeDatabaseError",
+        "id": "src/atomic-crm/utils/errorMessages.ts:579:sanitizeDatabaseError",
         "name": "sanitizeDatabaseError",
         "file": "src/atomic-crm/utils/errorMessages.ts",
-        "line": 362,
+        "line": 579,
         "nodeType": "function",
         "exported": true,
         "async": false
@@ -1770,637 +1770,250 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/errorMessages.ts:121:mapErrorToUserMessage",
+        "source": "src/atomic-crm/utils/errorMessages.ts:266:mapErrorToUserMessage",
         "target": "sanitizeMessage",
         "targetName": "sanitizeMessage",
-        "edgeType": "call",
-        "line": 128,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/utils/errorMessages.ts:121:mapErrorToUserMessage",
-        "target": "sanitizeMessage",
-        "targetName": "sanitizeMessage",
-        "edgeType": "call",
-        "line": 135,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/utils/errorMessages.ts:141:sanitizeMessage",
-        "target": "toLowerCase",
-        "targetName": "toLowerCase",
-        "edgeType": "call",
-        "line": 142,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/utils/errorMessages.ts:141:sanitizeMessage",
-        "target": "match",
-        "targetName": "match",
-        "edgeType": "call",
-        "line": 149,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/utils/errorMessages.ts:141:sanitizeMessage",
-        "target": "includes",
-        "targetName": "includes",
-        "edgeType": "call",
-        "line": 159,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/utils/errorMessages.ts:141:sanitizeMessage",
-        "target": "includes",
-        "targetName": "includes",
-        "edgeType": "call",
-        "line": 159,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/utils/errorMessages.ts:141:sanitizeMessage",
-        "target": "includes",
-        "targetName": "includes",
-        "edgeType": "call",
-        "line": 159,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/utils/errorMessages.ts:141:sanitizeMessage",
-        "target": "includes",
-        "targetName": "includes",
-        "edgeType": "call",
-        "line": 160,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/utils/errorMessages.ts:141:sanitizeMessage",
-        "target": "includes",
-        "targetName": "includes",
-        "edgeType": "call",
-        "line": 161,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/utils/errorMessages.ts:141:sanitizeMessage",
-        "target": "includes",
-        "targetName": "includes",
-        "edgeType": "call",
-        "line": 167,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/utils/errorMessages.ts:141:sanitizeMessage",
-        "target": "includes",
-        "targetName": "includes",
-        "edgeType": "call",
-        "line": 168,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/utils/errorMessages.ts:141:sanitizeMessage",
-        "target": "includes",
-        "targetName": "includes",
-        "edgeType": "call",
-        "line": 169,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/utils/errorMessages.ts:141:sanitizeMessage",
-        "target": "includes",
-        "targetName": "includes",
-        "edgeType": "call",
-        "line": 171,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/utils/errorMessages.ts:141:sanitizeMessage",
-        "target": "includes",
-        "targetName": "includes",
-        "edgeType": "call",
-        "line": 171,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/utils/errorMessages.ts:141:sanitizeMessage",
-        "target": "includes",
-        "targetName": "includes",
-        "edgeType": "call",
-        "line": 179,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/utils/errorMessages.ts:141:sanitizeMessage",
-        "target": "includes",
-        "targetName": "includes",
-        "edgeType": "call",
-        "line": 180,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/utils/errorMessages.ts:141:sanitizeMessage",
-        "target": "includes",
-        "targetName": "includes",
-        "edgeType": "call",
-        "line": 181,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/utils/errorMessages.ts:141:sanitizeMessage",
-        "target": "includes",
-        "targetName": "includes",
-        "edgeType": "call",
-        "line": 182,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/utils/errorMessages.ts:141:sanitizeMessage",
-        "target": "match",
-        "targetName": "match",
-        "edgeType": "call",
-        "line": 185,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/utils/errorMessages.ts:141:sanitizeMessage",
-        "target": "replace",
-        "targetName": "replace",
-        "edgeType": "call",
-        "line": 188,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/utils/errorMessages.ts:141:sanitizeMessage",
-        "target": "includes",
-        "targetName": "includes",
-        "edgeType": "call",
-        "line": 195,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/utils/errorMessages.ts:141:sanitizeMessage",
-        "target": "includes",
-        "targetName": "includes",
-        "edgeType": "call",
-        "line": 204,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/utils/errorMessages.ts:141:sanitizeMessage",
-        "target": "includes",
-        "targetName": "includes",
-        "edgeType": "call",
-        "line": 204,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/utils/errorMessages.ts:141:sanitizeMessage",
-        "target": "includes",
-        "targetName": "includes",
-        "edgeType": "call",
-        "line": 204,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/utils/errorMessages.ts:141:sanitizeMessage",
-        "target": "includes",
-        "targetName": "includes",
-        "edgeType": "call",
-        "line": 210,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/utils/errorMessages.ts:141:sanitizeMessage",
-        "target": "includes",
-        "targetName": "includes",
-        "edgeType": "call",
-        "line": 211,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/utils/errorMessages.ts:141:sanitizeMessage",
-        "target": "includes",
-        "targetName": "includes",
-        "edgeType": "call",
-        "line": 212,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/utils/errorMessages.ts:141:sanitizeMessage",
-        "target": "includes",
-        "targetName": "includes",
-        "edgeType": "call",
-        "line": 213,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/utils/errorMessages.ts:141:sanitizeMessage",
-        "target": "includes",
-        "targetName": "includes",
-        "edgeType": "call",
-        "line": 220,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/utils/errorMessages.ts:141:sanitizeMessage",
-        "target": "includes",
-        "targetName": "includes",
-        "edgeType": "call",
-        "line": 221,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/utils/errorMessages.ts:141:sanitizeMessage",
-        "target": "includes",
-        "targetName": "includes",
-        "edgeType": "call",
-        "line": 222,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/utils/errorMessages.ts:141:sanitizeMessage",
-        "target": "includes",
-        "targetName": "includes",
-        "edgeType": "call",
-        "line": 223,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/utils/errorMessages.ts:141:sanitizeMessage",
-        "target": "includes",
-        "targetName": "includes",
-        "edgeType": "call",
-        "line": 224,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/utils/errorMessages.ts:141:sanitizeMessage",
-        "target": "includes",
-        "targetName": "includes",
-        "edgeType": "call",
-        "line": 230,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/utils/errorMessages.ts:141:sanitizeMessage",
-        "target": "includes",
-        "targetName": "includes",
-        "edgeType": "call",
-        "line": 230,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/utils/errorMessages.ts:141:sanitizeMessage",
-        "target": "includes",
-        "targetName": "includes",
-        "edgeType": "call",
-        "line": 230,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/utils/errorMessages.ts:141:sanitizeMessage",
-        "target": "includes",
-        "targetName": "includes",
-        "edgeType": "call",
-        "line": 239,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/utils/errorMessages.ts:141:sanitizeMessage",
-        "target": "includes",
-        "targetName": "includes",
-        "edgeType": "call",
-        "line": 240,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/utils/errorMessages.ts:141:sanitizeMessage",
-        "target": "includes",
-        "targetName": "includes",
-        "edgeType": "call",
-        "line": 241,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/utils/errorMessages.ts:141:sanitizeMessage",
-        "target": "includes",
-        "targetName": "includes",
-        "edgeType": "call",
-        "line": 242,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/utils/errorMessages.ts:141:sanitizeMessage",
-        "target": "includes",
-        "targetName": "includes",
-        "edgeType": "call",
-        "line": 243,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/utils/errorMessages.ts:141:sanitizeMessage",
-        "target": "includes",
-        "targetName": "includes",
-        "edgeType": "call",
-        "line": 248,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/utils/errorMessages.ts:141:sanitizeMessage",
-        "target": "includes",
-        "targetName": "includes",
-        "edgeType": "call",
-        "line": 248,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/utils/errorMessages.ts:141:sanitizeMessage",
-        "target": "includes",
-        "targetName": "includes",
-        "edgeType": "call",
-        "line": 257,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/utils/errorMessages.ts:141:sanitizeMessage",
-        "target": "includes",
-        "targetName": "includes",
-        "edgeType": "call",
-        "line": 257,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/utils/errorMessages.ts:141:sanitizeMessage",
-        "target": "includes",
-        "targetName": "includes",
-        "edgeType": "call",
-        "line": 269,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/utils/errorMessages.ts:141:sanitizeMessage",
-        "target": "includes",
-        "targetName": "includes",
-        "edgeType": "call",
-        "line": 270,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/utils/errorMessages.ts:141:sanitizeMessage",
-        "target": "includes",
-        "targetName": "includes",
-        "edgeType": "call",
-        "line": 271,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/utils/errorMessages.ts:141:sanitizeMessage",
-        "target": "includes",
-        "targetName": "includes",
-        "edgeType": "call",
-        "line": 272,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/utils/errorMessages.ts:141:sanitizeMessage",
-        "target": "includes",
-        "targetName": "includes",
         "edgeType": "call",
         "line": 273,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/errorMessages.ts:141:sanitizeMessage",
-        "target": "includes",
-        "targetName": "includes",
+        "source": "src/atomic-crm/utils/errorMessages.ts:266:mapErrorToUserMessage",
+        "target": "sanitizeMessage",
+        "targetName": "sanitizeMessage",
         "edgeType": "call",
-        "line": 274,
-        "conditional": true,
+        "line": 280,
+        "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/errorMessages.ts:141:sanitizeMessage",
-        "target": "includes",
-        "targetName": "includes",
-        "edgeType": "call",
-        "line": 275,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/utils/errorMessages.ts:141:sanitizeMessage",
-        "target": "includes",
-        "targetName": "includes",
-        "edgeType": "call",
-        "line": 276,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/utils/errorMessages.ts:141:sanitizeMessage",
-        "target": "includes",
-        "targetName": "includes",
-        "edgeType": "call",
-        "line": 277,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/utils/errorMessages.ts:141:sanitizeMessage",
-        "target": "includes",
-        "targetName": "includes",
-        "edgeType": "call",
-        "line": 278,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/utils/errorMessages.ts:324:isNetworkError",
+        "source": "src/atomic-crm/utils/errorMessages.ts:288:sanitizeMessage",
         "target": "toLowerCase",
         "targetName": "toLowerCase",
+        "edgeType": "call",
+        "line": 289,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/errorMessages.ts:288:sanitizeMessage",
+        "target": "match",
+        "targetName": "match",
+        "edgeType": "call",
+        "line": 296,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/errorMessages.ts:288:sanitizeMessage",
+        "target": "includes",
+        "targetName": "includes",
+        "edgeType": "call",
+        "line": 310,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/errorMessages.ts:288:sanitizeMessage",
+        "target": "includes",
+        "targetName": "includes",
+        "edgeType": "call",
+        "line": 310,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/errorMessages.ts:288:sanitizeMessage",
+        "target": "replace",
+        "targetName": "replace",
+        "edgeType": "call",
+        "line": 311,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/errorMessages.ts:288:sanitizeMessage",
+        "target": "includes",
+        "targetName": "includes",
+        "edgeType": "call",
+        "line": 315,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/errorMessages.ts:288:sanitizeMessage",
+        "target": "includes",
+        "targetName": "includes",
+        "edgeType": "call",
+        "line": 315,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/errorMessages.ts:288:sanitizeMessage",
+        "target": "replace",
+        "targetName": "replace",
+        "edgeType": "call",
+        "line": 316,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/errorMessages.ts:288:sanitizeMessage",
+        "target": "includes",
+        "targetName": "includes",
+        "edgeType": "call",
+        "line": 325,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/errorMessages.ts:288:sanitizeMessage",
+        "target": "includes",
+        "targetName": "includes",
+        "edgeType": "call",
+        "line": 325,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/errorMessages.ts:288:sanitizeMessage",
+        "target": "includes",
+        "targetName": "includes",
+        "edgeType": "call",
+        "line": 325,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/errorMessages.ts:288:sanitizeMessage",
+        "target": "includes",
+        "targetName": "includes",
         "edgeType": "call",
         "line": 326,
-        "conditional": false,
+        "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/errorMessages.ts:324:isNetworkError",
+        "source": "src/atomic-crm/utils/errorMessages.ts:288:sanitizeMessage",
         "target": "includes",
         "targetName": "includes",
         "edgeType": "call",
-        "line": 328,
-        "conditional": false,
+        "line": 327,
+        "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/errorMessages.ts:324:isNetworkError",
+        "source": "src/atomic-crm/utils/errorMessages.ts:288:sanitizeMessage",
         "target": "includes",
         "targetName": "includes",
         "edgeType": "call",
-        "line": 329,
-        "conditional": false,
+        "line": 333,
+        "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/errorMessages.ts:324:isNetworkError",
+        "source": "src/atomic-crm/utils/errorMessages.ts:288:sanitizeMessage",
         "target": "includes",
         "targetName": "includes",
         "edgeType": "call",
-        "line": 330,
-        "conditional": false,
+        "line": 334,
+        "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/errorMessages.ts:324:isNetworkError",
+        "source": "src/atomic-crm/utils/errorMessages.ts:288:sanitizeMessage",
         "target": "includes",
         "targetName": "includes",
         "edgeType": "call",
-        "line": 331,
-        "conditional": false,
+        "line": 335,
+        "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/errorMessages.ts:324:isNetworkError",
+        "source": "src/atomic-crm/utils/errorMessages.ts:288:sanitizeMessage",
         "target": "includes",
         "targetName": "includes",
         "edgeType": "call",
-        "line": 332,
-        "conditional": false,
+        "line": 337,
+        "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/errorMessages.ts:339:isAuthError",
-        "target": "toLowerCase",
-        "targetName": "toLowerCase",
-        "edgeType": "call",
-        "line": 341,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/utils/errorMessages.ts:339:isAuthError",
+        "source": "src/atomic-crm/utils/errorMessages.ts:288:sanitizeMessage",
         "target": "includes",
         "targetName": "includes",
         "edgeType": "call",
-        "line": 343,
-        "conditional": false,
+        "line": 337,
+        "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/errorMessages.ts:339:isAuthError",
-        "target": "includes",
-        "targetName": "includes",
-        "edgeType": "call",
-        "line": 344,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/utils/errorMessages.ts:339:isAuthError",
+        "source": "src/atomic-crm/utils/errorMessages.ts:288:sanitizeMessage",
         "target": "includes",
         "targetName": "includes",
         "edgeType": "call",
         "line": 345,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/utils/errorMessages.ts:339:isAuthError",
-        "target": "includes",
-        "targetName": "includes",
-        "edgeType": "call",
-        "line": 346,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/utils/errorMessages.ts:339:isAuthError",
-        "target": "includes",
-        "targetName": "includes",
-        "edgeType": "call",
-        "line": 347,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/utils/errorMessages.ts:339:isAuthError",
-        "target": "includes",
-        "targetName": "includes",
-        "edgeType": "call",
-        "line": 348,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/utils/errorMessages.ts:362:sanitizeDatabaseError",
-        "target": "match",
-        "targetName": "match",
-        "edgeType": "call",
-        "line": 364,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/utils/errorMessages.ts:362:sanitizeDatabaseError",
-        "target": "replace",
-        "targetName": "replace",
-        "edgeType": "call",
-        "line": 367,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/errorMessages.ts:362:sanitizeDatabaseError",
+        "source": "src/atomic-crm/utils/errorMessages.ts:288:sanitizeMessage",
+        "target": "includes",
+        "targetName": "includes",
+        "edgeType": "call",
+        "line": 346,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/errorMessages.ts:288:sanitizeMessage",
+        "target": "includes",
+        "targetName": "includes",
+        "edgeType": "call",
+        "line": 347,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/errorMessages.ts:288:sanitizeMessage",
+        "target": "includes",
+        "targetName": "includes",
+        "edgeType": "call",
+        "line": 348,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/errorMessages.ts:288:sanitizeMessage",
+        "target": "match",
+        "targetName": "match",
+        "edgeType": "call",
+        "line": 351,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/errorMessages.ts:288:sanitizeMessage",
+        "target": "replace",
+        "targetName": "replace",
+        "edgeType": "call",
+        "line": 354,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/errorMessages.ts:288:sanitizeMessage",
+        "target": "includes",
+        "targetName": "includes",
+        "edgeType": "call",
+        "line": 361,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/errorMessages.ts:288:sanitizeMessage",
         "target": "match",
         "targetName": "match",
         "edgeType": "call",
@@ -2409,29 +2022,515 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/errorMessages.ts:362:sanitizeDatabaseError",
-        "target": "match",
-        "targetName": "match",
+        "source": "src/atomic-crm/utils/errorMessages.ts:288:sanitizeMessage",
+        "target": "includes",
+        "targetName": "includes",
         "edgeType": "call",
-        "line": 378,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/utils/errorMessages.ts:362:sanitizeDatabaseError",
-        "target": "replace",
-        "targetName": "replace",
-        "edgeType": "call",
-        "line": 381,
+        "line": 379,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/errorMessages.ts:362:sanitizeDatabaseError",
+        "source": "src/atomic-crm/utils/errorMessages.ts:288:sanitizeMessage",
         "target": "includes",
         "targetName": "includes",
         "edgeType": "call",
-        "line": 386,
+        "line": 379,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/errorMessages.ts:288:sanitizeMessage",
+        "target": "match",
+        "targetName": "match",
+        "edgeType": "call",
+        "line": 388,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/errorMessages.ts:288:sanitizeMessage",
+        "target": "toLowerCase",
+        "targetName": "toLowerCase",
+        "edgeType": "call",
+        "line": 390,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/errorMessages.ts:288:sanitizeMessage",
+        "target": "includes",
+        "targetName": "includes",
+        "edgeType": "call",
+        "line": 420,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/errorMessages.ts:288:sanitizeMessage",
+        "target": "includes",
+        "targetName": "includes",
+        "edgeType": "call",
+        "line": 420,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/errorMessages.ts:288:sanitizeMessage",
+        "target": "includes",
+        "targetName": "includes",
+        "edgeType": "call",
+        "line": 420,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/errorMessages.ts:288:sanitizeMessage",
+        "target": "includes",
+        "targetName": "includes",
+        "edgeType": "call",
+        "line": 426,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/errorMessages.ts:288:sanitizeMessage",
+        "target": "includes",
+        "targetName": "includes",
+        "edgeType": "call",
+        "line": 427,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/errorMessages.ts:288:sanitizeMessage",
+        "target": "includes",
+        "targetName": "includes",
+        "edgeType": "call",
+        "line": 428,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/errorMessages.ts:288:sanitizeMessage",
+        "target": "includes",
+        "targetName": "includes",
+        "edgeType": "call",
+        "line": 429,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/errorMessages.ts:288:sanitizeMessage",
+        "target": "includes",
+        "targetName": "includes",
+        "edgeType": "call",
+        "line": 436,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/errorMessages.ts:288:sanitizeMessage",
+        "target": "includes",
+        "targetName": "includes",
+        "edgeType": "call",
+        "line": 437,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/errorMessages.ts:288:sanitizeMessage",
+        "target": "includes",
+        "targetName": "includes",
+        "edgeType": "call",
+        "line": 438,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/errorMessages.ts:288:sanitizeMessage",
+        "target": "includes",
+        "targetName": "includes",
+        "edgeType": "call",
+        "line": 439,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/errorMessages.ts:288:sanitizeMessage",
+        "target": "includes",
+        "targetName": "includes",
+        "edgeType": "call",
+        "line": 440,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/errorMessages.ts:288:sanitizeMessage",
+        "target": "includes",
+        "targetName": "includes",
+        "edgeType": "call",
+        "line": 446,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/errorMessages.ts:288:sanitizeMessage",
+        "target": "includes",
+        "targetName": "includes",
+        "edgeType": "call",
+        "line": 446,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/errorMessages.ts:288:sanitizeMessage",
+        "target": "includes",
+        "targetName": "includes",
+        "edgeType": "call",
+        "line": 446,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/errorMessages.ts:288:sanitizeMessage",
+        "target": "includes",
+        "targetName": "includes",
+        "edgeType": "call",
+        "line": 455,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/errorMessages.ts:288:sanitizeMessage",
+        "target": "includes",
+        "targetName": "includes",
+        "edgeType": "call",
+        "line": 456,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/errorMessages.ts:288:sanitizeMessage",
+        "target": "includes",
+        "targetName": "includes",
+        "edgeType": "call",
+        "line": 457,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/errorMessages.ts:288:sanitizeMessage",
+        "target": "includes",
+        "targetName": "includes",
+        "edgeType": "call",
+        "line": 458,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/errorMessages.ts:288:sanitizeMessage",
+        "target": "includes",
+        "targetName": "includes",
+        "edgeType": "call",
+        "line": 459,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/errorMessages.ts:288:sanitizeMessage",
+        "target": "includes",
+        "targetName": "includes",
+        "edgeType": "call",
+        "line": 464,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/errorMessages.ts:288:sanitizeMessage",
+        "target": "includes",
+        "targetName": "includes",
+        "edgeType": "call",
+        "line": 464,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/errorMessages.ts:288:sanitizeMessage",
+        "target": "includes",
+        "targetName": "includes",
+        "edgeType": "call",
+        "line": 473,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/errorMessages.ts:288:sanitizeMessage",
+        "target": "includes",
+        "targetName": "includes",
+        "edgeType": "call",
+        "line": 473,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/errorMessages.ts:288:sanitizeMessage",
+        "target": "includes",
+        "targetName": "includes",
+        "edgeType": "call",
+        "line": 485,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/errorMessages.ts:288:sanitizeMessage",
+        "target": "includes",
+        "targetName": "includes",
+        "edgeType": "call",
+        "line": 486,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/errorMessages.ts:288:sanitizeMessage",
+        "target": "includes",
+        "targetName": "includes",
+        "edgeType": "call",
+        "line": 487,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/errorMessages.ts:288:sanitizeMessage",
+        "target": "includes",
+        "targetName": "includes",
+        "edgeType": "call",
+        "line": 488,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/errorMessages.ts:288:sanitizeMessage",
+        "target": "includes",
+        "targetName": "includes",
+        "edgeType": "call",
+        "line": 489,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/errorMessages.ts:288:sanitizeMessage",
+        "target": "includes",
+        "targetName": "includes",
+        "edgeType": "call",
+        "line": 490,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/errorMessages.ts:288:sanitizeMessage",
+        "target": "includes",
+        "targetName": "includes",
+        "edgeType": "call",
+        "line": 491,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/errorMessages.ts:288:sanitizeMessage",
+        "target": "includes",
+        "targetName": "includes",
+        "edgeType": "call",
+        "line": 492,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/errorMessages.ts:288:sanitizeMessage",
+        "target": "includes",
+        "targetName": "includes",
+        "edgeType": "call",
+        "line": 493,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/errorMessages.ts:288:sanitizeMessage",
+        "target": "includes",
+        "targetName": "includes",
+        "edgeType": "call",
+        "line": 494,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/errorMessages.ts:540:isNetworkError",
+        "target": "toLowerCase",
+        "targetName": "toLowerCase",
+        "edgeType": "call",
+        "line": 542,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/errorMessages.ts:540:isNetworkError",
+        "target": "includes",
+        "targetName": "includes",
+        "edgeType": "call",
+        "line": 544,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/errorMessages.ts:540:isNetworkError",
+        "target": "includes",
+        "targetName": "includes",
+        "edgeType": "call",
+        "line": 545,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/errorMessages.ts:540:isNetworkError",
+        "target": "includes",
+        "targetName": "includes",
+        "edgeType": "call",
+        "line": 546,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/errorMessages.ts:540:isNetworkError",
+        "target": "includes",
+        "targetName": "includes",
+        "edgeType": "call",
+        "line": 547,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/errorMessages.ts:540:isNetworkError",
+        "target": "includes",
+        "targetName": "includes",
+        "edgeType": "call",
+        "line": 548,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/errorMessages.ts:555:isAuthError",
+        "target": "toLowerCase",
+        "targetName": "toLowerCase",
+        "edgeType": "call",
+        "line": 557,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/errorMessages.ts:555:isAuthError",
+        "target": "includes",
+        "targetName": "includes",
+        "edgeType": "call",
+        "line": 559,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/errorMessages.ts:555:isAuthError",
+        "target": "includes",
+        "targetName": "includes",
+        "edgeType": "call",
+        "line": 560,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/errorMessages.ts:555:isAuthError",
+        "target": "includes",
+        "targetName": "includes",
+        "edgeType": "call",
+        "line": 561,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/errorMessages.ts:555:isAuthError",
+        "target": "includes",
+        "targetName": "includes",
+        "edgeType": "call",
+        "line": 562,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/errorMessages.ts:555:isAuthError",
+        "target": "includes",
+        "targetName": "includes",
+        "edgeType": "call",
+        "line": 563,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/errorMessages.ts:555:isAuthError",
+        "target": "includes",
+        "targetName": "includes",
+        "edgeType": "call",
+        "line": 564,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/errorMessages.ts:579:sanitizeDatabaseError",
+        "target": "match",
+        "targetName": "match",
+        "edgeType": "call",
+        "line": 584,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/errorMessages.ts:579:sanitizeDatabaseError",
+        "target": "replace",
+        "targetName": "replace",
+        "edgeType": "call",
+        "line": 587,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/errorMessages.ts:579:sanitizeDatabaseError",
+        "target": "match",
+        "targetName": "match",
+        "edgeType": "call",
+        "line": 592,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/errorMessages.ts:579:sanitizeDatabaseError",
+        "target": "match",
+        "targetName": "match",
+        "edgeType": "call",
+        "line": 598,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/errorMessages.ts:579:sanitizeDatabaseError",
+        "target": "replace",
+        "targetName": "replace",
+        "edgeType": "call",
+        "line": 601,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/errorMessages.ts:579:sanitizeDatabaseError",
+        "target": "includes",
+        "targetName": "includes",
+        "edgeType": "call",
+        "line": 606,
         "conditional": true,
         "inLoop": false
       },
