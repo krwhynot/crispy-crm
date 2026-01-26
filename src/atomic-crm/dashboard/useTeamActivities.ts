@@ -109,7 +109,7 @@ export function useTeamActivities(limit: number = DEFAULT_LIMIT): UseTeamActivit
       requestedUserIds: salesIds,
       fetchedUsers: salesRecords?.map((s) => ({
         id: s.id,
-        name: `${s.first_name} ${s.last_name}`.trim() || s.email || 'No name'
+        name: `${s.first_name} ${s.last_name}`.trim() || s.email || "No name",
       })),
       salesMapSize: salesMap.size,
     });
