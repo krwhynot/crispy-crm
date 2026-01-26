@@ -85,6 +85,10 @@ Findings are grouped by architectural layer to show where fixes apply:
 **$ARGUMENTS**
 
 - `--quick` - Pass to all sub-audits (skip MCP checks, local rg only)
+- `--exclude-tests` - Exclude `*.test.ts`, `*.spec.ts`, `__tests__/` from severity counts
+- `--exclude-scripts` - Exclude `scripts/`, `supabase/functions/_shared/` from findings
+- `--exclude-historical` - Exclude migrations before 2026-01-01 from Critical findings (mark as Historical)
+- `--show-allowlist` - Show allowlisted items in report (hidden by default)
 - Default: Full mode (all MCP checks enabled)
 
 ---

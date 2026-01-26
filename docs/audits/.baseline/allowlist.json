@@ -1,0 +1,80 @@
+{
+  "version": 1,
+  "description": "Centralized allowlist for known false positives in audit findings. Review dates enforce periodic verification.",
+  "lastUpdated": "2026-01-26",
+  "entries": [
+    {
+      "id": "INTENTIONAL-001",
+      "pattern": "USING(true)",
+      "files": ["**/harden_participant_tables.sql"],
+      "linePatterns": ["opportunity_participants", "interaction_participants"],
+      "reason": "Intentional team collaboration design - SELECT/INSERT shared for team visibility, UPDATE/DELETE properly restricted to owners",
+      "verifiedBy": "RLS Verification Task 3.6",
+      "verifiedDate": "2026-01-26",
+      "reviewDue": "2026-04-26",
+      "status": "VERIFIED_INTENTIONAL"
+    },
+    {
+      "id": "HISTORICAL-001",
+      "pattern": "DELETE FROM",
+      "files": ["**/phase2d_consolidate_duplicates.sql"],
+      "reason": "One-time historical migration for duplicate consolidation, already executed in production",
+      "verifiedDate": "2026-01-26",
+      "status": "HISTORICAL"
+    },
+    {
+      "id": "DOC-001",
+      "pattern": "USING(true)",
+      "files": ["**/document_rls_security_model.sql"],
+      "linePatterns": ["COMMENT ON", "expansion path", "documentation"],
+      "reason": "Pattern mentioned in SQL documentation comments, not actual policy code",
+      "verifiedDate": "2026-01-26",
+      "status": "DOCUMENTATION"
+    },
+    {
+      "id": "REFERENCE-001",
+      "pattern": "USING(true)",
+      "files": ["**/cloud_schema_fresh.sql"],
+      "linePatterns": ["segments"],
+      "reason": "Read-only reference table - intentionally public to all authenticated users per Supabase RLS docs (anon role pattern)",
+      "verifiedDate": "2026-01-26",
+      "reviewDue": "2026-04-26",
+      "status": "VERIFIED_INTENTIONAL"
+    },
+    {
+      "id": "ROLLBACK-001",
+      "pattern": "USING(true)",
+      "files": ["**/*.sql"],
+      "linePatterns": ["ROLLBACK", "-- Rollback", "DO $$ BEGIN.*ROLLBACK"],
+      "reason": "ROLLBACK sections in migrations are undo code, not active policies",
+      "verifiedDate": "2026-01-26",
+      "status": "EXCLUDED_CONTEXT"
+    },
+    {
+      "id": "TEST-AS-ANY-001",
+      "pattern": "as any",
+      "files": [
+        "**/*.test.ts",
+        "**/*.test.tsx",
+        "**/*.spec.ts",
+        "**/*.spec.tsx",
+        "**/__tests__/**"
+      ],
+      "reason": "Type casts in test files have different risk profile - mock data often doesn't match full production types",
+      "verifiedDate": "2026-01-26",
+      "status": "TEST_FILE"
+    }
+  ],
+  "matchingRules": {
+    "fileMatch": "fnmatch glob pattern (e.g., **/file.sql)",
+    "lineMatch": "ALL linePatterns must match if specified (AND logic)",
+    "priority": "First matching entry wins"
+  },
+  "statusDefinitions": {
+    "VERIFIED_INTENTIONAL": "Reviewed and confirmed as intentional design decision",
+    "HISTORICAL": "One-time migration or historical code, no longer active",
+    "DOCUMENTATION": "Pattern appears in comments/docs, not executable code",
+    "EXCLUDED_CONTEXT": "Pattern in non-active context (ROLLBACK, comments)",
+    "TEST_FILE": "Pattern in test file with different risk profile"
+  }
+}

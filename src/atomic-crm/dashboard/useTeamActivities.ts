@@ -127,7 +127,7 @@ export function useTeamActivities(limit: number = DEFAULT_LIMIT): UseTeamActivit
     const salesMap = new Map(salesRecords.map((s) => [s.id, s]));
 
     // Debug logging - ALWAYS log to help diagnose "Team Member" issues
-    console.log("[useTeamActivities] Data merge debug:", {
+    console.log("[useTeamActivities] 🔍 STEP 4 - Data merge:", {
       activitiesCount: activities.length,
       requestedUserIds: salesIds,
       fetchedUsers: salesRecords?.map((s) => ({

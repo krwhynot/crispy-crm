@@ -77,7 +77,8 @@ Run these `rg` patterns and collect findings. Each finding should include:
 | H6 | Non-null assertion on optional chain | `rg "\?\.\w+!" --type ts -n $SCOPE` | Contradictory assertions |
 | H7 | Database type in features | `rg "Database\['public'\]" --type ts -n src/atomic-crm/` | L1→L5 coupling (bypasses Domain layer) |
 | H8 | Manual interface in types/ | `rg "export interface" --type ts -n src/atomic-crm/types/` | Schema drift (use z.infer instead) |
-| H9 | Type casts in test files | `rg " as any\| as unknown as " src/**/*.test.ts* src/**/*.spec.ts* --type ts -n` | Tests pass with invalid data shapes, fail in production |
+
+**NOTE:** H9 (Type casts in test files) has been moved to "Test File Findings" section - see Phase 2.1.
 
 ### Medium Severity Checks
 
@@ -90,6 +91,38 @@ Run these `rg` patterns and collect findings. Each finding should include:
 | M5 | Function type (uppercase) | `rg ": Function\b" --type ts -n $SCOPE` | Prefer specific function signature |
 | M6 | Empty interface | `rg "interface \w+ \{\}" --type ts -n $SCOPE` | Likely placeholder |
 | M7 | Missing typed mock factories | `rg "mockReturnValue\(\{" src/**/*.test.ts* -A 2 --type ts \| rg "as any"` | Hook mocks lack type safety, inconsistent test data |
+
+---
+
+## Phase 2.1: Test File Findings (Separate Section)
+
+Test files have a different risk profile than production code. Type casts in mocks are often pragmatic, not bugs.
+
+**IMPORTANT:** These findings are counted SEPARATELY and do NOT contribute to severity totals.
+
+### Test File Checks (Informational Only)
+
+| ID | Check | Command | Note |
+|----|-------|---------|------|
+| T1 | as any in test files | `rg " as any" --type ts -n --glob '*.test.ts' --glob '*.test.tsx' --glob '*.spec.ts' --glob '*.spec.tsx' $SCOPE` | Mock data typing |
+| T2 | as unknown as in test files | `rg " as unknown as " --type ts -n --glob '*.test.ts' --glob '*.test.tsx' $SCOPE` | Type workarounds |
+| T3 | @ts-ignore in test files | `rg "@ts-ignore" --type ts -n --glob '*.test.ts' --glob '*.test.tsx' $SCOPE` | Test-specific suppressions |
+
+**Filtering Logic:**
+
+When running High Severity checks (C1, C2, C3, H9), EXCLUDE test files from counts:
+
+```bash
+# WRONG: Counts test files in severity totals
+rg "as any" --type ts -n src/
+
+# CORRECT: Exclude test files from main severity counts
+rg "as any" --type ts -n src/ --glob '!*.test.ts' --glob '!*.test.tsx' --glob '!*.spec.ts' --glob '!*.spec.tsx' --glob '!**/__tests__/**'
+```
+
+**Report Section:**
+
+Test file findings appear in a separate "Test File Findings (Informational)" section at the end of the report, clearly marked as NOT counting toward totals.
 
 ---
 
@@ -460,6 +493,29 @@ vi.mocked(useGetList<Opportunity>).mockReturnValue(
 - `mockUseGetManyReturn<T>()` - For useGetMany hooks
 
 **Location:** `src/tests/utils/typed-mocks.ts`
+
+---
+
+---
+
+## Test File Findings (Informational Only)
+
+**These findings are from test files and do NOT count toward severity totals.**
+
+Test files have a different risk profile - `as any` in mocks is often pragmatic, not a security or quality issue.
+
+| # | Check | Location | Note |
+|---|-------|----------|------|
+| 1 | T1: as any | src/.../ContactList.test.tsx:45 | Mock data typing |
+| ... | ... | ... | ... |
+
+**Test File Summary:**
+- Total `as any` in tests: X
+- Total `as unknown as` in tests: Y
+- Total @ts-ignore in tests: Z
+- Risk assessment: Contained (test environment only)
+
+**Recommendation:** Consider using typed mock factories from `src/tests/utils/typed-mocks.ts` for improved type safety, but this is NOT blocking.
 
 ---
 
