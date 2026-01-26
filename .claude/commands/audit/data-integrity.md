@@ -37,6 +37,36 @@ If $ARGUMENTS contains a path (e.g., "src/atomic-crm/"):
 
 ---
 
+## Phase 1.5: Load Allowlist and Apply Context Filters
+
+### Load Allowlist
+
+```bash
+cat docs/audits/.baseline/allowlist.json 2>/dev/null || echo "{}"
+```
+
+### SQL Context Filters
+
+For `DELETE FROM` findings in migrations, apply these filters:
+
+**1. Historical Migration Filter:**
+```bash
+# Migrations before 2026-01-01 are historical (already executed)
+# Extract date prefix from filename: YYYYMMDDHHMMSS_name.sql
+# If YYYYMMDD < 20260101, mark as "Historical" not "Critical"
+```
+
+**2. ROLLBACK Section Exclusion:**
+```bash
+# Exclude findings in ROLLBACK sections
+rg "DELETE FROM" supabase/migrations/ | rg -v "ROLLBACK|-- Rollback"
+```
+
+**3. Allowlist Check:**
+Match findings against allowlist entries with pattern `DELETE FROM` and status `HISTORICAL`.
+
+---
+
 ## Phase 2: Local Code Checks (Always Run)
 
 Execute these rg checks in parallel. Capture file:line for each finding.

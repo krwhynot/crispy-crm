@@ -47,6 +47,47 @@ Store as `AUDIT_DATE` for report naming.
 
 ---
 
+## Phase 1.5: Load Allowlist Context
+
+Before running checks, load the allowlist for known false positives:
+
+```bash
+cat docs/audits/.baseline/allowlist.json 2>/dev/null || echo "{}"
+```
+
+For SQL migration findings, apply these context filters:
+
+### SQL Context Exclusions
+
+**1. ROLLBACK Section Exclusion:**
+```bash
+# Exclude ROLLBACK sections from RLS findings
+rg "USING\s*\(\s*true\s*\)" supabase/migrations/ | rg -v "ROLLBACK|-- Rollback|DO \$\$ BEGIN.*ROLLBACK"
+```
+
+**2. Comment Exclusion:**
+```bash
+# Exclude SQL comments
+rg "pattern" supabase/migrations/ | rg -v "^--"
+```
+
+**3. Historical Migration Filter:**
+For migrations dated before 2026-01-01:
+- Extract date from filename prefix (YYYYMMDD)
+- Mark as "Historical" severity instead of Critical
+- Report in separate section
+
+```bash
+# Example: Check if migration is historical
+filename="20251018152315_cloud_schema_fresh.sql"
+date_prefix="${filename:0:8}"
+if [[ "$date_prefix" < "20260101" ]]; then
+  echo "HISTORICAL"
+fi
+```
+
+---
+
 ## Phase 2: Local Security Checks (Always Run)
 
 Run these `rg` patterns and collect findings. Each finding should include:
@@ -54,6 +95,7 @@ Run these `rg` patterns and collect findings. Each finding should include:
 - Code snippet (context)
 - Severity level
 - Risk description
+- Status (open/allowlisted/historical)
 
 ### Critical Severity Checks
 

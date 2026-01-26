@@ -93,6 +93,65 @@ Findings are grouped by architectural layer to show where fixes apply:
 
 ---
 
+## Phase 0: Load Allowlist (False Positive Filtering)
+
+Before dispatching any audit agents, load the centralized allowlist for known false positives.
+
+### 0.1 Read Allowlist
+
+```bash
+cat docs/audits/.baseline/allowlist.json
+```
+
+**Expected structure:**
+```json
+{
+  "version": 1,
+  "entries": [
+    {
+      "id": "INTENTIONAL-001",
+      "pattern": "USING(true)",
+      "files": ["**/harden_participant_tables.sql"],
+      "linePatterns": ["opportunity_participants"],
+      "reason": "Intentional team collaboration design",
+      "status": "VERIFIED_INTENTIONAL"
+    }
+  ]
+}
+```
+
+### 0.2 Pass Allowlist to Sub-Agents
+
+Include allowlist context in each agent's prompt:
+
+```markdown
+## Allowlist Context
+
+The following patterns are known false positives and should be marked as `allowlisted` rather than `open`:
+
+[List of relevant allowlist entries for this audit type]
+
+For each finding:
+1. Check if location matches any allowlist entry (file glob + pattern + linePatterns)
+2. If matched: Mark as `status: "allowlisted"` and include `allowlistId: "[entry.id]"`
+3. If NOT matched: Mark as `status: "open"`
+```
+
+### 0.3 Filtering by Status
+
+**Status classifications:**
+- `VERIFIED_INTENTIONAL` - Reviewed and confirmed as intentional design
+- `HISTORICAL` - One-time migration, no longer active code
+- `DOCUMENTATION` - Pattern in comments/docs, not executable
+- `EXCLUDED_CONTEXT` - Pattern in ROLLBACK/comments, not active
+- `TEST_FILE` - Pattern in test file with different risk profile
+
+**Reporting behavior:**
+- `open` → Counts toward severity totals
+- `allowlisted` → Separate "Allowlisted Findings" section (hidden unless `--show-allowlist`)
+
+---
+
 ## Phase 1: Mode Detection and Setup
 
 ### 1.1 Parse Arguments
@@ -100,10 +159,26 @@ Findings are grouped by architectural layer to show where fixes apply:
 ```
 MODE = "full" (default)
 QUICK_FLAG = ""
+EXCLUDE_TESTS = false
+EXCLUDE_SCRIPTS = false
+EXCLUDE_HISTORICAL = false
+SHOW_ALLOWLIST = false
 
 If $ARGUMENTS contains "--quick":
   MODE = "quick"
   QUICK_FLAG = "--quick"
+
+If $ARGUMENTS contains "--exclude-tests":
+  EXCLUDE_TESTS = true
+
+If $ARGUMENTS contains "--exclude-scripts":
+  EXCLUDE_SCRIPTS = true
+
+If $ARGUMENTS contains "--exclude-historical":
+  EXCLUDE_HISTORICAL = true
+
+If $ARGUMENTS contains "--show-allowlist":
+  SHOW_ALLOWLIST = true
 ```
 
 ### 1.2 Get Current Date and Start Time
@@ -535,12 +610,74 @@ Create a combined findings array, tagged with source audit:
       "check": "Missing RLS",
       "location": "file:line",
       "description": "...",
-      "fix": "..."
+      "fix": "...",
+      "status": "open"
     },
     ...
   ]
 }
 ```
+
+### 3.3.1 Apply Allowlist Filtering
+
+For each finding, check against allowlist entries:
+
+```python
+def apply_allowlist(finding, allowlist):
+    for entry in allowlist["entries"]:
+        # Check file pattern match (fnmatch glob)
+        if not fnmatch(finding.location, entry["files"]):
+            continue
+
+        # Check pattern match
+        if entry["pattern"] not in finding.line_content:
+            continue
+
+        # Check line patterns (if specified, ALL must match)
+        if "linePatterns" in entry:
+            if not all(lp in finding.line_content for lp in entry["linePatterns"]):
+                continue
+
+        # Match found - mark as allowlisted
+        finding.status = "allowlisted"
+        finding.allowlistId = entry["id"]
+        finding.allowlistReason = entry["reason"]
+        return finding
+
+    # No match - keep as open
+    finding.status = "open"
+    return finding
+```
+
+### 3.3.2 Apply Historical Migration Filter
+
+If `EXCLUDE_HISTORICAL = true`, apply date-based filtering for migration files:
+
+```python
+def apply_historical_filter(finding):
+    # Check if finding is in a migration file
+    if "supabase/migrations/" not in finding.location:
+        return finding
+
+    # Extract date from migration filename (format: YYYYMMDDHHMMSS_name.sql)
+    filename = finding.location.split("/")[-1]
+    date_prefix = filename[:8]  # First 8 chars = YYYYMMDD
+
+    # If before 2026-01-01, mark as historical
+    if date_prefix < "20260101":
+        if finding.severity == "critical":
+            finding.original_severity = "critical"
+            finding.severity = "historical"
+            finding.status = "historical"
+            finding.note = "Historical migration (before 2026-01-01)"
+        return finding
+
+    return finding
+```
+
+**Report handling:**
+- Historical findings appear in separate "Historical Migrations" section
+- Do NOT count toward Critical/High totals
 
 ### 3.4 Classify Findings by Layer
 
@@ -859,6 +996,40 @@ Findings grouped by architectural layer (fix from bottom up):
 | 1 | L2 | typescript | any usage | src/file.ts:23 | Parameter typed as any | Use proper type |
 | 2 | L5 | accessibility | Hardcoded color | src/file.tsx:45 | #3B82F6 used | Use semantic token |
 | ... | ... | ... | ... | ... | ... | ... |
+
+---
+
+## Historical Migrations (Informational)
+
+**These findings are from migrations before 2026-01-01 and do NOT count toward severity totals.**
+
+Historical migrations are one-time executions that have already run in production.
+
+| # | Original Severity | Check | Location | Note |
+|---|-------------------|-------|----------|------|
+| 1 | Critical | Hard DELETE | phase2d_consolidate_duplicates.sql:88 | One-time duplicate consolidation |
+| ... | ... | ... | ... | ... |
+
+---
+
+## Allowlisted Findings (Verified False Positives)
+
+*(Hidden by default - use `--show-allowlist` to display)*
+
+**These findings match entries in `docs/audits/.baseline/allowlist.json`.**
+
+Items are allowlisted when:
+- Pattern is intentional design (VERIFIED_INTENTIONAL)
+- Code is in ROLLBACK/comment section (EXCLUDED_CONTEXT)
+- Pattern is in documentation comments (DOCUMENTATION)
+- Pattern is in test files (TEST_FILE)
+
+| # | Allowlist ID | Check | Location | Reason |
+|---|--------------|-------|----------|--------|
+| 1 | INTENTIONAL-001 | USING(true) | harden_participant_tables.sql:410 | Team collaboration design |
+| ... | ... | ... | ... | ... |
+
+**Allowlist Review:** Review due dates are tracked. Entries past `reviewDue` should be re-verified.
 
 ---
 
