@@ -10,6 +10,7 @@ import { SlideOverSkeleton } from "@/components/ui/list-skeleton";
 import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
 import { useKeyboardShortcuts, formatShortcut } from "@/hooks/useKeyboardShortcuts";
 import { UnsavedChangesDialog } from "@/components/ui/unsaved-changes-dialog";
+import { TabErrorBoundary } from "@/components/TabErrorBoundary";
 
 /**
  * Props passed to each tab component
@@ -332,13 +333,15 @@ export function ResourceSlideOver({
                         {isLoading ? (
                           <LoadingSkeleton />
                         ) : record ? (
-                          <TabComponent
-                            record={record}
-                            mode={mode}
-                            onModeToggle={onModeToggle}
-                            isActiveTab={isActive}
-                            onDirtyChange={setIsDirty}
-                          />
+                          <TabErrorBoundary tabKey={tab.key} tabLabel={tab.label}>
+                            <TabComponent
+                              record={record}
+                              mode={mode}
+                              onModeToggle={onModeToggle}
+                              isActiveTab={isActive}
+                              onDirtyChange={setIsDirty}
+                            />
+                          </TabErrorBoundary>
                         ) : (
                           <p className="text-muted-foreground">Record not found</p>
                         )}
