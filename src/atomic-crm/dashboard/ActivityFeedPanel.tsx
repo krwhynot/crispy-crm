@@ -137,6 +137,20 @@ interface ActivityFeedPanelProps {
 function ActivityFeedPanel({ limit = 15 }: ActivityFeedPanelProps) {
   const { activities, loading, error } = useTeamActivities(limit);
 
+  // DIAGNOSTIC: Log what the component receives from the hook
+  console.log("[ActivityFeedPanel] 🎯 Component received from hook:", {
+    loading,
+    activitiesCount: activities.length,
+    error,
+    activitiesWithSales: activities.map((a) => ({
+      id: a.id,
+      subject: a.subject,
+      created_by: a.created_by,
+      hasSales: !!a.sales,
+      salesName: a.sales ? `${a.sales.first_name} ${a.sales.last_name}` : "NO SALES DATA",
+    })),
+  });
+
   // Memoize activity count to avoid recalculation
   const activityCount = useMemo(() => activities.length, [activities]);
 
