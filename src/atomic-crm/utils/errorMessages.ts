@@ -146,14 +146,14 @@ export function mapErrorToUserMessage(error: unknown, context?: ErrorContext): s
   }
 
   if (typeof error === "string") {
-    return sanitizeMessage(error);
+    return sanitizeMessage(error, context);
   }
 
   if (!(error instanceof Error)) {
     return "Something went wrong. Please try again.";
   }
 
-  return sanitizeMessage(error.message);
+  return sanitizeMessage(error.message, context);
 }
 
 /**
@@ -172,6 +172,25 @@ function sanitizeMessage(message: string, context?: ErrorContext): string {
   const constraintMatch = message.match(/constraint "([^"]+)"/i);
   if (constraintMatch?.[1] && CONSTRAINT_MESSAGES[constraintMatch[1]]) {
     return CONSTRAINT_MESSAGES[constraintMatch[1]];
+  }
+
+  // ============================================
+  // Resource-Specific Message Enhancement
+  // ============================================
+
+  // If we have resource context, enhance generic messages with resource name
+  if (context?.resource && context?.action === "delete") {
+    const resourceName = RESOURCE_LABELS[context.resource] || context.resource;
+
+    // Transform "Cannot delete" to "Cannot delete {resource}"
+    if (msg.includes("cannot delete") && !msg.includes(resourceName)) {
+      return message.replace(/Cannot delete/i, `Cannot delete ${resourceName}`);
+    }
+
+    // Transform "Couldn't delete" to "Couldn't delete {resource}"
+    if (msg.includes("couldn't delete") && !msg.includes(resourceName)) {
+      return message.replace(/Couldn't delete/i, `Couldn't delete ${resourceName}`);
+    }
   }
 
   // ============================================
@@ -380,9 +399,13 @@ export function isAuthError(error: unknown): boolean {
  * from database constraint violations.
  *
  * @param message - Raw database error message
+ * @param context - Optional context about the resource and action
  * @returns Object with field name and user-friendly message, or null if not recognized
  */
-export function sanitizeDatabaseError(message: string): { field: string; message: string } | null {
+export function sanitizeDatabaseError(
+  message: string,
+  context?: ErrorContext
+): { field: string; message: string } | null {
   // Pattern: "null value in column 'X' of relation 'Y' violates not-null constraint"
   const notNullMatch = message.match(/null value in column '(\w+)'.*violates not-null constraint/i);
   if (notNullMatch) {

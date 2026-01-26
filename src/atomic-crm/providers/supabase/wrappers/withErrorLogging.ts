@@ -22,7 +22,11 @@
 
 import type { DataProvider, Identifier, FilterPayload, RaRecord } from "ra-core";
 import { logger } from "@/lib/logger";
-import { FIELD_LABELS, sanitizeDatabaseError } from "@/atomic-crm/utils/errorMessages";
+import {
+  FIELD_LABELS,
+  sanitizeDatabaseError,
+  type ErrorContext,
+} from "@/atomic-crm/utils/errorMessages";
 
 /**
  * Interface for data provider method params logging

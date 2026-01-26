@@ -3,15 +3,13 @@ import { useGetList, useGetOne, useNotify } from "react-admin";
 import type { UseFormReturn } from "react-hook-form";
 import type { ActivityLogInput } from "@/atomic-crm/validation/activities";
 import { useDebouncedSearch } from "./useDebouncedSearch";
+import { DEFAULT_PAGE_SIZE, MAX_PAGE_SIZE } from "@/atomic-crm/constants";
 
 // Cache duration for data queries (5 minutes)
 const STALE_TIME_MS = 5 * 60 * 1000;
 
 // Garbage collection time for cached data (15 minutes)
 const GC_TIME_MS = 15 * 60 * 1000;
-
-// Initial page size for dropdown population
-const INITIAL_PAGE_SIZE = 25;
 
 // Minimum characters before server search
 const MIN_SEARCH_LENGTH = 2;

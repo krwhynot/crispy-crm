@@ -38,7 +38,7 @@ export function useMyTasks() {
         "deleted_at@is": null,
       },
       sort: { field: "due_date", order: "ASC" },
-      pagination: { page: 1, perPage: 100 },
+      pagination: { page: 1, perPage: MAX_PAGE_SIZE },
       meta: {
         expand: ["opportunity", "contact", "organization"],
       },
