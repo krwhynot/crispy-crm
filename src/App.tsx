@@ -53,7 +53,7 @@ const App = () => (
       <CRM
         lightModeLogo="/logos/mfb-logo.webp"
         darkModeLogo="/logos/mfb-logo.webp"
-        title="MFB Master Food Brokers"
+        title="MasterFood Broker CRM"
       />
     </Sentry.ErrorBoundary>
   </TooltipProvider>

@@ -1,6 +1,6 @@
 {
   "chunk_name": "activities",
-  "generated_at": "2026-01-26T17:59:23.865Z",
+  "generated_at": "2026-01-26T20:13:23.853Z",
   "items": {
     "nodes": [
       {
@@ -148,10 +148,10 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/activities/QuickLogActivityDialog.tsx:208:QuickLogActivityDialog",
+        "id": "src/atomic-crm/activities/QuickLogActivityDialog.tsx:209:QuickLogActivityDialog",
         "name": "QuickLogActivityDialog",
         "file": "src/atomic-crm/activities/QuickLogActivityDialog.tsx",
-        "line": 208,
+        "line": 209,
         "nodeType": "component",
         "exported": true,
         "async": false
@@ -3309,34 +3309,25 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/QuickLogActivityDialog.tsx:208:QuickLogActivityDialog",
+        "source": "src/atomic-crm/activities/QuickLogActivityDialog.tsx:209:QuickLogActivityDialog",
         "target": "useRecentSearches",
         "targetName": "useRecentSearches",
         "edgeType": "hook",
-        "line": 228,
+        "line": 229,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/QuickLogActivityDialog.tsx:208:QuickLogActivityDialog",
+        "source": "src/atomic-crm/activities/QuickLogActivityDialog.tsx:209:QuickLogActivityDialog",
         "target": "useMemo",
         "targetName": "useMemo",
         "edgeType": "hook",
-        "line": 231,
+        "line": 232,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/QuickLogActivityDialog.tsx:208:QuickLogActivityDialog",
-        "target": "find",
-        "targetName": "find",
-        "edgeType": "call",
-        "line": 237,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/activities/QuickLogActivityDialog.tsx:208:QuickLogActivityDialog",
+        "source": "src/atomic-crm/activities/QuickLogActivityDialog.tsx:209:QuickLogActivityDialog",
         "target": "find",
         "targetName": "find",
         "edgeType": "call",
@@ -3345,16 +3336,16 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/QuickLogActivityDialog.tsx:208:QuickLogActivityDialog",
-        "target": "Number",
-        "targetName": "Number",
+        "source": "src/atomic-crm/activities/QuickLogActivityDialog.tsx:209:QuickLogActivityDialog",
+        "target": "find",
+        "targetName": "find",
         "edgeType": "call",
-        "line": 241,
-        "conditional": true,
+        "line": 239,
+        "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/QuickLogActivityDialog.tsx:208:QuickLogActivityDialog",
+        "source": "src/atomic-crm/activities/QuickLogActivityDialog.tsx:209:QuickLogActivityDialog",
         "target": "Number",
         "targetName": "Number",
         "edgeType": "call",
@@ -3363,416 +3354,425 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/QuickLogActivityDialog.tsx:208:QuickLogActivityDialog",
-        "target": "useState",
-        "targetName": "useState",
-        "edgeType": "hook",
-        "line": 249,
-        "conditional": false,
+        "source": "src/atomic-crm/activities/QuickLogActivityDialog.tsx:209:QuickLogActivityDialog",
+        "target": "Number",
+        "targetName": "Number",
+        "edgeType": "call",
+        "line": 243,
+        "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/QuickLogActivityDialog.tsx:208:QuickLogActivityDialog",
-        "target": "useRef",
-        "targetName": "useRef",
+        "source": "src/atomic-crm/activities/QuickLogActivityDialog.tsx:209:QuickLogActivityDialog",
+        "target": "useState",
+        "targetName": "useState",
         "edgeType": "hook",
         "line": 250,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/QuickLogActivityDialog.tsx:208:QuickLogActivityDialog",
-        "target": "useEffect",
-        "targetName": "useEffect",
+        "source": "src/atomic-crm/activities/QuickLogActivityDialog.tsx:209:QuickLogActivityDialog",
+        "target": "useRef",
+        "targetName": "useRef",
         "edgeType": "hook",
-        "line": 253,
+        "line": 251,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/QuickLogActivityDialog.tsx:208:QuickLogActivityDialog",
-        "target": "loadDraft",
-        "targetName": "loadDraft",
-        "edgeType": "call",
-        "line": 255,
-        "conditional": true,
+        "source": "src/atomic-crm/activities/QuickLogActivityDialog.tsx:209:QuickLogActivityDialog",
+        "target": "useEffect",
+        "targetName": "useEffect",
+        "edgeType": "hook",
+        "line": 254,
+        "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/QuickLogActivityDialog.tsx:208:QuickLogActivityDialog",
-        "target": "setHasDraft",
-        "targetName": "setHasDraft",
+        "source": "src/atomic-crm/activities/QuickLogActivityDialog.tsx:209:QuickLogActivityDialog",
+        "target": "loadDraft",
+        "targetName": "loadDraft",
         "edgeType": "call",
         "line": 256,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/QuickLogActivityDialog.tsx:208:QuickLogActivityDialog",
-        "target": "useEffect",
-        "targetName": "useEffect",
-        "edgeType": "hook",
-        "line": 261,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/activities/QuickLogActivityDialog.tsx:208:QuickLogActivityDialog",
-        "target": "clearTimeout",
-        "targetName": "clearTimeout",
+        "source": "src/atomic-crm/activities/QuickLogActivityDialog.tsx:209:QuickLogActivityDialog",
+        "target": "setHasDraft",
+        "targetName": "setHasDraft",
         "edgeType": "call",
-        "line": 264,
+        "line": 257,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/QuickLogActivityDialog.tsx:208:QuickLogActivityDialog",
+        "source": "src/atomic-crm/activities/QuickLogActivityDialog.tsx:209:QuickLogActivityDialog",
+        "target": "useEffect",
+        "targetName": "useEffect",
+        "edgeType": "hook",
+        "line": 262,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/activities/QuickLogActivityDialog.tsx:209:QuickLogActivityDialog",
+        "target": "clearTimeout",
+        "targetName": "clearTimeout",
+        "edgeType": "call",
+        "line": 265,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/activities/QuickLogActivityDialog.tsx:209:QuickLogActivityDialog",
         "target": "useDataProvider",
         "targetName": "useDataProvider",
         "edgeType": "hook",
-        "line": 272,
+        "line": 273,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/QuickLogActivityDialog.tsx:208:QuickLogActivityDialog",
+        "source": "src/atomic-crm/activities/QuickLogActivityDialog.tsx:209:QuickLogActivityDialog",
         "target": "useQueries",
         "targetName": "useQueries",
         "edgeType": "hook",
-        "line": 274,
+        "line": 275,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/QuickLogActivityDialog.tsx:208:QuickLogActivityDialog",
+        "source": "src/atomic-crm/activities/QuickLogActivityDialog.tsx:209:QuickLogActivityDialog",
         "target": "detail",
         "targetName": "detail",
-        "edgeType": "call",
-        "line": 277,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/activities/QuickLogActivityDialog.tsx:208:QuickLogActivityDialog",
-        "target": "getOne",
-        "targetName": "getOne",
         "edgeType": "call",
         "line": 278,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/QuickLogActivityDialog.tsx:208:QuickLogActivityDialog",
-        "target": "detail",
-        "targetName": "detail",
-        "edgeType": "call",
-        "line": 282,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/activities/QuickLogActivityDialog.tsx:208:QuickLogActivityDialog",
+        "source": "src/atomic-crm/activities/QuickLogActivityDialog.tsx:209:QuickLogActivityDialog",
         "target": "getOne",
         "targetName": "getOne",
         "edgeType": "call",
-        "line": 284,
+        "line": 279,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/QuickLogActivityDialog.tsx:208:QuickLogActivityDialog",
+        "source": "src/atomic-crm/activities/QuickLogActivityDialog.tsx:209:QuickLogActivityDialog",
         "target": "detail",
         "targetName": "detail",
         "edgeType": "call",
-        "line": 290,
+        "line": 283,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/QuickLogActivityDialog.tsx:208:QuickLogActivityDialog",
+        "source": "src/atomic-crm/activities/QuickLogActivityDialog.tsx:209:QuickLogActivityDialog",
         "target": "getOne",
         "targetName": "getOne",
         "edgeType": "call",
-        "line": 292,
+        "line": 285,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/QuickLogActivityDialog.tsx:208:QuickLogActivityDialog",
+        "source": "src/atomic-crm/activities/QuickLogActivityDialog.tsx:209:QuickLogActivityDialog",
+        "target": "detail",
+        "targetName": "detail",
+        "edgeType": "call",
+        "line": 291,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/activities/QuickLogActivityDialog.tsx:209:QuickLogActivityDialog",
+        "target": "getOne",
+        "targetName": "getOne",
+        "edgeType": "call",
+        "line": 293,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/activities/QuickLogActivityDialog.tsx:209:QuickLogActivityDialog",
         "target": "useMemo",
         "targetName": "useMemo",
         "edgeType": "hook",
-        "line": 310,
+        "line": 311,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/QuickLogActivityDialog.tsx:208:QuickLogActivityDialog",
+        "source": "src/atomic-crm/activities/QuickLogActivityDialog.tsx:209:QuickLogActivityDialog",
         "target": "loadDraft",
         "targetName": "loadDraft",
         "edgeType": "call",
-        "line": 315,
+        "line": 316,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/QuickLogActivityDialog.tsx:208:QuickLogActivityDialog",
+        "source": "src/atomic-crm/activities/QuickLogActivityDialog.tsx:209:QuickLogActivityDialog",
         "target": "keys",
         "targetName": "keys",
         "edgeType": "call",
-        "line": 336,
+        "line": 337,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/QuickLogActivityDialog.tsx:208:QuickLogActivityDialog",
+        "source": "src/atomic-crm/activities/QuickLogActivityDialog.tsx:209:QuickLogActivityDialog",
         "target": "useMemo",
         "targetName": "useMemo",
         "edgeType": "hook",
-        "line": 349,
+        "line": 350,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/QuickLogActivityDialog.tsx:208:QuickLogActivityDialog",
+        "source": "src/atomic-crm/activities/QuickLogActivityDialog.tsx:209:QuickLogActivityDialog",
         "target": "useCallback",
         "targetName": "useCallback",
         "edgeType": "hook",
-        "line": 366,
+        "line": 367,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/QuickLogActivityDialog.tsx:208:QuickLogActivityDialog",
+        "source": "src/atomic-crm/activities/QuickLogActivityDialog.tsx:209:QuickLogActivityDialog",
         "target": "clearDraft",
         "targetName": "clearDraft",
-        "edgeType": "call",
-        "line": 368,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/activities/QuickLogActivityDialog.tsx:208:QuickLogActivityDialog",
-        "target": "setHasDraft",
-        "targetName": "setHasDraft",
         "edgeType": "call",
         "line": 369,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/QuickLogActivityDialog.tsx:208:QuickLogActivityDialog",
-        "target": "onOpenChange",
-        "targetName": "onOpenChange",
+        "source": "src/atomic-crm/activities/QuickLogActivityDialog.tsx:209:QuickLogActivityDialog",
+        "target": "setHasDraft",
+        "targetName": "setHasDraft",
         "edgeType": "call",
-        "line": 371,
-        "conditional": false,
+        "line": 370,
+        "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/QuickLogActivityDialog.tsx:208:QuickLogActivityDialog",
-        "target": "onSuccess",
-        "targetName": "onSuccess",
+        "source": "src/atomic-crm/activities/QuickLogActivityDialog.tsx:209:QuickLogActivityDialog",
+        "target": "onOpenChange",
+        "targetName": "onOpenChange",
         "edgeType": "call",
         "line": 372,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/QuickLogActivityDialog.tsx:208:QuickLogActivityDialog",
-        "target": "useCallback",
-        "targetName": "useCallback",
-        "edgeType": "hook",
-        "line": 375,
+        "source": "src/atomic-crm/activities/QuickLogActivityDialog.tsx:209:QuickLogActivityDialog",
+        "target": "onSuccess",
+        "targetName": "onSuccess",
+        "edgeType": "call",
+        "line": 373,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/QuickLogActivityDialog.tsx:208:QuickLogActivityDialog",
+        "source": "src/atomic-crm/activities/QuickLogActivityDialog.tsx:209:QuickLogActivityDialog",
+        "target": "useCallback",
+        "targetName": "useCallback",
+        "edgeType": "hook",
+        "line": 376,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/activities/QuickLogActivityDialog.tsx:209:QuickLogActivityDialog",
         "target": "clearTimeout",
         "targetName": "clearTimeout",
         "edgeType": "call",
-        "line": 381,
+        "line": 382,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/QuickLogActivityDialog.tsx:208:QuickLogActivityDialog",
+        "source": "src/atomic-crm/activities/QuickLogActivityDialog.tsx:209:QuickLogActivityDialog",
         "target": "setTimeout",
         "targetName": "setTimeout",
-        "edgeType": "call",
-        "line": 384,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/activities/QuickLogActivityDialog.tsx:208:QuickLogActivityDialog",
-        "target": "saveDraft",
-        "targetName": "saveDraft",
         "edgeType": "call",
         "line": 385,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/QuickLogActivityDialog.tsx:208:QuickLogActivityDialog",
-        "target": "setHasDraft",
-        "targetName": "setHasDraft",
+        "source": "src/atomic-crm/activities/QuickLogActivityDialog.tsx:209:QuickLogActivityDialog",
+        "target": "saveDraft",
+        "targetName": "saveDraft",
         "edgeType": "call",
         "line": 386,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/QuickLogActivityDialog.tsx:208:QuickLogActivityDialog",
-        "target": "useCallback",
-        "targetName": "useCallback",
-        "edgeType": "hook",
-        "line": 392,
+        "source": "src/atomic-crm/activities/QuickLogActivityDialog.tsx:209:QuickLogActivityDialog",
+        "target": "setHasDraft",
+        "targetName": "setHasDraft",
+        "edgeType": "call",
+        "line": 387,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/QuickLogActivityDialog.tsx:208:QuickLogActivityDialog",
+        "source": "src/atomic-crm/activities/QuickLogActivityDialog.tsx:209:QuickLogActivityDialog",
+        "target": "useCallback",
+        "targetName": "useCallback",
+        "edgeType": "hook",
+        "line": 393,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/activities/QuickLogActivityDialog.tsx:209:QuickLogActivityDialog",
         "target": "onCancel",
         "targetName": "onCancel",
         "edgeType": "call",
-        "line": 395,
+        "line": 396,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/QuickLogActivityDialog.tsx:208:QuickLogActivityDialog",
+        "source": "src/atomic-crm/activities/QuickLogActivityDialog.tsx:209:QuickLogActivityDialog",
         "target": "onOpenChange",
         "targetName": "onOpenChange",
         "edgeType": "call",
-        "line": 397,
+        "line": 398,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/QuickLogActivityDialog.tsx:208:QuickLogActivityDialog",
+        "source": "src/atomic-crm/activities/QuickLogActivityDialog.tsx:209:QuickLogActivityDialog",
         "target": "Sheet",
         "targetName": "Sheet",
-        "edgeType": "render",
-        "line": 413,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/activities/QuickLogActivityDialog.tsx:208:QuickLogActivityDialog",
-        "target": "handleOpenChange",
-        "targetName": "handleOpenChange",
-        "edgeType": "callback",
-        "line": 413,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/activities/QuickLogActivityDialog.tsx:208:QuickLogActivityDialog",
-        "target": "SheetContent",
-        "targetName": "SheetContent",
         "edgeType": "render",
         "line": 414,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/QuickLogActivityDialog.tsx:208:QuickLogActivityDialog",
-        "target": "SheetHeader",
-        "targetName": "SheetHeader",
-        "edgeType": "render",
-        "line": 420,
+        "source": "src/atomic-crm/activities/QuickLogActivityDialog.tsx:209:QuickLogActivityDialog",
+        "target": "handleOpenChange",
+        "targetName": "handleOpenChange",
+        "edgeType": "callback",
+        "line": 414,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/QuickLogActivityDialog.tsx:208:QuickLogActivityDialog",
-        "target": "SheetTitle",
-        "targetName": "SheetTitle",
+        "source": "src/atomic-crm/activities/QuickLogActivityDialog.tsx:209:QuickLogActivityDialog",
+        "target": "SheetContent",
+        "targetName": "SheetContent",
+        "edgeType": "render",
+        "line": 415,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/activities/QuickLogActivityDialog.tsx:209:QuickLogActivityDialog",
+        "target": "SheetHeader",
+        "targetName": "SheetHeader",
         "edgeType": "render",
         "line": 421,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/QuickLogActivityDialog.tsx:208:QuickLogActivityDialog",
+        "source": "src/atomic-crm/activities/QuickLogActivityDialog.tsx:209:QuickLogActivityDialog",
+        "target": "SheetTitle",
+        "targetName": "SheetTitle",
+        "edgeType": "render",
+        "line": 422,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/activities/QuickLogActivityDialog.tsx:209:QuickLogActivityDialog",
         "target": "Badge",
         "targetName": "Badge",
         "edgeType": "render",
-        "line": 424,
+        "line": 425,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/QuickLogActivityDialog.tsx:208:QuickLogActivityDialog",
+        "source": "src/atomic-crm/activities/QuickLogActivityDialog.tsx:209:QuickLogActivityDialog",
         "target": "SheetDescription",
         "targetName": "SheetDescription",
         "edgeType": "render",
-        "line": 429,
+        "line": 430,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/QuickLogActivityDialog.tsx:208:QuickLogActivityDialog",
+        "source": "src/atomic-crm/activities/QuickLogActivityDialog.tsx:209:QuickLogActivityDialog",
         "target": "Suspense",
         "targetName": "Suspense",
-        "edgeType": "render",
-        "line": 467,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/activities/QuickLogActivityDialog.tsx:208:QuickLogActivityDialog",
-        "target": "LockedEntityDisplay",
-        "targetName": "LockedEntityDisplay",
-        "edgeType": "render",
-        "line": 441,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/activities/QuickLogActivityDialog.tsx:208:QuickLogActivityDialog",
-        "target": "LockedEntityDisplay",
-        "targetName": "LockedEntityDisplay",
-        "edgeType": "render",
-        "line": 449,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/activities/QuickLogActivityDialog.tsx:208:QuickLogActivityDialog",
-        "target": "LockedEntityDisplay",
-        "targetName": "LockedEntityDisplay",
-        "edgeType": "render",
-        "line": 457,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/activities/QuickLogActivityDialog.tsx:208:QuickLogActivityDialog",
-        "target": "QuickLogFormSkeleton",
-        "targetName": "QuickLogFormSkeleton",
-        "edgeType": "render",
-        "line": 467,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/activities/QuickLogActivityDialog.tsx:208:QuickLogActivityDialog",
-        "target": "QuickLogForm",
-        "targetName": "QuickLogForm",
         "edgeType": "render",
         "line": 468,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/activities/QuickLogActivityDialog.tsx:208:QuickLogActivityDialog",
+        "source": "src/atomic-crm/activities/QuickLogActivityDialog.tsx:209:QuickLogActivityDialog",
+        "target": "LockedEntityDisplay",
+        "targetName": "LockedEntityDisplay",
+        "edgeType": "render",
+        "line": 442,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/activities/QuickLogActivityDialog.tsx:209:QuickLogActivityDialog",
+        "target": "LockedEntityDisplay",
+        "targetName": "LockedEntityDisplay",
+        "edgeType": "render",
+        "line": 450,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/activities/QuickLogActivityDialog.tsx:209:QuickLogActivityDialog",
+        "target": "LockedEntityDisplay",
+        "targetName": "LockedEntityDisplay",
+        "edgeType": "render",
+        "line": 458,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/activities/QuickLogActivityDialog.tsx:209:QuickLogActivityDialog",
+        "target": "QuickLogFormSkeleton",
+        "targetName": "QuickLogFormSkeleton",
+        "edgeType": "render",
+        "line": 468,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/activities/QuickLogActivityDialog.tsx:209:QuickLogActivityDialog",
+        "target": "QuickLogForm",
+        "targetName": "QuickLogForm",
+        "edgeType": "render",
+        "line": 469,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/activities/QuickLogActivityDialog.tsx:209:QuickLogActivityDialog",
         "target": "handleComplete",
         "targetName": "handleComplete",
         "edgeType": "callback",
-        "line": 469,
+        "line": 470,
         "conditional": false,
         "inLoop": false
       },

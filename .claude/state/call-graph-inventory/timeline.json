@@ -1,6 +1,6 @@
 {
   "chunk_name": "timeline",
-  "generated_at": "2026-01-26T17:59:23.977Z",
+  "generated_at": "2026-01-26T20:13:23.991Z",
   "items": {
     "nodes": [
       {
@@ -250,10 +250,19 @@
       },
       {
         "source": "src/atomic-crm/timeline/UnifiedTimeline.tsx:41:UnifiedTimeline",
+        "target": "refetch",
+        "targetName": "refetch",
+        "edgeType": "call",
+        "line": 85,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/timeline/UnifiedTimeline.tsx:41:UnifiedTimeline",
         "target": "setIsDialogOpen",
         "targetName": "setIsDialogOpen",
         "edgeType": "call",
-        "line": 91,
+        "line": 99,
         "conditional": false,
         "inLoop": false
       },
@@ -262,7 +271,7 @@
         "target": "map",
         "targetName": "map",
         "edgeType": "call",
-        "line": 105,
+        "line": 113,
         "conditional": true,
         "inLoop": false
       },
@@ -271,7 +280,7 @@
         "target": "refetch",
         "targetName": "refetch",
         "edgeType": "call",
-        "line": 124,
+        "line": 132,
         "conditional": false,
         "inLoop": false
       },
@@ -280,7 +289,16 @@
         "target": "AdminButton",
         "targetName": "AdminButton",
         "edgeType": "render",
-        "line": 91,
+        "line": 85,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/timeline/UnifiedTimeline.tsx:41:UnifiedTimeline",
+        "target": "AdminButton",
+        "targetName": "AdminButton",
+        "edgeType": "render",
+        "line": 99,
         "conditional": false,
         "inLoop": false
       },
@@ -313,10 +331,19 @@
       },
       {
         "source": "src/atomic-crm/timeline/UnifiedTimeline.tsx:41:UnifiedTimeline",
+        "target": "RefreshCw",
+        "targetName": "RefreshCw",
+        "edgeType": "render",
+        "line": 86,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/timeline/UnifiedTimeline.tsx:41:UnifiedTimeline",
         "target": "Plus",
         "targetName": "Plus",
         "edgeType": "render",
-        "line": 92,
+        "line": 100,
         "conditional": false,
         "inLoop": false
       },
@@ -325,7 +352,7 @@
         "target": "SidepaneEmptyState",
         "targetName": "SidepaneEmptyState",
         "edgeType": "render",
-        "line": 99,
+        "line": 107,
         "conditional": true,
         "inLoop": false
       },
@@ -334,7 +361,7 @@
         "target": "TimelineEntry",
         "targetName": "TimelineEntry",
         "edgeType": "render",
-        "line": 106,
+        "line": 114,
         "conditional": false,
         "inLoop": false
       },
@@ -343,7 +370,7 @@
         "target": "QuickLogActivityDialog",
         "targetName": "QuickLogActivityDialog",
         "edgeType": "render",
-        "line": 112,
+        "line": 120,
         "conditional": false,
         "inLoop": false
       }

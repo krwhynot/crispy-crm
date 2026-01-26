@@ -1,10 +1,10 @@
 import { Mars, NonBinary, Venus } from "lucide-react";
 import { STAGE } from "@/atomic-crm/opportunities/constants";
 
-export const defaultDarkModeLogo = "./logos/logo_atomic_crm_dark.svg";
-export const defaultLightModeLogo = "./logos/logo_atomic_crm_light.svg";
+export const defaultDarkModeLogo = "./logos/mfb-logo.webp";
+export const defaultLightModeLogo = "./logos/mfb-logo.webp";
 
-export const defaultTitle = "Atomic CRM";
+export const defaultTitle = "MasterFood Broker CRM";
 
 export const defaultDealStages = [
   { value: "opportunity", label: "Opportunity" },

@@ -1,6 +1,6 @@
 {
   "chunk_name": "activities",
-  "generated_at": "2026-01-26T17:59:01.357Z",
+  "generated_at": "2026-01-26T20:12:54.632Z",
   "item_count": 36,
   "items": [
     {
@@ -392,7 +392,7 @@
     {
       "name": "QuickLogActivityDialog",
       "file": "src/atomic-crm/activities/QuickLogActivityDialog.tsx",
-      "line": 208,
+      "line": 209,
       "type": "presentational",
       "hooks": [
         "useCallback",
@@ -410,6 +410,7 @@
         "./components/QuickLogFormSkeleton",
         "./utils/activityDraftStorage",
         "@/atomic-crm/hooks/useRecentSearches",
+        "@/atomic-crm/queryKeys",
         "@/atomic-crm/validation/activities",
         "@/components/ui/badge",
         "@/components/ui/sheet",
@@ -540,7 +541,7 @@
     {
       "name": "QuickLogActivityDialog",
       "file": "src/atomic-crm/activities/index.tsx",
-      "line": 208,
+      "line": 209,
       "type": "presentational",
       "hooks": [
         "useCallback",
