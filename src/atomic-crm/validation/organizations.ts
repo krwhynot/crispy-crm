@@ -186,7 +186,7 @@ export const organizationSchema = z.strictObject({
   is_operating_entity: z.coerce.boolean().default(true),
 
   // Status fields (Task 13)
-  status: orgStatusSchema.default("active"),
+  status: orgStatusSchema, // Required - no silent default
   status_reason: orgStatusReasonSchema.nullable().optional(),
 
   // Billing Address fields (Task 14)

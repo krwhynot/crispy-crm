@@ -186,6 +186,7 @@ const OrganizationCreate = () => {
     sales_id: smartDefaults?.sales_id ?? null, // Handle loading state (also serves as Account Manager)
     // Use null (not undefined) when no segment found - null is a valid value for nullable UUID fields
     segment_id: unknownSegmentId ?? null,
+    status: "active" as const, // Explicit UI default - not silent in validation
     ...(parentOrgId ? { parent_organization_id: parentOrgId } : {}), // Pre-fill parent when adding branch
   };
   const formKey = unknownSegmentId ? `org-create-${unknownSegmentId}` : "org-create";
