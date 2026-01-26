@@ -100,30 +100,154 @@ export const RESOURCE_LABELS: Record<string, string> = {
 /**
  * Maps database constraint names to user-friendly error messages
  * Provides specific, actionable messages for constraint violations
+ *
+ * Organized by constraint type for maintainability:
+ * 1. Unique constraints (23505) - prevent duplicates
+ * 2. Check constraints - business rule validation
+ * 3. Foreign key DELETE (23503) - prevent orphans
+ * 4. Foreign key INSERT/UPDATE (23503) - validate references
+ * 5. Not-null constraints (23502) - required fields
  */
 export const CONSTRAINT_MESSAGES: Record<string, string> = {
-  // Unique constraints (23505 errors)
+  // ============================================
+  // UNIQUE CONSTRAINTS (23505 errors)
+  // ============================================
+
+  // Core entities
   organizations_name_unique_idx: "An organization with this name already exists.",
   tags_name_key: "A tag with this name already exists.",
   segments_name_type_unique: "A segment with this name and type already exists.",
+  segments_name_type_case_insensitive_idx:
+    "A segment with this name and type already exists (case-insensitive).",
 
-  // Foreign key DELETE prevention (23503 errors - when deleting parent)
+  // Junction table uniqueness
+  opportunity_products_opportunity_id_product_id_reference_key:
+    "This product is already linked to this opportunity.",
+  uq_organization_distributor: "This organization-distributor relationship already exists.",
+
+  // ============================================
+  // CHECK CONSTRAINTS (Business Rules)
+  // ============================================
+
+  // Self-reference prevention
+  contacts_no_self_manager: "A contact cannot be their own manager.",
+  no_self_authorization: "A distributor cannot authorize itself as a principal.",
+  no_self_distribution: "An organization cannot be its own distributor.",
+
+  // Win/Loss reason requirements
+  opportunities_closed_won_check: "Closing as Won requires a win reason.",
+  opportunities_closed_lost_check: "Closing as Lost requires a loss reason.",
+
+  // Date validations
+  valid_authorization_dates: "Effective date must be before expiration date.",
+
+  // Enum validations
+  notifications_entity_type_check: "Invalid entity type for notification.",
+  notifications_type_check: "Invalid notification type.",
+  check_currency_code: "Currency code must be a valid 3-letter code (e.g., USD).",
+
+  // Timezone validation
+  sales_timezone_check: "Invalid timezone format. Use format like 'America/New_York'.",
+
+  // ============================================
+  // FOREIGN KEY DELETE PREVENTION (23503)
+  // These trigger when deleting a parent record
+  // ============================================
+
+  // Contacts - prevent deletion when referenced
   activities_contact_id_fkey: "Cannot delete - this contact has associated activities.",
   contact_notes_contact_id_fkey: "Cannot delete - this contact has notes.",
   opportunity_contacts_contact_id_fkey: "Cannot delete - this contact is linked to opportunities.",
   contact_organizations_contact_id_fkey: "Cannot delete - this contact is linked to organizations.",
+  tasks_contact_id_fkey: "Cannot delete - this contact has associated tasks.",
 
-  // Foreign key INSERT/UPDATE validation (23503 errors - when creating/updating)
+  // Organizations - prevent deletion when referenced
+  organization_notes_organization_id_fkey: "Cannot delete - this organization has notes.",
+  organization_distributors_organization_id_fkey:
+    "Cannot delete - this organization has distributor relationships.",
+  organization_distributors_distributor_id_fkey:
+    "Cannot delete - this organization is assigned as a distributor.",
+  distributor_principal_authorizations_distributor_id_fkey:
+    "Cannot delete - this organization has distributor authorizations.",
+  distributor_principal_authorizations_principal_id_fkey:
+    "Cannot delete - this organization is a principal in distributor authorizations.",
+  product_distributor_authorizations_distributor_id_fkey:
+    "Cannot delete - this distributor has product authorizations.",
+
+  // Opportunities - prevent deletion when referenced
+  opportunity_contacts_opportunity_id_fkey: "Cannot delete - this opportunity has linked contacts.",
+  opportunity_notes_opportunity_id_fkey: "Cannot delete - this opportunity has notes.",
+  opportunity_participants_opportunity_id_fkey:
+    "Cannot delete - this opportunity has participants.",
+  opportunity_products_opportunity_id_fkey: "Cannot delete - this opportunity has linked products.",
+
+  // Products - prevent deletion when referenced
+  opportunity_products_product_id_reference_fkey:
+    "Cannot delete - this product is linked to opportunities.",
+  product_distributor_authorizations_product_id_fkey:
+    "Cannot delete - this product has distributor authorizations.",
+  fk_product_distributors_product: "Cannot delete - this product has distributor assignments.",
+  fk_product_distributors_distributor:
+    "Cannot delete - this organization is assigned as a product distributor.",
+
+  // Activities - prevent deletion when referenced
+  interaction_participants_activity_id_fkey:
+    "Cannot delete - this activity has interaction participants.",
+
+  // Sales/Users - prevent deletion when referenced
+  dashboard_snapshots_sales_id_fkey:
+    "Cannot delete - this account manager has dashboard snapshots.",
+  tutorial_progress_sales_id_fkey:
+    "Cannot delete - this account manager has tutorial progress records.",
+
+  // ============================================
+  // FOREIGN KEY INSERT/UPDATE (23503)
+  // These trigger when referencing invalid parent
+  // ============================================
+
+  // Contact references
   contacts_organization_id_fkey: "Please select a valid organization.",
   contacts_sales_id_fkey: "Please select a valid account manager.",
+  contacts_manager_id_fkey: "Please select a valid manager contact.",
+
+  // Opportunity references
   opportunities_customer_organization_id_fkey: "Please select a valid customer organization.",
   opportunities_principal_organization_id_fkey: "Please select a valid principal organization.",
   opportunities_distributor_organization_id_fkey: "Please select a valid distributor organization.",
-  tasks_assigned_to_fkey: "Please select a valid user to assign this task to.",
+  opportunities_opportunity_owner_id_fkey: "Please select a valid opportunity owner.",
 
-  // Not-null constraints (23502 errors) - though these are better handled by field extraction
+  // Task references
+  tasks_assigned_to_fkey: "Please select a valid user to assign this task to.",
+  tasks_sales_id_fkey: "Please select a valid account manager for this task.",
+  tasks_opportunity_id_fkey: "Please select a valid opportunity for this task.",
+  tasks_contact_id_fkey_insert: "Please select a valid contact for this task.",
+
+  // Activity references
+  activities_opportunity_id_fkey: "Please select a valid opportunity for this activity.",
+  activities_sales_id_fkey: "Please select a valid account manager for this activity.",
+
+  // Note references
+  contact_notes_sales_id_fkey: "Please select a valid account manager for this note.",
+  organization_notes_sales_id_fkey: "Please select a valid account manager for this note.",
+  opportunity_notes_sales_id_fkey: "Please select a valid account manager for this note.",
+
+  // Product references
+  products_principal_organization_id_fkey: "Please select a valid principal organization.",
+  opportunity_products_product_id_fkey: "Please select a valid product.",
+
+  // Segment references
+  organizations_segment_id_fkey: "Please select a valid segment.",
+
+  // ============================================
+  // NOT-NULL CONSTRAINTS (23502)
+  // Better handled by field extraction, but
+  // specific messages for common cases
+  // ============================================
+
   contacts_email_not_null: "Email is required for contacts.",
   organizations_name_not_null: "Organization name is required.",
+  tasks_sales_id_not_null: "Account manager is required for tasks.",
+  opportunities_opportunity_owner_id_not_null: "Opportunity owner is required.",
 };
 
 /**
@@ -233,9 +357,59 @@ function sanitizeMessage(message: string, context?: ErrorContext): string {
     return "Required field is missing.";
   }
 
-  // Check constraint violation
+  // Check constraint violation - try to provide specific message
   if (msg.includes("violates check constraint")) {
+    // The constraint name should already have been matched above via constraintMatch
+    // This is a fallback for unrecognized check constraints
     return "Invalid value provided. Please check your input.";
+  }
+
+  // ============================================
+  // String Length Violations (22001 - string_data_right_truncation)
+  // Handles: "value too long for type character varying(255)"
+  // ============================================
+
+  const lengthMatch = message.match(/value too long for type character varying\((\d+)\)/i);
+  if (lengthMatch) {
+    const maxLength = lengthMatch[1];
+    return `Input is too long. Maximum ${maxLength} characters allowed.`;
+  }
+
+  // Alternative pattern: "string data right truncation" with length
+  if (msg.includes("string data") && msg.includes("truncation")) {
+    return "Input is too long. Please shorten your text.";
+  }
+
+  // ============================================
+  // Data Type Mismatch (22P02 - invalid_text_representation)
+  // Handles: "invalid input syntax for type integer"
+  // ============================================
+
+  const typeMatch = message.match(/invalid input syntax for type (\w+)/i);
+  if (typeMatch) {
+    const dataType = typeMatch[1].toLowerCase();
+    switch (dataType) {
+      case "integer":
+      case "bigint":
+      case "smallint":
+        return "Please enter a valid whole number.";
+      case "numeric":
+      case "decimal":
+      case "real":
+      case "double":
+        return "Please enter a valid number.";
+      case "uuid":
+        return "Invalid record identifier format.";
+      case "date":
+        return "Please enter a valid date.";
+      case "timestamp":
+      case "timestamptz":
+        return "Please enter a valid date and time.";
+      case "boolean":
+        return "Please select Yes or No.";
+      default:
+        return "Invalid input format. Please check your entry.";
+    }
   }
 
   // ============================================
