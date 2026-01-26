@@ -22,6 +22,7 @@
 
 import type { DataProvider, Identifier, FilterPayload, RaRecord } from "ra-core";
 import { logger } from "@/lib/logger";
+import { FIELD_LABELS, sanitizeDatabaseError } from "@/atomic-crm/utils/errorMessages";
 
 /**
  * Interface for data provider method params logging
@@ -177,53 +178,6 @@ function transformSupabaseError(error: SupabaseError): ValidationError {
 function isSupabaseError(error: unknown): error is SupabaseError {
   const err = error as SupabaseError;
   return !!(err?.code && err?.details);
-}
-
-/**
- * Human-readable field labels for error messages
- * Maps database column names to display labels
- */
-const FIELD_LABELS: Record<string, string> = {
-  organization_id: "Organization",
-  first_name: "First Name",
-  last_name: "Last Name",
-  sales_id: "Account Manager",
-  email: "Email",
-};
-
-/**
- * Sanitize PostgreSQL error messages for user display
- * Removes technical details and provides actionable messages
- */
-function sanitizeDatabaseError(message: string): { field: string; message: string } | null {
-  // Pattern: "null value in column 'X' of relation 'Y' violates not-null constraint"
-  const notNullMatch = message.match(/null value in column '(\w+)'.*violates not-null constraint/i);
-  if (notNullMatch) {
-    const columnName = notNullMatch[1];
-    const label = FIELD_LABELS[columnName] || columnName.replace(/_/g, " ");
-    return { field: columnName, message: `${label} is required` };
-  }
-
-  // Pattern: "duplicate key value violates unique constraint"
-  const uniqueMatch = message.match(/duplicate key.*constraint "(\w+)"/i);
-  if (uniqueMatch) {
-    return { field: "_error", message: "This record already exists" };
-  }
-
-  // Pattern: "violates foreign key constraint"
-  const fkMatch = message.match(/violates foreign key constraint.*column "(\w+)"/i);
-  if (fkMatch) {
-    const columnName = fkMatch[1];
-    const label = FIELD_LABELS[columnName] || columnName.replace(/_/g, " ");
-    return { field: columnName, message: `Invalid ${label} reference` };
-  }
-
-  // Pattern: "violates check constraint"
-  if (message.includes("violates check constraint")) {
-    return { field: "_error", message: "Invalid value provided" };
-  }
-
-  return null; // Not a recognized database error
 }
 
 /**

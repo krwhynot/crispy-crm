@@ -10,6 +10,16 @@
  */
 
 /**
+ * Context information for error message generation
+ */
+export interface ErrorContext {
+  /** The resource being operated on (e.g., "contacts", "organizations") */
+  resource?: string;
+  /** The action being performed */
+  action?: "create" | "update" | "delete";
+}
+
+/**
  * Human-readable field labels for error messages
  * Maps database column names to display labels
  */
@@ -105,9 +115,10 @@ export const CONSTRAINT_MESSAGES: Record<string, string> = {
  * - Validation errors
  *
  * @param error - The error to sanitize (can be Error, string, or unknown)
+ * @param context - Optional resource and action context for specific error messages
  * @returns A user-friendly error message
  */
-export function mapErrorToUserMessage(error: unknown): string {
+export function mapErrorToUserMessage(error: unknown, context?: ErrorContext): string {
   // Handle non-Error types
   if (error === null || error === undefined) {
     return "Something went wrong. Please try again.";
@@ -129,6 +140,16 @@ export function mapErrorToUserMessage(error: unknown): string {
  */
 function sanitizeMessage(message: string): string {
   const msg = message.toLowerCase();
+
+  // ============================================
+  // Specific Constraint Name Matching (Priority)
+  // ============================================
+
+  // Extract constraint name from messages like: constraint "organizations_name_unique_idx"
+  const constraintMatch = message.match(/constraint "([^"]+)"/i);
+  if (constraintMatch?.[1] && CONSTRAINT_MESSAGES[constraintMatch[1]]) {
+    return CONSTRAINT_MESSAGES[constraintMatch[1]];
+  }
 
   // ============================================
   // Postgres Constraint Violations
