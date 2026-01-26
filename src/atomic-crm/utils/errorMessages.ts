@@ -13,18 +13,86 @@
  * Human-readable field labels for error messages
  * Maps database column names to display labels
  */
-const FIELD_LABELS: Record<string, string> = {
-  organization_id: "Organization",
-  first_name: "First Name",
-  last_name: "Last Name",
-  sales_id: "Account Manager",
+export const FIELD_LABELS: Record<string, string> = {
+  // Common fields
   email: "Email",
   name: "Name",
   title: "Title",
+
+  // Contacts
+  organization_id: "Organization",
+  first_name: "First Name",
+  last_name: "Last Name",
+  phone: "Phone Number",
+  department: "Department",
+  linkedin_url: "LinkedIn URL",
+  manager_id: "Manager",
+  contact_id: "Contact",
+
+  // Organizations
+  website: "Website",
+  address: "Address",
+  city: "City",
+  state: "State",
+  postal_code: "Postal Code",
+  segment_id: "Segment",
+  parent_organization_id: "Parent Organization",
+
+  // Opportunities
+  opportunity_id: "Opportunity",
+  customer_organization_id: "Customer Organization",
+  principal_organization_id: "Principal Organization",
+  distributor_organization_id: "Distributor Organization",
+  stage: "Stage",
+  estimated_close_date: "Estimated Close Date",
+  win_reason: "Win Reason",
+  loss_reason: "Loss Reason",
+
+  // Products
+  product_id: "Product",
+  category: "Category",
+
+  // Tasks
+  due_date: "Due Date",
+  assigned_to: "Assigned To",
+
+  // Activities
+  activity_type: "Activity Type",
+  interaction_type: "Interaction Type",
+
+  // Legacy/Common references
+  sales_id: "Account Manager",
   principal_id: "Principal",
   distributor_id: "Distributor",
-  contact_id: "Contact",
-  opportunity_id: "Opportunity",
+};
+
+/**
+ * Maps database constraint names to user-friendly error messages
+ * Provides specific, actionable messages for constraint violations
+ */
+export const CONSTRAINT_MESSAGES: Record<string, string> = {
+  // Unique constraints (23505 errors)
+  organizations_name_unique_idx: "An organization with this name already exists.",
+  tags_name_key: "A tag with this name already exists.",
+  segments_name_type_unique: "A segment with this name and type already exists.",
+
+  // Foreign key DELETE prevention (23503 errors - when deleting parent)
+  activities_contact_id_fkey: "Cannot delete - this contact has associated activities.",
+  contact_notes_contact_id_fkey: "Cannot delete - this contact has notes.",
+  opportunity_contacts_contact_id_fkey: "Cannot delete - this contact is linked to opportunities.",
+  contact_organizations_contact_id_fkey: "Cannot delete - this contact is linked to organizations.",
+
+  // Foreign key INSERT/UPDATE validation (23503 errors - when creating/updating)
+  contacts_organization_id_fkey: "Please select a valid organization.",
+  contacts_sales_id_fkey: "Please select a valid account manager.",
+  opportunities_customer_organization_id_fkey: "Please select a valid customer organization.",
+  opportunities_principal_organization_id_fkey: "Please select a valid principal organization.",
+  opportunities_distributor_organization_id_fkey: "Please select a valid distributor organization.",
+  tasks_assigned_to_fkey: "Please select a valid user to assign this task to.",
+
+  // Not-null constraints (23502 errors) - though these are better handled by field extraction
+  contacts_email_not_null: "Email is required for contacts.",
+  organizations_name_not_null: "Organization name is required.",
 };
 
 /**
@@ -258,4 +326,45 @@ export function isAuthError(error: unknown): boolean {
     msg.includes("401") ||
     msg.includes("unauthorized")
   );
+}
+
+/**
+ * Sanitize PostgreSQL error messages for user display
+ * Removes technical details and provides actionable messages
+ *
+ * Used by withErrorLogging to extract field-specific validation errors
+ * from database constraint violations.
+ *
+ * @param message - Raw database error message
+ * @returns Object with field name and user-friendly message, or null if not recognized
+ */
+export function sanitizeDatabaseError(message: string): { field: string; message: string } | null {
+  // Pattern: "null value in column 'X' of relation 'Y' violates not-null constraint"
+  const notNullMatch = message.match(/null value in column '(\w+)'.*violates not-null constraint/i);
+  if (notNullMatch) {
+    const columnName = notNullMatch[1];
+    const label = FIELD_LABELS[columnName] || columnName.replace(/_/g, " ");
+    return { field: columnName, message: `${label} is required` };
+  }
+
+  // Pattern: "duplicate key value violates unique constraint"
+  const uniqueMatch = message.match(/duplicate key.*constraint "(\w+)"/i);
+  if (uniqueMatch) {
+    return { field: "_error", message: "This record already exists" };
+  }
+
+  // Pattern: "violates foreign key constraint"
+  const fkMatch = message.match(/violates foreign key constraint.*column "(\w+)"/i);
+  if (fkMatch) {
+    const columnName = fkMatch[1];
+    const label = FIELD_LABELS[columnName] || columnName.replace(/_/g, " ");
+    return { field: columnName, message: `Invalid ${label} reference` };
+  }
+
+  // Pattern: "violates check constraint"
+  if (message.includes("violates check constraint")) {
+    return { field: "_error", message: "Invalid value provided" };
+  }
+
+  return null; // Not a recognized database error
 }

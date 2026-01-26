@@ -167,7 +167,7 @@ function transformSupabaseError(error: SupabaseError): ValidationError {
 
   return {
     message: sanitized?.message || "Validation failed",
-    errors: fieldErrors,
+    body: { errors: fieldErrors },
   };
 }
 
