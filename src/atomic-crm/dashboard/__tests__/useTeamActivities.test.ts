@@ -169,6 +169,8 @@ const createMockSales = (id: number, overrides: Partial<any> = {}) => ({
 describe("useTeamActivities", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    mockGetList.mockReset();
+    mockGetMany.mockReset();
   });
 
   describe("Data Fetching", () => {
@@ -211,8 +213,17 @@ describe("useTeamActivities", () => {
       );
     });
 
-    it("should include meta.select for sales user join", async () => {
-      mockGetList.mockResolvedValueOnce({ data: [], total: 0 });
+    it("should batch fetch sales users with useGetMany", async () => {
+      const mockActivities = [
+        createMockActivity({ id: 1, created_by: 42 }),
+        createMockActivity({ id: 2, created_by: 43 }),
+        createMockActivity({ id: 3, created_by: 42 }), // Duplicate user ID
+      ];
+
+      mockGetList.mockResolvedValueOnce({ data: mockActivities, total: 3 });
+      mockGetMany.mockResolvedValueOnce({
+        data: [createMockSales(42), createMockSales(43)],
+      });
 
       const { result } = renderHook(() => useTeamActivities());
 
@@ -220,14 +231,14 @@ describe("useTeamActivities", () => {
         expect(result.current.loading).toBe(false);
       });
 
-      expect(mockGetList).toHaveBeenCalledWith(
-        "activities",
-        expect.objectContaining({
-          meta: expect.objectContaining({
-            select: expect.stringContaining("sales:created_by"),
-          }),
-        })
-      );
+      // Should call useGetMany with deduplicated sales IDs
+      expect(mockGetMany).toHaveBeenCalledWith("sales", { ids: [42, 43] });
+
+      // Should merge sales data into activities
+      expect(result.current.activities).toHaveLength(3);
+      expect(result.current.activities[0].sales?.first_name).toBe("User42");
+      expect(result.current.activities[1].sales?.first_name).toBe("User43");
+      expect(result.current.activities[2].sales?.first_name).toBe("User42");
     });
   });
 

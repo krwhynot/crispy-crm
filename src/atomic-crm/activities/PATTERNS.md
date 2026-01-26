@@ -778,19 +778,22 @@ const exporter: Exporter<ActivityRecord> = async (records, fetchRelatedRecords) 
 
 ---
 
-## Pattern Comparison: Quick Log vs Full Form
+## Activity Creation Pattern
 
-| Aspect | Quick Log Dialog | Full Activity Form |
-|--------|-----------------|-------------------|
-| **Entry point** | FAB, slide-over button | `/activities/create` route |
-| **Fields shown** | Core fields only (5-6) | All 15+ fields |
-| **Draft persistence** | Yes (localStorage) | No |
-| **Entity pre-fill** | Yes (locked display) | Yes (URL params) |
-| **Form validation** | Minimal on save | Full Zod schema |
-| **Use case** | Rapid 30-second logging | Comprehensive entry |
-| **Component** | QuickLogActivityDialog | ActivityCreate + ActivitySinglePage |
-| **Lazy loading** | Yes (QuickLogForm) | No |
-| **Form progress bar** | No | Yes (FormProgressBar) |
+All activity creation now flows through `QuickLogActivityDialog`:
+
+| Aspect | Details |
+|--------|---------|
+| **Entry points** | Dashboard FAB, slide-over "+" buttons, TaskCompletionDialog |
+| **Fields shown** | Core fields only (5-6 for quick logging) |
+| **Draft persistence** | Yes (localStorage with 24h expiry) |
+| **Entity pre-fill** | Yes (locked display based on context) |
+| **Use case** | Rapid 30-second logging (MVP goal) |
+| **Component** | `QuickLogActivityDialog` → `QuickLogForm` |
+| **Lazy loading** | Yes (QuickLogForm chunk ~15-20KB) |
+
+> **Note:** The standalone `/activities/create` route was removed to consolidate UX.
+> Legacy URLs redirect to `/activities`. Edit via `/activities/:id/edit`.
 
 ---
 

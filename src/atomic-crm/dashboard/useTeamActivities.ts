@@ -104,18 +104,23 @@ export function useTeamActivities(limit: number = DEFAULT_LIMIT): UseTeamActivit
     const salesMap = new Map(salesRecords.map((s) => [s.id, s]));
 
     // Merge sales data into activities
-    return activities.map((activity) => ({
-      ...activity,
-      sales: activity.created_by
-        ? {
-            id: salesMap.get(activity.created_by)?.id || 0,
-            first_name: salesMap.get(activity.created_by)?.first_name || null,
-            last_name: salesMap.get(activity.created_by)?.last_name || null,
-            email: salesMap.get(activity.created_by)?.email || null,
-            avatar_url: salesMap.get(activity.created_by)?.avatar_url || null,
-          }
-        : undefined,
-    }));
+    return activities.map((activity) => {
+      // Look up the sales user - only create sales object if user exists
+      const salesUser = activity.created_by ? salesMap.get(activity.created_by) : undefined;
+
+      return {
+        ...activity,
+        sales: salesUser
+          ? {
+              id: salesUser.id,
+              first_name: salesUser.first_name,
+              last_name: salesUser.last_name,
+              email: salesUser.email,
+              avatar_url: salesUser.avatar_url,
+            }
+          : undefined,
+      };
+    });
   }, [activities, salesRecords]);
 
   // Convert error to Error type for consistent interface
