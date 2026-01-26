@@ -33,7 +33,9 @@ export function getSupabaseAdmin(): SupabaseClient {
 
 // Legacy export for backward compatibility - now uses lazy init
 export const supabaseAdmin: SupabaseClient = new Proxy({} as SupabaseClient, {
-  get(_target, prop) {
-    return (getSupabaseAdmin() as any)[prop];
+  get(_target, prop: string | symbol) {
+    const client = getSupabaseAdmin();
+    const value = client[prop as keyof SupabaseClient];
+    return typeof value === "function" ? value.bind(client) : value;
   },
 });
