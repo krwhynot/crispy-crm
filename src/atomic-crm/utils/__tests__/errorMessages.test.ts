@@ -501,4 +501,243 @@ describe("errorMessages", () => {
       expect(result).toBeNull();
     });
   });
+
+  // ============================================
+  // NEW TESTS: Resource-Specific Delete Messages
+  // ============================================
+
+  describe("resource-specific delete messages with ErrorContext", () => {
+    it("should enhance generic 'Cannot delete' with resource name", () => {
+      const error = new Error("Cannot delete - record has dependencies");
+      const context = { resource: "contacts", action: "delete" as const };
+      expect(mapErrorToUserMessage(error, context)).toBe(
+        "Cannot delete contact - record has dependencies"
+      );
+    });
+
+    it("should enhance 'Couldn't delete' with resource name", () => {
+      const error = new Error("Couldn't delete - this record is in use");
+      const context = { resource: "organizations", action: "delete" as const };
+      expect(mapErrorToUserMessage(error, context)).toBe(
+        "Couldn't delete organization - this record is in use"
+      );
+    });
+
+    it("should not duplicate resource name if already present", () => {
+      const error = new Error("Cannot delete contact - has activities");
+      const context = { resource: "contacts", action: "delete" as const };
+      // Should not become "Cannot delete contact contact - has activities"
+      expect(mapErrorToUserMessage(error, context)).toBe("Cannot delete contact - has activities");
+    });
+
+    it("should not modify message for non-delete actions", () => {
+      const error = new Error("Cannot delete - record has dependencies");
+      const context = { resource: "contacts", action: "create" as const };
+      // Should pass through without modification since action is not delete
+      expect(mapErrorToUserMessage(error, context)).toBe("Cannot delete - record has dependencies");
+    });
+
+    it("should use RESOURCE_LABELS for friendly names", () => {
+      const error = new Error("Cannot delete - has linked records");
+      const context = { resource: "product_distributors", action: "delete" as const };
+      expect(mapErrorToUserMessage(error, context)).toBe(
+        "Cannot delete product distributor - has linked records"
+      );
+    });
+
+    it("should fall back to raw resource name if not in RESOURCE_LABELS", () => {
+      const error = new Error("Cannot delete - dependencies exist");
+      const context = { resource: "custom_resource", action: "delete" as const };
+      expect(mapErrorToUserMessage(error, context)).toBe(
+        "Cannot delete custom_resource - dependencies exist"
+      );
+    });
+  });
+
+  // ============================================
+  // NEW TESTS: Tier 1 Constraint Messages
+  // ============================================
+
+  describe("new Tier 1 constraint messages", () => {
+    describe("self-reference prevention constraints", () => {
+      it("should handle contact self-manager constraint", () => {
+        const error = new Error('violates check constraint "contacts_no_self_manager"');
+        expect(mapErrorToUserMessage(error)).toBe("A contact cannot be their own manager.");
+      });
+
+      it("should handle distributor self-authorization constraint", () => {
+        const error = new Error(
+          'insert or update violates check constraint "no_self_authorization"'
+        );
+        expect(mapErrorToUserMessage(error)).toBe(
+          "A distributor cannot authorize itself as a principal."
+        );
+      });
+
+      it("should handle organization self-distribution constraint", () => {
+        const error = new Error('violates check constraint "no_self_distribution"');
+        expect(mapErrorToUserMessage(error)).toBe("An organization cannot be its own distributor.");
+      });
+    });
+
+    describe("win/loss reason requirements", () => {
+      it("should handle closed_won without win_reason constraint", () => {
+        const error = new Error(
+          'new row violates check constraint "opportunities_closed_won_check"'
+        );
+        expect(mapErrorToUserMessage(error)).toBe("Closing as Won requires a win reason.");
+      });
+
+      it("should handle closed_lost without loss_reason constraint", () => {
+        const error = new Error(
+          'new row violates check constraint "opportunities_closed_lost_check"'
+        );
+        expect(mapErrorToUserMessage(error)).toBe("Closing as Lost requires a loss reason.");
+      });
+    });
+
+    describe("date validation constraints", () => {
+      it("should handle invalid authorization date range", () => {
+        const error = new Error('violates check constraint "valid_authorization_dates"');
+        expect(mapErrorToUserMessage(error)).toBe("Effective date must be before expiration date.");
+      });
+    });
+
+    describe("enum validation constraints", () => {
+      it("should handle invalid notification entity type", () => {
+        const error = new Error('violates check constraint "notifications_entity_type_check"');
+        expect(mapErrorToUserMessage(error)).toBe("Invalid entity type for notification.");
+      });
+
+      it("should handle invalid notification type", () => {
+        const error = new Error('violates check constraint "notifications_type_check"');
+        expect(mapErrorToUserMessage(error)).toBe("Invalid notification type.");
+      });
+    });
+
+    describe("unique constraint messages", () => {
+      it("should handle duplicate product in opportunity", () => {
+        const error = new Error(
+          'duplicate key value violates unique constraint "opportunity_products_opportunity_id_product_id_reference_key"'
+        );
+        expect(mapErrorToUserMessage(error)).toBe(
+          "This product is already linked to this opportunity."
+        );
+      });
+
+      it("should handle duplicate organization-distributor relationship", () => {
+        const error = new Error(
+          'duplicate key value violates unique constraint "uq_organization_distributor"'
+        );
+        expect(mapErrorToUserMessage(error)).toBe(
+          "This organization-distributor relationship already exists."
+        );
+      });
+    });
+
+    describe("additional foreign key delete prevention", () => {
+      it("should handle organization with distributor relationships", () => {
+        const error = new Error(
+          'update or delete violates foreign key constraint "organization_distributors_organization_id_fkey"'
+        );
+        expect(mapErrorToUserMessage(error)).toBe(
+          "Cannot delete - this organization has distributor relationships."
+        );
+      });
+
+      it("should handle opportunity with linked products", () => {
+        const error = new Error(
+          'update or delete violates foreign key constraint "opportunity_products_opportunity_id_fkey"'
+        );
+        expect(mapErrorToUserMessage(error)).toBe(
+          "Cannot delete - this opportunity has linked products."
+        );
+      });
+
+      it("should handle product with opportunity links", () => {
+        const error = new Error(
+          'update or delete violates foreign key constraint "opportunity_products_product_id_reference_fkey"'
+        );
+        expect(mapErrorToUserMessage(error)).toBe(
+          "Cannot delete - this product is linked to opportunities."
+        );
+      });
+    });
+  });
+
+  // ============================================
+  // NEW TESTS: String Length Violations
+  // ============================================
+
+  describe("string length violations", () => {
+    it("should handle varchar length exceeded with specific limit", () => {
+      const error = new Error("value too long for type character varying(255)");
+      expect(mapErrorToUserMessage(error)).toBe(
+        "Input is too long. Maximum 255 characters allowed."
+      );
+    });
+
+    it("should handle varchar with different length limits", () => {
+      expect(mapErrorToUserMessage("value too long for type character varying(100)")).toBe(
+        "Input is too long. Maximum 100 characters allowed."
+      );
+      expect(mapErrorToUserMessage("value too long for type character varying(50)")).toBe(
+        "Input is too long. Maximum 50 characters allowed."
+      );
+      expect(mapErrorToUserMessage("value too long for type character varying(1000)")).toBe(
+        "Input is too long. Maximum 1000 characters allowed."
+      );
+    });
+
+    it("should handle string data truncation errors", () => {
+      const error = new Error("ERROR: string data right truncation");
+      expect(mapErrorToUserMessage(error)).toBe("Input is too long. Please shorten your text.");
+    });
+  });
+
+  // ============================================
+  // NEW TESTS: Data Type Mismatch Handling
+  // ============================================
+
+  describe("data type mismatch handling", () => {
+    it("should handle invalid integer input", () => {
+      const error = new Error('invalid input syntax for type integer: "abc"');
+      expect(mapErrorToUserMessage(error)).toBe("Please enter a valid whole number.");
+    });
+
+    it("should handle invalid bigint input", () => {
+      const error = new Error('invalid input syntax for type bigint: "not-a-number"');
+      expect(mapErrorToUserMessage(error)).toBe("Please enter a valid whole number.");
+    });
+
+    it("should handle invalid numeric/decimal input", () => {
+      const error = new Error('invalid input syntax for type numeric: "abc"');
+      expect(mapErrorToUserMessage(error)).toBe("Please enter a valid number.");
+    });
+
+    it("should handle invalid UUID input", () => {
+      const error = new Error('invalid input syntax for type uuid: "not-a-uuid"');
+      expect(mapErrorToUserMessage(error)).toBe("Invalid record identifier format.");
+    });
+
+    it("should handle invalid date input", () => {
+      const error = new Error('invalid input syntax for type date: "not-a-date"');
+      expect(mapErrorToUserMessage(error)).toBe("Please enter a valid date.");
+    });
+
+    it("should handle invalid timestamp input", () => {
+      const error = new Error('invalid input syntax for type timestamp: "invalid"');
+      expect(mapErrorToUserMessage(error)).toBe("Please enter a valid date and time.");
+    });
+
+    it("should handle invalid boolean input", () => {
+      const error = new Error('invalid input syntax for type boolean: "maybe"');
+      expect(mapErrorToUserMessage(error)).toBe("Please select Yes or No.");
+    });
+
+    it("should handle unknown type with generic message", () => {
+      const error = new Error('invalid input syntax for type customtype: "value"');
+      expect(mapErrorToUserMessage(error)).toBe("Invalid input format. Please check your entry.");
+    });
+  });
 });
