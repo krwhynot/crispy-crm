@@ -178,6 +178,7 @@ describe("useTeamActivities", () => {
       const mockActivities = [createMockActivity({ id: 1 }), createMockActivity({ id: 2 })];
 
       mockGetList.mockResolvedValueOnce({ data: mockActivities, total: 2 });
+      mockGetMany.mockResolvedValueOnce({ data: [createMockSales(42)] });
 
       const { result } = renderHook(() => useTeamActivities());
 
@@ -301,9 +302,11 @@ describe("useTeamActivities", () => {
         contact_id: 101,
         organization_id: 201,
         opportunity_id: 301,
+        created_by: 42,
       });
 
       mockGetList.mockResolvedValueOnce({ data: [mockActivity], total: 1 });
+      mockGetMany.mockResolvedValueOnce({ data: [createMockSales(42)] });
 
       const { result } = renderHook(() => useTeamActivities());
 
@@ -455,15 +458,21 @@ describe("useTeamActivities", () => {
 
     it("should handle sales user with null fields", async () => {
       const mockActivity = createMockActivity({
-        sales: {
-          id: 42,
-          first_name: null,
-          last_name: null,
-          avatar_url: null,
-        },
+        created_by: 42,
       });
 
       mockGetList.mockResolvedValueOnce({ data: [mockActivity], total: 1 });
+      mockGetMany.mockResolvedValueOnce({
+        data: [
+          {
+            id: 42,
+            first_name: null,
+            last_name: null,
+            email: null,
+            avatar_url: null,
+          },
+        ],
+      });
 
       const { result } = renderHook(() => useTeamActivities());
 
