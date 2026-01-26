@@ -507,6 +507,27 @@ export const updateOpportunitySchema = opportunityBaseSchema
       message: "Please specify the reason in notes when selecting 'Other'",
       path: ["close_reason_notes"],
     }
+  )
+  // ============================================================================
+  // STAGE PREREQUISITE VALIDATION (Task 3.5 - Critical Issue #15)
+  // ============================================================================
+  // Ensures opportunities have required fields before advancing to certain stages.
+  // This prevents workflow gaps where opportunities reach closed stages without
+  // proper documentation (e.g., close date).
+  // ============================================================================
+  .refine(
+    (data) => {
+      // Closed won/lost stages require actual_close_date
+      const closedStagesArray = [...CLOSED_STAGES] as string[];
+      if (data.stage && closedStagesArray.includes(data.stage)) {
+        return !!data.actual_close_date;
+      }
+      return true;
+    },
+    {
+      message: "Close date is required when closing an opportunity",
+      path: ["actual_close_date"],
+    }
   );
 
 /**
@@ -524,6 +545,7 @@ export const closeOpportunityBaseSchema = z.strictObject({
     .max(500, "Close reason notes must be 500 characters or less")
     .optional()
     .nullable(),
+  actual_close_date: z.coerce.date().optional().nullable(),
 });
 
 /**
@@ -574,6 +596,16 @@ export const closeOpportunitySchema = closeOpportunityBaseSchema
     {
       message: "Please specify the reason in notes when selecting 'Other'",
       path: ["close_reason_notes"],
+    }
+  )
+  .refine(
+    (data) => {
+      // Task 3.5: Close date required when closing opportunity
+      return !!data.actual_close_date;
+    },
+    {
+      message: "Close date is required when closing an opportunity",
+      path: ["actual_close_date"],
     }
   );
 
