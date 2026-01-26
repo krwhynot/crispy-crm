@@ -1,6 +1,6 @@
 {
   "status": "complete",
-  "generated_at": "2026-01-26T20:13:16.435Z",
+  "generated_at": "2026-01-26T21:46:03.048Z",
   "generator": "scripts/discover/extractors/hooks.ts",
   "source_globs": [
     "src/**/use*.ts",
@@ -8,10 +8,9 @@
     "src/**/*.ts",
     "src/**/*.tsx"
   ],
-  "checksum": "sha256:b0e86ae5ff327750",
+  "checksum": "sha256:412a32243112bfdc",
   "source_hashes": {
     "src/App.tsx": "acaa54f99f2d",
-    "src/atomic-crm/activities/ActivityCreate.tsx": "98682150ee67",
     "src/atomic-crm/activities/ActivityEdit.tsx": "ba97db9f3ada",
     "src/atomic-crm/activities/ActivityInputs.tsx": "85431cf76810",
     "src/atomic-crm/activities/ActivityList.tsx": "2a8d24e8856d",
@@ -27,8 +26,8 @@
     "src/atomic-crm/activities/components/LockedEntityDisplay.tsx": "1b1f72ac7cf6",
     "src/atomic-crm/activities/components/QuickLogFormSkeleton.tsx": "1917fbe1b3fc",
     "src/atomic-crm/activities/constants.ts": "27a872f77f3a",
-    "src/atomic-crm/activities/index.tsx": "c107c00f986f",
-    "src/atomic-crm/activities/resource.tsx": "c96b085a1c89",
+    "src/atomic-crm/activities/index.tsx": "4936cdc69917",
+    "src/atomic-crm/activities/resource.tsx": "ccebb5623d96",
     "src/atomic-crm/activities/slideOverTabs/ActivityDetailsTab.tsx": "e3e65d0d8a6f",
     "src/atomic-crm/activities/slideOverTabs/ActivityRelatedTab.tsx": "1d7dc4ceca8a",
     "src/atomic-crm/activities/slideOverTabs/index.ts": "308bda1250b9",
@@ -169,7 +168,7 @@
     "src/atomic-crm/dashboard/usePrincipalOpportunities.ts": "b032c33ba4dc",
     "src/atomic-crm/dashboard/usePrincipalPipeline.ts": "cdca2e2005df",
     "src/atomic-crm/dashboard/useTaskCount.ts": "a5093f4e9a9d",
-    "src/atomic-crm/dashboard/useTeamActivities.ts": "b2ceb1f34d9e",
+    "src/atomic-crm/dashboard/useTeamActivities.ts": "4d9005589ab3",
     "src/atomic-crm/filters/DateRangeFilterButton.tsx": "305b817e65cc",
     "src/atomic-crm/filters/FilterCategory.tsx": "4124dc907360",
     "src/atomic-crm/filters/FilterChip.tsx": "b02db72a7660",
@@ -528,7 +527,7 @@
     "src/atomic-crm/reports/tabs/WeeklyActivityTab.tsx": "79c5fbc16c2f",
     "src/atomic-crm/reports/types.ts": "f28725d85208",
     "src/atomic-crm/reports/utils/cleanupMigration.ts": "c42a369af9c6",
-    "src/atomic-crm/root/CRM.tsx": "2248004d937e",
+    "src/atomic-crm/root/CRM.tsx": "cedf5dd80196",
     "src/atomic-crm/root/ConfigurationContext.tsx": "48434de03a21",
     "src/atomic-crm/root/defaultConfiguration.ts": "71a254c015c7",
     "src/atomic-crm/root/i18nProvider.tsx": "45c9726b3358",
@@ -594,7 +593,7 @@
     "src/atomic-crm/tasks/Task.tsx": "52b4c7c8dfc0",
     "src/atomic-crm/tasks/TaskActionMenu.tsx": "9b30480d5986",
     "src/atomic-crm/tasks/TaskCompactForm.tsx": "39309698a061",
-    "src/atomic-crm/tasks/TaskCompletionDialog.tsx": "dd64190f5932",
+    "src/atomic-crm/tasks/TaskCompletionDialog.tsx": "c65b06310f49",
     "src/atomic-crm/tasks/TaskCreate.tsx": "5eab0e7fbc9a",
     "src/atomic-crm/tasks/TaskEdit.tsx": "1044b9be9f0a",
     "src/atomic-crm/tasks/TaskEmpty.tsx": "88b1188f090e",
@@ -622,7 +621,7 @@
     "src/atomic-crm/tutorial/TutorialLauncher.tsx": "601fab50a209",
     "src/atomic-crm/tutorial/TutorialProvider.tsx": "fb4328ad4014",
     "src/atomic-crm/tutorial/index.tsx": "9cc5217682dd",
-    "src/atomic-crm/tutorial/steps/activitySteps.ts": "19ca216b2196",
+    "src/atomic-crm/tutorial/steps/activitySteps.ts": "b7433d4ddccc",
     "src/atomic-crm/tutorial/steps/contactSteps.ts": "648eb88894f0",
     "src/atomic-crm/tutorial/steps/index.ts": "8ae18cceff97",
     "src/atomic-crm/tutorial/steps/noteSteps.ts": "9c7b0d9b4406",
@@ -1025,7 +1024,7 @@
       "name": "activity-log",
       "file": "activity-log.json",
       "item_count": 1,
-      "checksum": "sha256:37402e8148f59403",
+      "checksum": "sha256:a638641fdf4b24e4",
       "source_files": [
         "src/atomic-crm/activity-log/ActivityLogContext.tsx"
       ],
@@ -1037,7 +1036,7 @@
       "name": "components",
       "file": "components.json",
       "item_count": 4,
-      "checksum": "sha256:0852f8508a96b11f",
+      "checksum": "sha256:a7ed25ce1fefcaa2",
       "source_files": [
         "src/components/ra-wrappers/form/formProgressUtils.ts",
         "src/components/ra-wrappers/form/useFormShortcuts.ts",
@@ -1055,7 +1054,7 @@
       "name": "contacts",
       "file": "contacts.json",
       "item_count": 8,
-      "checksum": "sha256:92ee80ae6598d63a",
+      "checksum": "sha256:9d52bca8752f3552",
       "source_files": [
         "src/atomic-crm/contacts/useColumnMapping.ts",
         "src/atomic-crm/contacts/useContactImport.tsx",
@@ -1081,7 +1080,7 @@
       "name": "contexts",
       "file": "contexts.json",
       "item_count": 3,
-      "checksum": "sha256:6c4e94434362c42f",
+      "checksum": "sha256:47859eb8c6b29e23",
       "source_files": [
         "src/atomic-crm/contexts/useAppBranding.ts",
         "src/atomic-crm/contexts/useFormOptions.ts",
@@ -1097,7 +1096,7 @@
       "name": "dashboard",
       "file": "dashboard.json",
       "item_count": 13,
-      "checksum": "sha256:6d81871ae80df938",
+      "checksum": "sha256:9ab0f17adb26ec58",
       "source_files": [
         "src/atomic-crm/dashboard/useCurrentSale.ts",
         "src/atomic-crm/dashboard/useDebouncedSearch.ts",
@@ -1126,14 +1125,14 @@
         "src/atomic-crm/dashboard/usePrincipalOpportunities.ts": "b032c33ba4dc",
         "src/atomic-crm/dashboard/usePrincipalPipeline.ts": "cdca2e2005df",
         "src/atomic-crm/dashboard/useTaskCount.ts": "a5093f4e9a9d",
-        "src/atomic-crm/dashboard/useTeamActivities.ts": "b2ceb1f34d9e"
+        "src/atomic-crm/dashboard/useTeamActivities.ts": "4d9005589ab3"
       }
     },
     {
       "name": "filters",
       "file": "filters.json",
       "item_count": 8,
-      "checksum": "sha256:10d40d0afbc942a5",
+      "checksum": "sha256:28b8d6fb5cf16806",
       "source_files": [
         "src/atomic-crm/filters/hooks/useResourceNamesBase.ts",
         "src/atomic-crm/filters/useCategoryNames.ts",
@@ -1159,7 +1158,7 @@
       "name": "hooks",
       "file": "hooks.json",
       "item_count": 8,
-      "checksum": "sha256:62596c0ec90b2878",
+      "checksum": "sha256:8e0b8ed0020ddc58",
       "source_files": [
         "src/atomic-crm/hooks/useAppBarHeight.ts",
         "src/atomic-crm/hooks/useFilterCleanup.ts",
@@ -1185,7 +1184,7 @@
       "name": "opportunities",
       "file": "opportunities.json",
       "item_count": 15,
-      "checksum": "sha256:b2758ff878caca08",
+      "checksum": "sha256:c64a1711d3afb4ee",
       "source_files": [
         "src/atomic-crm/opportunities/kanban/hooks/useQuickAddOpportunityData.ts",
         "src/atomic-crm/opportunities/kanban/hooks/useQuickAddOpportunityForm.ts",
@@ -1225,7 +1224,7 @@
       "name": "organizations",
       "file": "organizations.json",
       "item_count": 7,
-      "checksum": "sha256:74ebb89a4636da76",
+      "checksum": "sha256:997d06d69bb80cce",
       "source_files": [
         "src/atomic-crm/organizations/useDuplicateOrgCheck.ts",
         "src/atomic-crm/organizations/useOrganizationImport.tsx",
@@ -1249,7 +1248,7 @@
       "name": "reports",
       "file": "reports.json",
       "item_count": 5,
-      "checksum": "sha256:039f9a74bc6e4ed9",
+      "checksum": "sha256:79f76da5ff4c6c84",
       "source_files": [
         "src/atomic-crm/reports/CampaignActivity/useCampaignActivityData.ts",
         "src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts",
@@ -1269,7 +1268,7 @@
       "name": "settings",
       "file": "settings.json",
       "item_count": 1,
-      "checksum": "sha256:83d7c6a5f8cf5f31",
+      "checksum": "sha256:bd7282b1cfc5c200",
       "source_files": [
         "src/atomic-crm/settings/useSalesUpdate.ts"
       ],
@@ -1281,7 +1280,7 @@
       "name": "shared",
       "file": "shared.json",
       "item_count": 23,
-      "checksum": "sha256:bfd77e8b2fddae8b",
+      "checksum": "sha256:cec0cece1426346c",
       "source_files": [
         "src/hooks/saved-queries.tsx",
         "src/hooks/simple-form-iterator-context.tsx",
@@ -1327,7 +1326,7 @@
       "name": "tasks",
       "file": "tasks.json",
       "item_count": 1,
-      "checksum": "sha256:67db0c5f3f69cd58",
+      "checksum": "sha256:722c4938976d6c31",
       "source_files": [
         "src/atomic-crm/tasks/hooks/useTaskCompletion.ts"
       ],
@@ -1339,7 +1338,7 @@
       "name": "tutorial",
       "file": "tutorial.json",
       "item_count": 2,
-      "checksum": "sha256:277aaaa59690a7d1",
+      "checksum": "sha256:a894f241f224dd80",
       "source_files": [
         "src/atomic-crm/tutorial/TutorialProvider.tsx",
         "src/atomic-crm/tutorial/useTutorialProgress.ts"
@@ -1353,7 +1352,7 @@
       "name": "utils",
       "file": "utils.json",
       "item_count": 1,
-      "checksum": "sha256:4a554092bd8b67f1",
+      "checksum": "sha256:bda3bf3529ffb5cf",
       "source_files": [
         "src/atomic-crm/utils/useNotifyWithRetry.tsx"
       ],

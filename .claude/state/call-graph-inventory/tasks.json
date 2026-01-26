@@ -1,6 +1,6 @@
 {
   "chunk_name": "tasks",
-  "generated_at": "2026-01-26T20:13:23.985Z",
+  "generated_at": "2026-01-26T21:46:11.516Z",
   "items": {
     "nodes": [
       {
@@ -40,19 +40,19 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/tasks/TaskCompletionDialog.tsx:25:mapTaskTypeToActivityType",
+        "id": "src/atomic-crm/tasks/TaskCompletionDialog.tsx:27:mapTaskTypeToActivityType",
         "name": "mapTaskTypeToActivityType",
         "file": "src/atomic-crm/tasks/TaskCompletionDialog.tsx",
-        "line": 25,
+        "line": 27,
         "nodeType": "arrow",
         "exported": false,
         "async": false
       },
       {
-        "id": "src/atomic-crm/tasks/TaskCompletionDialog.tsx:38:TaskCompletionDialog",
+        "id": "src/atomic-crm/tasks/TaskCompletionDialog.tsx:40:TaskCompletionDialog",
         "name": "TaskCompletionDialog",
         "file": "src/atomic-crm/tasks/TaskCompletionDialog.tsx",
-        "line": 38,
+        "line": 40,
         "nodeType": "component",
         "exported": true,
         "async": false
@@ -2067,299 +2067,272 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tasks/TaskCompletionDialog.tsx:38:TaskCompletionDialog",
+        "source": "src/atomic-crm/tasks/TaskCompletionDialog.tsx:40:TaskCompletionDialog",
         "target": "useNavigate",
         "targetName": "useNavigate",
         "edgeType": "hook",
-        "line": 44,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/tasks/TaskCompletionDialog.tsx:38:TaskCompletionDialog",
-        "target": "mapTaskTypeToActivityType",
-        "targetName": "mapTaskTypeToActivityType",
-        "edgeType": "call",
         "line": 46,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tasks/TaskCompletionDialog.tsx:38:TaskCompletionDialog",
-        "target": "append",
-        "targetName": "append",
-        "edgeType": "call",
-        "line": 55,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/tasks/TaskCompletionDialog.tsx:38:TaskCompletionDialog",
-        "target": "String",
-        "targetName": "String",
-        "edgeType": "call",
-        "line": 55,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/tasks/TaskCompletionDialog.tsx:38:TaskCompletionDialog",
-        "target": "append",
-        "targetName": "append",
-        "edgeType": "call",
-        "line": 57,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/tasks/TaskCompletionDialog.tsx:38:TaskCompletionDialog",
-        "target": "String",
-        "targetName": "String",
-        "edgeType": "call",
-        "line": 57,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/tasks/TaskCompletionDialog.tsx:38:TaskCompletionDialog",
-        "target": "onComplete",
-        "targetName": "onComplete",
-        "edgeType": "call",
-        "line": 60,
+        "source": "src/atomic-crm/tasks/TaskCompletionDialog.tsx:40:TaskCompletionDialog",
+        "target": "useState",
+        "targetName": "useState",
+        "edgeType": "hook",
+        "line": 47,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tasks/TaskCompletionDialog.tsx:38:TaskCompletionDialog",
+        "source": "src/atomic-crm/tasks/TaskCompletionDialog.tsx:40:TaskCompletionDialog",
+        "target": "mapTaskTypeToActivityType",
+        "targetName": "mapTaskTypeToActivityType",
+        "edgeType": "call",
+        "line": 49,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tasks/TaskCompletionDialog.tsx:40:TaskCompletionDialog",
+        "target": "onComplete",
+        "targetName": "onComplete",
+        "edgeType": "call",
+        "line": 52,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tasks/TaskCompletionDialog.tsx:40:TaskCompletionDialog",
+        "target": "setShowActivityDialog",
+        "targetName": "setShowActivityDialog",
+        "edgeType": "call",
+        "line": 53,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tasks/TaskCompletionDialog.tsx:40:TaskCompletionDialog",
+        "target": "append",
+        "targetName": "append",
+        "edgeType": "call",
+        "line": 63,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tasks/TaskCompletionDialog.tsx:40:TaskCompletionDialog",
+        "target": "String",
+        "targetName": "String",
+        "edgeType": "call",
+        "line": 63,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tasks/TaskCompletionDialog.tsx:40:TaskCompletionDialog",
+        "target": "append",
+        "targetName": "append",
+        "edgeType": "call",
+        "line": 65,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tasks/TaskCompletionDialog.tsx:40:TaskCompletionDialog",
+        "target": "String",
+        "targetName": "String",
+        "edgeType": "call",
+        "line": 65,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tasks/TaskCompletionDialog.tsx:40:TaskCompletionDialog",
+        "target": "onComplete",
+        "targetName": "onComplete",
+        "edgeType": "call",
+        "line": 68,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tasks/TaskCompletionDialog.tsx:40:TaskCompletionDialog",
         "target": "navigate",
         "targetName": "navigate",
         "edgeType": "call",
-        "line": 61,
+        "line": 69,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tasks/TaskCompletionDialog.tsx:38:TaskCompletionDialog",
+        "source": "src/atomic-crm/tasks/TaskCompletionDialog.tsx:40:TaskCompletionDialog",
         "target": "toString",
         "targetName": "toString",
         "edgeType": "call",
-        "line": 61,
+        "line": 69,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tasks/TaskCompletionDialog.tsx:38:TaskCompletionDialog",
-        "target": "append",
-        "targetName": "append",
-        "edgeType": "call",
-        "line": 71,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/tasks/TaskCompletionDialog.tsx:38:TaskCompletionDialog",
-        "target": "String",
-        "targetName": "String",
-        "edgeType": "call",
-        "line": 71,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/tasks/TaskCompletionDialog.tsx:38:TaskCompletionDialog",
-        "target": "append",
-        "targetName": "append",
-        "edgeType": "call",
-        "line": 73,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/tasks/TaskCompletionDialog.tsx:38:TaskCompletionDialog",
-        "target": "String",
-        "targetName": "String",
-        "edgeType": "call",
-        "line": 73,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/tasks/TaskCompletionDialog.tsx:38:TaskCompletionDialog",
+        "source": "src/atomic-crm/tasks/TaskCompletionDialog.tsx:40:TaskCompletionDialog",
         "target": "onComplete",
         "targetName": "onComplete",
         "edgeType": "call",
-        "line": 76,
+        "line": 73,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tasks/TaskCompletionDialog.tsx:38:TaskCompletionDialog",
-        "target": "navigate",
-        "targetName": "navigate",
-        "edgeType": "call",
-        "line": 77,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/tasks/TaskCompletionDialog.tsx:38:TaskCompletionDialog",
-        "target": "toString",
-        "targetName": "toString",
-        "edgeType": "call",
-        "line": 77,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/tasks/TaskCompletionDialog.tsx:38:TaskCompletionDialog",
-        "target": "onComplete",
-        "targetName": "onComplete",
-        "edgeType": "call",
-        "line": 81,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/tasks/TaskCompletionDialog.tsx:38:TaskCompletionDialog",
+        "source": "src/atomic-crm/tasks/TaskCompletionDialog.tsx:40:TaskCompletionDialog",
         "target": "Dialog",
         "targetName": "Dialog",
         "edgeType": "render",
-        "line": 85,
+        "line": 83,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tasks/TaskCompletionDialog.tsx:38:TaskCompletionDialog",
+        "source": "src/atomic-crm/tasks/TaskCompletionDialog.tsx:40:TaskCompletionDialog",
         "target": "onClose",
         "targetName": "onClose",
         "edgeType": "callback",
-        "line": 85,
+        "line": 83,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tasks/TaskCompletionDialog.tsx:38:TaskCompletionDialog",
+        "source": "src/atomic-crm/tasks/TaskCompletionDialog.tsx:40:TaskCompletionDialog",
         "target": "DialogContent",
         "targetName": "DialogContent",
         "edgeType": "render",
-        "line": 86,
+        "line": 84,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tasks/TaskCompletionDialog.tsx:38:TaskCompletionDialog",
+        "source": "src/atomic-crm/tasks/TaskCompletionDialog.tsx:40:TaskCompletionDialog",
         "target": "DialogHeader",
         "targetName": "DialogHeader",
         "edgeType": "render",
-        "line": 90,
+        "line": 88,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tasks/TaskCompletionDialog.tsx:38:TaskCompletionDialog",
+        "source": "src/atomic-crm/tasks/TaskCompletionDialog.tsx:40:TaskCompletionDialog",
         "target": "DialogTitle",
         "targetName": "DialogTitle",
-        "edgeType": "render",
-        "line": 95,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/tasks/TaskCompletionDialog.tsx:38:TaskCompletionDialog",
-        "target": "DialogDescription",
-        "targetName": "DialogDescription",
-        "edgeType": "render",
-        "line": 98,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/tasks/TaskCompletionDialog.tsx:38:TaskCompletionDialog",
-        "target": "AdminButton",
-        "targetName": "AdminButton",
-        "edgeType": "render",
-        "line": 106,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/tasks/TaskCompletionDialog.tsx:38:TaskCompletionDialog",
-        "target": "handleLogActivity",
-        "targetName": "handleLogActivity",
-        "edgeType": "callback",
-        "line": 107,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/tasks/TaskCompletionDialog.tsx:38:TaskCompletionDialog",
-        "target": "AdminButton",
-        "targetName": "AdminButton",
-        "edgeType": "render",
-        "line": 118,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/tasks/TaskCompletionDialog.tsx:38:TaskCompletionDialog",
-        "target": "handleCreateFollowUp",
-        "targetName": "handleCreateFollowUp",
-        "edgeType": "callback",
-        "line": 119,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/tasks/TaskCompletionDialog.tsx:38:TaskCompletionDialog",
-        "target": "AdminButton",
-        "targetName": "AdminButton",
-        "edgeType": "render",
-        "line": 130,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/tasks/TaskCompletionDialog.tsx:38:TaskCompletionDialog",
-        "target": "handleJustComplete",
-        "targetName": "handleJustComplete",
-        "edgeType": "callback",
-        "line": 131,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/tasks/TaskCompletionDialog.tsx:38:TaskCompletionDialog",
-        "target": "CheckCircle",
-        "targetName": "CheckCircle",
         "edgeType": "render",
         "line": 93,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tasks/TaskCompletionDialog.tsx:38:TaskCompletionDialog",
-        "target": "FileText",
-        "targetName": "FileText",
+        "source": "src/atomic-crm/tasks/TaskCompletionDialog.tsx:40:TaskCompletionDialog",
+        "target": "DialogDescription",
+        "targetName": "DialogDescription",
         "edgeType": "render",
-        "line": 111,
+        "line": 96,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tasks/TaskCompletionDialog.tsx:38:TaskCompletionDialog",
-        "target": "CalendarPlus",
-        "targetName": "CalendarPlus",
+        "source": "src/atomic-crm/tasks/TaskCompletionDialog.tsx:40:TaskCompletionDialog",
+        "target": "AdminButton",
+        "targetName": "AdminButton",
         "edgeType": "render",
-        "line": 123,
+        "line": 104,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tasks/TaskCompletionDialog.tsx:38:TaskCompletionDialog",
+        "source": "src/atomic-crm/tasks/TaskCompletionDialog.tsx:40:TaskCompletionDialog",
+        "target": "handleLogActivity",
+        "targetName": "handleLogActivity",
+        "edgeType": "callback",
+        "line": 105,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tasks/TaskCompletionDialog.tsx:40:TaskCompletionDialog",
+        "target": "AdminButton",
+        "targetName": "AdminButton",
+        "edgeType": "render",
+        "line": 116,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tasks/TaskCompletionDialog.tsx:40:TaskCompletionDialog",
+        "target": "handleCreateFollowUp",
+        "targetName": "handleCreateFollowUp",
+        "edgeType": "callback",
+        "line": 117,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tasks/TaskCompletionDialog.tsx:40:TaskCompletionDialog",
+        "target": "AdminButton",
+        "targetName": "AdminButton",
+        "edgeType": "render",
+        "line": 128,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tasks/TaskCompletionDialog.tsx:40:TaskCompletionDialog",
+        "target": "handleJustComplete",
+        "targetName": "handleJustComplete",
+        "edgeType": "callback",
+        "line": 129,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tasks/TaskCompletionDialog.tsx:40:TaskCompletionDialog",
         "target": "CheckCircle",
         "targetName": "CheckCircle",
         "edgeType": "render",
-        "line": 135,
+        "line": 91,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tasks/TaskCompletionDialog.tsx:40:TaskCompletionDialog",
+        "target": "FileText",
+        "targetName": "FileText",
+        "edgeType": "render",
+        "line": 109,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tasks/TaskCompletionDialog.tsx:40:TaskCompletionDialog",
+        "target": "CalendarPlus",
+        "targetName": "CalendarPlus",
+        "edgeType": "render",
+        "line": 121,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tasks/TaskCompletionDialog.tsx:40:TaskCompletionDialog",
+        "target": "CheckCircle",
+        "targetName": "CheckCircle",
+        "edgeType": "render",
+        "line": 133,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tasks/TaskCompletionDialog.tsx:40:TaskCompletionDialog",
+        "target": "QuickLogActivityDialog",
+        "targetName": "QuickLogActivityDialog",
+        "edgeType": "render",
+        "line": 143,
         "conditional": false,
         "inLoop": false
       },

@@ -1,6 +1,6 @@
 {
   "status": "complete",
-  "generated_at": "2026-01-26T20:13:18.210Z",
+  "generated_at": "2026-01-26T21:46:05.266Z",
   "generator": "scripts/discover/extractors/forms.ts",
   "source_globs": [
     "src/atomic-crm/**/*Create*.tsx",
@@ -8,9 +8,8 @@
     "src/atomic-crm/**/*Form*.tsx",
     "src/atomic-crm/**/*Inputs*.tsx"
   ],
-  "checksum": "sha256:839f4fc0f4e25dc4",
+  "checksum": "sha256:2cad47da56ac1b31",
   "source_hashes": {
-    "src/atomic-crm/activities/ActivityCreate.tsx": "98682150ee67",
     "src/atomic-crm/activities/ActivityEdit.tsx": "ba97db9f3ada",
     "src/atomic-crm/activities/ActivityInputs.tsx": "85431cf76810",
     "src/atomic-crm/activities/components/QuickLogFormSkeleton.tsx": "1917fbe1b3fc",
@@ -72,41 +71,15 @@
     "src/atomic-crm/tutorial/OpportunityCreateFormTutorial.tsx": "2cd05674ea84"
   },
   "summary": {
-    "total_items": 48,
-    "react_admin_forms": 34,
+    "total_items": 47,
+    "react_admin_forms": 33,
     "react19_action_forms": 0,
     "react_hook_form_direct": 5,
     "with_zod_resolver": 9,
     "with_tabs": 0,
-    "with_progress": 9
+    "with_progress": 8
   },
   "forms": [
-    {
-      "componentName": "ActivityCreate",
-      "file": "src/atomic-crm/activities/ActivityCreate.tsx",
-      "line": 13,
-      "formType": "react-admin-simple",
-      "formPatterns": {
-        "primary": "Form",
-        "secondary": [
-          "CreateBase"
-        ]
-      },
-      "inputComponents": [],
-      "hasZodResolver": false,
-      "features": {
-        "hasTabs": false,
-        "hasWizard": false,
-        "hasProgress": true
-      },
-      "componentChain": [
-        "ActivityCreate"
-      ],
-      "inputComponentsDeep": [],
-      "formContextWrappers": [
-        "ActivityCreate"
-      ]
-    },
     {
       "componentName": "ActivityEdit",
       "file": "src/atomic-crm/activities/ActivityEdit.tsx",

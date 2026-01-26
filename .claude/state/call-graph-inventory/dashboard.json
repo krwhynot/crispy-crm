@@ -1,6 +1,6 @@
 {
   "chunk_name": "dashboard",
-  "generated_at": "2026-01-26T20:13:23.880Z",
+  "generated_at": "2026-01-26T21:46:11.394Z",
   "items": {
     "nodes": [
       {
@@ -607,10 +607,10 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/dashboard/useTeamActivities.ts:57:useTeamActivities",
+        "id": "src/atomic-crm/dashboard/useTeamActivities.ts:61:useTeamActivities",
         "name": "useTeamActivities",
         "file": "src/atomic-crm/dashboard/useTeamActivities.ts",
-        "line": 57,
+        "line": 61,
         "nodeType": "hook",
         "exported": true,
         "async": false
@@ -11175,38 +11175,182 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/useTeamActivities.ts:57:useTeamActivities",
+        "source": "src/atomic-crm/dashboard/useTeamActivities.ts:61:useTeamActivities",
         "target": "useGetList",
         "targetName": "useGetList",
         "edgeType": "hook",
-        "line": 65,
+        "line": 68,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/useTeamActivities.ts:57:useTeamActivities",
-        "target": "String",
-        "targetName": "String",
+        "source": "src/atomic-crm/dashboard/useTeamActivities.ts:61:useTeamActivities",
+        "target": "useMemo",
+        "targetName": "useMemo",
+        "edgeType": "hook",
+        "line": 85,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/useTeamActivities.ts:61:useTeamActivities",
+        "target": "filter",
+        "targetName": "filter",
         "edgeType": "call",
-        "line": 103,
+        "line": 86,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/useTeamActivities.ts:61:useTeamActivities",
+        "target": "map",
+        "targetName": "map",
+        "edgeType": "call",
+        "line": 86,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/useTeamActivities.ts:61:useTeamActivities",
+        "target": "stringify",
+        "targetName": "stringify",
+        "edgeType": "call",
+        "line": 89,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/useTeamActivities.ts:61:useTeamActivities",
+        "target": "map",
+        "targetName": "map",
+        "edgeType": "call",
+        "line": 89,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/useTeamActivities.ts:61:useTeamActivities",
+        "target": "useGetMany",
+        "targetName": "useGetMany",
+        "edgeType": "hook",
+        "line": 93,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/useTeamActivities.ts:61:useTeamActivities",
+        "target": "useMemo",
+        "targetName": "useMemo",
+        "edgeType": "hook",
+        "line": 100,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/useTeamActivities.ts:61:useTeamActivities",
+        "target": "map",
+        "targetName": "map",
+        "edgeType": "call",
+        "line": 104,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/useTeamActivities.ts:61:useTeamActivities",
+        "target": "log",
+        "targetName": "log",
+        "edgeType": "call",
+        "line": 107,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/useTeamActivities.ts:61:useTeamActivities",
+        "target": "map",
+        "targetName": "map",
+        "edgeType": "call",
+        "line": 110,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/useTeamActivities.ts:61:useTeamActivities",
+        "target": "trim",
+        "targetName": "trim",
+        "edgeType": "call",
+        "line": 112,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/useTeamActivities.ts:61:useTeamActivities",
+        "target": "map",
+        "targetName": "map",
+        "edgeType": "call",
+        "line": 121,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/useTeamActivities.ts:61:useTeamActivities",
+        "target": "get",
+        "targetName": "get",
+        "edgeType": "call",
+        "line": 123,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/useTeamActivities.ts:57:useTeamActivities",
+        "source": "src/atomic-crm/dashboard/useTeamActivities.ts:61:useTeamActivities",
+        "target": "push",
+        "targetName": "push",
+        "edgeType": "call",
+        "line": 127,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/useTeamActivities.ts:61:useTeamActivities",
+        "target": "warn",
+        "targetName": "warn",
+        "edgeType": "call",
+        "line": 146,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/useTeamActivities.ts:61:useTeamActivities",
+        "target": "log",
+        "targetName": "log",
+        "edgeType": "call",
+        "line": 152,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/useTeamActivities.ts:61:useTeamActivities",
+        "target": "String",
+        "targetName": "String",
+        "edgeType": "call",
+        "line": 159,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/useTeamActivities.ts:61:useTeamActivities",
         "target": "useCallback",
         "targetName": "useCallback",
         "edgeType": "hook",
-        "line": 106,
+        "line": 162,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/useTeamActivities.ts:57:useTeamActivities",
+        "source": "src/atomic-crm/dashboard/useTeamActivities.ts:61:useTeamActivities",
         "target": "refetch",
         "targetName": "refetch",
         "edgeType": "call",
-        "line": 107,
+        "line": 163,
         "conditional": false,
         "inLoop": false
       }

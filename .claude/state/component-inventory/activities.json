@@ -1,38 +1,8 @@
 {
   "chunk_name": "activities",
-  "generated_at": "2026-01-26T20:12:54.632Z",
-  "item_count": 36,
+  "generated_at": "2026-01-26T21:45:48.451Z",
+  "item_count": 32,
   "items": [
-    {
-      "name": "ActivityCreate",
-      "file": "src/atomic-crm/activities/ActivityCreate.tsx",
-      "line": 13,
-      "type": "presentational",
-      "hooks": [
-        "useGetIdentity",
-        "useLocation",
-        "useMemo"
-      ],
-      "imports": [
-        "../validation/activities",
-        "./ActivitySinglePage",
-        "@/atomic-crm/components",
-        "@/components/ra-wrappers/FormErrorSummary",
-        "@/components/ra-wrappers/form",
-        "@/components/ui/card",
-        "@/hooks/useUnsavedChangesWarning",
-        "ra-core",
-        "react",
-        "react-hook-form",
-        "react-router-dom"
-      ],
-      "isDefaultExport": true,
-      "childComponents": [
-        "ActivitySinglePage"
-      ],
-      "contextDependencies": [],
-      "componentRole": "wrapper"
-    },
     {
       "name": "ActivityEdit",
       "file": "src/atomic-crm/activities/ActivityEdit.tsx",
@@ -479,22 +449,6 @@
       "componentRole": "entry"
     },
     {
-      "name": "ActivityCreate",
-      "file": "src/atomic-crm/activities/index.tsx",
-      "line": 13,
-      "type": "presentational",
-      "hooks": [
-        "useGetIdentity",
-        "useLocation",
-        "useMemo"
-      ],
-      "imports": [],
-      "isDefaultExport": false,
-      "childComponents": [],
-      "contextDependencies": [],
-      "componentRole": "entry"
-    },
-    {
       "name": "ActivityEdit",
       "file": "src/atomic-crm/activities/index.tsx",
       "line": 16,
@@ -621,19 +575,7 @@
     {
       "name": "ActivityListView",
       "file": "src/atomic-crm/activities/index.tsx",
-      "line": 24,
-      "type": "presentational",
-      "hooks": [],
-      "imports": [],
-      "isDefaultExport": false,
-      "childComponents": [],
-      "contextDependencies": [],
-      "componentRole": "entry"
-    },
-    {
-      "name": "ActivityCreateView",
-      "file": "src/atomic-crm/activities/index.tsx",
-      "line": 32,
+      "line": 23,
       "type": "presentational",
       "hooks": [],
       "imports": [],
@@ -645,7 +587,7 @@
     {
       "name": "ActivityEditView",
       "file": "src/atomic-crm/activities/index.tsx",
-      "line": 40,
+      "line": 31,
       "type": "presentational",
       "hooks": [],
       "imports": [],
@@ -657,7 +599,7 @@
     {
       "name": "ActivityShowView",
       "file": "src/atomic-crm/activities/index.tsx",
-      "line": 48,
+      "line": 39,
       "type": "presentational",
       "hooks": [],
       "imports": [],
@@ -669,27 +611,7 @@
     {
       "name": "ActivityListView",
       "file": "src/atomic-crm/activities/resource.tsx",
-      "line": 24,
-      "type": "presentational",
-      "hooks": [],
-      "imports": [
-        "../types",
-        "@/components/ResourceErrorBoundary",
-        "@/components/ra-wrappers/loading",
-        "@/lib/date-utils",
-        "react"
-      ],
-      "isDefaultExport": false,
-      "childComponents": [
-        "ActivityRecord"
-      ],
-      "contextDependencies": [],
-      "componentRole": "wrapper"
-    },
-    {
-      "name": "ActivityCreateView",
-      "file": "src/atomic-crm/activities/resource.tsx",
-      "line": 32,
+      "line": 23,
       "type": "presentational",
       "hooks": [],
       "imports": [
@@ -709,7 +631,7 @@
     {
       "name": "ActivityEditView",
       "file": "src/atomic-crm/activities/resource.tsx",
-      "line": 40,
+      "line": 31,
       "type": "presentational",
       "hooks": [],
       "imports": [
@@ -729,7 +651,7 @@
     {
       "name": "ActivityShowView",
       "file": "src/atomic-crm/activities/resource.tsx",
-      "line": 48,
+      "line": 39,
       "type": "presentational",
       "hooks": [],
       "imports": [

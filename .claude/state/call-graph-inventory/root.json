@@ -1,6 +1,6 @@
 {
   "chunk_name": "root",
-  "generated_at": "2026-01-26T20:13:23.975Z",
+  "generated_at": "2026-01-26T21:46:11.497Z",
   "items": {
     "nodes": [
       {
@@ -547,8 +547,8 @@
       },
       {
         "source": "src/atomic-crm/root/CRM.tsx:161:CRM",
-        "target": "Resource",
-        "targetName": "Resource",
+        "target": "Route",
+        "targetName": "Route",
         "edgeType": "render",
         "line": 252,
         "conditional": false,
@@ -556,10 +556,10 @@
       },
       {
         "source": "src/atomic-crm/root/CRM.tsx:161:CRM",
-        "target": "Resource",
-        "targetName": "Resource",
+        "target": "Navigate",
+        "targetName": "Navigate",
         "edgeType": "render",
-        "line": 253,
+        "line": 252,
         "conditional": false,
         "inLoop": false
       },
@@ -668,6 +668,24 @@
         "targetName": "Resource",
         "edgeType": "render",
         "line": 265,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/root/CRM.tsx:161:CRM",
+        "target": "Resource",
+        "targetName": "Resource",
+        "edgeType": "render",
+        "line": 266,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/root/CRM.tsx:161:CRM",
+        "target": "Resource",
+        "targetName": "Resource",
+        "edgeType": "render",
+        "line": 267,
         "conditional": false,
         "inLoop": false
       },

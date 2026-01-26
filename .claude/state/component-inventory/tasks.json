@@ -1,6 +1,6 @@
 {
   "chunk_name": "tasks",
-  "generated_at": "2026-01-26T20:12:54.690Z",
+  "generated_at": "2026-01-26T21:45:48.496Z",
   "item_count": 28,
   "items": [
     {
@@ -141,15 +141,18 @@
     {
       "name": "TaskCompletionDialog",
       "file": "src/atomic-crm/tasks/TaskCompletionDialog.tsx",
-      "line": 38,
+      "line": 40,
       "type": "presentational",
       "hooks": [
-        "useNavigate"
+        "useNavigate",
+        "useState"
       ],
       "imports": [
+        "@/atomic-crm/activities",
         "@/components/admin/AdminButton",
         "@/components/ui/dialog",
         "lucide-react",
+        "react",
         "react-router-dom"
       ],
       "isDefaultExport": false,
@@ -160,15 +163,18 @@
     {
       "name": "TaskCompletionDialog",
       "file": "src/atomic-crm/tasks/TaskCompletionDialog.tsx",
-      "line": 38,
+      "line": 40,
       "type": "presentational",
       "hooks": [
-        "useNavigate"
+        "useNavigate",
+        "useState"
       ],
       "imports": [
+        "@/atomic-crm/activities",
         "@/components/admin/AdminButton",
         "@/components/ui/dialog",
         "lucide-react",
+        "react",
         "react-router-dom"
       ],
       "isDefaultExport": true,
