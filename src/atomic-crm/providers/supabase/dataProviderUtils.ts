@@ -340,7 +340,8 @@ export function getDatabaseResource(
       resource === "organizations" ||
       resource === "contacts" ||
       resource === "opportunities" ||
-      resource === "products"
+      resource === "products" ||
+      resource === "activities"
     ) {
       return summaryResource;
     }

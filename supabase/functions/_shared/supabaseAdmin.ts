@@ -32,6 +32,12 @@ export function getSupabaseAdmin(): SupabaseClient {
 }
 
 // Legacy export for backward compatibility - now uses lazy init
+// Pattern: Lazy initialization proxy
+// The `{} as SupabaseClient` cast is acceptable here because:
+// 1. Proxy intercepts ALL property access via get() trap
+// 2. Actual client comes from getSupabaseAdmin() (properly typed)
+// 3. Empty object is never used - just a Proxy target placeholder
+// 4. Type safety enforced through get() trap's return value
 export const supabaseAdmin: SupabaseClient = new Proxy({} as SupabaseClient, {
   get(_target, prop: string | symbol) {
     const client = getSupabaseAdmin();
