@@ -1,6 +1,6 @@
 {
   "chunk_name": "components",
-  "generated_at": "2026-01-27T19:23:53.613Z",
+  "generated_at": "2026-01-27T20:11:38.532Z",
   "item_count": 25,
   "items": [
     {
@@ -76,11 +76,12 @@
     {
       "name": "meta",
       "file": "src/atomic-crm/components/SampleStatusBadge.stories.tsx",
-      "line": 25,
+      "line": 26,
       "type": "presentational",
       "hooks": [],
       "imports": [
         "./SampleStatusBadge",
+        "@storybook/addon-actions",
         "@storybook/react",
         "react-admin"
       ],
@@ -97,11 +98,12 @@
     {
       "name": "Sent",
       "file": "src/atomic-crm/components/SampleStatusBadge.stories.tsx",
-      "line": 106,
+      "line": 107,
       "type": "presentational",
       "hooks": [],
       "imports": [
         "./SampleStatusBadge",
+        "@storybook/addon-actions",
         "@storybook/react",
         "react-admin"
       ],
@@ -118,11 +120,12 @@
     {
       "name": "Received",
       "file": "src/atomic-crm/components/SampleStatusBadge.stories.tsx",
-      "line": 120,
+      "line": 121,
       "type": "presentational",
       "hooks": [],
       "imports": [
         "./SampleStatusBadge",
+        "@storybook/addon-actions",
         "@storybook/react",
         "react-admin"
       ],
@@ -139,11 +142,12 @@
     {
       "name": "FeedbackPending",
       "file": "src/atomic-crm/components/SampleStatusBadge.stories.tsx",
-      "line": 133,
+      "line": 134,
       "type": "presentational",
       "hooks": [],
       "imports": [
         "./SampleStatusBadge",
+        "@storybook/addon-actions",
         "@storybook/react",
         "react-admin"
       ],
@@ -160,11 +164,12 @@
     {
       "name": "FeedbackReceived",
       "file": "src/atomic-crm/components/SampleStatusBadge.stories.tsx",
-      "line": 146,
+      "line": 147,
       "type": "presentational",
       "hooks": [],
       "imports": [
         "./SampleStatusBadge",
+        "@storybook/addon-actions",
         "@storybook/react",
         "react-admin"
       ],
@@ -181,11 +186,12 @@
     {
       "name": "AllStatuses",
       "file": "src/atomic-crm/components/SampleStatusBadge.stories.tsx",
-      "line": 163,
+      "line": 164,
       "type": "presentational",
       "hooks": [],
       "imports": [
         "./SampleStatusBadge",
+        "@storybook/addon-actions",
         "@storybook/react",
         "react-admin"
       ],
@@ -202,11 +208,12 @@
     {
       "name": "CompactMode",
       "file": "src/atomic-crm/components/SampleStatusBadge.stories.tsx",
-      "line": 184,
+      "line": 185,
       "type": "presentational",
       "hooks": [],
       "imports": [
         "./SampleStatusBadge",
+        "@storybook/addon-actions",
         "@storybook/react",
         "react-admin"
       ],
@@ -223,11 +230,12 @@
     {
       "name": "Interactive",
       "file": "src/atomic-crm/components/SampleStatusBadge.stories.tsx",
-      "line": 205,
+      "line": 206,
       "type": "presentational",
       "hooks": [],
       "imports": [
         "./SampleStatusBadge",
+        "@storybook/addon-actions",
         "@storybook/react",
         "react-admin"
       ],
@@ -244,11 +252,12 @@
     {
       "name": "InteractiveAtStart",
       "file": "src/atomic-crm/components/SampleStatusBadge.stories.tsx",
-      "line": 222,
+      "line": 223,
       "type": "presentational",
       "hooks": [],
       "imports": [
         "./SampleStatusBadge",
+        "@storybook/addon-actions",
         "@storybook/react",
         "react-admin"
       ],
@@ -265,11 +274,12 @@
     {
       "name": "InteractiveAtEnd",
       "file": "src/atomic-crm/components/SampleStatusBadge.stories.tsx",
-      "line": 239,
+      "line": 240,
       "type": "presentational",
       "hooks": [],
       "imports": [
         "./SampleStatusBadge",
+        "@storybook/addon-actions",
         "@storybook/react",
         "react-admin"
       ],
@@ -286,11 +296,12 @@
     {
       "name": "StepperOnly",
       "file": "src/atomic-crm/components/SampleStatusBadge.stories.tsx",
-      "line": 259,
+      "line": 260,
       "type": "presentational",
       "hooks": [],
       "imports": [
         "./SampleStatusBadge",
+        "@storybook/addon-actions",
         "@storybook/react",
         "react-admin"
       ],
@@ -307,11 +318,12 @@
     {
       "name": "InActivityList",
       "file": "src/atomic-crm/components/SampleStatusBadge.stories.tsx",
-      "line": 332,
+      "line": 333,
       "type": "presentational",
       "hooks": [],
       "imports": [
         "./SampleStatusBadge",
+        "@storybook/addon-actions",
         "@storybook/react",
         "react-admin"
       ],
@@ -328,11 +340,12 @@
     {
       "name": "WithCallback",
       "file": "src/atomic-crm/components/SampleStatusBadge.stories.tsx",
-      "line": 383,
+      "line": 384,
       "type": "presentational",
       "hooks": [],
       "imports": [
         "./SampleStatusBadge",
+        "@storybook/addon-actions",
         "@storybook/react",
         "react-admin"
       ],

@@ -42,7 +42,7 @@ import type { WizardActions } from "./actions/importWizardActions";
  *
  * // Access state based on step
  * if (state.step === "preview") {
- *   console.log(state.previewData.validCount);
+ *   logger.debug('Preview data loaded', { validCount: state.previewData.validCount });
  * }
  *
  * // Use derived flags
