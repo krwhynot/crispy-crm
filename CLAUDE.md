@@ -32,6 +32,33 @@
 **MCP Tools:** `search_code` (hybrid), `go_to_definition`, `find_references`.
 **CLI Prefs:** `just` (runner), `rg --type ts` (search), `fd -e tsx` (find), `bat` (read), `gh --json` (git).
 
+## 🔄 State Management & Discovery
+
+**Rebuild Triggers:** After major refactoring, deleting files, or if search/intelligence seems stale.
+
+| State Source | Purpose | Rebuild Command | Frequency |
+|-------------|---------|-----------------|-----------|
+| search.db (77MB) | Full-text search | `just discover` | Weekly or after bulk changes |
+| index.scip (27MB) | LSP/SCIP code intel | `just discover-scip` | After TS changes |
+| vectors.lance (7.6MB) | Semantic search | `just discover` | Weekly |
+| *-inventory/*.json | Component metadata | `just discover` | After file creation/deletion |
+
+**Quick Check:** `ls -lh .claude/state/search.db` - if older than 7 days, consider rebuild.
+**MCP Tools:** Verify connectivity with `just mcp-test` after server restarts.
+
+**Architecture Note (Best Practice):**
+Per official Claude Code guidance, large state databases (search.db, vectors.lance) should ideally be stored OUTSIDE the `.claude/` folder in gitignored project-local directories like `.indexes/` or `.vscode/.search/`. This separates configuration (tracked in `.claude/settings.json`) from state (gitignored elsewhere). Current setup works but doesn't follow recommended pattern. Consider migration in future if state management becomes complex.
+
+**State Drift Prevention:**
+- No PostToolUse hooks currently update these sources incrementally
+- Manual rebuild required after significant codebase changes
+- Watch for stale search results as a signal to rebuild
+
+**Orphan Cleanup:** If deletion hook flags `.prune-needed`:
+- Dry run: `./.claude/hooks/prune-stale-inventory.sh ".claude/state/component-inventory" true`
+- Execute: `./.claude/hooks/prune-stale-inventory.sh ".claude/state/component-inventory" false`
+- Archived to: `.claude/state/archive/YYYYMMDD-HHMMSS/`
+
 ## 🏗 Architecture & Structure
 **Critical:** All DB access via `src/atomic-crm/providers/supabase/unifiedDataProvider.ts`.
 - **Rules:** NO direct Supabase imports. Zod schemas at API boundary (provider), NOT forms.
