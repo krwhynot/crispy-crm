@@ -10,11 +10,11 @@
 
 | Priority | Open Items | Resolved |
 |----------|------------|----------|
-| P0 - Critical | 1 | 12 |
+| P0 - Critical | 0 | 13 |
 | P1 - High | 2 | 37 |
 | P2 - Medium | 16 | 40 |
 | P3 - Low | 9 | 32 |
-| **Total** | **28** | **121** |
+| **Total** | **27** | **122** |
 
 ---
 
@@ -22,12 +22,12 @@
 
 | ID | Category | Issue | File(s) | Status |
 |----|----------|-------|---------|--------|
-| UI-04 | Focus Mgmt | ColumnsButton manual portal bypass breaks focus management. Portal renders content outside React's tree, breaking Radix focus trap. | `src/components/admin/columns-button.tsx:85-87,110-128,138` | Open |
+| UI-04 | Focus Mgmt | ColumnsButton Tooltip portal broke Dialog focus trap on mobile - RESOLVED by removing Tooltip wrapper, using aria-label for accessibility | `src/components/ra-wrappers/columns-button.tsx:80-95` | Resolved |
 
-**Recommended Fix:** Refactor ColumnsSelector to be a direct child of PopoverContent instead of using portal pattern. Use React context or composition to pass data rather than DOM insertion.
+**Resolution:** Removed Tooltip wrapper that created portal nesting issue. Mobile button now uses `aria-label` for equivalent accessibility without portal complications. Focus trap works correctly for keyboard/screen reader users.
 
 ### P0 Dependencies
-- **UI-04**: Blocks nothing | Blocked by: None | Related: Focus management patterns
+- **UI-04**: Blocks nothing | Blocked by: None | Related: Focus management patterns (RESOLVED)
 
 ---
 

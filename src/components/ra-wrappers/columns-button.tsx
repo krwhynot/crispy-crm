@@ -29,7 +29,6 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { FieldToggle } from "@/components/ra-wrappers/field-toggle";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import {
   Dialog,
   DialogContent,
@@ -77,21 +76,22 @@ export const ColumnsButton = (props: ColumnsButtonProps) => {
     <span className={cn("inline-flex", className)}>
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
-          {isMobile ? (
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button variant="ghost" size="icon" aria-label={title} {...rest}>
-                  <Columns className="size-4" />
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent>{title}</TooltipContent>
-            </Tooltip>
-          ) : (
-            <Button variant="outline" className="cursor-pointer" {...rest}>
-              <Columns />
-              {title}
-            </Button>
-          )}
+          <Button
+            variant={isMobile ? "ghost" : "outline"}
+            size={isMobile ? "icon" : "default"}
+            aria-label={isMobile ? title : undefined}
+            className={isMobile ? undefined : "cursor-pointer"}
+            {...rest}
+          >
+            {isMobile ? (
+              <Columns className="size-4" />
+            ) : (
+              <>
+                <Columns />
+                {title}
+              </>
+            )}
+          </Button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
