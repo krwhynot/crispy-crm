@@ -81,60 +81,10 @@ vi.mock("react-admin", async () => {
         refetch: fetchData,
       };
     },
-    useGetMany: (resource: string, params: { ids: number[] }, options?: { enabled?: boolean }) => {
-      const [state, setState] = React.useState<{
-        data: any[];
-        isLoading: boolean;
-        error: Error | null;
-      }>({
-        data: [],
-        isLoading: false,
-        error: null,
-      });
-
-      const enabled = options?.enabled !== false;
-      const idsKey = JSON.stringify(params.ids);
-
-      const fetchData = React.useCallback(async () => {
-        if (!enabled || params.ids.length === 0) {
-          setState({ data: [], isLoading: false, error: null });
-          return;
-        }
-
-        setState((s) => ({ ...s, isLoading: true, error: null }));
-        try {
-          const result = await mockGetMany(resource, params);
-          setState({
-            data: result.data || [],
-            isLoading: false,
-            error: null,
-          });
-        } catch (e) {
-          const errorMessage = e instanceof Error ? e.message : "Failed to fetch records";
-          setState({
-            data: [],
-            isLoading: false,
-            error: new Error(errorMessage),
-          });
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-      }, [resource, idsKey, enabled]);
-
-      React.useEffect(() => {
-        fetchData();
-      }, [fetchData]);
-
-      return {
-        data: state.data,
-        isLoading: state.isLoading,
-        error: state.error,
-        refetch: fetchData,
-      };
-    },
   };
 });
 
-// Helper to create mock activity
+// Helper to create mock activity with pre-joined creator data (from activities_summary view)
 const createMockActivity = (overrides: Partial<TeamActivity> = {}): TeamActivity => ({
   id: 1,
   type: "call",
@@ -142,6 +92,12 @@ const createMockActivity = (overrides: Partial<TeamActivity> = {}): TeamActivity
   activity_date: new Date().toISOString(),
   description: "Discussed project timeline",
   created_by: 42,
+  // Pre-joined creator fields from activities_summary view
+  creator_first_name: "John",
+  creator_last_name: "Doe",
+  creator_email: "john.doe@example.com",
+  creator_avatar_url: "https://example.com/avatar.jpg",
+  // Transformed sales object (created by hook)
   sales: {
     id: 42,
     first_name: "John",
@@ -152,16 +108,6 @@ const createMockActivity = (overrides: Partial<TeamActivity> = {}): TeamActivity
   contact_id: 100,
   organization_id: 200,
   opportunity_id: 300,
-  ...overrides,
-});
-
-// Helper to create mock sales user
-const createMockSales = (id: number, overrides: Partial<any> = {}) => ({
-  id,
-  first_name: `User${id}`,
-  last_name: `Last${id}`,
-  email: `user${id}@example.com`,
-  avatar_url: `https://example.com/avatar${id}.jpg`,
   ...overrides,
 });
 
