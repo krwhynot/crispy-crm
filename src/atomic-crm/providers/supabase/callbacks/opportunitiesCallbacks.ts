@@ -260,6 +260,23 @@ async function opportunitiesBeforeGetList(
 }
 
 /**
+ * Validate stage transition prerequisites
+ *
+ * Enforces business rules for stage changes:
+ * - closed_won/closed_lost require closed_date
+ *
+ * @param toStage - Target stage
+ * @param data - Opportunity data being saved
+ * @throws Error if prerequisites not met
+ */
+function validateStageTransition(toStage: string, data: Partial<RaRecord>): void {
+  // Closed stages require closed_date
+  if (["closed_won", "closed_lost"].includes(toStage) && !data.closed_date) {
+    throw new Error("Close date required when closing opportunity");
+  }
+}
+
+/**
  * Custom beforeUpdate: Log stage transitions as activities
  *
  * WHY CUSTOM: When opportunity stage changes, create an audit trail activity
@@ -277,6 +294,9 @@ async function opportunitiesBeforeUpdate(
 
   // Check if stage changed
   if (previousData?.stage && data.stage && previousData.stage !== data.stage) {
+    // Validate stage transition prerequisites (fail-fast)
+    validateStageTransition(data.stage, data);
+
     try {
       // Log stage transition activity
       await dataProvider.create("activities", {

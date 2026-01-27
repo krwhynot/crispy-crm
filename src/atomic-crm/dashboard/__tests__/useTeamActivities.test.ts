@@ -3,12 +3,12 @@
  *
  * Tests the team activities hook for the dashboard activity feed.
  * Critical behaviors tested:
- * - Activity fetching with joined sales user data
+ * - Activity fetching from activities_summary view with pre-joined creator data
  * - Default limit and custom limit behavior
  * - Soft-delete filtering (deleted_at@is: null)
  * - Loading states and error handling
  * - Refetch functionality
- * - Edge cases: empty data, missing sales user
+ * - Edge cases: empty data, missing creator data
  */
 
 import { renderHook, waitFor, act } from "@testing-library/react";
