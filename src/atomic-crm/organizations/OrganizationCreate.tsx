@@ -177,16 +177,14 @@ const OrganizationCreate = () => {
 
   // Generate defaults from schema, then merge with runtime values
   // Per Constitution #5: FORM STATE DERIVED FROM TRUTH
-  // Use .partial() to make all fields optional during default generation
-  // This extracts fields with .default() (organization_type, priority)
-  // Note: Only use sales_id from smartDefaults - activity_date is for activities only
   // IMPORTANT: Only include fields defined in organizationSchema (z.strictObject rejects unknown keys)
   const formDefaults = {
-    ...organizationSchema.partial().parse({}),
     sales_id: smartDefaults?.sales_id ?? null, // Handle loading state (also serves as Account Manager)
     // Use null (not undefined) when no segment found - null is a valid value for nullable UUID fields
     segment_id: unknownSegmentId ?? null,
     status: "active" as const, // Explicit UI default - not silent in validation
+    organization_type: "prospect" as const, // Explicit UI default - not silent in validation
+    priority: "C" as const, // Explicit UI default - not silent in validation
     ...(parentOrgId ? { parent_organization_id: parentOrgId } : {}), // Pre-fill parent when adding branch
   };
   const formKey = unknownSegmentId ? `org-create-${unknownSegmentId}` : "org-create";
