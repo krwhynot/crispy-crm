@@ -229,7 +229,16 @@
   },
   "permissions": {
     "allow": [],
-    "deny": [],
+    "deny": [
+      "Read(./.env)",
+      "Read(./.env.*)",
+      "Read(./secrets/**)",
+      "Read(./.claude/state/search.db)",
+      "Read(./.claude/state/search.db-*)",
+      "Read(./.claude/state/*-inventory/**)",
+      "Read(./supabase/.env)",
+      "Read(./supabase/.env.local)"
+    ],
     "ask": []
   },
   "description": "Project hooks for file tracking, git checkpoints, skill auto-activation, CLI guards, and automatic state cleanup"
