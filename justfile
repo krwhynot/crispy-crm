@@ -187,6 +187,8 @@ storage-audit-json:
 # Run full codebase discovery (SCIP + extractors)
 discover:
     npx tsx scripts/discover/index.ts
+    @rm -f .claude/state/.state-stale
+    @echo "✅ State refreshed, staleness marker cleared"
 
 # Generate SCIP index from TypeScript codebase
 discover-scip:
