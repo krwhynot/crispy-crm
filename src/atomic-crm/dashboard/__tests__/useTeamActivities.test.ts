@@ -115,15 +115,13 @@ describe("useTeamActivities", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     mockGetList.mockReset();
-    mockGetMany.mockReset();
   });
 
   describe("Data Fetching", () => {
-    it("should fetch activities with default limit of 15", async () => {
+    it("should fetch activities from activities_summary view with default limit of 15", async () => {
       const mockActivities = [createMockActivity({ id: 1 }), createMockActivity({ id: 2 })];
 
       mockGetList.mockResolvedValueOnce({ data: mockActivities, total: 2 });
-      mockGetMany.mockResolvedValueOnce({ data: [createMockSales(42)] });
 
       const { result } = renderHook(() => useTeamActivities());
 
@@ -140,6 +138,7 @@ describe("useTeamActivities", () => {
         })
       );
       expect(result.current.activities).toHaveLength(2);
+      expect(result.current.activities[0].sales?.first_name).toBe("John");
     });
 
     it("should respect custom limit parameter", async () => {
@@ -159,17 +158,29 @@ describe("useTeamActivities", () => {
       );
     });
 
-    it("should batch fetch sales users with useGetMany", async () => {
+    it("should transform pre-joined creator fields into sales object", async () => {
       const mockActivities = [
-        createMockActivity({ id: 1, created_by: 42 }),
-        createMockActivity({ id: 2, created_by: 43 }),
-        createMockActivity({ id: 3, created_by: 42 }), // Duplicate user ID
+        createMockActivity({
+          id: 1,
+          created_by: 42,
+          creator_first_name: "Alice",
+          creator_last_name: "Smith",
+        }),
+        createMockActivity({
+          id: 2,
+          created_by: 43,
+          creator_first_name: "Bob",
+          creator_last_name: "Jones",
+        }),
+        createMockActivity({
+          id: 3,
+          created_by: 42,
+          creator_first_name: "Alice",
+          creator_last_name: "Smith",
+        }),
       ];
 
       mockGetList.mockResolvedValueOnce({ data: mockActivities, total: 3 });
-      mockGetMany.mockResolvedValueOnce({
-        data: [createMockSales(42), createMockSales(43)],
-      });
 
       const { result } = renderHook(() => useTeamActivities());
 
@@ -177,38 +188,28 @@ describe("useTeamActivities", () => {
         expect(result.current.loading).toBe(false);
       });
 
-      // Should call useGetMany with deduplicated sales IDs
-      expect(mockGetMany).toHaveBeenCalledWith("sales", { ids: [42, 43] });
-
-      // Should merge sales data into activities
+      // Should transform creator fields into sales object for each activity
       expect(result.current.activities).toHaveLength(3);
-      expect(result.current.activities[0].sales?.first_name).toBe("User42");
-      expect(result.current.activities[1].sales?.first_name).toBe("User43");
-      expect(result.current.activities[2].sales?.first_name).toBe("User42");
+      expect(result.current.activities[0].sales?.first_name).toBe("Alice");
+      expect(result.current.activities[1].sales?.first_name).toBe("Bob");
+      expect(result.current.activities[2].sales?.first_name).toBe("Alice");
     });
   });
 
   describe("Activity Data Structure", () => {
-    it("should return activities with joined sales user data", async () => {
+    it("should return activities with transformed sales user data from view", async () => {
       const mockActivity = createMockActivity({
         id: 1,
         type: "meeting",
         subject: "Quarterly review",
         created_by: 42,
+        creator_first_name: "Jane",
+        creator_last_name: "Smith",
+        creator_email: "jane.smith@example.com",
+        creator_avatar_url: "https://example.com/jane.jpg",
       });
 
       mockGetList.mockResolvedValueOnce({ data: [mockActivity], total: 1 });
-      mockGetMany.mockResolvedValueOnce({
-        data: [
-          {
-            id: 42,
-            first_name: "Jane",
-            last_name: "Smith",
-            email: "jane.smith@example.com",
-            avatar_url: "https://example.com/jane.jpg",
-          },
-        ],
-      });
 
       const { result } = renderHook(() => useTeamActivities());
 
