@@ -135,11 +135,6 @@
           },
           {
             "type": "command",
-            "command": "npx tsc --noEmit --pretty false 2>&1 | head -20 || true",
-            "timeout": 15000
-          },
-          {
-            "type": "command",
             "command": "${CLAUDE_PROJECT_DIR}/.claude/hooks/eslint-check.sh",
             "timeout": 10
           },
@@ -222,6 +217,11 @@
             "type": "command",
             "command": "${CLAUDE_PROJECT_DIR}/.claude/hooks/verify-tests-before-stop.sh",
             "timeout": 10
+          },
+          {
+            "type": "command",
+            "command": "npx tsc --noEmit --pretty false 2>&1 | head -20 || true",
+            "timeout": 30000
           }
         ]
       }
