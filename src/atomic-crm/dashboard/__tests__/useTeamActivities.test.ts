@@ -243,7 +243,7 @@ describe("useTeamActivities", () => {
       expect(result.current.activities[0].sales).toBeUndefined();
     });
 
-    it("should include related entity IDs", async () => {
+    it("should include related entity IDs from view", async () => {
       const mockActivity = createMockActivity({
         contact_id: 101,
         organization_id: 201,
@@ -252,7 +252,6 @@ describe("useTeamActivities", () => {
       });
 
       mockGetList.mockResolvedValueOnce({ data: [mockActivity], total: 1 });
-      mockGetMany.mockResolvedValueOnce({ data: [createMockSales(42)] });
 
       const { result } = renderHook(() => useTeamActivities());
 
@@ -386,14 +385,13 @@ describe("useTeamActivities", () => {
       expect(result.current.error).toBeNull();
     });
 
-    it("should handle null description", async () => {
+    it("should handle null description from view", async () => {
       const mockActivity = createMockActivity({
         description: null,
         created_by: 42,
       });
 
       mockGetList.mockResolvedValueOnce({ data: [mockActivity], total: 1 });
-      mockGetMany.mockResolvedValueOnce({ data: [createMockSales(42)] });
 
       const { result } = renderHook(() => useTeamActivities());
 
@@ -404,23 +402,16 @@ describe("useTeamActivities", () => {
       expect(result.current.activities[0].description).toBeNull();
     });
 
-    it("should handle sales user with null fields", async () => {
+    it("should handle creator with null name fields from view", async () => {
       const mockActivity = createMockActivity({
         created_by: 42,
+        creator_first_name: null,
+        creator_last_name: null,
+        creator_email: "user@example.com",
+        creator_avatar_url: null,
       });
 
       mockGetList.mockResolvedValueOnce({ data: [mockActivity], total: 1 });
-      mockGetMany.mockResolvedValueOnce({
-        data: [
-          {
-            id: 42,
-            first_name: null,
-            last_name: null,
-            email: null,
-            avatar_url: null,
-          },
-        ],
-      });
 
       const { result } = renderHook(() => useTeamActivities());
 
@@ -430,6 +421,7 @@ describe("useTeamActivities", () => {
 
       expect(result.current.activities[0].sales?.first_name).toBeNull();
       expect(result.current.activities[0].sales?.last_name).toBeNull();
+      expect(result.current.activities[0].sales?.email).toBe("user@example.com");
       expect(result.current.activities[0].sales?.avatar_url).toBeNull();
     });
   });
