@@ -133,3 +133,15 @@ screenshots/
 # Code intelligence index files (regenerate with `just discover-scip`)
 .claude/state/index.scip
 .claude/state/vectors.lance/
+
+# Claude Code state databases (regeneratable)
+.claude/state/search.db
+.claude/state/search.db-*
+
+# Claude Code inventories (regeneratable via just discover)
+.claude/state/*-inventory/
+.claude/state/business-logic-discovery.json
+.claude/state/data-provider-discovery.json
+.claude/state/forms-inventory.json
+.claude/state/schema-discovery.json
+.claude/state/test-discovery.json
