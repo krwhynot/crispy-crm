@@ -1,1 +1,0 @@
-2026-01-19T22:39:10-06:00 | just typecheck 2>&1 && npx vitest run --reporter=verbose src/components/ra-wrappers/__tests__/select-input.test.tsx 2>&1

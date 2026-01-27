@@ -1,1 +1,0 @@
-2026-01-18T21:56:51-06:00 | npx vitest run src/atomic-crm/organizations/ --reporter=verbose 2>&1 | tail -40

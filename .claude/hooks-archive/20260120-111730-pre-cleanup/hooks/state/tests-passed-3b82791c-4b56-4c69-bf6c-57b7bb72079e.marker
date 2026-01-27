@@ -1,1 +1,0 @@
-2026-01-17T09:42:19-06:00 | npx vitest run --reporter=verbose src/atomic-crm/contacts/__tests__/ContactSlideOver.test.tsx src/atomic-crm/opportunities/__tests__/OpportunitySlideOver.test.tsx src/atomic-crm/organizations/__tests__/OrganizationSlideOver.test.tsx 2>&1 | tail -30

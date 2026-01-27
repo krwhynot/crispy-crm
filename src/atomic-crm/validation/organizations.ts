@@ -173,8 +173,8 @@ export const organizationSchema = z.strictObject({
   updated_by: z.coerce.number().nullish(), // Audit: who last updated
 
   // Organization-specific fields
-  organization_type: organizationTypeSchema.default("prospect"), // Default for new organizations
-  priority: organizationPrioritySchema.default("C"), // Default matches database
+  organization_type: organizationTypeSchema, // Required - no silent default
+  priority: organizationPrioritySchema, // Required - no silent default
 
   // Computed fields (readonly)
   nb_contacts: z.number().optional(),

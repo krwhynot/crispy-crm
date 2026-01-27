@@ -1,1 +1,0 @@
-2026-01-18T14:28:17-06:00 | npx vitest run src/hooks/__tests__/usePermissions.test.ts src/atomic-crm/providers/commons/__tests__/canAccess.test.ts src/atomic-crm/providers/supabase/authProvider.test.ts --reporter=verbose 2>&1 | tail -30

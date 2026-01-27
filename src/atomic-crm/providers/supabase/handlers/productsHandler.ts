@@ -40,7 +40,7 @@ import {
 } from "../../../validation/productWithDistributors";
 import { z } from "zod";
 import { ProductsService, type ProductDistributorInput } from "../../../services/products.service";
-import { hasRpcMethod, assertExtendedDataProvider } from "../typeGuards";
+import { assertExtendedDataProvider } from "../typeGuards";
 
 /**
  * Schema for product update data with optional distributor associations
@@ -135,18 +135,13 @@ export function createProductsHandler(baseProvider: DataProvider): DataProvider 
           // Transform to RPC parameters using validated data
           const { productData, distributors: distData } = transformToRpcParams(validatedData);
 
-          // Get RPC method from baseProvider (will be available after wrapping)
-          if (!hasRpcMethod(baseProvider)) {
-            throw new Error(
-              "Product creation with distributors failed: DataProvider does not support RPC"
-            );
-          }
+          // Delegate to service for atomic RPC operation
+          // Engineering Constitution: Business logic (RPC calls) belongs in service layer
+          const extendedProvider = assertExtendedDataProvider(baseProvider);
+          const service = new ProductsService(extendedProvider);
 
-          // Call atomic RPC function
-          const result = await baseProvider.rpc("create_product_with_distributors", {
-            product_data: productData,
-            distributors: distData,
-          });
+          // Call service method for atomic creation
+          const result = await service.createWithDistributorsRpc(productData, distData);
 
           // Return in React Admin format
           return { data: result } as { data: RecordType };

@@ -1,1 +1,0 @@
-2026-01-14T22:08:51-06:00 | npx vitest run src/components/admin/__tests__/date-input.test.tsx --reporter=json 2>/dev/null | jq '.numPassedTests, .numFailedTests' 2>/dev/null || echo "Tests completed"

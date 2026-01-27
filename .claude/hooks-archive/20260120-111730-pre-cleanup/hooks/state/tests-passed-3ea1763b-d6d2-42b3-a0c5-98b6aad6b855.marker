@@ -1,1 +1,0 @@
-2026-01-18T00:53:12-06:00 | npx vitest run --testNamePattern="useEntitySelection" --reporter=verbose 2>&1

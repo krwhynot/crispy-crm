@@ -21,11 +21,15 @@ SELECT
   a.created_by,  -- Now a regular column, not FK lookup
   a.deleted_at,
   a.activity_type,
-  -- Task-related fields (from tasks migration)
-  a.is_task,
-  a.task_status,
-  a.task_due_date,
-  a.task_priority,
+  -- Task-related fields (from 20260121000001_add_task_columns_to_activities.sql)
+  a.due_date,
+  a.reminder_date,
+  a.completed,
+  a.completed_at,
+  a.priority,
+  a.sales_id,
+  a.snooze_until,
+  a.overdue_notified_at,
   a.related_task_id,
   -- Pre-joined creator info (bypasses FK nullification)
   s.first_name AS creator_first_name,

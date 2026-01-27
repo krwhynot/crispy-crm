@@ -1,1 +1,0 @@
-2026-01-13T09:53:50-06:00 | npm test -- --run src/atomic-crm/providers/supabase/handlers/productsHandler.test.ts 2>&1 | tail -30

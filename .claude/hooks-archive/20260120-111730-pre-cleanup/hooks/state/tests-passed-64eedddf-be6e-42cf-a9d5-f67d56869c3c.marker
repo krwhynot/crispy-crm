@@ -1,1 +1,0 @@
-2026-01-20T10:57:54-06:00 | just test 2>&1 | grep -E "^(FAIL|✗|❯.*FAIL| FAIL )" | head -80

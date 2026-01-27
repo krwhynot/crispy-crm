@@ -1,1 +1,0 @@
-2026-01-19T12:13:12-06:00 | npx vitest run src/atomic-crm/providers/supabase/wrappers/withValidation.test.ts 2>&1

@@ -1,6 +1,0 @@
-{"file":"src/atomic-crm/providers/supabase/wrappers/withErrorLogging.ts","line":"112","type":"BUG","content":"    // DEBUG: Also log the data that caused the error","timestamp":"2026-01-18T23:37:28-06:00"}
-{"file":"src/atomic-crm/providers/supabase/wrappers/withErrorLogging.ts","line":"121","type":"BUG","content":"    // DEBUG: Also log the data that caused the error","timestamp":"2026-01-18T23:37:28-06:00"}
-{"file":"src/atomic-crm/providers/supabase/wrappers/withErrorLogging.ts","line":"112","type":"BUG","content":"    // DEBUG: Also log the data that caused the error","timestamp":"2026-01-19T00:04:17-06:00"}
-{"file":"src/atomic-crm/providers/supabase/wrappers/withErrorLogging.ts","line":"121","type":"BUG","content":"    // DEBUG: Also log the data that caused the error","timestamp":"2026-01-19T00:04:17-06:00"}
-{"file":"src/atomic-crm/providers/supabase/wrappers/withErrorLogging.ts","line":"112","type":"BUG","content":"    // DEBUG: Also log the data that caused the error","timestamp":"2026-01-19T00:05:37-06:00"}
-{"file":"src/atomic-crm/providers/supabase/wrappers/withErrorLogging.ts","line":"121","type":"BUG","content":"    // DEBUG: Also log the data that caused the error","timestamp":"2026-01-19T00:05:37-06:00"}

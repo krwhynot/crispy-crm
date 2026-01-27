@@ -1,1 +1,0 @@
-2026-01-19T14:59:49-06:00 | npx vitest run --reporter=verbose src/atomic-crm/providers/supabase/handlers/ 2>&1 | tail -50

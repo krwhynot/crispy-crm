@@ -1,1 +1,0 @@
-2026-01-14T18:09:02-06:00 | npx vitest run src/atomic-crm/providers/supabase/callbacks/activitiesCallbacks.test.ts 2>&1

@@ -173,6 +173,51 @@ export class ProductsService {
   }
 
   /**
+   * Create a product with distributor relationships using RPC (atomic transaction)
+   *
+   * Uses the `create_product_with_distributors` RPC function for atomic creation.
+   * This ensures product + distributor relationships are created in a single transaction.
+   *
+   * Engineering Constitution: Business logic (RPC calls) belongs in service layer, not handlers.
+   *
+   * @param productData Product data to create
+   * @param distributors Array of distributor relationships with vendor item numbers
+   * @returns Created product with distributor info
+   */
+  async createWithDistributorsRpc(
+    productData: Record<string, unknown>,
+    distributors: Array<{ distributor_id: number; vendor_item_number: string | null }>
+  ): Promise<ProductWithDistributors> {
+    try {
+      devLog("ProductsService", "createWithDistributorsRpc", {
+        productData,
+        distributorCount: distributors.length,
+      });
+
+      // Call atomic RPC function
+      const result = await this.dataProvider.rpc("create_product_with_distributors", {
+        product_data: productData,
+        distributors,
+      });
+
+      devLog("ProductsService", "Created product with distributors via RPC", {
+        productId: result.id,
+        distributorCount: distributors.length,
+      });
+
+      return result as ProductWithDistributors;
+    } catch (error: unknown) {
+      devError("ProductsService", "Failed to create product with distributors via RPC", {
+        productData,
+        distributorCount: distributors.length,
+        error,
+      });
+      const errorMessage = error instanceof Error ? error.message : "Unknown error";
+      throw new Error(`Create product with distributors RPC failed: ${errorMessage}`);
+    }
+  }
+
+  /**
    * Update a product and sync its distributor relationships
    *
    * If distributor_ids is provided:
