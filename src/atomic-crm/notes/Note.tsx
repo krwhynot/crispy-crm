@@ -5,6 +5,7 @@ import { Form, useDelete, useNotify, useResourceContext, useUpdate, WithRecord }
 import { useQueryClient } from "@tanstack/react-query";
 import { useState, useCallback } from "react";
 import type { FieldValues, SubmitHandler } from "react-hook-form";
+import { notificationMessages } from "@/atomic-crm/constants/notificationMessages";
 
 import { ReferenceField } from "@/components/ra-wrappers/reference-field";
 import { OrganizationAvatar } from "../organizations/OrganizationAvatar";
@@ -76,7 +77,7 @@ export const Note = ({
     {
       mutationMode: "undoable",
       onSuccess: () => {
-        notify("Note deleted", { type: "info", undoable: true });
+        notify(notificationMessages.deleted("Note"), { type: "info", undoable: true });
         // Targeted invalidation - only invalidates the specific parent entity
         invalidateParentCache();
       },

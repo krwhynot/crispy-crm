@@ -15,6 +15,7 @@ import { useSafeNotify } from "../hooks/useSafeNotify";
 import { useFormContext, useFormState, useWatch } from "react-hook-form";
 import { setSubmissionErrors, useSaveContext, useTranslate } from "ra-core";
 import { Loader2, Save } from "lucide-react";
+import { notificationMessages } from "@/atomic-crm/constants/notificationMessages";
 
 import { AdminButton } from "@/components/admin/AdminButton";
 import { UnsavedChangesDialog } from "@/components/ui/unsaved-changes-dialog";
@@ -139,7 +140,7 @@ export function OpportunityCreateFormFooter({
       // Proceed with save
       await form.handleSubmit(async (values) => {
         await handleSubmit(values, () => {
-          success("Opportunity created successfully");
+          success(notificationMessages.created("Opportunity"));
           redirectFn(redirectPath);
         });
       })(event);
@@ -163,7 +164,7 @@ export function OpportunityCreateFormFooter({
       // Proceed with save
       await form.handleSubmit(async (values) => {
         await handleSubmit(values, () => {
-          success("Opportunity created successfully");
+          success(notificationMessages.created("Opportunity"));
 
           // Preserve specified fields for rapid entry
           if (preserveFields.length > 0) {

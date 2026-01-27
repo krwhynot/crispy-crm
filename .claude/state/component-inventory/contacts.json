@@ -1,6 +1,6 @@
 {
   "chunk_name": "contacts",
-  "generated_at": "2026-01-26T21:45:48.456Z",
+  "generated_at": "2026-01-27T19:23:53.615Z",
   "item_count": 59,
   "items": [
     {
@@ -355,7 +355,7 @@
     {
       "name": "ContactDetailsTab",
       "file": "src/atomic-crm/contacts/ContactDetailsTab.tsx",
-      "line": 46,
+      "line": 47,
       "type": "presentational",
       "hooks": [
         "useNotify",
@@ -368,6 +368,7 @@
         "../utils/formatName",
         "./Avatar",
         "./ContactInputs",
+        "@/atomic-crm/constants/notificationMessages",
         "@/atomic-crm/queryKeys",
         "@/components/layouts/sidepane",
         "@/components/ra-wrappers/array-field",
@@ -397,7 +398,7 @@
     {
       "name": "ContactEdit",
       "file": "src/atomic-crm/contacts/ContactEdit.tsx",
-      "line": 15,
+      "line": 16,
       "type": "presentational",
       "hooks": [
         "useQueryClient",
@@ -411,6 +412,7 @@
         "../types",
         "./ContactAside",
         "./ContactInputs",
+        "@/atomic-crm/constants/notificationMessages",
         "@/atomic-crm/validation/contacts",
         "@/components/design-system",
         "@/components/ui/card",
@@ -431,7 +433,7 @@
     {
       "name": "ContactEdit",
       "file": "src/atomic-crm/contacts/ContactEdit.tsx",
-      "line": 15,
+      "line": 16,
       "type": "presentational",
       "hooks": [
         "useQueryClient",
@@ -445,6 +447,7 @@
         "../types",
         "./ContactAside",
         "./ContactInputs",
+        "@/atomic-crm/constants/notificationMessages",
         "@/atomic-crm/validation/contacts",
         "@/components/design-system",
         "@/components/ui/card",
@@ -1184,7 +1187,7 @@
     {
       "name": "QuickCreateContactPopover",
       "file": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx",
-      "line": 27,
+      "line": 28,
       "type": "presentational",
       "hooks": [
         "useDataProvider",
@@ -1194,6 +1197,7 @@
         "useState"
       ],
       "imports": [
+        "@/atomic-crm/constants/notificationMessages",
         "@/atomic-crm/queryKeys",
         "@/atomic-crm/validation/contacts",
         "@/components/admin/AdminButton",
@@ -1218,7 +1222,7 @@
     {
       "name": "QuickCreateContactRA",
       "file": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx",
-      "line": 212,
+      "line": 213,
       "type": "presentational",
       "hooks": [
         "useCreateSuggestionContext",
@@ -1229,6 +1233,7 @@
         "useState"
       ],
       "imports": [
+        "@/atomic-crm/constants/notificationMessages",
         "@/atomic-crm/queryKeys",
         "@/atomic-crm/validation/contacts",
         "@/components/admin/AdminButton",

@@ -6,6 +6,7 @@ import { AdminButton } from "@/components/admin/AdminButton";
 import { SaveButton } from "@/components/ra-wrappers/form";
 import { UnsavedChangesDialog } from "@/components/ui/unsaved-changes-dialog";
 import { ucFirst } from "@/atomic-crm/utils";
+import { notificationMessages } from "@/atomic-crm/constants/notificationMessages";
 
 interface CreateFormFooterProps {
   resourceName: string;
@@ -56,7 +57,7 @@ export const CreateFormFooter = ({
           data-tutorial={tutorialAttribute}
           mutationOptions={{
             onSuccess: (data: { id: string | number }) => {
-              notify(`${ucFirst(resourceName)} created successfully`, { type: "success" });
+              notify(notificationMessages.created(ucFirst(resourceName)), { type: "success" });
               if (redirect) {
                 redirectFn(redirect(resourceName + "s", data.id, data));
               } else {
@@ -72,7 +73,7 @@ export const CreateFormFooter = ({
           alwaysEnable
           mutationOptions={{
             onSuccess: () => {
-              notify(`${ucFirst(resourceName)} created successfully`, { type: "success" });
+              notify(notificationMessages.created(ucFirst(resourceName)), { type: "success" });
               // Preserve specified fields for rapid entry (e.g., organization_id)
               if (preserveFields.length > 0) {
                 const currentValues = getValues();

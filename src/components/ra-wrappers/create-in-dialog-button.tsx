@@ -14,6 +14,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { FormToolbar } from "@/components/ra-wrappers/simple-form";
 import { SaveButton } from "@/components/ra-wrappers/form";
+import { notificationMessages } from "@/atomic-crm/constants/notificationMessages";
 
 /**
  * Parse database/API errors into user-friendly messages.
@@ -98,7 +99,8 @@ export const CreateInDialogButton = <RecordType extends RaRecord = RaRecord>({
     setOpen(false);
 
     // Notify success
-    notify(`${resource} created successfully`, { type: "success" });
+    const entityName = resource.slice(0, -1); // "contacts" -> "contact"
+    notify(notificationMessages.created(entityName), { type: "success" });
 
     // Refresh the list/form to get new options
     refresh();

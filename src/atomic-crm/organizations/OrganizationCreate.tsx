@@ -40,6 +40,7 @@ import type { Database } from "@/types/database.generated";
 import type { OrganizationFormValues, DuplicateCheckCallback } from "./types";
 import { useUnsavedChangesWarning } from "@/hooks/useUnsavedChangesWarning";
 import { usePermissions } from "@/hooks/usePermissions";
+import { notificationMessages } from "@/atomic-crm/constants/notificationMessages";
 
 type Segment = Database["public"]["Tables"]["segments"]["Row"];
 
@@ -137,7 +138,7 @@ const OrganizationCreate = () => {
           onSuccess: (data) => {
             bypassDuplicate();
             pendingValuesRef.current = null;
-            notify("Organization created", { type: "success" });
+            notify(notificationMessages.created("Organization"), { type: "success" });
             redirect("show", "organizations", data.id);
           },
           onError: (error: unknown) => {
@@ -258,7 +259,7 @@ const OrganizationCreate = () => {
                 mode="onBlur"
                 resolver={zodResolver(organizationSchema)}
               >
-                <FormProgressBar className="mb-6" />
+                <FormProgressBar schema={organizationSchema} className="mb-6" />
                 <Card>
                   <CardContent>
                     <OrganizationFormContent

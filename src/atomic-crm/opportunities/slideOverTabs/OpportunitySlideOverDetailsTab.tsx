@@ -1,6 +1,7 @@
 import { useState, useCallback, useRef } from "react";
 import { Form, useUpdate, useNotify, useDataProvider } from "react-admin";
 import { logger } from "@/lib/logger";
+import { notificationMessages } from "@/atomic-crm/constants/notificationMessages";
 import { useQueryClient } from "@tanstack/react-query";
 import type { CloseOpportunityInput } from "@/atomic-crm/validation/opportunities";
 import type { Opportunity } from "@/atomic-crm/types";
@@ -62,7 +63,7 @@ export function OpportunitySlideOverDetailsTab({
           {
             onSuccess: async () => {
               setServerError(null); // Clear server errors on success
-              notify("Opportunity updated successfully", { type: "success" });
+              notify(notificationMessages.updated("Opportunity"), { type: "success" });
 
               try {
                 await dataProvider.create("activities", {

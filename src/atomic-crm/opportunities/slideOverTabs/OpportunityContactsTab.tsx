@@ -13,6 +13,7 @@ import { OpportunitiesService } from "@/atomic-crm/services/opportunities.servic
 import type { ExtendedDataProvider } from "@/atomic-crm/providers/supabase/extensions/types";
 import { Link } from "react-router-dom";
 import { contactKeys, opportunityKeys, opportunityContactKeys } from "@/atomic-crm/queryKeys";
+import { notificationMessages } from "@/atomic-crm/constants/notificationMessages";
 import { AutocompleteArrayInput } from "@/components/ra-wrappers/autocomplete-array-input";
 import { AdminButton } from "@/components/admin/AdminButton";
 import { Badge } from "@/components/ui/badge";
@@ -157,7 +158,7 @@ export function OpportunityContactsTab({
 
       queryClient.invalidateQueries({ queryKey: opportunityContactKeys.all });
 
-      notify("Contacts updated successfully", { type: "success" });
+      notify(notificationMessages.updated("Contacts"), { type: "success" });
       if (onModeToggle) {
         onModeToggle();
       }

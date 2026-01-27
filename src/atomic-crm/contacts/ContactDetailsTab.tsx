@@ -4,6 +4,7 @@ import { useUpdate, useNotify, RecordContextProvider } from "ra-core";
 import { Form } from "react-admin";
 import { contactKeys } from "@/atomic-crm/queryKeys";
 import { logger } from "@/lib/logger";
+import { notificationMessages } from "@/atomic-crm/constants/notificationMessages";
 import { ReferenceField } from "@/components/ra-wrappers/reference-field";
 import { TextField } from "@/components/ra-wrappers/text-field";
 import { ArrayField } from "@/components/ra-wrappers/array-field";
@@ -66,7 +67,7 @@ export function ContactDetailsTab({
       queryClient.invalidateQueries({ queryKey: contactKeys.all });
       queryClient.invalidateQueries({ queryKey: contactKeys.detail(record.id) });
 
-      notify("Contact updated successfully", { type: "success" });
+      notify(notificationMessages.updated("Contact"), { type: "success" });
       onModeToggle?.(); // Return to view mode after successful save
     } catch (error: unknown) {
       notify("Error updating contact", { type: "error" });

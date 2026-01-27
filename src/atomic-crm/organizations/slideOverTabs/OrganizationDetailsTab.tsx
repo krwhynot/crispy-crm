@@ -3,6 +3,7 @@ import { useUpdate, useNotify, RecordContextProvider } from "ra-core";
 import { Form } from "react-admin";
 import { useFormContext } from "react-hook-form";
 import { logger } from "@/lib/logger";
+import { notificationMessages } from "@/atomic-crm/constants/notificationMessages";
 import { TextInput } from "@/components/ra-wrappers/text-input";
 import { SelectInput } from "@/components/ra-wrappers/select-input";
 import { BooleanInput } from "@/components/ra-wrappers/boolean-input";
@@ -91,7 +92,7 @@ export function OrganizationDetailsTab({
         data: completeData,
         previousData: record,
       });
-      notify("Organization updated successfully", { type: "success" });
+      notify(notificationMessages.updated("Organization"), { type: "success" });
       onModeToggle?.();
     } catch (error: unknown) {
       notify("Error updating organization", { type: "error" });

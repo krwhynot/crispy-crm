@@ -1,280 +1,189 @@
 {
   "lastAudit": "2026-01-26",
-  "lastAuditTime": "08:02",
+  "lastAuditTime": "00:15",
   "mode": "quick",
   "duration_minutes": 21,
   "totals": {
-    "critical": 16,
-    "high": 80,
-    "medium": 83,
-    "total": 250
+    "critical": 6,
+    "high": 22,
+    "medium": 39,
+    "total": 108
   },
   "by_layer": {
     "L1_database": {
-      "critical": 5,
-      "high": 12,
-      "medium": 7,
+      "critical": 2,
+      "high": 5,
+      "medium": 6,
       "status": "CRITICAL",
-      "primary_concerns": "USING(true) RLS policies (product_distributors, summary views, contact_organizations needs company isolation), hard DELETE in RPC, WITH CHECK(true) policies",
-      "note": "Junction table RLS partially false alarm - participant tables intentionally team-shared"
+      "primary_concerns": "contact_organizations missing dual-auth RLS, activities permissive policies, FK constraints without ON DELETE"
     },
     "L2_domain": {
-      "critical": 4,
-      "high": 0,
-      "medium": 0,
-      "status": "CRITICAL",
-      "primary_concerns": "any types in Edge Functions (supabaseAdmin.ts, updatePassword.ts, capture-dashboard-snapshots), 62 type assertions"
+      "critical": 1,
+      "high": 4,
+      "medium": 1,
+      "status": "WARN",
+      "primary_concerns": "Missing .strict() on 30 schemas, 7 manual interface definitions, type assertions"
     },
     "L3_provider": {
-      "critical": 2,
-      "high": 1,
-      "medium": 3,
-      "status": "WARN",
-      "primary_concerns": "filter-select-ui.tsx Tier 1 violation, business logic in productsHandler, console.log in tasksHandler"
-    },
-    "L4_ui_foundation": {
       "critical": 0,
-      "high": 0,
+      "high": 2,
       "medium": 1,
       "status": "OK",
-      "primary_concerns": "WCAG 2.1 AA+ compliant, 100% semantic colors, 48px touch targets, ~73% focus-visible coverage"
+      "primary_concerns": "Inline validate patterns in PATTERNS docs, test watch() usage"
+    },
+    "L4_ui_foundation": {
+      "critical": 1,
+      "high": 2,
+      "medium": 1,
+      "status": "WARN",
+      "primary_concerns": "FormErrorSummary touch target, aria-invalid pattern, icon aria-hidden"
     },
     "L5_features": {
-      "critical": 5,
-      "high": 67,
-      "medium": 72,
+      "critical": 2,
+      "high": 7,
+      "medium": 4,
       "status": "WARN",
-      "primary_concerns": "Missing activity logging for stage transitions, silent defaults, pagination gaps, 51 large files, race conditions in hooks"
+      "primary_concerns": "Missing activity logging, field naming mismatch, silent defaults, large validation file"
     }
   },
   "by_category": {
     "security": {
+      "critical": 0,
+      "high": 5,
+      "medium": 3,
+      "status": "WARN",
+      "note": "activities permissive RLS, task_id_mapping permissive, missing .max() constraints. Participant tables intentionally team-shared."
+    },
+    "data-integrity": {
+      "critical": 0,
+      "high": 0,
+      "medium": 0,
+      "status": "PASS",
+      "note": "Strangler Fig COMPLETE (0 unifiedDataProvider lines, 24 handlers). 0 .delete() calls. 719 soft-delete RLS filters."
+    },
+    "error-handling": {
+      "critical": 0,
+      "high": 0,
+      "medium": 0,
+      "status": "PASS",
+      "note": "100% withErrorLogging coverage. Fail-fast compliant. Zero retries or circuit breakers."
+    },
+    "db-hardening": {
+      "critical": 1,
+      "high": 4,
+      "medium": 6,
+      "status": "WARN",
+      "note": "contact_organizations missing dual-auth. 23 FKs without ON DELETE. Missing FK indexes. Incomplete trigger coverage."
+    },
+    "stale-state": {
+      "critical": 1,
+      "high": 2,
+      "medium": 4,
+      "status": "WARN",
+      "note": "No documented stale-state strategy. Broad query invalidation. Inconsistent refetchOnWindowFocus."
+    },
+    "workflow-gaps": {
       "critical": 2,
       "high": 5,
       "medium": 4,
       "status": "WARN",
-      "note": "USING(true) RLS on product_distributors, summary views. contact_organizations needs company isolation. Participant tables intentionally team-shared. Missing Zod .max() limits. Client storage concerns."
+      "note": "Missing activity logging for stage transitions. Field naming mismatch (closed_date vs actual_close_date). Silent status defaults."
     },
-    "data-integrity": {
-      "critical": 2,
-      "high": 4,
-      "medium": 5,
-      "status": "WARN",
-      "note": "Hard DELETE in migrations (historical) and sync RPC. Strangler Fig COMPLETE (24 handlers). 719 soft-delete RLS filters."
-    },
-    "error-handling": {
-      "critical": 0,
+    "architecture": {
+      "critical": 1,
       "high": 2,
+      "medium": 3,
+      "status": "WARN",
+      "note": "Missing .strict() on schemas. Manual interface definitions. Tier 1 properly isolated."
+    },
+    "typescript": {
+      "critical": 0,
+      "high": 38,
       "medium": 7,
       "status": "PASS",
-      "note": "100% withErrorLogging coverage. Fail-fast compliant. Minor: storage preference fallback silent, side-effect handling review."
+      "note": "Zero 'as any' in production. 32 type assertions (mostly safe). 6 as unknown as in tests. 92% type safety score."
     },
-    "db-hardening": {
+    "accessibility": {
       "critical": 1,
-      "high": 3,
-      "medium": 2,
-      "status": "WARN",
-      "note": "segments permissive policy. Missing partial indexes on junction FKs. Inconsistent timestamp trigger coverage."
-    },
-    "stale-state": {
-      "critical": 0,
       "high": 2,
       "medium": 4,
       "status": "WARN",
-      "note": "useFavorites missing cancelQueries (race condition). reopenTask fire-and-forget. 40+ hardcoded staleTime values."
-    },
-    "workflow-gaps": {
-      "critical": 3,
-      "high": 2,
-      "medium": 3,
-      "status": "CRITICAL",
-      "note": "No activity logging for stage transitions. Silent status defaults. Stage transitions lack business prerequisites."
-    },
-    "architecture": {
-      "critical": 2,
-      "high": 1,
-      "medium": 3,
-      "status": "WARN",
-      "note": "filter-select-ui.tsx in Tier 1, business logic in productsHandler, console.log in tasksHandler. Feature structure 5/5 compliant."
-    },
-    "typescript": {
-      "critical": 4,
-      "high": 62,
-      "medium": 0,
-      "status": "WARN",
-      "note": "4 any in Edge Functions/scripts. 62 type assertions. 0 @ts-ignore. 132 z.infer usages. Test any (281) properly isolated."
-    },
-    "accessibility": {
-      "critical": 0,
-      "high": 0,
-      "medium": 1,
-      "status": "PASS",
-      "note": "WCAG 2.1 AA+ compliant. 84 aria-invalid, 55 aria-describedby, 37 role=alert. 48px touch targets. ~73% focus-visible."
+      "note": "FormErrorSummary touch target. aria-invalid undefined vs false. WCAG 2.1 AA compliant overall."
     },
     "performance": {
-      "critical": 2,
-      "high": 0,
-      "medium": 7,
-      "status": "WARN",
-      "note": "perPage: 500-1000 in reports. 10+ hooks missing pagination. Good memoization (267 hooks, 12 React.memo)."
+      "critical": 0,
+      "high": 2,
+      "medium": 3,
+      "status": "PASS",
+      "note": "Inline validate in docs only. Test watch() usage. Good memoization (715 hooks). All forms onSubmit/onBlur."
     },
     "code-quality": {
-      "critical": 12,
-      "high": 58,
-      "medium": 47,
-      "status": "WARN",
-      "note": "12 as any in tests. 51 large files (500+ lines). 20 console.log. 20 deep nesting files. 174 avg lines/file."
+      "critical": 0,
+      "high": 1,
+      "medium": 5,
+      "status": "PASS",
+      "note": "Zero 'as any' in production. 1 large file (674 lines). 20 TODOs. Minimal dead code."
     }
   },
   "critical_issues_summary": [
     {
       "rank": 1,
       "layer": "L1",
-      "category": "security",
-      "issue": "USING(true) RLS - Product Distributors",
-      "location": "20251215054822_08_create_product_distributors.sql:41-51",
-      "impact": "ANY authenticated user can CRUD all product-distributor mappings",
-      "fix": "Apply dual-auth pattern from migration 20260125000007",
+      "category": "db-hardening",
+      "issue": "contact_organizations missing dual-auth RLS",
+      "location": "cloud_schema_fresh.sql",
+      "impact": "Users can link contacts and organizations across company boundaries",
+      "fix": "Add dual EXISTS checks per DATABASE_LAYER.md",
       "status": "OPEN"
     },
     {
       "rank": 2,
       "layer": "L1",
-      "category": "security",
-      "issue": "USING(true) RLS - Summary Views",
-      "location": "20251111121526_add_role_based_permissions.sql:163-325",
-      "impact": "Cross-tenant data exposure on contacts, opportunities, organizations",
-      "fix": "Add auth.uid() IS NOT NULL AND deleted_at IS NULL",
+      "category": "stale-state",
+      "issue": "No documented stale-state strategy",
+      "location": "N/A",
+      "impact": "Inconsistent cache invalidation decisions",
+      "fix": "Create .claude/rules/STALE_STATE_STRATEGY.md",
       "status": "OPEN"
     },
     {
       "rank": 3,
-      "layer": "L1",
-      "category": "security",
-      "issue": "USING(true) RLS - Junction Tables (PARTIAL FALSE ALARM)",
-      "location": "Multiple migrations",
-      "impact": "Mixed: participant tables intentional for team collab, contact_organizations lacks company isolation",
-      "fix": "contact_organizations needs dual-auth pattern (auth + company_id). Participants OK (team-shared design).",
-      "status": "PARTIAL_FIX_NEEDED",
-      "verification": {
-        "date": "2026-01-26",
-        "verified_by": "Task 3.6 RLS Verification",
-        "findings": {
-          "opportunity_participants": "FALSE_ALARM - Lines 410-425 in ROLLBACK section only. Active policies (230,240,290,300) intentionally use USING(true) for team SELECT/INSERT. UPDATE/DELETE properly restricted.",
-          "interaction_participants": "FALSE_ALARM - Same as opportunity_participants. Intentional team collaboration design.",
-          "opportunity_contacts": "FIXED - 20260126010000_fix_opportunity_contacts_select_bypass.sql dropped permissive policy.",
-          "contact_organizations": "REAL_ISSUE - Uses auth.uid() IS NOT NULL (no company isolation). Needs dual-auth with company_id check."
-        }
-      }
+      "layer": "L2",
+      "category": "architecture",
+      "issue": "Missing .strict() on Zod schemas",
+      "location": "src/atomic-crm/validation/**/*.ts",
+      "impact": "Mass assignment vulnerability - invalid fields bypass validation",
+      "fix": "Add .strict() to all 30 z.object() schemas",
+      "status": "OPEN"
     },
     {
       "rank": 4,
-      "layer": "L1",
-      "category": "data-integrity",
-      "issue": "Hard DELETE in sync RPC",
-      "location": "20251029051621_update_sync_rpc_remove_pricing.sql:88",
-      "impact": "RPC bypasses soft-delete enforcement",
-      "fix": "Update RPC to use UPDATE deleted_at",
+      "layer": "L4",
+      "category": "accessibility",
+      "issue": "FormErrorSummary touch target below 44px",
+      "location": "FormErrorSummary.tsx:156-174",
+      "impact": "WCAG 2.5.5 Target Size violation",
+      "fix": "Add min-h-11 px-3 to expand button",
       "status": "OPEN"
     },
     {
       "rank": 5,
-      "layer": "L1",
-      "category": "db-hardening",
-      "issue": "segments permissive policy",
-      "location": "20251018152315_cloud_schema_fresh.sql",
-      "impact": "Any authenticated user can view all segments",
-      "fix": "Add auth.uid() IS NOT NULL check",
-      "status": "OPEN"
-    },
-    {
-      "rank": 6,
-      "layer": "L2",
-      "category": "typescript",
-      "issue": "any in supabaseAdmin proxy",
-      "location": "supabase/functions/_shared/supabaseAdmin.ts:37",
-      "impact": "Type safety bypassed for all Supabase admin operations",
-      "fix": "Use proper generic type parameter",
-      "status": "OPEN"
-    },
-    {
-      "rank": 7,
-      "layer": "L2",
-      "category": "typescript",
-      "issue": "any in updatePassword",
-      "location": "supabase/functions/updatePassword/index.ts:13",
-      "impact": "No type safety for user object",
-      "fix": "Define proper User type from Supabase auth",
-      "status": "OPEN"
-    },
-    {
-      "rank": 8,
-      "layer": "L3",
-      "category": "architecture",
-      "issue": "Tier 1 violation",
-      "location": "src/components/ui/filter-select-ui.tsx",
-      "impact": "React Admin code in dumb UI layer",
-      "fix": "Move to src/components/ra-wrappers/",
-      "status": "OPEN"
-    },
-    {
-      "rank": 9,
-      "layer": "L3",
-      "category": "architecture",
-      "issue": "Business logic in handler",
-      "location": "src/atomic-crm/providers/supabase/handlers/productsHandler.ts",
-      "impact": "Handlers should be plumbing only",
-      "fix": "Extract RPC calls to ProductsService",
-      "status": "OPEN"
-    },
-    {
-      "rank": 10,
       "layer": "L5",
       "category": "workflow-gaps",
       "issue": "Missing activity logging for stage transitions",
-      "location": "src/atomic-crm/providers/supabase/callbacks/opportunitiesCallbacks.ts",
+      "location": "opportunitiesCallbacks.ts:301-327",
       "impact": "Lost audit trail for pipeline progression",
       "fix": "Add afterUpdate callback to log stage changes",
       "status": "OPEN"
     },
     {
-      "rank": 11,
+      "rank": 6,
       "layer": "L5",
       "category": "workflow-gaps",
-      "issue": "Silent status defaults",
-      "location": "src/atomic-crm/validation/organizations.ts:189",
-      "impact": "Organizations default to 'active' without validation",
-      "fix": "Remove .default('active'), require explicit selection",
-      "status": "OPEN"
-    },
-    {
-      "rank": 12,
-      "layer": "L5",
-      "category": "workflow-gaps",
-      "issue": "Stage prerequisites not validated",
-      "location": "src/atomic-crm/validation/opportunities/opportunities-operations.ts:32-40",
-      "impact": "Opportunities advance without required data",
-      "fix": "Add business rule refinements",
-      "status": "OPEN"
-    },
-    {
-      "rank": 13,
-      "layer": "L5",
-      "category": "performance",
-      "issue": "Large pagination in reports",
-      "location": "src/atomic-crm/reports/hooks/useReportData.ts",
-      "impact": "perPage: 1000 causes slow loads",
-      "fix": "Use server-side aggregation via RPC",
-      "status": "OPEN"
-    },
-    {
-      "rank": 14,
-      "layer": "L5",
-      "category": "performance",
-      "issue": "Missing pagination limits",
-      "location": "10+ hooks in dashboard/",
-      "impact": "No explicit limits on list queries",
-      "fix": "Add { page: 1, perPage: 50 }",
+      "issue": "Field naming mismatch (closed_date vs actual_close_date)",
+      "location": "opportunitiesCallbacks.ts:274 vs schema:223",
+      "impact": "Close operations may fail validation",
+      "fix": "Align field names between callback and schema",
       "status": "OPEN"
     }
   ],
@@ -282,15 +191,15 @@
     "Strangler Fig migration COMPLETE (0 unifiedDataProvider lines, 24 handlers)",
     "Error handling 100% withErrorLogging coverage, fail-fast compliant",
     "Zero @ts-ignore directives in entire codebase",
+    "Zero 'as any' in production code (all 16 in test files - allowlisted)",
     "132 z.infer usages - strong schema-type derivation",
-    "WCAG 2.1 AA+ accessibility: aria-invalid, aria-describedby, role=alert",
+    "WCAG 2.1 AA compliant: 84 aria-invalid, 55 aria-describedby, 37 role=alert",
     "100% semantic color usage (0 hex codes, 0 hardcoded Tailwind)",
     "48px touch targets exceed WCAG AAA",
     "719 soft-delete RLS filters at database layer",
     "0 direct .delete() calls in application code",
-    "267 memoization hooks (99 useMemo, 156 useCallback, 12 React.memo)",
-    "All forms use onSubmit/onBlur mode (no onChange performance issues)",
-    "23 useWatch usages (proper isolated re-render pattern)"
+    "715 memoization hooks (useMemo + useCallback)",
+    "All forms use onSubmit/onBlur mode (no onChange performance issues)"
   ],
   "strangler_fig_status": {
     "unifiedDataProvider_lines": 0,
@@ -298,21 +207,21 @@
     "status": "COMPLETE"
   },
   "delta_from_previous": {
-    "previous_date": "2026-01-25",
-    "previous_time": "17:03",
-    "previous_critical": 6,
-    "previous_high": 17,
-    "previous_medium": 24,
-    "previous_total": 47,
-    "current_critical": 17,
-    "current_high": 80,
-    "current_medium": 83,
-    "current_total": 251,
-    "critical_change": 11,
-    "high_change": 63,
-    "medium_change": 59,
-    "total_change": 204,
-    "analysis": "Increase due to methodology expansion: TypeScript audit now includes Edge Functions/scripts, code-quality audit added comprehensive checks, performance audit added pagination verification. Core security posture unchanged (same RLS issues). No actual regression."
+    "previous_date": "2026-01-26",
+    "previous_time": "08:02",
+    "previous_critical": 16,
+    "previous_high": 80,
+    "previous_medium": 83,
+    "previous_total": 250,
+    "current_critical": 6,
+    "current_high": 22,
+    "current_medium": 39,
+    "current_total": 108,
+    "critical_change": -10,
+    "high_change": -58,
+    "medium_change": -44,
+    "total_change": -142,
+    "analysis": "Significant improvement from: RLS policy fixes (audit_trail, segments), allowlist filtering for false positives, refined methodology focusing on actionable findings, historical migration exclusion."
   },
   "audit_methodology": {
     "type": "Quick 11-Audit Parallel Execution",
@@ -322,8 +231,6 @@
     "batch2_agents": ["stale-state", "workflow-gaps", "architecture", "typescript"],
     "batch3_agents": ["accessibility", "performance", "code-quality"],
     "duration_minutes": 21,
-    "files_analyzed": 1287,
-    "lines_analyzed": 224543,
-    "migrations_analyzed": 306
+    "allowlist_entries": 6
   }
 }

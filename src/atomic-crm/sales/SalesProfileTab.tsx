@@ -7,6 +7,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import type { Sale } from "@/atomic-crm/types";
 import { salesProfileSchema } from "@/atomic-crm/validation/sales";
 import { getInitials } from "@/atomic-crm/utils/formatters";
+import { notificationMessages } from "@/atomic-crm/constants/notificationMessages";
 // NOTE: Client-side validation removed (2025-12-12)
 // Edge Function /users PATCH handles validation with patchUserSchema
 // salesService.salesUpdate() filters empty strings before sending to Edge Function
@@ -101,7 +102,7 @@ export function SalesProfileTab({
         { id: record.id, data: formData, previousData: record },
         {
           onSuccess: () => {
-            notify("Profile updated successfully", { type: "success" });
+            notify(notificationMessages.updated("Profile"), { type: "success" });
             if (onModeToggle) onModeToggle(); // Switch back to view mode
           },
           onError: (error: Error) => {

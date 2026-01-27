@@ -12,6 +12,7 @@ import {
   useRecordContext,
   useRedirect,
 } from "ra-core";
+import { notificationMessages } from "@/atomic-crm/constants/notificationMessages";
 import type { SubmitHandler } from "react-hook-form";
 import { SalesService } from "../services";
 import type { Sale, SalesFormData } from "../types";
@@ -56,7 +57,7 @@ export default function SalesEdit() {
       queryClient.invalidateQueries({ queryKey: saleKeys.detail(record?.id ?? 0) });
 
       redirect("/sales");
-      notify("User updated successfully");
+      notify(notificationMessages.updated("User"), { type: "success" });
     },
     onError: () => {
       notify("An error occurred. Please try again.");

@@ -16,6 +16,7 @@ import {
 import { cn } from "@/lib/utils";
 import type { ReactNode } from "react";
 import { DeleteConfirmDialog } from "./delete-confirm-dialog";
+import { notificationMessages } from "@/atomic-crm/constants/notificationMessages";
 
 export interface BulkDeleteButtonProps<
   RecordType extends RaRecord = RaRecord,
@@ -69,14 +70,9 @@ export const BulkDeleteButton = <
         mutationMode,
         onSuccess: () => {
           onUnselectItems();
-          notify(`resources.${resource}.notifications.deleted`, {
-            messageArgs: {
-              smart_count: selectedIds.length,
-              _: translate("ra.notification.deleted", {
-                smart_count: selectedIds.length,
-                _: `${selectedIds.length} elements deleted`,
-              }),
-            },
+          const entityName = resource.slice(0, -1); // "contacts" -> "contact"
+          notify(notificationMessages.bulkDeleted(selectedIds.length, entityName), {
+            type: "success",
             undoable: mutationMode === "undoable",
           });
         },

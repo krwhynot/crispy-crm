@@ -1,6 +1,6 @@
 {
   "chunk_name": "tags",
-  "generated_at": "2026-01-26T21:45:48.494Z",
+  "generated_at": "2026-01-27T19:23:53.647Z",
   "item_count": 22,
   "items": [
     {
@@ -291,7 +291,7 @@
     {
       "name": "TagQuickInput",
       "file": "src/atomic-crm/tags/TagQuickInput.tsx",
-      "line": 15,
+      "line": 16,
       "type": "presentational",
       "hooks": [
         "useCreate",
@@ -300,6 +300,7 @@
         "useState"
       ],
       "imports": [
+        "@/atomic-crm/constants/notificationMessages",
         "@/atomic-crm/hooks/useSafeNotify",
         "@/components/ra-wrappers/generic-select-input",
         "react",
@@ -313,7 +314,7 @@
     {
       "name": "TagSelectWithCreate",
       "file": "src/atomic-crm/tags/TagSelectWithCreate.tsx",
-      "line": 19,
+      "line": 20,
       "type": "presentational",
       "hooks": [
         "useCreate",
@@ -324,6 +325,7 @@
       "imports": [
         "../types",
         "./TagDialog",
+        "@/atomic-crm/constants/notificationMessages",
         "@/atomic-crm/hooks/useSafeNotify",
         "@/components/admin/AdminButton",
         "@/components/ra-wrappers/generic-select-input",
@@ -398,7 +400,7 @@
     {
       "name": "TagSelectWithCreate",
       "file": "src/atomic-crm/tags/index.tsx",
-      "line": 19,
+      "line": 20,
       "type": "presentational",
       "hooks": [
         "useCreate",

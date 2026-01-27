@@ -1,6 +1,6 @@
 {
   "chunk_name": "organizations",
-  "generated_at": "2026-01-26T21:45:48.476Z",
+  "generated_at": "2026-01-27T19:23:53.634Z",
   "item_count": 76,
   "items": [
     {
@@ -456,7 +456,7 @@
     {
       "name": "OrganizationBulkDeleteButton",
       "file": "src/atomic-crm/organizations/OrganizationBulkDeleteButton.tsx",
-      "line": 30,
+      "line": 31,
       "type": "presentational",
       "hooks": [
         "useDeleteMany",
@@ -471,6 +471,7 @@
       "imports": [
         "../hooks/useRelatedRecordCounts",
         "../types",
+        "@/atomic-crm/constants/notificationMessages",
         "@/components/admin/AdminButton",
         "@/components/ra-wrappers/delete-confirm-dialog",
         "lucide-react",
@@ -489,7 +490,7 @@
     {
       "name": "OrganizationBulkDeleteButton",
       "file": "src/atomic-crm/organizations/OrganizationBulkDeleteButton.tsx",
-      "line": 30,
+      "line": 31,
       "type": "presentational",
       "hooks": [
         "useDeleteMany",
@@ -504,6 +505,7 @@
       "imports": [
         "../hooks/useRelatedRecordCounts",
         "../types",
+        "@/atomic-crm/constants/notificationMessages",
         "@/components/admin/AdminButton",
         "@/components/ra-wrappers/delete-confirm-dialog",
         "lucide-react",
@@ -554,7 +556,7 @@
     {
       "name": "OrganizationCreate",
       "file": "src/atomic-crm/organizations/OrganizationCreate.tsx",
-      "line": 65,
+      "line": 66,
       "type": "presentational",
       "hooks": [
         "useCallback",
@@ -578,6 +580,7 @@
         "./OrganizationInputs",
         "./types",
         "./useDuplicateOrgCheck",
+        "@/atomic-crm/constants/notificationMessages",
         "@/atomic-crm/hooks/useSmartDefaults",
         "@/components/ra-wrappers/form",
         "@/components/ui/card",
@@ -603,7 +606,7 @@
     {
       "name": "OrganizationCreate",
       "file": "src/atomic-crm/organizations/OrganizationCreate.tsx",
-      "line": 65,
+      "line": 66,
       "type": "presentational",
       "hooks": [
         "useCallback",
@@ -627,6 +630,7 @@
         "./OrganizationInputs",
         "./types",
         "./useDuplicateOrgCheck",
+        "@/atomic-crm/constants/notificationMessages",
         "@/atomic-crm/hooks/useSmartDefaults",
         "@/components/ra-wrappers/form",
         "@/components/ui/card",
@@ -652,7 +656,7 @@
     {
       "name": "OrganizationCreateFormFooter",
       "file": "src/atomic-crm/organizations/OrganizationCreateFormFooter.tsx",
-      "line": 31,
+      "line": 32,
       "type": "presentational",
       "hooks": [
         "useCallback",
@@ -666,6 +670,7 @@
       ],
       "imports": [
         "./types",
+        "@/atomic-crm/constants/notificationMessages",
         "@/atomic-crm/hooks/useSafeNotify",
         "@/components/admin/AdminButton",
         "@/components/ra-wrappers/form",
@@ -1525,7 +1530,7 @@
     {
       "name": "QuickCreatePopover",
       "file": "src/atomic-crm/organizations/QuickCreatePopover.tsx",
-      "line": 89,
+      "line": 90,
       "type": "presentational",
       "hooks": [
         "useDataProvider",
@@ -1535,6 +1540,7 @@
         "useState"
       ],
       "imports": [
+        "@/atomic-crm/constants/notificationMessages",
         "@/atomic-crm/queryKeys",
         "@/atomic-crm/validation/organizations",
         "@/atomic-crm/validation/segments",
@@ -1561,7 +1567,7 @@
     {
       "name": "QuickCreateOrganizationRA",
       "file": "src/atomic-crm/organizations/QuickCreatePopover.tsx",
-      "line": 281,
+      "line": 282,
       "type": "presentational",
       "hooks": [
         "useCreateSuggestionContext",
@@ -1572,6 +1578,7 @@
         "useState"
       ],
       "imports": [
+        "@/atomic-crm/constants/notificationMessages",
         "@/atomic-crm/queryKeys",
         "@/atomic-crm/validation/organizations",
         "@/atomic-crm/validation/segments",
@@ -1631,7 +1638,7 @@
     {
       "name": "OrganizationCreate",
       "file": "src/atomic-crm/organizations/index.tsx",
-      "line": 65,
+      "line": 66,
       "type": "presentational",
       "hooks": [
         "useCallback",
@@ -1917,7 +1924,7 @@
     {
       "name": "OrganizationDetailsTab",
       "file": "src/atomic-crm/organizations/slideOverTabs/OrganizationDetailsTab.tsx",
-      "line": 66,
+      "line": 67,
       "type": "presentational",
       "hooks": [
         "useNotify",
@@ -1932,6 +1939,7 @@
         "../ParentOrganizationInput",
         "../constants",
         "../types",
+        "@/atomic-crm/constants/notificationMessages",
         "@/components/layouts/sidepane",
         "@/components/ra-wrappers/SegmentComboboxInput",
         "@/components/ra-wrappers/autocomplete-array-input",

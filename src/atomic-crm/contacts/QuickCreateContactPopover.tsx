@@ -14,6 +14,7 @@ import {
   quickCreateContactFormSchema,
   type QuickCreateContactFormInput,
 } from "@/atomic-crm/validation/contacts";
+import { notificationMessages } from "@/atomic-crm/constants/notificationMessages";
 
 interface QuickCreateContactPopoverProps {
   name: string;
@@ -65,7 +66,7 @@ export function QuickCreateContactPopover({
         });
         queryClient.invalidateQueries({ queryKey: contactKeys.all });
         queryClient.invalidateQueries({ queryKey: organizationKeys.all });
-        notify("Contact created", { type: "success" });
+        notify(notificationMessages.created("Contact"), { type: "success" });
         onCreated(result.data as { id: number; first_name: string; last_name: string });
         setOpen(false);
       } catch {
@@ -100,7 +101,7 @@ export function QuickCreateContactPopover({
       });
       queryClient.invalidateQueries({ queryKey: contactKeys.all });
       queryClient.invalidateQueries({ queryKey: organizationKeys.all });
-      notify("Contact created", { type: "success" });
+      notify(notificationMessages.created("Contact"), { type: "success" });
       onCreated(result.data as { id: number; first_name: string; last_name: string });
       setOpen(false);
     } catch (error: unknown) {
@@ -249,7 +250,7 @@ export function QuickCreateContactRA({
         });
         queryClient.invalidateQueries({ queryKey: contactKeys.all });
         queryClient.invalidateQueries({ queryKey: organizationKeys.all });
-        notify("Contact created", { type: "success" });
+        notify(notificationMessages.created("Contact"), { type: "success" });
         onCreate(result.data); // KEY FIX: Pass real record back to RA
       } catch (error: unknown) {
         notify("Failed to create contact", { type: "error" });
@@ -284,7 +285,7 @@ export function QuickCreateContactRA({
       });
       queryClient.invalidateQueries({ queryKey: contactKeys.all });
       queryClient.invalidateQueries({ queryKey: organizationKeys.all });
-      notify("Contact created", { type: "success" });
+      notify(notificationMessages.created("Contact"), { type: "success" });
       onCreate(result.data); // KEY FIX: Pass real record back to RA
     } catch (error: unknown) {
       logger.error("Failed to create contact via autocomplete", error, {

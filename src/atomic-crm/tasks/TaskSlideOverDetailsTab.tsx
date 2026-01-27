@@ -3,6 +3,7 @@ import { useUpdate, useNotify, RecordContextProvider } from "ra-core";
 import { useQueryClient } from "@tanstack/react-query";
 import { Form } from "react-admin";
 import { logger } from "@/lib/logger";
+import { notificationMessages } from "@/atomic-crm/constants/notificationMessages";
 import { taskKeys } from "../queryKeys";
 import { TaskCompletionDialog } from "./TaskCompletionDialog";
 import { SnoozeIndicator } from "@/components/ui/snooze-badge";
@@ -69,7 +70,7 @@ export function TaskSlideOverDetailsTab({
         previousData: record,
       });
       queryClient.invalidateQueries({ queryKey: taskKeys.all });
-      notify("Task updated successfully", { type: "success" });
+      notify(notificationMessages.updated("Task"), { type: "success" });
       onModeToggle?.(); // Return to view mode after successful save
     } catch (error: unknown) {
       notify("Error updating task", { type: "error" });

@@ -1,6 +1,6 @@
 {
   "chunk_name": "activities",
-  "generated_at": "2026-01-26T21:45:48.451Z",
+  "generated_at": "2026-01-27T19:23:53.610Z",
   "item_count": 32,
   "items": [
     {
@@ -671,7 +671,7 @@
     {
       "name": "ActivityDetailsTab",
       "file": "src/atomic-crm/activities/slideOverTabs/ActivityDetailsTab.tsx",
-      "line": 58,
+      "line": 59,
       "type": "presentational",
       "hooks": [
         "useNotify",
@@ -683,6 +683,7 @@
         "../../queryKeys",
         "../../types",
         "../../validation/activities",
+        "@/atomic-crm/constants/notificationMessages",
         "@/atomic-crm/utils",
         "@/components/layouts/sidepane",
         "@/components/ra-wrappers/autocomplete-input",

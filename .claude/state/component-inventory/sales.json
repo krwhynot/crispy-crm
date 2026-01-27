@@ -1,6 +1,6 @@
 {
   "chunk_name": "sales",
-  "generated_at": "2026-01-26T21:45:48.488Z",
+  "generated_at": "2026-01-27T19:23:53.644Z",
   "item_count": 23,
   "items": [
     {
@@ -96,7 +96,7 @@
     {
       "name": "SalesEdit",
       "file": "src/atomic-crm/sales/SalesEdit.tsx",
-      "line": 32,
+      "line": 33,
       "type": "presentational",
       "hooks": [
         "useDataProvider",
@@ -112,6 +112,7 @@
         "../types",
         "../utils/formatName",
         "./SalesInputs",
+        "@/atomic-crm/constants/notificationMessages",
         "@/atomic-crm/queryKeys",
         "@/atomic-crm/validation/sales",
         "@/components/ra-wrappers/cancel-button",
@@ -251,7 +252,7 @@
     {
       "name": "SalesPermissionsTab",
       "file": "src/atomic-crm/sales/SalesPermissionsTab.tsx",
-      "line": 62,
+      "line": 63,
       "type": "presentational",
       "hooks": [
         "useDelete",
@@ -266,6 +267,7 @@
       "imports": [
         "../providers/supabase/authProvider",
         "./UserDisableReassignDialog",
+        "@/atomic-crm/constants/notificationMessages",
         "@/atomic-crm/hooks",
         "@/atomic-crm/types",
         "@/atomic-crm/validation/sales",
@@ -290,7 +292,7 @@
     {
       "name": "SalesProfileTab",
       "file": "src/atomic-crm/sales/SalesProfileTab.tsx",
-      "line": 39,
+      "line": 40,
       "type": "presentational",
       "hooks": [
         "useEffect",
@@ -299,6 +301,7 @@
         "useUpdate"
       ],
       "imports": [
+        "@/atomic-crm/constants/notificationMessages",
         "@/atomic-crm/types",
         "@/atomic-crm/utils/formatters",
         "@/atomic-crm/validation/sales",

@@ -263,15 +263,15 @@ async function opportunitiesBeforeGetList(
  * Validate stage transition prerequisites
  *
  * Enforces business rules for stage changes:
- * - closed_won/closed_lost require closed_date
+ * - closed_won/closed_lost require actual_close_date
  *
  * @param toStage - Target stage
  * @param data - Opportunity data being saved
  * @throws Error if prerequisites not met
  */
 function validateStageTransition(toStage: string, data: Partial<RaRecord>): void {
-  // Closed stages require closed_date
-  if (["closed_won", "closed_lost"].includes(toStage) && !data.closed_date) {
+  // Closed stages require actual_close_date
+  if (["closed_won", "closed_lost"].includes(toStage) && !data.actual_close_date) {
     throw new Error("Close date required when closing opportunity");
   }
 }

@@ -1,5 +1,6 @@
 import { describe, test, expect, vi, beforeEach } from "vitest";
 import { render, screen } from "@testing-library/react";
+import { z } from "zod";
 import { FormProgressBar } from "../FormProgressBar";
 
 vi.mock("../formProgressUtils", () => ({
@@ -9,6 +10,10 @@ vi.mock("../formProgressUtils", () => ({
     totalRequired: 4,
     fields: {},
   })),
+}));
+
+vi.mock("@/atomic-crm/utils/getRequiredFields", () => ({
+  getRequiredFields: vi.fn(() => ["name", "email", "phone"]),
 }));
 
 describe("FormProgressBar", () => {
@@ -132,8 +137,84 @@ describe("FormProgressBar", () => {
   test("semantic muted text color applied to step info", () => {
     const { container } = render(<FormProgressBar />);
 
-    // Component uses text-foreground/70 for muted text styling
     const stepInfoContainer = container.querySelector('[class*="text-foreground"]');
     expect(stepInfoContainer).toBeInTheDocument();
+  });
+
+  describe("Dot indicator mode (with schema)", () => {
+    const mockSchema = z.strictObject({
+      name: z.string().min(1),
+      email: z.string().email(),
+      phone: z.string(),
+      description: z.string().optional(),
+    });
+
+    test("renders dots instead of progress bar when schema provided", () => {
+      render(<FormProgressBar schema={mockSchema} />);
+
+      expect(screen.queryByRole("progressbar")).not.toBeInTheDocument();
+
+      expect(screen.getByRole("group")).toBeInTheDocument();
+    });
+
+    test("renders correct number of dots based on schema required fields", () => {
+      render(<FormProgressBar schema={mockSchema} />);
+
+      const dots = screen.getAllByRole("img");
+      expect(dots).toHaveLength(3);
+    });
+
+    test("filled dots match completedRequired count", () => {
+      render(<FormProgressBar schema={mockSchema} />);
+
+      const dots = screen.getAllByRole("img");
+
+      expect(dots[0]).toHaveAttribute("aria-label", "Completed");
+      expect(dots[1]).toHaveAttribute("aria-label", "Completed");
+      expect(dots[2]).toHaveAttribute("aria-label", "Pending");
+    });
+
+    test("dots have correct accessibility labels", () => {
+      render(<FormProgressBar schema={mockSchema} />);
+
+      const group = screen.getByRole("group");
+      expect(group).toHaveAttribute("aria-label", "2 of 3 required fields complete");
+    });
+
+    test("hides percentage in dot mode", () => {
+      render(<FormProgressBar schema={mockSchema} />);
+
+      expect(screen.queryByText("50%")).not.toBeInTheDocument();
+    });
+
+    test("shows field count text in dot mode", () => {
+      render(<FormProgressBar schema={mockSchema} />);
+
+      expect(screen.getByText("2 of 3 required fields")).toBeInTheDocument();
+    });
+
+    test("dot mode respects showStepInfo=false", () => {
+      render(<FormProgressBar schema={mockSchema} showStepInfo={false} />);
+
+      expect(screen.queryByText("2 of 3 required fields")).not.toBeInTheDocument();
+      expect(screen.getByRole("group")).toBeInTheDocument();
+    });
+  });
+
+  describe("backward compatibility", () => {
+    test("no schema renders percentage bar (existing behavior)", () => {
+      render(<FormProgressBar />);
+
+      expect(screen.getByRole("progressbar")).toBeInTheDocument();
+      expect(screen.queryByRole("group")).not.toBeInTheDocument();
+    });
+
+    test("wizard mode ignores schema and shows percentage bar", () => {
+      const mockSchema = z.strictObject({ name: z.string() });
+      render(<FormProgressBar schema={mockSchema} currentStep={1} totalSteps={3} />);
+
+      expect(screen.getByRole("progressbar")).toBeInTheDocument();
+      expect(screen.queryByRole("group")).not.toBeInTheDocument();
+    });
   });
 });

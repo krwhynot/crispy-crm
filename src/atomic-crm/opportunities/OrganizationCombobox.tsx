@@ -9,6 +9,7 @@ import { Combobox } from "@/components/ui/combobox";
 import { Popover, PopoverContent, PopoverAnchor } from "@/components/ui/popover";
 import { organizationKeys } from "@/atomic-crm/queryKeys";
 import { PLAYBOOK_CATEGORY_IDS } from "@/atomic-crm/validation/segments";
+import { notificationMessages } from "@/atomic-crm/constants/notificationMessages";
 
 interface InlineCreateOrganizationProps {
   name: string;
@@ -40,7 +41,7 @@ function InlineCreateOrganization({ name, onCreated, onCancel }: InlineCreateOrg
         },
       });
       queryClient.invalidateQueries({ queryKey: organizationKeys.all });
-      notify("Organization created", { type: "success" });
+      notify(notificationMessages.created("Organization"), { type: "success" });
       onCreated(result.data as { id: number; name: string });
     } catch {
       notify("Failed to create organization", { type: "error" });

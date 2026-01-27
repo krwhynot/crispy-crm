@@ -1,12 +1,12 @@
 {
   "chunk_name": "notes",
-  "generated_at": "2026-01-26T21:45:48.466Z",
+  "generated_at": "2026-01-27T19:23:53.626Z",
   "item_count": 5,
   "items": [
     {
       "name": "Note",
       "file": "src/atomic-crm/notes/Note.tsx",
-      "line": 25,
+      "line": 26,
       "type": "presentational",
       "hooks": [
         "useCallback",
@@ -24,6 +24,7 @@
         "../sales/SaleName",
         "../types",
         "./NoteInputs",
+        "@/atomic-crm/constants/notificationMessages",
         "@/components/admin/AdminButton",
         "@/components/ra-wrappers/reference-field",
         "@/components/ui",

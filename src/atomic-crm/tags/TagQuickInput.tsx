@@ -2,6 +2,7 @@ import { useState } from "react";
 import { ReferenceInput, useCreate, useRefresh } from "react-admin";
 import { GenericSelectInput } from "@/components/ra-wrappers/generic-select-input";
 import { useSafeNotify } from "@/atomic-crm/hooks/useSafeNotify";
+import { notificationMessages } from "@/atomic-crm/constants/notificationMessages";
 
 interface TagQuickInputProps {
   source: string;
@@ -26,7 +27,7 @@ export function TagQuickInput({ source, label }: TagQuickInputProps) {
       { data: { name: name.trim(), color: "warm" } },
       {
         onSuccess: () => {
-          success("Tag created");
+          success(notificationMessages.created("Tag"));
           refresh();
         },
         onError: (err: unknown) => {

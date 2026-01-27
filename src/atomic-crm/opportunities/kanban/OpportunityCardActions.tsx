@@ -23,6 +23,7 @@ import type { CloseOpportunityInput } from "@/atomic-crm/validation/opportunitie
 import type { Opportunity } from "../../types";
 import { STAGE } from "@/atomic-crm/opportunities/constants";
 import { opportunityKeys } from "@/atomic-crm/queryKeys";
+import { notificationMessages } from "@/atomic-crm/constants/notificationMessages";
 
 interface OpportunityCardActionsProps {
   opportunityId: number;
@@ -139,7 +140,7 @@ export function OpportunityCardActions({ opportunityId, onDelete }: OpportunityC
     setShowDeleteDialog(false);
     try {
       await deleteOne("opportunities", { id: opportunityId, previousData: {} });
-      notify("Opportunity deleted", { type: "success" });
+      notify(notificationMessages.deleted("Opportunity"), { type: "success" });
       if (onDelete) {
         onDelete(opportunityId);
       } else {

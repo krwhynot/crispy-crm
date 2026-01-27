@@ -11,6 +11,7 @@ import { ContactAside } from "./ContactAside";
 import { ContactInputs } from "./ContactInputs";
 import { FormToolbar } from "../layout/FormToolbar";
 import { contactBaseSchema } from "@/atomic-crm/validation/contacts";
+import { notificationMessages } from "@/atomic-crm/constants/notificationMessages";
 
 export const ContactEdit = () => {
   const queryClient = useQueryClient();
@@ -27,7 +28,7 @@ export const ContactEdit = () => {
           queryClient.invalidateQueries({ queryKey: contactKeys.all });
           queryClient.invalidateQueries({ queryKey: activityKeys.all });
           queryClient.invalidateQueries({ queryKey: opportunityKeys.all });
-          success("Contact updated successfully");
+          success(notificationMessages.updated("Contact"));
         },
         onError: (err: Error) => {
           // BUG-008 fix: Catch validation errors, RLS failures, network errors

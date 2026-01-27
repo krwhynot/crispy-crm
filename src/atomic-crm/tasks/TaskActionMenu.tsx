@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNotify, useUpdate, useDelete } from "react-admin";
 import { useQueryClient } from "@tanstack/react-query";
 import { taskKeys } from "@/atomic-crm/queryKeys";
+import { notificationMessages } from "@/atomic-crm/constants/notificationMessages";
 import { AdminButton } from "@/components/admin/AdminButton";
 import {
   DropdownMenu,
@@ -104,7 +105,7 @@ export function TaskActionMenu({
     try {
       await deleteOne("tasks", { id: taskId, previousData: task });
       queryClient.invalidateQueries({ queryKey: taskKeys.all });
-      notify("Task deleted", { type: "success" });
+      notify(notificationMessages.deleted("Task"), { type: "success" });
     } catch {
       notify("Failed to delete task", { type: "error" });
     } finally {

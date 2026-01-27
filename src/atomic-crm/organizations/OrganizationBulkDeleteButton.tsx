@@ -12,6 +12,7 @@ import { Trash } from "lucide-react";
 import { DeleteConfirmDialog } from "@/components/ra-wrappers/delete-confirm-dialog";
 import { useRelatedRecordCounts } from "../hooks/useRelatedRecordCounts";
 import type { OrganizationWithHierarchy } from "../types";
+import { notificationMessages } from "@/atomic-crm/constants/notificationMessages";
 
 /**
  * OrganizationBulkDeleteButton - Delete button with client-side validation
@@ -83,8 +84,8 @@ export const OrganizationBulkDeleteButton = () => {
         mutationMode: "undoable",
         onSuccess: () => {
           onUnselectItems();
-          notify(`resources.${resource}.notifications.deleted`, {
-            messageArgs: { smart_count: selectedIds.length },
+          notify(notificationMessages.bulkDeleted(selectedIds.length, "organization"), {
+            type: "success",
             undoable: true,
           });
         },

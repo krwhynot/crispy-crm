@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useGetList, Form, useUpdate, ReferenceArrayInput, useDataProvider } from "react-admin";
 import { logger } from "@/lib/logger";
 import { useSafeNotify } from "@/atomic-crm/hooks/useSafeNotify";
+import { notificationMessages } from "@/atomic-crm/constants/notificationMessages";
 import type { Identifier } from "react-admin";
 import { useQueryClient } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
@@ -104,7 +105,7 @@ export function OpportunityProductsTab({
         },
         {
           onSuccess: async () => {
-            success("Products updated successfully");
+            success(notificationMessages.updated("Products"));
 
             try {
               const productCount = data.product_ids?.length ?? 0;

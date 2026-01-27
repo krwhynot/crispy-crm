@@ -9,6 +9,7 @@ import { useSafeNotify } from "@/atomic-crm/hooks/useSafeNotify";
 import { digestKeys } from "../queryKeys";
 import { Mail, Bell, BellOff } from "lucide-react";
 import type { ExtendedDataProvider } from "../providers/supabase/extensions/types";
+import { notificationMessages } from "@/atomic-crm/constants/notificationMessages";
 
 /**
  * Response type from get_digest_preference RPC
@@ -75,7 +76,7 @@ export function DigestPreferences() {
     onSuccess: (data) => {
       // Invalidate and refetch
       queryClient.invalidateQueries({ queryKey: digestKeys.all });
-      success(data.message || "Preference updated successfully");
+      success(data.message || notificationMessages.updated("Preference"));
     },
     onError: (error: Error) => {
       actionError(error, "update", "preference");

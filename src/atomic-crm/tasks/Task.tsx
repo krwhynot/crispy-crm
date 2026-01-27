@@ -9,6 +9,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useQueryClient } from "@tanstack/react-query";
+import { notificationMessages } from "@/atomic-crm/constants/notificationMessages";
 
 import { taskKeys } from "../queryKeys";
 import {
@@ -65,7 +66,7 @@ export const Task = ({ task, showContact }: { task: TData; showContact?: boolean
     redirect: false,
     mutationOptions: {
       onSuccess() {
-        notify("Task deleted successfully", { undoable: true });
+        notify(notificationMessages.deleted("Task"), { undoable: true });
       },
     },
   });

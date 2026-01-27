@@ -1,6 +1,6 @@
 {
   "chunk_name": "settings",
-  "generated_at": "2026-01-26T21:46:11.503Z",
+  "generated_at": "2026-01-27T19:24:23.155Z",
   "items": {
     "nodes": [
       {
@@ -13,10 +13,10 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/settings/DigestPreferences.tsx:41:DigestPreferences",
+        "id": "src/atomic-crm/settings/DigestPreferences.tsx:42:DigestPreferences",
         "name": "DigestPreferences",
         "file": "src/atomic-crm/settings/DigestPreferences.tsx",
-        "line": 41,
+        "line": 42,
         "nodeType": "component",
         "exported": true,
         "async": false
@@ -249,250 +249,250 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/settings/DigestPreferences.tsx:41:DigestPreferences",
+        "source": "src/atomic-crm/settings/DigestPreferences.tsx:42:DigestPreferences",
         "target": "useSafeNotify",
         "targetName": "useSafeNotify",
-        "edgeType": "hook",
-        "line": 42,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/settings/DigestPreferences.tsx:41:DigestPreferences",
-        "target": "useQueryClient",
-        "targetName": "useQueryClient",
         "edgeType": "hook",
         "line": 43,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/settings/DigestPreferences.tsx:41:DigestPreferences",
-        "target": "useDataProvider",
-        "targetName": "useDataProvider",
+        "source": "src/atomic-crm/settings/DigestPreferences.tsx:42:DigestPreferences",
+        "target": "useQueryClient",
+        "targetName": "useQueryClient",
         "edgeType": "hook",
         "line": 44,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/settings/DigestPreferences.tsx:41:DigestPreferences",
+        "source": "src/atomic-crm/settings/DigestPreferences.tsx:42:DigestPreferences",
+        "target": "useDataProvider",
+        "targetName": "useDataProvider",
+        "edgeType": "hook",
+        "line": 45,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/settings/DigestPreferences.tsx:42:DigestPreferences",
         "target": "useQuery",
         "targetName": "useQuery",
         "edgeType": "hook",
-        "line": 51,
+        "line": 52,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/settings/DigestPreferences.tsx:41:DigestPreferences",
+        "source": "src/atomic-crm/settings/DigestPreferences.tsx:42:DigestPreferences",
         "target": "rpc",
         "targetName": "rpc",
         "edgeType": "call",
-        "line": 55,
+        "line": 56,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/settings/DigestPreferences.tsx:41:DigestPreferences",
+        "source": "src/atomic-crm/settings/DigestPreferences.tsx:42:DigestPreferences",
         "target": "useMutation",
         "targetName": "useMutation",
         "edgeType": "hook",
-        "line": 61,
+        "line": 62,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/settings/DigestPreferences.tsx:41:DigestPreferences",
+        "source": "src/atomic-crm/settings/DigestPreferences.tsx:42:DigestPreferences",
         "target": "rpc",
         "targetName": "rpc",
         "edgeType": "call",
-        "line": 64,
+        "line": 65,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/settings/DigestPreferences.tsx:41:DigestPreferences",
+        "source": "src/atomic-crm/settings/DigestPreferences.tsx:42:DigestPreferences",
         "target": "invalidateQueries",
         "targetName": "invalidateQueries",
-        "edgeType": "call",
-        "line": 77,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/settings/DigestPreferences.tsx:41:DigestPreferences",
-        "target": "success",
-        "targetName": "success",
         "edgeType": "call",
         "line": 78,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/settings/DigestPreferences.tsx:41:DigestPreferences",
+        "source": "src/atomic-crm/settings/DigestPreferences.tsx:42:DigestPreferences",
+        "target": "success",
+        "targetName": "success",
+        "edgeType": "call",
+        "line": 79,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/settings/DigestPreferences.tsx:42:DigestPreferences",
+        "target": "updated",
+        "targetName": "updated",
+        "edgeType": "call",
+        "line": 79,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/settings/DigestPreferences.tsx:42:DigestPreferences",
         "target": "actionError",
         "targetName": "actionError",
         "edgeType": "call",
-        "line": 81,
+        "line": 82,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/settings/DigestPreferences.tsx:41:DigestPreferences",
+        "source": "src/atomic-crm/settings/DigestPreferences.tsx:42:DigestPreferences",
         "target": "updatePreference",
         "targetName": "updatePreference",
         "edgeType": "call",
-        "line": 86,
+        "line": 87,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/settings/DigestPreferences.tsx:41:DigestPreferences",
+        "source": "src/atomic-crm/settings/DigestPreferences.tsx:42:DigestPreferences",
         "target": "Card",
         "targetName": "Card",
-        "edgeType": "render",
-        "line": 92,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/settings/DigestPreferences.tsx:41:DigestPreferences",
-        "target": "CardHeader",
-        "targetName": "CardHeader",
         "edgeType": "render",
         "line": 93,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/settings/DigestPreferences.tsx:41:DigestPreferences",
-        "target": "CardTitle",
-        "targetName": "CardTitle",
+        "source": "src/atomic-crm/settings/DigestPreferences.tsx:42:DigestPreferences",
+        "target": "CardHeader",
+        "targetName": "CardHeader",
         "edgeType": "render",
         "line": 94,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/settings/DigestPreferences.tsx:41:DigestPreferences",
-        "target": "CardContent",
-        "targetName": "CardContent",
-        "edgeType": "render",
-        "line": 99,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/settings/DigestPreferences.tsx:41:DigestPreferences",
-        "target": "Card",
-        "targetName": "Card",
-        "edgeType": "render",
-        "line": 115,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/settings/DigestPreferences.tsx:41:DigestPreferences",
-        "target": "CardHeader",
-        "targetName": "CardHeader",
-        "edgeType": "render",
-        "line": 116,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/settings/DigestPreferences.tsx:41:DigestPreferences",
+        "source": "src/atomic-crm/settings/DigestPreferences.tsx:42:DigestPreferences",
         "target": "CardTitle",
         "targetName": "CardTitle",
-        "edgeType": "render",
-        "line": 117,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/settings/DigestPreferences.tsx:41:DigestPreferences",
-        "target": "CardContent",
-        "targetName": "CardContent",
-        "edgeType": "render",
-        "line": 122,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/settings/DigestPreferences.tsx:41:DigestPreferences",
-        "target": "Card",
-        "targetName": "Card",
-        "edgeType": "render",
-        "line": 134,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/settings/DigestPreferences.tsx:41:DigestPreferences",
-        "target": "CardHeader",
-        "targetName": "CardHeader",
-        "edgeType": "render",
-        "line": 135,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/settings/DigestPreferences.tsx:41:DigestPreferences",
-        "target": "CardTitle",
-        "targetName": "CardTitle",
-        "edgeType": "render",
-        "line": 136,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/settings/DigestPreferences.tsx:41:DigestPreferences",
-        "target": "CardDescription",
-        "targetName": "CardDescription",
-        "edgeType": "render",
-        "line": 140,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/settings/DigestPreferences.tsx:41:DigestPreferences",
-        "target": "CardContent",
-        "targetName": "CardContent",
-        "edgeType": "render",
-        "line": 144,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/settings/DigestPreferences.tsx:41:DigestPreferences",
-        "target": "Label",
-        "targetName": "Label",
-        "edgeType": "render",
-        "line": 153,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/settings/DigestPreferences.tsx:41:DigestPreferences",
-        "target": "Mail",
-        "targetName": "Mail",
         "edgeType": "render",
         "line": 95,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/settings/DigestPreferences.tsx:41:DigestPreferences",
-        "target": "Skeleton",
-        "targetName": "Skeleton",
+        "source": "src/atomic-crm/settings/DigestPreferences.tsx:42:DigestPreferences",
+        "target": "CardContent",
+        "targetName": "CardContent",
         "edgeType": "render",
-        "line": 102,
+        "line": 100,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/settings/DigestPreferences.tsx:41:DigestPreferences",
+        "source": "src/atomic-crm/settings/DigestPreferences.tsx:42:DigestPreferences",
+        "target": "Card",
+        "targetName": "Card",
+        "edgeType": "render",
+        "line": 116,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/settings/DigestPreferences.tsx:42:DigestPreferences",
+        "target": "CardHeader",
+        "targetName": "CardHeader",
+        "edgeType": "render",
+        "line": 117,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/settings/DigestPreferences.tsx:42:DigestPreferences",
+        "target": "CardTitle",
+        "targetName": "CardTitle",
+        "edgeType": "render",
+        "line": 118,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/settings/DigestPreferences.tsx:42:DigestPreferences",
+        "target": "CardContent",
+        "targetName": "CardContent",
+        "edgeType": "render",
+        "line": 123,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/settings/DigestPreferences.tsx:42:DigestPreferences",
+        "target": "Card",
+        "targetName": "Card",
+        "edgeType": "render",
+        "line": 135,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/settings/DigestPreferences.tsx:42:DigestPreferences",
+        "target": "CardHeader",
+        "targetName": "CardHeader",
+        "edgeType": "render",
+        "line": 136,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/settings/DigestPreferences.tsx:42:DigestPreferences",
+        "target": "CardTitle",
+        "targetName": "CardTitle",
+        "edgeType": "render",
+        "line": 137,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/settings/DigestPreferences.tsx:42:DigestPreferences",
+        "target": "CardDescription",
+        "targetName": "CardDescription",
+        "edgeType": "render",
+        "line": 141,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/settings/DigestPreferences.tsx:42:DigestPreferences",
+        "target": "CardContent",
+        "targetName": "CardContent",
+        "edgeType": "render",
+        "line": 145,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/settings/DigestPreferences.tsx:42:DigestPreferences",
+        "target": "Label",
+        "targetName": "Label",
+        "edgeType": "render",
+        "line": 154,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/settings/DigestPreferences.tsx:42:DigestPreferences",
+        "target": "Mail",
+        "targetName": "Mail",
+        "edgeType": "render",
+        "line": 96,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/settings/DigestPreferences.tsx:42:DigestPreferences",
         "target": "Skeleton",
         "targetName": "Skeleton",
         "edgeType": "render",
@@ -501,65 +501,74 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/settings/DigestPreferences.tsx:41:DigestPreferences",
+        "source": "src/atomic-crm/settings/DigestPreferences.tsx:42:DigestPreferences",
         "target": "Skeleton",
         "targetName": "Skeleton",
         "edgeType": "render",
-        "line": 105,
+        "line": 104,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/settings/DigestPreferences.tsx:41:DigestPreferences",
-        "target": "Mail",
-        "targetName": "Mail",
+        "source": "src/atomic-crm/settings/DigestPreferences.tsx:42:DigestPreferences",
+        "target": "Skeleton",
+        "targetName": "Skeleton",
         "edgeType": "render",
-        "line": 118,
+        "line": 106,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/settings/DigestPreferences.tsx:41:DigestPreferences",
+        "source": "src/atomic-crm/settings/DigestPreferences.tsx:42:DigestPreferences",
         "target": "Mail",
         "targetName": "Mail",
         "edgeType": "render",
-        "line": 137,
+        "line": 119,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/settings/DigestPreferences.tsx:42:DigestPreferences",
+        "target": "Mail",
+        "targetName": "Mail",
+        "edgeType": "render",
+        "line": 138,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/settings/DigestPreferences.tsx:41:DigestPreferences",
+        "source": "src/atomic-crm/settings/DigestPreferences.tsx:42:DigestPreferences",
         "target": "Bell",
         "targetName": "Bell",
         "edgeType": "render",
-        "line": 148,
+        "line": 149,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/settings/DigestPreferences.tsx:41:DigestPreferences",
+        "source": "src/atomic-crm/settings/DigestPreferences.tsx:42:DigestPreferences",
         "target": "BellOff",
         "targetName": "BellOff",
         "edgeType": "render",
-        "line": 150,
+        "line": 151,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/settings/DigestPreferences.tsx:41:DigestPreferences",
+        "source": "src/atomic-crm/settings/DigestPreferences.tsx:42:DigestPreferences",
         "target": "Switch",
         "targetName": "Switch",
         "edgeType": "render",
-        "line": 163,
+        "line": 164,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/settings/DigestPreferences.tsx:41:DigestPreferences",
+        "source": "src/atomic-crm/settings/DigestPreferences.tsx:42:DigestPreferences",
         "target": "handleToggle",
         "targetName": "handleToggle",
         "edgeType": "callback",
-        "line": 166,
+        "line": 167,
         "conditional": false,
         "inLoop": false
       },

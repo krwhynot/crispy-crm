@@ -11,6 +11,7 @@ import { useSafeNotify } from "@/atomic-crm/hooks";
 import { AdminButton } from "@/components/admin/AdminButton";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
+import { notificationMessages } from "@/atomic-crm/constants/notificationMessages";
 import {
   Select,
   SelectContent,
@@ -114,7 +115,7 @@ export function SalesPermissionsTab({
       { id: record.id, previousData: record },
       {
         onSuccess: () => {
-          notify("User removed successfully", { type: "success" });
+          notify(notificationMessages.deleted("User"), { type: "success" });
           refresh();
           redirect("/sales");
         },
@@ -178,7 +179,7 @@ export function SalesPermissionsTab({
             if (formData.role !== record.role) {
               invalidateIdentityCache();
             }
-            notify("Permissions updated successfully", { type: "success" });
+            notify(notificationMessages.updated("Permissions"), { type: "success" });
             if (onModeToggle) onModeToggle(); // Switch back to view mode
           },
           onError: (error: Error) => {

@@ -4,6 +4,7 @@ import { useDataProvider, useGetList, useRefresh } from "ra-core";
 import { logger } from "@/lib/logger";
 import { useQueryClient } from "@tanstack/react-query";
 import { useSafeNotify } from "@/atomic-crm/hooks/useSafeNotify";
+import { notificationMessages } from "@/atomic-crm/constants/notificationMessages";
 
 import { opportunityKeys, activityKeys } from "@/atomic-crm/queryKeys";
 
@@ -99,7 +100,7 @@ export const ActivityNoteForm = ({ opportunity, onSuccess }: ActivityNoteFormPro
       setValue("stage", newStage);
       queryClient.invalidateQueries({ queryKey: opportunityKeys.all });
       queryClient.invalidateQueries({ queryKey: activityKeys.all });
-      success("Stage updated successfully");
+      success(notificationMessages.updated("Stage"));
     } catch (error: unknown) {
       logger.error("Stage update failed", error, { feature: "ActivityNoteForm" });
       const message = error instanceof Error ? error.message : "Unknown error";
@@ -128,7 +129,7 @@ export const ActivityNoteForm = ({ opportunity, onSuccess }: ActivityNoteFormPro
 
       queryClient.invalidateQueries({ queryKey: activityKeys.all });
       queryClient.invalidateQueries({ queryKey: opportunityKeys.all });
-      success("Activity created successfully");
+      success(notificationMessages.created("Activity"));
       reset();
       onSuccess?.();
     } catch (error: unknown) {

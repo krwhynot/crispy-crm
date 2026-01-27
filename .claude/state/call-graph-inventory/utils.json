@@ -1,6 +1,6 @@
 {
   "chunk_name": "utils",
-  "generated_at": "2026-01-26T21:46:11.528Z",
+  "generated_at": "2026-01-27T19:24:23.168Z",
   "items": {
     "nodes": [
       {
@@ -495,6 +495,33 @@
         "file": "src/atomic-crm/utils/getContextAwareRedirect.ts",
         "line": 59,
         "nodeType": "arrow",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/utils/getRequiredFields.ts:56:hasZodInternals",
+        "name": "hasZodInternals",
+        "file": "src/atomic-crm/utils/getRequiredFields.ts",
+        "line": 56,
+        "nodeType": "function",
+        "exported": false,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/utils/getRequiredFields.ts:70:isOptionalDef",
+        "name": "isOptionalDef",
+        "file": "src/atomic-crm/utils/getRequiredFields.ts",
+        "line": 70,
+        "nodeType": "function",
+        "exported": false,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/utils/getRequiredFields.ts:120:getRequiredFields",
+        "name": "getRequiredFields",
+        "file": "src/atomic-crm/utils/getRequiredFields.ts",
+        "line": 120,
+        "nodeType": "function",
         "exported": true,
         "async": false
       },
@@ -3109,6 +3136,78 @@
         "line": 73,
         "conditional": false,
         "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/getRequiredFields.ts:70:isOptionalDef",
+        "target": "has",
+        "targetName": "has",
+        "edgeType": "call",
+        "line": 74,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/getRequiredFields.ts:70:isOptionalDef",
+        "target": "isOptionalDef",
+        "targetName": "isOptionalDef",
+        "edgeType": "call",
+        "line": 80,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/getRequiredFields.ts:70:isOptionalDef",
+        "target": "isOptionalDef",
+        "targetName": "isOptionalDef",
+        "edgeType": "call",
+        "line": 85,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/getRequiredFields.ts:120:getRequiredFields",
+        "target": "entries",
+        "targetName": "entries",
+        "edgeType": "call",
+        "line": 128,
+        "conditional": false,
+        "inLoop": true
+      },
+      {
+        "source": "src/atomic-crm/utils/getRequiredFields.ts:120:getRequiredFields",
+        "target": "has",
+        "targetName": "has",
+        "edgeType": "call",
+        "line": 129,
+        "conditional": true,
+        "inLoop": true
+      },
+      {
+        "source": "src/atomic-crm/utils/getRequiredFields.ts:120:getRequiredFields",
+        "target": "hasZodInternals",
+        "targetName": "hasZodInternals",
+        "edgeType": "call",
+        "line": 131,
+        "conditional": true,
+        "inLoop": true
+      },
+      {
+        "source": "src/atomic-crm/utils/getRequiredFields.ts:120:getRequiredFields",
+        "target": "isOptionalDef",
+        "targetName": "isOptionalDef",
+        "edgeType": "call",
+        "line": 140,
+        "conditional": false,
+        "inLoop": true
+      },
+      {
+        "source": "src/atomic-crm/utils/getRequiredFields.ts:120:getRequiredFields",
+        "target": "push",
+        "targetName": "push",
+        "edgeType": "call",
+        "line": 144,
+        "conditional": true,
+        "inLoop": true
       },
       {
         "source": "src/atomic-crm/utils/safeJsonParse.ts:23:safeJsonParse",

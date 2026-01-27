@@ -153,7 +153,7 @@ describe("opportunitiesCallbacks", () => {
 
       const params = {
         id: 1,
-        data: { stage: "closed_won" },
+        data: { stage: "closed_won", actual_close_date: "2026-01-27" },
         previousData: {
           id: 1,
           stage: "demo_scheduled",
@@ -170,7 +170,7 @@ describe("opportunitiesCallbacks", () => {
     it("should use first contact_id if multiple contacts exist", async () => {
       const params = {
         id: 1,
-        data: { stage: "closed_won" },
+        data: { stage: "closed_won", actual_close_date: "2026-01-27" },
         previousData: {
           id: 1,
           stage: "demo_scheduled",
@@ -192,7 +192,7 @@ describe("opportunitiesCallbacks", () => {
     it("should handle null contact_ids gracefully", async () => {
       const params = {
         id: 1,
-        data: { stage: "closed_lost" },
+        data: { stage: "closed_lost", actual_close_date: "2026-01-27" },
         previousData: {
           id: 1,
           stage: "proposal",

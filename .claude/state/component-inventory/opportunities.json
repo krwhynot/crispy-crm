@@ -1,6 +1,6 @@
 {
   "chunk_name": "opportunities",
-  "generated_at": "2026-01-26T21:45:48.467Z",
+  "generated_at": "2026-01-27T19:23:53.628Z",
   "item_count": 83,
   "items": [
     {
@@ -30,7 +30,7 @@
     {
       "name": "ActivityNoteForm",
       "file": "src/atomic-crm/opportunities/ActivityNoteForm.tsx",
-      "line": 37,
+      "line": 38,
       "type": "presentational",
       "hooks": [
         "useDataProvider",
@@ -47,6 +47,7 @@
         "../validation/activities",
         "./constants",
         "@/atomic-crm/constants/appConstants",
+        "@/atomic-crm/constants/notificationMessages",
         "@/atomic-crm/hooks/useSafeNotify",
         "@/atomic-crm/queryKeys",
         "@/components/admin/AdminButton",
@@ -110,7 +111,7 @@
     {
       "name": "ArchiveButton",
       "file": "src/atomic-crm/opportunities/ArchiveActions.tsx",
-      "line": 17,
+      "line": 18,
       "type": "presentational",
       "hooks": [
         "useDataProvider",
@@ -125,6 +126,7 @@
         "../services",
         "../types",
         "./constants",
+        "@/atomic-crm/constants/notificationMessages",
         "@/components/admin/AdminButton",
         "@tanstack/react-query",
         "lucide-react",
@@ -145,7 +147,7 @@
     {
       "name": "UnarchiveButton",
       "file": "src/atomic-crm/opportunities/ArchiveActions.tsx",
-      "line": 61,
+      "line": 62,
       "type": "presentational",
       "hooks": [
         "useDataProvider",
@@ -160,6 +162,7 @@
         "../services",
         "../types",
         "./constants",
+        "@/atomic-crm/constants/notificationMessages",
         "@/components/admin/AdminButton",
         "@tanstack/react-query",
         "lucide-react",
@@ -886,7 +889,7 @@
     {
       "name": "OpportunityCreateFormFooter",
       "file": "src/atomic-crm/opportunities/OpportunityCreateFormFooter.tsx",
-      "line": 33,
+      "line": 34,
       "type": "presentational",
       "hooks": [
         "useCallback",
@@ -904,6 +907,7 @@
       "imports": [
         "../hooks/useSafeNotify",
         "../utils/levenshtein",
+        "@/atomic-crm/constants/notificationMessages",
         "@/components/admin/AdminButton",
         "@/components/ui/unsaved-changes-dialog",
         "@/lib/utils",
@@ -1509,12 +1513,13 @@
     {
       "name": "OrganizationCombobox",
       "file": "src/atomic-crm/opportunities/OrganizationCombobox.tsx",
-      "line": 97,
+      "line": 98,
       "type": "presentational",
       "hooks": [
         "useState"
       ],
       "imports": [
+        "@/atomic-crm/constants/notificationMessages",
         "@/atomic-crm/queryKeys",
         "@/atomic-crm/validation/segments",
         "@/components/admin/AdminButton",
@@ -1868,7 +1873,7 @@
     {
       "name": "OpportunityCardActions",
       "file": "src/atomic-crm/opportunities/kanban/OpportunityCardActions.tsx",
-      "line": 32,
+      "line": 33,
       "type": "presentational",
       "hooks": [
         "useCallback",
@@ -1885,6 +1890,7 @@
       "imports": [
         "../../types",
         "../CloseOpportunityModal",
+        "@/atomic-crm/constants/notificationMessages",
         "@/atomic-crm/opportunities/constants",
         "@/atomic-crm/queryKeys",
         "@/atomic-crm/validation/opportunities",
@@ -2160,7 +2166,7 @@
     {
       "name": "OpportunityContactsTab",
       "file": "src/atomic-crm/opportunities/slideOverTabs/OpportunityContactsTab.tsx",
-      "line": 103,
+      "line": 104,
       "type": "presentational",
       "hooks": [
         "useDataProvider",
@@ -2173,6 +2179,7 @@
         "../../contacts/ContactOption",
         "../../contacts/QuickCreateContactPopover",
         "@/atomic-crm/constants/appConstants",
+        "@/atomic-crm/constants/notificationMessages",
         "@/atomic-crm/providers/supabase/extensions/types",
         "@/atomic-crm/queryKeys",
         "@/atomic-crm/services/opportunities.service",
@@ -2298,7 +2305,7 @@
     {
       "name": "OpportunityProductsTab",
       "file": "src/atomic-crm/opportunities/slideOverTabs/OpportunityProductsTab.tsx",
-      "line": 54,
+      "line": 55,
       "type": "presentational",
       "hooks": [
         "useDataProvider",
@@ -2310,6 +2317,7 @@
       ],
       "imports": [
         "@/atomic-crm/constants/appConstants",
+        "@/atomic-crm/constants/notificationMessages",
         "@/atomic-crm/hooks/useSafeNotify",
         "@/atomic-crm/queryKeys",
         "@/atomic-crm/types",
@@ -2337,7 +2345,7 @@
     {
       "name": "OpportunitySlideOverDetailsTab",
       "file": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx",
-      "line": 27,
+      "line": 28,
       "type": "presentational",
       "hooks": [
         "useCallback",
@@ -2351,6 +2359,7 @@
       "imports": [
         "./OpportunityDetailsFormSection",
         "./OpportunityDetailsViewSection",
+        "@/atomic-crm/constants/notificationMessages",
         "@/atomic-crm/opportunities/constants",
         "@/atomic-crm/queryKeys",
         "@/atomic-crm/types",

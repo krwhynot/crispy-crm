@@ -1,6 +1,6 @@
 {
   "chunk_name": "organizations",
-  "generated_at": "2026-01-26T21:46:04.112Z",
+  "generated_at": "2026-01-27T19:24:16.589Z",
   "item_count": 9,
   "items": [
     {
@@ -409,7 +409,7 @@
           "optional": false,
           "nullable": false,
           "hasTransform": false,
-          "hasDefault": true
+          "hasDefault": false
         },
         {
           "name": "priority",
@@ -418,7 +418,7 @@
           "optional": false,
           "nullable": false,
           "hasTransform": false,
-          "hasDefault": true
+          "hasDefault": false
         },
         {
           "name": "nb_contacts",

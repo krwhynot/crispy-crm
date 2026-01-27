@@ -3,6 +3,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { Form, ReferenceField } from "react-admin";
 import { activityKeys } from "../../queryKeys";
 import { logger } from "@/lib/logger";
+import { notificationMessages } from "@/atomic-crm/constants/notificationMessages";
 import { TextInput } from "@/components/ra-wrappers/text-input";
 import { DateInput } from "@/components/ra-wrappers/date-input";
 import { SelectInput } from "@/components/ra-wrappers/select-input";
@@ -73,7 +74,7 @@ export function ActivityDetailsTab({
         previousData: record,
       });
       queryClient.invalidateQueries({ queryKey: activityKeys.all });
-      notify("Activity updated successfully", { type: "success" });
+      notify(notificationMessages.updated("Activity"), { type: "success" });
       onModeToggle?.();
     } catch (error: unknown) {
       notify("Error updating activity", { type: "error" });

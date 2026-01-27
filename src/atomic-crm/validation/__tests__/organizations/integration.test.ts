@@ -7,11 +7,19 @@ import { describe, it, expect } from "vitest";
 import { validateOrganizationForSubmission, validateOrganizationForm } from "../../organizations";
 
 describe("Organization Validation Functions", () => {
+  // After audit fix (commit 4f0245d2b): Schema no longer provides silent defaults
+  // All tests must include required fields: organization_type, priority, status
+  const requiredFields = {
+    organization_type: "customer" as const,
+    priority: "B" as const,
+    status: "active" as const,
+  };
+
   describe("validateOrganizationForm", () => {
     it("should validate and pass valid data", async () => {
       const validData = {
         name: "Test Organization",
-        organization_type: "customer",
+        ...requiredFields,
       };
 
       await expect(validateOrganizationForm(validData)).resolves.toBeUndefined();
@@ -21,9 +29,10 @@ describe("Organization Validation Functions", () => {
       // Note: "not-a-url" now becomes "https://not-a-url" via auto-prefix (valid format)
       // Use malformed URL "://invalid" to test URL validation error
       const invalidData = {
-        name: "",
-        organization_type: "invalid_type",
-        website: "://invalid",
+        ...requiredFields, // Spread first
+        name: "", // Invalid: empty name
+        organization_type: "invalid_type", // Override with invalid type
+        website: "://invalid", // Invalid URL
       };
 
       try {
@@ -42,6 +51,7 @@ describe("Organization Validation Functions", () => {
     it("should validate LinkedIn URL format", async () => {
       const invalidLinkedIn = {
         name: "Test Org",
+        ...requiredFields,
         linkedin_url: "https://twitter.com/company/test",
       };
 
@@ -57,6 +67,7 @@ describe("Organization Validation Functions", () => {
     it("should handle nested field errors", async () => {
       const complexInvalidData = {
         name: "Test",
+        ...requiredFields,
         address: {
           street: "",
           city: "",
@@ -81,7 +92,7 @@ describe("Organization Validation Functions", () => {
     it("should validate and normalize organization data", async () => {
       const inputData = {
         name: "Submission Test",
-        organization_type: "customer",
+        ...requiredFields,
         website: "https://example.com",
       };
 
@@ -90,7 +101,7 @@ describe("Organization Validation Functions", () => {
 
     it("should throw for missing required fields", async () => {
       const minimalData = {
-        // Missing required 'name' field
+        // Missing required 'name' field (and priority/status per audit fix)
         organization_type: "customer",
       };
 
@@ -103,6 +114,7 @@ describe("Organization Validation Functions", () => {
       const invalidData = {
         name: "",
         organization_type: "invalid",
+        ...requiredFields,
       };
 
       await expect(validateOrganizationForSubmission(invalidData)).rejects.toMatchObject({
@@ -114,7 +126,7 @@ describe("Organization Validation Functions", () => {
       // z.strictObject() provides defense-in-depth security by rejecting unrecognized keys
       const dataWithExtras = {
         name: "Clean Org",
-        organization_type: "customer",
+        ...requiredFields,
         extra_field: "should be rejected",
         malicious: "also rejected",
       };
@@ -130,12 +142,13 @@ describe("Organization Validation Functions", () => {
     it("should provide clear error messages", async () => {
       const testCases = [
         {
-          data: { name: "", organization_type: "customer" },
+          data: { ...requiredFields, name: "" }, // Empty name
           expectedError: "Organization name is required",
           field: "name",
         },
         {
-          data: { name: "Test", organization_type: "invalid" },
+          // Spread first, then override with invalid value
+          data: { ...requiredFields, name: "Test", organization_type: "invalid" },
           field: "organization_type",
         },
       ];

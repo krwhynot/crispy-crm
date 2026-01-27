@@ -5,6 +5,7 @@ import { GenericSelectInput } from "@/components/ra-wrappers/generic-select-inpu
 import { AdminButton } from "@/components/admin/AdminButton";
 import { PlusIcon } from "lucide-react";
 import { TagDialog } from "./TagDialog";
+import { notificationMessages } from "@/atomic-crm/constants/notificationMessages";
 import type { Tag } from "../types";
 
 interface TagSelectWithCreateProps {
@@ -29,7 +30,7 @@ export function TagSelectWithCreate({ source, label }: TagSelectWithCreateProps)
       { data },
       {
         onSuccess: () => {
-          success("Tag created");
+          success(notificationMessages.created("Tag"));
           setDialogOpen(false);
           refresh();
         },

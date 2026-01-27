@@ -1,6 +1,6 @@
 {
   "chunk_name": "dashboard",
-  "generated_at": "2026-01-26T21:46:03.039Z",
+  "generated_at": "2026-01-27T19:24:15.850Z",
   "item_count": 13,
   "items": [
     {
@@ -177,14 +177,13 @@
     {
       "name": "useTeamActivities",
       "file": "src/atomic-crm/dashboard/useTeamActivities.ts",
-      "line": 61,
+      "line": 64,
       "parameters": [
         "limit"
       ],
       "returnType": "UseTeamActivitiesResult",
       "dependencies": [
         "useCallback",
-        "useGetMany",
         "useMemo"
       ],
       "isReact19Action": false

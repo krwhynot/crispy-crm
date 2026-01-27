@@ -56,30 +56,45 @@ describe("Organization Validation Schemas (organizations.ts)", () => {
     });
   });
 
-  describe("organizationSchema defaults", () => {
-    it("extracts 'prospect' as default organization_type via .partial().parse({})", () => {
-      // This is the exact pattern used in OrganizationCreate.tsx:239
-      // const formDefaults = { ...organizationSchema.partial().parse({}) }
+  describe("organizationSchema defaults behavior", () => {
+    /**
+     * Per audit fix (commit 4f0245d2b): Schema no longer provides silent defaults
+     * for organization_type, priority, status to prevent data masking issues.
+     *
+     * Form layer (OrganizationCreate.tsx) now provides explicit defaults:
+     *   status: "active"
+     *   organization_type: "prospect"
+     *   priority: "C"
+     *
+     * Only country fields and booleans retain schema defaults (safe for forms).
+     */
+
+    it("does NOT provide silent default for organization_type (form layer responsibility)", () => {
       const defaults = organizationSchema.partial().parse({});
-      expect(defaults.organization_type).toBe("prospect");
+      // organization_type should be undefined - form provides explicit default
+      expect(defaults.organization_type).toBeUndefined();
     });
 
-    it("extracts 'C' as default priority via .partial().parse({})", () => {
+    it("does NOT provide silent default for priority (form layer responsibility)", () => {
       const defaults = organizationSchema.partial().parse({});
-      expect(defaults.priority).toBe("C");
+      // priority should be undefined - form provides explicit default
+      expect(defaults.priority).toBeUndefined();
     });
 
-    it("extracts 'active' as default status via .partial().parse({})", () => {
+    it("does NOT provide silent default for status (form layer responsibility)", () => {
       const defaults = organizationSchema.partial().parse({});
-      expect(defaults.status).toBe("active");
+      // status should be undefined - form provides explicit default
+      expect(defaults.status).toBeUndefined();
     });
 
     it("extracts 'US' as default billing_country via .partial().parse({})", () => {
+      // Country defaults are safe to keep in schema (ISO codes, not business logic)
       const defaults = organizationSchema.partial().parse({});
       expect(defaults.billing_country).toBe("US");
     });
 
     it("extracts true as default is_operating_entity via .partial().parse({})", () => {
+      // Boolean defaults are safe to keep in schema
       const defaults = organizationSchema.partial().parse({});
       expect(defaults.is_operating_entity).toBe(true);
     });
@@ -107,10 +122,17 @@ describe("Organization Validation Schemas (organizations.ts)", () => {
   });
 
   describe("organizationSchema validation", () => {
+    // Required fields after audit fix (commit 4f0245d2b)
+    const requiredFields = {
+      organization_type: "prospect" as const,
+      priority: "C" as const,
+      status: "active" as const,
+    };
+
     it("requires name field", () => {
       const result = organizationSchema.safeParse({
-        organization_type: "prospect",
-        priority: "C",
+        ...requiredFields,
+        // name intentionally missing
       });
       expect(result.success).toBe(false);
       if (!result.success) {
@@ -122,6 +144,7 @@ describe("Organization Validation Schemas (organizations.ts)", () => {
     it("validates name max length (255)", () => {
       const result = organizationSchema.safeParse({
         name: "a".repeat(256),
+        ...requiredFields,
       });
       expect(result.success).toBe(false);
     });

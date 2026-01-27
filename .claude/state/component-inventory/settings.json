@@ -1,6 +1,6 @@
 {
   "chunk_name": "settings",
-  "generated_at": "2026-01-26T21:45:48.492Z",
+  "generated_at": "2026-01-27T19:23:53.645Z",
   "item_count": 13,
   "items": [
     {
@@ -29,7 +29,7 @@
     {
       "name": "DigestPreferences",
       "file": "src/atomic-crm/settings/DigestPreferences.tsx",
-      "line": 41,
+      "line": 42,
       "type": "presentational",
       "hooks": [
         "useDataProvider",
@@ -41,6 +41,7 @@
       "imports": [
         "../providers/supabase/extensions/types",
         "../queryKeys",
+        "@/atomic-crm/constants/notificationMessages",
         "@/atomic-crm/hooks/useSafeNotify",
         "@/components/ui/card",
         "@/components/ui/label",

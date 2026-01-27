@@ -14,6 +14,7 @@ import { AdminButton } from "@/components/admin/AdminButton";
 import { SaveButton } from "@/components/ra-wrappers/form";
 import { UnsavedChangesDialog } from "@/components/ui/unsaved-changes-dialog";
 import { useSafeNotify } from "@/atomic-crm/hooks/useSafeNotify";
+import { notificationMessages } from "@/atomic-crm/constants/notificationMessages";
 import type { OrganizationFormValues, DuplicateCheckCallback } from "./types";
 
 interface OrganizationCreateFormFooterProps {
@@ -75,7 +76,7 @@ export const OrganizationCreateFormFooter = ({
           {
             onSuccess: (data: { id: string | number }) => {
               bypassDuplicate();
-              success("Organization created successfully");
+              success(notificationMessages.created("Organization"));
 
               if (action === "close") {
                 redirectFn("show", "organizations", data.id);

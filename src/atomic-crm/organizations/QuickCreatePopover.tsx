@@ -22,6 +22,7 @@ import {
   organizationQuickCreateSchema,
   type OrganizationQuickCreateInput,
 } from "@/atomic-crm/validation/organizations";
+import { notificationMessages } from "@/atomic-crm/constants/notificationMessages";
 
 /**
  * P5: Isolated sub-components using useWatch for performance
@@ -116,7 +117,7 @@ export function QuickCreatePopover({
           data: { ...data, segment_id: PLAYBOOK_CATEGORY_IDS.Unknown },
         });
         queryClient.invalidateQueries({ queryKey: organizationKeys.all });
-        notify("Organization created", { type: "success" });
+        notify(notificationMessages.created("Organization"), { type: "success" });
         onCreated(result.data as { id: number; name: string });
         setOpen(false);
       } catch (error: unknown) {
@@ -151,7 +152,7 @@ export function QuickCreatePopover({
         },
       });
       queryClient.invalidateQueries({ queryKey: organizationKeys.all });
-      notify("Organization created", { type: "success" });
+      notify(notificationMessages.created("Organization"), { type: "success" });
       onCreated(result.data as { id: number; name: string });
       setOpen(false);
     } catch (error: unknown) {
@@ -307,7 +308,7 @@ export function QuickCreateOrganizationRA({
           data: { ...data, segment_id: PLAYBOOK_CATEGORY_IDS.Unknown },
         });
         queryClient.invalidateQueries({ queryKey: organizationKeys.all });
-        notify("Organization created", { type: "success" });
+        notify(notificationMessages.created("Organization"), { type: "success" });
         onCreate(result.data);
       } catch (error: unknown) {
         notify("Failed to create organization", { type: "error" });
@@ -336,7 +337,7 @@ export function QuickCreateOrganizationRA({
         },
       });
       queryClient.invalidateQueries({ queryKey: organizationKeys.all });
-      notify("Organization created", { type: "success" });
+      notify(notificationMessages.created("Organization"), { type: "success" });
       onCreate(result.data);
     } catch (error: unknown) {
       notify("Failed to create organization", { type: "error" });

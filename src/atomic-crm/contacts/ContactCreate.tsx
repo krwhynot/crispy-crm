@@ -72,7 +72,7 @@ const ContactCreate = () => {
       <div className="bg-muted px-6 py-6">
         <div className="max-w-4xl mx-auto create-form-card">
           <FormProgressProvider initialProgress={10}>
-            <FormProgressBar className="mb-6" />
+            <FormProgressBar schema={contactBaseSchema} className="mb-6" />
             <Form defaultValues={formDefaults} mode="onBlur">
               <ContactFormContent redirect={redirect} />
             </Form>

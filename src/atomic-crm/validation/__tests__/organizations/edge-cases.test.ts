@@ -7,13 +7,21 @@ import { describe, it, expect } from "vitest";
 import { organizationSchema } from "../../organizations";
 
 describe("Organization Business Rules and Edge Cases", () => {
+  // After audit fix (commit 4f0245d2b): Schema no longer provides silent defaults
+  // All tests must include required fields: organization_type, priority, status
+  const requiredFields = {
+    organization_type: "customer" as const,
+    priority: "B" as const,
+    status: "active" as const,
+  };
+
   describe("Business Rules", () => {
     it("should handle organization hierarchies", () => {
       // Use numeric IDs since schema uses z.coerce.number()
       const childOrganization = {
         name: "Child Organization",
         parent_organization_id: 456,
-        organization_type: "customer",
+        ...requiredFields,
       };
 
       const result = organizationSchema.parse(childOrganization);
@@ -33,7 +41,7 @@ describe("Organization Business Rules and Edge Cases", () => {
     it("should handle international organizations", () => {
       const internationalOrg = {
         name: "Global Corp Ltd.",
-        organization_type: "customer",
+        ...requiredFields,
         // Note: z.strictObject() rejects unrecognized keys for mass assignment prevention
         // Country/timezone/currency/language would be additional fields not in current schema
       };
@@ -47,7 +55,8 @@ describe("Organization Business Rules and Edge Cases", () => {
     it("should handle organization relationships", () => {
       const orgWithRelationships = {
         name: "Connected Org",
-        organization_type: "principal",
+        ...requiredFields,
+        organization_type: "principal", // Override default
         // Note: z.strictObject() rejects unrecognized keys for mass assignment prevention
         // Relationships like referral_source and account_manager would be separate tables/fields
       };
@@ -68,34 +77,44 @@ describe("Organization Business Rules and Edge Cases", () => {
       ];
 
       specialNames.forEach((name) => {
-        const org = { name };
+        const org = { name, ...requiredFields };
         expect(() => organizationSchema.parse(org)).not.toThrow();
       });
     });
 
     it("should handle organizations with very long names", () => {
       const maxLengthName = "A".repeat(255); // Assuming 255 is max
-      const org = { name: maxLengthName };
+      const org = { name: maxLengthName, ...requiredFields };
 
       expect(() => organizationSchema.parse(org)).not.toThrow();
     });
 
-    it("should handle organizations with minimal data", () => {
+    it("should require organization_type, priority, and status explicitly (no silent defaults)", () => {
+      // Per audit fix (commit 4f0245d2b): Schema no longer provides silent defaults
       const minimalOrg = {
         name: "Minimal",
       };
 
-      const result = organizationSchema.parse(minimalOrg);
+      // Should throw without required fields
+      expect(() => organizationSchema.parse(minimalOrg)).toThrow();
+
+      // Should pass with required fields
+      const completeOrg = {
+        name: "Minimal",
+        ...requiredFields,
+      };
+      const result = organizationSchema.parse(completeOrg);
       expect(result.name).toBe("Minimal");
-      expect(result.organization_type).toBe("prospect"); // Should have default
-      expect(result.priority).toBe("C"); // Should have default
+      expect(result.organization_type).toBe("customer");
+      expect(result.priority).toBe("B");
+      expect(result.status).toBe("active");
     });
 
     it("should handle organizations with maximum data", () => {
       // Use numeric IDs since schema uses z.coerce.number()
       const maximalOrg = {
         name: "Maximal Organization",
-        organization_type: "customer",
+        ...requiredFields,
         description: "A".repeat(1000),
         website: "https://example.com",
         linkedin_url: "https://linkedin.com/company/maximal",
@@ -107,7 +126,7 @@ describe("Organization Business Rules and Edge Cases", () => {
         state: "CA",
         postal_code: "12345",
         phone: "555-123-4567", // Must have at least 10 digits
-        priority: "A",
+        priority: "A", // Override default
       };
 
       expect(() => organizationSchema.parse(maximalOrg)).not.toThrow();
@@ -120,6 +139,7 @@ describe("Organization Business Rules and Edge Cases", () => {
         id: 123,
         name: "Self Reference Test",
         parent_organization_id: 123, // Same as own ID
+        ...requiredFields,
       };
 
       // Schema should accept it, business logic should prevent it

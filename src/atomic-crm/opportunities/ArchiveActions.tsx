@@ -3,6 +3,7 @@ import { Archive, ArchiveRestore } from "lucide-react";
 import { useDataProvider, useNotify, useRedirect } from "react-admin";
 
 import { opportunityKeys } from "../queryKeys";
+import { notificationMessages } from "@/atomic-crm/constants/notificationMessages";
 
 import { AdminButton } from "@/components/admin/AdminButton";
 import { OpportunitiesService } from "../services";
@@ -30,7 +31,7 @@ export const ArchiveButton = ({ record }: ArchiveActionsProps) => {
     },
     onSuccess: () => {
       redirect("list", "opportunities");
-      notify("Opportunity archived", { type: "info", undoable: false });
+      notify(notificationMessages.archived("Opportunity"), { type: "info", undoable: false });
       queryClient.invalidateQueries({ queryKey: opportunityKeys.all });
     },
     onError: () => {
@@ -74,7 +75,7 @@ export const UnarchiveButton = ({ record }: ArchiveActionsProps) => {
     },
     onSuccess: () => {
       redirect("list", "opportunities");
-      notify("Opportunity unarchived", {
+      notify(notificationMessages.restored("Opportunity"), {
         type: "info",
         undoable: false,
       });

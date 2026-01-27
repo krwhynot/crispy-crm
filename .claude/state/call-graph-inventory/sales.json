@@ -1,6 +1,6 @@
 {
   "chunk_name": "sales",
-  "generated_at": "2026-01-26T21:46:11.498Z",
+  "generated_at": "2026-01-27T19:24:23.147Z",
   "items": {
     "nodes": [
       {
@@ -40,37 +40,37 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/sales/SalesEdit.tsx:23:EditToolbar",
+        "id": "src/atomic-crm/sales/SalesEdit.tsx:24:EditToolbar",
         "name": "EditToolbar",
         "file": "src/atomic-crm/sales/SalesEdit.tsx",
-        "line": 23,
+        "line": 24,
         "nodeType": "component",
         "exported": false,
         "async": false
       },
       {
-        "id": "src/atomic-crm/sales/SalesEdit.tsx:32:SalesEdit",
+        "id": "src/atomic-crm/sales/SalesEdit.tsx:33:SalesEdit",
         "name": "SalesEdit",
         "file": "src/atomic-crm/sales/SalesEdit.tsx",
-        "line": 32,
+        "line": 33,
         "nodeType": "component",
         "exported": true,
         "async": false
       },
       {
-        "id": "src/atomic-crm/sales/SalesEdit.tsx:88:SalesFormContent",
+        "id": "src/atomic-crm/sales/SalesEdit.tsx:89:SalesFormContent",
         "name": "SalesFormContent",
         "file": "src/atomic-crm/sales/SalesEdit.tsx",
-        "line": 88,
+        "line": 89,
         "nodeType": "component",
         "exported": false,
         "async": false
       },
       {
-        "id": "src/atomic-crm/sales/SalesEdit.tsx:99:SaleEditTitle",
+        "id": "src/atomic-crm/sales/SalesEdit.tsx:100:SaleEditTitle",
         "name": "SaleEditTitle",
         "file": "src/atomic-crm/sales/SalesEdit.tsx",
-        "line": 99,
+        "line": 100,
         "nodeType": "component",
         "exported": false,
         "async": false
@@ -157,19 +157,19 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/sales/SalesPermissionsTab.tsx:62:SalesPermissionsTab",
+        "id": "src/atomic-crm/sales/SalesPermissionsTab.tsx:63:SalesPermissionsTab",
         "name": "SalesPermissionsTab",
         "file": "src/atomic-crm/sales/SalesPermissionsTab.tsx",
-        "line": 62,
+        "line": 63,
         "nodeType": "component",
         "exported": true,
         "async": false
       },
       {
-        "id": "src/atomic-crm/sales/SalesProfileTab.tsx:39:SalesProfileTab",
+        "id": "src/atomic-crm/sales/SalesProfileTab.tsx:40:SalesProfileTab",
         "name": "SalesProfileTab",
         "file": "src/atomic-crm/sales/SalesProfileTab.tsx",
-        "line": 39,
+        "line": 40,
         "nodeType": "component",
         "exported": true,
         "async": false
@@ -789,124 +789,115 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesEdit.tsx:23:EditToolbar",
+        "source": "src/atomic-crm/sales/SalesEdit.tsx:24:EditToolbar",
         "target": "CancelButton",
         "targetName": "CancelButton",
-        "edgeType": "render",
-        "line": 26,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/sales/SalesEdit.tsx:23:EditToolbar",
-        "target": "SaveButton",
-        "targetName": "SaveButton",
         "edgeType": "render",
         "line": 27,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesEdit.tsx:32:SalesEdit",
+        "source": "src/atomic-crm/sales/SalesEdit.tsx:24:EditToolbar",
+        "target": "SaveButton",
+        "targetName": "SaveButton",
+        "edgeType": "render",
+        "line": 28,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/sales/SalesEdit.tsx:33:SalesEdit",
         "target": "useEditController",
         "targetName": "useEditController",
         "edgeType": "hook",
-        "line": 33,
+        "line": 34,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesEdit.tsx:32:SalesEdit",
+        "source": "src/atomic-crm/sales/SalesEdit.tsx:33:SalesEdit",
         "target": "useDataProvider",
         "targetName": "useDataProvider",
-        "edgeType": "hook",
-        "line": 35,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/sales/SalesEdit.tsx:32:SalesEdit",
-        "target": "useNotify",
-        "targetName": "useNotify",
         "edgeType": "hook",
         "line": 36,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesEdit.tsx:32:SalesEdit",
-        "target": "useRedirect",
-        "targetName": "useRedirect",
+        "source": "src/atomic-crm/sales/SalesEdit.tsx:33:SalesEdit",
+        "target": "useNotify",
+        "targetName": "useNotify",
         "edgeType": "hook",
         "line": 37,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesEdit.tsx:32:SalesEdit",
+        "source": "src/atomic-crm/sales/SalesEdit.tsx:33:SalesEdit",
+        "target": "useRedirect",
+        "targetName": "useRedirect",
+        "edgeType": "hook",
+        "line": 38,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/sales/SalesEdit.tsx:33:SalesEdit",
         "target": "useQueryClient",
         "targetName": "useQueryClient",
         "edgeType": "hook",
-        "line": 41,
+        "line": 42,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesEdit.tsx:32:SalesEdit",
+        "source": "src/atomic-crm/sales/SalesEdit.tsx:33:SalesEdit",
         "target": "useMemo",
         "targetName": "useMemo",
         "edgeType": "hook",
-        "line": 43,
+        "line": 44,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesEdit.tsx:32:SalesEdit",
+        "source": "src/atomic-crm/sales/SalesEdit.tsx:33:SalesEdit",
         "target": "parse",
         "targetName": "parse",
         "edgeType": "call",
-        "line": 43,
+        "line": 44,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesEdit.tsx:32:SalesEdit",
+        "source": "src/atomic-crm/sales/SalesEdit.tsx:33:SalesEdit",
         "target": "partial",
         "targetName": "partial",
         "edgeType": "call",
-        "line": 43,
+        "line": 44,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesEdit.tsx:32:SalesEdit",
+        "source": "src/atomic-crm/sales/SalesEdit.tsx:33:SalesEdit",
         "target": "useMutation",
         "targetName": "useMutation",
         "edgeType": "hook",
-        "line": 45,
+        "line": 46,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesEdit.tsx:32:SalesEdit",
+        "source": "src/atomic-crm/sales/SalesEdit.tsx:33:SalesEdit",
         "target": "salesUpdate",
         "targetName": "salesUpdate",
         "edgeType": "call",
-        "line": 51,
+        "line": 52,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesEdit.tsx:32:SalesEdit",
-        "target": "invalidateQueries",
-        "targetName": "invalidateQueries",
-        "edgeType": "call",
-        "line": 55,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/sales/SalesEdit.tsx:32:SalesEdit",
+        "source": "src/atomic-crm/sales/SalesEdit.tsx:33:SalesEdit",
         "target": "invalidateQueries",
         "targetName": "invalidateQueries",
         "edgeType": "call",
@@ -915,146 +906,164 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesEdit.tsx:32:SalesEdit",
+        "source": "src/atomic-crm/sales/SalesEdit.tsx:33:SalesEdit",
+        "target": "invalidateQueries",
+        "targetName": "invalidateQueries",
+        "edgeType": "call",
+        "line": 57,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/sales/SalesEdit.tsx:33:SalesEdit",
         "target": "detail",
         "targetName": "detail",
         "edgeType": "call",
-        "line": 56,
+        "line": 57,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesEdit.tsx:32:SalesEdit",
+        "source": "src/atomic-crm/sales/SalesEdit.tsx:33:SalesEdit",
         "target": "redirect",
         "targetName": "redirect",
-        "edgeType": "call",
-        "line": 58,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/sales/SalesEdit.tsx:32:SalesEdit",
-        "target": "notify",
-        "targetName": "notify",
         "edgeType": "call",
         "line": 59,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesEdit.tsx:32:SalesEdit",
+        "source": "src/atomic-crm/sales/SalesEdit.tsx:33:SalesEdit",
         "target": "notify",
         "targetName": "notify",
         "edgeType": "call",
-        "line": 62,
+        "line": 60,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesEdit.tsx:32:SalesEdit",
+        "source": "src/atomic-crm/sales/SalesEdit.tsx:33:SalesEdit",
+        "target": "updated",
+        "targetName": "updated",
+        "edgeType": "call",
+        "line": 60,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/sales/SalesEdit.tsx:33:SalesEdit",
+        "target": "notify",
+        "targetName": "notify",
+        "edgeType": "call",
+        "line": 63,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/sales/SalesEdit.tsx:33:SalesEdit",
         "target": "mutate",
         "targetName": "mutate",
         "edgeType": "call",
-        "line": 67,
+        "line": 68,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesEdit.tsx:32:SalesEdit",
+        "source": "src/atomic-crm/sales/SalesEdit.tsx:33:SalesEdit",
         "target": "Card",
         "targetName": "Card",
-        "edgeType": "render",
-        "line": 72,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/sales/SalesEdit.tsx:32:SalesEdit",
-        "target": "CardContent",
-        "targetName": "CardContent",
         "edgeType": "render",
         "line": 73,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesEdit.tsx:32:SalesEdit",
-        "target": "SimpleForm",
-        "targetName": "SimpleForm",
+        "source": "src/atomic-crm/sales/SalesEdit.tsx:33:SalesEdit",
+        "target": "CardContent",
+        "targetName": "CardContent",
         "edgeType": "render",
         "line": 74,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesEdit.tsx:32:SalesEdit",
-        "target": "onSubmit",
-        "targetName": "onSubmit",
-        "edgeType": "callback",
-        "line": 76,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/sales/SalesEdit.tsx:32:SalesEdit",
-        "target": "EditToolbar",
-        "targetName": "EditToolbar",
+        "source": "src/atomic-crm/sales/SalesEdit.tsx:33:SalesEdit",
+        "target": "SimpleForm",
+        "targetName": "SimpleForm",
         "edgeType": "render",
         "line": 75,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesEdit.tsx:32:SalesEdit",
+        "source": "src/atomic-crm/sales/SalesEdit.tsx:33:SalesEdit",
+        "target": "onSubmit",
+        "targetName": "onSubmit",
+        "edgeType": "callback",
+        "line": 77,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/sales/SalesEdit.tsx:33:SalesEdit",
+        "target": "EditToolbar",
+        "targetName": "EditToolbar",
+        "edgeType": "render",
+        "line": 76,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/sales/SalesEdit.tsx:33:SalesEdit",
         "target": "SalesFormContent",
         "targetName": "SalesFormContent",
         "edgeType": "render",
-        "line": 80,
+        "line": 81,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesEdit.tsx:88:SalesFormContent",
+        "source": "src/atomic-crm/sales/SalesEdit.tsx:89:SalesFormContent",
         "target": "useUnsavedChangesWarning",
         "targetName": "useUnsavedChangesWarning",
         "edgeType": "hook",
-        "line": 89,
+        "line": 90,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesEdit.tsx:88:SalesFormContent",
+        "source": "src/atomic-crm/sales/SalesEdit.tsx:89:SalesFormContent",
         "target": "SaleEditTitle",
         "targetName": "SaleEditTitle",
-        "edgeType": "render",
-        "line": 93,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/sales/SalesEdit.tsx:88:SalesFormContent",
-        "target": "SalesInputs",
-        "targetName": "SalesInputs",
         "edgeType": "render",
         "line": 94,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesEdit.tsx:99:SaleEditTitle",
-        "target": "useRecordContext",
-        "targetName": "useRecordContext",
-        "edgeType": "hook",
-        "line": 100,
+        "source": "src/atomic-crm/sales/SalesEdit.tsx:89:SalesFormContent",
+        "target": "SalesInputs",
+        "targetName": "SalesInputs",
+        "edgeType": "render",
+        "line": 95,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesEdit.tsx:99:SaleEditTitle",
+        "source": "src/atomic-crm/sales/SalesEdit.tsx:100:SaleEditTitle",
+        "target": "useRecordContext",
+        "targetName": "useRecordContext",
+        "edgeType": "hook",
+        "line": 101,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/sales/SalesEdit.tsx:100:SaleEditTitle",
         "target": "formatName",
         "targetName": "formatName",
         "edgeType": "call",
-        "line": 104,
+        "line": 105,
         "conditional": false,
         "inLoop": false
       },
@@ -1500,430 +1509,439 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:62:SalesPermissionsTab",
+        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:63:SalesPermissionsTab",
         "target": "useUpdate",
         "targetName": "useUpdate",
-        "edgeType": "hook",
-        "line": 68,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:62:SalesPermissionsTab",
-        "target": "useDelete",
-        "targetName": "useDelete",
         "edgeType": "hook",
         "line": 69,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:62:SalesPermissionsTab",
-        "target": "useNotify",
-        "targetName": "useNotify",
+        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:63:SalesPermissionsTab",
+        "target": "useDelete",
+        "targetName": "useDelete",
         "edgeType": "hook",
         "line": 70,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:62:SalesPermissionsTab",
-        "target": "useRedirect",
-        "targetName": "useRedirect",
+        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:63:SalesPermissionsTab",
+        "target": "useNotify",
+        "targetName": "useNotify",
         "edgeType": "hook",
         "line": 71,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:62:SalesPermissionsTab",
-        "target": "useRefresh",
-        "targetName": "useRefresh",
+        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:63:SalesPermissionsTab",
+        "target": "useRedirect",
+        "targetName": "useRedirect",
         "edgeType": "hook",
         "line": 72,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:62:SalesPermissionsTab",
-        "target": "useGetIdentity",
-        "targetName": "useGetIdentity",
+        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:63:SalesPermissionsTab",
+        "target": "useRefresh",
+        "targetName": "useRefresh",
         "edgeType": "hook",
         "line": 73,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:62:SalesPermissionsTab",
-        "target": "useState",
-        "targetName": "useState",
+        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:63:SalesPermissionsTab",
+        "target": "useGetIdentity",
+        "targetName": "useGetIdentity",
         "edgeType": "hook",
-        "line": 75,
+        "line": 74,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:62:SalesPermissionsTab",
+        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:63:SalesPermissionsTab",
         "target": "useState",
         "targetName": "useState",
         "edgeType": "hook",
-        "line": 80,
+        "line": 76,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:62:SalesPermissionsTab",
-        "target": "parse",
-        "targetName": "parse",
-        "edgeType": "call",
+        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:63:SalesPermissionsTab",
+        "target": "useState",
+        "targetName": "useState",
+        "edgeType": "hook",
         "line": 81,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:62:SalesPermissionsTab",
+        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:63:SalesPermissionsTab",
+        "target": "parse",
+        "targetName": "parse",
+        "edgeType": "call",
+        "line": 82,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:63:SalesPermissionsTab",
         "target": "useState",
         "targetName": "useState",
         "edgeType": "hook",
-        "line": 87,
+        "line": 88,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:62:SalesPermissionsTab",
+        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:63:SalesPermissionsTab",
         "target": "useEffect",
         "targetName": "useEffect",
         "edgeType": "hook",
-        "line": 92,
+        "line": 93,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:62:SalesPermissionsTab",
+        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:63:SalesPermissionsTab",
         "target": "onDirtyChange",
         "targetName": "onDirtyChange",
         "edgeType": "call",
-        "line": 97,
+        "line": 98,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:62:SalesPermissionsTab",
+        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:63:SalesPermissionsTab",
         "target": "notify",
         "targetName": "notify",
         "edgeType": "call",
-        "line": 106,
+        "line": 107,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:62:SalesPermissionsTab",
+        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:63:SalesPermissionsTab",
         "target": "deleteOne",
         "targetName": "deleteOne",
         "edgeType": "call",
-        "line": 112,
+        "line": 113,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:62:SalesPermissionsTab",
+        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:63:SalesPermissionsTab",
         "target": "notify",
         "targetName": "notify",
-        "edgeType": "call",
-        "line": 117,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:62:SalesPermissionsTab",
-        "target": "refresh",
-        "targetName": "refresh",
         "edgeType": "call",
         "line": 118,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:62:SalesPermissionsTab",
-        "target": "redirect",
-        "targetName": "redirect",
+        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:63:SalesPermissionsTab",
+        "target": "deleted",
+        "targetName": "deleted",
+        "edgeType": "call",
+        "line": 118,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:63:SalesPermissionsTab",
+        "target": "refresh",
+        "targetName": "refresh",
         "edgeType": "call",
         "line": 119,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:62:SalesPermissionsTab",
+        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:63:SalesPermissionsTab",
+        "target": "redirect",
+        "targetName": "redirect",
+        "edgeType": "call",
+        "line": 120,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:63:SalesPermissionsTab",
         "target": "notify",
         "targetName": "notify",
         "edgeType": "call",
-        "line": 123,
+        "line": 124,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:62:SalesPermissionsTab",
+        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:63:SalesPermissionsTab",
         "target": "setFormData",
         "targetName": "setFormData",
         "edgeType": "call",
-        "line": 131,
+        "line": 132,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:62:SalesPermissionsTab",
+        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:63:SalesPermissionsTab",
         "target": "setErrors",
         "targetName": "setErrors",
         "edgeType": "call",
-        "line": 133,
+        "line": 134,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:62:SalesPermissionsTab",
+        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:63:SalesPermissionsTab",
         "target": "setShowDisableDialog",
         "targetName": "setShowDisableDialog",
         "edgeType": "call",
-        "line": 149,
+        "line": 150,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:62:SalesPermissionsTab",
+        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:63:SalesPermissionsTab",
         "target": "handleChange",
         "targetName": "handleChange",
         "edgeType": "call",
-        "line": 152,
+        "line": 153,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:62:SalesPermissionsTab",
+        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:63:SalesPermissionsTab",
         "target": "setFormData",
         "targetName": "setFormData",
         "edgeType": "call",
-        "line": 161,
+        "line": 162,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:62:SalesPermissionsTab",
+        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:63:SalesPermissionsTab",
         "target": "onModeToggle",
         "targetName": "onModeToggle",
         "edgeType": "call",
-        "line": 162,
+        "line": 163,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:62:SalesPermissionsTab",
+        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:63:SalesPermissionsTab",
         "target": "update",
         "targetName": "update",
         "edgeType": "call",
-        "line": 172,
+        "line": 173,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:62:SalesPermissionsTab",
+        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:63:SalesPermissionsTab",
         "target": "invalidateIdentityCache",
         "targetName": "invalidateIdentityCache",
         "edgeType": "call",
-        "line": 179,
+        "line": 180,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:62:SalesPermissionsTab",
+        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:63:SalesPermissionsTab",
         "target": "notify",
         "targetName": "notify",
         "edgeType": "call",
-        "line": 181,
+        "line": 182,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:62:SalesPermissionsTab",
+        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:63:SalesPermissionsTab",
+        "target": "updated",
+        "targetName": "updated",
+        "edgeType": "call",
+        "line": 182,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:63:SalesPermissionsTab",
         "target": "onModeToggle",
         "targetName": "onModeToggle",
         "edgeType": "call",
-        "line": 182,
+        "line": 183,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:62:SalesPermissionsTab",
+        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:63:SalesPermissionsTab",
         "target": "notify",
         "targetName": "notify",
         "edgeType": "call",
-        "line": 185,
+        "line": 186,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:62:SalesPermissionsTab",
+        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:63:SalesPermissionsTab",
         "target": "setErrors",
         "targetName": "setErrors",
         "edgeType": "call",
-        "line": 188,
+        "line": 189,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:62:SalesPermissionsTab",
+        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:63:SalesPermissionsTab",
         "target": "setErrors",
         "targetName": "setErrors",
-        "edgeType": "call",
-        "line": 196,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:62:SalesPermissionsTab",
-        "target": "notify",
-        "targetName": "notify",
         "edgeType": "call",
         "line": 197,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:62:SalesPermissionsTab",
+        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:63:SalesPermissionsTab",
         "target": "notify",
         "targetName": "notify",
         "edgeType": "call",
-        "line": 199,
+        "line": 198,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:62:SalesPermissionsTab",
+        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:63:SalesPermissionsTab",
+        "target": "notify",
+        "targetName": "notify",
+        "edgeType": "call",
+        "line": 200,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:63:SalesPermissionsTab",
         "target": "preventDefault",
         "targetName": "preventDefault",
         "edgeType": "call",
-        "line": 233,
+        "line": 234,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:62:SalesPermissionsTab",
+        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:63:SalesPermissionsTab",
         "target": "handleSave",
         "targetName": "handleSave",
         "edgeType": "call",
-        "line": 235,
+        "line": 236,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:62:SalesPermissionsTab",
+        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:63:SalesPermissionsTab",
         "target": "getRoleBadge",
         "targetName": "getRoleBadge",
         "edgeType": "call",
-        "line": 264,
+        "line": 265,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:62:SalesPermissionsTab",
+        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:63:SalesPermissionsTab",
         "target": "handleChange",
         "targetName": "handleChange",
         "edgeType": "call",
-        "line": 269,
+        "line": 270,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:62:SalesPermissionsTab",
+        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:63:SalesPermissionsTab",
         "target": "handleChange",
         "targetName": "handleChange",
         "edgeType": "call",
-        "line": 302,
+        "line": 303,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:62:SalesPermissionsTab",
+        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:63:SalesPermissionsTab",
         "target": "setShowDisableDialog",
         "targetName": "setShowDisableDialog",
         "edgeType": "call",
-        "line": 428,
+        "line": 429,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:62:SalesPermissionsTab",
+        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:63:SalesPermissionsTab",
         "target": "Badge",
         "targetName": "Badge",
         "edgeType": "render",
-        "line": 210,
+        "line": 211,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:62:SalesPermissionsTab",
+        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:63:SalesPermissionsTab",
         "target": "Badge",
         "targetName": "Badge",
         "edgeType": "render",
-        "line": 216,
+        "line": 217,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:62:SalesPermissionsTab",
+        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:63:SalesPermissionsTab",
         "target": "Badge",
         "targetName": "Badge",
         "edgeType": "render",
-        "line": 222,
+        "line": 223,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:62:SalesPermissionsTab",
+        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:63:SalesPermissionsTab",
         "target": "Label",
         "targetName": "Label",
         "edgeType": "render",
-        "line": 262,
+        "line": 263,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:62:SalesPermissionsTab",
+        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:63:SalesPermissionsTab",
         "target": "Select",
         "targetName": "Select",
         "edgeType": "render",
-        "line": 267,
+        "line": 268,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:62:SalesPermissionsTab",
+        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:63:SalesPermissionsTab",
         "target": "SelectTrigger",
         "targetName": "SelectTrigger",
         "edgeType": "render",
-        "line": 272,
+        "line": 273,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:62:SalesPermissionsTab",
+        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:63:SalesPermissionsTab",
         "target": "SelectContent",
         "targetName": "SelectContent",
-        "edgeType": "render",
-        "line": 275,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:62:SalesPermissionsTab",
-        "target": "SelectItem",
-        "targetName": "SelectItem",
         "edgeType": "render",
         "line": 276,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:62:SalesPermissionsTab",
+        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:63:SalesPermissionsTab",
         "target": "SelectItem",
         "targetName": "SelectItem",
         "edgeType": "render",
@@ -1932,7 +1950,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:62:SalesPermissionsTab",
+        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:63:SalesPermissionsTab",
         "target": "SelectItem",
         "targetName": "SelectItem",
         "edgeType": "render",
@@ -1941,160 +1959,160 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:62:SalesPermissionsTab",
-        "target": "Label",
-        "targetName": "Label",
+        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:63:SalesPermissionsTab",
+        "target": "SelectItem",
+        "targetName": "SelectItem",
         "edgeType": "render",
-        "line": 291,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:62:SalesPermissionsTab",
-        "target": "Label",
-        "targetName": "Label",
-        "edgeType": "render",
-        "line": 320,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:62:SalesPermissionsTab",
-        "target": "Badge",
-        "targetName": "Badge",
-        "edgeType": "render",
-        "line": 324,
+        "line": 279,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:62:SalesPermissionsTab",
+        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:63:SalesPermissionsTab",
+        "target": "Label",
+        "targetName": "Label",
+        "edgeType": "render",
+        "line": 292,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:63:SalesPermissionsTab",
+        "target": "Label",
+        "targetName": "Label",
+        "edgeType": "render",
+        "line": 321,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:63:SalesPermissionsTab",
         "target": "Badge",
         "targetName": "Badge",
         "edgeType": "render",
-        "line": 328,
+        "line": 325,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:62:SalesPermissionsTab",
+        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:63:SalesPermissionsTab",
+        "target": "Badge",
+        "targetName": "Badge",
+        "edgeType": "render",
+        "line": 329,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:63:SalesPermissionsTab",
         "target": "AlertDialog",
         "targetName": "AlertDialog",
-        "edgeType": "render",
-        "line": 373,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:62:SalesPermissionsTab",
-        "target": "AlertDialogTrigger",
-        "targetName": "AlertDialogTrigger",
         "edgeType": "render",
         "line": 374,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:62:SalesPermissionsTab",
-        "target": "AdminButton",
-        "targetName": "AdminButton",
+        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:63:SalesPermissionsTab",
+        "target": "AlertDialogTrigger",
+        "targetName": "AlertDialogTrigger",
         "edgeType": "render",
         "line": 375,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:62:SalesPermissionsTab",
-        "target": "AlertDialogContent",
-        "targetName": "AlertDialogContent",
+        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:63:SalesPermissionsTab",
+        "target": "AdminButton",
+        "targetName": "AdminButton",
         "edgeType": "render",
-        "line": 385,
+        "line": 376,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:62:SalesPermissionsTab",
-        "target": "AlertDialogHeader",
-        "targetName": "AlertDialogHeader",
+        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:63:SalesPermissionsTab",
+        "target": "AlertDialogContent",
+        "targetName": "AlertDialogContent",
         "edgeType": "render",
         "line": 386,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:62:SalesPermissionsTab",
-        "target": "AlertDialogTitle",
-        "targetName": "AlertDialogTitle",
+        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:63:SalesPermissionsTab",
+        "target": "AlertDialogHeader",
+        "targetName": "AlertDialogHeader",
         "edgeType": "render",
         "line": 387,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:62:SalesPermissionsTab",
-        "target": "AlertDialogDescription",
-        "targetName": "AlertDialogDescription",
+        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:63:SalesPermissionsTab",
+        "target": "AlertDialogTitle",
+        "targetName": "AlertDialogTitle",
         "edgeType": "render",
         "line": 388,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:62:SalesPermissionsTab",
-        "target": "AlertDialogFooter",
-        "targetName": "AlertDialogFooter",
+        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:63:SalesPermissionsTab",
+        "target": "AlertDialogDescription",
+        "targetName": "AlertDialogDescription",
         "edgeType": "render",
-        "line": 400,
+        "line": 389,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:62:SalesPermissionsTab",
-        "target": "AlertDialogCancel",
-        "targetName": "AlertDialogCancel",
+        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:63:SalesPermissionsTab",
+        "target": "AlertDialogFooter",
+        "targetName": "AlertDialogFooter",
         "edgeType": "render",
         "line": 401,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:62:SalesPermissionsTab",
-        "target": "AlertDialogAction",
-        "targetName": "AlertDialogAction",
+        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:63:SalesPermissionsTab",
+        "target": "AlertDialogCancel",
+        "targetName": "AlertDialogCancel",
         "edgeType": "render",
         "line": 402,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:62:SalesPermissionsTab",
-        "target": "handleRemoveUser",
-        "targetName": "handleRemoveUser",
-        "edgeType": "callback",
+        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:63:SalesPermissionsTab",
+        "target": "AlertDialogAction",
+        "targetName": "AlertDialogAction",
+        "edgeType": "render",
         "line": 403,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:62:SalesPermissionsTab",
+        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:63:SalesPermissionsTab",
+        "target": "handleRemoveUser",
+        "targetName": "handleRemoveUser",
+        "edgeType": "callback",
+        "line": 404,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:63:SalesPermissionsTab",
         "target": "handleFormSubmit",
         "targetName": "handleFormSubmit",
         "edgeType": "callback",
-        "line": 421,
+        "line": 422,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:62:SalesPermissionsTab",
-        "target": "Skeleton",
-        "targetName": "Skeleton",
-        "edgeType": "render",
-        "line": 242,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:62:SalesPermissionsTab",
+        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:63:SalesPermissionsTab",
         "target": "Skeleton",
         "targetName": "Skeleton",
         "edgeType": "render",
@@ -2103,7 +2121,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:62:SalesPermissionsTab",
+        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:63:SalesPermissionsTab",
         "target": "Skeleton",
         "targetName": "Skeleton",
         "edgeType": "render",
@@ -2112,376 +2130,385 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:62:SalesPermissionsTab",
+        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:63:SalesPermissionsTab",
+        "target": "Skeleton",
+        "targetName": "Skeleton",
+        "edgeType": "render",
+        "line": 245,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:63:SalesPermissionsTab",
         "target": "SelectValue",
         "targetName": "SelectValue",
         "edgeType": "render",
-        "line": 273,
+        "line": 274,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:62:SalesPermissionsTab",
+        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:63:SalesPermissionsTab",
         "target": "Switch",
         "targetName": "Switch",
         "edgeType": "render",
-        "line": 299,
+        "line": 300,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:62:SalesPermissionsTab",
+        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:63:SalesPermissionsTab",
         "target": "Switch",
         "targetName": "Switch",
         "edgeType": "render",
-        "line": 336,
+        "line": 337,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:62:SalesPermissionsTab",
+        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:63:SalesPermissionsTab",
         "target": "handleDisabledChange",
         "targetName": "handleDisabledChange",
         "edgeType": "callback",
-        "line": 339,
+        "line": 340,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:62:SalesPermissionsTab",
+        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:63:SalesPermissionsTab",
         "target": "Trash2",
         "targetName": "Trash2",
         "edgeType": "render",
-        "line": 381,
+        "line": 382,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:62:SalesPermissionsTab",
+        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:63:SalesPermissionsTab",
         "target": "UserDisableReassignDialog",
         "targetName": "UserDisableReassignDialog",
         "edgeType": "render",
-        "line": 425,
+        "line": 426,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:62:SalesPermissionsTab",
+        "source": "src/atomic-crm/sales/SalesPermissionsTab.tsx:63:SalesPermissionsTab",
         "target": "handleDisableSuccess",
         "targetName": "handleDisableSuccess",
         "edgeType": "callback",
-        "line": 429,
+        "line": 430,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:39:SalesProfileTab",
+        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:40:SalesProfileTab",
         "target": "useUpdate",
         "targetName": "useUpdate",
-        "edgeType": "hook",
-        "line": 45,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:39:SalesProfileTab",
-        "target": "useNotify",
-        "targetName": "useNotify",
         "edgeType": "hook",
         "line": 46,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:39:SalesProfileTab",
-        "target": "useState",
-        "targetName": "useState",
+        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:40:SalesProfileTab",
+        "target": "useNotify",
+        "targetName": "useNotify",
         "edgeType": "hook",
-        "line": 51,
+        "line": 47,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:39:SalesProfileTab",
-        "target": "parse",
-        "targetName": "parse",
-        "edgeType": "call",
+        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:40:SalesProfileTab",
+        "target": "useState",
+        "targetName": "useState",
+        "edgeType": "hook",
         "line": 52,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:39:SalesProfileTab",
+        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:40:SalesProfileTab",
+        "target": "parse",
+        "targetName": "parse",
+        "edgeType": "call",
+        "line": 53,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:40:SalesProfileTab",
         "target": "useState",
         "targetName": "useState",
         "edgeType": "hook",
-        "line": 61,
+        "line": 62,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:39:SalesProfileTab",
+        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:40:SalesProfileTab",
         "target": "useEffect",
         "targetName": "useEffect",
         "edgeType": "hook",
-        "line": 66,
+        "line": 67,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:39:SalesProfileTab",
+        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:40:SalesProfileTab",
         "target": "onDirtyChange",
         "targetName": "onDirtyChange",
         "edgeType": "call",
-        "line": 76,
+        "line": 77,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:39:SalesProfileTab",
+        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:40:SalesProfileTab",
         "target": "setFormData",
         "targetName": "setFormData",
         "edgeType": "call",
-        "line": 81,
+        "line": 82,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:39:SalesProfileTab",
+        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:40:SalesProfileTab",
         "target": "setErrors",
         "targetName": "setErrors",
         "edgeType": "call",
-        "line": 84,
+        "line": 85,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:39:SalesProfileTab",
+        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:40:SalesProfileTab",
         "target": "update",
         "targetName": "update",
         "edgeType": "call",
-        "line": 99,
+        "line": 100,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:39:SalesProfileTab",
+        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:40:SalesProfileTab",
         "target": "notify",
         "targetName": "notify",
         "edgeType": "call",
-        "line": 104,
+        "line": 105,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:39:SalesProfileTab",
+        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:40:SalesProfileTab",
+        "target": "updated",
+        "targetName": "updated",
+        "edgeType": "call",
+        "line": 105,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:40:SalesProfileTab",
         "target": "onModeToggle",
         "targetName": "onModeToggle",
         "edgeType": "call",
-        "line": 105,
+        "line": 106,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:39:SalesProfileTab",
+        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:40:SalesProfileTab",
         "target": "notify",
         "targetName": "notify",
         "edgeType": "call",
-        "line": 108,
+        "line": 109,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:39:SalesProfileTab",
+        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:40:SalesProfileTab",
         "target": "setErrors",
         "targetName": "setErrors",
         "edgeType": "call",
-        "line": 111,
+        "line": 112,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:39:SalesProfileTab",
+        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:40:SalesProfileTab",
         "target": "setErrors",
         "targetName": "setErrors",
-        "edgeType": "call",
-        "line": 119,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:39:SalesProfileTab",
-        "target": "notify",
-        "targetName": "notify",
         "edgeType": "call",
         "line": 120,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:39:SalesProfileTab",
+        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:40:SalesProfileTab",
         "target": "notify",
         "targetName": "notify",
         "edgeType": "call",
-        "line": 122,
+        "line": 121,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:39:SalesProfileTab",
-        "target": "preventDefault",
-        "targetName": "preventDefault",
+        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:40:SalesProfileTab",
+        "target": "notify",
+        "targetName": "notify",
         "edgeType": "call",
-        "line": 140,
-        "conditional": false,
+        "line": 123,
+        "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:39:SalesProfileTab",
-        "target": "handleSave",
-        "targetName": "handleSave",
+        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:40:SalesProfileTab",
+        "target": "preventDefault",
+        "targetName": "preventDefault",
         "edgeType": "call",
         "line": 141,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:39:SalesProfileTab",
+        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:40:SalesProfileTab",
+        "target": "handleSave",
+        "targetName": "handleSave",
+        "edgeType": "call",
+        "line": 142,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:40:SalesProfileTab",
         "target": "getInitials",
         "targetName": "getInitials",
         "edgeType": "call",
+        "line": 156,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:40:SalesProfileTab",
+        "target": "handleChange",
+        "targetName": "handleChange",
+        "edgeType": "call",
+        "line": 169,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:40:SalesProfileTab",
+        "target": "handleChange",
+        "targetName": "handleChange",
+        "edgeType": "call",
+        "line": 191,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:40:SalesProfileTab",
+        "target": "handleChange",
+        "targetName": "handleChange",
+        "edgeType": "call",
+        "line": 210,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:40:SalesProfileTab",
+        "target": "handleChange",
+        "targetName": "handleChange",
+        "edgeType": "call",
+        "line": 233,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:40:SalesProfileTab",
+        "target": "handleChange",
+        "targetName": "handleChange",
+        "edgeType": "call",
+        "line": 253,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:40:SalesProfileTab",
+        "target": "Avatar",
+        "targetName": "Avatar",
+        "edgeType": "render",
+        "line": 150,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:40:SalesProfileTab",
+        "target": "AvatarFallback",
+        "targetName": "AvatarFallback",
+        "edgeType": "render",
         "line": 155,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:39:SalesProfileTab",
-        "target": "handleChange",
-        "targetName": "handleChange",
-        "edgeType": "call",
-        "line": 168,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:39:SalesProfileTab",
-        "target": "handleChange",
-        "targetName": "handleChange",
-        "edgeType": "call",
-        "line": 190,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:39:SalesProfileTab",
-        "target": "handleChange",
-        "targetName": "handleChange",
-        "edgeType": "call",
-        "line": 209,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:39:SalesProfileTab",
-        "target": "handleChange",
-        "targetName": "handleChange",
-        "edgeType": "call",
-        "line": 232,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:39:SalesProfileTab",
-        "target": "handleChange",
-        "targetName": "handleChange",
-        "edgeType": "call",
-        "line": 252,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:39:SalesProfileTab",
-        "target": "Avatar",
-        "targetName": "Avatar",
-        "edgeType": "render",
-        "line": 149,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:39:SalesProfileTab",
-        "target": "AvatarFallback",
-        "targetName": "AvatarFallback",
-        "edgeType": "render",
-        "line": 154,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:39:SalesProfileTab",
+        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:40:SalesProfileTab",
         "target": "Label",
         "targetName": "Label",
         "edgeType": "render",
-        "line": 163,
+        "line": 164,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:39:SalesProfileTab",
+        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:40:SalesProfileTab",
         "target": "Label",
         "targetName": "Label",
         "edgeType": "render",
-        "line": 182,
+        "line": 183,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:39:SalesProfileTab",
+        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:40:SalesProfileTab",
         "target": "Label",
         "targetName": "Label",
         "edgeType": "render",
-        "line": 201,
+        "line": 202,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:39:SalesProfileTab",
+        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:40:SalesProfileTab",
         "target": "Label",
         "targetName": "Label",
         "edgeType": "render",
-        "line": 223,
+        "line": 224,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:39:SalesProfileTab",
+        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:40:SalesProfileTab",
         "target": "Label",
         "targetName": "Label",
         "edgeType": "render",
-        "line": 243,
+        "line": 244,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:39:SalesProfileTab",
+        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:40:SalesProfileTab",
         "target": "handleFormSubmit",
         "targetName": "handleFormSubmit",
         "edgeType": "callback",
-        "line": 267,
+        "line": 268,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:39:SalesProfileTab",
-        "target": "Skeleton",
-        "targetName": "Skeleton",
-        "edgeType": "render",
-        "line": 131,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:39:SalesProfileTab",
+        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:40:SalesProfileTab",
         "target": "Skeleton",
         "targetName": "Skeleton",
         "edgeType": "render",
@@ -2490,7 +2517,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:39:SalesProfileTab",
+        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:40:SalesProfileTab",
         "target": "Skeleton",
         "targetName": "Skeleton",
         "edgeType": "render",
@@ -2499,56 +2526,65 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:39:SalesProfileTab",
+        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:40:SalesProfileTab",
+        "target": "Skeleton",
+        "targetName": "Skeleton",
+        "edgeType": "render",
+        "line": 134,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:40:SalesProfileTab",
         "target": "AvatarImage",
         "targetName": "AvatarImage",
         "edgeType": "render",
-        "line": 150,
+        "line": 151,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:39:SalesProfileTab",
+        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:40:SalesProfileTab",
         "target": "Input",
         "targetName": "Input",
         "edgeType": "render",
-        "line": 164,
+        "line": 165,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:39:SalesProfileTab",
+        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:40:SalesProfileTab",
         "target": "Input",
         "targetName": "Input",
         "edgeType": "render",
-        "line": 187,
+        "line": 188,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:39:SalesProfileTab",
+        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:40:SalesProfileTab",
         "target": "Input",
         "targetName": "Input",
         "edgeType": "render",
-        "line": 206,
+        "line": 207,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:39:SalesProfileTab",
+        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:40:SalesProfileTab",
         "target": "Input",
         "targetName": "Input",
         "edgeType": "render",
-        "line": 228,
+        "line": 229,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:39:SalesProfileTab",
+        "source": "src/atomic-crm/sales/SalesProfileTab.tsx:40:SalesProfileTab",
         "target": "Input",
         "targetName": "Input",
         "edgeType": "render",
-        "line": 248,
+        "line": 249,
         "conditional": true,
         "inLoop": false
       },

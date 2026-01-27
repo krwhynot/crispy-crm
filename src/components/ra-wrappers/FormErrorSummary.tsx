@@ -156,19 +156,19 @@ export function FormErrorSummary({
           <button
             type="button"
             onClick={() => setIsExpanded(!isExpanded)}
-            className="flex items-center gap-1 text-xs text-destructive/80 hover:text-destructive transition-colors"
+            className="flex items-center gap-1 text-xs text-destructive/80 hover:text-destructive transition-colors min-h-11 px-3"
             aria-expanded={isExpanded}
             aria-controls="error-list"
           >
             {isExpanded ? (
               <>
                 Hide details
-                <ChevronUp className="h-4 w-4" />
+                <ChevronUp className="h-4 w-4" aria-hidden="true" />
               </>
             ) : (
               <>
                 Show details
-                <ChevronDown className="h-4 w-4" />
+                <ChevronDown className="h-4 w-4" aria-hidden="true" />
               </>
             )}
           </button>

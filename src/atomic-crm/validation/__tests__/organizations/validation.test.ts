@@ -50,8 +50,10 @@ describe("Organization Validation Schemas", () => {
       organization_type: "customer",
       website: "https://example.com",
       segment_id: "562062be-c15b-417f-b2a1-d4a643d69d52",
-      // Note: annual_revenue, employee_count, founded_year removed from validation
-      // These fields exist in DB but are not user-editable via forms
+      // Required fields after audit fix (commit 4f0245d2b):
+      // Schema no longer provides silent defaults - form layer must provide them
+      priority: "B" as const,
+      status: "active" as const,
     };
 
     it("should accept valid organization data", () => {
@@ -61,14 +63,24 @@ describe("Organization Validation Schemas", () => {
       expect(result.organization_type).toBe("customer");
     });
 
-    it("should provide default values", () => {
+    it("should require organization_type, priority, and status (no silent defaults)", () => {
+      // Per audit fix (commit 4f0245d2b): Schema no longer provides defaults
+      // to prevent silent data issues. Form layer must provide explicit values.
       const minimalOrganization = {
         name: "Minimal Organization",
       };
 
-      const result = organizationSchema.parse(minimalOrganization);
-      expect(result.organization_type).toBe("prospect"); // Default for new organizations
-      expect(result.priority).toBe("C"); // Database default
+      // Schema requires these fields - will throw without them
+      expect(() => organizationSchema.parse(minimalOrganization)).toThrow(z.ZodError);
+
+      // With required fields, should pass
+      const completeOrganization = {
+        name: "Minimal Organization",
+        organization_type: "prospect",
+        priority: "C",
+        status: "active",
+      };
+      expect(() => organizationSchema.parse(completeOrganization)).not.toThrow();
     });
 
     it("should reject empty name", () => {
@@ -223,12 +235,15 @@ describe("Organization Validation Schemas", () => {
 
   describe("createOrganizationSchema", () => {
     it("should require essential fields for creation", () => {
-      // createOrganizationSchema requires: name, organization_type, sales_id, segment_id
+      // createOrganizationSchema requires: name, organization_type, sales_id, segment_id, priority, status
+      // Per audit fix: priority and status must be explicit (no silent defaults)
       const validCreate = {
         name: "New Organization",
         organization_type: "prospect",
         sales_id: 1,
         segment_id: "562062be-c15b-417f-b2a1-d4a643d69d52",
+        priority: "C",
+        status: "active",
       };
 
       expect(() => createOrganizationSchema.parse(validCreate)).not.toThrow();
@@ -262,9 +277,9 @@ describe("Organization Validation Schemas", () => {
       expect(() => createOrganizationSchema.parse(dataWithSystemFields)).toThrow(z.ZodError);
     });
 
-    it("should apply defaults on creation for optional fields", () => {
-      // createOrganizationSchema now requires: name, organization_type, sales_id, segment_id
-      // Defaults still apply to other optional fields like priority, status, billing_country
+    it("should require priority and status explicitly (no silent defaults)", () => {
+      // Per audit fix (commit 4f0245d2b): Schema no longer provides silent defaults
+      // Form layer must supply these values explicitly to prevent data issues
       const minimalCreate = {
         name: "New Org",
         organization_type: "prospect",
@@ -272,11 +287,21 @@ describe("Organization Validation Schemas", () => {
         segment_id: "562062be-c15b-417f-b2a1-d4a643d69d52",
       };
 
-      const result = createOrganizationSchema.parse(minimalCreate);
+      // Schema requires priority and status - will throw without them
+      expect(() => createOrganizationSchema.parse(minimalCreate)).toThrow(z.ZodError);
+
+      // With all required fields, should pass
+      const completeCreate = {
+        ...minimalCreate,
+        priority: "C",
+        status: "active",
+      };
+
+      const result = createOrganizationSchema.parse(completeCreate);
       expect(result.organization_type).toBe("prospect"); // Explicitly provided
-      expect(result.priority).toBe("C"); // Database default
-      expect(result.billing_country).toBe("US"); // Default from schema
-      expect(result.status).toBe("active"); // Default from schema
+      expect(result.priority).toBe("C"); // Explicitly provided
+      expect(result.status).toBe("active"); // Explicitly provided
+      expect(result.billing_country).toBe("US"); // Default from schema (country defaults are OK)
     });
   });
 

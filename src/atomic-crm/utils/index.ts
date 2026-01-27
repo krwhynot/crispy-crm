@@ -109,3 +109,6 @@ export {
   isNetworkError,
   isAuthError,
 } from "./errorMessages";
+
+// Schema introspection utilities
+export { getRequiredFields } from "./getRequiredFields";

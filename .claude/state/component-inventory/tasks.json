@@ -1,6 +1,6 @@
 {
   "chunk_name": "tasks",
-  "generated_at": "2026-01-26T21:45:48.496Z",
+  "generated_at": "2026-01-27T19:23:53.648Z",
   "item_count": 28,
   "items": [
     {
@@ -50,7 +50,7 @@
     {
       "name": "Task",
       "file": "src/atomic-crm/tasks/Task.tsx",
-      "line": 33,
+      "line": 34,
       "type": "presentational",
       "hooks": [
         "useDeleteWithUndoController",
@@ -65,6 +65,7 @@
         "../types",
         "./TaskCompletionDialog",
         "./TaskEdit",
+        "@/atomic-crm/constants/notificationMessages",
         "@/components/admin/AdminButton",
         "@/components/ra-wrappers/date-field",
         "@/components/ra-wrappers/reference-field",
@@ -91,7 +92,7 @@
     {
       "name": "TaskActionMenu",
       "file": "src/atomic-crm/tasks/TaskActionMenu.tsx",
-      "line": 53,
+      "line": 54,
       "type": "presentational",
       "hooks": [
         "useDelete",
@@ -101,6 +102,7 @@
         "useUpdate"
       ],
       "imports": [
+        "@/atomic-crm/constants/notificationMessages",
         "@/atomic-crm/queryKeys",
         "@/components/admin/AdminButton",
         "@/components/ui/dropdown-menu",
@@ -487,7 +489,7 @@
     {
       "name": "TaskSlideOverDetailsTab",
       "file": "src/atomic-crm/tasks/TaskSlideOverDetailsTab.tsx",
-      "line": 51,
+      "line": 52,
       "type": "presentational",
       "hooks": [
         "useFormOptions",
@@ -503,6 +505,7 @@
         "../sales/SaleName",
         "../types",
         "./TaskCompletionDialog",
+        "@/atomic-crm/constants/notificationMessages",
         "@/components/layouts/sidepane",
         "@/components/ra-wrappers/autocomplete-input",
         "@/components/ra-wrappers/boolean-input",
