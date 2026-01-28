@@ -34,9 +34,15 @@ export const baseActivitiesSchema = z.strictObject({
   duration_minutes: z.number().int().positive().optional().nullable(),
 
   // Entity relationships
-  contact_id: z.union([z.string(), z.number()]).optional().nullable(),
-  organization_id: z.union([z.string(), z.number()]).optional().nullable(),
-  opportunity_id: z.union([z.string(), z.number()]).optional().nullable(),
+  contact_id: z.union([z.string().max(50, "Contact ID too long"), z.number()]).optional().nullable(),
+  organization_id: z
+    .union([z.string().max(50, "Organization ID too long"), z.number()])
+    .optional()
+    .nullable(),
+  opportunity_id: z
+    .union([z.string().max(50, "Opportunity ID too long"), z.number()])
+    .optional()
+    .nullable(),
 
   // Follow-up fields
   follow_up_required: z.coerce.boolean().default(false),

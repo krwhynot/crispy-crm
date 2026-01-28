@@ -55,7 +55,10 @@ export const taskSchema = z.strictObject({
   ), // NULL = active, future timestamp = snoozed
 
   // Audit fields (per migration 20251127054700_fix_critical_rls_security_tasks.sql)
-  created_by: z.union([z.string(), z.number()]).optional().nullable(), // Sales rep who created this task (different from assignee)
+  created_by: z
+    .union([z.string().max(50, "Created by ID too long"), z.number()])
+    .optional()
+    .nullable(), // Sales rep who created this task (different from assignee)
   created_at: z.string().max(50).optional(),
   updated_at: z.string().max(50).optional(),
   deleted_at: z.string().max(50).optional().nullable(), // Soft-delete timestamp (NULL = active)

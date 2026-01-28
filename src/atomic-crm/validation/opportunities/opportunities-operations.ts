@@ -73,8 +73,8 @@ export const opportunityProductSyncInputSchema = z.strictObject({
 export const opportunityProductSyncHandlerSchema = z.strictObject({
   id: z.union([z.string(), z.number()]).optional(),
   product_id_reference: z.union([z.string(), z.number()]),
-  product_name: z.string().optional(),
-  product_category: z.string().optional(),
+  product_name: z.string().max(255, "Product name too long").optional(),
+  product_category: z.string().max(100, "Product category too long").optional(),
   notes: z.string().max(2000).optional().nullable(),
 });
 

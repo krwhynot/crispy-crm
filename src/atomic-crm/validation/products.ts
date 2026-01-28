@@ -186,7 +186,7 @@ export const productCreateWithDistributorsSchema = z.strictObject({
  */
 export const productUpdateWithDistributorsSchema = z.strictObject({
   // ID may be included in update data
-  id: z.union([z.string(), z.number()]).optional(),
+  id: z.union([z.string().max(50), z.number()]).optional(),
 
   // Required fields
   name: z

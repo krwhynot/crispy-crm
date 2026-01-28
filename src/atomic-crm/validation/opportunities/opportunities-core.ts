@@ -233,19 +233,19 @@ const opportunityBaseSchema = z.strictObject({
   stage_changed_at: z.string().optional().nullable(),
 
   // Summary view computed fields (populated by database views, not editable)
-  customer_organization_name: z.string().optional().nullable(),
-  principal_organization_name: z.string().optional().nullable(),
-  distributor_organization_name: z.string().optional().nullable(),
-  primary_contact_name: z.string().optional().nullable(), // JOIN from contacts table via primary_contact_id
+  customer_organization_name: z.string().max(255).optional().nullable(),
+  principal_organization_name: z.string().max(255).optional().nullable(),
+  distributor_organization_name: z.string().max(255).optional().nullable(),
+  primary_contact_name: z.string().max(255).optional().nullable(), // JOIN from contacts table via primary_contact_id
   days_in_stage: z.number().optional().nullable(),
   last_activity_date: z.string().optional().nullable(),
   days_since_last_activity: z.number().optional().nullable(),
   pending_task_count: z.number().optional().nullable(),
   overdue_task_count: z.number().optional().nullable(),
   next_task_id: z.union([z.string(), z.number()]).optional().nullable(),
-  next_task_title: z.string().optional().nullable(),
+  next_task_title: z.string().max(255).optional().nullable(),
   next_task_due_date: z.string().optional().nullable(),
-  next_task_priority: z.string().optional().nullable(),
+  next_task_priority: z.string().max(50).optional().nullable(),
   products: opportunityProductSchema, // Type-safe JSONB array from view
 });
 
