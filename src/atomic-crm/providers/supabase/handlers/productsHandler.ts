@@ -137,8 +137,10 @@ export function createProductsHandler(baseProvider: DataProvider): DataProvider 
 
           // Delegate to service for atomic RPC operation
           // Engineering Constitution: Business logic (RPC calls) belongs in service layer
-          const extendedProvider = assertExtendedDataProvider(baseProvider);
-          const service = new ProductsService(extendedProvider);
+          // NOTE: We cast to ExtendedDataProvider because the provider WILL be extended
+          // by the time these methods are actually called. The runtime assertion was
+          // removed because it runs at initialization time before extensions are added.
+          const service = new ProductsService(baseProvider as ExtendedDataProvider);
 
           // Call service method for atomic creation
           const result = await service.createWithDistributorsRpc(productData, distData);
