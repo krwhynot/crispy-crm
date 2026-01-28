@@ -256,7 +256,7 @@ const OrganizationCreate = () => {
               <Form
                 key={formKey}
                 defaultValues={formDefaults}
-                mode="onBlur"
+                mode="all"
                 resolver={zodResolver(organizationSchema)}
               >
                 <FormProgressBar schema={organizationSchema} className="mb-6" />

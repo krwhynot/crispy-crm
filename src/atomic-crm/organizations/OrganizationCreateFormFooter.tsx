@@ -130,13 +130,22 @@ export const OrganizationCreateFormFooter = ({
     async (action: SaveAction, event: React.MouseEvent<HTMLButtonElement>) => {
       event.preventDefault();
 
-      // Validate form first
+      // Validate form first - explicitly trigger all fields including segment_id
+      // Belt-and-suspenders: trigger() should validate all, but explicitly include segment_id
+      // to catch cases where form mode or default values might skip validation
       const isValid = await trigger();
       if (!isValid) {
         return;
       }
 
       const values = getValues() as OrganizationFormValues;
+
+      // Defense-in-depth: Explicitly check segment_id since validation can be bypassed
+      // when form mode="onBlur" and field is untouched with default value
+      if (!values.segment_id) {
+        await trigger("segment_id");
+        return;
+      }
       const name = values.name?.trim();
 
       if (!name) {
