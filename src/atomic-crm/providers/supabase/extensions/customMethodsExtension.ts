@@ -48,6 +48,9 @@ import { createSpecializedExtension } from "./specializedExtension";
  * Configuration for extending DataProvider with custom methods
  */
 export interface ExtensionConfig {
+  /** Base DataProvider (CRUD only) - MUST be mutated with RPC methods for runtime service instances */
+  baseProvider: DataProvider;
+
   /** Composed DataProvider with handler routing */
   composedProvider: DataProvider;
 
@@ -116,7 +119,7 @@ export interface ExtensionConfig {
  * - Type-safe error messages
  */
 export function extendWithCustomMethods(config: ExtensionConfig): ExtendedDataProvider {
-  const { composedProvider, services, supabaseClient } = config;
+  const { baseProvider, composedProvider, services, supabaseClient } = config;
 
   // Create category extensions
   const salesExt = createSalesExtension(services);
@@ -128,7 +131,22 @@ export function extendWithCustomMethods(config: ExtensionConfig): ExtendedDataPr
   const edgeFunctionsExt = createEdgeFunctionsExtension(supabaseClient);
   const specializedExt = createSpecializedExtension(supabaseClient);
 
-  // Mutate composedProvider to preserve reference held by services
+  // CRITICAL: Mutate baseProvider so it can be mutated with RPC methods.
+  // Handlers create NEW service instances with baseProvider at runtime,
+  // so baseProvider MUST have RPC methods added to it.
+  Object.assign(
+    baseProvider,
+    salesExt,
+    opportunitiesExt,
+    activitiesExt,
+    junctionsExt,
+    rpcExt,
+    storageExt,
+    edgeFunctionsExt,
+    specializedExt
+  );
+
+  // Also mutate composedProvider to preserve reference held by services
   // This allows services to access RPC/storage/invoke methods through their baseProvider reference
   Object.assign(
     composedProvider,
