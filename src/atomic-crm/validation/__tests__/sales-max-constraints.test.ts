@@ -133,22 +133,29 @@ describe("Sales .max() Constraints", () => {
 
   describe("avatar_url field", () => {
     it("should accept avatar_url at max length from VALIDATION_LIMITS.AVATAR_URL_MAX (500)", () => {
+      // Build a 500-char valid URL
+      const baseUrl = "https://cdn.example.com/avatars/";
+      const pathLength = 500 - baseUrl.length - 4; // -4 for ".jpg"
+      const validUrl = baseUrl + "a".repeat(pathLength) + ".jpg";
       const validSales = {
         first_name: "John",
         last_name: "Doe",
         email: "john@example.com",
-        avatar_url: "http://example.com/" + "a".repeat(480), // 500 total
+        avatar_url: validUrl,
       };
       expect(() => salesSchema.parse(validSales)).not.toThrow();
     });
 
     it("should reject avatar_url over VALIDATION_LIMITS.AVATAR_URL_MAX (501+)", () => {
-      const longPath = "a".repeat(481);
+      // Build a 600-char valid URL (well over limit)
+      const baseUrl = "https://cdn.example.com/avatars/";
+      const pathLength = 600 - baseUrl.length - 4; // -4 for ".jpg"
+      const invalidUrl = baseUrl + "a".repeat(pathLength) + ".jpg";
       const invalidSales = {
         first_name: "John",
         last_name: "Doe",
         email: "john@example.com",
-        avatar_url: `http://example.com/${longPath}`, // 501 total
+        avatar_url: invalidUrl,
       };
       expect(() => salesSchema.parse(invalidSales)).toThrow(z.ZodError);
     });
