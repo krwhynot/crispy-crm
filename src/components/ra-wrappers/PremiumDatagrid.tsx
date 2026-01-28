@@ -26,7 +26,7 @@ import { cn } from "@/lib/utils";
  *
  * @see {@link https://marmelab.com/react-admin/Datagrid.html} React Admin Datagrid docs
  */
-export interface PremiumDatagridProps extends DatagridProps {
+export interface PremiumDatagridProps extends Omit<DatagridProps, "rowClassName"> {
   /**
    * Custom row click handler.
    * When provided, overrides the default rowClick behavior.
@@ -61,6 +61,12 @@ export interface PremiumDatagridProps extends DatagridProps {
    * @example "organizations.datagrid"
    */
   preferenceKey?: string;
+
+  /**
+   * Optional className for table rows.
+   * Can be a string or a function that receives (record, index) and returns a string.
+   */
+  rowClassName?: string | ((record: unknown, index: number) => string);
 }
 
 /**
