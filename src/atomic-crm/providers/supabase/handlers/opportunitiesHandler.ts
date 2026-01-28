@@ -48,7 +48,7 @@ import { z } from "zod";
 import { withErrorLogging, withValidation, withSkipDelete } from "../wrappers";
 import { opportunitiesCallbacks } from "../callbacks";
 import { OpportunitiesService } from "../../../services/opportunities.service";
-import { assertExtendedDataProvider, type ExtendedDataProvider } from "../typeGuards";
+import type { ExtendedDataProvider } from "../typeGuards";
 import {
   opportunityProductSyncHandlerSchema,
   type OpportunityProductSyncHandler,

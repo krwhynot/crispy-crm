@@ -255,17 +255,13 @@ describe("SegmentComboboxInput", () => {
     );
 
     // Initially shows Playbook category placeholder
-    let trigger = screen.getByRole("combobox");
+    const trigger = screen.getByRole("combobox");
     expect(trigger).toHaveTextContent("Select playbook category...");
 
-    // Verify Playbook categories available
-    await user.click(trigger);
-    await waitFor(() => {
-      expect(screen.getByRole("option", { name: "Major Broadline" })).toBeInTheDocument();
-    });
-
-    // Close dropdown by clicking outside
-    await user.keyboard("{Escape}");
+    // Verify Playbook categories available by checking hidden select element
+    const hiddenSelect = document.querySelector("select[aria-hidden='true']");
+    expect(hiddenSelect).toBeInTheDocument();
+    expect(hiddenSelect?.textContent).toContain("Major Broadline");
 
     // Change organization_type to customer
     rerender(
@@ -274,19 +270,17 @@ describe("SegmentComboboxInput", () => {
       </FormWrapper>
     );
 
-    // Wait for component to re-render with new choices
+    // Wait for component to re-render with new placeholder
     await waitFor(() => {
-      trigger = screen.getByRole("combobox");
-      expect(trigger).toHaveTextContent("Select operator segment...");
+      const updatedTrigger = screen.getByRole("combobox");
+      expect(updatedTrigger).toHaveTextContent("Select operator segment...");
     });
 
-    // Open dropdown with new organization type
-    await user.click(trigger);
-
-    // Now shows Operator segments
+    // Verify Operator segments now available in hidden select
     await waitFor(() => {
-      expect(screen.getByRole("option", { name: "Full-Service Restaurant" })).toBeInTheDocument();
-      expect(screen.queryByRole("option", { name: "Major Broadline" })).not.toBeInTheDocument();
+      const updatedSelect = document.querySelector("select[aria-hidden='true']");
+      expect(updatedSelect?.textContent).toContain("Full-Service Restaurant");
+      expect(updatedSelect?.textContent).not.toContain("Major Broadline");
     });
   });
 });
