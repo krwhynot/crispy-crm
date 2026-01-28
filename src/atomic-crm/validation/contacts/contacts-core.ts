@@ -131,20 +131,20 @@ export const contactBaseSchema = z.strictObject({
     .transform((val) => (val ? sanitizeHtml(val) : val)),
 
   // Address fields - exist in DB, may not have UI inputs yet
-  address: z.string().trim().max(500, "Address too long").optional().nullable(),
-  city: z.string().trim().max(100, "City too long").optional().nullable(),
-  state: z.string().trim().max(100, "State too long").optional().nullable(),
-  postal_code: z.string().trim().max(20, "Postal code too long").optional().nullable(),
-  country: z.string().trim().max(100, "Country too long").optional().nullable(),
+  address: z.string().trim().max(500).optional().nullable(),
+  city: z.string().trim().max(100).optional().nullable(),
+  state: z.string().trim().max(100).optional().nullable(),
+  postal_code: z.string().trim().max(20).optional().nullable(),
+  country: z.string().trim().max(100).optional().nullable(),
 
   // Personal info fields - exist in DB
   birthday: z.coerce.date().optional().nullable(),
-  gender: z.string().trim().max(50, "Gender too long").optional().nullable(),
-  twitter_handle: z.string().trim().max(100, "Twitter handle too long").optional().nullable(),
+  gender: z.string().trim().max(50).optional().nullable(),
+  twitter_handle: z.string().trim().max(100).optional().nullable(),
 
   // Classification fields - exist in DB
   tags: z.array(z.string().trim().max(100)).max(50, "Maximum 50 tags").default([]),
-  status: z.string().trim().max(50, "Status too long").optional().nullable(),
+  status: z.string().trim().max(50).optional().nullable(),
 
   // System fields (readonly, set by triggers)
   updated_by: z.coerce.number().optional().nullable(),
