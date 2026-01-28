@@ -73,7 +73,7 @@ export function FilterChipBar({ filterConfig, context, className }: FilterChipBa
    * Allows arrow key navigation between chips
    */
   const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
-    const buttons = chipBarRef.current?.querySelectorAll('button[aria-label^="Remove"]');
+    const buttons = chipBarRef.current?.querySelectorAll('[data-chip-button]');
     if (!buttons?.length) return;
 
     const currentIndex = Array.from(buttons).findIndex((btn) => btn === document.activeElement);

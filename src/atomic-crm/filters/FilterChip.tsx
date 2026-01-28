@@ -62,6 +62,7 @@ export const FilterChip = React.memo(function FilterChip({
       <AdminButton
         variant="ghost"
         size="icon"
+        data-chip-button
         className={cn(
           "rounded-full hover:bg-accent/50",
           "h-11 w-11", // 44px button for iPad touch target
