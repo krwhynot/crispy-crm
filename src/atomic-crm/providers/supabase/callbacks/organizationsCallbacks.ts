@@ -91,6 +91,51 @@ export const transformQToIlikeSearch = createQToIlikeTransformer({
 // ============================================================================
 
 /**
+ * Custom beforeCreate: Check for duplicate organization names
+ *
+ * WHY CUSTOM: Prevent duplicate organization names (case-insensitive).
+ * Throws React Admin server-side validation error if duplicate found.
+ *
+ * @param params - Create parameters with data
+ * @param dataProvider - React Admin data provider for querying existing orgs
+ * @returns Unchanged params if validation passes
+ * @throws Server-side validation error if duplicate name exists
+ */
+async function organizationsBeforeCreate(
+  params: CreateParams,
+  dataProvider: DataProvider
+): Promise<CreateParams> {
+  const { data } = params;
+  const name = data.name?.trim();
+
+  // Fail-fast: Name is required
+  if (!name) {
+    throw new Error("Organization name is required");
+  }
+
+  // Query for existing org with same name (case-insensitive)
+  const { data: existing } = await dataProvider.getList("organizations", {
+    filter: { "name@ilike": name },
+    pagination: { page: 1, perPage: 1 },
+    sort: { field: "id", order: "ASC" },
+  });
+
+  if (existing && existing.length > 0) {
+    // Throw React Admin server-side validation error
+    throw {
+      message: "Validation failed",
+      body: {
+        errors: {
+          name: "An organization with this name already exists",
+        },
+      },
+    };
+  }
+
+  return params;
+}
+
+/**
  * Custom beforeDelete: Use archive RPC for cascading soft delete
  *
  * FIX [WF-C02]: Standard soft delete only sets `deleted_at` on ONE record.
@@ -272,6 +317,7 @@ async function organizationsBeforeGetList(
  */
 export const organizationsCallbacks: ResourceCallbacks = {
   ...baseCallbacks,
+  beforeCreate: organizationsBeforeCreate, // Prevent duplicate names (case-insensitive)
   beforeDelete: organizationsBeforeDelete, // FIX [WF-C02]: Cascade via RPC (single)
   beforeDeleteMany: organizationsBeforeDeleteMany, // FIX [E2E-001]: Cascade via RPC (bulk)
   beforeGetList: organizationsBeforeGetList,

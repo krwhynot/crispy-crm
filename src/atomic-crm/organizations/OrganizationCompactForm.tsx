@@ -1,3 +1,6 @@
+import React from "react";
+import { useDataProvider, useRecordContext } from "react-admin";
+import type { DataProvider } from "react-admin";
 import { TextInput } from "@/components/ra-wrappers/text-input";
 import { ReferenceInput } from "@/components/ra-wrappers/reference-input";
 import { SelectInput } from "@/components/ra-wrappers/select-input";
@@ -16,12 +19,37 @@ import { ParentOrganizationInput } from "./ParentOrganizationInput";
 import { useCityStateMapping } from "@/hooks";
 import { PrincipalAwareTypeInput } from "./PrincipalAwareTypeInput";
 
+const createDuplicateNameValidator = (dataProvider: DataProvider, currentId?: number) => {
+  return async (name: string) => {
+    if (!name?.trim()) return undefined;
+
+    const { data } = await dataProvider.getList("organizations", {
+      filter: { "name@ilike": name.trim() },
+      pagination: { page: 1, perPage: 1 },
+    });
+
+    // Allow if no duplicates OR if the duplicate is the current record (edit mode)
+    if (!data || data.length === 0 || data[0].id === currentId) {
+      return undefined;
+    }
+
+    return "An organization with this name already exists";
+  };
+};
+
 interface OrganizationCompactFormProps {
   isRep?: boolean;
 }
 
 export const OrganizationCompactForm = ({ isRep }: OrganizationCompactFormProps) => {
   useCityStateMapping();
+
+  const dataProvider = useDataProvider();
+  const record = useRecordContext();
+  const validateUniqueName = React.useMemo(
+    () => createDuplicateNameValidator(dataProvider, record?.id),
+    [dataProvider, record?.id]
+  );
 
   return (
     <div className="space-y-6">
@@ -38,6 +66,7 @@ export const OrganizationCompactForm = ({ isRep }: OrganizationCompactFormProps)
                 label="Organization Name *"
                 helperText={false}
                 placeholder="Organization name"
+                validate={validateUniqueName}
               />
             </FormFieldWrapper>
           </div>
