@@ -111,7 +111,7 @@ describe("Sales .max() Constraints", () => {
         first_name: "John",
         last_name: "Doe",
         email: "john@example.com",
-        phone: "1".repeat(50),
+        phone: "1".repeat(30),
       };
       expect(() => salesSchema.parse(validSales)).not.toThrow();
     });
@@ -121,7 +121,7 @@ describe("Sales .max() Constraints", () => {
         first_name: "John",
         last_name: "Doe",
         email: "john@example.com",
-        phone: "1".repeat(51),
+        phone: "1".repeat(31),
       };
       expect(() => salesSchema.parse(invalidSales)).toThrow(z.ZodError);
     });
