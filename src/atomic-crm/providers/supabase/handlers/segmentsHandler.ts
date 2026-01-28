@@ -22,15 +22,8 @@ import type { Segment } from "../../../validation/segments";
 import { withErrorLogging } from "../wrappers";
 import type { ExtendedDataProvider } from "../extensions/types";
 
-/**
- * Schema for validating segment create data
- * Validates the minimal required shape for segment lookup
- */
 const segmentCreateDataSchema = z.object({ name: z.string().optional() }).passthrough();
 
-/**
- * Type guard to ensure segment has required id for RaRecord compatibility
- */
 function hasRequiredId(segment: Segment): segment is Segment & { id: string } {
   return typeof segment.id === "string";
 }

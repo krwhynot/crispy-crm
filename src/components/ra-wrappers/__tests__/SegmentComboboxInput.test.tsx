@@ -292,7 +292,7 @@ describe("SegmentComboboxInput", () => {
       <FormWrapper
         defaultValues={{
           organization_type: "distributor",
-          segment_id: "00000000-0000-0000-0000-000000000000" // Invalid UUID
+          segment_id: "00000000-0000-0000-0000-000000000000", // Invalid UUID
         }}
         onSubmit={onSubmit}
       >
@@ -325,7 +325,7 @@ describe("SegmentComboboxInput", () => {
       <FormWrapper
         defaultValues={{
           organization_type: "distributor",
-          segment_id: "33333333-3333-4333-8333-000000000001" // Full-Service Restaurant (Operator)
+          segment_id: "33333333-3333-4333-8333-000000000001", // Full-Service Restaurant (Operator)
         }}
         onSubmit={onSubmit}
       >
@@ -358,7 +358,7 @@ describe("SegmentComboboxInput", () => {
       <FormWrapper
         defaultValues={{
           organization_type: "customer",
-          segment_id: "22222222-2222-4222-8222-000000000001" // Major Broadline (Playbook)
+          segment_id: "22222222-2222-4222-8222-000000000001", // Major Broadline (Playbook)
         }}
         onSubmit={onSubmit}
       >
