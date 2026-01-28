@@ -1,0 +1,489 @@
+{
+  "audit": "architecture",
+  "mode": "full",
+  "date": "2026-01-27",
+  "critical": 3,
+  "high": 6,
+  "medium": 4,
+  "low": 2,
+  "feature_compliance": {
+    "compliant": 5,
+    "partial": 2,
+    "incomplete": 1
+  },
+  "findings": [
+    {
+      "severity": "CRITICAL",
+      "category": "Direct Supabase Imports",
+      "title": "52 files bypass provider layer with direct Supabase imports",
+      "description": "Architecture Rule: All DB access via unifiedDataProvider. Found 52 files with direct @supabase imports, bypassing validation, lifecycle callbacks, and error logging.",
+      "impact": "Validation bypass, inconsistent error handling, no soft-delete enforcement, no lifecycle hooks",
+      "files": [
+        "src/atomic-crm/sales/SalesPermissionsTab.tsx",
+        "src/atomic-crm/settings/DigestPreferences.tsx",
+        "src/atomic-crm/opportunities/ArchiveActions.tsx",
+        "src/atomic-crm/opportunities/slideOverTabs/OpportunityContactsTab.tsx",
+        "src/atomic-crm/providers/supabase/callbacks/opportunitiesCallbacks.ts",
+        "src/atomic-crm/services/products.service.ts",
+        "src/atomic-crm/root/CRM.tsx",
+        "src/atomic-crm/reports/CampaignActivity/useCampaignActivityData.ts",
+        "src/atomic-crm/providers/supabase/filterRegistry.ts",
+        "src/atomic-crm/providers/supabase/services/StorageService.ts",
+        "src/atomic-crm/services/segments.service.ts",
+        "src/atomic-crm/providers/supabase/utils/storageCleanup.ts",
+        "src/atomic-crm/dashboard/QuickLogForm.tsx",
+        "src/atomic-crm/services/digest.service.ts",
+        "src/atomic-crm/hooks/useFilterCleanup.ts",
+        "src/atomic-crm/providers/supabase/callbacks/contactsCallbacks.ts",
+        "src/atomic-crm/providers/supabase/handlers/timelineHandler.ts",
+        "src/atomic-crm/providers/supabase/authProvider.ts",
+        "src/atomic-crm/opportunities/useSimilarOpportunityCheck.ts",
+        "src/atomic-crm/services/productDistributors.service.ts",
+        "src/atomic-crm/root/i18nProvider.tsx",
+        "src/atomic-crm/services/opportunities.service.ts"
+      ],
+      "remediation": [
+        "Identify which files need data access (vs. just types)",
+        "Replace supabase.from() with useDataProvider() in components",
+        "Move logic from components to service layer (src/atomic-crm/services/)",
+        "Service layer can import supabase for RPC/Edge Function calls only",
+        "Test files can import for mocking purposes"
+      ],
+      "exceptions": [
+        "Test files (*.test.ts, __tests__/)",
+        "Provider infrastructure (supabase.ts, authProvider.ts, handlers/)",
+        "Service layer for RPC/Edge Function calls",
+        "Callbacks for RPC archive operations"
+      ]
+    },
+    {
+      "severity": "CRITICAL",
+      "category": "Tier 1 Component Leaks",
+      "title": "218 files use Tier 1 components directly instead of Tier 2 wrappers",
+      "description": "Architecture Rule: Features use Tier 2 (ra-wrappers), not Tier 1 (ui/). Found 218 direct imports from @/components/ui/, bypassing React Admin integration layer.",
+      "impact": "Inconsistent UI patterns, duplicated React Admin integration code, harder maintenance",
+      "examples": [
+        "opportunities: 81 occurrences (41 files) - Card, Button, Dialog, Popover",
+        "contacts: 38 occurrences (21 files) - Card, Button, Dialog",
+        "organizations: Similar pattern",
+        "products: Similar pattern"
+      ],
+      "pattern": "Features import Card/Button/Dialog directly and wire onChange/onBlur manually instead of using SaveButton/StandardListLayout",
+      "remediation": [
+        "Audit all @/components/ui/ imports in feature modules",
+        "Create missing Tier 2 wrappers for common patterns",
+        "Replace direct Card usage with SectionCard wrapper",
+        "Replace Button with SaveButton/CancelButton",
+        "Use StandardListLayout instead of manual Card layouts"
+      ]
+    },
+    {
+      "severity": "CRITICAL",
+      "category": "Database Security",
+      "title": "Multiple USING (true) RLS policies detected (some legitimate, some security risks)",
+      "description": "Database Layer Rule: No USING (true) except service_role or documented team-shared access. Found extensive use of USING (true) in migrations - mix of legacy patterns and actual security issues.",
+      "impact": "Potential unauthorized access, unclear access control model",
+      "analysis": {
+        "legitimate_uses": [
+          "Service role policies (service_role bypass)",
+          "Team-shared access documented in PATTERNS.md",
+          "Small team shared model (20251018203500 migration)",
+          "Reference data tables (with TO authenticated clause)"
+        ],
+        "security_risks": [
+          "product_distributors: USING (true) for SELECT/UPDATE/DELETE (20251215054822)",
+          "segments: USING (true) allowing all authenticated users (20251018152315)",
+          "audit_trail: USING (true) instead of admin-only (20260126010100)",
+          "task_id_mapping: USING (true) without company_id check (20260123222442)"
+        ],
+        "remediation_status": "Multiple fix migrations applied (20260122184338, 20260126085619, 20251222011040) but pattern persists"
+      },
+      "files": [
+        "supabase/migrations/20251215054822_08_create_product_distributors.sql",
+        "supabase/migrations/20251018152315_cloud_schema_fresh.sql",
+        "supabase/migrations/20260126085619_fix_segments_rls.sql",
+        "supabase/migrations/20260126010100_fix_audit_trail_admin_only.sql"
+      ],
+      "remediation": [
+        "Run security advisor: mcp__supabase__get_advisors with type='security'",
+        "Replace USING (true) with auth.uid() IS NOT NULL for authenticated-only",
+        "Add company_id checks for multi-tenant tables",
+        "Document team-shared access patterns in migration comments",
+        "Verify RLS policies match DATABASE_LAYER.md standards"
+      ]
+    },
+    {
+      "severity": "HIGH",
+      "category": "Feature Structure",
+      "title": "10 prohibited subdirectories in feature modules",
+      "description": "Module Rules: Features should be flat, helpers in src/lib/. Found 10 utils/ and components/ subdirectories in feature modules.",
+      "impact": "Inconsistent organization, harder navigation, violates flat feature structure",
+      "files": [
+        "src/atomic-crm/activities/components/",
+        "src/atomic-crm/activities/utils/",
+        "src/atomic-crm/components/",
+        "src/atomic-crm/providers/supabase/utils/",
+        "src/atomic-crm/reports/components/",
+        "src/atomic-crm/reports/opportunities-by-principal/components/",
+        "src/atomic-crm/reports/opportunities-by-principal/utils/",
+        "src/atomic-crm/reports/utils/",
+        "src/atomic-crm/services/utils/",
+        "src/atomic-crm/shared/components/",
+        "src/atomic-crm/utils/"
+      ],
+      "remediation": [
+        "Move generic components to src/components/ (or create if missing)",
+        "Move utils to src/lib/ or src/atomic-crm/lib/",
+        "Keep feature modules flat (files at module root)",
+        "Exception: slideOverTabs/ subdir for tab organization is acceptable"
+      ]
+    },
+    {
+      "severity": "HIGH",
+      "category": "Feature Compliance",
+      "title": "Missing standard CRUD files in feature modules",
+      "description": "Feature Standard: Each module should have index.tsx, List.tsx, Create.tsx, Edit.tsx, Inputs.tsx",
+      "findings": {
+        "contacts": {
+          "status": "COMPLIANT",
+          "has": [
+            "index.tsx",
+            "ContactList.tsx",
+            "ContactCreate.tsx",
+            "ContactEdit.tsx",
+            "ContactInputs.tsx"
+          ],
+          "missing": []
+        },
+        "opportunities": {
+          "status": "COMPLIANT",
+          "has": [
+            "index.tsx",
+            "OpportunityList.tsx",
+            "OpportunityCreate.tsx",
+            "OpportunityEdit.tsx",
+            "OpportunityInputs.tsx"
+          ],
+          "missing": []
+        },
+        "organizations": {
+          "status": "COMPLIANT",
+          "has": [
+            "index.tsx",
+            "OrganizationList.tsx",
+            "OrganizationCreate.tsx",
+            "OrganizationEdit.tsx",
+            "OrganizationInputs.tsx"
+          ],
+          "missing": []
+        },
+        "products": {
+          "status": "COMPLIANT",
+          "has": [
+            "index.tsx",
+            "ProductList.tsx",
+            "ProductCreate.tsx",
+            "ProductEdit.tsx",
+            "ProductInputs.tsx"
+          ],
+          "missing": []
+        },
+        "sales": {
+          "status": "COMPLIANT",
+          "has": [
+            "index.tsx",
+            "SalesList.tsx",
+            "SalesCreate.tsx",
+            "SalesEdit.tsx",
+            "SalesInputs.tsx"
+          ],
+          "missing": []
+        },
+        "tasks": {
+          "status": "PARTIAL",
+          "has": ["index.tsx", "TaskList.tsx", "TaskEdit.tsx", "TaskInputs.tsx"],
+          "missing": ["TaskCreate.tsx (exists but not in standard naming)"]
+        },
+        "activities": {
+          "status": "PARTIAL",
+          "has": ["index.tsx", "ActivityList.tsx", "ActivityEdit.tsx", "ActivityInputs.tsx"],
+          "missing": ["ActivityCreate.tsx (quick log pattern instead)"]
+        },
+        "notes": {
+          "status": "INCOMPLETE",
+          "has": ["NotesList.tsx"],
+          "missing": ["index.tsx", "NoteCreate.tsx", "NoteEdit.tsx", "NoteInputs.tsx"],
+          "note": "Notes use polymorphic pattern (contact_notes, opportunity_notes, organization_notes) instead of unified resource"
+        }
+      }
+    },
+    {
+      "severity": "HIGH",
+      "category": "Handler Registry",
+      "title": "All composed handlers registered correctly",
+      "description": "Provider Rule: All resources use handlers/ pattern registered in composedDataProvider.ts",
+      "status": "PASS",
+      "registered_handlers": [
+        "contacts",
+        "organizations",
+        "opportunities",
+        "activities",
+        "products",
+        "tasks",
+        "contact_notes",
+        "opportunity_notes",
+        "organization_notes",
+        "tags",
+        "sales",
+        "segments",
+        "product_distributors",
+        "opportunity_participants",
+        "opportunity_contacts",
+        "interaction_participants",
+        "distributor_principal_authorizations",
+        "organization_distributors",
+        "user_favorites",
+        "notifications",
+        "entity_timeline"
+      ],
+      "handler_files": [
+        "activitiesHandler.ts",
+        "contactsHandler.ts",
+        "notesHandler.ts",
+        "notificationsHandler.ts",
+        "opportunitiesHandler.ts",
+        "organizationsHandler.ts",
+        "productDistributorsHandler.ts",
+        "productsHandler.ts",
+        "salesHandler.ts",
+        "segmentsHandler.ts",
+        "tagsHandler.ts",
+        "tasksHandler.ts",
+        "timelineHandler.ts"
+      ],
+      "note": "13 handler files for 21 resources (notes/junction handlers cover multiple resources)"
+    },
+    {
+      "severity": "HIGH",
+      "category": "Validation Registry",
+      "title": "Comprehensive Zod validation at API boundary",
+      "description": "Provider Rule: All validation in ValidationService, registered schemas in validation/",
+      "status": "PASS",
+      "registered_validations": [
+        "contacts (create, update)",
+        "organizations (create, update)",
+        "opportunities (create, update, close)",
+        "products (create, update with distributors)",
+        "product_distributors (create, update)",
+        "organization_distributors (create, update)",
+        "tags (create, update)",
+        "contact_notes (create, update)",
+        "opportunity_notes (create, update)",
+        "organization_notes (create, update)",
+        "tasks (create, update)",
+        "sales (create only - Edge Function handles update)",
+        "activities (create, update partial)",
+        "engagements (create, update partial)",
+        "interactions (create, update partial)",
+        "segments (create, update)",
+        "user_favorites (create, update)"
+      ],
+      "schema_files": [
+        "31 schema files in src/atomic-crm/validation/",
+        "Organized by entity and operation (core, operations, junctions)",
+        "Shared patterns in validation/shared/"
+      ],
+      "filter_validation": "Filter registry enforces allowed fields per resource, prevents stale cache attacks"
+    },
+    {
+      "severity": "HIGH",
+      "category": "Service Layer",
+      "title": "Business logic properly separated into service layer",
+      "description": "Architecture Rule: Handlers = plumbing, Services = logic",
+      "status": "PASS",
+      "service_files": [
+        "activities.service.ts",
+        "digest.service.ts",
+        "junctions.service.ts",
+        "opportunities.service.ts",
+        "productDistributors.service.ts",
+        "products.service.ts",
+        "sales.service.ts",
+        "segments.service.ts"
+      ],
+      "handler_comments": [
+        "segmentsHandler.ts: 'Service Layer for business logic'",
+        "opportunitiesHandler.ts: 'Service layer for business logic'",
+        "productsHandler.ts: 'Business logic (RPC calls) belongs in service layer'"
+      ],
+      "note": "Handlers correctly delegate complex operations to services"
+    },
+    {
+      "severity": "HIGH",
+      "category": "Error Handling",
+      "title": "Side-effect error handling implemented correctly",
+      "description": "Provider Rule: Try/catch external side-effects, log failures but don't block transactions",
+      "status": "PASS",
+      "pattern": "void deleteStorageFiles(filePaths).catch((err: unknown) => { logger.warn(...) })",
+      "examples": [
+        "organizationsCallbacks.ts: Storage cleanup in beforeDelete with structured error logging",
+        "organizationsCallbacks.ts: Bulk archive storage cleanup with error context"
+      ],
+      "note": "Fire-and-forget pattern correctly uses void with error handlers, not silent catches"
+    },
+    {
+      "severity": "MEDIUM",
+      "category": "Form Validation",
+      "title": "No inline validation in forms (correctly relies on API boundary)",
+      "description": "Engineering Principle: Zod at API boundary only, not in forms",
+      "status": "PASS",
+      "findings": {
+        "contacts": "No validate functions found",
+        "opportunities": "No validate functions found",
+        "organizations": "No validate functions found"
+      },
+      "form_mode": "Forms use mode='onBlur' or mode='onSubmit' to prevent aggressive validation",
+      "note": "Validation happens at provider layer via ValidationService"
+    },
+    {
+      "severity": "MEDIUM",
+      "category": "Component Organization",
+      "title": "Large feature modules with many files",
+      "description": "Feature modules have 45-53 component files, making navigation difficult",
+      "counts": {
+        "contacts": "45 component files",
+        "opportunities": "53 component files",
+        "organizations": "45 component files"
+      },
+      "impact": "Harder to find files, potential for duplication, violates 'flat feature structure' guidance",
+      "remediation": [
+        "Consider grouping related components (e.g., import/ subfolder for ContactImport* files)",
+        "Move generic components to shared/ or components/",
+        "Evaluate if some components should be in Tier 2 wrappers"
+      ],
+      "note": "Not a violation, but approaching threshold where organization would help"
+    },
+    {
+      "severity": "MEDIUM",
+      "category": "View/Table Duality",
+      "title": "Provider correctly uses _summary views for reads",
+      "description": "Provider Rule: Read from views, write to tables",
+      "status": "PASS",
+      "implementation": {
+        "getDatabaseResource": "Maps resources to database views (opportunities → opportunities_summary)",
+        "getList": "Uses dbResource = getDatabaseResource(resource, 'list')",
+        "getOne": "Uses dbResource = getDatabaseResource(resource, 'one')",
+        "getMany": "Uses _summary views to exclude soft-deleted records (SF-C09 fix)",
+        "create/update/delete": "Routes to base tables"
+      },
+      "computed_fields": "COMPUTED_FIELDS defined in callbacks, stripped by withLifecycleCallbacks before save"
+    },
+    {
+      "severity": "MEDIUM",
+      "category": "Soft Delete Implementation",
+      "title": "Comprehensive soft delete enforcement",
+      "description": "Provider Rule: supportsSoftDelete resources use withSkipDelete wrapper",
+      "status": "PASS",
+      "implementation": {
+        "wrapper": "withSkipDelete converts DELETE to UPDATE deleted_at = NOW()",
+        "views": "Views filter deleted_at IS NULL automatically",
+        "getManyReference": "Adds deleted_at@is: null filter for soft-delete resources",
+        "idempotency": "Returns success if record already deleted"
+      },
+      "resources": "21 resources with soft delete support registered in composedDataProvider"
+    },
+    {
+      "severity": "LOW",
+      "category": "Code Organization",
+      "title": "Service layer missing from src/services/ (located in src/atomic-crm/services/)",
+      "description": "Expected service files in src/services/, but found in src/atomic-crm/services/",
+      "impact": "Minor - location doesn't affect functionality, just convention",
+      "current": "src/atomic-crm/services/",
+      "expected": "src/services/",
+      "note": "Both locations work, but documentation may reference src/services/"
+    },
+    {
+      "severity": "LOW",
+      "category": "Type Safety",
+      "title": "Forms correctly use schema-derived types",
+      "description": "Engineering Principle: Types derived from Zod schemas, not manual interfaces",
+      "status": "PASS",
+      "examples": [
+        "OpportunityCreate.tsx: Uses opportunitySchema.partial().parse({}) for defaults",
+        "ContactCreate.tsx: Uses contactBaseSchema.partial().parse({}) for defaults"
+      ],
+      "pattern": "Forms use schema.partial() to extract default values, ensuring form state matches schema truth"
+    }
+  ],
+  "summary": {
+    "total_findings": 15,
+    "breakdown": {
+      "CRITICAL": 3,
+      "HIGH": 6,
+      "MEDIUM": 4,
+      "LOW": 2
+    },
+    "feature_compliance": {
+      "total_features": 8,
+      "compliant": 5,
+      "partial": 2,
+      "incomplete": 1,
+      "compliance_rate": "62.5%"
+    },
+    "architecture_strengths": [
+      "Comprehensive handler registry with 21 resources",
+      "Validation properly centralized in ValidationService",
+      "Service layer correctly separates business logic",
+      "View/table duality implemented correctly",
+      "Soft delete enforcement comprehensive",
+      "Error handling follows fail-fast principles",
+      "Forms rely on API boundary validation (no inline validation)",
+      "Type safety maintained through Zod schema inference"
+    ],
+    "critical_issues": [
+      "52 files bypass provider layer with direct Supabase imports",
+      "218 Tier 1 component imports violate 3-tier architecture",
+      "Multiple USING (true) RLS policies pose security risks"
+    ],
+    "recommendations": [
+      {
+        "priority": "P0",
+        "action": "Audit and remediate direct Supabase imports",
+        "effort": "High - 52 files to refactor",
+        "impact": "Critical - validation bypass, inconsistent behavior"
+      },
+      {
+        "priority": "P0",
+        "action": "Run security advisor and fix remaining USING (true) policies",
+        "effort": "Medium - migrations already exist, need verification",
+        "impact": "Critical - unauthorized access risk"
+      },
+      {
+        "priority": "P1",
+        "action": "Create missing Tier 2 wrappers and migrate Tier 1 imports",
+        "effort": "High - 218 occurrences across 119+ files",
+        "impact": "High - consistency, maintainability"
+      },
+      {
+        "priority": "P2",
+        "action": "Flatten feature module structure (remove utils/, components/ subdirs)",
+        "effort": "Medium - 10 directories to reorganize",
+        "impact": "Medium - navigation, consistency"
+      },
+      {
+        "priority": "P3",
+        "action": "Complete feature files for tasks/activities/notes",
+        "effort": "Low - 3 features, ~6-9 files",
+        "impact": "Low - consistency, but current patterns work"
+      }
+    ],
+    "overall_assessment": "Architecture is largely sound with strong separation of concerns in handler/validation/service layers. Critical issues are primarily around bypassing the architecture (direct Supabase imports, Tier 1 leaks) rather than fundamental design flaws. RLS security needs verification via security advisor. Feature structure is mostly compliant with room for improvement in organization."
+  },
+  "metadata": {
+    "audit_date": "2026-01-27",
+    "audit_scope": "Full codebase",
+    "files_analyzed": "~500+ TypeScript/TSX files",
+    "migrations_reviewed": "~100+ migration files",
+    "methodology": "Pattern matching via ripgrep, file structure analysis, schema registry verification, RLS policy inspection"
+  }
+}

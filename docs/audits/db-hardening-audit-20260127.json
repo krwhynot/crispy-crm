@@ -1,0 +1,212 @@
+{
+  "audit": "db-hardening",
+  "mode": "full",
+  "date": "2026-01-27",
+  "scope": "Database schema and migrations (supabase/migrations/)",
+  "migrations_analyzed": 309,
+  "critical": 1,
+  "high": 6,
+  "medium": 8,
+  "allowlisted": 3,
+  "findings": [
+    {
+      "id": "D1-001",
+      "severity": "critical",
+      "check": "Permissive RLS policies",
+      "location": "20251215054822_08_create_product_distributors.sql:42-51",
+      "description": "product_distributors table has USING(true) policies for SELECT, INSERT, UPDATE, and DELETE. This allows ANY authenticated user to view, create, modify, and delete ALL product-distributor mappings across ALL companies with NO ownership checks. Cross-tenant data leakage vulnerability.",
+      "fix": "Apply 20260125000007_product_distributors_dual_auth_rls.sql (already exists). Verify policies check ownership of BOTH product AND distributor via created_by or is_admin_or_manager().",
+      "status": "open",
+      "allowlistId": null
+    },
+    {
+      "id": "D1-002",
+      "severity": "high",
+      "check": "Missing deleted_at column",
+      "location": "20251212094908_create_dashboard_snapshots_table.sql",
+      "description": "dashboard_snapshots table lacks deleted_at column. Cannot be soft-deleted, violating system-wide soft delete pattern. Data retention/recovery impossible.",
+      "fix": "ALTER TABLE dashboard_snapshots ADD COLUMN deleted_at TIMESTAMPTZ DEFAULT NULL; CREATE INDEX idx_dashboard_snapshots_deleted_at ON dashboard_snapshots(deleted_at) WHERE deleted_at IS NULL;",
+      "status": "open",
+      "allowlistId": null
+    },
+    {
+      "id": "D1-003",
+      "severity": "high",
+      "check": "Missing deleted_at column",
+      "location": "20260121000002_migrate_tasks_to_activities.sql",
+      "description": "task_id_mapping table lacks deleted_at column. System migration table should support soft delete for audit trail.",
+      "fix": "ALTER TABLE task_id_mapping ADD COLUMN deleted_at TIMESTAMPTZ DEFAULT NULL; CREATE INDEX idx_task_id_mapping_deleted_at ON task_id_mapping(deleted_at) WHERE deleted_at IS NULL;",
+      "status": "open",
+      "allowlistId": null
+    },
+    {
+      "id": "D1-004",
+      "severity": "high",
+      "check": "Missing FK index (partial)",
+      "location": "20251212094908_create_dashboard_snapshots_table.sql",
+      "description": "dashboard_snapshots.sales_id REFERENCES sales(id) but lacks partial index WHERE deleted_at IS NULL for RLS policy performance. JOIN queries in dashboard views will cause full table scans.",
+      "fix": "CREATE INDEX IF NOT EXISTS idx_dashboard_snapshots_sales_id ON dashboard_snapshots(sales_id) WHERE deleted_at IS NULL; (Note: table needs deleted_at column first)",
+      "status": "open",
+      "allowlistId": null
+    },
+    {
+      "id": "D1-005",
+      "severity": "high",
+      "check": "Permissive RLS policy (reference data)",
+      "location": "20251018152315_cloud_schema_fresh.sql:segments",
+      "description": "segments table has USING(true) for SELECT policy. This is INTENTIONAL for reference data (industry segments shared across all users), but lacks documentation comment.",
+      "fix": "Add COMMENT ON POLICY: 'Reference data - shared across all authenticated users. No ownership check required.'",
+      "status": "allowlisted",
+      "allowlistId": "REFERENCE-001"
+    },
+    {
+      "id": "D1-006",
+      "severity": "high",
+      "check": "Permissive RLS policies (team collaboration)",
+      "location": "20251129170506_harden_participant_tables_rls_security.sql:230,290",
+      "description": "opportunity_participants and interaction_participants have USING(true) for SELECT and INSERT. This is INTENTIONAL for team collaboration (all reps see all participants), documented in migration. UPDATE/DELETE are properly restricted to owner or admin.",
+      "fix": "No fix needed. Pattern is documented and intentional per migration comments.",
+      "status": "allowlisted",
+      "allowlistId": "INTENTIONAL-001"
+    },
+    {
+      "id": "D1-007",
+      "severity": "high",
+      "check": "Permissive RLS policy (migration metadata)",
+      "location": "20260122231125_enable_rls_task_id_mapping.sql:26",
+      "description": "task_id_mapping has USING(true) for SELECT. This is INTENTIONAL - system migration table with non-sensitive ID mappings. No user_id column exists. Service role handles all writes.",
+      "fix": "No fix needed. Documented as appropriate for non-sensitive migration metadata.",
+      "status": "allowlisted",
+      "allowlistId": "DOC-001"
+    },
+    {
+      "id": "D1-008",
+      "severity": "medium",
+      "check": "Missing NOT NULL constraint",
+      "location": "20251018152315_cloud_schema_fresh.sql:contacts",
+      "description": "contacts.company_id is nullable but was deprecated in favor of contact_organizations junction table. Should either be NOT NULL or have CHECK constraint preventing orphan contacts.",
+      "fix": "Consider: CHECK (company_id IS NOT NULL OR EXISTS (SELECT 1 FROM contact_organizations WHERE contact_id = contacts.id)) OR deprecate column entirely.",
+      "status": "open",
+      "allowlistId": null
+    },
+    {
+      "id": "D1-009",
+      "severity": "medium",
+      "check": "Missing NOT NULL constraint",
+      "location": "20251018152315_cloud_schema_fresh.sql:opportunities",
+      "description": "opportunities.opportunity_owner_id is nullable. Per business rules, every opportunity should have an owner (sales rep). Orphan opportunities may exist.",
+      "fix": "ALTER TABLE opportunities ADD CONSTRAINT opportunities_must_have_owner CHECK (opportunity_owner_id IS NOT NULL);",
+      "status": "open",
+      "allowlistId": null
+    },
+    {
+      "id": "D1-010",
+      "severity": "medium",
+      "check": "Missing NOT NULL constraint",
+      "location": "20251018152315_cloud_schema_fresh.sql:activities",
+      "description": "activities.created_by is nullable but required for RLS policies and audit trail. Every activity should have a creator.",
+      "fix": "Backfill NULL values, then: ALTER TABLE activities ALTER COLUMN created_by SET NOT NULL;",
+      "status": "open",
+      "allowlistId": null
+    },
+    {
+      "id": "D1-011",
+      "severity": "medium",
+      "check": "Missing CHECK constraint",
+      "location": "20251018152315_cloud_schema_fresh.sql:organizations",
+      "description": "organizations.organization_type can be 'unknown' indefinitely. Should have CHECK constraint requiring type to be set within N days or marked as 'prospect'.",
+      "fix": "Add business rule: CHECK (organization_type != 'unknown' OR created_at > NOW() - INTERVAL '30 days') OR migrate 'unknown' to 'prospect'.",
+      "status": "open",
+      "allowlistId": null
+    },
+    {
+      "id": "D1-012",
+      "severity": "medium",
+      "check": "Missing CHECK constraint",
+      "location": "20251215054822_08_create_product_distributors.sql:14",
+      "description": "product_distributors.status has CHECK for enum values but no temporal validation. Records can have status='active' with valid_to in the past.",
+      "fix": "ADD CONSTRAINT check_active_not_expired CHECK (status != 'active' OR valid_to IS NULL OR valid_to > NOW());",
+      "status": "open",
+      "allowlistId": null
+    },
+    {
+      "id": "D1-013",
+      "severity": "medium",
+      "check": "Missing FK index (performance)",
+      "location": "20251206000001_create_tutorial_progress.sql",
+      "description": "tutorial_progress has 6 foreign keys (sales_id, created_organization_id, created_contact_id, created_opportunity_id, created_activity_id, created_task_id) but only sales_id has an index. Queries joining tutorial progress will be slow.",
+      "fix": "Indexes already added in 20260115120607_db_hardening.sql. Verify they exist: SELECT indexname FROM pg_indexes WHERE tablename = 'tutorial_progress';",
+      "status": "open",
+      "allowlistId": null
+    },
+    {
+      "id": "D1-014",
+      "severity": "medium",
+      "check": "Missing UNIQUE constraint",
+      "location": "20251215054822_08_create_product_distributors.sql:29",
+      "description": "product_distributors has composite PRIMARY KEY (product_id, distributor_id) but allows duplicate vendor_item_number values. Same DOT# can be assigned to different products, causing lookup confusion.",
+      "fix": "Consider: CREATE UNIQUE INDEX idx_product_distributors_vendor_item_unique ON product_distributors(distributor_id, vendor_item_number) WHERE vendor_item_number IS NOT NULL AND deleted_at IS NULL;",
+      "status": "open",
+      "allowlistId": null
+    },
+    {
+      "id": "D1-015",
+      "severity": "medium",
+      "check": "Missing UNIQUE constraint",
+      "location": "20260102142324_create_user_favorites.sql",
+      "description": "user_favorites lacks UNIQUE constraint on (user_id, entity_type, entity_id). Users can favorite the same record multiple times.",
+      "fix": "CREATE UNIQUE INDEX idx_user_favorites_unique_entity ON user_favorites(user_id, entity_type, entity_id) WHERE deleted_at IS NULL;",
+      "status": "open",
+      "allowlistId": null
+    }
+  ],
+  "summary": "Database hardening audit found 1 CRITICAL security issue (product_distributors permissive RLS allowing cross-tenant data access), 6 HIGH severity issues (2 missing deleted_at columns, 1 missing FK index, 3 allowlisted permissive policies), and 8 MEDIUM issues (3 missing NOT NULL constraints, 2 missing CHECK constraints, 2 missing UNIQUE constraints, 1 index verification). The critical issue has a migration ready to apply (20260125000007_product_distributors_dual_auth_rls.sql). Three HIGH findings are allowlisted as intentional design patterns (reference data sharing, team collaboration, migration metadata). Recommended immediate action: Apply product_distributors RLS fix, add deleted_at columns to dashboard_snapshots and task_id_mapping, verify tutorial_progress indexes exist.",
+  "recommendations": [
+    {
+      "priority": "P0",
+      "action": "Apply 20260125000007_product_distributors_dual_auth_rls.sql",
+      "reason": "Fixes critical cross-tenant data leakage in product_distributors table"
+    },
+    {
+      "priority": "P1",
+      "action": "Add deleted_at to dashboard_snapshots and task_id_mapping",
+      "reason": "Enforces system-wide soft delete pattern for audit trail and data recovery"
+    },
+    {
+      "priority": "P1",
+      "action": "Verify tutorial_progress indexes exist",
+      "reason": "6 FK joins without indexes will cause dashboard performance degradation"
+    },
+    {
+      "priority": "P2",
+      "action": "Add NOT NULL to opportunities.opportunity_owner_id",
+      "reason": "Prevents orphan opportunities without assigned sales rep"
+    },
+    {
+      "priority": "P2",
+      "action": "Add UNIQUE constraint to user_favorites",
+      "reason": "Prevents duplicate favorites (data integrity, UI confusion)"
+    },
+    {
+      "priority": "P3",
+      "action": "Add CHECK constraints for business rules",
+      "reason": "Enforces temporal validity (active status with expired dates) and prevents stale 'unknown' organization types"
+    }
+  ],
+  "verification_commands": [
+    "-- Check product_distributors RLS policies (should have dual-auth)",
+    "SELECT policyname, cmd, qual FROM pg_policies WHERE tablename = 'product_distributors' ORDER BY cmd;",
+    "",
+    "-- Verify deleted_at columns exist",
+    "SELECT table_name, column_name FROM information_schema.columns WHERE table_schema = 'public' AND column_name = 'deleted_at' AND table_name IN ('dashboard_snapshots', 'task_id_mapping');",
+    "",
+    "-- Check tutorial_progress indexes",
+    "SELECT indexname FROM pg_indexes WHERE tablename = 'tutorial_progress' AND indexname LIKE 'idx_tutorial_progress_%';",
+    "",
+    "-- Find tables without RLS enabled",
+    "SELECT tablename FROM pg_tables WHERE schemaname = 'public' AND rowsecurity = false AND tablename NOT LIKE 'pg_%';",
+    "",
+    "-- Find USING(true) policies (should only be reference data, participants, or migration tables)",
+    "SELECT tablename, policyname, cmd FROM pg_policies WHERE qual = 'true' ORDER BY tablename, cmd;"
+  ]
+}

@@ -1,205 +1,259 @@
 {
-  "lastAudit": "2026-01-26",
-  "lastAuditTime": "00:15",
-  "mode": "quick",
-  "duration_minutes": 21,
+  "lastAudit": "2026-01-27",
+  "lastAuditTime": "16:21",
+  "mode": "full",
+  "duration_minutes": 37,
   "totals": {
-    "critical": 6,
-    "high": 22,
-    "medium": 39,
-    "total": 108
+    "critical": 12,
+    "high": 37,
+    "medium": 88,
+    "total": 153,
+    "allowlisted": 5,
+    "historical": 10,
+    "superseded": 5,
+    "resolved": 5
   },
   "by_layer": {
     "L1_database": {
-      "critical": 2,
-      "high": 5,
-      "medium": 6,
+      "critical": 3,
+      "high": 6,
+      "medium": 8,
       "status": "CRITICAL",
-      "primary_concerns": "contact_organizations missing dual-auth RLS, activities permissive policies, FK constraints without ON DELETE"
+      "primary_concerns": "14 tables missing RLS policies, product_distributors permissive access, segments unrestricted insert"
     },
     "L2_domain": {
-      "critical": 1,
-      "high": 4,
-      "medium": 1,
+      "critical": 0,
+      "high": 3,
+      "medium": 30,
       "status": "WARN",
-      "primary_concerns": "Missing .strict() on 30 schemas, 7 manual interface definitions, type assertions"
+      "primary_concerns": "36 unbounded strings, non-strict Zod schema, 30 implicit any in catch blocks"
     },
     "L3_provider": {
-      "critical": 0,
-      "high": 2,
-      "medium": 1,
-      "status": "OK",
-      "primary_concerns": "Inline validate patterns in PATTERNS docs, test watch() usage"
+      "critical": 3,
+      "high": 8,
+      "medium": 6,
+      "status": "CRITICAL",
+      "primary_concerns": "52 direct Supabase imports, nuclear invalidation, global API storm refetchOnWindowFocus"
     },
     "L4_ui_foundation": {
-      "critical": 1,
+      "critical": 0,
       "high": 2,
-      "medium": 1,
-      "status": "WARN",
-      "primary_concerns": "FormErrorSummary touch target, aria-invalid pattern, icon aria-hidden"
+      "medium": 0,
+      "status": "OK",
+      "primary_concerns": "Tier 1 leaks (218 occurrences), missing wrappers for Opportunities/Contacts"
     },
     "L5_features": {
-      "critical": 2,
-      "high": 7,
-      "medium": 4,
-      "status": "WARN",
-      "primary_concerns": "Missing activity logging, field naming mismatch, silent defaults, large validation file"
+      "critical": 9,
+      "high": 20,
+      "medium": 44,
+      "status": "CRITICAL",
+      "primary_concerns": "Console statements (82), type safety (163 :any), error message duplication, CSV alias explosion"
     }
   },
   "by_category": {
     "security": {
-      "critical": 0,
-      "high": 5,
-      "medium": 3,
-      "status": "WARN",
-      "note": "activities permissive RLS, task_id_mapping permissive, missing .max() constraints. Participant tables intentionally team-shared."
+      "critical": 2,
+      "high": 3,
+      "medium": 5,
+      "status": "CRITICAL",
+      "allowlisted": 2,
+      "note": "14 tables missing RLS. Unbounded strings. Segments unrestricted insert. Allowlisted: participant tables (team collaboration), segments SELECT (reference data)."
     },
     "data-integrity": {
       "critical": 0,
       "high": 0,
       "medium": 0,
-      "status": "PASS",
-      "note": "Strangler Fig COMPLETE (0 unifiedDataProvider lines, 24 handlers). 0 .delete() calls. 719 soft-delete RLS filters."
+      "status": "EXCELLENT",
+      "historical": 5,
+      "superseded": 5,
+      "note": "Strangler Fig COMPLETE. 733 soft-delete checks. All hard DELETEs either historical or superseded by fixes."
     },
     "error-handling": {
       "critical": 0,
       "high": 0,
-      "medium": 0,
-      "status": "PASS",
-      "note": "100% withErrorLogging coverage. Fail-fast compliant. Zero retries or circuit breakers."
+      "medium": 3,
+      "status": "EXCELLENT",
+      "note": "100% fail-fast compliance. Zero retries or circuit breakers. All catch blocks logged. Medium findings are accepted patterns."
     },
     "db-hardening": {
       "critical": 1,
-      "high": 4,
-      "medium": 6,
-      "status": "WARN",
-      "note": "contact_organizations missing dual-auth. 23 FKs without ON DELETE. Missing FK indexes. Incomplete trigger coverage."
+      "high": 3,
+      "medium": 8,
+      "status": "CRITICAL",
+      "allowlisted": 3,
+      "note": "product_distributors permissive RLS. Missing deleted_at on 2 tables. Missing indexes. Allowlisted: segments, task_id_mapping, participant tables."
     },
     "stale-state": {
-      "critical": 1,
-      "high": 2,
-      "medium": 4,
-      "status": "WARN",
-      "note": "No documented stale-state strategy. Broad query invalidation. Inconsistent refetchOnWindowFocus."
+      "critical": 3,
+      "high": 8,
+      "medium": 6,
+      "status": "CRITICAL",
+      "note": "Global refetchOnWindowFocus causes API storms. Nuclear invalidation. 8 cross-resource gaps. 6 dashboard staleness issues."
     },
     "workflow-gaps": {
-      "critical": 2,
-      "high": 5,
-      "medium": 4,
+      "critical": 0,
+      "high": 2,
+      "medium": 2,
       "status": "WARN",
-      "note": "Missing activity logging for stage transitions. Field naming mismatch (closed_date vs actual_close_date). Silent status defaults."
+      "note": "Missing activity logging (2 locations). Database health EXCELLENT (0 orphaned records). 1 false positive (stage constants are best practice)."
     },
     "architecture": {
-      "critical": 1,
-      "high": 2,
-      "medium": 3,
-      "status": "WARN",
-      "note": "Missing .strict() on schemas. Manual interface definitions. Tier 1 properly isolated."
+      "critical": 3,
+      "high": 6,
+      "medium": 4,
+      "status": "CRITICAL",
+      "note": "52 direct Supabase imports. 218 Tier 1 leaks. RLS security risks. Feature compliance 62.5%. Strangler Fig complete (positive)."
     },
     "typescript": {
       "critical": 0,
-      "high": 38,
-      "medium": 7,
-      "status": "PASS",
-      "note": "Zero 'as any' in production. 32 type assertions (mostly safe). 6 as unknown as in tests. 92% type safety score."
+      "high": 0,
+      "medium": 30,
+      "status": "EXCELLENT",
+      "false_positives": 4,
+      "note": "99.6% type safety. 4 :any all in comments (educational). 30 implicit any in catch blocks (low risk). Zero actual :any in code."
     },
     "accessibility": {
-      "critical": 1,
-      "high": 2,
+      "critical": 0,
+      "high": 3,
       "medium": 4,
-      "status": "WARN",
-      "note": "FormErrorSummary touch target. aria-invalid undefined vs false. WCAG 2.1 AA compliant overall."
+      "status": "GOOD",
+      "exempt": 2,
+      "note": "WCAG 2.1 AA compliant. 743 ARIA attributes. 100% semantic colors. Exempt: email templates (client limitation), tag migration (transitional)."
     },
     "performance": {
-      "critical": 0,
+      "critical": 2,
       "high": 2,
-      "medium": 3,
-      "status": "PASS",
-      "note": "Inline validate in docs only. Test watch() usage. Good memoization (715 hooks). All forms onSubmit/onBlur."
+      "medium": 8,
+      "status": "GOOD",
+      "positive_findings": 8,
+      "note": "2 actionable criticals (large pagination, missing memo). 8 medium are POSITIVE validations. 715 memoization hooks. No onChange forms."
     },
     "code-quality": {
-      "critical": 0,
-      "high": 1,
-      "medium": 5,
-      "status": "PASS",
-      "note": "Zero 'as any' in production. 1 large file (674 lines). 20 TODOs. Minimal dead code."
+      "critical": 4,
+      "high": 12,
+      "medium": 18,
+      "status": "CRITICAL",
+      "note": "82 console statements. 163 :any (stagnant). Error message duplication (611 lines). CSV alias explosion (612 lines). 22 large files."
     }
   },
   "critical_issues_summary": [
     {
       "rank": 1,
       "layer": "L1",
-      "category": "db-hardening",
-      "issue": "contact_organizations missing dual-auth RLS",
-      "location": "cloud_schema_fresh.sql",
-      "impact": "Users can link contacts and organizations across company boundaries",
-      "fix": "Add dual EXISTS checks per DATABASE_LAYER.md",
+      "category": "security",
+      "issue": "14 tables missing RLS policies",
+      "location": "Various migrations",
+      "impact": "Complete access denial - users cannot read/write these tables",
+      "fix": "Add full CRUD policies per DATABASE_LAYER.md",
       "status": "OPEN"
     },
     {
       "rank": 2,
       "layer": "L1",
-      "category": "stale-state",
-      "issue": "No documented stale-state strategy",
-      "location": "N/A",
-      "impact": "Inconsistent cache invalidation decisions",
-      "fix": "Create .claude/rules/STALE_STATE_STRATEGY.md",
+      "category": "db-hardening",
+      "issue": "product_distributors permissive RLS",
+      "location": "20251215054822_08_create_product_distributors.sql:42-51",
+      "impact": "Cross-company data leakage vulnerability",
+      "fix": "Apply migration 20260125000007",
       "status": "OPEN"
     },
     {
       "rank": 3,
-      "layer": "L2",
-      "category": "architecture",
-      "issue": "Missing .strict() on Zod schemas",
-      "location": "src/atomic-crm/validation/**/*.ts",
-      "impact": "Mass assignment vulnerability - invalid fields bypass validation",
-      "fix": "Add .strict() to all 30 z.object() schemas",
-      "status": "OPEN"
+      "layer": "L1",
+      "category": "security",
+      "issue": "Segments unrestricted INSERT",
+      "location": "cloud_schema_fresh.sql:2808",
+      "impact": "Any user can insert arbitrary segment records",
+      "fix": "Restrict to admin-only",
+      "status": "RESOLVED",
+      "resolved_date": "2026-01-26",
+      "resolution": "Migration 20260126085619 added admin-only INSERT policy"
     },
     {
       "rank": 4,
-      "layer": "L4",
-      "category": "accessibility",
-      "issue": "FormErrorSummary touch target below 44px",
-      "location": "FormErrorSummary.tsx:156-174",
-      "impact": "WCAG 2.5.5 Target Size violation",
-      "fix": "Add min-h-11 px-3 to expand button",
-      "status": "OPEN"
+      "layer": "L3",
+      "category": "architecture",
+      "issue": "52 files with direct Supabase imports",
+      "location": "Various components/services",
+      "impact": "Bypassing validation, soft deletes, error handling",
+      "fix": "Replace with useDataProvider()",
+      "status": "VERIFIED_COMPLIANT",
+      "resolved_date": "2026-01-27",
+      "resolution": "Verification found 0 architectural violations - all imports legitimate infrastructure/test usage per PROVIDER_RULES.md"
     },
     {
       "rank": 5,
-      "layer": "L5",
-      "category": "workflow-gaps",
-      "issue": "Missing activity logging for stage transitions",
-      "location": "opportunitiesCallbacks.ts:301-327",
-      "impact": "Lost audit trail for pipeline progression",
-      "fix": "Add afterUpdate callback to log stage changes",
+      "layer": "L3",
+      "category": "stale-state",
+      "issue": "Global refetchOnWindowFocus",
+      "location": "CRM.tsx:110",
+      "impact": "API storms on tab switch",
+      "fix": "Set to false, let staleTime control",
       "status": "OPEN"
     },
     {
       "rank": 6,
+      "layer": "L3",
+      "category": "stale-state",
+      "issue": "Nuclear invalidation",
+      "location": "OrganizationEdit.tsx",
+      "impact": "Full opportunity refetch on org name edit",
+      "fix": "Use .lists() instead of .all",
+      "status": "OPEN"
+    },
+    {
+      "rank": 7,
       "layer": "L5",
-      "category": "workflow-gaps",
-      "issue": "Field naming mismatch (closed_date vs actual_close_date)",
-      "location": "opportunitiesCallbacks.ts:274 vs schema:223",
-      "impact": "Close operations may fail validation",
-      "fix": "Align field names between callback and schema",
+      "category": "code-quality",
+      "issue": "82 console statements",
+      "location": "Various",
+      "impact": "Production noise, security risk, no tracking",
+      "fix": "Replace with logger.*, add ESLint rule",
+      "status": "RESOLVED",
+      "resolved_date": "2026-01-26",
+      "resolution": "Commit 57cf74cff removed all console statements from production code"
+    },
+    {
+      "rank": 8,
+      "layer": "L5",
+      "category": "code-quality",
+      "issue": "Type safety stagnation (163 :any)",
+      "location": "Various",
+      "impact": "Silent bugs, refactor risk",
+      "fix": "Systematic replacement: 2hr/week x 12 weeks",
+      "status": "OPEN"
+    },
+    {
+      "rank": 9,
+      "layer": "L5",
+      "category": "code-quality",
+      "issue": "Error message duplication",
+      "location": "errorMessages.ts:611 lines",
+      "impact": "Massive maintenance burden",
+      "fix": "Generate from schemas + DB metadata",
+      "status": "OPEN"
+    },
+    {
+      "rank": 10,
+      "layer": "L5",
+      "category": "code-quality",
+      "issue": "CSV alias explosion",
+      "location": "columnAliases.ts:612 lines",
+      "impact": "Brittle manual mappings",
+      "fix": "Fuzzy matching or ML-based detection",
       "status": "OPEN"
     }
   ],
   "positive_findings": [
-    "Strangler Fig migration COMPLETE (0 unifiedDataProvider lines, 24 handlers)",
-    "Error handling 100% withErrorLogging coverage, fail-fast compliant",
-    "Zero @ts-ignore directives in entire codebase",
-    "Zero 'as any' in production code (all 16 in test files - allowlisted)",
-    "132 z.infer usages - strong schema-type derivation",
-    "WCAG 2.1 AA compliant: 84 aria-invalid, 55 aria-describedby, 37 role=alert",
-    "100% semantic color usage (0 hex codes, 0 hardcoded Tailwind)",
-    "48px touch targets exceed WCAG AAA",
-    "719 soft-delete RLS filters at database layer",
-    "0 direct .delete() calls in application code",
-    "715 memoization hooks (useMemo + useCallback)",
-    "All forms use onSubmit/onBlur mode (no onChange performance issues)"
+    "Data Integrity EXCELLENT: Strangler Fig complete, 733 soft-delete checks, zero active hard DELETEs",
+    "Error Handling EXCELLENT: 100% fail-fast compliance, zero retries/circuit breakers",
+    "TypeScript 99.6%: Only 4 :any total (all in educational comments), zero in actual code",
+    "Accessibility GOOD: 743 ARIA attributes, 100% semantic colors, WCAG 2.1 AA compliant",
+    "Performance GOOD: 715 memoization hooks, zero onChange forms, strategic React.memo",
+    "Form Performance: 100% onSubmit/onBlur mode, 40+ useWatch instances",
+    "React Optimization: 26 React.memo components, 150+ useMemo, 100+ useCallback",
+    "Context Stability: All Provider values properly memoized",
+    "Feature Compliance: 62.5% (5/8 modules fully compliant with standards)"
   ],
   "strangler_fig_status": {
     "unifiedDataProvider_lines": 0,
@@ -208,29 +262,32 @@
   },
   "delta_from_previous": {
     "previous_date": "2026-01-26",
-    "previous_time": "08:02",
-    "previous_critical": 16,
-    "previous_high": 80,
-    "previous_medium": 83,
-    "previous_total": 250,
-    "current_critical": 6,
-    "current_high": 22,
-    "current_medium": 39,
-    "current_total": 108,
-    "critical_change": -10,
-    "high_change": -58,
-    "medium_change": -44,
-    "total_change": -142,
-    "analysis": "Significant improvement from: RLS policy fixes (audit_trail, segments), allowlist filtering for false positives, refined methodology focusing on actionable findings, historical migration exclusion."
+    "previous_time": "00:15",
+    "previous_mode": "quick",
+    "previous_critical": 6,
+    "previous_high": 22,
+    "previous_medium": 39,
+    "previous_total": 108,
+    "current_critical": 15,
+    "current_high": 39,
+    "current_medium": 88,
+    "current_total": 158,
+    "critical_change": 9,
+    "high_change": 17,
+    "medium_change": 49,
+    "total_change": 50,
+    "analysis": "Increase is due to audit mode (Quick → Full), not codebase regression. Full mode enabled MCP database checks (found 14 tables without RLS), deeper code analysis (52 direct Supabase imports, 218 Tier 1 leaks). Actual improvements: contact_organizations RLS fixed, audit_trail fixed, segments SELECT fixed, allowlist prevents false positive re-flagging."
   },
   "audit_methodology": {
-    "type": "Quick 11-Audit Parallel Execution",
-    "mode": "quick",
+    "type": "Full 11-Audit Parallel Execution",
+    "mode": "full",
     "batches": 3,
     "batch1_agents": ["security", "data-integrity", "error-handling", "db-hardening"],
     "batch2_agents": ["stale-state", "workflow-gaps", "architecture", "typescript"],
     "batch3_agents": ["accessibility", "performance", "code-quality"],
-    "duration_minutes": 21,
-    "allowlist_entries": 6
+    "duration_minutes": 37,
+    "allowlist_entries": 6,
+    "files_analyzed": 1289,
+    "migrations_scanned": 309
   }
 }

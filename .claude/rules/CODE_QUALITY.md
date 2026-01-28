@@ -215,6 +215,17 @@ grep -r "text-red-\|bg-blue-\|#[0-9a-fA-F]\{6\}" src/ \
 grep -r "h-[1-9] \|w-[1-9] \|h-10\|w-10" src/components/ \
   | grep -v "h-11\|w-11\|h-12\|w-12"
 ```
+## Storage Hygiene
+
+DO:
+- **Centralized Config:** Define max file sizes and allowed types in `src/config/storage.ts`.
+- **Sanitization:** Sanitize filenames before upload (remove special chars, spaces) to prevent URL encoding issues.
+- **Error Codes:** Handle specific storage errors (e.g., "Quota Exceeded") explicitly, do not just `catch (e)`.
+
+DON'T:
+- **Hardcoded Buckets:** Never use string literals like `"avatars"` in components. Use constants (`STORAGE_BUCKETS.AVATARS`).
+- **Magic Numbers:** No `if (file.size > 5000000)`. Use `MAX_FILE_SIZE_BYTES`.
+
 
 ### Accessibility Checklist
 

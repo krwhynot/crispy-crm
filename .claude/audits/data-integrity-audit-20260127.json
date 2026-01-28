@@ -1,0 +1,313 @@
+{
+  "audit": "data-integrity",
+  "date": "2026-01-27",
+  "mode": "full",
+  "scope": "Full codebase (src/ + supabase/)",
+  "critical": 1,
+  "high": 7,
+  "medium": 3,
+  "allowlisted": 2,
+  "historical": 8,
+  "strangler_fig": {
+    "file": "src/atomic-crm/providers/supabase/unifiedDataProvider.ts",
+    "previous_lines": 0,
+    "current_lines": 0,
+    "status": "deleted",
+    "assessment": "SUCCESS - Strangler Fig migration complete. File successfully deleted. All resources use handler pattern in handlers/ directory.",
+    "handler_count": 24,
+    "handler_pattern": "src/atomic-crm/providers/supabase/handlers/*.ts"
+  },
+  "summary": {
+    "soft_delete_coverage": "733 deleted_at IS NULL checks across 149 migration files (excellent coverage)",
+    "view_write_protection": "No direct writes to _summary views detected in src/ code (GOOD)",
+    "deprecated_field_usage": "Zero usage of deprecated fields (company_id on contacts, archived_at on opportunities)",
+    "strangler_fig_status": "Successfully deleted - migration to composed handler architecture complete",
+    "total_migrations": 309,
+    "rls_policies_with_soft_delete": "149 files include deleted_at IS NULL filters",
+    "open_issues": 11,
+    "needs_remediation": 8
+  },
+  "findings": [
+    {
+      "id": "DI-C001",
+      "severity": "critical",
+      "category": "RLS Security",
+      "status": "open",
+      "issue": "USING(true) policies without authorization on product_distributors table",
+      "description": "Migration 20251215054822_08_create_product_distributors.sql creates SELECT/UPDATE/DELETE policies with USING(true), allowing ANY authenticated user to access/modify ANY record without company isolation or ownership checks.",
+      "file": "supabase/migrations/20251215054822_08_create_product_distributors.sql",
+      "lines": [42, 48, 51],
+      "pattern": "USING (true)",
+      "evidence": [
+        "Line 42: CREATE POLICY \"Users can view product_distributors\" ON product_distributors FOR SELECT USING (true);",
+        "Line 48: CREATE POLICY \"Users can update product_distributors\" ON product_distributors FOR UPDATE USING (true);",
+        "Line 51: CREATE POLICY \"Users can delete product_distributors\" ON product_distributors FOR DELETE USING (true);"
+      ],
+      "impact": "Security hole - users can view/modify/delete product-distributor mappings across all companies",
+      "remediation": "FIXED in migration 20260124170000_fix_product_distributors_rls_security.sql (DELETE policy) and 20260125000007_product_distributors_dual_auth_rls.sql (comprehensive fix)",
+      "remediation_status": "superseded",
+      "superseded_by": "20260124170000_fix_product_distributors_rls_security.sql, 20260125000007_product_distributors_dual_auth_rls.sql",
+      "verification": "Check latest migration applies owner-or-privileged pattern with company_id checks"
+    },
+    {
+      "id": "DI-H001",
+      "severity": "high",
+      "category": "Hard Delete",
+      "status": "historical",
+      "issue": "Hard DELETE statements in historical data consolidation migrations",
+      "description": "DELETE FROM organizations in one-time migrations for duplicate consolidation",
+      "files": [
+        "supabase/migrations/20251117123500_phase2d_consolidate_duplicates.sql",
+        "supabase/migrations/20251117121913_phase2c_correct_misnamed_restaurants.sql"
+      ],
+      "pattern": "DELETE FROM organizations",
+      "evidence": [
+        "phase2d line 22: DELETE FROM organizations WHERE id = 5;",
+        "phase2d line 37: DELETE FROM organizations WHERE id = 1338;",
+        "phase2d line 53: DELETE FROM organizations WHERE id IN (1533, 21);",
+        "phase2c line 71: DELETE FROM organizations WHERE id = 856;"
+      ],
+      "impact": "Data loss - permanent deletion of organization records",
+      "allowlistId": "HISTORICAL-001",
+      "reason": "One-time historical migrations for duplicate consolidation, already executed in production. Part of Phase 2 data cleanup initiative documented in docs/architecture/DATA_CONSOLIDATION_HISTORY.md",
+      "remediation": "None required - historical one-time operations. Future consolidations should use soft delete pattern.",
+      "remediation_status": "accepted_historical"
+    },
+    {
+      "id": "DI-H002",
+      "severity": "high",
+      "category": "Hard Delete",
+      "status": "superseded",
+      "issue": "Hard DELETE in sync_opportunity_with_products RPC function (opportunity_products)",
+      "description": "Multiple iterations of sync_opportunity_with_products used hard DELETE FROM opportunity_products",
+      "files": [
+        "supabase/migrations/20251029051621_update_sync_rpc_remove_pricing.sql",
+        "supabase/migrations/20251030130720_fix_sync_opportunity_schema_mismatch.sql",
+        "supabase/migrations/20251030131117_fix_rpc_array_parsing.sql",
+        "supabase/migrations/20251030132011_add_rpc_backend_validation.sql",
+        "supabase/migrations/20251030145417_fix_sync_opportunity_id_handling.sql",
+        "supabase/migrations/20251030201606_fix_sync_rpc_response_format.sql"
+      ],
+      "pattern": "DELETE FROM opportunity_products WHERE id = ANY(product_ids_to_delete)",
+      "superseded_by": "supabase/migrations/20251108051154_fix_opportunity_products_soft_delete.sql",
+      "impact": "Data loss - product associations permanently deleted instead of soft-deleted",
+      "remediation": "FIXED in 20251108051154 - replaced with UPDATE opportunity_products SET deleted_at = NOW()",
+      "remediation_status": "superseded",
+      "verification": "Latest migration 20251108051154 lines 128-136 show soft delete implementation"
+    },
+    {
+      "id": "DI-H003",
+      "severity": "high",
+      "category": "Hard Delete",
+      "status": "superseded",
+      "issue": "Hard DELETE in sync_contact_organizations RPC function",
+      "description": "Original function used DELETE FROM contact_organizations",
+      "file": "supabase/migrations/20251018152315_cloud_schema_fresh.sql",
+      "line": 714,
+      "pattern": "DELETE FROM contact_organizations WHERE contact_id = p_contact_id",
+      "superseded_by": "supabase/migrations/20260123175626_fix_sync_contact_organizations_soft_delete.sql",
+      "impact": "Data loss - contact-organization associations permanently deleted",
+      "remediation": "FIXED in 20260123175626 - replaced with UPDATE contact_organizations SET deleted_at = NOW()",
+      "remediation_status": "superseded",
+      "verification": "Migration 20260123175626 lines 34-44 implement soft delete pattern"
+    },
+    {
+      "id": "DI-H004",
+      "severity": "high",
+      "category": "Hard Delete",
+      "status": "superseded",
+      "issue": "Hard DELETE in sync_opportunity_contacts RPC function",
+      "description": "Original function used DELETE FROM opportunity_contacts",
+      "file": "supabase/migrations/20251231120000_add_sync_opportunity_contacts_rpc.sql",
+      "line": 18,
+      "pattern": "DELETE FROM opportunity_contacts",
+      "superseded_by": "supabase/migrations/20260120000001_fix_sync_opportunity_contacts_soft_delete.sql",
+      "impact": "Data loss - opportunity-contact associations permanently deleted",
+      "remediation": "FIXED in 20260120000001 - replaced with soft delete pattern",
+      "remediation_status": "superseded"
+    },
+    {
+      "id": "DI-H005",
+      "severity": "high",
+      "category": "Hard Delete",
+      "status": "superseded",
+      "issue": "Hard DELETE in merge_contacts function",
+      "description": "Multiple iterations of merge_contacts used DELETE FROM contacts",
+      "files": [
+        "supabase/migrations/20251123214721_add_contact_duplicates_view.sql",
+        "supabase/migrations/20251123215857_fix_merge_function_table_names.sql"
+      ],
+      "pattern": "DELETE FROM contacts WHERE id = ANY(p_duplicate_ids)",
+      "superseded_by": "supabase/migrations/20260111000001_convert_merge_to_soft_delete.sql",
+      "impact": "Data loss - duplicate contacts permanently deleted during merge",
+      "remediation": "FIXED in 20260111000001 - converted to UPDATE contacts SET deleted_at = NOW()",
+      "remediation_status": "superseded"
+    },
+    {
+      "id": "DI-H006",
+      "severity": "high",
+      "category": "Hard Delete",
+      "status": "historical",
+      "issue": "Hard DELETE for data cleanup in sales schema consistency migration",
+      "description": "DELETE FROM sales for NULL email cleanup",
+      "file": "supabase/migrations/20251116210019_fix_sales_schema_consistency.sql",
+      "lines": [48, 62, 67],
+      "pattern": "DELETE FROM sales",
+      "impact": "Data loss - sales records with NULL emails permanently deleted",
+      "reason": "One-time data cleanup for schema consistency - removing invalid records before adding NOT NULL constraint",
+      "remediation_status": "accepted_historical"
+    },
+    {
+      "id": "DI-H007",
+      "severity": "high",
+      "category": "Hard Delete",
+      "status": "historical",
+      "issue": "Hard DELETE for orphaned data cleanup",
+      "description": "DELETE statements converted to soft delete in orphan cleanup migrations",
+      "files": [
+        "supabase/migrations/20260111000002_soft_delete_orphaned_opportunities.sql",
+        "supabase/migrations/20260111000003_soft_delete_orphaned_activities.sql"
+      ],
+      "pattern": "Original: DELETE FROM opportunities/activities (in migration comments)",
+      "impact": "Original design would have caused data loss - migrations document the fix",
+      "remediation": "Migrations already implement soft delete - DELETE FROM only mentioned in comments as 'Original' approach that was rejected",
+      "remediation_status": "already_fixed"
+    },
+    {
+      "id": "DI-M001",
+      "severity": "medium",
+      "category": "RLS Policy",
+      "status": "allowlisted",
+      "issue": "USING(true) on segments table for authenticated read access",
+      "description": "Segments table uses USING(true) for SELECT policy",
+      "file": "supabase/migrations/20251018152315_cloud_schema_fresh.sql",
+      "line": 2804,
+      "pattern": "CREATE POLICY \"Allow authenticated read access\" ON \"public\".\"segments\" FOR SELECT TO \"authenticated\" USING (true)",
+      "allowlistId": "REFERENCE-001",
+      "reason": "Read-only reference table - intentionally public to all authenticated users per Supabase RLS docs (anon role pattern)",
+      "impact": "Low - reference data, read-only access, intentional design",
+      "remediation_status": "accepted_intentional"
+    },
+    {
+      "id": "DI-M002",
+      "severity": "medium",
+      "category": "Hard Delete",
+      "status": "historical",
+      "issue": "Hard DELETE in segments table migration",
+      "description": "DELETE FROM segments during playbook categories migration",
+      "file": "supabase/migrations/20251129225719_replace_segments_with_playbook_categories.sql",
+      "line": 50,
+      "pattern": "DELETE FROM segments",
+      "reason": "One-time migration replacing segments with new playbook categories architecture",
+      "impact": "Data loss - all segments deleted during architectural change",
+      "remediation_status": "accepted_historical"
+    },
+    {
+      "id": "DI-M003",
+      "severity": "medium",
+      "category": "Hard Delete",
+      "status": "historical",
+      "issue": "Hard DELETE for referential integrity cleanup",
+      "description": "DELETE FROM opportunities for orphaned records cleanup",
+      "file": "supabase/migrations/20251117032253_fix_referential_integrity.sql",
+      "line": 21,
+      "pattern": "DELETE FROM opportunities",
+      "reason": "One-time cleanup of referentially broken data before adding FK constraints",
+      "impact": "Data loss - orphaned opportunities without valid customer_organization_id",
+      "remediation_status": "accepted_historical"
+    },
+    {
+      "id": "DI-I001",
+      "severity": "info",
+      "category": "Deprecated Fields",
+      "status": "verified",
+      "issue": "Check for deprecated field usage: Contact.company_id and Opportunity.archived_at",
+      "description": "Scan for deprecated fields that should not be used in application code",
+      "pattern": "Contact.company_id (use contact_organizations junction), Opportunity.archived_at (use deleted_at)",
+      "evidence": "Zero matches found in src/ codebase for both deprecated patterns",
+      "impact": "None - deprecated fields not used",
+      "assessment": "PASS - No deprecated field usage detected in application code"
+    },
+    {
+      "id": "DI-I002",
+      "severity": "info",
+      "category": "View Write Protection",
+      "status": "verified",
+      "issue": "Check for direct writes to _summary views",
+      "description": "Scan for INSERT/UPDATE/DELETE statements targeting _summary views",
+      "pattern": "INSERT INTO.*_summary|UPDATE.*_summary|DELETE FROM.*_summary",
+      "evidence": "Zero matches found in src/ codebase",
+      "impact": "None - view/table duality properly maintained",
+      "assessment": "PASS - No direct writes to summary views detected"
+    },
+    {
+      "id": "DI-I003",
+      "severity": "info",
+      "category": "Test/Seed Data",
+      "status": "excluded",
+      "issue": "DELETE FROM statements in test and seed files",
+      "description": "32 DELETE FROM statements found in supabase/seed-parts/, supabase/tests/database/, and scripts/dev/",
+      "files": [
+        "supabase/seed-parts/*.sql (10 files)",
+        "supabase/tests/database/*.sql (15 files)",
+        "scripts/dev/reset-environment.sh (2 instances)"
+      ],
+      "pattern": "DELETE FROM",
+      "reason": "Test data setup and teardown - hard delete acceptable in non-production contexts",
+      "impact": "None - test/development context only",
+      "assessment": "EXCLUDED - Hard deletes acceptable for test fixtures and seed data cleanup"
+    }
+  ],
+  "recommendations": [
+    {
+      "priority": "critical",
+      "action": "Verify migration 20260125000007_product_distributors_dual_auth_rls.sql properly replaces USING(true) policies with owner-or-privileged pattern",
+      "rationale": "Finding DI-C001 shows security hole in product_distributors RLS",
+      "verification": "Run: SELECT policyname, cmd, qual FROM pg_policies WHERE tablename = 'product_distributors' ORDER BY cmd;"
+    },
+    {
+      "priority": "high",
+      "action": "Document historical hard DELETE migrations in allowlist with HISTORICAL status",
+      "rationale": "8 historical hard DELETE findings need formal acknowledgment",
+      "verification": "Update docs/audits/.baseline/allowlist.json with entries for HISTORICAL-002 through HISTORICAL-009"
+    },
+    {
+      "priority": "medium",
+      "action": "Add migration validation hook to prevent future USING(true) policies without documentation",
+      "rationale": "Prevent regression - enforce DATABASE_LAYER.md rule 'No USING(true) except service_role'",
+      "verification": "scripts/validate-migrations.sh should flag USING(true) and require comment justification"
+    },
+    {
+      "priority": "low",
+      "action": "Archive superseded migrations to historical directory",
+      "rationale": "6 superseded migrations with hard DELETE now fixed - reduce noise in future audits",
+      "verification": "Move 20251030*.sql to supabase/migrations/historical/ directory"
+    }
+  ],
+  "verification_commands": [
+    "# Check current product_distributors RLS policies",
+    "psql $DATABASE_URL -c \"SELECT policyname, cmd, qual FROM pg_policies WHERE tablename = 'product_distributors' ORDER BY cmd;\"",
+    "",
+    "# Verify soft delete coverage in views",
+    "rg 'deleted_at IS NULL' supabase/migrations/*.sql --count",
+    "",
+    "# Check for new USING(true) policies",
+    "rg 'USING \\(true\\)' supabase/migrations/*.sql --line-number | grep -v 'service_role\\|ROLLBACK\\|-- Original'",
+    "",
+    "# Verify Strangler Fig migration status",
+    "ls -la src/atomic-crm/providers/supabase/unifiedDataProvider.ts 2>&1 || echo 'File deleted - migration complete'",
+    "",
+    "# Count handler files",
+    "ls -1 src/atomic-crm/providers/supabase/handlers/*.ts | wc -l"
+  ],
+  "baseline_comparison": {
+    "previous_audit": "2026-01-23",
+    "critical_delta": "+1 (product_distributors RLS)",
+    "high_delta": "0 (superseded migrations moved to historical)",
+    "trends": {
+      "soft_delete_adoption": "Increasing - 6 hard DELETE migrations superseded by soft delete versions",
+      "rls_security": "Improving - but regression found in product_distributors (already fixed in later migration)",
+      "strangler_fig": "Complete - unifiedDataProvider.ts successfully deleted"
+    }
+  }
+}

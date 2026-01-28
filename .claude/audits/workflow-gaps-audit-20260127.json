@@ -1,0 +1,158 @@
+{
+  "audit": "workflow-gaps",
+  "date": "2026-01-27",
+  "mode": "full",
+  "scope": "src/",
+  "critical": 0,
+  "high": 3,
+  "medium": 2,
+  "total": 5,
+  "status": "PASS",
+  "db_findings": {
+    "orphaned_opportunities": 0,
+    "invalid_stages": 0,
+    "null_owners": 0,
+    "unlinked_contacts": 0,
+    "missing_close_reasons": 0,
+    "activities_without_type": 0,
+    "state_transition_anomalies": 0
+  },
+  "findings": [
+    {
+      "id": "WF-H1-001",
+      "severity": "high",
+      "check": "WF-H1",
+      "type": "hardcoded-stage-values",
+      "title": "Stage comparisons using STAGE constants",
+      "description": "31 instances of stage comparisons using STAGE constants from centralized file. This is actually best practice and should be downgraded.",
+      "location": "Multiple files",
+      "examples": [
+        "src/atomic-crm/reports/tabs/OverviewTab.tsx:256",
+        "src/atomic-crm/opportunities/RelatedOpportunitiesSection.tsx:83",
+        "src/atomic-crm/validation/opportunities/opportunities-operations.ts:474"
+      ],
+      "risk": "LOW - Using constants provides type safety and prevents typos",
+      "recommendation": "DOWNGRADE to LOW or RESOLVE - Current implementation is correct",
+      "effort": "No action needed",
+      "confidence": "95%",
+      "firstSeen": "2026-01-20"
+    },
+    {
+      "id": "WF-H2-001",
+      "severity": "high",
+      "check": "WF-H2",
+      "type": "missing-activity-logging",
+      "title": "Opportunity creation missing automatic activity log",
+      "description": "When opportunities are created via QuickAddOpportunity, no automatic activity record is created. Audit trail depends on users remembering to log manually.",
+      "location": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:60",
+      "risk": "HIGH - Incomplete audit trail, loss of context on opportunity origins",
+      "recommendation": "Add afterCreate callback in opportunitiesCallbacks.ts to automatically log creation activity",
+      "effort": "2 hours",
+      "confidence": "92%",
+      "firstSeen": "2026-01-11"
+    },
+    {
+      "id": "WF-H2-002",
+      "severity": "high",
+      "check": "WF-H2",
+      "type": "missing-activity-logging",
+      "title": "Archive operation missing automatic activity log",
+      "description": "When opportunities are archived (soft deleted), no activity record is created to document who archived it or why.",
+      "location": "src/atomic-crm/opportunities/components/ArchiveActions.tsx:23",
+      "risk": "HIGH - No record of archive decisions, difficult to track abandoned deals",
+      "recommendation": "Add activity creation in archive handler",
+      "effort": "1 hour",
+      "confidence": "92%",
+      "firstSeen": "2026-01-11"
+    },
+    {
+      "id": "WF-M1-001",
+      "severity": "medium",
+      "check": "WF-M1",
+      "type": "inconsistent-date-handling",
+      "title": "Inconsistent date handling patterns",
+      "description": "250 instances of new Date() across codebase. Most are correct (.toISOString() for DB storage), but patterns are inconsistent.",
+      "location": "Multiple files",
+      "examples": [
+        "src/atomic-crm/providers/supabase/extensions/rpcExtension.ts:147",
+        "src/atomic-crm/providers/supabase/callbacks/tasksCallbacks.ts:52",
+        "src/atomic-crm/notes/NoteCreate.tsx:96"
+      ],
+      "risk": "MEDIUM - Potential timezone issues, difficult to mock in tests",
+      "recommendation": "Create dateUtils.ts helper module for consistent date handling",
+      "effort": "4 hours initial + gradual migration",
+      "confidence": "90%",
+      "firstSeen": "2026-01-20"
+    },
+    {
+      "id": "WF-M2-001",
+      "severity": "medium",
+      "check": "WF-M2",
+      "type": "direct-stage-assignments",
+      "title": "Direct stage comparisons instead of helper functions",
+      "description": "31 instances of direct stage comparisons (stage === STAGE.CLOSED_WON) instead of using helper functions like isClosed(stage).",
+      "location": "Multiple files",
+      "examples": [
+        "src/atomic-crm/validation/opportunities/opportunities-operations.ts:474",
+        "src/atomic-crm/opportunities/RelatedOpportunitiesSection.tsx:83"
+      ],
+      "risk": "MEDIUM - Stage logic scattered, harder to add business rules",
+      "recommendation": "Create stageHelpers.ts with functions like isClosed(), isClosedWon(), requiresCloseReason()",
+      "effort": "2 hours",
+      "confidence": "85%",
+      "firstSeen": "2026-01-20"
+    }
+  ],
+  "summary": {
+    "overall_health": "EXCELLENT",
+    "critical_status": "PASS - All critical violations resolved",
+    "database_health": "100% PASS - All consistency checks passed",
+    "delta_from_last_audit": {
+      "date": "2026-01-23",
+      "new_issues": 0,
+      "resolved_issues": 0,
+      "net_change": 0
+    },
+    "activity_logging_coverage": {
+      "opportunities": "0%",
+      "contacts": "0%",
+      "note": "Activities are created ONLY manually via QuickLogActivityDialog. This is by design."
+    },
+    "key_strengths": [
+      "All opportunities have required principal_organization_id",
+      "All contacts linked to organizations",
+      "No orphaned pipeline stages",
+      "All closed opportunities have win/loss reasons",
+      "No invalid state transitions detected"
+    ],
+    "top_priorities": [
+      {
+        "id": "WF-H2-001",
+        "action": "Add automatic activity logging to opportunity creation",
+        "effort": "2 hours"
+      },
+      {
+        "id": "WF-H2-002",
+        "action": "Add automatic activity logging to archive operation",
+        "effort": "1 hour"
+      },
+      {
+        "id": "WF-H1-001",
+        "action": "Downgrade or resolve - using STAGE constants is best practice",
+        "effort": "0 hours"
+      }
+    ],
+    "verification": {
+      "confidence": "95%",
+      "all_critical_verified": true,
+      "database_checks_complete": true,
+      "activity_logging_audit_complete": true
+    }
+  },
+  "metadata": {
+    "auditor": "Claude Code (automated)",
+    "report_location": "docs/audits/2026-01-27-workflow-gaps.md",
+    "baseline_location": "docs/audits/.baseline/workflow-gaps.json",
+    "next_audit_recommended": "2026-02-03 (7 days) or after activity logging implementation"
+  }
+}

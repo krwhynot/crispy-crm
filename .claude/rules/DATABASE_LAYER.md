@@ -26,6 +26,18 @@ DON'T:
 - Rely only on frontend filtering `deleted_at`
 - Skip RLS policies - attackers can bypass frontend
 
+## Storage Layer (Files & Assets)
+
+DO:
+- **Bucket RLS:** Enable Row Level Security on `storage.objects`. Buckets are tables too.
+- **Path Structure:** Enforce hierarchy: `/{tenant_id}/{resource}/{record_id}/{filename}`. Prevents collisions and leaks.
+- **Private by Default:** Use private buckets. Only make buckets public for generic assets (e.g., app logos).
+- **Foreign Keys:** Store the file path string in the database record (e.g., `avatar_url`), not the full signed URL.
+
+DON'T:
+- **Public PII:** Never store sensitive user documents in public buckets.
+- **Flat Structures:** Don't dump all files in the root of a bucket.
+- **Orphaned Files:** Don't delete database records without cleaning up associated storage files (handle via triggers or soft-delete workflows).
 ## Access Control Patterns
 
 DO:

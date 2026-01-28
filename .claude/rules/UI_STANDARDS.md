@@ -33,6 +33,18 @@ DO:
 DON'T:
 - Skip creating wrappers - force features to use raw Tier 1
 
+## File Handling (Tier 2)
+
+DO:
+- **Optimistic Previews:** Show `URL.createObjectURL(file)` immediately when a user selects an image.
+- **Progress Indication:** Uploads > 500KB must show a progress bar or spinner.
+- **Client-Side Validation:** `<input accept="...">` AND manual size checks before sending to server.
+- **Wrappers:** Use `src/components/ra-wrappers/FileInput.tsx` which standardizes dropzones and error messages.
+
+DON'T:
+- **Raw Inputs:** Never use a bare `<input type="file" />`.
+- **Silent Failures:** Never fail an upload without a `toast.error()` notification.
+- 
 ## Global Styling (`src/index.css`)
 
 DO:
@@ -103,7 +115,9 @@ Uses semantic color (`destructive`) and standard size (`h-11` = 44px).
 ```bash
 # Find Tier 1 leaks in features
 grep -r "from '@/components/ui/" src/atomic-crm/
+
 ```
+
 
 ## Checklist
 

@@ -39,6 +39,18 @@ DON'T:
 - Rely solely on React Admin form validation
 - Skip provider-layer validation
 
+## Storage Operations
+
+DO:
+- **Service Isolation:** Encapsulate storage logic in `src/services/StorageService.ts`. Don't call `supabase.storage` inside handlers directly.
+- **MIME Validation:** Validate `file.type` against an allowed list (e.g., `['image/png', 'application/pdf']`) before upload.
+- **Cleanup on Fail:** If a database transaction fails after a file upload, catch the error and delete the orphaned file immediately.
+- **Signed URLs:** Use `createSignedUrl` for private assets; do not expose permanent paths.
+
+DON'T:
+- **Blocking Uploads:** Don't block the main UI thread. Use background uploads where possible.
+- **Raw File Inputs:** Don't pass raw `File` objects deeper than the handler layer.
+- 
 ## Service Layer
 
 DO:

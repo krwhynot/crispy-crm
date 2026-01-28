@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 import type { DatagridProps } from "react-admin";
-import { Datagrid, useListContext } from "react-admin";
+import { Datagrid, DatagridConfigurable, useListContext } from "react-admin";
 import { cn } from "@/lib/utils";
 
 /**
@@ -43,6 +43,24 @@ export interface PremiumDatagridProps extends DatagridProps {
    * Pass -1 or undefined to disable focus styling.
    */
   focusedIndex?: number;
+
+  /**
+   * Enable column visibility controls via DatagridConfigurable.
+   * When true, renders DatagridConfigurable instead of Datagrid,
+   * allowing users to show/hide columns via SelectColumnsButton.
+   *
+   * @default false
+   */
+  configurable?: boolean;
+
+  /**
+   * Storage key for persisting column visibility preferences.
+   * Required when configurable=true.
+   * Stored in localStorage as "RaStore.preferences.{preferenceKey}.columns"
+   *
+   * @example "organizations.datagrid"
+   */
+  preferenceKey?: string;
 }
 
 /**
@@ -54,6 +72,8 @@ export interface PremiumDatagridProps extends DatagridProps {
 export function PremiumDatagrid({
   onRowClick,
   focusedIndex,
+  configurable = false,
+  preferenceKey,
   rowClassName: externalRowClassName,
   ...props
 }: PremiumDatagridProps) {
@@ -112,10 +132,14 @@ export function PremiumDatagrid({
     setTimeout(scrollFocusedRowIntoView, 0);
   }
 
+  // Conditionally use DatagridConfigurable when column visibility is enabled
+  const DatagridComponent = configurable ? DatagridConfigurable : Datagrid;
+
   return (
     <div className="flex-1 min-h-0 overflow-auto">
-      <Datagrid
+      <DatagridComponent
         {...props}
+        preferenceKey={preferenceKey}
         rowClassName={getRowClassName}
         rowClick={onRowClick ? handleRowClick : props.rowClick}
       />

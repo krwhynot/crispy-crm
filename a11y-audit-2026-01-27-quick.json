@@ -1,0 +1,113 @@
+{
+  "audit": "accessibility",
+  "mode": "quick",
+  "date": "2026-01-27",
+  "critical": 1,
+  "high": 2,
+  "medium": 4,
+  "findings": [
+    {
+      "id": "A11Y-QUICK-001",
+      "severity": "critical",
+      "check": "FormErrorSummary expand button below 44px touch target",
+      "location": "src/components/ra-wrappers/FormErrorSummary.tsx:156-174",
+      "pattern": "className=\"flex items-center gap-1 text-xs text-destructive/80\"",
+      "description": "Expand/collapse button lacks explicit min-h-11 sizing. text-xs with icon-only content likely results in <40px height, violating iPad touch target requirement.",
+      "wcag_criterion": "WCAG 2.1 2.5.5 Target Size (Enhanced)",
+      "fix": "Add min-h-11 px-3: className=\"flex items-center gap-1 min-h-11 px-3 text-xs text-destructive/80 hover:text-destructive transition-colors\""
+    },
+    {
+      "id": "A11Y-QUICK-002",
+      "severity": "high",
+      "check": "aria-invalid passes undefined instead of false",
+      "location": "src/components/ra-wrappers/form/form-primitives.tsx:99",
+      "pattern": "aria-invalid={error ? \"true\" : undefined}",
+      "description": "When no error, aria-invalid is undefined (removed from DOM). Best practice is explicit aria-invalid=\"false\" for clarity.",
+      "wcag_criterion": "WCAG 2.1 4.1.2 Name, Role, Value",
+      "note": "Current implementation functionally correct but less explicit. assistive technology interpreters may differ.",
+      "recommendation": "Change to aria-invalid={error ? \"true\" : \"false\"} for consistency"
+    },
+    {
+      "id": "A11Y-QUICK-003",
+      "severity": "high",
+      "check": "AccessibleField component rarely used in codebase",
+      "location": "src/components/admin/AccessibleField.tsx",
+      "usage_count": 4,
+      "files_using": [
+        "src/atomic-crm/opportunities/LocationNotesSection.tsx",
+        "src/atomic-crm/opportunities/ContactInformationSection.tsx",
+        "src/atomic-crm/opportunities/OpportunityDetailsSection.tsx"
+      ],
+      "description": "AccessibleField provides proper aria-invalid/aria-describedby/aria-required but only used in 4 files. Most forms rely on TextInput/FormField pattern instead.",
+      "wcag_criterion": "WCAG 2.1 4.1.2 Name, Role, Value",
+      "note": "TextInput wraps FormControl which properly implements aria-invalid via useFormField hook - this is the standard pattern.",
+      "status": "OK - FormControl pattern is standard and functional"
+    },
+    {
+      "id": "A11Y-QUICK-004",
+      "severity": "medium",
+      "check": "FormError aria-live subscription correctness",
+      "location": "src/components/ra-wrappers/form/form-primitives.tsx:33-53",
+      "pattern": "useFormState({ name }) subscription pattern",
+      "description": "FormError relies on useFormField() which subscribes to specific field via useFormState({ name }). Pattern is correct but undocumented.",
+      "wcag_criterion": "WCAG 2.1 4.1.3 Status Messages",
+      "verification": "Comment on line 40 confirms this fixes aria-invalid update issue",
+      "status": "PASSING - implementation verified in comments"
+    },
+    {
+      "id": "A11Y-QUICK-005",
+      "severity": "medium",
+      "check": "Icon aria-hidden consistency",
+      "location": "src/components/ra-wrappers/FormErrorSummary.tsx:149, 166, 171",
+      "pattern": "<AlertCircle className=\"h-5 w-5\" aria-hidden=\"true\" /> vs <ChevronUp className=\"h-4 w-4\" />",
+      "description": "AlertCircle has aria-hidden but chevrons do not. Inconsistent - all decorative icons should have aria-hidden=\"true\".",
+      "wcag_criterion": "WCAG 2.1 1.1.1 Non-text Content",
+      "files_affected": 1,
+      "fix": "Add aria-hidden=\"true\" to ChevronUp and ChevronDown: <ChevronUp className=\"h-4 w-4\" aria-hidden=\"true\" />"
+    },
+    {
+      "id": "A11Y-QUICK-006",
+      "severity": "medium",
+      "check": "Hex colors in data/color constants (non-UI)",
+      "location": "src/lib/color-types.ts",
+      "pattern": "'#eddcd2', '#fff1e6', '#fde2e4', etc.",
+      "description": "Color mapping file contains hex codes for data transformation (color labels, not UI styling). This is acceptable - hex codes map to semantic colors at UI layer.",
+      "wcag_criterion": "Design system adherence",
+      "status": "ACCEPTABLE - hex codes are data constants, not UI styling"
+    }
+  ],
+  "summary": "1 critical, 2 high, 4 medium issues found. Overall WCAG 2.1 AA status: PASS with minor recommendations.",
+  "wcag_status": "PASS",
+  "wcag_level": "AA",
+  "audit_delta_vs_2026_01_23": {
+    "critical_change": "-1 (fixed: min-h-[24px] removed)",
+    "high_change": "-1 (fixed: PATTERNS.md colors removed or resolved)",
+    "medium_change": "-3 (icons aria-hidden improved, form patterns stable)"
+  },
+  "strengths": [
+    "FormControl properly implements aria-invalid via Slot pattern with field subscription",
+    "FormError has role=\"alert\" with aria-live=\"polite\"",
+    "Form inputs consistently use h-11 (44px) minimum",
+    "FormErrorSummary has excellent keyboard navigation (focus links)",
+    "Focus-visible states comprehensive across all components",
+    "Semantic colors fully implemented in UI layer"
+  ],
+  "quick_wins": [
+    {
+      "task": "Add min-h-11 to FormErrorSummary expand button",
+      "effort": "2 minutes",
+      "file": "src/components/ra-wrappers/FormErrorSummary.tsx:159"
+    },
+    {
+      "task": "Add aria-hidden to decorative icons in FormErrorSummary",
+      "effort": "2 minutes",
+      "file": "src/components/ra-wrappers/FormErrorSummary.tsx:166,171"
+    }
+  ],
+  "test_coverage": "PASS - form-primitives-accessibility.test.tsx verified",
+  "next_actions": [
+    "Monitor FormErrorSummary touch target after fix",
+    "Document FormControl aria-invalid pattern in UI_STANDARDS.md",
+    "Run full axe-core audit if making UI changes"
+  ]
+}

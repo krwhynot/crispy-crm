@@ -117,6 +117,11 @@ vi.mock("react-admin", async () => {
         </div>
       );
     },
+    SelectColumnsButton: ({ preferenceKey }: { preferenceKey?: string }) => (
+      <button data-testid="select-columns-button" data-preference-key={preferenceKey}>
+        Columns
+      </button>
+    ),
   };
 });
 
@@ -154,7 +159,12 @@ vi.mock("@/atomic-crm/tutorial/PageTutorialTrigger", () => ({
 }));
 
 vi.mock("@/components/ra-wrappers/PremiumDatagrid", () => ({
-  PremiumDatagrid: ({ children, onRowClick }: MockLayoutProps) => {
+  PremiumDatagrid: ({
+    children,
+    onRowClick,
+    configurable,
+    preferenceKey,
+  }: MockLayoutProps & { configurable?: boolean; preferenceKey?: string }) => {
     sortableColumns.length = 0;
 
     const processChild = (child: React.ReactNode) => {
@@ -181,7 +191,12 @@ vi.mock("@/components/ra-wrappers/PremiumDatagrid", () => ({
     }
 
     return (
-      <div data-testid="premium-datagrid" className="table-row-premium">
+      <div
+        data-testid="premium-datagrid"
+        data-configurable={configurable ? "true" : "false"}
+        data-preference-key={preferenceKey || ""}
+        className="table-row-premium"
+      >
         {children}
         <div
           data-testid="mock-row-1"
@@ -224,7 +239,12 @@ vi.mock("@/components/layouts/StandardListLayout", () => ({
 }));
 
 vi.mock("@/components/ra-wrappers/list", () => ({
-  List: ({ children }: MockChildrenProps) => <div data-testid="list-wrapper">{children}</div>,
+  List: ({ children, actions }: MockChildrenProps & { actions?: React.ReactNode }) => (
+    <div data-testid="list-wrapper">
+      {actions}
+      {children}
+    </div>
+  ),
 }));
 
 vi.mock("../OrganizationEmpty", () => ({
@@ -241,6 +261,10 @@ vi.mock("@/components/ra-wrappers/FloatingCreateButton", () => ({
 
 vi.mock("../layout/TopToolbar", () => ({
   TopToolbar: ({ children }: MockChildrenProps) => <div data-testid="top-toolbar">{children}</div>,
+}));
+
+vi.mock("@/components/ra-wrappers/sort-button", () => ({
+  SortButton: () => <button data-testid="sort-button">Sort</button>,
 }));
 
 vi.mock("@/components/ra-wrappers/export-button", () => ({
@@ -443,6 +467,14 @@ describe("OrganizationList column sorting configuration", () => {
     await waitFor(() => {
       const opportunitiesField = screen.getByTestId("function-field-Opportunities");
       expect(opportunitiesField).toHaveAttribute("data-sortable", "false");
+    });
+  });
+
+  test("SelectColumnsButton is rendered in TopToolbar", async () => {
+    renderWithAdminContext(<OrganizationList />);
+
+    await waitFor(() => {
+      expect(screen.getByTestId("select-columns-button")).toBeInTheDocument();
     });
   });
 });

@@ -1,0 +1,603 @@
+{
+  "audit": "code-quality",
+  "audit_date": "2026-01-27",
+  "mode": "full",
+  "scope": "src/",
+  "exclusions": [
+    "test files (*.test.ts, *.test.tsx, __tests__/)",
+    "logger infrastructure (logger.ts, devLogger.ts)",
+    "generated types (database.generated.ts, database.types.ts, supabase.ts)"
+  ],
+  "summary": {
+    "total_files": 1289,
+    "average_file_length": 176,
+    "total_exports": 1957,
+    "critical_issues": 4,
+    "high_priority": 12,
+    "medium_priority": 18,
+    "total_findings": 34
+  },
+  "baselines": {
+    "console_statements": {
+      "current": 82,
+      "baseline": 83,
+      "target": 0,
+      "status": "IMPROVED",
+      "note": "Decreased from 83 to 82, but still far from target"
+    },
+    "type_safety": {
+      "any_annotations": 163,
+      "any_casts": 16,
+      "total_any_usage": 179,
+      "baseline": 163,
+      "target": 0,
+      "status": "STABLE"
+    },
+    "large_files": {
+      "over_500_lines": 22,
+      "over_1000_lines": 3,
+      "largest_files": [
+        {
+          "file": "src/types/database.generated.ts",
+          "lines": 6203,
+          "note": "Generated file - excluded"
+        },
+        {
+          "file": "src/types/database.types.ts",
+          "lines": 6128,
+          "note": "Generated file - excluded"
+        },
+        { "file": "src/types/supabase.ts", "lines": 5288, "note": "Generated file - excluded" },
+        {
+          "file": "src/atomic-crm/organizations/OrganizationType.spec.tsx",
+          "lines": 742,
+          "severity": "medium"
+        },
+        {
+          "file": "src/atomic-crm/organizations/OrganizationList.spec.tsx",
+          "lines": 725,
+          "severity": "medium"
+        },
+        {
+          "file": "src/atomic-crm/validation/opportunities/opportunities-operations.ts",
+          "lines": 674,
+          "severity": "medium"
+        },
+        {
+          "file": "src/atomic-crm/providers/supabase/extensions/types.ts",
+          "lines": 614,
+          "severity": "low"
+        },
+        { "file": "src/atomic-crm/contacts/columnAliases.ts", "lines": 612, "severity": "low" },
+        { "file": "src/atomic-crm/utils/errorMessages.ts", "lines": 611, "severity": "high" }
+      ]
+    },
+    "todo_markers": {
+      "count": 12,
+      "status": "ACCEPTABLE"
+    }
+  },
+  "metrics": {
+    "hook_usage": {
+      "useState": 122,
+      "useEffect": 130,
+      "note": "High hook usage indicates complex component state"
+    },
+    "error_handling": {
+      "try_catch_blocks": 270,
+      "proper_unknown_typing": 155,
+      "coverage_rate": "57%",
+      "note": "57% of catch blocks use proper 'unknown' typing"
+    },
+    "array_operations": {
+      "map_filter_reduce": 881,
+      "note": "Heavy functional programming usage - watch for performance"
+    },
+    "component_interfaces": {
+      "props_interfaces": 391,
+      "note": "Good typing discipline on components"
+    },
+    "semantic_styling": {
+      "text_destructive_usage": 119,
+      "note": "Good adoption of semantic color classes"
+    }
+  },
+  "critical": [
+    {
+      "id": "CQ-001",
+      "severity": "critical",
+      "check": "Data Duplication",
+      "location": "src/atomic-crm/utils/errorMessages.ts:26-77, src/atomic-crm/utils/errorMessages.ts:111-251",
+      "description": "FIELD_LABELS (52 entries) and CONSTRAINT_MESSAGES (140+ entries) represent massive lookup tables. The errorMessages.ts file is 611 lines with extensive switch/case logic for error mapping. This creates a maintenance burden.",
+      "impact": "High maintenance cost - every new field/constraint requires manual entry. Risk of inconsistent error messages.",
+      "fix": "Consider schema-driven approach: Generate field labels from Zod schemas automatically. Use database constraint metadata to build constraint messages dynamically. Reduce manual mapping tables by 70%+.",
+      "effort": "4-6 hours",
+      "status": "open"
+    },
+    {
+      "id": "CQ-002",
+      "severity": "critical",
+      "check": "Data Duplication",
+      "location": "src/atomic-crm/contacts/columnAliases.ts:15-362",
+      "description": "COLUMN_ALIASES contains 612 lines of CSV header variations (email_work: 23 variations, phone_work: 30 variations, organization_name: 30 variations). Massive manual mapping effort.",
+      "impact": "High risk of missing variations. Brittle to changes. Difficult to validate completeness.",
+      "fix": "Consider fuzzy string matching (Levenshtein distance) or ML-based column mapping to reduce manual alias definitions by 80%. Keep only core variations, use algorithms for edge cases.",
+      "effort": "6-8 hours",
+      "status": "open"
+    },
+    {
+      "id": "CQ-003",
+      "severity": "critical",
+      "check": "Type Safety",
+      "location": "Multiple files",
+      "description": "163 uses of ': any' type annotations in production code. Disables all type checking at those points. Baseline established but no reduction progress.",
+      "impact": "Silent runtime bugs. Refactoring risks. Poor IDE autocomplete.",
+      "fix": "Systematic replacement campaign: 1) Test files using 'any' in mocks - use typed factories from src/tests/utils/typed-mocks.ts. 2) Component props - define proper interfaces. 3) Error handlers - use 'unknown' with type guards. Target: <50 uses in 30 days, 0 in 90 days.",
+      "effort": "Ongoing - 2 hours/week for 12 weeks",
+      "status": "open"
+    },
+    {
+      "id": "CQ-004",
+      "severity": "critical",
+      "check": "Console Statements",
+      "location": "82 locations across codebase",
+      "description": "82 console.log/error/warn statements in production code (down from 83 baseline). These bypass structured logging and clutter production console.",
+      "impact": "Security risk (may log sensitive data). No error tracking integration. Production noise.",
+      "fix": "Replace all console.* with logger.* from @/lib/logger. Use eslint rule to prevent new violations. Pre-commit hook to block console statements.",
+      "effort": "3-4 hours",
+      "status": "open"
+    }
+  ],
+  "high": [
+    {
+      "id": "CQ-005",
+      "severity": "high",
+      "check": "File Complexity",
+      "location": "src/atomic-crm/utils/errorMessages.ts",
+      "description": "611-line file with extensive conditional logic. Single sanitizeMessage function contains 200+ lines of nested if/else checks for error type detection.",
+      "impact": "Difficult to test exhaustively. High cyclomatic complexity. Hard to add new error types.",
+      "fix": "Refactor into strategy pattern: Map error codes to handler functions. Split into multiple smaller files: constraintErrors.ts, validationErrors.ts, networkErrors.ts, authErrors.ts. Each <150 lines.",
+      "effort": "4-5 hours",
+      "status": "open"
+    },
+    {
+      "id": "CQ-006",
+      "severity": "high",
+      "check": "File Complexity",
+      "location": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx",
+      "description": "595-line component with complex drag-drop logic, state management, and side effects. Multiple useEffect hooks, custom collision detection, and modal handling.",
+      "impact": "Difficult to test. High risk of state bugs. Hard to understand flow.",
+      "fix": "Extract custom hooks: useDragDrop, useColumnCustomization, useOpportunityMutations. Extract components: DragOverlayContent, CloseOpportunityModalContainer. Target: <300 lines per file.",
+      "effort": "6-8 hours",
+      "status": "open"
+    },
+    {
+      "id": "CQ-007",
+      "severity": "high",
+      "check": "File Complexity",
+      "location": "src/atomic-crm/sales/UserDisableReassignDialog.tsx",
+      "description": "576-line wizard component with complex reassignment logic, batch processing, and multi-step state management.",
+      "impact": "Hard to test batch reassignment logic. Difficult to understand error handling paths.",
+      "fix": "Extract batch reassignment logic to service layer: batchReassignService.ts. Extract wizard steps into separate components. Use state machine for step transitions.",
+      "effort": "5-6 hours",
+      "status": "open"
+    },
+    {
+      "id": "CQ-008",
+      "severity": "high",
+      "check": "Magic Numbers",
+      "location": "Multiple files",
+      "description": "Hardcoded pagination values (50, 500), timeout values (100, 150, 300, 500, 800, 1000, 2000, 3000), and debounce times (300, 500) scattered across codebase.",
+      "impact": "Inconsistent UX (different debounce times). Hard to tune performance globally. Difficult to find all timeout locations.",
+      "fix": "Centralize in constants file: DEFAULT_PAGE_SIZE=50, LARGE_PAGE_SIZE=500, DEBOUNCE_SEARCH_MS=300, TIMEOUT_STANDARD_MS=2000, TIMEOUT_EXTENDED_MS=3000. Replace all hardcoded values.",
+      "effort": "2-3 hours",
+      "status": "open"
+    },
+    {
+      "id": "CQ-009",
+      "severity": "high",
+      "check": "Error Handling Coverage",
+      "location": "Multiple files",
+      "description": "Only 57% of try-catch blocks use proper 'error: unknown' typing. 43% of error handlers don't validate error types before accessing properties.",
+      "impact": "Runtime crashes if error isn't Error instance. Accessing .message on undefined crashes. Poor type safety.",
+      "fix": "Enforce 'catch (error: unknown)' pattern. Use type guards from @/lib/type-guards. Add ESLint rule to require unknown in catch blocks.",
+      "effort": "4-5 hours",
+      "status": "open"
+    },
+    {
+      "id": "CQ-010",
+      "severity": "high",
+      "check": "Type Casts",
+      "location": "16 files with 'as any' casts",
+      "description": "16 'as any' type casts in production code (excluding tests). Primarily in test files like OpportunityArchivedList.test.tsx (12 occurrences).",
+      "impact": "Bypasses type safety completely. Tests pass with wrong data shapes. Production type mismatches.",
+      "fix": "Test files: Use typed factories from src/tests/utils/typed-mocks.ts. Production code: Fix type mismatches at source instead of casting. Define proper interfaces.",
+      "effort": "3-4 hours",
+      "status": "open"
+    },
+    {
+      "id": "CQ-011",
+      "severity": "high",
+      "check": "Dead Code Risk",
+      "location": "src/atomic-crm/validation/",
+      "description": "390 exports in validation layer, but only 2 imports detected from that layer. Suggests significant dead schema code.",
+      "impact": "Maintenance burden for unused schemas. Confusion about which schemas are active. Bundle size impact.",
+      "fix": "Run dead code analysis: npx ts-prune src/atomic-crm/validation. Remove unused exports. Document which schemas are required vs optional.",
+      "effort": "3-4 hours",
+      "status": "open"
+    },
+    {
+      "id": "CQ-012",
+      "severity": "high",
+      "check": "Complex Array Operations",
+      "location": "Multiple files",
+      "description": "881 uses of .map/.filter/.reduce across codebase. Some with complex chaining that may have performance implications.",
+      "impact": "Potential N² complexity in nested operations. Hard to read complex chains. Performance issues on large datasets.",
+      "fix": "Review chains longer than 3 operations. Consider useMemo for expensive computations. Extract complex transformations to utility functions with clear names.",
+      "effort": "Ongoing code review item",
+      "status": "open"
+    },
+    {
+      "id": "CQ-013",
+      "severity": "high",
+      "check": "Large Test Files",
+      "location": "src/atomic-crm/organizations/OrganizationType.spec.tsx (742 lines), OrganizationList.spec.tsx (725 lines)",
+      "description": "Test files over 700 lines indicate poor test organization. Difficult to find specific test cases.",
+      "impact": "Slow test execution. Hard to identify failing tests. Poor test maintainability.",
+      "fix": "Split into multiple test files by feature area. Use describe blocks for grouping. Extract test fixtures to separate files.",
+      "effort": "4-5 hours",
+      "status": "open"
+    },
+    {
+      "id": "CQ-014",
+      "severity": "high",
+      "check": "Validation Schema Complexity",
+      "location": "src/atomic-crm/validation/opportunities/opportunities-operations.ts",
+      "description": "674-line validation file with complex win/loss reason logic and conditional schemas. Multiple TODO markers (TODO-004a) for incomplete features.",
+      "impact": "Hard to understand validation rules. Incomplete features in production code. Risk of validation gaps.",
+      "fix": "Split into separate files: base schemas, win/loss schemas, stage transition schemas. Complete or remove TODO-004a placeholders. Add comprehensive validation tests.",
+      "effort": "5-6 hours",
+      "status": "open"
+    },
+    {
+      "id": "CQ-015",
+      "severity": "high",
+      "check": "DRY Violation - State Management",
+      "location": "Multiple components",
+      "description": "122 useState declarations and 130 useEffect hooks suggest significant state duplication across components.",
+      "impact": "Inconsistent state behavior. Difficult to debug state issues. Poor separation of concerns.",
+      "fix": "Audit high useState/useEffect files. Extract shared state to custom hooks. Consider Zustand for global state. Move side effects to React Query.",
+      "effort": "Ongoing refactoring",
+      "status": "open"
+    },
+    {
+      "id": "CQ-016",
+      "severity": "high",
+      "check": "Hardcoded Page Sizes",
+      "location": "7 files with perPage: 50 or perPage: 500",
+      "description": "Pagination sizes hardcoded as 50 or 500 across different features. One dashboard query uses perPage: 500 which may cause performance issues.",
+      "impact": "Inconsistent pagination behavior. Performance risks with large page sizes. Hard to tune globally.",
+      "fix": "Use DEFAULT_PAGE_SIZE constant from appConstants.ts. Add LARGE_PAGE_SIZE for special cases. Document why large sizes are needed.",
+      "effort": "1-2 hours",
+      "status": "open"
+    }
+  ],
+  "medium": [
+    {
+      "id": "CQ-017",
+      "severity": "medium",
+      "check": "TODO Markers",
+      "location": "12 files",
+      "description": "12 TODO/FIXME/XXX markers in production code. Most are legitimate (ARIA improvements, known Radix issues, TODO-004a feature placeholders).",
+      "impact": "Incomplete features in production. Tech debt tracking.",
+      "fix": "Review each TODO: 1) Create GitHub issues for legitimate work. 2) Complete or remove placeholder TODOs. 3) Document workarounds for known library issues.",
+      "effort": "2-3 hours",
+      "status": "open"
+    },
+    {
+      "id": "CQ-018",
+      "severity": "medium",
+      "check": "Function Length",
+      "location": "Various files",
+      "description": "Multiple functions exceeding 100 lines detected (e.g., generateDailyDigestEmail, sanitizeMessage in errorMessages.ts).",
+      "impact": "Hard to understand function purpose. Difficult to test. High cyclomatic complexity.",
+      "fix": "Refactor long functions: Extract helper functions, use early returns to reduce nesting, split into smaller focused functions.",
+      "effort": "Ongoing refactoring",
+      "status": "open"
+    },
+    {
+      "id": "CQ-019",
+      "severity": "medium",
+      "check": "Verbose Array Checks",
+      "location": "20 files",
+      "description": "20 instances of .length === 0 or .length > 0 instead of using array truthiness. Slightly verbose but not critical.",
+      "impact": "Minor code verbosity. Slightly harder to read.",
+      "fix": "Consider simplifying to !array.length or array.length where appropriate. Keep explicit checks where clarity is important.",
+      "effort": "1 hour",
+      "status": "open"
+    },
+    {
+      "id": "CQ-020",
+      "severity": "medium",
+      "check": "Component Props Duplication",
+      "location": "391 Props interfaces",
+      "description": "391 component Props interfaces suggest possible duplication. Common props like onClose, isOpen, recordId may be redefined multiple times.",
+      "impact": "Inconsistent prop naming. Hard to enforce common patterns.",
+      "fix": "Define common prop type utilities: WithSlideOver, WithDialog, WithRecordId. Reuse across components.",
+      "effort": "3-4 hours",
+      "status": "open"
+    },
+    {
+      "id": "CQ-021",
+      "severity": "medium",
+      "check": "Test Mock Patterns",
+      "location": "src/atomic-crm/products/__tests__/ProductList.test.tsx",
+      "description": "ProductList.test.tsx has 28 uses of ': any' in mock component definitions. Indicates poor test type safety.",
+      "impact": "Tests can pass with incorrect props. Type mismatches only caught at runtime.",
+      "fix": "Use React.ComponentProps<typeof Component> for mock prop types. Define typed mock components in test utilities.",
+      "effort": "2-3 hours for ProductList, apply pattern to other tests",
+      "status": "open"
+    },
+    {
+      "id": "CQ-022",
+      "severity": "medium",
+      "check": "CSV Export Type Safety",
+      "location": "src/atomic-crm/organizations/OrganizationList.exporter.test.ts",
+      "description": "Uses 'any' types for CSV export data structures. jsonExport callback has (_err: any, csv: string) signature.",
+      "impact": "CSV export errors may not be properly typed. Hard to debug export failures.",
+      "fix": "Define JsonExportError type. Type the jsonExport callback properly. Add error handling tests.",
+      "effort": "1-2 hours",
+      "status": "open"
+    },
+    {
+      "id": "CQ-023",
+      "severity": "medium",
+      "check": "Filter Duplication",
+      "location": "src/atomic-crm/contacts/ContactImportPreview.tsx, ContactImportValidationPanel.tsx",
+      "description": "Same filter logic duplicated: preview.mappings.filter((m) => m.target !== null) and preview.mappings.filter((m) => m.target === null).",
+      "impact": "DRY violation. Changes must be made in multiple places.",
+      "fix": "Extract to utility functions: getMappedColumns(preview), getSkippedColumns(preview).",
+      "effort": "30 minutes",
+      "status": "open"
+    },
+    {
+      "id": "CQ-024",
+      "severity": "medium",
+      "check": "Timeout Inconsistency",
+      "location": "Multiple test files",
+      "description": "Test timeout values vary widely: 100ms (mocks), 800ms (stories), 2000ms (integration), 3000ms (extended). No clear pattern.",
+      "impact": "Flaky tests due to inconsistent timeouts. Hard to tune timeouts globally.",
+      "fix": "Define test timeout constants: MOCK_DELAY_MS=100, ANIMATION_TIMEOUT_MS=500, INTEGRATION_TIMEOUT_MS=2000. Document rationale.",
+      "effort": "1-2 hours",
+      "status": "open"
+    },
+    {
+      "id": "CQ-025",
+      "severity": "medium",
+      "check": "Debounce Inconsistency",
+      "location": "Multiple components",
+      "description": "Debounce times vary: 300ms (search inputs, ParentOrganizationInput), 500ms (draft autosave). No clear rationale documented.",
+      "impact": "Inconsistent UX - some inputs feel more responsive than others. Hard to optimize globally.",
+      "fix": "Define debounce constants: DEBOUNCE_SEARCH_MS=300 (fast user feedback), DEBOUNCE_AUTOSAVE_MS=500 (reduce server load). Document in appConstants.ts.",
+      "effort": "1 hour",
+      "status": "open"
+    },
+    {
+      "id": "CQ-026",
+      "severity": "medium",
+      "check": "Color Type Complexity",
+      "location": "src/lib/color-types.ts",
+      "description": "Hardcoded hex color mappings to semantic colors (10 hex values). Should use CSS variables instead.",
+      "impact": "Brittle color mapping. Hard to maintain color palette. Doesn't respect theme changes.",
+      "fix": "Remove hardcoded hex mappings. Use CSS custom properties (--warm-500, --blue-400). Let Tailwind semantic colors handle mapping.",
+      "effort": "2-3 hours",
+      "status": "open"
+    },
+    {
+      "id": "CQ-027",
+      "severity": "medium",
+      "check": "CSP Hash Duplication",
+      "location": "src/config/csp-config.ts",
+      "description": "Same CSP script hash appears twice: 'sha256-MS6/3FCg4WjP9gwgaBGwLpRCY6fZBgwmhVCdrPrNf3E=' in different CSP blocks.",
+      "impact": "Maintenance burden - hash changes require updates in multiple places.",
+      "fix": "Extract to constant: MAIN_SCRIPT_HASH. Use in both CSP configurations.",
+      "effort": "15 minutes",
+      "status": "open"
+    },
+    {
+      "id": "CQ-028",
+      "severity": "medium",
+      "check": "Large Component Files",
+      "location": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx (511 lines), src/atomic-crm/pages/WhatsNew.tsx (518 lines)",
+      "description": "Component files over 500 lines indicate poor component decomposition.",
+      "impact": "Hard to understand component structure. Difficult to test in isolation. Poor reusability.",
+      "fix": "Split into smaller components: Extract sub-components, extract custom hooks, move business logic to services.",
+      "effort": "4-5 hours per file",
+      "status": "open"
+    },
+    {
+      "id": "CQ-029",
+      "severity": "medium",
+      "check": "Service Layer Complexity",
+      "location": "src/atomic-crm/services/junctions.service.ts (513 lines)",
+      "description": "Junction service is 513 lines handling multiple junction tables. May benefit from splitting.",
+      "impact": "Hard to find specific junction logic. Changes to one junction may affect others.",
+      "fix": "Consider splitting by junction table: contactOrganizationsService.ts, opportunityContactsService.ts, etc. Keep shared utilities in base service.",
+      "effort": "3-4 hours",
+      "status": "open"
+    },
+    {
+      "id": "CQ-030",
+      "severity": "medium",
+      "check": "Provider Utils Complexity",
+      "location": "src/atomic-crm/providers/supabase/dataProviderUtils.ts (508 lines)",
+      "description": "Data provider utilities file at 508 lines. Contains query builders, filter parsers, and transformation logic.",
+      "impact": "Hard to navigate utilities. Functions with different purposes mixed together.",
+      "fix": "Split into focused files: queryBuilders.ts, filterParsers.ts, dataTransformers.ts, errorHandlers.ts.",
+      "effort": "3-4 hours",
+      "status": "open"
+    },
+    {
+      "id": "CQ-031",
+      "severity": "medium",
+      "check": "Extension Types",
+      "location": "src/atomic-crm/providers/supabase/extensions/types.ts (614 lines)",
+      "description": "Extension types file is 614 lines of TypeScript types. May indicate overly complex extension pattern.",
+      "impact": "Hard to find specific types. Type changes require navigating large file.",
+      "fix": "Split by extension type: customMethodTypes.ts, validationTypes.ts, callbackTypes.ts. Re-export from index.ts.",
+      "effort": "2-3 hours",
+      "status": "open"
+    },
+    {
+      "id": "CQ-032",
+      "severity": "medium",
+      "check": "Contact Schema Complexity",
+      "location": "src/atomic-crm/validation/contacts/contacts-core.ts (549 lines)",
+      "description": "Contact core validation schema is 549 lines. Indicates complex domain model or duplication.",
+      "impact": "Hard to understand validation rules. Difficult to find specific field validators.",
+      "fix": "Split into logical groups: contactPersonalInfo.ts, contactProfessionalInfo.ts, contactRelationships.ts. Re-export from index.",
+      "effort": "3-4 hours",
+      "status": "open"
+    },
+    {
+      "id": "CQ-033",
+      "severity": "medium",
+      "check": "Component Stories Size",
+      "location": "src/components/ui/accordion.stories.tsx (570 lines), tooltip.stories.tsx (548 lines), sonner.stories.tsx (506 lines)",
+      "description": "Storybook story files over 500 lines. Too many variations in single file.",
+      "impact": "Hard to find specific stories. Slow Storybook performance.",
+      "fix": "Split stories by category: accordion-basic.stories.tsx, accordion-advanced.stories.tsx. Use story composition.",
+      "effort": "2-3 hours per file",
+      "status": "open"
+    },
+    {
+      "id": "CQ-034",
+      "severity": "medium",
+      "check": "Sample Status Badge Complexity",
+      "location": "src/atomic-crm/components/SampleStatusBadge.tsx (525 lines)",
+      "description": "Single component file at 525 lines. Contains badge UI, status logic, and interaction handlers.",
+      "impact": "Difficult to test. Hard to understand component boundaries. Poor separation of concerns.",
+      "fix": "Extract custom hooks: useSampleStatus, useSampleStatusUpdate. Extract sub-components: StatusBadge, StatusMenu. Move constants to separate file.",
+      "effort": "4-5 hours",
+      "status": "open"
+    }
+  ],
+  "recommendations": {
+    "immediate_actions": [
+      {
+        "priority": 1,
+        "action": "Fix console statements",
+        "description": "Replace 82 console.* calls with structured logger. Add ESLint rule to prevent new violations.",
+        "effort": "3-4 hours",
+        "impact": "Removes production noise, enables error tracking, improves security"
+      },
+      {
+        "priority": 2,
+        "action": "Centralize magic numbers",
+        "description": "Move hardcoded timeouts, page sizes, and debounce values to appConstants.ts",
+        "effort": "2-3 hours",
+        "impact": "Consistent UX, easier performance tuning, better maintainability"
+      },
+      {
+        "priority": 3,
+        "action": "Fix test type safety",
+        "description": "Replace 'as any' in test files with typed factories from typed-mocks.ts",
+        "effort": "4-5 hours",
+        "impact": "Catch type errors in tests, better test reliability"
+      }
+    ],
+    "short_term_30_days": [
+      {
+        "action": "Type safety campaign",
+        "description": "Reduce ': any' usage from 163 to <50 through systematic replacement",
+        "effort": "2 hours/week for 4 weeks",
+        "impact": "Improved type safety, better refactoring confidence"
+      },
+      {
+        "action": "Refactor large files",
+        "description": "Split files over 600 lines: errorMessages.ts, columnAliases.ts, OpportunityListContent.tsx, UserDisableReassignDialog.tsx",
+        "effort": "20-25 hours total",
+        "impact": "Better code organization, easier testing, improved maintainability"
+      },
+      {
+        "action": "Dead code analysis",
+        "description": "Run ts-prune on validation layer, remove unused schemas",
+        "effort": "3-4 hours",
+        "impact": "Reduced bundle size, clearer codebase"
+      }
+    ],
+    "long_term_90_days": [
+      {
+        "action": "Error message architecture",
+        "description": "Move from manual FIELD_LABELS/CONSTRAINT_MESSAGES to schema-driven approach. Generate from Zod schemas and DB metadata.",
+        "effort": "8-10 hours",
+        "impact": "Reduce maintenance burden by 70%, consistent error messages"
+      },
+      {
+        "action": "CSV import intelligence",
+        "description": "Replace 612-line COLUMN_ALIASES with fuzzy matching or ML-based column detection",
+        "effort": "10-12 hours",
+        "impact": "Smarter import, fewer manual mappings, better UX"
+      },
+      {
+        "action": "Zero 'any' types",
+        "description": "Complete type safety campaign - eliminate all 163 ': any' annotations",
+        "effort": "Ongoing through Q1 2026",
+        "impact": "Full type safety, zero silent bugs, excellent IDE experience"
+      }
+    ]
+  },
+  "enforcement": {
+    "eslint_rules": [
+      "no-console (production code only)",
+      "@typescript-eslint/no-explicit-any (warn → error)",
+      "max-lines-per-function (100 lines)",
+      "max-lines (500 lines per file)",
+      "complexity (max 15)"
+    ],
+    "pre_commit_hooks": [
+      "Check for console.* in staged files",
+      "Run TypeScript strict mode check",
+      "Verify no new ': any' types added",
+      "Check file length limits"
+    ],
+    "code_review_checklist": [
+      "No console statements in production code",
+      "No new ': any' types introduced",
+      "Magic numbers extracted to constants",
+      "Files under 500 lines",
+      "Functions under 100 lines",
+      "Proper error typing (catch error: unknown)"
+    ]
+  },
+  "trend_analysis": {
+    "positive_trends": [
+      "Console statements decreased from 83 to 82",
+      "Good semantic color adoption (119 uses of text-destructive)",
+      "Strong component typing discipline (391 Props interfaces)",
+      "Proper error typing in 57% of catch blocks"
+    ],
+    "negative_trends": [
+      "Type safety stagnant (163 ': any' unchanged from baseline)",
+      "Large file count increasing (22 files over 500 lines)",
+      "TODO markers accumulating (12 items, some dating back months)",
+      "Complex validation files growing (opportunities-operations.ts at 674 lines)"
+    ],
+    "risk_areas": [
+      "Validation layer: 390 exports, only 2 imports - significant dead code risk",
+      "Error handling: Only 57% of catch blocks properly typed",
+      "File complexity: 9 files over 600 lines require immediate attention",
+      "Test files: Large test files (700+ lines) indicate poor organization"
+    ]
+  },
+  "next_audit": {
+    "recommended_date": "2026-02-10",
+    "frequency": "bi-weekly",
+    "focus_areas": [
+      "Type safety progress (target: <100 ': any')",
+      "Console statement trend (target: <40)",
+      "Large file reduction (target: <15 files over 500 lines)",
+      "Error handling coverage (target: >75% proper typing)"
+    ]
+  }
+}

@@ -1,11 +1,13 @@
 import { memo } from "react";
 import jsonExport from "jsonexport/dist";
 import type { Exporter } from "ra-core";
-import { downloadCSV, useGetIdentity, useListContext } from "ra-core";
+import { downloadCSV, useGetIdentity, useListContext, useStore } from "ra-core";
 import { TextField, ReferenceField, FunctionField } from "react-admin";
 import { OrganizationBulkActionsToolbar } from "./OrganizationBulkActionsToolbar";
 import { List } from "@/components/ra-wrappers/list";
 import { StandardListLayout } from "@/components/layouts/StandardListLayout";
+import { Button } from "@/components/ui/button";
+import { Columns } from "lucide-react";
 import { PremiumDatagrid } from "@/components/ra-wrappers/PremiumDatagrid";
 import { FloatingCreateButton } from "@/components/ra-wrappers/FloatingCreateButton";
 import { OrganizationListSkeleton } from "@/components/ui/list-skeleton";
@@ -84,12 +86,39 @@ const OrganizationOpportunitiesCell = memo(function OrganizationOpportunitiesCel
   return <>{record.nb_opportunities || 0}</>;
 });
 
+/**
+ * StyledColumnsButton - Custom columns selector that matches site design
+ * Uses shadcn Button component instead of Material-UI from React Admin
+ * Opens the DatagridConfigurable column preferences editor
+ */
+const StyledColumnsButton = ({ preferenceKey }: { preferenceKey: string }) => {
+  const [, setInspectorOpen] = useStore(`preferences.${preferenceKey}.inspectorOpen`, false);
+
+  const handleClick = () => {
+    setInspectorOpen(true);
+  };
+
+  return (
+    <Button
+      variant="outline"
+      onClick={handleClick}
+      className="gap-2"
+      data-testid="select-columns-button"
+      data-preference-key={preferenceKey}
+    >
+      <Columns className="h-4 w-4" />
+      Columns
+    </Button>
+  );
+};
+
 const OrganizationListActions = () => (
   <TopToolbar>
     <SortButton
       fields={["name", "organization_type", "priority", "created_at"]}
       dataTutorial="org-sort-btn"
     />
+    <StyledColumnsButton preferenceKey="organizations.datagrid" />
     <ExportButton dataTutorial="org-export-btn" />
   </TopToolbar>
 );
@@ -215,6 +244,8 @@ const OrganizationListLayout = ({
           enableRecentSearches
         />
         <PremiumDatagrid
+          configurable={true}
+          preferenceKey="organizations.datagrid"
           onRowClick={(id) => openSlideOver(Number(id), "view")}
           focusedIndex={focusedIndex}
         >
@@ -228,6 +259,7 @@ const OrganizationListLayout = ({
 
           {/* Column 2: Type - Organization classification (sortable by organization_type) - always visible */}
           <FunctionField
+            source="organization_type"
             label={<OrganizationTypeHeader />}
             sortBy="organization_type"
             render={(record: OrganizationRecord) => <OrganizationTypeCell record={record} />}
@@ -235,6 +267,7 @@ const OrganizationListLayout = ({
 
           {/* Column 3: Priority - Business priority indicator (sortable) - always visible */}
           <FunctionField
+            source="priority"
             label={<OrganizationPriorityHeader />}
             sortBy="priority"
             render={(record: OrganizationRecord) => <OrganizationPriorityCell record={record} />}
@@ -265,6 +298,7 @@ const OrganizationListLayout = ({
 
           {/* Column 5: Contacts - Computed count metric (non-sortable) - hidden on mobile */}
           <FunctionField
+            source="nb_contacts"
             label="Contacts"
             sortable={false}
             render={(record: OrganizationRecord) => <OrganizationContactsCell record={record} />}
@@ -275,6 +309,7 @@ const OrganizationListLayout = ({
 
           {/* Column 6: Opportunities - Computed count metric (non-sortable) - hidden on mobile */}
           <FunctionField
+            source="nb_opportunities"
             label="Opportunities"
             sortable={false}
             render={(record: OrganizationRecord) => (

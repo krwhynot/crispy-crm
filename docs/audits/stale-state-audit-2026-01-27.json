@@ -1,0 +1,269 @@
+{
+  "audit": "stale-state",
+  "mode": "full",
+  "date": "2026-01-27",
+  "scope": "Full codebase - cache invalidation, refetch patterns, query key usage",
+  "critical": 3,
+  "high": 8,
+  "medium": 6,
+  "low": 0,
+  "total_findings": 17,
+  "findings": [
+    {
+      "id": "SS-001",
+      "severity": "high",
+      "check": "Cross-resource invalidation gaps",
+      "location": "src/atomic-crm/organizations/QuickCreatePopover.tsx:119",
+      "description": "Organization create only invalidates organizationKeys.all but does NOT invalidate contactKeys when organization is created via contact form autocomplete. Contact lists may show stale org counts/names.",
+      "fix": "Add queryClient.invalidateQueries({ queryKey: contactKeys.lists() }) after organization creation in QuickCreatePopover",
+      "status": "open",
+      "impact": "Contact list views show stale organization data (count, name) until manual refresh",
+      "rule_reference": "STALE_STATE_STRATEGY.md - Cross-Resource Dependencies table"
+    },
+    {
+      "id": "SS-002",
+      "severity": "critical",
+      "check": "Global refetchOnWindowFocus on high-frequency data",
+      "location": "src/atomic-crm/root/CRM.tsx:110",
+      "description": "Global QueryClient configured with refetchOnWindowFocus: true for ALL queries. Dashboard widgets with 30s staleTime will refetch on every tab switch, causing API storms.",
+      "fix": "Remove refetchOnWindowFocus: true from global config. Set explicitly to false for dashboard queries. Only enable for notifications and critical real-time data.",
+      "status": "open",
+      "impact": "Every tab switch triggers full page refetch. API rate limiting risk, poor UX during multitasking.",
+      "rule_reference": "STALE_STATE_STRATEGY.md - Aggressive Window Focus Refetch (BANNED)"
+    },
+    {
+      "id": "SS-003",
+      "severity": "high",
+      "check": "Dashboard queries with refetchOnWindowFocus + SHORT_STALE_TIME",
+      "location": "src/atomic-crm/dashboard/useMyTasks.ts:48-49",
+      "description": "useMyTasks uses staleTime: 5min + refetchOnWindowFocus: true. Combined with global refetch config, this creates double refetches on tab switch.",
+      "fix": "Remove refetchOnWindowFocus: true from useMyTasks. Let staleTime handle cache freshness. Or reduce staleTime to SHORT_STALE_TIME_MS (30s) and remove windowFocus refetch.",
+      "status": "open",
+      "impact": "Task list refetches unnecessarily on tab switch even when data is fresh (< 5 min old)",
+      "rule_reference": "STALE_STATE_STRATEGY.md - Stale Time Defaults, When to Use Short Stale Time"
+    },
+    {
+      "id": "SS-004",
+      "severity": "high",
+      "check": "Dashboard queries with refetchOnWindowFocus enabled",
+      "location": "src/atomic-crm/dashboard/useTeamActivities.ts:83, usePrincipalPipeline.ts:47, useTaskCount.ts:32, usePrincipalOpportunities.ts:54",
+      "description": "Multiple dashboard hooks use refetchOnWindowFocus: true on data that changes infrequently. Combined with global refetch, causes redundant API calls.",
+      "fix": "Remove refetchOnWindowFocus: true. Rely on SHORT_STALE_TIME_MS for volatile data (task counts) and DEFAULT_STALE_TIME_MS for stable data (team activities, pipeline).",
+      "status": "open",
+      "impact": "Dashboard widgets refetch on every tab switch regardless of staleness, causing API load spikes",
+      "rule_reference": "STALE_STATE_STRATEGY.md - Refetch Patterns, When NOT to Use"
+    },
+    {
+      "id": "SS-005",
+      "severity": "medium",
+      "check": "Hardcoded query keys in tests",
+      "location": "src/atomic-crm/opportunities/__tests__/OpportunityEdit.unit.test.tsx:108, src/atomic-crm/products/__tests__/ProductEdit.test.tsx:171",
+      "description": "Tests use hardcoded query keys ['opportunities'], ['products'] instead of queryKeys factory. Keys can drift from actual implementation.",
+      "fix": "Replace hardcoded strings with opportunityKeys.all, productKeys.all from queryKeys factory",
+      "status": "open",
+      "impact": "Test invalidation keys may not match production keys, causing false test passes",
+      "rule_reference": "STALE_STATE_STRATEGY.md - Hardcoded Keys (BANNED)"
+    },
+    {
+      "id": "SS-006",
+      "severity": "critical",
+      "check": "Nuclear invalidation pattern",
+      "location": "src/atomic-crm/organizations/OrganizationEdit.tsx:23-25",
+      "description": "Organization edit invalidates organizationKeys.all, contactKeys.all, AND opportunityKeys.all. This is overly broad - updating org name doesn't affect opportunities.",
+      "fix": "Replace with targeted invalidation: organizationKeys.lists() for list views, contactKeys.lists() for contact org names. Remove opportunityKeys.all unless org field displayed in opportunity lists.",
+      "status": "open",
+      "impact": "Editing one organization forces full refetch of ALL opportunities across entire app, causing performance degradation",
+      "rule_reference": "STALE_STATE_STRATEGY.md - Nuclear Invalidation (BANNED)"
+    },
+    {
+      "id": "SS-007",
+      "severity": "high",
+      "check": "Missing cross-resource invalidation on junction table changes",
+      "location": "src/atomic-crm/contacts/LinkOpportunityModal.tsx:72-79",
+      "description": "Linking contact to opportunity correctly invalidates both detail queries and junction table, but does NOT invalidate opportunityKeys.lists() or contactKeys.lists(). List views may show stale contact counts.",
+      "fix": "Add queryClient.invalidateQueries({ queryKey: opportunityKeys.lists() }) and queryClient.invalidateQueries({ queryKey: contactKeys.lists() }) after junction table mutation",
+      "status": "open",
+      "impact": "Opportunity and contact list views show stale participant/contact counts until manual refresh",
+      "rule_reference": "STALE_STATE_STRATEGY.md - Junction Table Invalidation, Cross-Resource Dependencies"
+    },
+    {
+      "id": "SS-008",
+      "severity": "high",
+      "check": "Missing staleTime on volatile data",
+      "location": "src/atomic-crm/dashboard/useTaskCount.ts:32",
+      "description": "useTaskCount correctly uses SHORT_STALE_TIME_MS (30s) but also has refetchOnWindowFocus: true, causing double refetches when data is fresh.",
+      "fix": "Remove refetchOnWindowFocus: true. SHORT_STALE_TIME_MS handles freshness requirements.",
+      "status": "open",
+      "impact": "Task count widget refetches on tab switch even when count was updated 5 seconds ago",
+      "rule_reference": "STALE_STATE_STRATEGY.md - When to Use Short Stale Time, Refetch Patterns"
+    },
+    {
+      "id": "SS-009",
+      "severity": "medium",
+      "check": "Inconsistent staleTime configuration",
+      "location": "src/atomic-crm/opportunities/OpportunityListFilter.tsx:123, useQuickAddFormLogic.ts:65, ContactOrgMismatchWarning.tsx:62",
+      "description": "Multiple components use hardcoded 5 * 60 * 1000 instead of DEFAULT_STALE_TIME_MS constant. Magic numbers make it hard to adjust global cache policy.",
+      "fix": "Replace 5 * 60 * 1000 with DEFAULT_STALE_TIME_MS from appConstants. Use SHORT_STALE_TIME_MS for volatile data.",
+      "status": "open",
+      "impact": "Cache policy inconsistencies make it difficult to tune performance globally",
+      "rule_reference": "STALE_STATE_STRATEGY.md - Stale Time Defaults"
+    },
+    {
+      "id": "SS-010",
+      "severity": "medium",
+      "check": "Missing gcTime on queries with custom staleTime",
+      "location": "src/atomic-crm/opportunities/useSimilarOpportunityCheck.ts:115",
+      "description": "useSimilarOpportunityCheck sets gcTime: 5min but does NOT set staleTime. Query will be immediately stale but cached for 5 minutes, causing unnecessary refetches.",
+      "fix": "Add staleTime: 5 * 60 * 1000 to match gcTime. Use DEFAULT_STALE_TIME_MS constant.",
+      "status": "open",
+      "impact": "Similar opportunity checks refetch on every component mount instead of using cached data",
+      "rule_reference": "STALE_STATE_STRATEGY.md - Stale Time Defaults"
+    },
+    {
+      "id": "SS-011",
+      "severity": "high",
+      "check": "Missing dashboard invalidation after task mutations",
+      "location": "src/atomic-crm/dashboard/useMyTasks.ts:194-196, 283-285, 342-344, 419-421",
+      "description": "Task mutations (complete, snooze, delete, update due date) invalidate taskKeys.all and opportunityKeys.all but NOT dashboardKeys.all. Dashboard widgets showing task counts will be stale.",
+      "fix": "Add queryClient.invalidateQueries({ queryKey: dashboardKeys.all }) after each task mutation in useMyTasks",
+      "status": "open",
+      "impact": "Dashboard task count widgets show stale counts after completing/snoozing tasks until page refresh",
+      "rule_reference": "STALE_STATE_STRATEGY.md - Cross-Resource Dependencies (Opportunity stage change → Dashboard metrics)"
+    },
+    {
+      "id": "SS-012",
+      "severity": "medium",
+      "check": "Missing contact/org invalidation after opportunity mutations",
+      "location": "src/atomic-crm/opportunities/kanban/OpportunityCardActions.tsx:99-101",
+      "description": "Opportunity archive/delete invalidates opportunityKeys but does NOT invalidate contactKeys or organizationKeys. Contact/org detail views showing opportunity counts will be stale.",
+      "fix": "Add queryClient.invalidateQueries({ queryKey: contactKeys.lists() }) and queryClient.invalidateQueries({ queryKey: organizationKeys.lists() }) after opportunity mutations",
+      "status": "open",
+      "impact": "Contact and organization views show stale opportunity counts after archiving opportunities",
+      "rule_reference": "STALE_STATE_STRATEGY.md - Cross-Resource Dependencies"
+    },
+    {
+      "id": "SS-013",
+      "severity": "high",
+      "check": "Missing activity invalidation after opportunity stage change",
+      "location": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:249-250",
+      "description": "Stage change in kanban correctly invalidates activityKeys.all after logging activity, BUT uses non-blocking error handling. If activity creation fails, invalidation doesn't happen but main mutation succeeds.",
+      "fix": "Move activity invalidation to onSuccess of stage update mutation, not inside try/catch of activity creation. Activity logging is non-critical but cache should stay fresh.",
+      "status": "open",
+      "impact": "Activity timeline may miss stage change entries if activity creation fails, causing confusion about opportunity history",
+      "rule_reference": "STALE_STATE_STRATEGY.md - Cross-Resource Dependencies, PROVIDER_RULES.md - Side-Effect Error Handling"
+    },
+    {
+      "id": "SS-014",
+      "severity": "medium",
+      "check": "Redundant .all invalidation instead of targeted lists()",
+      "location": "src/atomic-crm/contacts/ContactDetailsTab.tsx:67-68",
+      "description": "Contact update invalidates contactKeys.all AND contactKeys.detail(id). Using .all forces refetch of ALL contact queries (lists, details, filters). Should use .lists() for targeted invalidation.",
+      "fix": "Replace contactKeys.all with contactKeys.lists(). Keep contactKeys.detail(id) for detail view invalidation.",
+      "status": "open",
+      "impact": "Editing one contact forces refetch of all contact list queries across the app, degrading performance",
+      "rule_reference": "STALE_STATE_STRATEGY.md - Invalidation Rules (Update operations)"
+    },
+    {
+      "id": "SS-015",
+      "severity": "medium",
+      "check": "Polling with refetchInterval instead of server-sent events",
+      "location": "src/components/NotificationBell.tsx:24",
+      "description": "Notification count uses polling (refetchInterval: 30s) instead of server-sent events or websockets. This is acceptable for notifications but creates unnecessary API load.",
+      "fix": "ACCEPTABLE CURRENT STATE: Polling for notifications is standard pattern. Future enhancement: migrate to Supabase Realtime subscriptions for zero-latency updates. Document as technical debt.",
+      "status": "open",
+      "impact": "30-second polling creates predictable API load but delays notification delivery. Not critical.",
+      "rule_reference": "STALE_STATE_STRATEGY.md - Refetch Patterns (refetchInterval except for notifications)"
+    },
+    {
+      "id": "SS-016",
+      "severity": "medium",
+      "check": "Missing organization hierarchy invalidation",
+      "location": "src/hooks/useOrganizationDescendants.ts:41",
+      "description": "Organization descendants query uses SHORT_STALE_TIME_MS (30s) but is NOT invalidated when organization parent_id changes. Hierarchy views will show stale tree structure for 30s.",
+      "fix": "Add orgDescendantKeys.all invalidation to organization update mutations. Also invalidate when parent_id field changes specifically.",
+      "status": "open",
+      "impact": "Organization hierarchy tree shows stale parent/child relationships for up to 30 seconds after reassignment",
+      "rule_reference": "STALE_STATE_STRATEGY.md - Cross-Resource Dependencies, When to Use Short Stale Time"
+    },
+    {
+      "id": "SS-017",
+      "severity": "critical",
+      "check": "Global staleTime too aggressive for volatile dashboard data",
+      "location": "src/atomic-crm/root/CRM.tsx:109",
+      "description": "Global default staleTime: 30s is reasonable for most queries but is overridden by dashboard hooks (5min). However, global refetchOnWindowFocus: true negates the staleTime benefit, causing refetches on tab switch regardless of staleness.",
+      "fix": "Set global refetchOnWindowFocus: false. Let individual queries opt-in to window focus refetch for critical data (notifications only). Keep staleTime: 30s as reasonable default.",
+      "status": "open",
+      "impact": "Global refetch config undermines staleTime strategy, causing unnecessary API calls and poor UX during multitasking",
+      "rule_reference": "STALE_STATE_STRATEGY.md - Stale Time Defaults, Refetch Patterns"
+    }
+  ],
+  "summary": {
+    "total_issues": 17,
+    "critical_issues": 3,
+    "high_priority_issues": 8,
+    "medium_priority_issues": 6,
+    "low_priority_issues": 0,
+    "overall_health": "NEEDS_IMPROVEMENT",
+    "key_problems": [
+      "Global refetchOnWindowFocus causes API storms on tab switching (SS-002, SS-017)",
+      "Nuclear invalidation patterns force unnecessary full-page refetches (SS-006, SS-014)",
+      "Missing cross-resource invalidation leaves stale counts/relationships (SS-001, SS-007, SS-011, SS-012)",
+      "Dashboard queries over-refetch with redundant refetchOnWindowFocus + staleTime (SS-003, SS-004, SS-008)",
+      "Hardcoded magic numbers instead of constants (SS-005, SS-009)"
+    ],
+    "quick_wins": [
+      "Remove global refetchOnWindowFocus from CRM.tsx QueryClient config (fixes SS-002, SS-017)",
+      "Replace hardcoded 5*60*1000 with DEFAULT_STALE_TIME_MS constant (fixes SS-009)",
+      "Remove refetchOnWindowFocus from all dashboard hooks (fixes SS-003, SS-004, SS-008)",
+      "Add dashboardKeys.all invalidation to task mutations (fixes SS-011)"
+    ],
+    "architectural_changes_needed": [
+      "Replace .all invalidation with targeted .lists() or .detail(id) (SS-006, SS-014)",
+      "Add cross-resource invalidation mapping (org → contacts, opportunity → dashboard, etc.) (SS-001, SS-007, SS-012)",
+      "Migrate notification polling to Supabase Realtime subscriptions (SS-015 - future enhancement)",
+      "Add org hierarchy invalidation when parent_id changes (SS-016)"
+    ],
+    "compliance_with_rules": {
+      "query_key_factory_usage": "GOOD - queryKeys.ts factory is used consistently in production code",
+      "hardcoded_query_keys": "MINOR_ISSUES - Tests use hardcoded keys (SS-005)",
+      "nuclear_invalidation": "MODERATE_ISSUES - Some .all usage should be .lists() (SS-006, SS-014)",
+      "cross_resource_invalidation": "MAJOR_GAPS - Missing invalidations for junction tables, dashboard, hierarchy (SS-001, SS-007, SS-011, SS-012, SS-016)",
+      "stale_time_configuration": "INCONSISTENT - Mix of constants and magic numbers (SS-009, SS-010)",
+      "refetch_on_window_focus": "VIOLATION - Global config + per-hook overuse (SS-002, SS-003, SS-004, SS-008, SS-017)",
+      "optimistic_updates": "NOT_AUDITED - Requires separate review",
+      "cache_manipulation": "GOOD - No direct queryClient.setQueryData usage found"
+    }
+  },
+  "recommendations": {
+    "immediate_actions": [
+      "1. Remove global refetchOnWindowFocus from CRM.tsx - set to false (CRITICAL)",
+      "2. Remove refetchOnWindowFocus from all dashboard hooks (HIGH)",
+      "3. Add dashboardKeys.all to task mutation invalidations (HIGH)",
+      "4. Replace organizationKeys.all with .lists() in OrganizationEdit (HIGH)"
+    ],
+    "short_term": [
+      "1. Add cross-resource invalidation map documentation to STALE_STATE_STRATEGY.md",
+      "2. Create queryKey audit script to find .all usage and suggest .lists() replacements",
+      "3. Replace all hardcoded staleTime values with constants",
+      "4. Add organization hierarchy invalidation to parent_id mutations"
+    ],
+    "long_term": [
+      "1. Migrate notification polling to Supabase Realtime subscriptions",
+      "2. Implement optimistic updates with rollback for common mutations",
+      "3. Add React Query DevTools in development to visualize cache staleness",
+      "4. Create pre-commit hook to prevent hardcoded query keys in new code"
+    ]
+  },
+  "verification_commands": {
+    "find_refetch_on_window_focus": "rg 'refetchOnWindowFocus.*true' src/",
+    "find_hardcoded_stale_times": "rg '\\d+\\s*\\*\\s*60\\s*\\*\\s*1000' src/ --type ts",
+    "find_all_invalidations": "rg 'Keys\\.all(?!\\s*\\])' src/ --type ts",
+    "find_nuclear_invalidations": "rg 'invalidateQueries\\(\\)(?!.*queryKey)' src/ --type ts",
+    "count_query_keys_usage": "rg 'queryKey:' src/ | wc -l"
+  },
+  "references": {
+    "rules": [".claude/rules/STALE_STATE_STRATEGY.md", ".claude/rules/PROVIDER_RULES.md"],
+    "constants": "src/atomic-crm/constants/appConstants.ts",
+    "query_keys": "src/atomic-crm/queryKeys.ts"
+  }
+}
