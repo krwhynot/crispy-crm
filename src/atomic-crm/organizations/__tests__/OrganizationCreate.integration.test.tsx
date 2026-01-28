@@ -176,20 +176,20 @@ describe("OrganizationCreate with Progress Tracking", () => {
     expect(progressBarWrapper?.className).toContain("mb-6");
   });
 
-  it("maintains form mode as onBlur", async () => {
+  it("validates form fields on blur and change (mode=all)", async () => {
     renderOrganizationCreate();
 
     // The form should exist
     const nameInput = await screen.findByLabelText(/Organization Name/i);
     expect(nameInput).toBeInTheDocument();
 
-    // Blur behavior test - type and blur to trigger validation
+    // Validation behavior test - type and blur to trigger validation
     const user = userEvent.setup();
     await user.click(nameInput);
     await user.tab(); // Blur the field
 
-    // Field should be validated on blur (form mode: onBlur)
-    // This is implicit - the form uses onBlur mode
+    // Field should be validated on blur and change (form mode: all)
+    // This ensures required fields like segment_id are validated even when untouched
   });
 
   it("shows section with requiredFields prop correctly", async () => {
