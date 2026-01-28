@@ -171,6 +171,38 @@ async function afterCreate(record: RaRecord, dataProvider: DataProvider) {
 
 Critical operations (database) should never depend on external services (email, storage).
 
+## Hierarchical Integrity
+
+DO:
+- **Self-Exclusion:** When fetching candidates for a self-referential field (e.g., `parent_id`), usually via `getList`, you MUST explicitly exclude the current record's ID.
+  - Example: `filter: { id_neq: currentRecord.id }`
+- **Cycle Prevention:** If possible, filter out known descendants to prevent "grandparent -> child -> grandparent" loops.
+
+DON'T:
+- **Blind Fetching:** Never use a generic `useGetList('organizations')` for a Parent Dropdown without filters.
+- **Client-Side Filtering:** Do not fetch all 10,000 organizations and try to filter the ID in JavaScript. Filter at the database query level.
+
+// WRONG: Allows selecting self
+<ReferenceInput source="parent_id" reference="organizations">
+  <SelectInput optionText="name" />
+</ReferenceInput>
+
+// RIGHT: Enforces the rule
+const { record } = useRecordContext();
+<ReferenceInput 
+  source="parent_id" 
+  reference="organizations" 
+  filter={{ id_neq: record?.id }} // <-- The Rule in Action
+>
+  <SelectInput optionText="name" />
+</ReferenceInput>
+
+## Hierarchical Constraints
+
+DO:
+- **Check Constraints:** Add a table constraint ensuring `id != parent_id`.
+  - `ALTER TABLE organizations ADD CONSTRAINT no_self_parent CHECK (id != parent_id);`
+
 ## Wrapper Composition Order
 
 WRONG:

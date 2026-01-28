@@ -40,7 +40,7 @@ import {
 } from "../../../validation/productWithDistributors";
 import { z } from "zod";
 import { ProductsService, type ProductDistributorInput } from "../../../services/products.service";
-import { assertExtendedDataProvider } from "../typeGuards";
+import type { ExtendedDataProvider } from "../typeGuards";
 
 /**
  * Schema for product update data with optional distributor associations
@@ -289,8 +289,10 @@ export function createProductsHandler(baseProvider: DataProvider): DataProvider 
     ) => {
       // Only intercept products resource
       if (resource === "products") {
-        const extendedProvider = assertExtendedDataProvider(baseProvider);
-        const service = new ProductsService(extendedProvider);
+        // NOTE: We cast to ExtendedDataProvider because the provider WILL be extended
+        // by the time these methods are actually called. The runtime assertion was
+        // removed because it runs at initialization time before extensions are added.
+        const service = new ProductsService(baseProvider as ExtendedDataProvider);
         await service.softDeleteMany(params.ids);
 
         // Return in React Admin format

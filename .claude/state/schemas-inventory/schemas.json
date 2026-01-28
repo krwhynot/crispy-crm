@@ -1,6 +1,6 @@
 {
   "chunk_name": "schemas",
-  "generated_at": "2026-01-28T01:53:17.266Z",
+  "generated_at": "2026-01-28T02:48:29.610Z",
   "item_count": 6,
   "items": [
     {
@@ -54,7 +54,7 @@
           "zodType": "unknown",
           "constraints": [
             "trim()",
-            "max(5000)"
+            "max(10000)"
           ],
           "optional": true,
           "nullable": true,
@@ -85,7 +85,7 @@
         },
         {
           "name": "contact_id",
-          "zodType": "union",
+          "zodType": "string",
           "constraints": [
             "max(50, \"Contact ID too long\")"
           ],
@@ -139,7 +139,7 @@
           "zodType": "unknown",
           "constraints": [
             "trim()",
-            "max(5000)"
+            "max(10000)"
           ],
           "optional": true,
           "nullable": true,
@@ -374,7 +374,7 @@
     {
       "name": "activitiesSchema",
       "file": "src/atomic-crm/validation/activities/schemas.ts",
-      "line": 174,
+      "line": 177,
       "schemaType": "other",
       "fields": [],
       "relatedSchemas": [
@@ -388,7 +388,7 @@
     {
       "name": "engagementsSchema",
       "file": "src/atomic-crm/validation/activities/schemas.ts",
-      "line": 199,
+      "line": 202,
       "schemaType": "other",
       "fields": [],
       "relatedSchemas": [],
@@ -399,7 +399,7 @@
     {
       "name": "interactionsSchema",
       "file": "src/atomic-crm/validation/activities/schemas.ts",
-      "line": 219,
+      "line": 222,
       "schemaType": "union",
       "fields": [],
       "relatedSchemas": [],
@@ -410,7 +410,7 @@
     {
       "name": "updateActivitiesSchema",
       "file": "src/atomic-crm/validation/activities/schemas.ts",
-      "line": 240,
+      "line": 243,
       "schemaType": "union",
       "fields": [],
       "relatedSchemas": [
@@ -424,7 +424,7 @@
     {
       "name": "activityNoteFormSchema",
       "file": "src/atomic-crm/validation/activities/schemas.ts",
-      "line": 248,
+      "line": 251,
       "schemaType": "strictObject",
       "fields": [
         {

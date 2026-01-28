@@ -1,6 +1,6 @@
 {
   "chunk_name": "organizations",
-  "generated_at": "2026-01-28T01:53:09.418Z",
+  "generated_at": "2026-01-28T02:48:01.149Z",
   "item_count": 76,
   "items": [
     {
@@ -1053,7 +1053,7 @@
     {
       "name": "OrganizationList",
       "file": "src/atomic-crm/organizations/OrganizationList.tsx",
-      "line": 329,
+      "line": 298,
       "type": "presentational",
       "hooks": [
         "useFilterCleanup",
@@ -1084,12 +1084,10 @@
         "@/components/ra-wrappers/export-button",
         "@/components/ra-wrappers/list",
         "@/components/ra-wrappers/sort-button",
-        "@/components/ui/button",
         "@/components/ui/list-skeleton",
         "@/hooks/useListKeyboardNavigation",
         "@/hooks/useSlideOverState",
         "jsonexport/dist",
-        "lucide-react",
         "ra-core",
         "react",
         "react-admin"
@@ -1122,7 +1120,7 @@
     {
       "name": "OrganizationList",
       "file": "src/atomic-crm/organizations/OrganizationList.tsx",
-      "line": 329,
+      "line": 298,
       "type": "presentational",
       "hooks": [
         "useFilterCleanup",
@@ -1153,12 +1151,10 @@
         "@/components/ra-wrappers/export-button",
         "@/components/ra-wrappers/list",
         "@/components/ra-wrappers/sort-button",
-        "@/components/ui/button",
         "@/components/ui/list-skeleton",
         "@/hooks/useListKeyboardNavigation",
         "@/hooks/useSlideOverState",
         "jsonexport/dist",
-        "lucide-react",
         "ra-core",
         "react",
         "react-admin"
@@ -1626,7 +1622,7 @@
     {
       "name": "OrganizationList",
       "file": "src/atomic-crm/organizations/index.tsx",
-      "line": 329,
+      "line": 298,
       "type": "presentational",
       "hooks": [
         "useFilterCleanup",

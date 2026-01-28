@@ -1,6 +1,6 @@
 {
   "chunk_name": "sales",
-  "generated_at": "2026-01-28T01:53:17.287Z",
+  "generated_at": "2026-01-28T02:48:29.670Z",
   "item_count": 5,
   "items": [
     {
@@ -51,8 +51,8 @@
           "zodType": "unknown",
           "constraints": [
             "trim()",
-            "email(\"Must be a valid email address\")",
-            "max(VALIDATION_LIMITS.EMAIL_MAX, \"Email too long\")"
+            "max(VALIDATION_LIMITS.EMAIL_MAX, \"Email too long\")",
+            "email(\"Must be a valid email address\")"
           ],
           "optional": false,
           "nullable": false,
@@ -210,8 +210,8 @@
           "name": "email",
           "zodType": "string",
           "constraints": [
-            "email(\"Invalid email format\")",
-            "max(254, \"Email too long\")"
+            "max(254, \"Email too long\")",
+            "email(\"Invalid email format\")"
           ],
           "optional": false,
           "nullable": false,

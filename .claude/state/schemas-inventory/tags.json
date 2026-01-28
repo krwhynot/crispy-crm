@@ -1,6 +1,6 @@
 {
   "chunk_name": "tags",
-  "generated_at": "2026-01-28T01:53:17.288Z",
+  "generated_at": "2026-01-28T02:48:29.678Z",
   "item_count": 4,
   "items": [
     {
@@ -14,7 +14,7 @@
           "zodType": "unknown",
           "constraints": [
             "min(1, \"Tag name is required\")",
-            "max(50, \"Tag name must be less than 50 characters\")",
+            "max(100, \"Tag name must be less than 100 characters\")",
             "trim()"
           ],
           "optional": false,

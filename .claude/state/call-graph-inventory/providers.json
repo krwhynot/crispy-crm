@@ -1,6 +1,6 @@
 {
   "chunk_name": "providers",
-  "generated_at": "2026-01-28T01:53:20.526Z",
+  "generated_at": "2026-01-28T02:48:35.388Z",
   "items": {
     "nodes": [
       {
@@ -3904,19 +3904,10 @@
       },
       {
         "source": "src/atomic-crm/providers/supabase/handlers/opportunitiesHandler.ts:96:createOpportunitiesHandler",
-        "target": "assertExtendedDataProvider",
-        "targetName": "assertExtendedDataProvider",
-        "edgeType": "call",
-        "line": 145,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/providers/supabase/handlers/opportunitiesHandler.ts:96:createOpportunitiesHandler",
         "target": "createWithProducts",
         "targetName": "createWithProducts",
         "edgeType": "call",
-        "line": 147,
+        "line": 148,
         "conditional": true,
         "inLoop": false
       },
@@ -3925,7 +3916,7 @@
         "target": "create",
         "targetName": "create",
         "edgeType": "call",
-        "line": 153,
+        "line": 154,
         "conditional": false,
         "inLoop": false
       },
@@ -3934,7 +3925,7 @@
         "target": "parse",
         "targetName": "parse",
         "edgeType": "call",
-        "line": 171,
+        "line": 172,
         "conditional": true,
         "inLoop": false
       },
@@ -3943,7 +3934,7 @@
         "target": "isArray",
         "targetName": "isArray",
         "edgeType": "call",
-        "line": 177,
+        "line": 178,
         "conditional": true,
         "inLoop": false
       },
@@ -3952,16 +3943,7 @@
         "target": "parse",
         "targetName": "parse",
         "edgeType": "call",
-        "line": 178,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/providers/supabase/handlers/opportunitiesHandler.ts:96:createOpportunitiesHandler",
-        "target": "assertExtendedDataProvider",
-        "targetName": "assertExtendedDataProvider",
-        "edgeType": "call",
-        "line": 185,
+        "line": 179,
         "conditional": true,
         "inLoop": false
       },
@@ -3970,7 +3952,7 @@
         "target": "updateWithProducts",
         "targetName": "updateWithProducts",
         "edgeType": "call",
-        "line": 187,
+        "line": 189,
         "conditional": true,
         "inLoop": false
       },
@@ -3979,7 +3961,7 @@
         "target": "update",
         "targetName": "update",
         "edgeType": "call",
-        "line": 198,
+        "line": 200,
         "conditional": false,
         "inLoop": false
       },
@@ -3988,7 +3970,7 @@
         "target": "updateMany",
         "targetName": "updateMany",
         "edgeType": "call",
-        "line": 207,
+        "line": 209,
         "conditional": false,
         "inLoop": false
       },
@@ -3997,7 +3979,7 @@
         "target": "delete",
         "targetName": "delete",
         "edgeType": "call",
-        "line": 215,
+        "line": 217,
         "conditional": false,
         "inLoop": false
       },
@@ -4006,7 +3988,7 @@
         "target": "deleteMany",
         "targetName": "deleteMany",
         "edgeType": "call",
-        "line": 223,
+        "line": 225,
         "conditional": false,
         "inLoop": false
       },
@@ -4015,7 +3997,7 @@
         "target": "withErrorLogging",
         "targetName": "withErrorLogging",
         "edgeType": "call",
-        "line": 237,
+        "line": 239,
         "conditional": false,
         "inLoop": false
       },
@@ -4024,7 +4006,7 @@
         "target": "withLifecycleCallbacks",
         "targetName": "withLifecycleCallbacks",
         "edgeType": "call",
-        "line": 238,
+        "line": 240,
         "conditional": false,
         "inLoop": false
       },
@@ -4033,7 +4015,7 @@
         "target": "withSkipDelete",
         "targetName": "withSkipDelete",
         "edgeType": "call",
-        "line": 238,
+        "line": 240,
         "conditional": false,
         "inLoop": false
       },
@@ -4042,7 +4024,7 @@
         "target": "withValidation",
         "targetName": "withValidation",
         "edgeType": "call",
-        "line": 238,
+        "line": 240,
         "conditional": false,
         "inLoop": false
       },
@@ -4525,19 +4507,10 @@
       },
       {
         "source": "src/atomic-crm/providers/supabase/handlers/productsHandler.ts:85:createProductsHandler",
-        "target": "assertExtendedDataProvider",
-        "targetName": "assertExtendedDataProvider",
-        "edgeType": "call",
-        "line": 140,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/providers/supabase/handlers/productsHandler.ts:85:createProductsHandler",
         "target": "createWithDistributorsRpc",
         "targetName": "createWithDistributorsRpc",
         "edgeType": "call",
-        "line": 144,
+        "line": 146,
         "conditional": true,
         "inLoop": false
       },
@@ -4546,7 +4519,7 @@
         "target": "parse",
         "targetName": "parse",
         "edgeType": "call",
-        "line": 152,
+        "line": 154,
         "conditional": true,
         "inLoop": false
       },
@@ -4555,7 +4528,7 @@
         "target": "create",
         "targetName": "create",
         "edgeType": "call",
-        "line": 160,
+        "line": 162,
         "conditional": true,
         "inLoop": false
       },
@@ -4564,7 +4537,7 @@
         "target": "create",
         "targetName": "create",
         "edgeType": "call",
-        "line": 167,
+        "line": 169,
         "conditional": false,
         "inLoop": false
       },
@@ -4573,7 +4546,7 @@
         "target": "parse",
         "targetName": "parse",
         "edgeType": "call",
-        "line": 187,
+        "line": 189,
         "conditional": true,
         "inLoop": false
       },
@@ -4582,7 +4555,7 @@
         "target": "isArray",
         "targetName": "isArray",
         "edgeType": "call",
-        "line": 192,
+        "line": 194,
         "conditional": true,
         "inLoop": false
       },
@@ -4591,16 +4564,7 @@
         "target": "isArray",
         "targetName": "isArray",
         "edgeType": "call",
-        "line": 193,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/providers/supabase/handlers/productsHandler.ts:85:createProductsHandler",
-        "target": "assertExtendedDataProvider",
-        "targetName": "assertExtendedDataProvider",
-        "edgeType": "call",
-        "line": 196,
+        "line": 195,
         "conditional": true,
         "inLoop": false
       },
@@ -4609,7 +4573,7 @@
         "target": "isArray",
         "targetName": "isArray",
         "edgeType": "call",
-        "line": 202,
+        "line": 206,
         "conditional": true,
         "inLoop": false
       },
@@ -4618,7 +4582,7 @@
         "target": "map",
         "targetName": "map",
         "edgeType": "call",
-        "line": 204,
+        "line": 208,
         "conditional": true,
         "inLoop": false
       },
@@ -4627,7 +4591,7 @@
         "target": "Number",
         "targetName": "Number",
         "edgeType": "call",
-        "line": 205,
+        "line": 209,
         "conditional": false,
         "inLoop": false
       },
@@ -4636,7 +4600,7 @@
         "target": "isArray",
         "targetName": "isArray",
         "edgeType": "call",
-        "line": 208,
+        "line": 212,
         "conditional": true,
         "inLoop": false
       },
@@ -4645,7 +4609,7 @@
         "target": "map",
         "targetName": "map",
         "edgeType": "call",
-        "line": 210,
+        "line": 214,
         "conditional": true,
         "inLoop": false
       },
@@ -4654,7 +4618,7 @@
         "target": "updateWithDistributors",
         "targetName": "updateWithDistributors",
         "edgeType": "call",
-        "line": 217,
+        "line": 221,
         "conditional": true,
         "inLoop": false
       },
@@ -4663,7 +4627,7 @@
         "target": "update",
         "targetName": "update",
         "edgeType": "call",
-        "line": 227,
+        "line": 231,
         "conditional": true,
         "inLoop": false
       },
@@ -4672,7 +4636,7 @@
         "target": "update",
         "targetName": "update",
         "edgeType": "call",
-        "line": 234,
+        "line": 238,
         "conditional": false,
         "inLoop": false
       },
@@ -4681,17 +4645,8 @@
         "target": "updateMany",
         "targetName": "updateMany",
         "edgeType": "call",
-        "line": 243,
+        "line": 247,
         "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/providers/supabase/handlers/productsHandler.ts:85:createProductsHandler",
-        "target": "assertExtendedDataProvider",
-        "targetName": "assertExtendedDataProvider",
-        "edgeType": "call",
-        "line": 260,
-        "conditional": true,
         "inLoop": false
       },
       {
@@ -4699,7 +4654,7 @@
         "target": "softDelete",
         "targetName": "softDelete",
         "edgeType": "call",
-        "line": 262,
+        "line": 268,
         "conditional": true,
         "inLoop": false
       },
@@ -4708,17 +4663,8 @@
         "target": "delete",
         "targetName": "delete",
         "edgeType": "call",
-        "line": 269,
+        "line": 275,
         "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/providers/supabase/handlers/productsHandler.ts:85:createProductsHandler",
-        "target": "assertExtendedDataProvider",
-        "targetName": "assertExtendedDataProvider",
-        "edgeType": "call",
-        "line": 286,
-        "conditional": true,
         "inLoop": false
       },
       {
@@ -4726,7 +4672,7 @@
         "target": "softDeleteMany",
         "targetName": "softDeleteMany",
         "edgeType": "call",
-        "line": 288,
+        "line": 296,
         "conditional": true,
         "inLoop": false
       },
@@ -4735,7 +4681,7 @@
         "target": "deleteMany",
         "targetName": "deleteMany",
         "edgeType": "call",
-        "line": 295,
+        "line": 303,
         "conditional": false,
         "inLoop": false
       },
@@ -4744,7 +4690,7 @@
         "target": "withErrorLogging",
         "targetName": "withErrorLogging",
         "edgeType": "call",
-        "line": 310,
+        "line": 318,
         "conditional": false,
         "inLoop": false
       },
@@ -4753,7 +4699,7 @@
         "target": "withLifecycleCallbacks",
         "targetName": "withLifecycleCallbacks",
         "edgeType": "call",
-        "line": 311,
+        "line": 319,
         "conditional": false,
         "inLoop": false
       },
@@ -4762,7 +4708,7 @@
         "target": "withValidation",
         "targetName": "withValidation",
         "edgeType": "call",
-        "line": 311,
+        "line": 319,
         "conditional": false,
         "inLoop": false
       },
