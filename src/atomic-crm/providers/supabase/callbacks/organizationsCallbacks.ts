@@ -33,7 +33,6 @@ import type {
   DataProvider,
   DeleteParams,
   DeleteManyParams,
-  CreateParams,
 } from "ra-core";
 import { createResourceCallbacks, type ResourceCallbacks } from "./createResourceCallbacks";
 import { createQToIlikeTransformer } from "./commonTransforms";
