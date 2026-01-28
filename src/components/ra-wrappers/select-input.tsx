@@ -289,6 +289,7 @@ export const SelectInput = (props: SelectInputProps) => {
           </div>
         </FormControl>
         <InputHelperText helperText={helperText} />
+        <FormError />
       </FormField>
       {createElement}
     </>
