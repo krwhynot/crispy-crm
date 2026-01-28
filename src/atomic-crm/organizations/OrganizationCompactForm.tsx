@@ -19,6 +19,14 @@ import { ParentOrganizationInput } from "./ParentOrganizationInput";
 import { useCityStateMapping } from "@/hooks";
 import { PrincipalAwareTypeInput } from "./PrincipalAwareTypeInput";
 
+// Required field validator - same pattern as name field validation
+const validateRequiredSegment = (value: string | null | undefined) => {
+  if (!value) {
+    return "Segment is required";
+  }
+  return undefined;
+};
+
 const createDuplicateNameValidator = (dataProvider: DataProvider, currentId?: number) => {
   return async (name: string) => {
     if (!name?.trim()) return undefined;
