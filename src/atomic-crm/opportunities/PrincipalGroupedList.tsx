@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, memo } from "react";
 import { useListContext } from "ra-core";
 import { Factory, TrendingUp, TrendingDown } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
@@ -113,7 +113,7 @@ function sortOpportunities(opportunities: Opportunity[]): Opportunity[] {
   });
 }
 
-export const PrincipalGroupedList = ({ openSlideOver }: PrincipalGroupedListProps) => {
+const PrincipalGroupedListComponent = ({ openSlideOver }: PrincipalGroupedListProps) => {
   const { data: opportunities, isPending } = useListContext<Opportunity>();
 
   // Group opportunities by principal
@@ -193,6 +193,8 @@ export const PrincipalGroupedList = ({ openSlideOver }: PrincipalGroupedListProp
     </div>
   );
 };
+
+export const PrincipalGroupedList = memo(PrincipalGroupedListComponent);
 
 /**
  * Principal Column - Kanban-style column for one principal

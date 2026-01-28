@@ -1,6 +1,6 @@
 {
   "chunk_name": "opportunities",
-  "generated_at": "2026-01-28T00:18:19.588Z",
+  "generated_at": "2026-01-28T00:38:26.756Z",
   "item_count": 83,
   "items": [
     {
@@ -226,12 +226,9 @@
     {
       "name": "CampaignGroupedList",
       "file": "src/atomic-crm/opportunities/CampaignGroupedList.tsx",
-      "line": 51,
+      "line": 289,
       "type": "presentational",
-      "hooks": [
-        "useListContext",
-        "useMemo"
-      ],
+      "hooks": [],
       "imports": [
         "../types",
         "@/atomic-crm/opportunities/constants",
@@ -246,9 +243,7 @@
       "childComponents": [
         "Opportunity"
       ],
-      "contextDependencies": [
-        "useListContext"
-      ],
+      "contextDependencies": [],
       "componentRole": "wrapper"
     },
     {
