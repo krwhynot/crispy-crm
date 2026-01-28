@@ -13,6 +13,8 @@ interface SegmentSelectInputProps {
   validate?: Validator | Validator[];
 }
 
+export const UNKNOWN_SEGMENT_ID = "22222222-2222-4222-8222-000000000009";
+
 /**
  * Segment selection input with conditional display based on organization type
  *
@@ -32,17 +34,38 @@ export const SegmentSelectInput = (props: SegmentSelectInputProps) => {
   const usePlaybookCategories =
     organizationType === "distributor" || organizationType === "principal";
 
-  const choices = usePlaybookCategories ? PLAYBOOK_CATEGORY_CHOICES : OPERATOR_SEGMENT_CHOICES;
+  const UNKNOWN_SEGMENT = { id: UNKNOWN_SEGMENT_ID, name: "Unknown" };
+
+  const baseChoices = usePlaybookCategories ? PLAYBOOK_CATEGORY_CHOICES : OPERATOR_SEGMENT_CHOICES;
+
+  // Ensure "Unknown" is always a selectable option, prepending it to the list.
+  // This handles cases where a record might have the default "Unknown" ID from the DB
+  // and makes it explicitly selectable by the user.
+  // We filter out any existing "Unknown" from the base lists to prevent duplicates.
+  const choices = [
+    UNKNOWN_SEGMENT,
+    ...baseChoices.filter((choice) => choice.id !== UNKNOWN_SEGMENT_ID),
+  ];
 
   const defaultLabel = usePlaybookCategories ? "Playbook Category" : "Operator Segment";
 
   // Built-in required validation + any additional validators from props
-  const requiredValidator = required("Segment is required");
-  const validators: Validator[] = props.validate
-    ? Array.isArray(props.validate)
-      ? [requiredValidator, ...props.validate]
-      : [requiredValidator, props.validate]
-    : [requiredValidator];
+  // Custom validator to ensure the value is in the current list of choices
+  // This prevents "phantom" default values (like "Unknown") from passing validation
+  // while appearing blank in the UI.
+  const validateInChoices = (value: unknown) => {
+    if (!value) return undefined; // Handled by required()
+    // choices are typically { id: string | number, name: string }
+    const isValid = choices.some((c: any) => c.id === value);
+    return isValid ? undefined : "Selected segment is not valid for this organization type";
+  };
+
+  // Built-in required validation + choice validation + any additional validators from props
+  const validators: Validator[] = [
+    required("Segment is required"),
+    validateInChoices,
+    ...(props.validate ? (Array.isArray(props.validate) ? props.validate : [props.validate]) : []),
+  ];
 
   return (
     <SelectInput

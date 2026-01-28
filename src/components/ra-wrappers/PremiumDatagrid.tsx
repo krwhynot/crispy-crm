@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 import type { DatagridProps } from "react-admin";
 import { Datagrid, DatagridConfigurable, useListContext } from "react-admin";
 import { cn } from "@/lib/utils";
@@ -135,10 +135,19 @@ export function PremiumDatagrid({
   // Conditionally use DatagridConfigurable when column visibility is enabled
   const DatagridComponent = configurable ? DatagridConfigurable : Datagrid;
 
+   // Sanitize props to prevent passing non-DOM attributes down to the table element.
+  // This is a defensive measure against warnings like "React does not recognize the `rowClassName` prop...".
+  const {
+    rowClick: _rowClick,
+    rowStyle: _rowStyle,
+    rowClassName: _rowClassNameFromProps,
+    ...rest
+  } = props;
+
   return (
     <div className="flex-1 min-h-0 overflow-auto">
       <DatagridComponent
-        {...props}
+        {...rest}
         {...(configurable && preferenceKey ? { preferenceKey } : {})}
         rowClassName={getRowClassName}
         rowClick={onRowClick ? handleRowClick : props.rowClick}
