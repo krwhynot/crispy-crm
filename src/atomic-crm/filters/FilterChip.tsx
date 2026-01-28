@@ -39,37 +39,39 @@ interface FilterChipProps {
  * />
  * ```
  */
-export const FilterChip = React.memo<React.FC<FilterChipProps>>(
-  ({ label, onRemove, className }) => {
-    const handleRemove = (e: React.MouseEvent) => {
-      e.stopPropagation();
-      onRemove();
-    };
+export const FilterChip = React.memo(function FilterChip({
+  label,
+  onRemove,
+  className,
+}: FilterChipProps) {
+  const handleRemove = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    onRemove();
+  };
 
-    return (
-      <div
+  return (
+    <div
+      className={cn(
+        "inline-flex items-center gap-1.5 pl-3 pr-1 text-sm rounded-full",
+        "bg-muted hover:bg-muted/90 transition-colors",
+        "min-h-[2.75rem]", // 44px touch target height
+        className
+      )}
+    >
+      <span className="truncate max-w-[150px]">{label}</span>
+      <AdminButton
+        variant="ghost"
+        size="icon"
         className={cn(
-          "inline-flex items-center gap-1.5 pl-3 pr-1 text-sm rounded-full",
-          "bg-muted hover:bg-muted/90 transition-colors",
-          "min-h-[2.75rem]", // 44px touch target height
-          className
+          "rounded-full hover:bg-accent/50",
+          "h-11 w-11", // 44px button for iPad touch target
+          "focus:outline-none focus:ring-2 focus:ring-ring"
         )}
+        onClick={handleRemove}
+        aria-label={`Remove ${label} filter`}
       >
-        <span className="truncate max-w-[150px]">{label}</span>
-        <AdminButton
-          variant="ghost"
-          size="icon"
-          className={cn(
-            "rounded-full hover:bg-accent/50",
-            "h-11 w-11", // 44px button for iPad touch target
-            "focus:outline-none focus:ring-2 focus:ring-ring"
-          )}
-          onClick={handleRemove}
-          aria-label={`Remove ${label} filter`}
-        >
-          <X className="size-4" aria-hidden="true" />
-        </AdminButton>
-      </div>
-    );
-  }
-);
+        <X className="size-4" aria-hidden="true" />
+      </AdminButton>
+    </div>
+  );
+});

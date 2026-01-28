@@ -62,7 +62,7 @@ export function FilterChipBar({ filterConfig, context, className }: FilterChipBa
    * Stable reference allows FilterChip React.memo to prevent unnecessary re-renders.
    */
   const handleRemoveFilter = useCallback(
-    (key: string, value: string) => {
+    (key: string, value: string | number) => {
       removeFilter(key, value);
     },
     [removeFilter]
