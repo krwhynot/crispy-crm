@@ -1,6 +1,6 @@
 {
   "chunk_name": "organizations",
-  "generated_at": "2026-01-27T20:11:38.537Z",
+  "generated_at": "2026-01-28T00:08:55.641Z",
   "item_count": 76,
   "items": [
     {
@@ -1053,7 +1053,7 @@
     {
       "name": "OrganizationList",
       "file": "src/atomic-crm/organizations/OrganizationList.tsx",
-      "line": 294,
+      "line": 297,
       "type": "presentational",
       "hooks": [
         "useFilterCleanup",
@@ -1120,7 +1120,7 @@
     {
       "name": "OrganizationList",
       "file": "src/atomic-crm/organizations/OrganizationList.tsx",
-      "line": 294,
+      "line": 297,
       "type": "presentational",
       "hooks": [
         "useFilterCleanup",
@@ -1622,7 +1622,7 @@
     {
       "name": "OrganizationList",
       "file": "src/atomic-crm/organizations/index.tsx",
-      "line": 294,
+      "line": 297,
       "type": "presentational",
       "hooks": [
         "useFilterCleanup",
