@@ -127,31 +127,33 @@ export function PremiumDatagrid({
   }, [focusedIndex, data]);
 
   // Trigger scroll when focused index changes
-  // Using setTimeout to ensure DOM has updated
-  if (focusedIndex !== undefined && focusedIndex >= 0) {
-    setTimeout(scrollFocusedRowIntoView, 0);
-  }
+  // Using setTimeout to ensure DOM has updated after React render
+  useEffect(() => {
+    if (focusedIndex !== undefined && focusedIndex >= 0) {
+      const timeoutId = setTimeout(scrollFocusedRowIntoView, 0);
+      return () => clearTimeout(timeoutId); // Cleanup on unmount or dependency change
+    }
+  }, [focusedIndex, scrollFocusedRowIntoView]);
 
   // Conditionally use DatagridConfigurable when column visibility is enabled
   const DatagridComponent = configurable ? DatagridConfigurable : Datagrid;
 
-   // Sanitize props to prevent passing non-DOM attributes down to the table element.
-  // This is a defensive measure against warnings like "React does not recognize the `rowClassName` prop...".
-  const {
-    rowClick: _rowClick,
-    rowStyle: _rowStyle,
-    rowClassName: _rowClassNameFromProps,
-    ...rest
-  } = props;
+  // Extract React Admin props that we're overriding to prevent conflicts
+  // rowClassName and rowClick are handled explicitly below
+  const { rowClick: _rowClick, ...rest } = props;
+
+  // Build props object based on which component we're rendering
+  // DatagridConfigurable doesn't support rowClassName, so we only pass it to Datagrid
+  const componentProps = {
+    ...rest,
+    ...(configurable && preferenceKey ? { preferenceKey } : {}),
+    ...(!configurable ? { rowClassName: getRowClassName } : {}),
+    rowClick: onRowClick ? handleRowClick : props.rowClick,
+  };
 
   return (
     <div className="flex-1 min-h-0 overflow-auto">
-      <DatagridComponent
-        {...rest}
-        {...(configurable && preferenceKey ? { preferenceKey } : {})}
-        rowClassName={getRowClassName}
-        rowClick={onRowClick ? handleRowClick : props.rowClick}
-      />
+      <DatagridComponent {...componentProps} />
     </div>
   );
 }
