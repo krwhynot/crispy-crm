@@ -1,5 +1,5 @@
 import { useWatch } from "react-hook-form";
-import { required } from "react-admin";
+import type { Validator } from "react-admin";
 import { SelectInput } from "@/components/ra-wrappers/select-input";
 import { PLAYBOOK_CATEGORY_CHOICES } from "@/atomic-crm/validation/segments";
 import { OPERATOR_SEGMENT_CHOICES } from "@/atomic-crm/validation/operatorSegments";
@@ -9,6 +9,7 @@ interface SegmentSelectInputProps {
   label?: string;
   helperText?: string | false;
   className?: string;
+  validate?: Validator | Validator[];
 }
 
 /**
@@ -41,7 +42,7 @@ export const SegmentSelectInput = (props: SegmentSelectInputProps) => {
       className={props.className}
       emptyText={`Select ${defaultLabel.toLowerCase()}...`}
       parse={(value: string) => (value === "" ? null : value)}
-      validate={required("Segment is required")}
+      validate={props.validate}
     />
   );
 };

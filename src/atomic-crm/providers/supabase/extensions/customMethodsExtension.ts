@@ -128,51 +128,19 @@ export function extendWithCustomMethods(config: ExtensionConfig): ExtendedDataPr
   const edgeFunctionsExt = createEdgeFunctionsExtension(supabaseClient);
   const specializedExt = createSpecializedExtension(supabaseClient);
 
-  return {
-    // ========================================================================
-    // BASE CRUD METHODS (9 methods from React Admin DataProvider interface)
-    // ========================================================================
-    // All delegated to composedProvider which handles routing to resource-specific handlers
-    ...composedProvider,
+  // Mutate composedProvider to preserve reference held by services
+  // This allows services to access RPC/storage/invoke methods through their baseProvider reference
+  Object.assign(
+    composedProvider,
+    salesExt,
+    opportunitiesExt,
+    activitiesExt,
+    junctionsExt,
+    rpcExt,
+    storageExt,
+    edgeFunctionsExt,
+    specializedExt
+  );
 
-    // ========================================================================
-    // SALES METHODS (3 methods → SalesService)
-    // ========================================================================
-    ...salesExt,
-
-    // ========================================================================
-    // OPPORTUNITIES METHODS (2 methods → OpportunitiesService)
-    // ========================================================================
-    ...opportunitiesExt,
-
-    // ========================================================================
-    // ACTIVITIES METHODS (1 method → ActivitiesService)
-    // ========================================================================
-    ...activitiesExt,
-
-    // ========================================================================
-    // JUNCTION METHODS (13 methods → JunctionsService)
-    // ========================================================================
-    ...junctionsExt,
-
-    // ========================================================================
-    // RPC OPERATIONS (1 method → Direct Supabase with Zod validation)
-    // ========================================================================
-    ...rpcExt,
-
-    // ========================================================================
-    // STORAGE OPERATIONS (4 methods → Direct Supabase Storage API)
-    // ========================================================================
-    ...storageExt,
-
-    // ========================================================================
-    // EDGE FUNCTION INVOCATION (1 method → Direct Supabase with Zod validation)
-    // ========================================================================
-    ...edgeFunctionsExt,
-
-    // ========================================================================
-    // SPECIALIZED BUSINESS OPERATIONS (1 method → Direct Supabase RPC)
-    // ========================================================================
-    ...specializedExt,
-  } as ExtendedDataProvider;
+  return composedProvider as ExtendedDataProvider;
 }

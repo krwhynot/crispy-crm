@@ -123,7 +123,12 @@ export const OrganizationCompactForm = ({ isRep }: OrganizationCompactFormProps)
             </ReferenceInput>
           </FormFieldWrapper>
           <FormFieldWrapper name="segment_id" isRequired countDefaultAsFilled>
-            <SegmentComboboxInput source="segment_id" label="Segment *" helperText={false} />
+            <SegmentComboboxInput
+              source="segment_id"
+              label="Segment *"
+              helperText={false}
+              validate={validateRequiredSegment}
+            />
           </FormFieldWrapper>
         </CompactFormRow>
       </FormSectionWithProgress>
