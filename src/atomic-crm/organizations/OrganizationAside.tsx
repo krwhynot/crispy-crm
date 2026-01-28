@@ -150,7 +150,7 @@ const AdditionalInfo = ({ record }: { record: Company }) => {
 
   return (
     <AsideSection title="Additional Info">
-      {record.description && <p className="text-sm  mb-1">{record.description}</p>}
+      {record.description && <p className="text-sm mb-1">{record.description}</p>}
       {record.parent_organization_id && (
         <div className="text-sm text-muted-foreground mb-1">
           Parent organization:{" "}
@@ -180,7 +180,7 @@ const AdditionalInfo = ({ record }: { record: Company }) => {
       {record.sales_id !== null && (
         <div className="text-sm text-muted-foreground mb-1">
           Followed by{" "}
-          <ReferenceField source="sales_id" reference="sales" record={record}>
+          <ReferenceField source="sales_id" reference="sales">
             <SaleName />
           </ReferenceField>
         </div>
