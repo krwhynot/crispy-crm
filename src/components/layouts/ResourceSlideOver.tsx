@@ -2,7 +2,14 @@ import React, { useState, useCallback, useEffect } from "react";
 import { useGetOne } from "react-admin";
 import type { RaRecord } from "react-admin";
 import { PencilIcon, XIcon } from "lucide-react";
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetFooter } from "@/components/ui/sheet";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetDescription,
+  SheetFooter,
+} from "@/components/ui/sheet";
 import { Tabs, TabsContent } from "@/components/ui/tabs";
 import { PriorityTabsList } from "@/components/ui/priority-tabs";
 import { Button } from "@/components/ui/button";
@@ -258,6 +265,13 @@ export function ResourceSlideOver({
                     />
                   )}
                 </SheetTitle>
+
+                {/* Hidden description for screen readers - WCAG 2.1 AA compliance */}
+                <SheetDescription className="sr-only">
+                  {mode === "edit"
+                    ? `Edit ${resource} details`
+                    : `View ${resource} details and related information`}
+                </SheetDescription>
 
                 <div className="flex items-center gap-2">
                   {/* Custom header actions */}
