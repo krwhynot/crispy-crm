@@ -90,7 +90,7 @@ describe("Sales .max() Constraints", () => {
       const validSales = {
         first_name: "John",
         last_name: "Doe",
-        email: "a".repeat(244) + "@example.com", // 254 chars total
+        email: "a".repeat(241) + "@example.com", // 254 chars total
       };
       expect(() => salesSchema.parse(validSales)).not.toThrow();
     });
@@ -99,7 +99,7 @@ describe("Sales .max() Constraints", () => {
       const invalidSales = {
         first_name: "John",
         last_name: "Doe",
-        email: "a".repeat(245) + "@example.com", // 255 chars total
+        email: "a".repeat(242) + "@example.com", // 255 chars total
       };
       expect(() => salesSchema.parse(invalidSales)).toThrow(z.ZodError);
     });
@@ -129,21 +129,25 @@ describe("Sales .max() Constraints", () => {
 
   describe("avatar_url field", () => {
     it("should accept avatar_url at max length from VALIDATION_LIMITS.AVATAR_URL_MAX", () => {
+      const baseUrl = "https://cdn.example.com/avatars/";
+      const pathLength = 500 - baseUrl.length - 4;
       const validSales = {
         first_name: "John",
         last_name: "Doe",
         email: "john@example.com",
-        avatar_url: "http://example.com/" + "a".repeat(2028), // 2048 total
+        avatar_url: baseUrl + "a".repeat(pathLength) + ".jpg",
       };
       expect(() => salesSchema.parse(validSales)).not.toThrow();
     });
 
     it("should reject avatar_url over VALIDATION_LIMITS.AVATAR_URL_MAX", () => {
+      const baseUrl = "https://cdn.example.com/avatars/";
+      const pathLength = 501 - baseUrl.length - 4;
       const invalidSales = {
         first_name: "John",
         last_name: "Doe",
         email: "john@example.com",
-        avatar_url: "http://example.com/" + "a".repeat(2029), // 2049 total
+        avatar_url: baseUrl + "a".repeat(pathLength) + ".jpg",
       };
       expect(() => salesSchema.parse(invalidSales)).toThrow(z.ZodError);
     });
@@ -307,12 +311,14 @@ describe("Sales .max() Constraints", () => {
 
   describe("salesProfileSchema", () => {
     it("should enforce max constraints on profile form", () => {
+      const baseUrl = "https://cdn.example.com/avatars/";
+      const pathLength = 500 - baseUrl.length - 4;
       const validProfile = {
         first_name: "a".repeat(100),
         last_name: "a".repeat(100),
-        email: "a".repeat(244) + "@example.com",
-        phone: "1".repeat(50),
-        avatar_url: "http://example.com/" + "a".repeat(2028),
+        email: "a".repeat(241) + "@example.com",
+        phone: "1".repeat(30),
+        avatar_url: baseUrl + "a".repeat(pathLength) + ".jpg",
       };
       expect(() => salesProfileSchema.parse(validProfile)).not.toThrow();
 

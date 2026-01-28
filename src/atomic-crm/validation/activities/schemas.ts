@@ -26,7 +26,7 @@ export const baseActivitiesSchema = z.strictObject({
   description: z
     .string()
     .trim()
-    .max(5000)
+    .max(10000)
     .optional()
     .nullable()
     .transform((val) => (val ? sanitizeHtml(val) : val)),
@@ -34,7 +34,10 @@ export const baseActivitiesSchema = z.strictObject({
   duration_minutes: z.number().int().positive().optional().nullable(),
 
   // Entity relationships
-  contact_id: z.union([z.string().max(50, "Contact ID too long"), z.number()]).optional().nullable(),
+  contact_id: z
+    .union([z.string().max(50, "Contact ID too long"), z.number()])
+    .optional()
+    .nullable(),
   organization_id: z
     .union([z.string().max(50, "Organization ID too long"), z.number()])
     .optional()
