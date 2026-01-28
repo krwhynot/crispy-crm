@@ -1,6 +1,6 @@
 {
   "chunk_name": "task",
-  "generated_at": "2026-01-28T00:38:42.859Z",
+  "generated_at": "2026-01-28T01:13:11.611Z",
   "item_count": 3,
   "items": [
     {
@@ -184,8 +184,10 @@
         },
         {
           "name": "created_by",
-          "zodType": "union",
-          "constraints": [],
+          "zodType": "string",
+          "constraints": [
+            "max(50, \"Created by ID too long\")"
+          ],
           "optional": true,
           "nullable": true,
           "hasTransform": false,

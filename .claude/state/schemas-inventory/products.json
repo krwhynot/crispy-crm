@@ -1,6 +1,6 @@
 {
   "chunk_name": "products",
-  "generated_at": "2026-01-28T00:38:42.853Z",
+  "generated_at": "2026-01-28T01:13:11.584Z",
   "item_count": 5,
   "items": [
     {
@@ -179,7 +179,7 @@
     {
       "name": "productCreateWithDistributorsSchema",
       "file": "src/atomic-crm/validation/products.ts",
-      "line": 138,
+      "line": 141,
       "schemaType": "strictObject",
       "fields": [
         {
@@ -325,13 +325,15 @@
     {
       "name": "productUpdateWithDistributorsSchema",
       "file": "src/atomic-crm/validation/products.ts",
-      "line": 187,
+      "line": 190,
       "schemaType": "strictObject",
       "fields": [
         {
           "name": "id",
           "zodType": "union",
-          "constraints": [],
+          "constraints": [
+            "max(50)"
+          ],
           "optional": true,
           "nullable": false,
           "hasTransform": false,
@@ -481,7 +483,9 @@
         {
           "name": "created_at",
           "zodType": "string",
-          "constraints": [],
+          "constraints": [
+            "max(50)"
+          ],
           "optional": false,
           "nullable": true,
           "hasTransform": false,
@@ -490,7 +494,9 @@
         {
           "name": "updated_at",
           "zodType": "string",
-          "constraints": [],
+          "constraints": [
+            "max(50)"
+          ],
           "optional": false,
           "nullable": true,
           "hasTransform": false,
@@ -499,7 +505,9 @@
         {
           "name": "deleted_at",
           "zodType": "string",
-          "constraints": [],
+          "constraints": [
+            "max(50)"
+          ],
           "optional": false,
           "nullable": true,
           "hasTransform": false,
@@ -508,7 +516,9 @@
         {
           "name": "principal_name",
           "zodType": "string",
-          "constraints": [],
+          "constraints": [
+            "max(255)"
+          ],
           "optional": false,
           "nullable": true,
           "hasTransform": false,
@@ -527,7 +537,7 @@
     {
       "name": "opportunityProductSchema",
       "file": "src/atomic-crm/validation/products.ts",
-      "line": 258,
+      "line": 261,
       "schemaType": "strictObject",
       "fields": [
         {
