@@ -14,11 +14,11 @@ import type { ChipFilterConfig } from "./filterConfigSchema";
 import { useFilterChipBar } from "./useFilterChipBar";
 import { FilterChip } from "./FilterChip";
 
-interface FilterChipBarProps {
+interface FilterChipBarProps<TContext = unknown> {
   /** Filter configuration defining how to display each filter type */
   filterConfig: ChipFilterConfig[];
   /** Optional context for dynamic choices (e.g., ConfigurationContext) */
-  context?: unknown;
+  context?: TContext;
   /** Additional CSS classes */
   className?: string;
 }
@@ -69,11 +69,20 @@ export function FilterChipBar({ filterConfig, context, className }: FilterChipBa
   );
 
   /**
+   * Helper function to safely focus a button element with type guard
+   */
+  const focusButton = (button: Element | undefined): void => {
+    if (button instanceof HTMLElement) {
+      button.focus();
+    }
+  };
+
+  /**
    * Keyboard navigation handler for chip bar
    * Allows arrow key navigation between chips
    */
   const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
-    const buttons = chipBarRef.current?.querySelectorAll('[data-chip-button]');
+    const buttons = chipBarRef.current?.querySelectorAll("[data-chip-button]");
     if (!buttons?.length) return;
 
     const currentIndex = Array.from(buttons).findIndex((btn) => btn === document.activeElement);
@@ -81,19 +90,19 @@ export function FilterChipBar({ filterConfig, context, className }: FilterChipBa
     switch (e.key) {
       case "ArrowRight":
         e.preventDefault();
-        (buttons[(currentIndex + 1) % buttons.length] as HTMLElement).focus();
+        focusButton(buttons[(currentIndex + 1) % buttons.length]);
         break;
       case "ArrowLeft":
         e.preventDefault();
-        (buttons[currentIndex <= 0 ? buttons.length - 1 : currentIndex - 1] as HTMLElement).focus();
+        focusButton(buttons[currentIndex <= 0 ? buttons.length - 1 : currentIndex - 1]);
         break;
       case "Home":
         e.preventDefault();
-        (buttons[0] as HTMLElement).focus();
+        focusButton(buttons[0]);
         break;
       case "End":
         e.preventDefault();
-        (buttons[buttons.length - 1] as HTMLElement).focus();
+        focusButton(buttons[buttons.length - 1]);
         break;
     }
   }, []);

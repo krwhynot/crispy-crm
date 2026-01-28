@@ -74,9 +74,9 @@ const SYSTEM_FILTERS = ["deleted_at", "deleted_at@is"];
  * );
  * ```
  */
-export function useFilterChipBar(
+export function useFilterChipBar<TContext = unknown>(
   filterConfig: ChipFilterConfig[],
-  context?: unknown
+  context?: TContext
 ): UseFilterChipBarReturn {
   const { filterValues, setFilters, displayedFilters } = useListContext();
 
