@@ -215,7 +215,8 @@ describe("Product Schema String Limits - DoS Protection", () => {
       const result = productUpdateWithDistributorsSchema.safeParse(data);
       expect(result.success).toBe(false);
       if (!result.success) {
-        expect(result.error.issues[0].message).toContain("50");
+        // Zod reports record key validation as "Invalid key in record"
+        expect(result.error.issues[0].message).toContain("Invalid key");
       }
     });
 

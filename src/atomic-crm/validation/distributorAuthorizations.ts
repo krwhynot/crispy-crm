@@ -15,7 +15,7 @@ import { z } from "zod";
  * Zod v4: .omit()/.pick()/.partial() require base object without refinements
  */
 const distributorAuthorizationBaseSchema = z.strictObject({
-  id: z.union([z.string(), z.number()]).optional(),
+  id: z.union([z.string().max(50), z.number()]).optional(),
 
   // Required foreign keys
   distributor_id: z.coerce.number().int().positive("Distributor is required"),
@@ -192,7 +192,7 @@ export const specialPricingSchema = z
  * @see supabase/migrations/20251129051625_add_product_distributor_authorizations.sql
  */
 const productDistributorAuthorizationBaseSchema = z.strictObject({
-  id: z.union([z.string(), z.number()]).optional(),
+  id: z.union([z.string().max(50), z.number()]).optional(),
 
   // Required foreign keys
   product_id: z.coerce.number().int().positive("Product is required"),

@@ -63,14 +63,17 @@ export const tagSchema = z.strictObject({
   color: semanticColorSchema,
 
   // Optional fields - timestamps
-  createdAt: z.union([z.string(), z.date()]).optional(),
-  updatedAt: z.union([z.string(), z.date()]).optional(),
+  createdAt: z.union([z.string().max(50, "Timestamp too long"), z.date()]).optional(),
+  updatedAt: z.union([z.string().max(50, "Timestamp too long"), z.date()]).optional(),
 
   // Soft delete timestamp (DI-002 audit fix)
-  deleted_at: z.union([z.string(), z.date()]).nullable().optional(),
+  deleted_at: z
+    .union([z.string().max(50, "Timestamp too long"), z.date()])
+    .nullable()
+    .optional(),
 
   // ID only present on updates
-  id: z.union([z.string(), z.number()]).optional(),
+  id: z.union([z.string().max(50, "ID too long"), z.number()]).optional(),
 });
 
 /**
@@ -102,8 +105,8 @@ export const updateTagSchema = tagSchema
  * Used by withLifecycleCallbacks when supportsSoftDelete is true
  */
 export const deleteTagSchema = z.strictObject({
-  id: z.union([z.string(), z.number()]),
-  deleted_at: z.union([z.string(), z.date()]),
+  id: z.union([z.string().max(50, "ID too long"), z.number()]),
+  deleted_at: z.union([z.string().max(50, "Timestamp too long"), z.date()]),
 });
 
 /**

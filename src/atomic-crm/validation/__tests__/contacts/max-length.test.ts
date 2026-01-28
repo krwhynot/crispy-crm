@@ -10,12 +10,13 @@
  */
 
 import { describe, it, expect } from "vitest";
-import { contactSchema, quickCreateContactSchema } from "../../contacts";
+import { contactBaseSchema } from "../../contacts/contacts-core";
+import { quickCreateContactSchema } from "../../contacts/contacts-quick-create";
 
 describe("Contact Schema - String Max Length Constraints", () => {
   describe("Name fields", () => {
     it("accepts first_name at max length (100)", () => {
-      const result = contactSchema.safeParse({
+      const result = contactBaseSchema.safeParse({
         first_name: "a".repeat(100),
         last_name: "Smith",
       });
@@ -23,19 +24,19 @@ describe("Contact Schema - String Max Length Constraints", () => {
     });
 
     it("rejects first_name over max length (101)", () => {
-      const result = contactSchema.safeParse({
+      const result = contactBaseSchema.safeParse({
         first_name: "a".repeat(101),
         last_name: "Smith",
       });
       expect(result.success).toBe(false);
       if (!result.success) {
         const error = result.error.issues.find((i) => i.path[0] === "first_name");
-        expect(error?.message).toContain("too long");
+        expect(error?.message).toMatch(/100/);
       }
     });
 
     it("accepts last_name at max length (100)", () => {
-      const result = contactSchema.safeParse({
+      const result = contactBaseSchema.safeParse({
         first_name: "John",
         last_name: "a".repeat(100),
       });
@@ -43,40 +44,40 @@ describe("Contact Schema - String Max Length Constraints", () => {
     });
 
     it("rejects last_name over max length (101)", () => {
-      const result = contactSchema.safeParse({
+      const result = contactBaseSchema.safeParse({
         first_name: "John",
         last_name: "a".repeat(101),
       });
       expect(result.success).toBe(false);
       if (!result.success) {
         const error = result.error.issues.find((i) => i.path[0] === "last_name");
-        expect(error?.message).toContain("too long");
+        expect(error?.message).toMatch(/100/);
       }
     });
 
     it("accepts computed name at max length (255)", () => {
       // Name is computed from first + last, so test the computed field
-      const result = contactSchema.partial().safeParse({
+      const result = contactBaseSchema.partial().safeParse({
         name: "a".repeat(255),
       });
       expect(result.success).toBe(true);
     });
 
     it("rejects computed name over max length (256)", () => {
-      const result = contactSchema.partial().safeParse({
+      const result = contactBaseSchema.partial().safeParse({
         name: "a".repeat(256),
       });
       expect(result.success).toBe(false);
       if (!result.success) {
         const error = result.error.issues.find((i) => i.path[0] === "name");
-        expect(error?.message).toContain("too long");
+        expect(error?.message).toMatch(/255/);
       }
     });
   });
 
   describe("Professional fields (100 chars)", () => {
     it("accepts title at max length (100)", () => {
-      const result = contactSchema.partial().safeParse({
+      const result = contactBaseSchema.partial().safeParse({
         first_name: "John",
         title: "a".repeat(100),
       });
@@ -84,19 +85,19 @@ describe("Contact Schema - String Max Length Constraints", () => {
     });
 
     it("rejects title over max length (101)", () => {
-      const result = contactSchema.partial().safeParse({
+      const result = contactBaseSchema.partial().safeParse({
         first_name: "John",
         title: "a".repeat(101),
       });
       expect(result.success).toBe(false);
       if (!result.success) {
         const error = result.error.issues.find((i) => i.path[0] === "title");
-        expect(error?.message).toContain("too long");
+        expect(error?.message).toMatch(/100/);
       }
     });
 
     it("accepts department at max length (100)", () => {
-      const result = contactSchema.partial().safeParse({
+      const result = contactBaseSchema.partial().safeParse({
         first_name: "John",
         department: "a".repeat(100),
       });
@@ -104,19 +105,19 @@ describe("Contact Schema - String Max Length Constraints", () => {
     });
 
     it("rejects department over max length (101)", () => {
-      const result = contactSchema.partial().safeParse({
+      const result = contactBaseSchema.partial().safeParse({
         first_name: "John",
         department: "a".repeat(101),
       });
       expect(result.success).toBe(false);
       if (!result.success) {
         const error = result.error.issues.find((i) => i.path[0] === "department");
-        expect(error?.message).toContain("too long");
+        expect(error?.message).toMatch(/100/);
       }
     });
 
     it("accepts territory_name at max length (100)", () => {
-      const result = contactSchema.partial().safeParse({
+      const result = contactBaseSchema.partial().safeParse({
         first_name: "John",
         territory_name: "a".repeat(100),
       });
@@ -124,21 +125,21 @@ describe("Contact Schema - String Max Length Constraints", () => {
     });
 
     it("rejects territory_name over max length (101)", () => {
-      const result = contactSchema.partial().safeParse({
+      const result = contactBaseSchema.partial().safeParse({
         first_name: "John",
         territory_name: "a".repeat(101),
       });
       expect(result.success).toBe(false);
       if (!result.success) {
         const error = result.error.issues.find((i) => i.path[0] === "territory_name");
-        expect(error?.message).toContain("too long");
+        expect(error?.message).toMatch(/100/);
       }
     });
   });
 
   describe("District code (10 chars)", () => {
     it("accepts district_code at max length (10)", () => {
-      const result = contactSchema.partial().safeParse({
+      const result = contactBaseSchema.partial().safeParse({
         first_name: "John",
         district_code: "a".repeat(10),
       });
@@ -146,21 +147,21 @@ describe("Contact Schema - String Max Length Constraints", () => {
     });
 
     it("rejects district_code over max length (11)", () => {
-      const result = contactSchema.partial().safeParse({
+      const result = contactBaseSchema.partial().safeParse({
         first_name: "John",
         district_code: "a".repeat(11),
       });
       expect(result.success).toBe(false);
       if (!result.success) {
         const error = result.error.issues.find((i) => i.path[0] === "district_code");
-        expect(error?.message).toContain("too long");
+        expect(error?.message).toMatch(/10/);
       }
     });
   });
 
   describe("Twitter handle (100 chars)", () => {
     it("accepts twitter_handle at max length (100)", () => {
-      const result = contactSchema.partial().safeParse({
+      const result = contactBaseSchema.partial().safeParse({
         first_name: "John",
         twitter_handle: "a".repeat(100),
       });
@@ -168,21 +169,21 @@ describe("Contact Schema - String Max Length Constraints", () => {
     });
 
     it("rejects twitter_handle over max length (101)", () => {
-      const result = contactSchema.partial().safeParse({
+      const result = contactBaseSchema.partial().safeParse({
         first_name: "John",
         twitter_handle: "a".repeat(101),
       });
       expect(result.success).toBe(false);
       if (!result.success) {
         const error = result.error.issues.find((i) => i.path[0] === "twitter_handle");
-        expect(error?.message).toContain("too long");
+        expect(error?.message).toMatch(/100/);
       }
     });
   });
 
   describe("Gender field (50 chars)", () => {
     it("accepts gender at max length (50)", () => {
-      const result = contactSchema.partial().safeParse({
+      const result = contactBaseSchema.partial().safeParse({
         first_name: "John",
         gender: "a".repeat(50),
       });
@@ -190,21 +191,21 @@ describe("Contact Schema - String Max Length Constraints", () => {
     });
 
     it("rejects gender over max length (51)", () => {
-      const result = contactSchema.partial().safeParse({
+      const result = contactBaseSchema.partial().safeParse({
         first_name: "John",
         gender: "a".repeat(51),
       });
       expect(result.success).toBe(false);
       if (!result.success) {
         const error = result.error.issues.find((i) => i.path[0] === "gender");
-        expect(error?.message).toContain("too long");
+        expect(error?.message).toMatch(/50/);
       }
     });
   });
 
   describe("Status field (50 chars)", () => {
     it("accepts status at max length (50)", () => {
-      const result = contactSchema.partial().safeParse({
+      const result = contactBaseSchema.partial().safeParse({
         first_name: "John",
         status: "a".repeat(50),
       });
@@ -212,14 +213,14 @@ describe("Contact Schema - String Max Length Constraints", () => {
     });
 
     it("rejects status over max length (51)", () => {
-      const result = contactSchema.partial().safeParse({
+      const result = contactBaseSchema.partial().safeParse({
         first_name: "John",
         status: "a".repeat(51),
       });
       expect(result.success).toBe(false);
       if (!result.success) {
         const error = result.error.issues.find((i) => i.path[0] === "status");
-        expect(error?.message).toContain("too long");
+        expect(error?.message).toMatch(/50/);
       }
     });
   });
@@ -227,7 +228,7 @@ describe("Contact Schema - String Max Length Constraints", () => {
   describe("Timestamp fields (50 chars)", () => {
     it("accepts created_at at max length (50)", () => {
       const timestamp = "2024-01-01T00:00:00.000Z";
-      const result = contactSchema.partial().safeParse({
+      const result = contactBaseSchema.partial().safeParse({
         first_name: "John",
         created_at: timestamp,
       });
@@ -235,20 +236,20 @@ describe("Contact Schema - String Max Length Constraints", () => {
     });
 
     it("rejects created_at over max length (51)", () => {
-      const result = contactSchema.partial().safeParse({
+      const result = contactBaseSchema.partial().safeParse({
         first_name: "John",
         created_at: "a".repeat(51),
       });
       expect(result.success).toBe(false);
       if (!result.success) {
         const error = result.error.issues.find((i) => i.path[0] === "created_at");
-        expect(error?.message).toContain("50");
+        expect(error?.message).toMatch(/50/);
       }
     });
 
     it("accepts updated_at at max length (50)", () => {
       const timestamp = "2024-01-01T00:00:00.000Z";
-      const result = contactSchema.partial().safeParse({
+      const result = contactBaseSchema.partial().safeParse({
         first_name: "John",
         updated_at: timestamp,
       });
@@ -257,7 +258,7 @@ describe("Contact Schema - String Max Length Constraints", () => {
 
     it("accepts deleted_at at max length (50)", () => {
       const timestamp = "2024-01-01T00:00:00.000Z";
-      const result = contactSchema.partial().safeParse({
+      const result = contactBaseSchema.partial().safeParse({
         first_name: "John",
         deleted_at: timestamp,
       });
@@ -266,7 +267,7 @@ describe("Contact Schema - String Max Length Constraints", () => {
 
     it("accepts first_seen at max length (50)", () => {
       const timestamp = "2024-01-01T00:00:00.000Z";
-      const result = contactSchema.partial().safeParse({
+      const result = contactBaseSchema.partial().safeParse({
         first_name: "John",
         first_seen: timestamp,
       });
@@ -275,7 +276,7 @@ describe("Contact Schema - String Max Length Constraints", () => {
 
     it("accepts last_seen at max length (50)", () => {
       const timestamp = "2024-01-01T00:00:00.000Z";
-      const result = contactSchema.partial().safeParse({
+      const result = contactBaseSchema.partial().safeParse({
         first_name: "John",
         last_seen: timestamp,
       });
@@ -285,7 +286,7 @@ describe("Contact Schema - String Max Length Constraints", () => {
 
   describe("Company name (255 chars - readonly)", () => {
     it("accepts company_name at max length (255)", () => {
-      const result = contactSchema.partial().safeParse({
+      const result = contactBaseSchema.partial().safeParse({
         first_name: "John",
         company_name: "a".repeat(255),
       });
@@ -293,14 +294,14 @@ describe("Contact Schema - String Max Length Constraints", () => {
     });
 
     it("rejects company_name over max length (256)", () => {
-      const result = contactSchema.partial().safeParse({
+      const result = contactBaseSchema.partial().safeParse({
         first_name: "John",
         company_name: "a".repeat(256),
       });
       expect(result.success).toBe(false);
       if (!result.success) {
         const error = result.error.issues.find((i) => i.path[0] === "company_name");
-        expect(error?.message).toContain("too long");
+        expect(error?.message).toMatch(/255/);
       }
     });
   });

@@ -76,8 +76,8 @@ export const contactBaseSchema = z.strictObject({
 
   // Name fields - ContactIdentityInputs (required in UI)
   name: z.string().trim().max(255, "Name too long").optional(), // Computed from first + last
-  first_name: z.string().trim().max(100, "First name too long").optional().nullable(),
-  last_name: z.string().trim().max(100, "Last name too long").optional().nullable(),
+  first_name: z.string().trim().min(1).max(100, "First name too long").optional().nullable(),
+  last_name: z.string().trim().min(1).max(100, "Last name too long").optional().nullable(),
 
   // Contact information - ContactPersonalInformationInputs
   // JSONB arrays in database: email and phone

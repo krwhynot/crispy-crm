@@ -20,7 +20,7 @@ import { VALIDATION_LIMITS } from "./constants";
  * Use this for .omit(), .partial(), .pick() operations
  */
 export const baseOrganizationDistributorSchema = z.strictObject({
-  id: z.union([z.string(), z.number()]).optional(),
+  id: z.union([z.string().max(50), z.number()]).optional(),
 
   // Required foreign keys
   organization_id: z.coerce.number().int().positive("Organization is required"),
