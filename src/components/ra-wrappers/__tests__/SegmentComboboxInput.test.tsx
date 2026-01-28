@@ -283,4 +283,103 @@ describe("SegmentComboboxInput", () => {
       expect(updatedSelect?.textContent).not.toContain("Major Broadline");
     });
   });
+
+  test("rejects invalid segment_id that doesn't exist in choices", async () => {
+    const user = userEvent.setup();
+    const onSubmit = vi.fn();
+
+    renderWithAdminContext(
+      <FormWrapper
+        defaultValues={{
+          organization_type: "distributor",
+          segment_id: "00000000-0000-0000-0000-000000000000" // Invalid UUID
+        }}
+        onSubmit={onSubmit}
+      >
+        <SegmentComboboxInput source="segment_id" />
+      </FormWrapper>,
+      { resource: "organizations" }
+    );
+
+    // Submit form with invalid segment_id
+    const submitButton = screen.getByText("Submit");
+    await user.click(submitButton);
+
+    // Verify validation error prevents submission
+    await waitFor(() => {
+      expect(onSubmit).not.toHaveBeenCalled();
+    });
+
+    // Verify error message displayed
+    await waitFor(() => {
+      const errorMessage = screen.getByText(/not valid for this organization type/i);
+      expect(errorMessage).toBeInTheDocument();
+    });
+  });
+
+  test("rejects Operator segment when organization is distributor", async () => {
+    const user = userEvent.setup();
+    const onSubmit = vi.fn();
+
+    renderWithAdminContext(
+      <FormWrapper
+        defaultValues={{
+          organization_type: "distributor",
+          segment_id: "33333333-3333-4333-8333-000000000001" // Full-Service Restaurant (Operator)
+        }}
+        onSubmit={onSubmit}
+      >
+        <SegmentComboboxInput source="segment_id" />
+      </FormWrapper>,
+      { resource: "organizations" }
+    );
+
+    // Submit form with wrong segment type
+    const submitButton = screen.getByText("Submit");
+    await user.click(submitButton);
+
+    // Verify validation blocks submission
+    await waitFor(() => {
+      expect(onSubmit).not.toHaveBeenCalled();
+    });
+
+    // Verify custom validation error
+    await waitFor(() => {
+      const errorMessage = screen.getByText(/not valid for this organization type/i);
+      expect(errorMessage).toBeInTheDocument();
+    });
+  });
+
+  test("rejects Playbook category when organization is customer", async () => {
+    const user = userEvent.setup();
+    const onSubmit = vi.fn();
+
+    renderWithAdminContext(
+      <FormWrapper
+        defaultValues={{
+          organization_type: "customer",
+          segment_id: "22222222-2222-4222-8222-000000000001" // Major Broadline (Playbook)
+        }}
+        onSubmit={onSubmit}
+      >
+        <SegmentComboboxInput source="segment_id" />
+      </FormWrapper>,
+      { resource: "organizations" }
+    );
+
+    // Submit form with wrong segment type
+    const submitButton = screen.getByText("Submit");
+    await user.click(submitButton);
+
+    // Verify validation prevents submission
+    await waitFor(() => {
+      expect(onSubmit).not.toHaveBeenCalled();
+    });
+
+    // Verify error displayed
+    await waitFor(() => {
+      const errorMessage = screen.getByText(/not valid for this organization type/i);
+      expect(errorMessage).toBeInTheDocument();
+    });
+  });
 });
