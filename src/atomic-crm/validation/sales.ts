@@ -40,7 +40,7 @@ export const ROLE_CHOICES = [
 // This schema serves as the single source of truth for all sales validation
 // per Engineering Constitution - all validation happens at API boundary only
 export const salesSchema = z.strictObject({
-  id: z.union([z.string(), z.number()]).optional(),
+  id: z.union([z.string().max(50, "ID too long"), z.number()]).optional(),
   first_name: z.string().trim().min(1, "First name is required").max(100, "First name too long"),
   last_name: z.string().trim().min(1, "Last name is required").max(100, "Last name too long"),
   email: z

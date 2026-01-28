@@ -75,9 +75,9 @@ export const contactBaseSchema = z.strictObject({
   id: z.coerce.number().optional(),
 
   // Name fields - ContactIdentityInputs (required in UI)
-  name: z.string().trim().max(255, "Name too long").optional(), // Computed from first + last
-  first_name: z.string().trim().min(1).max(100, "First name too long").optional().nullable(),
-  last_name: z.string().trim().min(1).max(100, "Last name too long").optional().nullable(),
+  name: z.string().trim().max(255).optional(), // Computed from first + last
+  first_name: z.string().trim().max(100).optional().nullable(),
+  last_name: z.string().trim().max(100).optional().nullable(),
 
   // Contact information - ContactPersonalInformationInputs
   // JSONB arrays in database: email and phone
@@ -85,8 +85,8 @@ export const contactBaseSchema = z.strictObject({
   phone: z.array(phoneNumberAndTypeSchema).max(10, "Maximum 10 phone numbers").default([]),
 
   // Professional information - ContactPositionInputs
-  title: z.string().trim().max(100, "Title too long").optional().nullable(),
-  department: z.string().trim().max(100, "Department too long").optional().nullable(),
+  title: z.string().trim().max(100).optional().nullable(),
+  department: z.string().trim().max(100).optional().nullable(),
   department_type: contactDepartmentSchema.nullable().optional(),
 
   // Social media - ContactMiscInputs
@@ -103,8 +103,8 @@ export const contactBaseSchema = z.strictObject({
   organization_id: z.coerce.number().nullable().optional(),
 
   // Territory assignment fields
-  district_code: z.string().trim().max(10, "District code too long").nullable().optional(),
-  territory_name: z.string().trim().max(100, "Territory name too long").nullable().optional(),
+  district_code: z.string().trim().max(10).nullable().optional(),
+  territory_name: z.string().trim().max(100).nullable().optional(),
 
   // System fields (readonly, not validated)
   created_at: z.string().max(50).optional(),
@@ -119,7 +119,7 @@ export const contactBaseSchema = z.strictObject({
 
   // Calculated/readonly fields (not user input)
   nb_tasks: z.number().optional(),
-  company_name: z.string().max(255, "Company name too long").optional().nullable(),
+  company_name: z.string().max(255).optional().nullable(),
 
   // Notes field - text field for additional contact information
   notes: z
