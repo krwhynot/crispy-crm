@@ -139,7 +139,7 @@ export function PremiumDatagrid({
     <div className="flex-1 min-h-0 overflow-auto">
       <DatagridComponent
         {...props}
-        preferenceKey={preferenceKey}
+        {...(configurable && preferenceKey ? { preferenceKey } : {})}
         rowClassName={getRowClassName}
         rowClick={onRowClick ? handleRowClick : props.rowClick}
       />
