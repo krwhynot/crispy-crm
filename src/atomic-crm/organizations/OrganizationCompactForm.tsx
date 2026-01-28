@@ -19,14 +19,6 @@ import { ParentOrganizationInput } from "./ParentOrganizationInput";
 import { useCityStateMapping } from "@/hooks";
 import { PrincipalAwareTypeInput } from "./PrincipalAwareTypeInput";
 
-// Required field validator - same pattern as name field validation
-const validateRequiredSegment = (value: string | null | undefined) => {
-  if (!value) {
-    return "Segment is required";
-  }
-  return undefined;
-};
-
 const createDuplicateNameValidator = (dataProvider: DataProvider, currentId?: number) => {
   return async (name: string) => {
     if (!name?.trim()) return undefined;
@@ -123,12 +115,7 @@ export const OrganizationCompactForm = ({ isRep }: OrganizationCompactFormProps)
             </ReferenceInput>
           </FormFieldWrapper>
           <FormFieldWrapper name="segment_id" isRequired countDefaultAsFilled>
-            <SegmentComboboxInput
-              source="segment_id"
-              label="Segment *"
-              helperText={false}
-              validate={validateRequiredSegment}
-            />
+            <SegmentComboboxInput source="segment_id" label="Segment *" helperText={false} />
           </FormFieldWrapper>
         </CompactFormRow>
       </FormSectionWithProgress>

@@ -1,6 +1,6 @@
 {
   "chunk_name": "organizations",
-  "generated_at": "2026-01-28T02:48:01.149Z",
+  "generated_at": "2026-01-28T04:25:17.590Z",
   "item_count": 76,
   "items": [
     {
@@ -524,10 +524,12 @@
     {
       "name": "OrganizationCompactForm",
       "file": "src/atomic-crm/organizations/OrganizationCompactForm.tsx",
-      "line": 23,
+      "line": 44,
       "type": "presentational",
       "hooks": [
-        "useCityStateMapping"
+        "useCityStateMapping",
+        "useDataProvider",
+        "useRecordContext"
       ],
       "imports": [
         "../utils/saleOptionRenderer",
@@ -541,7 +543,9 @@
         "@/components/ra-wrappers/select-input",
         "@/components/ra-wrappers/state-combobox-input",
         "@/components/ra-wrappers/text-input",
-        "@/hooks"
+        "@/hooks",
+        "react",
+        "react-admin"
       ],
       "isDefaultExport": false,
       "childComponents": [
@@ -550,7 +554,10 @@
         "ParentOrganizationInput",
         "PrincipalAwareTypeInput"
       ],
-      "contextDependencies": [],
+      "contextDependencies": [
+        "useDataProvider",
+        "useRecordContext"
+      ],
       "componentRole": "wrapper"
     },
     {

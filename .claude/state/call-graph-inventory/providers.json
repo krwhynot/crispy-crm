@@ -1,6 +1,6 @@
 {
   "chunk_name": "providers",
-  "generated_at": "2026-01-28T02:48:35.388Z",
+  "generated_at": "2026-01-28T04:25:38.784Z",
   "items": {
     "nodes": [
       {
@@ -238,37 +238,46 @@
         "async": true
       },
       {
-        "id": "src/atomic-crm/providers/supabase/callbacks/organizationsCallbacks.ts:106:organizationsBeforeDelete",
+        "id": "src/atomic-crm/providers/supabase/callbacks/organizationsCallbacks.ts:104:organizationsBeforeCreate",
+        "name": "organizationsBeforeCreate",
+        "file": "src/atomic-crm/providers/supabase/callbacks/organizationsCallbacks.ts",
+        "line": 104,
+        "nodeType": "function",
+        "exported": false,
+        "async": true
+      },
+      {
+        "id": "src/atomic-crm/providers/supabase/callbacks/organizationsCallbacks.ts:152:organizationsBeforeDelete",
         "name": "organizationsBeforeDelete",
         "file": "src/atomic-crm/providers/supabase/callbacks/organizationsCallbacks.ts",
-        "line": 106,
+        "line": 152,
         "nodeType": "function",
         "exported": false,
         "async": true
       },
       {
-        "id": "src/atomic-crm/providers/supabase/callbacks/organizationsCallbacks.ts:173:organizationsBeforeDeleteMany",
+        "id": "src/atomic-crm/providers/supabase/callbacks/organizationsCallbacks.ts:219:organizationsBeforeDeleteMany",
         "name": "organizationsBeforeDeleteMany",
         "file": "src/atomic-crm/providers/supabase/callbacks/organizationsCallbacks.ts",
-        "line": 173,
+        "line": 219,
         "nodeType": "function",
         "exported": false,
         "async": true
       },
       {
-        "id": "src/atomic-crm/providers/supabase/callbacks/organizationsCallbacks.ts:236:organizationsBeforeGetList",
+        "id": "src/atomic-crm/providers/supabase/callbacks/organizationsCallbacks.ts:282:organizationsBeforeGetList",
         "name": "organizationsBeforeGetList",
         "file": "src/atomic-crm/providers/supabase/callbacks/organizationsCallbacks.ts",
-        "line": 236,
+        "line": 282,
         "nodeType": "function",
         "exported": false,
         "async": true
       },
       {
-        "id": "src/atomic-crm/providers/supabase/callbacks/organizationsCallbacks.ts:283:stripComputedFields",
+        "id": "src/atomic-crm/providers/supabase/callbacks/organizationsCallbacks.ts:330:stripComputedFields",
         "name": "stripComputedFields",
         "file": "src/atomic-crm/providers/supabase/callbacks/organizationsCallbacks.ts",
-        "line": 283,
+        "line": 330,
         "nodeType": "function",
         "exported": true,
         "async": false
@@ -1671,173 +1680,191 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/callbacks/organizationsCallbacks.ts:106:organizationsBeforeDelete",
-        "target": "Number",
-        "targetName": "Number",
+        "source": "src/atomic-crm/providers/supabase/callbacks/organizationsCallbacks.ts:104:organizationsBeforeCreate",
+        "target": "trim",
+        "targetName": "trim",
         "edgeType": "call",
-        "line": 111,
+        "line": 109,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/callbacks/organizationsCallbacks.ts:106:organizationsBeforeDelete",
+        "source": "src/atomic-crm/providers/supabase/callbacks/organizationsCallbacks.ts:104:organizationsBeforeCreate",
+        "target": "getList",
+        "targetName": "getList",
+        "edgeType": "call",
+        "line": 117,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/callbacks/organizationsCallbacks.ts:152:organizationsBeforeDelete",
+        "target": "Number",
+        "targetName": "Number",
+        "edgeType": "call",
+        "line": 157,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/callbacks/organizationsCallbacks.ts:152:organizationsBeforeDelete",
         "target": "isInteger",
         "targetName": "isInteger",
         "edgeType": "call",
-        "line": 112,
+        "line": 158,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/callbacks/organizationsCallbacks.ts:106:organizationsBeforeDelete",
+        "source": "src/atomic-crm/providers/supabase/callbacks/organizationsCallbacks.ts:152:organizationsBeforeDelete",
         "target": "collectOrganizationFilePaths",
         "targetName": "collectOrganizationFilePaths",
         "edgeType": "call",
-        "line": 118,
+        "line": 164,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/callbacks/organizationsCallbacks.ts:106:organizationsBeforeDelete",
+        "source": "src/atomic-crm/providers/supabase/callbacks/organizationsCallbacks.ts:152:organizationsBeforeDelete",
         "target": "rpc",
         "targetName": "rpc",
         "edgeType": "call",
-        "line": 122,
+        "line": 168,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/callbacks/organizationsCallbacks.ts:106:organizationsBeforeDelete",
+        "source": "src/atomic-crm/providers/supabase/callbacks/organizationsCallbacks.ts:152:organizationsBeforeDelete",
         "target": "catch",
         "targetName": "catch",
         "edgeType": "call",
-        "line": 137,
+        "line": 183,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/callbacks/organizationsCallbacks.ts:106:organizationsBeforeDelete",
+        "source": "src/atomic-crm/providers/supabase/callbacks/organizationsCallbacks.ts:152:organizationsBeforeDelete",
         "target": "deleteStorageFiles",
         "targetName": "deleteStorageFiles",
         "edgeType": "call",
-        "line": 137,
+        "line": 183,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/callbacks/organizationsCallbacks.ts:106:organizationsBeforeDelete",
+        "source": "src/atomic-crm/providers/supabase/callbacks/organizationsCallbacks.ts:152:organizationsBeforeDelete",
         "target": "String",
         "targetName": "String",
-        "edgeType": "call",
-        "line": 139,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/providers/supabase/callbacks/organizationsCallbacks.ts:106:organizationsBeforeDelete",
-        "target": "warn",
-        "targetName": "warn",
-        "edgeType": "call",
-        "line": 140,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/providers/supabase/callbacks/organizationsCallbacks.ts:106:organizationsBeforeDelete",
-        "target": "slice",
-        "targetName": "slice",
-        "edgeType": "call",
-        "line": 143,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/providers/supabase/callbacks/organizationsCallbacks.ts:173:organizationsBeforeDeleteMany",
-        "target": "Number",
-        "targetName": "Number",
-        "edgeType": "call",
-        "line": 179,
-        "conditional": false,
-        "inLoop": true
-      },
-      {
-        "source": "src/atomic-crm/providers/supabase/callbacks/organizationsCallbacks.ts:173:organizationsBeforeDeleteMany",
-        "target": "isInteger",
-        "targetName": "isInteger",
-        "edgeType": "call",
-        "line": 180,
-        "conditional": true,
-        "inLoop": true
-      },
-      {
-        "source": "src/atomic-crm/providers/supabase/callbacks/organizationsCallbacks.ts:173:organizationsBeforeDeleteMany",
-        "target": "collectOrganizationFilePaths",
-        "targetName": "collectOrganizationFilePaths",
         "edgeType": "call",
         "line": 185,
-        "conditional": false,
-        "inLoop": true
-      },
-      {
-        "source": "src/atomic-crm/providers/supabase/callbacks/organizationsCallbacks.ts:173:organizationsBeforeDeleteMany",
-        "target": "rpc",
-        "targetName": "rpc",
-        "edgeType": "call",
-        "line": 187,
-        "conditional": false,
-        "inLoop": true
-      },
-      {
-        "source": "src/atomic-crm/providers/supabase/callbacks/organizationsCallbacks.ts:173:organizationsBeforeDeleteMany",
-        "target": "catch",
-        "targetName": "catch",
-        "edgeType": "call",
-        "line": 197,
-        "conditional": true,
-        "inLoop": true
-      },
-      {
-        "source": "src/atomic-crm/providers/supabase/callbacks/organizationsCallbacks.ts:173:organizationsBeforeDeleteMany",
-        "target": "deleteStorageFiles",
-        "targetName": "deleteStorageFiles",
-        "edgeType": "call",
-        "line": 197,
-        "conditional": true,
-        "inLoop": true
-      },
-      {
-        "source": "src/atomic-crm/providers/supabase/callbacks/organizationsCallbacks.ts:173:organizationsBeforeDeleteMany",
-        "target": "String",
-        "targetName": "String",
-        "edgeType": "call",
-        "line": 198,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/callbacks/organizationsCallbacks.ts:173:organizationsBeforeDeleteMany",
+        "source": "src/atomic-crm/providers/supabase/callbacks/organizationsCallbacks.ts:152:organizationsBeforeDelete",
         "target": "warn",
         "targetName": "warn",
         "edgeType": "call",
-        "line": 199,
+        "line": 186,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/callbacks/organizationsCallbacks.ts:173:organizationsBeforeDeleteMany",
+        "source": "src/atomic-crm/providers/supabase/callbacks/organizationsCallbacks.ts:152:organizationsBeforeDelete",
         "target": "slice",
         "targetName": "slice",
         "edgeType": "call",
-        "line": 202,
+        "line": 189,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/callbacks/organizationsCallbacks.ts:236:organizationsBeforeGetList",
+        "source": "src/atomic-crm/providers/supabase/callbacks/organizationsCallbacks.ts:219:organizationsBeforeDeleteMany",
+        "target": "Number",
+        "targetName": "Number",
+        "edgeType": "call",
+        "line": 225,
+        "conditional": false,
+        "inLoop": true
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/callbacks/organizationsCallbacks.ts:219:organizationsBeforeDeleteMany",
+        "target": "isInteger",
+        "targetName": "isInteger",
+        "edgeType": "call",
+        "line": 226,
+        "conditional": true,
+        "inLoop": true
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/callbacks/organizationsCallbacks.ts:219:organizationsBeforeDeleteMany",
+        "target": "collectOrganizationFilePaths",
+        "targetName": "collectOrganizationFilePaths",
+        "edgeType": "call",
+        "line": 231,
+        "conditional": false,
+        "inLoop": true
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/callbacks/organizationsCallbacks.ts:219:organizationsBeforeDeleteMany",
+        "target": "rpc",
+        "targetName": "rpc",
+        "edgeType": "call",
+        "line": 233,
+        "conditional": false,
+        "inLoop": true
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/callbacks/organizationsCallbacks.ts:219:organizationsBeforeDeleteMany",
+        "target": "catch",
+        "targetName": "catch",
+        "edgeType": "call",
+        "line": 243,
+        "conditional": true,
+        "inLoop": true
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/callbacks/organizationsCallbacks.ts:219:organizationsBeforeDeleteMany",
+        "target": "deleteStorageFiles",
+        "targetName": "deleteStorageFiles",
+        "edgeType": "call",
+        "line": 243,
+        "conditional": true,
+        "inLoop": true
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/callbacks/organizationsCallbacks.ts:219:organizationsBeforeDeleteMany",
+        "target": "String",
+        "targetName": "String",
+        "edgeType": "call",
+        "line": 244,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/callbacks/organizationsCallbacks.ts:219:organizationsBeforeDeleteMany",
+        "target": "warn",
+        "targetName": "warn",
+        "edgeType": "call",
+        "line": 245,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/callbacks/organizationsCallbacks.ts:219:organizationsBeforeDeleteMany",
+        "target": "slice",
+        "targetName": "slice",
+        "edgeType": "call",
+        "line": 248,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/callbacks/organizationsCallbacks.ts:282:organizationsBeforeGetList",
         "target": "transformQToIlikeSearch",
         "targetName": "transformQToIlikeSearch",
         "edgeType": "call",
-        "line": 241,
+        "line": 287,
         "conditional": false,
         "inLoop": false
       },
@@ -2945,6 +2972,15 @@
         "targetName": "createSpecializedExtension",
         "edgeType": "call",
         "line": 129,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/extensions/customMethodsExtension.ts:118:extendWithCustomMethods",
+        "target": "assign",
+        "targetName": "assign",
+        "edgeType": "call",
+        "line": 133,
         "conditional": false,
         "inLoop": false
       },

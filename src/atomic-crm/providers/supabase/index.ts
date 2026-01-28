@@ -53,7 +53,11 @@ function createExtendedDataProvider(): DataProvider {
   const composedProvider = createComposedDataProvider(baseProvider);
 
   // Stage 4: Extend with custom methods
+  // CRITICAL: Pass baseProvider so it can be mutated with RPC methods.
+  // Handlers create NEW service instances with baseProvider at runtime,
+  // so baseProvider MUST have RPC methods added to it.
   return extendWithCustomMethods({
+    baseProvider,
     composedProvider,
     services,
     supabaseClient: supabase,
