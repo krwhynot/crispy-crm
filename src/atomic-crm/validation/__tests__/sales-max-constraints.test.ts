@@ -99,7 +99,7 @@ describe("Sales .max() Constraints", () => {
       const invalidSales = {
         first_name: "John",
         last_name: "Doe",
-        email: "a".repeat(242) + "@example.com", // 255 chars total
+        email: "a".repeat(243) + "@example.com", // 255 chars total
       };
       expect(() => salesSchema.parse(invalidSales)).toThrow(z.ZodError);
     });

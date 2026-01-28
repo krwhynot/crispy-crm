@@ -63,10 +63,10 @@ describe("Activities .max() Constraints", () => {
   });
 
   describe("follow_up_notes field", () => {
-    it("should accept follow_up_notes at max length (5000 chars)", () => {
+    it("should accept follow_up_notes at max length (10000 chars)", () => {
       const validActivity = {
         subject: "Test",
-        follow_up_notes: "a".repeat(5000),
+        follow_up_notes: "a".repeat(10000),
         activity_type: "interaction" as const,
         type: "call" as const,
         contact_id: 1,
@@ -75,10 +75,10 @@ describe("Activities .max() Constraints", () => {
       expect(() => activitiesSchema.parse(validActivity)).not.toThrow();
     });
 
-    it("should reject follow_up_notes over max length (5001 chars)", () => {
+    it("should reject follow_up_notes over max length (10001 chars)", () => {
       const invalidActivity = {
         subject: "Test",
-        follow_up_notes: "a".repeat(5001),
+        follow_up_notes: "a".repeat(10001),
         activity_type: "interaction" as const,
         type: "call" as const,
         contact_id: 1,
