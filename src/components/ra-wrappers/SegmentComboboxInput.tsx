@@ -1,5 +1,6 @@
 import { useWatch } from "react-hook-form";
 import type { Validator } from "react-admin";
+import { required } from "react-admin";
 import { SelectInput } from "@/components/ra-wrappers/select-input";
 import { PLAYBOOK_CATEGORY_CHOICES } from "@/atomic-crm/validation/segments";
 import { OPERATOR_SEGMENT_CHOICES } from "@/atomic-crm/validation/operatorSegments";
@@ -19,6 +20,8 @@ interface SegmentSelectInputProps {
  * - Customers/Prospects/Unknown: Uses Operator segments (FSR, LSR, Hotels, etc.)
  *
  * Watches organization_type field to determine which segment choices to display.
+ *
+ * This field has BUILT-IN required validation - segment_id is always required for organizations.
  */
 export const SegmentSelectInput = (props: SegmentSelectInputProps) => {
   // Watch organization_type to determine which segments to show
@@ -33,6 +36,14 @@ export const SegmentSelectInput = (props: SegmentSelectInputProps) => {
 
   const defaultLabel = usePlaybookCategories ? "Playbook Category" : "Operator Segment";
 
+  // Built-in required validation + any additional validators from props
+  const requiredValidator = required("Segment is required");
+  const validators: Validator[] = props.validate
+    ? Array.isArray(props.validate)
+      ? [requiredValidator, ...props.validate]
+      : [requiredValidator, props.validate]
+    : [requiredValidator];
+
   return (
     <SelectInput
       source={props.source}
@@ -42,7 +53,7 @@ export const SegmentSelectInput = (props: SegmentSelectInputProps) => {
       className={props.className}
       emptyText={`Select ${defaultLabel.toLowerCase()}...`}
       parse={(value: string) => (value === "" ? null : value)}
-      validate={props.validate}
+      validate={validators}
     />
   );
 };
