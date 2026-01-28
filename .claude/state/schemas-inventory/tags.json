@@ -1,6 +1,6 @@
 {
   "chunk_name": "tags",
-  "generated_at": "2026-01-28T01:13:11.602Z",
+  "generated_at": "2026-01-28T01:22:24.930Z",
   "item_count": 4,
   "items": [
     {
@@ -38,7 +38,9 @@
         {
           "name": "createdAt",
           "zodType": "union",
-          "constraints": [],
+          "constraints": [
+            "max(50, \"Timestamp too long\")"
+          ],
           "optional": true,
           "nullable": false,
           "hasTransform": false,
@@ -47,7 +49,9 @@
         {
           "name": "updatedAt",
           "zodType": "union",
-          "constraints": [],
+          "constraints": [
+            "max(50, \"Timestamp too long\")"
+          ],
           "optional": true,
           "nullable": false,
           "hasTransform": false,
@@ -55,8 +59,10 @@
         },
         {
           "name": "deleted_at",
-          "zodType": "union",
-          "constraints": [],
+          "zodType": "string",
+          "constraints": [
+            "max(50, \"Timestamp too long\")"
+          ],
           "optional": true,
           "nullable": true,
           "hasTransform": false,
@@ -65,7 +71,9 @@
         {
           "name": "id",
           "zodType": "union",
-          "constraints": [],
+          "constraints": [
+            "max(50, \"ID too long\")"
+          ],
           "optional": true,
           "nullable": false,
           "hasTransform": false,
@@ -87,13 +95,15 @@
     {
       "name": "deleteTagSchema",
       "file": "src/atomic-crm/validation/tags.ts",
-      "line": 104,
+      "line": 107,
       "schemaType": "strictObject",
       "fields": [
         {
           "name": "id",
           "zodType": "union",
-          "constraints": [],
+          "constraints": [
+            "max(50, \"ID too long\")"
+          ],
           "optional": false,
           "nullable": false,
           "hasTransform": false,
@@ -102,7 +112,9 @@
         {
           "name": "deleted_at",
           "zodType": "union",
-          "constraints": [],
+          "constraints": [
+            "max(50, \"Timestamp too long\")"
+          ],
           "optional": false,
           "nullable": false,
           "hasTransform": false,
@@ -119,7 +131,7 @@
     {
       "name": "tagWithCountSchema",
       "file": "src/atomic-crm/validation/tags.ts",
-      "line": 112,
+      "line": 115,
       "schemaType": "other",
       "fields": [],
       "relatedSchemas": [
@@ -132,7 +144,7 @@
     {
       "name": "tagFilterSchema",
       "file": "src/atomic-crm/validation/tags.ts",
-      "line": 119,
+      "line": 122,
       "schemaType": "strictObject",
       "fields": [
         {

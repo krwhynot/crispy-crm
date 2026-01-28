@@ -1,6 +1,6 @@
 {
   "chunk_name": "contacts-core",
-  "generated_at": "2026-01-28T01:13:11.530Z",
+  "generated_at": "2026-01-28T01:22:24.918Z",
   "item_count": 3,
   "items": [
     {
@@ -35,6 +35,7 @@
           "zodType": "string",
           "constraints": [
             "trim()",
+            "min(1)",
             "max(100, \"First name too long\")"
           ],
           "optional": true,
@@ -47,6 +48,7 @@
           "zodType": "string",
           "constraints": [
             "trim()",
+            "min(1)",
             "max(100, \"Last name too long\")"
           ],
           "optional": true,

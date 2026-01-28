@@ -1,13 +1,13 @@
 {
   "chunk_name": "validation",
-  "generated_at": "2026-01-28T01:13:18.365Z",
+  "generated_at": "2026-01-28T01:22:30.446Z",
   "items": {
     "nodes": [
       {
-        "id": "src/atomic-crm/validation/activities/schemas.ts:113:applyActivityRefinements",
+        "id": "src/atomic-crm/validation/activities/schemas.ts:116:applyActivityRefinements",
         "name": "applyActivityRefinements",
         "file": "src/atomic-crm/validation/activities/schemas.ts",
-        "line": 113,
+        "line": 116,
         "nodeType": "function",
         "exported": false,
         "async": false
@@ -760,46 +760,46 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/validation/tags.ts:143:validateCreateTag",
+        "id": "src/atomic-crm/validation/tags.ts:146:validateCreateTag",
         "name": "validateCreateTag",
         "file": "src/atomic-crm/validation/tags.ts",
-        "line": 143,
+        "line": 146,
         "nodeType": "function",
         "exported": true,
         "async": false
       },
       {
-        "id": "src/atomic-crm/validation/tags.ts:154:validateUpdateTag",
+        "id": "src/atomic-crm/validation/tags.ts:157:validateUpdateTag",
         "name": "validateUpdateTag",
         "file": "src/atomic-crm/validation/tags.ts",
-        "line": 154,
+        "line": 157,
         "nodeType": "function",
         "exported": true,
         "async": false
       },
       {
-        "id": "src/atomic-crm/validation/tags.ts:163:validateTagFilter",
+        "id": "src/atomic-crm/validation/tags.ts:166:validateTagFilter",
         "name": "validateTagFilter",
         "file": "src/atomic-crm/validation/tags.ts",
-        "line": 163,
+        "line": 166,
         "nodeType": "function",
         "exported": true,
         "async": false
       },
       {
-        "id": "src/atomic-crm/validation/tags.ts:176:validateTagUniqueness",
+        "id": "src/atomic-crm/validation/tags.ts:179:validateTagUniqueness",
         "name": "validateTagUniqueness",
         "file": "src/atomic-crm/validation/tags.ts",
-        "line": 176,
+        "line": 179,
         "nodeType": "function",
         "exported": true,
         "async": false
       },
       {
-        "id": "src/atomic-crm/validation/tags.ts:204:validateTagForSubmission",
+        "id": "src/atomic-crm/validation/tags.ts:207:validateTagForSubmission",
         "name": "validateTagForSubmission",
         "file": "src/atomic-crm/validation/tags.ts",
-        "line": 204,
+        "line": 207,
         "nodeType": "function",
         "exported": true,
         "async": false
@@ -861,65 +861,65 @@
     ],
     "edges": [
       {
-        "source": "src/atomic-crm/validation/activities/schemas.ts:113:applyActivityRefinements",
+        "source": "src/atomic-crm/validation/activities/schemas.ts:116:applyActivityRefinements",
         "target": "addIssue",
         "targetName": "addIssue",
         "edgeType": "call",
-        "line": 120,
+        "line": 123,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/activities/schemas.ts:113:applyActivityRefinements",
+        "source": "src/atomic-crm/validation/activities/schemas.ts:116:applyActivityRefinements",
         "target": "addIssue",
         "targetName": "addIssue",
         "edgeType": "call",
-        "line": 129,
+        "line": 132,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/activities/schemas.ts:113:applyActivityRefinements",
+        "source": "src/atomic-crm/validation/activities/schemas.ts:116:applyActivityRefinements",
         "target": "addIssue",
         "targetName": "addIssue",
         "edgeType": "call",
-        "line": 138,
+        "line": 141,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/activities/schemas.ts:113:applyActivityRefinements",
+        "source": "src/atomic-crm/validation/activities/schemas.ts:116:applyActivityRefinements",
         "target": "addIssue",
         "targetName": "addIssue",
         "edgeType": "call",
-        "line": 147,
+        "line": 150,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/activities/schemas.ts:113:applyActivityRefinements",
+        "source": "src/atomic-crm/validation/activities/schemas.ts:116:applyActivityRefinements",
         "target": "includes",
         "targetName": "includes",
-        "edgeType": "call",
-        "line": 158,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/validation/activities/schemas.ts:113:applyActivityRefinements",
-        "target": "addIssue",
-        "targetName": "addIssue",
         "edgeType": "call",
         "line": 161,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/activities/schemas.ts:113:applyActivityRefinements",
+        "source": "src/atomic-crm/validation/activities/schemas.ts:116:applyActivityRefinements",
         "target": "addIssue",
         "targetName": "addIssue",
         "edgeType": "call",
-        "line": 169,
+        "line": 164,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/validation/activities/schemas.ts:116:applyActivityRefinements",
+        "target": "addIssue",
+        "targetName": "addIssue",
+        "edgeType": "call",
+        "line": 172,
         "conditional": true,
         "inLoop": false
       },
@@ -2688,92 +2688,92 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/tags.ts:143:validateCreateTag",
+        "source": "src/atomic-crm/validation/tags.ts:146:validateCreateTag",
         "target": "parse",
         "targetName": "parse",
         "edgeType": "call",
-        "line": 144,
+        "line": 147,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/tags.ts:154:validateUpdateTag",
+        "source": "src/atomic-crm/validation/tags.ts:157:validateUpdateTag",
         "target": "parse",
         "targetName": "parse",
         "edgeType": "call",
-        "line": 155,
+        "line": 158,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/tags.ts:163:validateTagFilter",
+        "source": "src/atomic-crm/validation/tags.ts:166:validateTagFilter",
         "target": "parse",
         "targetName": "parse",
         "edgeType": "call",
-        "line": 164,
+        "line": 167,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/tags.ts:176:validateTagUniqueness",
+        "source": "src/atomic-crm/validation/tags.ts:179:validateTagUniqueness",
         "target": "toLowerCase",
         "targetName": "toLowerCase",
         "edgeType": "call",
-        "line": 181,
+        "line": 184,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/tags.ts:176:validateTagUniqueness",
+        "source": "src/atomic-crm/validation/tags.ts:179:validateTagUniqueness",
         "target": "trim",
         "targetName": "trim",
         "edgeType": "call",
-        "line": 181,
+        "line": 184,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/tags.ts:176:validateTagUniqueness",
+        "source": "src/atomic-crm/validation/tags.ts:179:validateTagUniqueness",
         "target": "some",
         "targetName": "some",
         "edgeType": "call",
-        "line": 183,
+        "line": 186,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/tags.ts:176:validateTagUniqueness",
+        "source": "src/atomic-crm/validation/tags.ts:179:validateTagUniqueness",
         "target": "toLowerCase",
         "targetName": "toLowerCase",
         "edgeType": "call",
-        "line": 189,
+        "line": 192,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/tags.ts:176:validateTagUniqueness",
+        "source": "src/atomic-crm/validation/tags.ts:179:validateTagUniqueness",
         "target": "trim",
         "targetName": "trim",
         "edgeType": "call",
-        "line": 189,
+        "line": 192,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/tags.ts:204:validateTagForSubmission",
+        "source": "src/atomic-crm/validation/tags.ts:207:validateTagForSubmission",
         "target": "parse",
         "targetName": "parse",
         "edgeType": "call",
-        "line": 205,
+        "line": 208,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/tags.ts:204:validateTagForSubmission",
+        "source": "src/atomic-crm/validation/tags.ts:207:validateTagForSubmission",
         "target": "trim",
         "targetName": "trim",
         "edgeType": "call",
-        "line": 208,
+        "line": 211,
         "conditional": false,
         "inLoop": false
       },

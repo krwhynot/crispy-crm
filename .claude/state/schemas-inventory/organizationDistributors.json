@@ -1,6 +1,6 @@
 {
   "chunk_name": "organizationDistributors",
-  "generated_at": "2026-01-28T01:13:11.563Z",
+  "generated_at": "2026-01-28T01:22:24.924Z",
   "item_count": 1,
   "items": [
     {
@@ -12,7 +12,9 @@
         {
           "name": "id",
           "zodType": "union",
-          "constraints": [],
+          "constraints": [
+            "max(50)"
+          ],
           "optional": true,
           "nullable": false,
           "hasTransform": false,

@@ -1,6 +1,6 @@
 {
   "chunk_name": "schemas",
-  "generated_at": "2026-01-28T01:13:11.525Z",
+  "generated_at": "2026-01-28T01:22:24.916Z",
   "item_count": 6,
   "items": [
     {
@@ -12,7 +12,9 @@
         {
           "name": "id",
           "zodType": "union",
-          "constraints": [],
+          "constraints": [
+            "max(50, \"Activity ID too long\")"
+          ],
           "optional": true,
           "nullable": false,
           "hasTransform": false,
@@ -330,7 +332,7 @@
         },
         {
           "name": "sales_id",
-          "zodType": "union",
+          "zodType": "string",
           "constraints": [
             "max(50, \"Sales ID too long\")"
           ],
@@ -380,7 +382,7 @@
     {
       "name": "activitiesSchema",
       "file": "src/atomic-crm/validation/activities/schemas.ts",
-      "line": 183,
+      "line": 186,
       "schemaType": "other",
       "fields": [],
       "relatedSchemas": [
@@ -394,7 +396,7 @@
     {
       "name": "engagementsSchema",
       "file": "src/atomic-crm/validation/activities/schemas.ts",
-      "line": 208,
+      "line": 211,
       "schemaType": "other",
       "fields": [],
       "relatedSchemas": [],
@@ -405,7 +407,7 @@
     {
       "name": "interactionsSchema",
       "file": "src/atomic-crm/validation/activities/schemas.ts",
-      "line": 228,
+      "line": 231,
       "schemaType": "union",
       "fields": [],
       "relatedSchemas": [],
@@ -416,7 +418,7 @@
     {
       "name": "updateActivitiesSchema",
       "file": "src/atomic-crm/validation/activities/schemas.ts",
-      "line": 249,
+      "line": 252,
       "schemaType": "union",
       "fields": [],
       "relatedSchemas": [
@@ -430,7 +432,7 @@
     {
       "name": "activityNoteFormSchema",
       "file": "src/atomic-crm/validation/activities/schemas.ts",
-      "line": 257,
+      "line": 260,
       "schemaType": "strictObject",
       "fields": [
         {
