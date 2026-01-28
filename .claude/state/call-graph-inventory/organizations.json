@@ -1,6 +1,6 @@
 {
   "chunk_name": "organizations",
-  "generated_at": "2026-01-28T00:09:34.274Z",
+  "generated_at": "2026-01-28T00:18:50.152Z",
   "items": {
     "nodes": [
       {
@@ -256,10 +256,10 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/organizations/OrganizationEdit.tsx:41:OrganizationEditContent",
+        "id": "src/atomic-crm/organizations/OrganizationEdit.tsx:42:OrganizationEditContent",
         "name": "OrganizationEditContent",
         "file": "src/atomic-crm/organizations/OrganizationEdit.tsx",
-        "line": 41,
+        "line": 42,
         "nodeType": "component",
         "exported": false,
         "async": false
@@ -4906,14 +4906,14 @@
         "target": "invalidateQueries",
         "targetName": "invalidateQueries",
         "edgeType": "call",
-        "line": 23,
+        "line": 24,
         "conditional": false,
         "inLoop": false
       },
       {
         "source": "src/atomic-crm/organizations/OrganizationEdit.tsx:13:OrganizationEdit",
-        "target": "invalidateQueries",
-        "targetName": "invalidateQueries",
+        "target": "lists",
+        "targetName": "lists",
         "edgeType": "call",
         "line": 24,
         "conditional": false,
@@ -4930,10 +4930,37 @@
       },
       {
         "source": "src/atomic-crm/organizations/OrganizationEdit.tsx:13:OrganizationEdit",
+        "target": "lists",
+        "targetName": "lists",
+        "edgeType": "call",
+        "line": 25,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/OrganizationEdit.tsx:13:OrganizationEdit",
+        "target": "invalidateQueries",
+        "targetName": "invalidateQueries",
+        "edgeType": "call",
+        "line": 26,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/OrganizationEdit.tsx:13:OrganizationEdit",
+        "target": "lists",
+        "targetName": "lists",
+        "edgeType": "call",
+        "line": 26,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/OrganizationEdit.tsx:13:OrganizationEdit",
         "target": "startsWith",
         "targetName": "startsWith",
         "edgeType": "call",
-        "line": 30,
+        "line": 31,
         "conditional": true,
         "inLoop": false
       },
@@ -4951,79 +4978,79 @@
         "target": "OrganizationEditContent",
         "targetName": "OrganizationEditContent",
         "edgeType": "render",
-        "line": 36,
+        "line": 37,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationEdit.tsx:41:OrganizationEditContent",
+        "source": "src/atomic-crm/organizations/OrganizationEdit.tsx:42:OrganizationEditContent",
         "target": "useRecordContext",
         "targetName": "useRecordContext",
         "edgeType": "hook",
-        "line": 42,
+        "line": 43,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationEdit.tsx:41:OrganizationEditContent",
+        "source": "src/atomic-crm/organizations/OrganizationEdit.tsx:42:OrganizationEditContent",
         "target": "ResponsiveGrid",
         "targetName": "ResponsiveGrid",
         "edgeType": "render",
-        "line": 50,
+        "line": 51,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationEdit.tsx:41:OrganizationEditContent",
+        "source": "src/atomic-crm/organizations/OrganizationEdit.tsx:42:OrganizationEditContent",
         "target": "Form",
         "targetName": "Form",
-        "edgeType": "render",
-        "line": 52,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/OrganizationEdit.tsx:41:OrganizationEditContent",
-        "target": "Card",
-        "targetName": "Card",
         "edgeType": "render",
         "line": 53,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationEdit.tsx:41:OrganizationEditContent",
-        "target": "CardContent",
-        "targetName": "CardContent",
+        "source": "src/atomic-crm/organizations/OrganizationEdit.tsx:42:OrganizationEditContent",
+        "target": "Card",
+        "targetName": "Card",
         "edgeType": "render",
         "line": 54,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationEdit.tsx:41:OrganizationEditContent",
-        "target": "OrganizationInputs",
-        "targetName": "OrganizationInputs",
+        "source": "src/atomic-crm/organizations/OrganizationEdit.tsx:42:OrganizationEditContent",
+        "target": "CardContent",
+        "targetName": "CardContent",
         "edgeType": "render",
         "line": 55,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationEdit.tsx:41:OrganizationEditContent",
-        "target": "FormToolbar",
-        "targetName": "FormToolbar",
+        "source": "src/atomic-crm/organizations/OrganizationEdit.tsx:42:OrganizationEditContent",
+        "target": "OrganizationInputs",
+        "targetName": "OrganizationInputs",
         "edgeType": "render",
         "line": 56,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationEdit.tsx:41:OrganizationEditContent",
+        "source": "src/atomic-crm/organizations/OrganizationEdit.tsx:42:OrganizationEditContent",
+        "target": "FormToolbar",
+        "targetName": "FormToolbar",
+        "edgeType": "render",
+        "line": 57,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/OrganizationEdit.tsx:42:OrganizationEditContent",
         "target": "OrganizationAside",
         "targetName": "OrganizationAside",
         "edgeType": "render",
-        "line": 63,
+        "line": 64,
         "conditional": false,
         "inLoop": false
       },

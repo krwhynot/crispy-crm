@@ -1,6 +1,6 @@
 {
   "chunk_name": "opportunities",
-  "generated_at": "2026-01-28T00:08:55.629Z",
+  "generated_at": "2026-01-28T00:18:19.588Z",
   "item_count": 83,
   "items": [
     {
@@ -1561,12 +1561,9 @@
     {
       "name": "PrincipalGroupedList",
       "file": "src/atomic-crm/opportunities/PrincipalGroupedList.tsx",
-      "line": 116,
+      "line": 197,
       "type": "presentational",
-      "hooks": [
-        "useListContext",
-        "useMemo"
-      ],
+      "hooks": [],
       "imports": [
         "../types",
         "./constants",
@@ -1584,9 +1581,7 @@
         "STAGE",
         "STAGE_ORDER"
       ],
-      "contextDependencies": [
-        "useListContext"
-      ],
+      "contextDependencies": [],
       "componentRole": "wrapper"
     },
     {

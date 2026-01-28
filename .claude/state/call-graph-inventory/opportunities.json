@@ -1,6 +1,6 @@
 {
   "chunk_name": "opportunities",
-  "generated_at": "2026-01-28T00:09:34.228Z",
+  "generated_at": "2026-01-28T00:18:50.105Z",
   "items": {
     "nodes": [
       {
@@ -544,28 +544,28 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/opportunities/PrincipalGroupedList.tsx:116:PrincipalGroupedList",
-        "name": "PrincipalGroupedList",
+        "id": "src/atomic-crm/opportunities/PrincipalGroupedList.tsx:116:PrincipalGroupedListComponent",
+        "name": "PrincipalGroupedListComponent",
         "file": "src/atomic-crm/opportunities/PrincipalGroupedList.tsx",
         "line": 116,
-        "nodeType": "component",
-        "exported": true,
-        "async": false
-      },
-      {
-        "id": "src/atomic-crm/opportunities/PrincipalGroupedList.tsx:207:PrincipalColumn",
-        "name": "PrincipalColumn",
-        "file": "src/atomic-crm/opportunities/PrincipalGroupedList.tsx",
-        "line": 207,
         "nodeType": "component",
         "exported": false,
         "async": false
       },
       {
-        "id": "src/atomic-crm/opportunities/PrincipalGroupedList.tsx:285:PrincipalOpportunityCard",
+        "id": "src/atomic-crm/opportunities/PrincipalGroupedList.tsx:209:PrincipalColumn",
+        "name": "PrincipalColumn",
+        "file": "src/atomic-crm/opportunities/PrincipalGroupedList.tsx",
+        "line": 209,
+        "nodeType": "component",
+        "exported": false,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/opportunities/PrincipalGroupedList.tsx:287:PrincipalOpportunityCard",
         "name": "PrincipalOpportunityCard",
         "file": "src/atomic-crm/opportunities/PrincipalGroupedList.tsx",
-        "line": 285,
+        "line": 287,
         "nodeType": "component",
         "exported": false,
         "async": false
@@ -13704,7 +13704,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/PrincipalGroupedList.tsx:116:PrincipalGroupedList",
+        "source": "src/atomic-crm/opportunities/PrincipalGroupedList.tsx:116:PrincipalGroupedListComponent",
         "target": "useListContext",
         "targetName": "useListContext",
         "edgeType": "hook",
@@ -13713,7 +13713,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/PrincipalGroupedList.tsx:116:PrincipalGroupedList",
+        "source": "src/atomic-crm/opportunities/PrincipalGroupedList.tsx:116:PrincipalGroupedListComponent",
         "target": "useMemo",
         "targetName": "useMemo",
         "edgeType": "hook",
@@ -13722,7 +13722,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/PrincipalGroupedList.tsx:116:PrincipalGroupedList",
+        "source": "src/atomic-crm/opportunities/PrincipalGroupedList.tsx:116:PrincipalGroupedListComponent",
         "target": "forEach",
         "targetName": "forEach",
         "edgeType": "call",
@@ -13731,7 +13731,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/PrincipalGroupedList.tsx:116:PrincipalGroupedList",
+        "source": "src/atomic-crm/opportunities/PrincipalGroupedList.tsx:116:PrincipalGroupedListComponent",
         "target": "push",
         "targetName": "push",
         "edgeType": "call",
@@ -13740,7 +13740,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/PrincipalGroupedList.tsx:116:PrincipalGroupedList",
+        "source": "src/atomic-crm/opportunities/PrincipalGroupedList.tsx:116:PrincipalGroupedListComponent",
         "target": "forEach",
         "targetName": "forEach",
         "edgeType": "call",
@@ -13749,7 +13749,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/PrincipalGroupedList.tsx:116:PrincipalGroupedList",
+        "source": "src/atomic-crm/opportunities/PrincipalGroupedList.tsx:116:PrincipalGroupedListComponent",
         "target": "keys",
         "targetName": "keys",
         "edgeType": "call",
@@ -13758,7 +13758,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/PrincipalGroupedList.tsx:116:PrincipalGroupedList",
+        "source": "src/atomic-crm/opportunities/PrincipalGroupedList.tsx:116:PrincipalGroupedListComponent",
         "target": "sortOpportunities",
         "targetName": "sortOpportunities",
         "edgeType": "call",
@@ -13767,7 +13767,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/PrincipalGroupedList.tsx:116:PrincipalGroupedList",
+        "source": "src/atomic-crm/opportunities/PrincipalGroupedList.tsx:116:PrincipalGroupedListComponent",
         "target": "sort",
         "targetName": "sort",
         "edgeType": "call",
@@ -13776,7 +13776,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/PrincipalGroupedList.tsx:116:PrincipalGroupedList",
+        "source": "src/atomic-crm/opportunities/PrincipalGroupedList.tsx:116:PrincipalGroupedListComponent",
         "target": "keys",
         "targetName": "keys",
         "edgeType": "call",
@@ -13785,7 +13785,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/PrincipalGroupedList.tsx:116:PrincipalGroupedList",
+        "source": "src/atomic-crm/opportunities/PrincipalGroupedList.tsx:116:PrincipalGroupedListComponent",
         "target": "map",
         "targetName": "map",
         "edgeType": "call",
@@ -13794,7 +13794,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/PrincipalGroupedList.tsx:116:PrincipalGroupedList",
+        "source": "src/atomic-crm/opportunities/PrincipalGroupedList.tsx:116:PrincipalGroupedListComponent",
         "target": "calculateMetrics",
         "targetName": "calculateMetrics",
         "edgeType": "call",
@@ -13803,7 +13803,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/PrincipalGroupedList.tsx:116:PrincipalGroupedList",
+        "source": "src/atomic-crm/opportunities/PrincipalGroupedList.tsx:116:PrincipalGroupedListComponent",
         "target": "filter",
         "targetName": "filter",
         "edgeType": "call",
@@ -13812,7 +13812,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/PrincipalGroupedList.tsx:116:PrincipalGroupedList",
+        "source": "src/atomic-crm/opportunities/PrincipalGroupedList.tsx:116:PrincipalGroupedListComponent",
         "target": "Card",
         "targetName": "Card",
         "edgeType": "render",
@@ -13821,7 +13821,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/PrincipalGroupedList.tsx:116:PrincipalGroupedList",
+        "source": "src/atomic-crm/opportunities/PrincipalGroupedList.tsx:116:PrincipalGroupedListComponent",
         "target": "Factory",
         "targetName": "Factory",
         "edgeType": "render",
@@ -13830,7 +13830,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/PrincipalGroupedList.tsx:116:PrincipalGroupedList",
+        "source": "src/atomic-crm/opportunities/PrincipalGroupedList.tsx:116:PrincipalGroupedListComponent",
         "target": "PrincipalColumn",
         "targetName": "PrincipalColumn",
         "edgeType": "render",
@@ -13839,146 +13839,146 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/PrincipalGroupedList.tsx:207:PrincipalColumn",
+        "source": "src/atomic-crm/opportunities/PrincipalGroupedList.tsx:209:PrincipalColumn",
         "target": "replace",
         "targetName": "replace",
         "edgeType": "call",
-        "line": 214,
+        "line": 216,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/PrincipalGroupedList.tsx:207:PrincipalColumn",
+        "source": "src/atomic-crm/opportunities/PrincipalGroupedList.tsx:209:PrincipalColumn",
         "target": "replace",
         "targetName": "replace",
         "edgeType": "call",
-        "line": 214,
+        "line": 216,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/PrincipalGroupedList.tsx:207:PrincipalColumn",
+        "source": "src/atomic-crm/opportunities/PrincipalGroupedList.tsx:209:PrincipalColumn",
         "target": "toLowerCase",
         "targetName": "toLowerCase",
         "edgeType": "call",
-        "line": 214,
+        "line": 216,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/PrincipalGroupedList.tsx:207:PrincipalColumn",
+        "source": "src/atomic-crm/opportunities/PrincipalGroupedList.tsx:209:PrincipalColumn",
         "target": "map",
         "targetName": "map",
         "edgeType": "call",
-        "line": 261,
+        "line": 263,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/PrincipalGroupedList.tsx:207:PrincipalColumn",
+        "source": "src/atomic-crm/opportunities/PrincipalGroupedList.tsx:209:PrincipalColumn",
         "target": "Badge",
         "targetName": "Badge",
         "edgeType": "render",
-        "line": 231,
+        "line": 233,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/PrincipalGroupedList.tsx:207:PrincipalColumn",
+        "source": "src/atomic-crm/opportunities/PrincipalGroupedList.tsx:209:PrincipalColumn",
         "target": "TrendingUp",
         "targetName": "TrendingUp",
-        "edgeType": "render",
-        "line": 240,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/PrincipalGroupedList.tsx:207:PrincipalColumn",
-        "target": "TrendingDown",
-        "targetName": "TrendingDown",
         "edgeType": "render",
         "line": 242,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/PrincipalGroupedList.tsx:207:PrincipalColumn",
+        "source": "src/atomic-crm/opportunities/PrincipalGroupedList.tsx:209:PrincipalColumn",
+        "target": "TrendingDown",
+        "targetName": "TrendingDown",
+        "edgeType": "render",
+        "line": 244,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/PrincipalGroupedList.tsx:209:PrincipalColumn",
         "target": "PrincipalOpportunityCard",
         "targetName": "PrincipalOpportunityCard",
         "edgeType": "render",
-        "line": 262,
+        "line": 264,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/PrincipalGroupedList.tsx:285:PrincipalOpportunityCard",
+        "source": "src/atomic-crm/opportunities/PrincipalGroupedList.tsx:287:PrincipalOpportunityCard",
         "target": "parseDateSafely",
         "targetName": "parseDateSafely",
         "edgeType": "call",
-        "line": 290,
+        "line": 292,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/PrincipalGroupedList.tsx:285:PrincipalOpportunityCard",
+        "source": "src/atomic-crm/opportunities/PrincipalGroupedList.tsx:287:PrincipalOpportunityCard",
         "target": "getStageStatus",
         "targetName": "getStageStatus",
         "edgeType": "call",
-        "line": 292,
+        "line": 294,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/PrincipalGroupedList.tsx:285:PrincipalOpportunityCard",
+        "source": "src/atomic-crm/opportunities/PrincipalGroupedList.tsx:287:PrincipalOpportunityCard",
         "target": "openSlideOver",
         "targetName": "openSlideOver",
         "edgeType": "call",
-        "line": 309,
+        "line": 311,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/PrincipalGroupedList.tsx:285:PrincipalOpportunityCard",
+        "source": "src/atomic-crm/opportunities/PrincipalGroupedList.tsx:287:PrincipalOpportunityCard",
         "target": "preventDefault",
         "targetName": "preventDefault",
         "edgeType": "call",
-        "line": 314,
+        "line": 316,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/PrincipalGroupedList.tsx:285:PrincipalOpportunityCard",
+        "source": "src/atomic-crm/opportunities/PrincipalGroupedList.tsx:287:PrincipalOpportunityCard",
         "target": "handleClick",
         "targetName": "handleClick",
         "edgeType": "call",
-        "line": 315,
+        "line": 317,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/PrincipalGroupedList.tsx:285:PrincipalOpportunityCard",
+        "source": "src/atomic-crm/opportunities/PrincipalGroupedList.tsx:287:PrincipalOpportunityCard",
         "target": "getOpportunityStageLabel",
         "targetName": "getOpportunityStageLabel",
         "edgeType": "call",
-        "line": 342,
+        "line": 344,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/PrincipalGroupedList.tsx:285:PrincipalOpportunityCard",
+        "source": "src/atomic-crm/opportunities/PrincipalGroupedList.tsx:287:PrincipalOpportunityCard",
         "target": "handleClick",
         "targetName": "handleClick",
         "edgeType": "callback",
-        "line": 323,
+        "line": 325,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/PrincipalGroupedList.tsx:285:PrincipalOpportunityCard",
+        "source": "src/atomic-crm/opportunities/PrincipalGroupedList.tsx:287:PrincipalOpportunityCard",
         "target": "handleKeyDown",
         "targetName": "handleKeyDown",
         "edgeType": "callback",
-        "line": 324,
+        "line": 326,
         "conditional": false,
         "inLoop": false
       },
