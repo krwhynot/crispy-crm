@@ -23,13 +23,6 @@ interface OrganizationCompactFormProps {
 export const OrganizationCompactForm = ({ isRep }: OrganizationCompactFormProps) => {
   useCityStateMapping();
 
-  const dataProvider = useDataProvider();
-  const record = useRecordContext();
-  const validateUniqueName = React.useMemo(
-    () => createDuplicateNameValidator(dataProvider, record?.id),
-    [dataProvider, record?.id]
-  );
-
   return (
     <div className="space-y-6">
       <FormSectionWithProgress
@@ -45,7 +38,6 @@ export const OrganizationCompactForm = ({ isRep }: OrganizationCompactFormProps)
                 label="Organization Name *"
                 helperText={false}
                 placeholder="Organization name"
-                validate={validateUniqueName}
               />
             </FormFieldWrapper>
           </div>
