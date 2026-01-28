@@ -154,7 +154,7 @@ const AdditionalInfo = ({ record }: { record: Company }) => {
       {record.parent_organization_id && (
         <div className="text-sm text-muted-foreground mb-1">
           Parent organization:{" "}
-          <ReferenceField source="parent_organization_id" reference="organizations" record={record}>
+          <ReferenceField source="parent_organization_id" reference="organizations">
             <TextField source="name" />
           </ReferenceField>
         </div>
