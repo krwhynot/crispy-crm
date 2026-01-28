@@ -54,7 +54,7 @@ function assertSegmentRecord<RecordType extends RaRecord>(
   if (!isSegmentRecord(segment)) {
     throw new Error(`Invalid segment data in ${context}`);
   }
-  return segment as RecordType;
+  return segment as unknown as RecordType;
 }
 
 function assertSegmentRecordArray<RecordType extends RaRecord>(
@@ -66,7 +66,7 @@ function assertSegmentRecordArray<RecordType extends RaRecord>(
       throw new Error(`Invalid segment data in ${context}`);
     }
   }
-  return segments as RecordType[];
+  return segments as unknown as RecordType[];
 }
 
 /**
@@ -129,10 +129,6 @@ export function createSegmentsHandler(baseProvider: DataProvider): DataProvider 
       return baseProvider.create<RecordType>(resource, params);
     },
 
-    /**
-     * getOne for segments
-     * Looks up by ID using the service
-     */
     getOne: async <RecordType extends RaRecord = RaRecord>(
       resource: string,
       params: Parameters<DataProvider["getOne"]>[1]
@@ -154,10 +150,6 @@ export function createSegmentsHandler(baseProvider: DataProvider): DataProvider 
       return baseProvider.getOne<RecordType>(resource, params);
     },
 
-    /**
-     * getList for segments
-     * Returns all fixed Playbook categories
-     */
     getList: async <RecordType extends RaRecord = RaRecord>(
       resource: string,
       _params: Parameters<DataProvider["getList"]>[1]
@@ -185,10 +177,6 @@ export function createSegmentsHandler(baseProvider: DataProvider): DataProvider 
       return baseProvider.getList<RecordType>(resource, _params);
     },
 
-    /**
-     * getMany for segments
-     * Looks up multiple segments by ID
-     */
     getMany: async <RecordType extends RaRecord = RaRecord>(
       resource: string,
       params: Parameters<DataProvider["getMany"]>[1]
