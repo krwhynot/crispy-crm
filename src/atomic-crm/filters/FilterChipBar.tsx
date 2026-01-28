@@ -41,7 +41,11 @@ interface FilterChipBarProps<TContext = unknown> {
  * </StandardListLayout>
  * ```
  */
-export function FilterChipBar({ filterConfig, context, className }: FilterChipBarProps) {
+export function FilterChipBar<TContext = unknown>({
+  filterConfig,
+  context,
+  className,
+}: FilterChipBarProps<TContext>) {
   const chipBarRef = useRef<HTMLDivElement>(null);
 
   // Fail-fast: config required
@@ -52,10 +56,8 @@ export function FilterChipBar({ filterConfig, context, className }: FilterChipBa
     );
   }
 
-  const { chips, removeFilter, clearAllFilters, hasActiveFilters, activeCount } = useFilterChipBar(
-    filterConfig,
-    context
-  );
+  const { chips, removeFilter, clearAllFilters, hasActiveFilters, activeCount } =
+    useFilterChipBar<TContext>(filterConfig, context);
 
   /**
    * Memoized callback for removing individual filters.

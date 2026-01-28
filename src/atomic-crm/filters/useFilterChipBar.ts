@@ -158,9 +158,9 @@ export function useFilterChipBar<TContext = unknown>(
     [context]
   );
 
-  // Transform filterValues into chip data
-  // Combines date range chips using removalGroup
-  const chips = useMemo(() => {
+  // Step 1: Create base chip data from filters (no name resolution yet)
+  // Only recalculates when filter values or config change
+  const baseChips = useMemo(() => {
     const result: ChipData[] = [];
     const processedGroups = new Set<string>(); // Track rendered removalGroups
 
@@ -228,6 +228,8 @@ export function useFilterChipBar<TContext = unknown>(
 
       values.forEach((v) => {
         let label: string;
+        let needsNameResolution = false;
+        let referenceType: string | undefined;
 
         // Special handling for search filter (q)
         // Include "Search: " prefix since FilterChip only renders label, not category
@@ -256,36 +258,82 @@ export function useFilterChipBar<TContext = unknown>(
           const choice = resolvedChoices?.find((c) => c.id === v);
           label = choice?.name ?? String(v);
         } else if (config?.reference === "organizations" || key === "organization_id") {
-          label = getOrganizationName(String(v));
+          // Store ID for later resolution
+          label = String(v);
+          needsNameResolution = true;
+          referenceType = "organizations";
         } else if (config?.reference === "sales" || key === "sales_id") {
-          // NOTE: Shows full name, not "Me" even when value matches current user.
-          // This is intentional - consistent with other reference lookups.
-          label = getSalesName(String(v));
+          label = String(v);
+          needsNameResolution = true;
+          referenceType = "sales";
         } else if (config?.reference === "tags" || key === "tags") {
-          label = getTagName(String(v));
+          label = String(v);
+          needsNameResolution = true;
+          referenceType = "tags";
         } else if (config?.reference === "segments" || key === "segment_id") {
-          label = getSegmentName(String(v));
+          label = String(v);
+          needsNameResolution = true;
+          referenceType = "segments";
         } else if (config?.reference === "categories" || key === "category") {
-          label = getCategoryName(String(v));
+          label = String(v);
+          needsNameResolution = true;
+          referenceType = "categories";
         } else {
           label = String(v);
         }
 
-        result.push({ key, value: v as string | number, label, category });
+        result.push({
+          key,
+          value: v as string | number,
+          label,
+          category,
+          // Store metadata for name resolution in next memo
+          ...(needsNameResolution && { referenceType }),
+        });
       });
     });
 
     return result;
-  }, [
-    filterValues,
-    filterConfig,
-    resolveChoices,
-    getOrganizationName,
-    getSalesName,
-    getTagName,
-    getSegmentName,
-    getCategoryName,
-  ]);
+  }, [filterValues, filterConfig, resolveChoices]);
+
+  // Step 2: Resolve reference names (separate memo)
+  // Only recalculates when name hooks change, not on every filter change
+  const chips = useMemo(() => {
+    return baseChips.map((chip) => {
+      // @ts-expect-error - referenceType is metadata for name resolution
+      const referenceType = chip.referenceType as string | undefined;
+
+      if (!referenceType) {
+        return chip;
+      }
+
+      // Resolve name based on reference type
+      let resolvedLabel: string;
+      switch (referenceType) {
+        case "organizations":
+          resolvedLabel = getOrganizationName(chip.label);
+          break;
+        case "sales":
+          resolvedLabel = getSalesName(chip.label);
+          break;
+        case "tags":
+          resolvedLabel = getTagName(chip.label);
+          break;
+        case "segments":
+          resolvedLabel = getSegmentName(chip.label);
+          break;
+        case "categories":
+          resolvedLabel = getCategoryName(chip.label);
+          break;
+        default:
+          resolvedLabel = chip.label;
+      }
+
+      // Return chip without metadata
+      const { referenceType: _, ...cleanChip } = chip as ChipData & { referenceType?: string };
+      return { ...cleanChip, label: resolvedLabel };
+    });
+  }, [baseChips, getOrganizationName, getSalesName, getTagName, getSegmentName, getCategoryName]);
 
   const removeFilter = useCallback(
     (key: string, value?: string | number) => {

@@ -254,7 +254,7 @@ const OrganizationCreate = () => {
         <div className="bg-muted px-6 py-6" onKeyDown={handleFormKeyDown}>
           <div className="max-w-4xl mx-auto create-form-card">
             <FormProgressProvider initialProgress={10}>
-              <Form
+              <Form<z.infer<typeof createOrganizationSchema>>
                 key={formKey}
                 defaultValues={formDefaults}
                 mode="all"
