@@ -18,9 +18,7 @@ interface OrganizationAsideProps {
   link?: string;
 }
 
-export const OrganizationAside = ({
-  link = "edit",
-}: OrganizationAsideProps): JSX.Element | null => {
+export const OrganizationAside = ({ link = "edit" }: OrganizationAsideProps) => {
   const record = useRecordContext<Company>();
   if (!record) return null;
 
@@ -100,12 +98,12 @@ const ContextInfo = ({ record }: { record: Company }) => {
     <AsideSection title="Context">
       {record.organization_type && (
         <span>
-          Type: <SelectField source="organization_type" choices={ORGANIZATION_TYPE_CHOICES} />
+          Type: <SelectField source="organization_type" choices={[...ORGANIZATION_TYPE_CHOICES]} />
         </span>
       )}
       {record.priority && (
         <span>
-          Priority: <SelectField source="priority" choices={PRIORITY_CHOICES} />
+          Priority: <SelectField source="priority" choices={[...PRIORITY_CHOICES]} />
         </span>
       )}
       {record.segment_id && (
