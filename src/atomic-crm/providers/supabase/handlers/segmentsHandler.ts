@@ -47,12 +47,6 @@ export function isSegmentRecord(value: unknown): value is Segment & { id: string
   );
 }
 
-/**
- * Assert and cast a validated segment to RecordType
- * Replaces double-casts with single generic cast after validation
- *
- * @throws Error if segment fails type guard validation
- */
 function assertSegmentRecord<RecordType extends RaRecord>(
   segment: Segment & { id: string },
   context: string
@@ -60,16 +54,9 @@ function assertSegmentRecord<RecordType extends RaRecord>(
   if (!isSegmentRecord(segment)) {
     throw new Error(`Invalid segment data in ${context}`);
   }
-  // Single cast is safe after type guard validation
   return segment as RecordType;
 }
 
-/**
- * Assert and cast an array of validated segments to RecordType[]
- * Replaces double-casts with single generic cast after validation
- *
- * @throws Error if any segment fails type guard validation
- */
 function assertSegmentRecordArray<RecordType extends RaRecord>(
   segments: Array<Segment & { id: string }>,
   context: string
@@ -79,7 +66,6 @@ function assertSegmentRecordArray<RecordType extends RaRecord>(
       throw new Error(`Invalid segment data in ${context}`);
     }
   }
-  // Single cast is safe after type guard validation
   return segments as RecordType[];
 }
 
