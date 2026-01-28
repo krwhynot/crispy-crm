@@ -46,8 +46,8 @@ export const salesSchema = z.strictObject({
   email: z
     .string()
     .trim()
-    .email("Must be a valid email address")
-    .max(VALIDATION_LIMITS.EMAIL_MAX, "Email too long"),
+    .max(VALIDATION_LIMITS.EMAIL_MAX, "Email too long")
+    .email("Must be a valid email address"),
   phone: z.string().trim().max(VALIDATION_LIMITS.PHONE_MAX, "Phone number too long").nullish(),
   avatar_url: z
     .string()
@@ -201,7 +201,7 @@ export async function validateUpdateSales(data: unknown): Promise<void> {
  * User receives invite email and sets their own password
  */
 export const userInviteSchema = z.strictObject({
-  email: z.string().email("Invalid email format").max(254, "Email too long"),
+  email: z.string().max(254, "Email too long").email("Invalid email format"),
   // Password optional - Supabase inviteUserByEmail handles password setup
   password: z
     .string()

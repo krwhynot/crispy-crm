@@ -37,10 +37,10 @@ describe("Activities .max() Constraints", () => {
   });
 
   describe("description field", () => {
-    it("should accept description at max length (5000 chars)", () => {
+    it("should accept description at max length (10000 chars)", () => {
       const validActivity = {
         subject: "Test",
-        description: "a".repeat(5000),
+        description: "a".repeat(10000),
         activity_type: "interaction" as const,
         type: "call" as const,
         contact_id: 1,
@@ -49,10 +49,10 @@ describe("Activities .max() Constraints", () => {
       expect(() => activitiesSchema.parse(validActivity)).not.toThrow();
     });
 
-    it("should reject description over max length (5001 chars)", () => {
+    it("should reject description over max length (10001 chars)", () => {
       const invalidActivity = {
         subject: "Test",
-        description: "a".repeat(5001),
+        description: "a".repeat(10001),
         activity_type: "interaction" as const,
         type: "call" as const,
         contact_id: 1,

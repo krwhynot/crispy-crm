@@ -53,7 +53,7 @@ export const baseActivitiesSchema = z.strictObject({
   follow_up_notes: z
     .string()
     .trim()
-    .max(5000)
+    .max(10000)
     .optional()
     .nullable()
     .transform((val) => (val ? sanitizeHtml(val) : val)),
