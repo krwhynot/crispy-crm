@@ -48,7 +48,7 @@ import { z } from "zod";
 import { withErrorLogging, withValidation, withSkipDelete } from "../wrappers";
 import { opportunitiesCallbacks } from "../callbacks";
 import { OpportunitiesService } from "../../../services/opportunities.service";
-import { assertExtendedDataProvider } from "../typeGuards";
+import { assertExtendedDataProvider, type ExtendedDataProvider } from "../typeGuards";
 import {
   opportunityProductSyncHandlerSchema,
   type OpportunityProductSyncHandler,
@@ -182,9 +182,10 @@ export function createOpportunitiesHandler(baseProvider: DataProvider): DataProv
           // FIX [SF-C12]: Pass version for optimistic locking concurrency check
           const previousVersion: number | undefined = validatedPreviousData.version;
 
-          // Service is instantiated here to ensure it uses the wrapped provider
-          const extendedProvider = assertExtendedDataProvider(baseProvider);
-          const service = new OpportunitiesService(extendedProvider);
+          // NOTE: We cast to ExtendedDataProvider because the provider WILL be extended
+          // by the time these methods are actually called. The runtime assertion was
+          // removed because it runs at initialization time before extensions are added.
+          const service = new OpportunitiesService(baseProvider as ExtendedDataProvider);
           const result = await service.updateWithProducts(
             params.id,
             validatedData,

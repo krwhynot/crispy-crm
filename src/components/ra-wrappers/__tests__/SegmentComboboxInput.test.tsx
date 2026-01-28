@@ -58,7 +58,7 @@ const FormWrapper = ({
 };
 
 describe("SegmentComboboxInput", () => {
-  test("marks segment as required (aria-required)", () => {
+  test("marks segment as required with visual indicator", () => {
     renderWithAdminContext(
       <FormWrapper defaultValues={{ organization_type: "distributor" }}>
         <SegmentComboboxInput source="segment_id" />
@@ -66,8 +66,16 @@ describe("SegmentComboboxInput", () => {
       { resource: "organizations" }
     );
 
-    const trigger = screen.getByRole("combobox");
-    expect(trigger).toHaveAttribute("aria-required", "true");
+    // Check for required indicator (asterisk) in label
+    const label = screen.getByText("Playbook Category");
+    expect(label).toBeInTheDocument();
+
+    // Required fields show asterisk via aria-hidden span
+    const labelElement = label.closest("label");
+    expect(labelElement).toBeInTheDocument();
+    const asterisk = labelElement?.querySelector('[aria-hidden="true"]');
+    expect(asterisk).toBeInTheDocument();
+    expect(asterisk).toHaveTextContent("*");
   });
 
   test("shows validation error when form submitted without selection", async () => {
@@ -85,9 +93,11 @@ describe("SegmentComboboxInput", () => {
     const submitButton = screen.getByText("Submit");
     await user.click(submitButton);
 
-    // Wait for validation error to appear
+    // Wait for validation error to appear (via FormError component with role="alert")
     await waitFor(() => {
-      expect(screen.getByText("Segment is required")).toBeInTheDocument();
+      const errorElement = document.querySelector('[role="alert"]');
+      expect(errorElement).toBeInTheDocument();
+      expect(errorElement).toHaveTextContent("Segment is required");
     });
 
     // Verify form was not submitted
@@ -244,16 +254,18 @@ describe("SegmentComboboxInput", () => {
       { resource: "organizations" }
     );
 
-    // Initially shows Playbook categories
-    const trigger = screen.getByRole("combobox");
-    await user.click(trigger);
+    // Initially shows Playbook category placeholder
+    let trigger = screen.getByRole("combobox");
+    expect(trigger).toHaveTextContent("Select playbook category...");
 
+    // Verify Playbook categories available
+    await user.click(trigger);
     await waitFor(() => {
       expect(screen.getByRole("option", { name: "Major Broadline" })).toBeInTheDocument();
     });
 
-    // Close dropdown
-    await user.click(trigger);
+    // Close dropdown by clicking outside
+    await user.keyboard("{Escape}");
 
     // Change organization_type to customer
     rerender(
@@ -262,14 +274,14 @@ describe("SegmentComboboxInput", () => {
       </FormWrapper>
     );
 
-    // Open dropdown again
+    // Wait for component to re-render with new choices
     await waitFor(() => {
-      const updatedTrigger = screen.getByRole("combobox");
-      expect(updatedTrigger).toHaveTextContent("Select operator segment...");
+      trigger = screen.getByRole("combobox");
+      expect(trigger).toHaveTextContent("Select operator segment...");
     });
 
-    const updatedTrigger = screen.getByRole("combobox");
-    await user.click(updatedTrigger);
+    // Open dropdown with new organization type
+    await user.click(trigger);
 
     // Now shows Operator segments
     await waitFor(() => {

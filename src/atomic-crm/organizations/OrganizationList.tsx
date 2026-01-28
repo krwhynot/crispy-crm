@@ -84,39 +84,12 @@ const OrganizationOpportunitiesCell = memo(function OrganizationOpportunitiesCel
   return <>{record.nb_opportunities || 0}</>;
 });
 
-/**
- * StyledColumnsButton - Custom columns selector that matches site design
- * Uses shadcn Button component instead of Material-UI from React Admin
- * Opens the DatagridConfigurable column preferences editor
- */
-const StyledColumnsButton = ({ preferenceKey }: { preferenceKey: string }) => {
-  const [, setInspectorOpen] = useStore(`preferences.${preferenceKey}.inspectorOpen`, false);
-
-  const handleClick = () => {
-    setInspectorOpen(true);
-  };
-
-  return (
-    <Button
-      variant="outline"
-      onClick={handleClick}
-      className="gap-2"
-      data-testid="select-columns-button"
-      data-preference-key={preferenceKey}
-    >
-      <Columns className="h-4 w-4" />
-      Columns
-    </Button>
-  );
-};
-
 const OrganizationListActions = () => (
   <TopToolbar>
     <SortButton
       fields={["name", "organization_type", "priority", "created_at"]}
       dataTutorial="org-sort-btn"
     />
-    <StyledColumnsButton preferenceKey="organizations.datagrid" />
     <ExportButton dataTutorial="org-export-btn" />
   </TopToolbar>
 );
@@ -242,8 +215,6 @@ const OrganizationListLayout = ({
           enableRecentSearches
         />
         <PremiumDatagrid
-          configurable={true}
-          preferenceKey="organizations.datagrid"
           onRowClick={(id) => openSlideOver(Number(id), "view")}
           focusedIndex={focusedIndex}
         >

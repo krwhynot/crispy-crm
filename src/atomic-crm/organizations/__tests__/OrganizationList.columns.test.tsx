@@ -117,11 +117,6 @@ vi.mock("react-admin", async () => {
         </div>
       );
     },
-    SelectColumnsButton: ({ preferenceKey }: { preferenceKey?: string }) => (
-      <button data-testid="select-columns-button" data-preference-key={preferenceKey}>
-        Columns
-      </button>
-    ),
   };
 });
 
@@ -467,14 +462,6 @@ describe("OrganizationList column sorting configuration", () => {
     await waitFor(() => {
       const opportunitiesField = screen.getByTestId("function-field-Opportunities");
       expect(opportunitiesField).toHaveAttribute("data-sortable", "false");
-    });
-  });
-
-  test("SelectColumnsButton is rendered in TopToolbar", async () => {
-    renderWithAdminContext(<OrganizationList />);
-
-    await waitFor(() => {
-      expect(screen.getByTestId("select-columns-button")).toBeInTheDocument();
     });
   });
 });

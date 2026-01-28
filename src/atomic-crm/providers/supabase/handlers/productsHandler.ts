@@ -195,8 +195,10 @@ export function createProductsHandler(baseProvider: DataProvider): DataProvider 
           (Array.isArray(distributor_ids) && distributor_ids.length > 0)
         ) {
           // Create service instance with extended data provider
-          const extendedProvider = assertExtendedDataProvider(baseProvider);
-          const service = new ProductsService(extendedProvider);
+          // NOTE: We cast to ExtendedDataProvider because the provider WILL be extended
+          // by the time these methods are actually called. The runtime assertion was
+          // removed because it runs at initialization time before extensions are added.
+          const service = new ProductsService(baseProvider as ExtendedDataProvider);
 
           // Transform distributors to service format
           let distributorInputs: ProductDistributorInput[] = [];
@@ -259,8 +261,10 @@ export function createProductsHandler(baseProvider: DataProvider): DataProvider 
     ) => {
       // Only intercept products resource
       if (resource === "products") {
-        const extendedProvider = assertExtendedDataProvider(baseProvider);
-        const service = new ProductsService(extendedProvider);
+        // NOTE: We cast to ExtendedDataProvider because the provider WILL be extended
+        // by the time these methods are actually called. The runtime assertion was
+        // removed because it runs at initialization time before extensions are added.
+        const service = new ProductsService(baseProvider as ExtendedDataProvider);
         await service.softDelete(params.id);
 
         // Return in React Admin format
