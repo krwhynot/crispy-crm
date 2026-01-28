@@ -74,7 +74,7 @@ describe("Organization Schema - String Max Length Constraints", () => {
       expect(result.success).toBe(false);
       if (!result.success) {
         const error = result.error.issues.find((i) => i.path[0] === "sector");
-        expect(error?.message).toContain("too long");
+        expect(error?.message).toMatch(/100/);
       }
     });
 
@@ -92,7 +92,7 @@ describe("Organization Schema - String Max Length Constraints", () => {
       expect(result.success).toBe(false);
       if (!result.success) {
         const error = result.error.issues.find((i) => i.path[0] === "territory");
-        expect(error?.message).toContain("too long");
+        expect(error?.message).toMatch(/100/);
       }
     });
   });
@@ -114,7 +114,7 @@ describe("Organization Schema - String Max Length Constraints", () => {
       expect(result.success).toBe(false);
       if (!result.success) {
         const error = result.error.issues.find((i) => i.path[0] === "segment_id");
-        expect(error?.message).toContain("uuid");
+        expect(error?.message).toMatch(/UUID/i);
       }
     });
 

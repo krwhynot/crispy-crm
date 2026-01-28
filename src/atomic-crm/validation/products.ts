@@ -121,7 +121,10 @@ const distributorFieldsSchema = {
     .optional(),
   // Zod v4: z.record(keySchema, valueSchema) - keys are strings in JS objects
   product_distributors: z
-    .record(z.string(), z.strictObject({ vendor_item_number: z.string().max(50).nullable() }))
+    .record(
+      z.string().max(50),
+      z.strictObject({ vendor_item_number: z.string().max(50).nullable() })
+    )
     .optional(),
 };
 
@@ -220,12 +223,12 @@ export const productUpdateWithDistributorsSchema = z.strictObject({
   // System/timestamp fields (from view, stripped before save by productsCallbacks)
   created_by: z.number().int().nullish(),
   updated_by: z.number().int().nullish(),
-  created_at: z.string().nullish(), // ISO timestamp from view
-  updated_at: z.string().nullish(), // ISO timestamp from view
-  deleted_at: z.string().nullish(), // ISO timestamp from view
+  created_at: z.string().max(50).nullish(), // ISO timestamp from view
+  updated_at: z.string().max(50).nullish(), // ISO timestamp from view
+  deleted_at: z.string().max(50).nullish(), // ISO timestamp from view
 
   // Computed fields from products_summary view (stripped before save)
-  principal_name: z.string().nullish(),
+  principal_name: z.string().max(255).nullish(),
 
   // Distributor fields - explicitly allowed for productsHandler
   ...distributorFieldsSchema,
@@ -256,7 +259,7 @@ export async function validateProductUpdateWithDistributors(data: unknown): Prom
 // Opportunity Product schema for line items (added for opportunity-products junction)
 // SIMPLIFIED: Only tracks product associations, no pricing/quantity (matches database schema)
 export const opportunityProductSchema = z.strictObject({
-  id: z.union([z.string(), z.number()]).optional(),
+  id: z.union([z.string().max(50), z.number()]).optional(),
   product_id_reference: z.coerce.number().int().positive("Product is required"),
   product_name: z
     .string()
