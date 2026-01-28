@@ -1,13 +1,13 @@
 {
   "chunk_name": "validation",
-  "generated_at": "2026-01-28T01:22:30.446Z",
+  "generated_at": "2026-01-28T01:53:20.556Z",
   "items": {
     "nodes": [
       {
-        "id": "src/atomic-crm/validation/activities/schemas.ts:116:applyActivityRefinements",
+        "id": "src/atomic-crm/validation/activities/schemas.ts:104:applyActivityRefinements",
         "name": "applyActivityRefinements",
         "file": "src/atomic-crm/validation/activities/schemas.ts",
-        "line": 116,
+        "line": 104,
         "nodeType": "function",
         "exported": false,
         "async": false
@@ -861,65 +861,65 @@
     ],
     "edges": [
       {
-        "source": "src/atomic-crm/validation/activities/schemas.ts:116:applyActivityRefinements",
+        "source": "src/atomic-crm/validation/activities/schemas.ts:104:applyActivityRefinements",
         "target": "addIssue",
         "targetName": "addIssue",
         "edgeType": "call",
-        "line": 123,
+        "line": 111,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/activities/schemas.ts:116:applyActivityRefinements",
+        "source": "src/atomic-crm/validation/activities/schemas.ts:104:applyActivityRefinements",
         "target": "addIssue",
         "targetName": "addIssue",
         "edgeType": "call",
-        "line": 132,
+        "line": 120,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/activities/schemas.ts:116:applyActivityRefinements",
+        "source": "src/atomic-crm/validation/activities/schemas.ts:104:applyActivityRefinements",
         "target": "addIssue",
         "targetName": "addIssue",
         "edgeType": "call",
-        "line": 141,
+        "line": 129,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/activities/schemas.ts:116:applyActivityRefinements",
+        "source": "src/atomic-crm/validation/activities/schemas.ts:104:applyActivityRefinements",
         "target": "addIssue",
         "targetName": "addIssue",
         "edgeType": "call",
-        "line": 150,
+        "line": 138,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/activities/schemas.ts:116:applyActivityRefinements",
+        "source": "src/atomic-crm/validation/activities/schemas.ts:104:applyActivityRefinements",
         "target": "includes",
         "targetName": "includes",
         "edgeType": "call",
-        "line": 161,
+        "line": 149,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/activities/schemas.ts:116:applyActivityRefinements",
+        "source": "src/atomic-crm/validation/activities/schemas.ts:104:applyActivityRefinements",
         "target": "addIssue",
         "targetName": "addIssue",
         "edgeType": "call",
-        "line": 164,
+        "line": 152,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/activities/schemas.ts:116:applyActivityRefinements",
+        "source": "src/atomic-crm/validation/activities/schemas.ts:104:applyActivityRefinements",
         "target": "addIssue",
         "targetName": "addIssue",
         "edgeType": "call",
-        "line": 172,
+        "line": 160,
         "conditional": true,
         "inLoop": false
       },

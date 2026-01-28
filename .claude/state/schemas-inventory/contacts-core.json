@@ -1,6 +1,6 @@
 {
   "chunk_name": "contacts-core",
-  "generated_at": "2026-01-28T01:22:24.918Z",
+  "generated_at": "2026-01-28T01:53:17.268Z",
   "item_count": 3,
   "items": [
     {
@@ -23,7 +23,7 @@
           "zodType": "string",
           "constraints": [
             "trim()",
-            "max(255, \"Name too long\")"
+            "max(255)"
           ],
           "optional": true,
           "nullable": false,
@@ -35,8 +35,7 @@
           "zodType": "string",
           "constraints": [
             "trim()",
-            "min(1)",
-            "max(100, \"First name too long\")"
+            "max(100)"
           ],
           "optional": true,
           "nullable": true,
@@ -48,8 +47,7 @@
           "zodType": "string",
           "constraints": [
             "trim()",
-            "min(1)",
-            "max(100, \"Last name too long\")"
+            "max(100)"
           ],
           "optional": true,
           "nullable": true,
@@ -83,7 +81,7 @@
           "zodType": "string",
           "constraints": [
             "trim()",
-            "max(100, \"Title too long\")"
+            "max(100)"
           ],
           "optional": true,
           "nullable": true,
@@ -95,7 +93,7 @@
           "zodType": "string",
           "constraints": [
             "trim()",
-            "max(100, \"Department too long\")"
+            "max(100)"
           ],
           "optional": true,
           "nullable": true,
@@ -152,7 +150,7 @@
           "zodType": "string",
           "constraints": [
             "trim()",
-            "max(10, \"District code too long\")"
+            "max(10)"
           ],
           "optional": true,
           "nullable": true,
@@ -164,7 +162,7 @@
           "zodType": "string",
           "constraints": [
             "trim()",
-            "max(100, \"Territory name too long\")"
+            "max(100)"
           ],
           "optional": true,
           "nullable": true,
@@ -257,7 +255,7 @@
           "name": "company_name",
           "zodType": "string",
           "constraints": [
-            "max(255, \"Company name too long\")"
+            "max(255)"
           ],
           "optional": true,
           "nullable": true,
@@ -285,7 +283,7 @@
           "zodType": "string",
           "constraints": [
             "trim()",
-            "max(500, \"Address too long\")"
+            "max(500)"
           ],
           "optional": true,
           "nullable": true,
@@ -297,7 +295,7 @@
           "zodType": "string",
           "constraints": [
             "trim()",
-            "max(100, \"City too long\")"
+            "max(100)"
           ],
           "optional": true,
           "nullable": true,
@@ -309,7 +307,7 @@
           "zodType": "string",
           "constraints": [
             "trim()",
-            "max(100, \"State too long\")"
+            "max(100)"
           ],
           "optional": true,
           "nullable": true,
@@ -321,7 +319,7 @@
           "zodType": "string",
           "constraints": [
             "trim()",
-            "max(20, \"Postal code too long\")"
+            "max(20)"
           ],
           "optional": true,
           "nullable": true,
@@ -333,7 +331,7 @@
           "zodType": "string",
           "constraints": [
             "trim()",
-            "max(100, \"Country too long\")"
+            "max(100)"
           ],
           "optional": true,
           "nullable": true,
@@ -354,7 +352,7 @@
           "zodType": "string",
           "constraints": [
             "trim()",
-            "max(50, \"Gender too long\")"
+            "max(50)"
           ],
           "optional": true,
           "nullable": true,
@@ -366,7 +364,7 @@
           "zodType": "string",
           "constraints": [
             "trim()",
-            "max(100, \"Twitter handle too long\")"
+            "max(100)"
           ],
           "optional": true,
           "nullable": true,
@@ -391,7 +389,7 @@
           "zodType": "string",
           "constraints": [
             "trim()",
-            "max(50, \"Status too long\")"
+            "max(50)"
           ],
           "optional": true,
           "nullable": true,

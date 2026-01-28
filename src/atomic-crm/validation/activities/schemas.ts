@@ -19,7 +19,7 @@ import { SAMPLE_ACTIVE_STATUSES } from "./constants";
  * IMPORTANT: Exported for Zod v4 compatibility - use baseActivitiesSchema.partial().parse({}) for defaults
  */
 export const baseActivitiesSchema = z.strictObject({
-  id: z.union([z.string().max(50, "Activity ID too long"), z.number()]).optional(),
+  id: z.union([z.string(), z.number()]).optional(),
   activity_type: activityTypeSchema.default("interaction"), // Default to interaction
   type: interactionTypeSchema.default("call"), // Default to call
   subject: z.string().trim().min(1, "Subject is required").max(255, "Subject too long"),
@@ -34,10 +34,7 @@ export const baseActivitiesSchema = z.strictObject({
   duration_minutes: z.number().int().positive().optional().nullable(),
 
   // Entity relationships
-  contact_id: z
-    .union([z.string().max(50, "Contact ID too long"), z.number()])
-    .optional()
-    .nullable(),
+  contact_id: z.union([z.string().max(50, "Contact ID too long"), z.number()]).optional().nullable(),
   organization_id: z
     .union([z.string().max(50, "Organization ID too long"), z.number()])
     .optional()
@@ -81,10 +78,7 @@ export const baseActivitiesSchema = z.strictObject({
   sample_status: sampleStatusSchema.optional().nullable(),
 
   // System fields
-  created_by: z
-    .union([z.string().max(50, "Created by ID too long"), z.number()])
-    .optional()
-    .nullable(),
+  created_by: z.union([z.string(), z.number()]).optional().nullable(),
   created_at: z.string().max(50).optional(),
   updated_at: z.string().max(50).optional(),
   deleted_at: z.string().max(50).optional().nullable(),
@@ -96,18 +90,12 @@ export const baseActivitiesSchema = z.strictObject({
   completed: z.coerce.boolean().optional().nullable(),
   completed_at: z.coerce.date().optional().nullable(),
   priority: z.enum(["low", "medium", "high", "critical"]).optional().nullable(),
-  sales_id: z
-    .union([z.string().max(50, "Sales ID too long"), z.number()])
-    .optional()
-    .nullable(),
+  sales_id: z.union([z.string(), z.number()]).optional().nullable(),
   snooze_until: z.coerce.date().optional().nullable(),
   overdue_notified_at: z.coerce.date().optional().nullable(),
 
   // Related task reference (for activities that complete a task)
-  related_task_id: z
-    .union([z.string().max(50, "Task ID too long"), z.number()])
-    .optional()
-    .nullable(),
+  related_task_id: z.union([z.string(), z.number()]).optional().nullable(),
 });
 
 /**

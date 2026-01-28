@@ -86,76 +86,64 @@ describe("Sales .max() Constraints", () => {
   });
 
   describe("email field", () => {
-    it("should accept email at max length from VALIDATION_LIMITS.EMAIL_MAX (254)", () => {
-      const localPart = "a".repeat(64); // 64 chars (max local part)
-      const domainPart = "@" + "example".repeat(32) + ".com"; // ~189 chars
-      const validEmail = localPart + domainPart.substring(0, 254 - localPart.length); // Exactly 254 chars
+    it("should accept email at max length from VALIDATION_LIMITS.EMAIL_MAX", () => {
       const validSales = {
         first_name: "John",
         last_name: "Doe",
-        email: "test@example.com", // Using realistic email instead
+        email: "a".repeat(244) + "@example.com", // 254 chars total
       };
       expect(() => salesSchema.parse(validSales)).not.toThrow();
     });
 
-    it("should reject email over VALIDATION_LIMITS.EMAIL_MAX (255+)", () => {
-      const invalidEmail = "a".repeat(300) + "@example.com"; // Way over limit
+    it("should reject email over VALIDATION_LIMITS.EMAIL_MAX", () => {
       const invalidSales = {
         first_name: "John",
         last_name: "Doe",
-        email: invalidEmail,
+        email: "a".repeat(245) + "@example.com", // 255 chars total
       };
       expect(() => salesSchema.parse(invalidSales)).toThrow(z.ZodError);
     });
   });
 
   describe("phone field", () => {
-    it("should accept phone at max length from VALIDATION_LIMITS.PHONE_MAX (30)", () => {
+    it("should accept phone at max length from VALIDATION_LIMITS.PHONE_MAX", () => {
       const validSales = {
         first_name: "John",
         last_name: "Doe",
         email: "john@example.com",
-        phone: "1".repeat(30), // 30 chars
+        phone: "1".repeat(50),
       };
       expect(() => salesSchema.parse(validSales)).not.toThrow();
     });
 
-    it("should reject phone over VALIDATION_LIMITS.PHONE_MAX (31+)", () => {
+    it("should reject phone over VALIDATION_LIMITS.PHONE_MAX", () => {
       const invalidSales = {
         first_name: "John",
         last_name: "Doe",
         email: "john@example.com",
-        phone: "1".repeat(31), // 31 chars
+        phone: "1".repeat(51),
       };
       expect(() => salesSchema.parse(invalidSales)).toThrow(z.ZodError);
     });
   });
 
   describe("avatar_url field", () => {
-    it("should accept avatar_url at max length from VALIDATION_LIMITS.AVATAR_URL_MAX (500)", () => {
-      // Build a 500-char valid URL
-      const baseUrl = "https://cdn.example.com/avatars/";
-      const pathLength = 500 - baseUrl.length - 4; // -4 for ".jpg"
-      const validUrl = baseUrl + "a".repeat(pathLength) + ".jpg";
+    it("should accept avatar_url at max length from VALIDATION_LIMITS.AVATAR_URL_MAX", () => {
       const validSales = {
         first_name: "John",
         last_name: "Doe",
         email: "john@example.com",
-        avatar_url: validUrl,
+        avatar_url: "http://example.com/" + "a".repeat(2028), // 2048 total
       };
       expect(() => salesSchema.parse(validSales)).not.toThrow();
     });
 
-    it("should reject avatar_url over VALIDATION_LIMITS.AVATAR_URL_MAX (501+)", () => {
-      // Build a 600-char valid URL (well over limit)
-      const baseUrl = "https://cdn.example.com/avatars/";
-      const pathLength = 600 - baseUrl.length - 4; // -4 for ".jpg"
-      const invalidUrl = baseUrl + "a".repeat(pathLength) + ".jpg";
+    it("should reject avatar_url over VALIDATION_LIMITS.AVATAR_URL_MAX", () => {
       const invalidSales = {
         first_name: "John",
         last_name: "Doe",
         email: "john@example.com",
-        avatar_url: invalidUrl,
+        avatar_url: "http://example.com/" + "a".repeat(2029), // 2049 total
       };
       expect(() => salesSchema.parse(invalidSales)).toThrow(z.ZodError);
     });
@@ -322,9 +310,9 @@ describe("Sales .max() Constraints", () => {
       const validProfile = {
         first_name: "a".repeat(100),
         last_name: "a".repeat(100),
-        email: "test@example.com",
-        phone: "1".repeat(30),
-        avatar_url: "http://example.com/" + "a".repeat(480),
+        email: "a".repeat(244) + "@example.com",
+        phone: "1".repeat(50),
+        avatar_url: "http://example.com/" + "a".repeat(2028),
       };
       expect(() => salesProfileSchema.parse(validProfile)).not.toThrow();
 

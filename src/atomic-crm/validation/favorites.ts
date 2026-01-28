@@ -23,7 +23,7 @@ export type FavoriteEntityType = (typeof FAVORITE_ENTITY_TYPES)[number];
  */
 export const favoriteSchema = z.strictObject({
   // ID - optional for creates, present on reads
-  id: z.union([z.string(), z.number()]).optional(),
+  id: z.union([z.string().max(50, "ID too long"), z.number()]).optional(),
 
   // User ID - UUID from auth.users
   user_id: z.string().uuid().max(36),

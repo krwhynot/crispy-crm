@@ -1,6 +1,6 @@
 {
   "chunk_name": "sales",
-  "generated_at": "2026-01-28T01:22:24.928Z",
+  "generated_at": "2026-01-28T01:53:17.287Z",
   "item_count": 5,
   "items": [
     {
@@ -12,7 +12,9 @@
         {
           "name": "id",
           "zodType": "union",
-          "constraints": [],
+          "constraints": [
+            "max(50, \"ID too long\")"
+          ],
           "optional": true,
           "nullable": false,
           "hasTransform": false,
