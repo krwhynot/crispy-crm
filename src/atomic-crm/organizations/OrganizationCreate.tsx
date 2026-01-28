@@ -31,7 +31,7 @@ import {
 import { useLocation } from "react-router-dom";
 
 import { OrganizationInputs } from "./OrganizationInputs";
-import { organizationSchema } from "../validation/organizations";
+import { createOrganizationSchema } from "../validation/organizations";
 import { useDuplicateOrgCheck } from "./useDuplicateOrgCheck";
 import { DuplicateOrgWarningDialog } from "./DuplicateOrgWarningDialog";
 import { OrganizationCreateFormFooter } from "./OrganizationCreateFormFooter";
@@ -257,9 +257,9 @@ const OrganizationCreate = () => {
                 key={formKey}
                 defaultValues={formDefaults}
                 mode="all"
-                resolver={zodResolver(organizationSchema)}
+                resolver={zodResolver(createOrganizationSchema)}
               >
-                <FormProgressBar schema={organizationSchema} className="mb-6" />
+                <FormProgressBar schema={createOrganizationSchema} className="mb-6" />
                 <Card>
                   <CardContent>
                     <OrganizationFormContent

@@ -1,6 +1,6 @@
 {
   "chunk_name": "organizations",
-  "generated_at": "2026-01-28T04:25:38.758Z",
+  "generated_at": "2026-01-28T05:48:30.299Z",
   "items": {
     "nodes": [
       {
@@ -166,19 +166,10 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/organizations/OrganizationCompactForm.tsx:22:createDuplicateNameValidator",
-        "name": "createDuplicateNameValidator",
-        "file": "src/atomic-crm/organizations/OrganizationCompactForm.tsx",
-        "line": 22,
-        "nodeType": "arrow",
-        "exported": false,
-        "async": false
-      },
-      {
-        "id": "src/atomic-crm/organizations/OrganizationCompactForm.tsx:44:OrganizationCompactForm",
+        "id": "src/atomic-crm/organizations/OrganizationCompactForm.tsx:23:OrganizationCompactForm",
         "name": "OrganizationCompactForm",
         "file": "src/atomic-crm/organizations/OrganizationCompactForm.tsx",
-        "line": 44,
+        "line": 23,
         "nodeType": "component",
         "exported": true,
         "async": false
@@ -3579,232 +3570,214 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationCompactForm.tsx:22:createDuplicateNameValidator",
-        "target": "trim",
-        "targetName": "trim",
-        "edgeType": "call",
-        "line": 24,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/OrganizationCompactForm.tsx:22:createDuplicateNameValidator",
-        "target": "getList",
-        "targetName": "getList",
-        "edgeType": "call",
-        "line": 26,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/OrganizationCompactForm.tsx:22:createDuplicateNameValidator",
-        "target": "trim",
-        "targetName": "trim",
-        "edgeType": "call",
-        "line": 27,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/OrganizationCompactForm.tsx:44:OrganizationCompactForm",
+        "source": "src/atomic-crm/organizations/OrganizationCompactForm.tsx:23:OrganizationCompactForm",
         "target": "useCityStateMapping",
         "targetName": "useCityStateMapping",
         "edgeType": "hook",
+        "line": 24,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/OrganizationCompactForm.tsx:23:OrganizationCompactForm",
+        "target": "FormSectionWithProgress",
+        "targetName": "FormSectionWithProgress",
+        "edgeType": "render",
+        "line": 28,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/OrganizationCompactForm.tsx:23:OrganizationCompactForm",
+        "target": "CompactFormRow",
+        "targetName": "CompactFormRow",
+        "edgeType": "render",
+        "line": 33,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/OrganizationCompactForm.tsx:23:OrganizationCompactForm",
+        "target": "FormFieldWrapper",
+        "targetName": "FormFieldWrapper",
+        "edgeType": "render",
+        "line": 35,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/OrganizationCompactForm.tsx:23:OrganizationCompactForm",
+        "target": "FormFieldWrapper",
+        "targetName": "FormFieldWrapper",
+        "edgeType": "render",
         "line": 45,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationCompactForm.tsx:44:OrganizationCompactForm",
-        "target": "useDataProvider",
-        "targetName": "useDataProvider",
-        "edgeType": "hook",
-        "line": 47,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/OrganizationCompactForm.tsx:44:OrganizationCompactForm",
-        "target": "useRecordContext",
-        "targetName": "useRecordContext",
-        "edgeType": "hook",
-        "line": 48,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/OrganizationCompactForm.tsx:44:OrganizationCompactForm",
-        "target": "useMemo",
-        "targetName": "useMemo",
-        "edgeType": "hook",
-        "line": 49,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/OrganizationCompactForm.tsx:44:OrganizationCompactForm",
-        "target": "createDuplicateNameValidator",
-        "targetName": "createDuplicateNameValidator",
-        "edgeType": "call",
-        "line": 50,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/OrganizationCompactForm.tsx:44:OrganizationCompactForm",
-        "target": "FormSectionWithProgress",
-        "targetName": "FormSectionWithProgress",
-        "edgeType": "render",
-        "line": 56,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/OrganizationCompactForm.tsx:44:OrganizationCompactForm",
+        "source": "src/atomic-crm/organizations/OrganizationCompactForm.tsx:23:OrganizationCompactForm",
         "target": "CompactFormRow",
         "targetName": "CompactFormRow",
         "edgeType": "render",
-        "line": 61,
+        "line": 51,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationCompactForm.tsx:44:OrganizationCompactForm",
+        "source": "src/atomic-crm/organizations/OrganizationCompactForm.tsx:23:OrganizationCompactForm",
         "target": "FormFieldWrapper",
         "targetName": "FormFieldWrapper",
         "edgeType": "render",
-        "line": 63,
+        "line": 52,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationCompactForm.tsx:44:OrganizationCompactForm",
+        "source": "src/atomic-crm/organizations/OrganizationCompactForm.tsx:23:OrganizationCompactForm",
         "target": "FormFieldWrapper",
         "targetName": "FormFieldWrapper",
+        "edgeType": "render",
+        "line": 55,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/OrganizationCompactForm.tsx:23:OrganizationCompactForm",
+        "target": "FormSectionWithProgress",
+        "targetName": "FormSectionWithProgress",
+        "edgeType": "render",
+        "line": 67,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/OrganizationCompactForm.tsx:23:OrganizationCompactForm",
+        "target": "CompactFormRow",
+        "targetName": "CompactFormRow",
+        "edgeType": "render",
+        "line": 72,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/OrganizationCompactForm.tsx:23:OrganizationCompactForm",
+        "target": "FormFieldWrapper",
+        "targetName": "FormFieldWrapper",
+        "edgeType": "render",
+        "line": 73,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/OrganizationCompactForm.tsx:23:OrganizationCompactForm",
+        "target": "ReferenceInput",
+        "targetName": "ReferenceInput",
         "edgeType": "render",
         "line": 74,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationCompactForm.tsx:44:OrganizationCompactForm",
+        "source": "src/atomic-crm/organizations/OrganizationCompactForm.tsx:23:OrganizationCompactForm",
+        "target": "FormFieldWrapper",
+        "targetName": "FormFieldWrapper",
+        "edgeType": "render",
+        "line": 88,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/OrganizationCompactForm.tsx:23:OrganizationCompactForm",
+        "target": "FormSectionWithProgress",
+        "targetName": "FormSectionWithProgress",
+        "edgeType": "render",
+        "line": 94,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/OrganizationCompactForm.tsx:23:OrganizationCompactForm",
         "target": "CompactFormRow",
         "targetName": "CompactFormRow",
         "edgeType": "render",
-        "line": 80,
+        "line": 95,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationCompactForm.tsx:44:OrganizationCompactForm",
+        "source": "src/atomic-crm/organizations/OrganizationCompactForm.tsx:23:OrganizationCompactForm",
         "target": "FormFieldWrapper",
         "targetName": "FormFieldWrapper",
-        "edgeType": "render",
-        "line": 81,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/OrganizationCompactForm.tsx:44:OrganizationCompactForm",
-        "target": "FormFieldWrapper",
-        "targetName": "FormFieldWrapper",
-        "edgeType": "render",
-        "line": 84,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/OrganizationCompactForm.tsx:44:OrganizationCompactForm",
-        "target": "FormSectionWithProgress",
-        "targetName": "FormSectionWithProgress",
         "edgeType": "render",
         "line": 96,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationCompactForm.tsx:44:OrganizationCompactForm",
-        "target": "CompactFormRow",
-        "targetName": "CompactFormRow",
-        "edgeType": "render",
-        "line": 101,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/OrganizationCompactForm.tsx:44:OrganizationCompactForm",
+        "source": "src/atomic-crm/organizations/OrganizationCompactForm.tsx:23:OrganizationCompactForm",
         "target": "FormFieldWrapper",
         "targetName": "FormFieldWrapper",
         "edgeType": "render",
-        "line": 102,
+        "line": 104,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationCompactForm.tsx:44:OrganizationCompactForm",
-        "target": "ReferenceInput",
-        "targetName": "ReferenceInput",
+        "source": "src/atomic-crm/organizations/OrganizationCompactForm.tsx:23:OrganizationCompactForm",
+        "target": "CompactFormRow",
+        "targetName": "CompactFormRow",
         "edgeType": "render",
-        "line": 103,
+        "line": 114,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationCompactForm.tsx:44:OrganizationCompactForm",
+        "source": "src/atomic-crm/organizations/OrganizationCompactForm.tsx:23:OrganizationCompactForm",
         "target": "FormFieldWrapper",
         "targetName": "FormFieldWrapper",
         "edgeType": "render",
-        "line": 117,
+        "line": 115,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationCompactForm.tsx:44:OrganizationCompactForm",
-        "target": "FormSectionWithProgress",
-        "targetName": "FormSectionWithProgress",
+        "source": "src/atomic-crm/organizations/OrganizationCompactForm.tsx:23:OrganizationCompactForm",
+        "target": "FormFieldWrapper",
+        "targetName": "FormFieldWrapper",
         "edgeType": "render",
-        "line": 128,
+        "line": 118,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationCompactForm.tsx:44:OrganizationCompactForm",
-        "target": "CompactFormRow",
-        "targetName": "CompactFormRow",
+        "source": "src/atomic-crm/organizations/OrganizationCompactForm.tsx:23:OrganizationCompactForm",
+        "target": "CollapsibleSection",
+        "targetName": "CollapsibleSection",
         "edgeType": "render",
         "line": 129,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationCompactForm.tsx:44:OrganizationCompactForm",
+        "source": "src/atomic-crm/organizations/OrganizationCompactForm.tsx:23:OrganizationCompactForm",
         "target": "FormFieldWrapper",
         "targetName": "FormFieldWrapper",
         "edgeType": "render",
-        "line": 130,
+        "line": 132,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationCompactForm.tsx:44:OrganizationCompactForm",
+        "source": "src/atomic-crm/organizations/OrganizationCompactForm.tsx:23:OrganizationCompactForm",
         "target": "FormFieldWrapper",
         "targetName": "FormFieldWrapper",
         "edgeType": "render",
-        "line": 138,
+        "line": 140,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationCompactForm.tsx:44:OrganizationCompactForm",
-        "target": "CompactFormRow",
-        "targetName": "CompactFormRow",
-        "edgeType": "render",
-        "line": 148,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/OrganizationCompactForm.tsx:44:OrganizationCompactForm",
+        "source": "src/atomic-crm/organizations/OrganizationCompactForm.tsx:23:OrganizationCompactForm",
         "target": "FormFieldWrapper",
         "targetName": "FormFieldWrapper",
         "edgeType": "render",
@@ -3813,191 +3786,146 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationCompactForm.tsx:44:OrganizationCompactForm",
+        "source": "src/atomic-crm/organizations/OrganizationCompactForm.tsx:23:OrganizationCompactForm",
         "target": "FormFieldWrapper",
         "targetName": "FormFieldWrapper",
         "edgeType": "render",
-        "line": 152,
+        "line": 156,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationCompactForm.tsx:44:OrganizationCompactForm",
-        "target": "CollapsibleSection",
-        "targetName": "CollapsibleSection",
-        "edgeType": "render",
-        "line": 163,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/OrganizationCompactForm.tsx:44:OrganizationCompactForm",
-        "target": "FormFieldWrapper",
-        "targetName": "FormFieldWrapper",
-        "edgeType": "render",
-        "line": 166,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/OrganizationCompactForm.tsx:44:OrganizationCompactForm",
-        "target": "FormFieldWrapper",
-        "targetName": "FormFieldWrapper",
-        "edgeType": "render",
-        "line": 174,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/OrganizationCompactForm.tsx:44:OrganizationCompactForm",
-        "target": "FormFieldWrapper",
-        "targetName": "FormFieldWrapper",
-        "edgeType": "render",
-        "line": 183,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/OrganizationCompactForm.tsx:44:OrganizationCompactForm",
-        "target": "FormFieldWrapper",
-        "targetName": "FormFieldWrapper",
-        "edgeType": "render",
-        "line": 190,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/OrganizationCompactForm.tsx:44:OrganizationCompactForm",
+        "source": "src/atomic-crm/organizations/OrganizationCompactForm.tsx:23:OrganizationCompactForm",
         "target": "TextInput",
         "targetName": "TextInput",
         "edgeType": "render",
-        "line": 64,
+        "line": 36,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationCompactForm.tsx:44:OrganizationCompactForm",
+        "source": "src/atomic-crm/organizations/OrganizationCompactForm.tsx:23:OrganizationCompactForm",
         "target": "PrincipalAwareTypeInput",
         "targetName": "PrincipalAwareTypeInput",
         "edgeType": "render",
-        "line": 75,
+        "line": 46,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationCompactForm.tsx:44:OrganizationCompactForm",
+        "source": "src/atomic-crm/organizations/OrganizationCompactForm.tsx:23:OrganizationCompactForm",
         "target": "ParentOrganizationInput",
         "targetName": "ParentOrganizationInput",
         "edgeType": "render",
-        "line": 82,
+        "line": 53,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationCompactForm.tsx:44:OrganizationCompactForm",
+        "source": "src/atomic-crm/organizations/OrganizationCompactForm.tsx:23:OrganizationCompactForm",
         "target": "SelectInput",
         "targetName": "SelectInput",
         "edgeType": "render",
-        "line": 85,
+        "line": 56,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationCompactForm.tsx:44:OrganizationCompactForm",
+        "source": "src/atomic-crm/organizations/OrganizationCompactForm.tsx:23:OrganizationCompactForm",
         "target": "SelectInput",
         "targetName": "SelectInput",
         "edgeType": "render",
-        "line": 109,
+        "line": 80,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationCompactForm.tsx:44:OrganizationCompactForm",
+        "source": "src/atomic-crm/organizations/OrganizationCompactForm.tsx:23:OrganizationCompactForm",
         "target": "SegmentComboboxInput",
         "targetName": "SegmentComboboxInput",
         "edgeType": "render",
-        "line": 118,
+        "line": 89,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationCompactForm.tsx:44:OrganizationCompactForm",
+        "source": "src/atomic-crm/organizations/OrganizationCompactForm.tsx:23:OrganizationCompactForm",
         "target": "TextInput",
         "targetName": "TextInput",
         "edgeType": "render",
-        "line": 131,
+        "line": 97,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationCompactForm.tsx:44:OrganizationCompactForm",
+        "source": "src/atomic-crm/organizations/OrganizationCompactForm.tsx:23:OrganizationCompactForm",
         "target": "TextInput",
         "targetName": "TextInput",
         "edgeType": "render",
-        "line": 139,
+        "line": 105,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationCompactForm.tsx:44:OrganizationCompactForm",
+        "source": "src/atomic-crm/organizations/OrganizationCompactForm.tsx:23:OrganizationCompactForm",
         "target": "StateComboboxInput",
         "targetName": "StateComboboxInput",
+        "edgeType": "render",
+        "line": 116,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/OrganizationCompactForm.tsx:23:OrganizationCompactForm",
+        "target": "TextInput",
+        "targetName": "TextInput",
+        "edgeType": "render",
+        "line": 119,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/OrganizationCompactForm.tsx:23:OrganizationCompactForm",
+        "target": "TextInput",
+        "targetName": "TextInput",
+        "edgeType": "render",
+        "line": 133,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/OrganizationCompactForm.tsx:23:OrganizationCompactForm",
+        "target": "TextInput",
+        "targetName": "TextInput",
+        "edgeType": "render",
+        "line": 141,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/organizations/OrganizationCompactForm.tsx:23:OrganizationCompactForm",
+        "target": "TextInput",
+        "targetName": "TextInput",
         "edgeType": "render",
         "line": 150,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationCompactForm.tsx:44:OrganizationCompactForm",
+        "source": "src/atomic-crm/organizations/OrganizationCompactForm.tsx:23:OrganizationCompactForm",
         "target": "TextInput",
         "targetName": "TextInput",
         "edgeType": "render",
-        "line": 153,
+        "line": 157,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/organizations/OrganizationCompactForm.tsx:44:OrganizationCompactForm",
-        "target": "TextInput",
-        "targetName": "TextInput",
-        "edgeType": "render",
-        "line": 167,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/OrganizationCompactForm.tsx:44:OrganizationCompactForm",
-        "target": "TextInput",
-        "targetName": "TextInput",
-        "edgeType": "render",
-        "line": 175,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/OrganizationCompactForm.tsx:44:OrganizationCompactForm",
-        "target": "TextInput",
-        "targetName": "TextInput",
-        "edgeType": "render",
-        "line": 184,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/OrganizationCompactForm.tsx:44:OrganizationCompactForm",
-        "target": "TextInput",
-        "targetName": "TextInput",
-        "edgeType": "render",
-        "line": 191,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/organizations/OrganizationCompactForm.tsx:44:OrganizationCompactForm",
+        "source": "src/atomic-crm/organizations/OrganizationCompactForm.tsx:23:OrganizationCompactForm",
         "target": "OrganizationHierarchySection",
         "targetName": "OrganizationHierarchySection",
         "edgeType": "render",
-        "line": 202,
+        "line": 168,
         "conditional": false,
         "inLoop": false
       },
