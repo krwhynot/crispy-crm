@@ -142,10 +142,16 @@ describe("LinkOpportunityModal", () => {
     });
 
     // Capture the onSuccess callback passed to create()
-    mockCreate.mockImplementation((resource: string, data: any, options: any) => {
-      successCallback = options.onSuccess;
-      return Promise.resolve({ data: { id: 1 } });
-    });
+    mockCreate.mockImplementation(
+      (
+        _resource: string,
+        _data: Record<string, unknown>,
+        options: { onSuccess?: () => Promise<void> }
+      ) => {
+        successCallback = options.onSuccess;
+        return Promise.resolve({ data: { id: 1 } });
+      }
+    );
 
     render(
       <LinkOpportunityModal

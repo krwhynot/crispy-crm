@@ -178,7 +178,7 @@ describe("OpportunityCreate - Validation", () => {
 
 describe("OpportunityCreate - Error Handling", () => {
   it("should format server errors correctly", () => {
-    const formatError = (error: any) => {
+    const formatError = (error: { status: number; message?: string }) => {
       if (error.status === 500) {
         return {
           message: error.message || "Internal server error",

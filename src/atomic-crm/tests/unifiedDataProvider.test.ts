@@ -106,6 +106,14 @@ describe("Unified Data Provider - Real Schema Tests", () => {
 
   describe("Data provider error transformation", () => {
     it("should transform Supabase errors into HttpError format", async () => {
+      interface SupabaseError {
+        message?: string;
+        status?: number;
+        code?: string;
+        details?: string | null;
+        hint?: string | null;
+      }
+
       // Mock the data provider's error handling
       class HttpError extends Error {
         status: number;

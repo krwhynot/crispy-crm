@@ -300,6 +300,12 @@ function getTableSchema(table: string): string[] {
   return getValidFields(table);
 }
 
+interface SchemaValidationRequest {
+  select?: string;
+  filter?: Record<string, unknown>;
+  sort?: { field: string; order: string };
+}
+
 interface ValidationResult {
   valid: boolean;
   errors: string[];

@@ -218,7 +218,13 @@ vi.mock("@/components/layouts/ResourceSlideOver", () => ({
 
 // Mock tab components
 vi.mock("./ContactDetailsTab", () => ({
-  ContactDetailsTab: ({ record, mode }: any) => (
+  ContactDetailsTab: ({
+    record,
+    mode,
+  }: {
+    record: { first_name: string; last_name: string };
+    mode: string;
+  }) => (
     <div data-testid="contact-details-tab">
       <p>
         Details for {record.first_name} {record.last_name}
@@ -229,7 +235,7 @@ vi.mock("./ContactDetailsTab", () => ({
 }));
 
 vi.mock("./slideOverTabs/ContactNotesTab", () => ({
-  ContactNotesTab: ({ record, mode }: any) => (
+  ContactNotesTab: ({ record, mode }: { record: { id: number | null }; mode: string }) => (
     <div data-testid="contact-notes-tab">
       <p>Notes for contact {record.id}</p>
       <p>Mode: {mode}</p>

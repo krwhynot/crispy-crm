@@ -207,7 +207,13 @@ describe("HTTP Error Patterns from Production", () => {
         warnings: string[];
       }
 
-      const validateQuery = (resource: string, query: any): QueryValidation => {
+      interface QueryInput {
+        filter?: Record<string, unknown>;
+        sort?: { field: string; order: string };
+        select?: string;
+      }
+
+      const validateQuery = (resource: string, query: QueryInput): QueryValidation => {
         const errors: string[] = [];
         const warnings: string[] = [];
 

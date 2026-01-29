@@ -328,7 +328,9 @@ vi.mock("@/components/ra-wrappers/FloatingCreateButton", () => ({
 
 // Mock TopToolbar
 vi.mock("../layout/TopToolbar", () => ({
-  TopToolbar: ({ children }: any) => <div data-testid="top-toolbar">{children}</div>,
+  TopToolbar: ({ children }: { children: React.ReactNode }) => (
+    <div data-testid="top-toolbar">{children}</div>
+  ),
 }));
 
 vi.mock("@/components/ra-wrappers/bulk-actions-toolbar", () => ({
@@ -342,7 +344,7 @@ vi.mock("../ProductListFilter", () => ({
 
 // Mock ListSearchBar to avoid FilterLiveForm/SearchInput context issues
 vi.mock("@/components/ra-wrappers/ListSearchBar", () => ({
-  ListSearchBar: ({ placeholder }: any) => (
+  ListSearchBar: ({ placeholder }: { placeholder?: string }) => (
     <div data-testid="list-search-bar">
       <input type="text" placeholder={placeholder || "Search..."} data-testid="search-input" />
     </div>

@@ -139,7 +139,7 @@ describe("checkExactDuplicate", () => {
 
       // P1: Should throw immediately (fail-fast)
       // Verify error structure in one call
-      let caughtError: any;
+      let caughtError: unknown;
       try {
         await checkExactDuplicate(mockDataProvider, params);
       } catch (error: unknown) {
