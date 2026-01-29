@@ -7,14 +7,39 @@ Defines what entities (Contact, Opportunity, Task) actually are. If this layer i
 DO:
 - `src/atomic-crm/validation/[entity].ts` - one file per entity
 - `export type Contact = z.infer<typeof contactSchema>` - derive types from schemas
-- `contactSchema.strict()` - prevent illegal fields reaching Supabase
+- `contactSchema.strict()` - prevent illegal fields reaching Supabase (default for creates)
 - `z.coerce.number()` - handle form inputs that return strings
 - Match DB columns exactly (e.g., `linkedin_url` in schema if in DB)
 
 DON'T:
 - `export interface Contact { ... }` - manual interfaces drift from schemas
 - Orphan schemas in `utils/` or component files
-- Skip `.strict()` - allows invalid data through
+- Skip `.strict()` on create schemas - allows invalid data through
+
+### Strict vs Passthrough: When to Use Each
+
+**`.strict()` (Default):** Use at API boundaries for **creates** and provider-level validation. Rejects unknown fields, preventing mass-assignment attacks.
+
+**`.passthrough()` for Updates:** When handling **manual updates** (e.g., SlideOvers, edit forms) where the data object may contain mixed UI state, metadata fields (`id`, `created_at`, `updated_at`), or computed view fields, use `.passthrough()` to prevent Zod from silently stripping required metadata.
+
+WRONG:
+```typescript
+// .strict() strips `id` and `updated_at` from update payload — save silently fails
+const updateSchema = contactSchema.strict();
+const cleaned = updateSchema.parse(formData); // { name: "John" } — id is GONE
+```
+
+RIGHT:
+```typescript
+// Create schema: strict (reject unknown fields)
+export const contactCreateSchema = contactSchema.strict();
+
+// Update schema: passthrough (preserve metadata, strip only via COMPUTED_FIELDS)
+export const contactUpdateSchema = contactSchema.passthrough();
+// Computed fields (from views) stripped separately in lifecycle callbacks
+```
+
+**Rule of thumb:** `.strict()` for creates (security), `.passthrough()` for updates (preserve metadata). Computed view fields are stripped by `withLifecycleCallbacks` in the provider layer, NOT by Zod.
 
 ## Constants
 

@@ -29,9 +29,31 @@ DO:
 - Accept standard React Admin props (e.g., `actions={<EditButton />}`)
 - Custom inputs wrap `useInput` from React Admin
 - Handle `onChange` and `onBlur` for React Hook Form
+- **Modal Accessibility:** All Dialogs/Modals MUST include `<DialogTitle>`. If a visual title is not desired, wrap it in `<VisuallyHidden>` or apply `className="sr-only"` (Radix UI requirement — omitting triggers console warnings)
+- **Prop Hygiene:** When wrapping third-party components (e.g., React Admin's `Datagrid`), destructure custom props to prevent DOM leaks
 
 DON'T:
 - Skip creating wrappers - force features to use raw Tier 1
+- Pass library-specific props (e.g., `rowClassName`, `record`) through to native DOM elements — React will warn about unknown props
+
+### Prop Hygiene Pattern
+
+WRONG:
+```tsx
+// Library props leak to DOM — React warns about unknown attributes
+const CustomRow = (props) => <tr {...props} />;
+// rowClassName, record, etc. end up as HTML attributes
+```
+
+RIGHT:
+```tsx
+// Destructure custom props, spread only valid HTML
+const CustomRow = ({ rowClassName, record, ...rest }) => (
+  <tr className={rowClassName} {...rest} />
+);
+```
+
+**Key example:** Use `PremiumDatagrid` (`src/components/ra-wrappers/PremiumDatagrid.tsx`) instead of raw `Datagrid` from `react-admin`. PremiumDatagrid destructures `rowClassName`, `onRowClick`, and `focusedIndex` before passing props to the underlying component.
 
 ## File Handling (Tier 2)
 
