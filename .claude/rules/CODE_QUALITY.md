@@ -180,7 +180,7 @@ grep -rn "console\.(log|warn|error|info|debug)(" src/ \
 
 # 2. Any types — ZERO TOLERANCE (expect: 0 across ALL code)
 rg ": any|as any|any\[\]|Promise<any>" src/ --type ts \
-  | grep -v "^\s*\*\|^\s*//\|^\s*\*/" \
+  | grep -v " \* \| \*/\|:\s*//" \
   | wc -l
 
 # 3. TypeScript errors (expect: 0 errors)
