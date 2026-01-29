@@ -68,7 +68,7 @@ const OrganizationInfo = ({ record }: { record: Company }) => {
         <div className="flex flex-row items-center gap-1 min-h-11">
           <Linkedin className="w-4 h-4" />
           <a
-            className="underline hover:no-underline"
+            className="underline hover:no-underline focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded"
             href={record.linkedin_url}
             target="_blank"
             rel="noopener noreferrer"
@@ -81,7 +81,10 @@ const OrganizationInfo = ({ record }: { record: Company }) => {
       {record.phone && (
         <div className="flex flex-row items-center gap-1 min-h-11">
           <Phone className="w-4 h-4" />
-          <a href={`tel:${record.phone}`} className="underline hover:no-underline">
+          <a
+            href={`tel:${record.phone}`}
+            className="underline hover:no-underline focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded"
+          >
             {record.phone}
           </a>
         </div>
@@ -138,10 +141,6 @@ const AdditionalInfo = ({ record }: { record: Company }) => {
   if (!record.created_at && !record.sales_id && !record.description && !record.context_links) {
     return null;
   }
-  const getBaseURL = (url: string) => {
-    const urlObject = new URL(url.startsWith("http") ? url : `https://${url}`);
-    return urlObject.hostname;
-  };
 
   return (
     <AsideSection title="Additional Info">
@@ -152,7 +151,7 @@ const AdditionalInfo = ({ record }: { record: Company }) => {
             link ? (
               <a
                 key={index}
-                className="text-sm underline hover:no-underline mb-1"
+                className="text-sm underline hover:no-underline focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded mb-1"
                 href={link.startsWith("http") ? link : `https://${link}`}
                 target="_blank"
                 rel="noopener noreferrer"

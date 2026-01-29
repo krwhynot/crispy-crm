@@ -1,7 +1,7 @@
 import { CreateBase, Form, useGetIdentity } from "ra-core";
 import { useSearchParams } from "react-router-dom";
 import { getContextAwareRedirect } from "@/atomic-crm/utils/getContextAwareRedirect";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { createFormResolver } from "@/lib/zodErrorFormatting";
 import { FormProgressProvider, FormProgressBar } from "@/components/ra-wrappers/form";
 import { CreateFormFooter } from "@/atomic-crm/components";
 import { TaskInputs } from "./TaskInputs";
