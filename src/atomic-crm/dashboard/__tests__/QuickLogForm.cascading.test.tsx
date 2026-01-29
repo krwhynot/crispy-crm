@@ -518,20 +518,20 @@ vi.mock("react-hook-form", async (importOriginal) => {
 // ============================================================================
 // MOCK DATA
 // ============================================================================
-const mockContacts = [
+const mockContacts: MockContact[] = [
   { id: 1, name: "John Doe", organization_id: 1, company_name: "Acme Corp" },
   { id: 2, name: "Jane Smith", organization_id: 2, company_name: "Tech Inc" },
   { id: 3, name: "Bob Wilson", organization_id: 1, company_name: "Acme Corp" },
   { id: 4, name: "Alice Brown", organization_id: 3, company_name: "Sales Co" },
 ];
 
-const mockOrganizations = [
+const mockOrganizations: MockOrganization[] = [
   { id: 1, name: "Acme Corp" },
   { id: 2, name: "Tech Inc" },
   { id: 3, name: "Sales Co" },
 ];
 
-const mockOpportunities = [
+const mockOpportunities: MockOpportunity[] = [
   { id: 1, name: "Acme Deal 1", customer_organization_id: 1, stage: "prospect" },
   { id: 2, name: "Acme Deal 2", customer_organization_id: 1, stage: "qualified" },
   { id: 3, name: "Tech Deal", customer_organization_id: 2, stage: "prospect" },

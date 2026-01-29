@@ -53,22 +53,34 @@ logger.warn('Deprecated field used', {
 
 ## Type Safety Baseline
 
-**Production:** 0 `: any` in production code (Verified Jan 2026) — **90-DAY GOAL ACHIEVED** ✅
-**Tests:** ~175 instances across 31 test files (remediation in progress)
+**Baseline:** 0 uses of `: any` across ALL code (Cleaned Jan 2026) ✅
+**Target:** 0 (Strict Enforcement — Zero Tolerance)
 **Current Status:**
-- Production: `rg ": any|as any" src/ --type ts --glob "!*test*" --glob "!__tests__" -c | wc -l` (expect: 0)
-- Tests: `rg ": any|as any|any\[\]|Promise<any>" src/ --type ts --glob "*test*" -c | awk -F: '{sum += $NF} END {print sum}'` (target: <50)
-- Test file count: `rg ": any|as any" src/ --type ts --glob "*test*" -c | wc -l` (target: 0 files)
+```bash
+# Verify zero any (expect: 0)
+rg ": any|as any|any\[\]|Promise<any>" src/ --type ts -c \
+  | grep -v "typed-test-helpers" \
+  | awk -F: '{sum += $NF} END {print sum+0, "any instances"}'
+```
 
-### Banned Patterns
+### Banned Patterns (ALL code — production AND tests)
 
-DO NOT (in production code):
-- `: any` - Disables all type checking
-- `as any` - Bypasses type safety completely
-- `as unknown as T` - Signals broken types (fix root cause). Exception: with a runtime type guard (see `segmentsHandler.ts`)
-- `any[]` - Untyped arrays
+DO NOT:
+- `: any` - Disables all type checking. Use `unknown`, `Record<string, unknown>`, or `Partial<T>`
+- `as any` - Bypasses type safety completely. Use type guards or typed factories
+- `as unknown as T` - Signals broken types (fix root cause). Exception: with a runtime type guard (see `segmentsHandler.ts`) or `// Type: partial mock` in tests
+- `any[]` - Untyped arrays. Use `unknown[]` or `Array<T>`
+- `Promise<any>` - Use `Promise<unknown>` or `Promise<T>`
 
-In test files, prefer typed factories from `src/tests/utils/typed-mocks.ts`. Use `Partial<T>` for partial mocks rather than `: any`.
+### Type-Safe Alternatives
+
+| Instead of | Use |
+|------------|-----|
+| `(props: any)` | Inline type: `({ children }: { children: React.ReactNode })` |
+| `{...} as any` (RA hook mock) | Typed factory: `mockUseGetListReturn<T>()` from `src/tests/utils/typed-mocks.ts` |
+| `(param: any)` in mock | `Record<string, unknown>` or specific interface |
+| `(item: any)` in callback | Infer type from context or define local interface |
+| `let error: any` | `let error: unknown` with type narrowing |
 
 ### Type Safety Checklist
 
@@ -76,7 +88,8 @@ In test files, prefer typed factories from `src/tests/utils/typed-mocks.ts`. Use
 - [x] No `as any` casts in production (use type guards)
 - [x] `as unknown as T` only with runtime guards (`segmentsHandler.ts` pattern)
 - [x] API boundaries use Zod schemas with `z.infer`
-- [ ] Test mocks use typed factories from `src/tests/utils/typed-mocks.ts`
+- [x] Test mocks use typed factories from `src/tests/utils/typed-mocks.ts`
+- [x] Zero `any` in test files (cleaned Jan 2026)
 
 ## Form Standards (React Admin)
 
@@ -164,12 +177,10 @@ grep -rn "console\.(log|warn|error|info|debug)(" src/ \
   --exclude="devLogger.ts" \
   | wc -l
 
-# 2a. Production any types (expect: 0)
-rg ": any|as any" src/ --type ts --glob "!*test*" --glob "!__tests__*" --glob "!typed-mocks*" -c | wc -l
-
-# 2b. Test any types (target: <50, decreasing toward 0)
-rg ": any|as any|any\[\]|Promise<any>" src/ --type ts --glob "*test*" -c \
-  | awk -F: '{sum += $NF} END {print sum, "across", NR, "files"}'
+# 2. Any types — ZERO TOLERANCE (expect: 0 across ALL code)
+rg ": any|as any|any\[\]|Promise<any>" src/ --type ts -c \
+  | grep -v "typed-test-helpers" \
+  | awk -F: '{sum += $NF} END {print sum+0, "any instances (expect: 0)"}'
 
 # 3. TypeScript errors (expect: 0 errors)
 npx tsc --noEmit
