@@ -57,8 +57,8 @@ vi.mock("ra-core", async () => {
     useGetOne: vi.fn(),
     useUpdate: vi.fn(),
     useNotify: vi.fn(() => vi.fn()),
-    RecordContextProvider: ({ children }: any) => <div>{children}</div>,
-    Form: ({ children, onSubmit, record }: any) => (
+    RecordContextProvider: ({ children }: { children: ReactNode }) => <div>{children}</div>,
+    Form: ({ children, onSubmit, record }: { children: ReactNode; onSubmit?: (data: Record<string, unknown>) => void; record?: Record<string, unknown> }) => (
       <form
         data-testid="task-form"
         onSubmit={(e) => {
