@@ -115,7 +115,7 @@ vi.mock("@/components/ra-wrappers/select-input", () => ({
 }));
 
 vi.mock("@/components/ra-wrappers/boolean-input", () => ({
-  BooleanInput: ({ source, label }: any) => (
+  BooleanInput: ({ source, label }: MockInputProps) => (
     <div data-testid={`boolean-input-${source}`}>
       <label>{label}</label>
       <input type="checkbox" name={source} />
@@ -124,7 +124,7 @@ vi.mock("@/components/ra-wrappers/boolean-input", () => ({
 }));
 
 vi.mock("@/components/ra-wrappers/reference-input", () => ({
-  ReferenceInput: ({ source, children }: any) => (
+  ReferenceInput: ({ source, children }: MockFieldProps) => (
     <div data-testid={`reference-input-${source}`}>{children}</div>
   ),
 }));

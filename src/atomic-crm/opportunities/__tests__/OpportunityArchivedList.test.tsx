@@ -124,20 +124,20 @@ describe("OpportunityArchivedList", () => {
   });
 
   it("should not show Load More button when all items are loaded", async () => {
-    vi.mocked(useGetIdentity).mockReturnValue({
-      data: { id: 1, name: "Test User" },
-      isLoading: false,
-      error: null,
-    } as any);
+    vi.mocked(useGetIdentity).mockReturnValue(
+      mockUseGetIdentityReturn({
+        identity: { id: 1, fullName: "Test User" },
+      })
+    );
 
     // Only 20 items with perPage=25 means all items fit on one page
-    vi.mocked(useGetList).mockReturnValue({
-      data: mockOpportunities.slice(0, 20),
-      total: 20,
-      isPending: false,
-      error: null,
-      refetch: vi.fn(),
-    } as any);
+    vi.mocked(useGetList).mockReturnValue(
+      mockUseGetListReturn({
+        data: mockOpportunities.slice(0, 20),
+        total: 20,
+        isPending: false,
+      })
+    );
 
     render(<OpportunityArchivedList />);
 
@@ -154,19 +154,19 @@ describe("OpportunityArchivedList", () => {
   it("should reset to page 1 when dialog reopens", async () => {
     const mockUseGetList = vi.mocked(useGetList);
 
-    vi.mocked(useGetIdentity).mockReturnValue({
-      data: { id: 1, name: "Test User" },
-      isLoading: false,
-      error: null,
-    } as any);
+    vi.mocked(useGetIdentity).mockReturnValue(
+      mockUseGetIdentityReturn({
+        identity: { id: 1, fullName: "Test User" },
+      })
+    );
 
-    mockUseGetList.mockReturnValue({
-      data: mockOpportunities.slice(0, 25),
-      total: 100,
-      isPending: false,
-      error: null,
-      refetch: vi.fn(),
-    } as any);
+    mockUseGetList.mockReturnValue(
+      mockUseGetListReturn({
+        data: mockOpportunities.slice(0, 25),
+        total: 100,
+        isPending: false,
+      })
+    );
 
     const { rerender } = render(<OpportunityArchivedList />);
 

@@ -226,7 +226,7 @@ vi.mock("@/atomic-crm/tutorial/TutorialProvider", () => ({
     previousStep: vi.fn(),
     skipTutorial: vi.fn(),
   }),
-  TutorialProvider: ({ children }: any) => children,
+  TutorialProvider: ({ children }: { children: React.ReactNode }) => children,
 }));
 
 // Mock PageTutorialTrigger to avoid tutorial context requirement

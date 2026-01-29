@@ -91,7 +91,7 @@ const exporter: Exporter<Organization> = async (records, fetchRelatedRecords) =>
     return exportedOrg;
   });
 
-  return jsonExport(organizations, {}, (_err: any, csv: string) => {
+  return jsonExport(organizations, {}, (_err: Error | null, csv: string) => {
     downloadCSV(csv, "organizations");
   });
 };

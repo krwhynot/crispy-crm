@@ -190,7 +190,7 @@ vi.mock("@/components/ui/button", () => ({
 
 // Mock Select components (Radix UI Select)
 vi.mock("@/components/ui/select", () => ({
-  Select: ({ children, defaultValue }: any) => (
+  Select: ({ children, defaultValue }: { children: ReactNode; defaultValue?: string }) => (
     <div data-testid="select" data-value={defaultValue}>
       {children}
     </div>

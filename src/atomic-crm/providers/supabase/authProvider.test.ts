@@ -46,7 +46,7 @@ vi.mock("./supabase", () => ({
       getSession: (...args: unknown[]) => mocks.mockGetSession(...args),
       getUser: (...args: unknown[]) => mocks.mockGetUser(...args),
     },
-    from: (...args: any[]) => mocks.mockFrom(...args),
+    from: (...args: unknown[]) => mocks.mockFrom(...args),
   },
 }));
 
