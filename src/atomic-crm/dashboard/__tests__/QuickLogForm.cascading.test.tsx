@@ -332,7 +332,7 @@ vi.mock("lucide-react", () => ({
 
 // Mock cn utility
 vi.mock("@/lib/utils", () => ({
-  cn: (...classes: any[]) => classes.filter(Boolean).join(" "),
+  cn: (...classes: (string | boolean | undefined | null)[]) => classes.filter(Boolean).join(" "),
 }));
 
 // Mock date-fns
@@ -415,7 +415,7 @@ vi.mock("@/atomic-crm/validation/activities", () => ({
 
 // Mock @hookform/resolvers/zod
 vi.mock("@hookform/resolvers/zod", () => ({
-  zodResolver: () => async (values: any) => ({ values, errors: {} }),
+  zodResolver: () => async (values: Record<string, unknown>) => ({ values, errors: {} }),
 }));
 
 // Mock @tanstack/react-query for useQueryClient (added for cache invalidation in audit fixes)

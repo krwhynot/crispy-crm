@@ -389,11 +389,11 @@ export async function validateFieldExists(
 }
 
 export async function validateFilterField(
-  supabase: any,
+  supabase: SupabaseClient,
   table: string,
   field: string,
   operator: string,
-  value: any
+  value: unknown
 ): Promise<{ valid: boolean; error?: string }> {
   try {
     const { error } = await supabase

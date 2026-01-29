@@ -18,7 +18,11 @@ vi.mock("ra-core", async (importOriginal) => {
     ...actual,
     useDataProvider: () => mockDataProvider,
     useNotify: () => mockNotify,
-    useGetOne: (resource: string, params: any, options: any) => {
+    useGetOne: (
+      resource: string,
+      params: Record<string, unknown>,
+      options: Record<string, unknown>
+    ) => {
       // Always return an object with data property, even if undefined
       return (
         mockGetOne(resource, params, options) || { data: undefined, isLoading: false, error: null }

@@ -68,12 +68,15 @@ describe("FilterChipBar", () => {
     });
 
     it("should not render when no active filters", () => {
-      vi.mocked(vi.importActual<typeof import("ra-core")>("ra-core") as any).useListContext =
-        () => ({
-          filterValues: {},
-          setFilters: mockSetFilters,
-          displayedFilters: {},
-        });
+      vi.mocked(
+        vi.importActual<typeof import("ra-core")>("ra-core") as unknown as {
+          useListContext: () => unknown;
+        }
+      ).useListContext = () => ({
+        filterValues: {},
+        setFilters: mockSetFilters,
+        displayedFilters: {},
+      });
 
       const { container } = renderWithAdminContext(
         <FilterChipBar filterConfig={mockFilterConfig} />

@@ -161,7 +161,7 @@ vi.mock("../TaskSlideOverDetailsTab", () => ({
 vi.mock("../TaskRelatedItemsTab", () => ({
   TaskRelatedItemsTab: ({ record, mode }: MockTabComponentProps) => (
     <div data-testid="task-related-tab">
-      <p>Related items for task {record.id}</p>
+      <p>Related items for task {String(record.id)}</p>
       <p>Mode: {mode}</p>
     </div>
   ),

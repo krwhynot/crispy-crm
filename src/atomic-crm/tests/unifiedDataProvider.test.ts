@@ -279,8 +279,20 @@ describe("Unified Data Provider - Real Schema Tests", () => {
     });
 
     it("should log errors with context for debugging", () => {
+      interface ErrorLogEntry {
+        message: string;
+        code: string;
+        status: number;
+      }
+
+      interface ErrorLogContext {
+        resource: string;
+        method: string;
+        params: Record<string, unknown>;
+      }
+
       const errorLogger = {
-        log: (error: any, context: any) => {
+        log: (error: ErrorLogEntry, context: ErrorLogContext) => {
           const logEntry = {
             timestamp: new Date().toISOString(),
             error: {

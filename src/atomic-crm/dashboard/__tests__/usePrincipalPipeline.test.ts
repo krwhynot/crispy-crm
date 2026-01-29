@@ -56,7 +56,7 @@ vi.mock("react-admin", async (importOriginal) => {
       const paramsKey = JSON.stringify(params);
       const fetchData = React.useCallback(async () => {
         if (!enabled) return;
-        setState((s: any) => ({ ...s, isPending: true, error: null }));
+        setState((s: MockGetListState) => ({ ...s, isPending: true, error: null }));
         try {
           const result = await mockGetList(resource, params, enabled);
           setState({
