@@ -1,4 +1,5 @@
-import { List, Datagrid, TextField, FunctionField } from "react-admin";
+import { List, TextField, FunctionField } from "react-admin";
+import { PremiumDatagrid } from "@/components/ra-wrappers/PremiumDatagrid";
 import { cn } from "@/lib/utils";
 import { getTagColorClass } from "./tag-colors";
 import type { Tag } from "../types";
