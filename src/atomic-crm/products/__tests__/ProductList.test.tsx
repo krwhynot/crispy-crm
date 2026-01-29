@@ -311,7 +311,9 @@ vi.mock("@/components/layouts/StandardListLayout", () => ({
 
 // Mock List component
 vi.mock("@/components/ra-wrappers/list", () => ({
-  List: ({ children }: any) => <div data-testid="list-wrapper">{children}</div>,
+  List: ({ children }: { children: React.ReactNode }) => (
+    <div data-testid="list-wrapper">{children}</div>
+  ),
 }));
 
 // Mock ProductEmpty

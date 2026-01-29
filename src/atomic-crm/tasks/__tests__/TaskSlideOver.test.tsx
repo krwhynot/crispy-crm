@@ -115,7 +115,7 @@ vi.mock("@/components/layouts/ResourceSlideOver", () => ({
         </div>
 
         <div role="tablist" data-testid="tab-list">
-          {tabs.map((tab: any) => (
+          {tabs.map((tab: MockTabConfig) => (
             <button
               key={tab.key}
               role="tab"
@@ -134,7 +134,7 @@ vi.mock("@/components/layouts/ResourceSlideOver", () => ({
         <div data-testid="tab-count">{tabs.length}</div>
 
         <div data-testid="tab-content">
-          {tabs.map((tab: any) => {
+          {tabs.map((tab: MockTabConfig) => {
             const TabComponent = tab.component;
             return (
               <div key={tab.key} data-testid={`tab-panel-${tab.key}`}>
@@ -150,7 +150,7 @@ vi.mock("@/components/layouts/ResourceSlideOver", () => ({
 
 // Mock tab components
 vi.mock("../TaskSlideOverDetailsTab", () => ({
-  TaskSlideOverDetailsTab: ({ record, mode }: any) => (
+  TaskSlideOverDetailsTab: ({ record, mode }: MockTabComponentProps) => (
     <div data-testid="task-details-tab">
       <p>Details for task: {record.title}</p>
       <p>Mode: {mode}</p>

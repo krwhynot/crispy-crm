@@ -181,10 +181,7 @@ vi.mock("@/components/ra-wrappers/PremiumDatagrid", () => ({
 
 // Mock ToggleFilterButton to avoid form context issues
 vi.mock("@/components/ra-wrappers/toggle-filter-button", () => ({
-  ToggleFilterButton: ({
-    label,
-    ...props
-  }: { label: string } & Record<string, unknown>) => (
+  ToggleFilterButton: ({ label, ...props }: { label: string } & Record<string, unknown>) => (
     <button data-testid={`toggle-filter-${label}`} {...props}>
       {label}
     </button>
@@ -193,7 +190,7 @@ vi.mock("@/components/ra-wrappers/toggle-filter-button", () => ({
 
 // Mock SearchInput to avoid form context issues
 vi.mock("@/components/ra-wrappers/search-input", () => ({
-  SearchInput: ({ source, placeholder }: any) => (
+  SearchInput: ({ source, placeholder }: { source: string; placeholder?: string }) => (
     <input type="text" placeholder={placeholder || "Search..."} data-testid={`search-${source}`} />
   ),
 }));

@@ -57,7 +57,9 @@ vi.mock("react-admin", async (importOriginal) => {
 
 // Mock AutocompleteInput component
 vi.mock("@/components/ra-wrappers/autocomplete-input", () => ({
-  AutocompleteInput: ({ label }: any) => <div data-testid="autocomplete">{label}</div>,
+  AutocompleteInput: ({ label }: { label?: string }) => (
+    <div data-testid="autocomplete">{label}</div>
+  ),
 }));
 
 describe("LinkOpportunityModal", () => {

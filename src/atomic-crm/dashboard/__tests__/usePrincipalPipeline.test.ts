@@ -12,8 +12,16 @@
 
 import { renderHook, waitFor } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
+import type { GetListParams } from "ra-core";
 import { usePrincipalPipeline } from "../usePrincipalPipeline";
 import type { PipelineSummaryRow } from "../types";
+
+interface MockGetListState {
+  data: PipelineSummaryRow[];
+  total: number;
+  isPending: boolean;
+  error: Error | null;
+}
 
 // Create stable mock functions
 const mockGetList = vi.fn();

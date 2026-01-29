@@ -64,7 +64,7 @@ describe("OpportunityCreate - Transform Function", () => {
   });
 
   it("should handle undefined products", () => {
-    const transform = (data: any) => {
+    const transform = (data: OpportunityFormData) => {
       const { products, ...opportunityData } = data;
       return {
         ...opportunityData,

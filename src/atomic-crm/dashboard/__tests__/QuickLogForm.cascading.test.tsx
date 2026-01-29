@@ -229,7 +229,7 @@ vi.mock("@/components/ui/command", () => ({
       {children}
     </div>
   ),
-  CommandInput: ({ placeholder, value, onValueChange }: any) => (
+  CommandInput: ({ placeholder, value, onValueChange }: MockCommandInputProps) => (
     <input
       data-testid="command-input"
       placeholder={placeholder}
@@ -237,10 +237,16 @@ vi.mock("@/components/ui/command", () => ({
       onChange={(e) => onValueChange?.(e.target.value)}
     />
   ),
-  CommandList: ({ children }: any) => <div data-testid="command-list">{children}</div>,
-  CommandEmpty: ({ children }: any) => <div data-testid="command-empty">{children}</div>,
-  CommandGroup: ({ children }: any) => <div data-testid="command-group">{children}</div>,
-  CommandItem: ({ children, onSelect, value, className }: any) => (
+  CommandList: ({ children }: MockChildrenProps) => (
+    <div data-testid="command-list">{children}</div>
+  ),
+  CommandEmpty: ({ children }: MockChildrenProps) => (
+    <div data-testid="command-empty">{children}</div>
+  ),
+  CommandGroup: ({ children }: MockChildrenProps) => (
+    <div data-testid="command-group">{children}</div>
+  ),
+  CommandItem: ({ children, onSelect, value, className }: MockCommandItemProps) => (
     <div
       data-testid={`command-item-${value}`}
       data-value={value}
@@ -255,7 +261,7 @@ vi.mock("@/components/ui/command", () => ({
 
 // Mock Popover components (Radix UI Popover)
 vi.mock("@/components/ui/popover", () => ({
-  Popover: ({ children, open }: any) => (
+  Popover: ({ children, open }: MockPopoverProps) => (
     <div data-testid="popover" data-open={open}>
       {children}
     </div>
