@@ -312,7 +312,7 @@ vi.mock("@/components/ui/input", () => ({
 
 // Mock Calendar component (date picker)
 vi.mock("@/components/ui/calendar", () => ({
-  Calendar: ({ onSelect }: any) => (
+  Calendar: ({ onSelect }: MockCalendarProps) => (
     <div data-testid="calendar">
       <button data-testid="calendar-day" onClick={() => onSelect && onSelect(new Date())}>
         Today

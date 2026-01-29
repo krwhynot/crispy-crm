@@ -224,29 +224,34 @@ describe("QuickAdd Integration", () => {
     (useNotify as Mock).mockReturnValue(mockNotify);
 
     // Mock useGetList for organizations (principals and customers), sales, and products
-    (useGetList as Mock).mockImplementation((resource: string, params: { filter?: Record<string, unknown> }) => {
-      if (resource === "organizations") {
-        // Check filter to determine if this is principals or customers/prospects
-        if (params?.filter?.organization_type === "principal") {
-          return { data: principals, isLoading: false };
+    (useGetList as Mock).mockImplementation(
+      (resource: string, params: { filter?: Record<string, unknown> }) => {
+        if (resource === "organizations") {
+          // Check filter to determine if this is principals or customers/prospects
+          if (params?.filter?.organization_type === "principal") {
+            return { data: principals, isLoading: false };
+          }
+          if (params?.filter?.["organization_type@in"]) {
+            return { data: customerOrgs, isLoading: false };
+          }
+          return { data: [...principals, ...customerOrgs], isLoading: false };
         }
-        if (params?.filter?.["organization_type@in"]) {
-          return { data: customerOrgs, isLoading: false };
+        if (resource === "sales") {
+          return { data: salesList, isLoading: false };
         }
-        return { data: [...principals, ...customerOrgs], isLoading: false };
-      }
-      if (resource === "sales") {
-        return { data: salesList, isLoading: false };
-      }
-      if (resource === "products") {
-        const principalId = params?.filter?.principal_id;
-        if (principalId) {
-          return { data: products.filter((p) => p.principal_id === principalId), isLoading: false };
+        if (resource === "products") {
+          const principalId = params?.filter?.principal_id;
+          if (principalId) {
+            return {
+              data: products.filter((p) => p.principal_id === principalId),
+              isLoading: false,
+            };
+          }
+          return { data: [], isLoading: false };
         }
         return { data: [], isLoading: false };
       }
-      return { data: [], isLoading: false };
-    });
+    );
   });
 
   afterEach(() => {

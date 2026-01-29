@@ -152,7 +152,7 @@ vi.mock("@/components/layouts/ResourceSlideOver", () => ({
 vi.mock("../TaskSlideOverDetailsTab", () => ({
   TaskSlideOverDetailsTab: ({ record, mode }: MockTabComponentProps) => (
     <div data-testid="task-details-tab">
-      <p>Details for task: {record.title}</p>
+      <p>Details for task: {String(record.title)}</p>
       <p>Mode: {mode}</p>
     </div>
   ),

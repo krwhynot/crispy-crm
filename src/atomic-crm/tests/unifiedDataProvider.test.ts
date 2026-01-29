@@ -211,8 +211,8 @@ describe("Unified Data Provider - Real Schema Tests", () => {
       expect(validateField("contacts_summary", "first_name")).toBe(true);
 
       // Build safe query
-      const buildSafeQuery = (table: string, filters: Record<string, any>) => {
-        const safeFilters: Record<string, any> = {};
+      const buildSafeQuery = (table: string, filters: Record<string, unknown>) => {
+        const safeFilters: Record<string, unknown> = {};
         const warnings: string[] = [];
 
         Object.entries(filters).forEach(([field, value]) => {

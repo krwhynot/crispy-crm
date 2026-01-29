@@ -244,7 +244,7 @@ describe("Data Provider Error Handling", () => {
 });
 
 // Helper functions
-function validateFilter(resource: string, filter: any): void {
+function validateFilter(resource: string, filter: Record<string, unknown>): void {
   const invalidFields: Record<string, string[]> = {
     contacts_summary: ["nb_tasks"],
     contacts: ["invalid_field"],

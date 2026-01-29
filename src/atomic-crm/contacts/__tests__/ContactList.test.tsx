@@ -807,8 +807,11 @@ describe("ContactList exporter", () => {
       1: { id: 1, name: "Tech Corp" },
     };
 
+    type MockContactRecord = ReturnType<typeof createMockContact>;
+    type ContactInfoEntry = { value: string; type: string };
+
     // Mock the exporter function - mirrors simplified single-org pattern from ContactList.tsx
-    const exporter = async (records: any[]) => {
+    const exporter = async (records: MockContactRecord[]) => {
       const sales = mockSales;
       const tags = mockTags;
       const organizations = mockOrganizations;
@@ -826,10 +829,14 @@ describe("ContactList exporter", () => {
           tags: contact.tags
             .map((tagId: number) => tags[tagId as keyof typeof tags].name)
             .join(", "),
-          email_work: contact.email?.find((email: any) => email.type === "work")?.value,
-          email_home: contact.email?.find((email: any) => email.type === "home")?.value,
-          phone_work: contact.phone?.find((phone: any) => phone.type === "work")?.value,
-          phone_mobile: contact.phone?.find((phone: any) => phone.type === "mobile")?.value,
+          email_work: contact.email?.find((email: ContactInfoEntry) => email.type === "work")
+            ?.value,
+          email_home: contact.email?.find((email: ContactInfoEntry) => email.type === "home")
+            ?.value,
+          phone_work: contact.phone?.find((phone: ContactInfoEntry) => phone.type === "work")
+            ?.value,
+          phone_mobile: contact.phone?.find((phone: ContactInfoEntry) => phone.type === "mobile")
+            ?.value,
         };
       });
 

@@ -375,7 +375,7 @@ export function isSchemaError(error: unknown): boolean {
 
 // Export validation utilities for use in other tests
 export async function validateFieldExists(
-  supabase: any,
+  supabase: SupabaseClient,
   table: string,
   field: string
 ): Promise<boolean> {
