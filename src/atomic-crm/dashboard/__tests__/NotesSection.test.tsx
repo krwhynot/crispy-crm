@@ -2,7 +2,7 @@ import { describe, it, expect, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { useForm, FormProvider } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { createFormResolver } from "@/lib/zodErrorFormatting";
 import { z } from "zod";
 import { NotesSection } from "../NotesSection";
 
@@ -28,7 +28,7 @@ function TestWrapper({
   onSubmit?: (data: TestFormData) => void;
 }) {
   const form = useForm<TestFormData>({
-    resolver: zodResolver(testSchema),
+    resolver: createFormResolver(testSchema),
     defaultValues: {
       notes: "",
       ...defaultValues,

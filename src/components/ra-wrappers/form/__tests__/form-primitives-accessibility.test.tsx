@@ -14,7 +14,7 @@ import { describe, it, expect, vi } from "vitest";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { FormProvider, useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { createFormResolver } from "@/lib/zodErrorFormatting";
 import { z } from "zod";
 import { FormField, FormLabel, FormControl, FormError } from "../form-primitives";
 import { Input } from "@/components/ui/input";
@@ -39,7 +39,7 @@ const TestForm = ({
 }) => {
   const methods = useForm<TestFormData>({
     defaultValues,
-    resolver: zodResolver(testSchema),
+    resolver: createFormResolver(testSchema),
     mode: "onSubmit",
   });
 
