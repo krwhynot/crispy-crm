@@ -4,6 +4,7 @@ import { useUpdate, useNotify, RecordContextProvider } from "ra-core";
 import { Form } from "react-admin";
 import { contactKeys } from "@/atomic-crm/queryKeys";
 import { logger } from "@/lib/logger";
+import { contactBaseSchema } from "../validation/contacts";
 import { notificationMessages } from "@/atomic-crm/constants/notificationMessages";
 import { ReferenceField } from "@/components/ra-wrappers/reference-field";
 import { TextField } from "@/components/ra-wrappers/text-field";
@@ -57,9 +58,22 @@ export function ContactDetailsTab({
   // Handle save in edit mode
   const handleSave = async (data: Partial<Contact>) => {
     try {
+      // PRE-VALIDATE before API call (passthrough preserves id, created_at, etc.)
+      const result = contactBaseSchema.partial().passthrough().safeParse(data);
+
+      if (!result.success) {
+        const firstError = result.error.issues[0];
+        notify(`${firstError.path.join(".")}: ${firstError.message}`, { type: "error" });
+        logger.error("Contact validation failed", result.error, {
+          feature: "ContactDetailsTab",
+          contactId: record.id,
+        });
+        return;
+      }
+
       await update("contacts", {
         id: record.id,
-        data,
+        data: result.data,
         previousData: record,
       });
 

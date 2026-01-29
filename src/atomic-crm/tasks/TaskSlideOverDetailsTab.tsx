@@ -3,6 +3,7 @@ import { useUpdate, useNotify, RecordContextProvider } from "ra-core";
 import { useQueryClient } from "@tanstack/react-query";
 import { Form } from "react-admin";
 import { logger } from "@/lib/logger";
+import { taskUpdateSchema } from "@/atomic-crm/validation/task";
 import { notificationMessages } from "@/atomic-crm/constants/notificationMessages";
 import { taskKeys } from "../queryKeys";
 import { TaskCompletionDialog } from "./TaskCompletionDialog";
@@ -64,9 +65,23 @@ export function TaskSlideOverDetailsTab({
   // Handle save in edit mode
   const handleSave = async (data: Partial<Task>) => {
     try {
+      // PRE-VALIDATE before API call (passthrough preserves id, created_at, etc.)
+      const result = taskUpdateSchema.safeParse({ ...data, id: record.id });
+
+      if (!result.success) {
+        const firstError = result.error.issues[0];
+        notify(`${firstError.path.join(".")}: ${firstError.message}`, { type: "error" });
+        logger.error("Task validation failed", result.error, {
+          feature: "TaskSlideOverDetailsTab",
+          taskId: record.id,
+        });
+        return;
+      }
+
+      // Use result.data for the update
       await update("tasks", {
         id: record.id,
-        data,
+        data: result.data,
         previousData: record,
       });
       queryClient.invalidateQueries({ queryKey: taskKeys.all });

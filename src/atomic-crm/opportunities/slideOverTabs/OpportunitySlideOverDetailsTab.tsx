@@ -3,7 +3,10 @@ import { Form, useUpdate, useNotify, useDataProvider } from "react-admin";
 import { logger } from "@/lib/logger";
 import { notificationMessages } from "@/atomic-crm/constants/notificationMessages";
 import { useQueryClient } from "@tanstack/react-query";
-import type { CloseOpportunityInput } from "@/atomic-crm/validation/opportunities";
+import {
+  opportunitySchema,
+  type CloseOpportunityInput,
+} from "@/atomic-crm/validation/opportunities";
 import type { Opportunity } from "@/atomic-crm/types";
 import { activityKeys } from "@/atomic-crm/queryKeys";
 import { STAGE } from "@/atomic-crm/opportunities/constants";
@@ -53,11 +56,27 @@ export function OpportunitySlideOverDetailsTab({
     async (data: Partial<Opportunity>, additionalData?: Partial<CloseOpportunityInput>) => {
       setIsSaving(true);
       try {
+        const completeData = { ...data, ...additionalData };
+
+        // PRE-VALIDATE before API call (passthrough preserves id, created_at, etc.)
+        const result = opportunitySchema.partial().passthrough().safeParse(completeData);
+
+        if (!result.success) {
+          const firstError = result.error.issues[0];
+          notify(`${firstError.path.join(".")}: ${firstError.message}`, { type: "error" });
+          logger.error("Opportunity validation failed", result.error, {
+            feature: "OpportunitySlideOverDetailsTab",
+            opportunityId: record.id,
+          });
+          setIsSaving(false);
+          return;
+        }
+
         await update(
           "opportunities",
           {
             id: record.id,
-            data: { ...data, ...additionalData },
+            data: result.data,
             previousData: record,
           },
           {

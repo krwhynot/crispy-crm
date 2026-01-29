@@ -88,9 +88,23 @@ export function OrganizationDetailsTab({
         ...allFormValues,
       };
 
+      // PRE-VALIDATE before API call (passthrough preserves id, created_at, etc.)
+      const result = organizationSchema.partial().passthrough().safeParse(completeData);
+
+      if (!result.success) {
+        const firstError = result.error.issues[0];
+        notify(`${firstError.path.join(".")}: ${firstError.message}`, { type: "error" });
+        logger.error("Organization validation failed", result.error, {
+          feature: "OrganizationDetailsTab",
+          organizationId: record.id,
+        });
+        return;
+      }
+
+      // Use result.data for the update
       await update("organizations", {
         id: record.id,
-        data: completeData,
+        data: result.data,
         previousData: record,
       });
       notify(notificationMessages.updated("Organization"), { type: "success" });
