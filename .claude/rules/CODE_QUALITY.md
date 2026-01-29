@@ -57,11 +57,12 @@ logger.warn('Deprecated field used', {
 **Target:** 0 (Strict Enforcement — Zero Tolerance)
 **Current Status:**
 ```bash
-# Verify zero any (expect: 0)
-rg ": any|as any|any\[\]|Promise<any>" src/ --type ts -c \
-  | grep -v "typed-test-helpers" \
-  | awk -F: '{sum += $NF} END {print sum+0, "any instances"}'
+# Verify zero any in CODE (excludes JSDoc/comments) (expect: 0)
+rg ": any|as any|any\[\]|Promise<any>" src/ --type ts \
+  | grep -v "^\s*\*\|^\s*//\|^\s*\*/" \
+  | wc -l
 ```
+Note: JSDoc comments that mention `: any` (e.g., "replaces `as any` casts") are not violations — they document what the utility replaces.
 
 ### Banned Patterns (ALL code — production AND tests)
 
