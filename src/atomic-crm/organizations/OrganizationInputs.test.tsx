@@ -47,7 +47,7 @@ const MockFormWrapper = ({
   defaultValues = {},
 }: {
   children: React.ReactNode;
-  defaultValues?: any;
+  defaultValues?: Record<string, unknown>;
 }) => {
   const saveContext = {
     save: vi.fn(),

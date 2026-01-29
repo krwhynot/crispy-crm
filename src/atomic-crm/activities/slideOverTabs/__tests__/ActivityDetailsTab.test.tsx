@@ -139,7 +139,9 @@ vi.mock("@/components/ra-wrappers/autocomplete-input", () => ({
 }));
 
 vi.mock("@/components/ra-wrappers/date-field", () => ({
-  DateField: ({ source }: any) => <span data-testid={`date-field-${source}`}>Date Value</span>,
+  DateField: ({ source }: { source: string }) => (
+    <span data-testid={`date-field-${source}`}>Date Value</span>
+  ),
 }));
 
 // Mock DateInput to avoid FormProvider requirement in edit mode

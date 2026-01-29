@@ -44,7 +44,7 @@ describe("OpportunityCreate - Transform Function", () => {
   });
 
   it("should handle empty products array", () => {
-    const transform = (data: any) => {
+    const transform = (data: OpportunityFormData) => {
       const { products, ...opportunityData } = data;
       return {
         ...opportunityData,

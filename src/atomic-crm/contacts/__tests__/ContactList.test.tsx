@@ -152,7 +152,7 @@ vi.mock("../ContactSlideOver", () => ({
 
 // Mock PremiumDatagrid to expose row click handler
 vi.mock("@/components/ra-wrappers/PremiumDatagrid", () => ({
-  PremiumDatagrid: ({ children, onRowClick }: any) => (
+  PremiumDatagrid: ({ children, onRowClick }: { children: React.ReactNode; onRowClick?: (id: number) => void }) => (
     <div data-testid="premium-datagrid" className="table-row-premium">
       {children}
       {/* Simulate a clickable row */}

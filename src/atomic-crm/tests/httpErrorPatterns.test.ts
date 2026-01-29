@@ -127,7 +127,11 @@ describe("HTTP Error Patterns from Production", () => {
     });
 
     it("should build safe URLs by filtering out invalid fields", () => {
-      const buildSafeUrl = (baseUrl: string, resource: string, params: any) => {
+      const buildSafeUrl = (
+        baseUrl: string,
+        resource: string,
+        params: Record<string, string | number>
+      ) => {
         const validFields: Record<string, string[]> = {
           contacts_summary: [
             "id",

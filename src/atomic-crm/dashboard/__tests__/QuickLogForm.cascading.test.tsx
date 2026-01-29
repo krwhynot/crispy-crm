@@ -224,7 +224,7 @@ vi.mock("@/components/ui/select", () => ({
 
 // Mock Command components (cmdk - combobox)
 vi.mock("@/components/ui/command", () => ({
-  Command: ({ children, id }: any) => (
+  Command: ({ children, id }: MockCommandProps) => (
     <div data-testid="command" id={id}>
       {children}
     </div>
