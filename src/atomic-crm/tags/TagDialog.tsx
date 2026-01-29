@@ -11,7 +11,7 @@ import { Label } from "@/components/ui/label";
 import { SaveIcon } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { useForm, FormProvider, useWatch } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { createFormResolver } from "@/lib/zodErrorFormatting";
 import type { Tag } from "../types";
 import { colors } from "./colors";
 import { RoundButton } from "./RoundButton";
@@ -48,7 +48,7 @@ export function TagDialog({ open, tag, title, onClose, onSubmit }: TagDialogProp
   );
 
   const form = useForm<CreateTagInput>({
-    resolver: zodResolver(createTagSchema),
+    resolver: createFormResolver(createTagSchema),
     defaultValues,
     mode: "onSubmit", // P5: onSubmit mode for performance
   });

@@ -40,7 +40,7 @@ export function QuickCreateContactPopover({
   const queryClient = useQueryClient();
 
   const methods = useForm<QuickCreateContactFormInput>({
-    resolver: zodResolver(quickCreateContactFormSchema),
+    resolver: createFormResolver(quickCreateContactFormSchema),
     defaultValues: {
       first_name: name,
       last_name: "",
@@ -224,7 +224,7 @@ export function QuickCreateContactRA({
   const queryClient = useQueryClient();
 
   const methods = useForm<QuickCreateContactFormInput>({
-    resolver: zodResolver(quickCreateContactFormSchema),
+    resolver: createFormResolver(quickCreateContactFormSchema),
     defaultValues: {
       first_name: filter || "",
       last_name: "",
