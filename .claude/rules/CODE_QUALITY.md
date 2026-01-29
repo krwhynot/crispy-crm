@@ -53,25 +53,29 @@ logger.warn('Deprecated field used', {
 
 ## Type Safety Baseline
 
-**Baseline:** 163 uses of `: any` (pre-hardening)
-**90-Day Goal:** 0 uses of `: any` in production code
-**30-Day Milestone:** <50 uses
-**Current Status:** `grep -r ": any" src/ --exclude-dir=tests | wc -l`
+**Production:** 0 `: any` in production code (Verified Jan 2026)
+**Tests:** ~236 instances across 32 test files (remediation in progress)
+**90-Day Goal:** 0 uses of `: any` in production code — **ACHIEVED**
+**Current Status:**
+- Production: `rg ": any|as any" src/ --type ts --glob "!*test*" --glob "!__tests__" -c | wc -l`
+- Tests: `rg ": any|as any" src/ --type ts --glob "*test*" -c | wc -l`
 
 ### Banned Patterns
 
-DO NOT:
+DO NOT (in production code):
 - `: any` - Disables all type checking
 - `as any` - Bypasses type safety completely
-- `as unknown as T` - Signals broken types (fix root cause)
+- `as unknown as T` - Signals broken types (fix root cause). Exception: with a runtime type guard (see `segmentsHandler.ts`)
 - `any[]` - Untyped arrays
+
+In test files, prefer typed factories from `src/tests/utils/typed-mocks.ts`. Use `Partial<T>` for partial mocks rather than `: any`.
 
 ### Type Safety Checklist
 
-- [ ] No `: any` types (use generic constraints, unknown with guards)
-- [ ] No `as any` casts (use type guards)
-- [ ] No `as unknown as T` (fix type mismatch at source)
-- [ ] API boundaries use Zod schemas with `z.infer`
+- [x] No `: any` types in production (use generic constraints, unknown with guards)
+- [x] No `as any` casts in production (use type guards)
+- [x] `as unknown as T` only with runtime guards (`segmentsHandler.ts` pattern)
+- [x] API boundaries use Zod schemas with `z.infer`
 - [ ] Test mocks use typed factories from `src/tests/utils/typed-mocks.ts`
 
 ## Form Standards (React Admin)
