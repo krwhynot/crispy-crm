@@ -150,3 +150,6 @@ grep -r "from '@/components/ui/" src/atomic-crm/
 - [ ] Custom inputs wrap `useInput` properly
 - [ ] CSS variables defined in `:root`
 - [ ] No magic numbers in Tailwind config
+- [ ] All Dialogs/Modals include `<DialogTitle>` (or sr-only equivalent)
+- [ ] No raw `Datagrid` imports from `react-admin` — use `PremiumDatagrid`
+- [ ] Wrapper components destructure custom props before DOM spread
