@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { useDataProvider, useNotify } from "ra-core";
 import { useQueryClient } from "@tanstack/react-query";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { createFormResolver } from "@/lib/zodErrorFormatting";
 import { logger } from "@/lib/logger";
 import { Popover, PopoverAnchor, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { useCreateSuggestionContext } from "@/hooks/useSupportCreateSuggestion";
@@ -101,7 +101,7 @@ export function QuickCreatePopover({
   const queryClient = useQueryClient();
 
   const methods = useForm<OrganizationQuickCreateInput>({
-    resolver: zodResolver(organizationQuickCreateSchema),
+    resolver: createFormResolver(organizationQuickCreateSchema),
     defaultValues: {
       name,
       organization_type: organizationType,
@@ -292,7 +292,7 @@ export function QuickCreateOrganizationRA({
   const name = filter || "";
 
   const methods = useForm<OrganizationQuickCreateInput>({
-    resolver: zodResolver(organizationQuickCreateSchema),
+    resolver: createFormResolver(organizationQuickCreateSchema),
     defaultValues: {
       name,
       organization_type: organizationType,
