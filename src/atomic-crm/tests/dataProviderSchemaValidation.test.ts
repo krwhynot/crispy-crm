@@ -351,8 +351,15 @@ describe("Data Provider Schema Validation", () => {
 });
 
 // Helper function to detect schema mismatches in error messages
-export function isSchemaError(error: any): boolean {
-  if (!error || !error.message) return false;
+export function isSchemaError(error: unknown): boolean {
+  if (
+    !error ||
+    typeof error !== "object" ||
+    !("message" in error) ||
+    typeof (error as { message: unknown }).message !== "string"
+  ) {
+    return false;
+  }
 
   const schemaErrorPatterns = [
     "does not exist",
@@ -362,7 +369,7 @@ export function isSchemaError(error: any): boolean {
     "operator does not exist",
   ];
 
-  const message = error.message.toLowerCase();
+  const message = (error as { message: string }).message.toLowerCase();
   return schemaErrorPatterns.some((pattern) => message.includes(pattern));
 }
 

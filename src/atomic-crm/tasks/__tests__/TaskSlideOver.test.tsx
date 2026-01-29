@@ -71,7 +71,7 @@ vi.mock("ra-core", async () => {
         data-testid="task-form"
         onSubmit={(e) => {
           e.preventDefault();
-          if (onSubmit) onSubmit(record);
+          if (onSubmit && record) onSubmit(record);
         }}
       >
         {children}

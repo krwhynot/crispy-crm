@@ -45,12 +45,7 @@ vi.mock("react-admin", async (importOriginal) => {
       // Support enabled option - if false, don't fetch
       const enabled = options?.enabled !== false;
 
-      const [state, setState] = React.useState<{
-        data: any[];
-        total: number;
-        isPending: boolean;
-        error: Error | null;
-      }>({
+      const [state, setState] = React.useState<MockGetListState>({
         data: [],
         total: 0,
         isPending: enabled, // Only loading if enabled

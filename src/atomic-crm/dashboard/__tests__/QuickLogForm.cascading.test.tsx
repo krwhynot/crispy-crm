@@ -285,7 +285,7 @@ vi.mock("@/components/ui/textarea", () => ({
 
 // Mock Switch component
 vi.mock("@/components/ui/switch", () => ({
-  Switch: ({ checked, onCheckedChange }: any) => (
+  Switch: ({ checked, onCheckedChange }: MockSwitchProps) => (
     <button
       data-testid="switch"
       role="switch"
@@ -297,7 +297,7 @@ vi.mock("@/components/ui/switch", () => ({
 
 // Mock Input component
 vi.mock("@/components/ui/input", () => ({
-  Input: ({ type, placeholder, className, onChange, value, ...props }: any) => (
+  Input: ({ type, placeholder, className, onChange, value, ...props }: MockInputProps) => (
     <input
       data-testid="input"
       type={type}

@@ -244,7 +244,9 @@ vi.mock("@/components/layouts/StandardListLayout", () => ({
 
 // Mock List component
 vi.mock("@/components/ra-wrappers/list", () => ({
-  List: ({ children }: any) => <div data-testid="list-wrapper">{children}</div>,
+  List: ({ children }: { children: React.ReactNode }) => (
+    <div data-testid="list-wrapper">{children}</div>
+  ),
 }));
 
 // Mock ContactEmpty
@@ -264,7 +266,9 @@ vi.mock("@/components/ra-wrappers/FloatingCreateButton", () => ({
 
 // Mock TopToolbar and buttons
 vi.mock("../layout/TopToolbar", () => ({
-  TopToolbar: ({ children }: any) => <div data-testid="top-toolbar">{children}</div>,
+  TopToolbar: ({ children }: { children: React.ReactNode }) => (
+    <div data-testid="top-toolbar">{children}</div>
+  ),
 }));
 
 vi.mock("@/components/ra-wrappers/export-button", () => ({
@@ -277,17 +281,21 @@ vi.mock("@/components/ra-wrappers/bulk-actions-toolbar", () => ({
 
 // Mock all field components
 vi.mock("@/components/ra-wrappers/text-field", () => ({
-  TextField: ({ source }: any) => <span data-testid={`text-field-${source}`}>{source}</span>,
+  TextField: ({ source }: { source: string }) => (
+    <span data-testid={`text-field-${source}`}>{source}</span>
+  ),
 }));
 
 vi.mock("@/components/ra-wrappers/reference-field", () => ({
-  ReferenceField: ({ source, children }: any) => (
+  ReferenceField: ({ source, children }: { source: string; children: React.ReactNode }) => (
     <span data-testid={`ref-field-${source}`}>{children}</span>
   ),
 }));
 
 vi.mock("@/components/ra-wrappers/date-field", () => ({
-  DateField: ({ source }: any) => <span data-testid={`date-field-${source}`}>{source}</span>,
+  DateField: ({ source }: { source: string }) => (
+    <span data-testid={`date-field-${source}`}>{source}</span>
+  ),
 }));
 
 vi.mock("@/components/ra-wrappers/edit-button", () => ({
@@ -304,12 +312,12 @@ vi.mock("../TagsList", () => ({
 }));
 
 vi.mock("../misc/Status", () => ({
-  Status: ({ status }: any) => <span data-testid="status">{status}</span>,
+  Status: ({ status }: { status: string }) => <span data-testid="status">{status}</span>,
 }));
 
 // Mock ContactStatusBadge (new badge component)
 vi.mock("../ContactBadges", () => ({
-  ContactStatusBadge: ({ status }: any) => (
+  ContactStatusBadge: ({ status }: { status: string }) => (
     <span data-testid="contact-status-badge" data-status={status}>
       {status}
     </span>

@@ -224,7 +224,7 @@ describe("QuickAdd Integration", () => {
     (useNotify as Mock).mockReturnValue(mockNotify);
 
     // Mock useGetList for organizations (principals and customers), sales, and products
-    (useGetList as Mock).mockImplementation((resource: string, params: any) => {
+    (useGetList as Mock).mockImplementation((resource: string, params: { filter?: Record<string, unknown> }) => {
       if (resource === "organizations") {
         // Check filter to determine if this is principals or customers/prospects
         if (params?.filter?.organization_type === "principal") {

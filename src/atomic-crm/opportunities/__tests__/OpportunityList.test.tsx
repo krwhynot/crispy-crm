@@ -24,10 +24,16 @@ vi.mock("ra-core", async () => {
 // Mock OpportunityColumn to simplify rendering
 // Path is relative to the component being tested (kanban/OpportunityListContent.tsx)
 vi.mock("../kanban/OpportunityColumn", () => ({
-  OpportunityColumn: ({ stage, opportunities }: any) => (
-    <div data-testid={`column-${stage?.value || stage}`}>
-      <h3>{stage?.label || stage}</h3>
-      {opportunities?.map((opp: any) => (
+  OpportunityColumn: ({
+    stage,
+    opportunities,
+  }: {
+    stage: { value: string; label: string } | string;
+    opportunities?: { id: number; name: string }[];
+  }) => (
+    <div data-testid={`column-${typeof stage === "object" ? stage?.value : stage}`}>
+      <h3>{typeof stage === "object" ? stage?.label : stage}</h3>
+      {opportunities?.map((opp: { id: number; name: string }) => (
         <div key={opp.id} data-testid={`opportunity-${opp.id}`}>
           {opp.name}
         </div>
