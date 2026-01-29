@@ -134,13 +134,7 @@ const AddressInfo = ({ record }: { record: Company }) => {
 };
 
 const AdditionalInfo = ({ record }: { record: Company }) => {
-  if (
-    !record.created_at &&
-    !record.sales_id &&
-    !record.description &&
-    !record.context_links &&
-    !record.parent_organization_id
-  ) {
+  if (!record.created_at && !record.sales_id && !record.description && !record.context_links) {
     return null;
   }
   const getBaseURL = (url: string) => {
@@ -151,14 +145,6 @@ const AdditionalInfo = ({ record }: { record: Company }) => {
   return (
     <AsideSection title="Additional Info">
       {record.description && <p className="text-sm mb-1">{record.description}</p>}
-      {record.parent_organization_id && (
-        <div className="text-sm text-muted-foreground mb-1">
-          Parent organization:{" "}
-          <ReferenceField source="parent_organization_id" reference="organizations">
-            <TextField source="name" />
-          </ReferenceField>
-        </div>
-      )}
       {record.context_links && (
         <div className="flex flex-col">
           {record.context_links.map((link, index) =>

@@ -21,8 +21,7 @@ import {
   useNotify,
   useCanAccess,
 } from "ra-core";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
+import { createFormResolver } from "@/lib/zodErrorFormatting";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   FormLoadingSkeleton,
@@ -258,7 +257,7 @@ const OrganizationCreate = () => {
                 key={formKey}
                 defaultValues={formDefaults}
                 mode="all"
-                resolver={zodResolver(createOrganizationSchema) as any}
+                resolver={createFormResolver(createOrganizationSchema)}
               >
                 <FormProgressBar schema={createOrganizationSchema} className="mb-6" />
                 <Card>
