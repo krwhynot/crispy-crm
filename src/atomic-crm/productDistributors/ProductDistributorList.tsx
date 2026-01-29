@@ -1,4 +1,5 @@
-import { List, Datagrid, TextField, ReferenceField, DateField, SelectField } from "react-admin";
+import { List, TextField, ReferenceField, DateField, SelectField } from "react-admin";
+import { PremiumDatagrid } from "@/components/ra-wrappers/PremiumDatagrid";
 import { TextInput } from "@/components/ra-wrappers/text-input";
 import { SelectInput } from "@/components/ra-wrappers/select-input";
 import { ReferenceInput } from "@/components/ra-wrappers/reference-input";

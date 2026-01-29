@@ -11,7 +11,7 @@ import type { Tag } from "../types";
 export const TagList = () => {
   return (
     <List title="Tags" perPage={25} sort={{ field: "name", order: "ASC" }} exporter={false}>
-      <Datagrid rowClick="edit" bulkActionButtons={false}>
+      <PremiumDatagrid rowClick="edit" bulkActionButtons={false}>
         {/* Name column - primary identifier */}
         <TextField source="name" label="Tag Name" />
 
@@ -38,7 +38,7 @@ export const TagList = () => {
             <span className="text-muted-foreground capitalize">{record.color}</span>
           )}
         />
-      </Datagrid>
+      </PremiumDatagrid>
     </List>
   );
 };
