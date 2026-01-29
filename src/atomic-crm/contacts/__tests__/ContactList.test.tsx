@@ -152,7 +152,13 @@ vi.mock("../ContactSlideOver", () => ({
 
 // Mock PremiumDatagrid to expose row click handler
 vi.mock("@/components/ra-wrappers/PremiumDatagrid", () => ({
-  PremiumDatagrid: ({ children, onRowClick }: { children: React.ReactNode; onRowClick?: (id: number) => void }) => (
+  PremiumDatagrid: ({
+    children,
+    onRowClick,
+  }: {
+    children: React.ReactNode;
+    onRowClick?: (id: number) => void;
+  }) => (
     <div data-testid="premium-datagrid" className="table-row-premium">
       {children}
       {/* Simulate a clickable row */}
@@ -175,7 +181,10 @@ vi.mock("@/components/ra-wrappers/PremiumDatagrid", () => ({
 
 // Mock ToggleFilterButton to avoid form context issues
 vi.mock("@/components/ra-wrappers/toggle-filter-button", () => ({
-  ToggleFilterButton: ({ label, ...props }: any) => (
+  ToggleFilterButton: ({
+    label,
+    ...props
+  }: { label: string } & Record<string, unknown>) => (
     <button data-testid={`toggle-filter-${label}`} {...props}>
       {label}
     </button>
