@@ -1,6 +1,8 @@
 import { EditBase, Form, useRecordContext } from "ra-core";
 import { useQueryClient } from "@tanstack/react-query";
 
+import { createFormResolver } from "@/lib/zodErrorFormatting";
+import { organizationSchema } from "../validation/organizations";
 import { organizationKeys, contactKeys, opportunityKeys } from "../queryKeys";
 import { OrganizationInputs } from "./OrganizationInputs";
 

@@ -16,6 +16,7 @@ import type { Opportunity } from "../types";
 import { OpportunityCompactForm } from "./OpportunityCompactForm";
 import { OpportunityActivitySection } from "./OpportunityActivitySection";
 import { opportunitySchema } from "@/atomic-crm/validation/opportunities";
+import { createFormResolver } from "@/lib/zodErrorFormatting";
 
 const OpportunityEdit = () => {
   const queryClient = useQueryClient();

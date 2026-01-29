@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { CreateFormFooter } from "@/atomic-crm/components";
 import { TagInputs } from "./TagInputs";
 import { createTagSchema } from "../validation/tags";
+import { createFormResolver } from "@/lib/zodErrorFormatting";
 
 /**
  * TagCreate - Create form for new tags

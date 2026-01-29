@@ -2,6 +2,7 @@ import { CreateBase, Form, useGetIdentity } from "ra-core";
 import { Card, CardContent } from "@/components/ui/card";
 import { FormProgressProvider, FormProgressBar } from "@/components/ra-wrappers/form";
 import { CreateFormFooter } from "../components/CreateFormFooter";
+import { createFormResolver } from "@/lib/zodErrorFormatting";
 
 import { ProductInputs } from "./ProductInputs";
 import { productSchema } from "../validation/products";

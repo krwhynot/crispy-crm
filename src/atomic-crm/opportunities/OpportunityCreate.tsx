@@ -7,6 +7,7 @@ import { FormErrorSummary } from "@/components/ra-wrappers/FormErrorSummary";
 import { FormProgressProvider, FormProgressBar } from "@/components/ra-wrappers/form";
 import { OpportunityInputs } from "./OpportunityInputs";
 import { opportunitySchema } from "../validation/opportunities";
+import { createFormResolver } from "@/lib/zodErrorFormatting";
 import { OpportunityCreateFormFooter } from "./OpportunityCreateFormFooter";
 import { SimilarOpportunitiesDialog } from "./SimilarOpportunitiesDialog";
 import { useSimilarOpportunityCheck } from "./useSimilarOpportunityCheck";

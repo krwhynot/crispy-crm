@@ -2,6 +2,7 @@ import { useMemo } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { ResponsiveGrid } from "@/components/design-system";
 import { EditBase, Form, useEditContext, useRefresh } from "ra-core";
+import { createFormResolver } from "@/lib/zodErrorFormatting";
 import { useSafeNotify } from "../hooks/useSafeNotify";
 import { useQueryClient } from "@tanstack/react-query";
 
@@ -53,7 +54,12 @@ const ContactEditContent = () => {
   return (
     <ResponsiveGrid variant="dashboard" className="mt-2">
       <main role="main" aria-label="Edit contact">
-        <Form className="flex flex-col gap-4" defaultValues={defaultValues} mode="onBlur">
+        <Form
+          className="flex flex-col gap-4"
+          defaultValues={defaultValues}
+          mode="onBlur"
+          resolver={createFormResolver(contactBaseSchema)}
+        >
           <Card>
             <CardContent>
               <ContactInputs />
