@@ -19,7 +19,7 @@ interface OpportunityFormData {
 describe("OpportunityCreate - Transform Function", () => {
   it("should extract products to products_to_sync", () => {
     // Test the transform logic directly
-    const transform = (data: any) => {
+    const transform = (data: OpportunityFormData) => {
       const { products, ...opportunityData } = data;
       return {
         ...opportunityData,

@@ -239,12 +239,14 @@ const sortableColumns: { label: string; sortBy: string; sortable: boolean }[] = 
 
 // Mock PremiumDatagrid to expose row click handler and track column config
 vi.mock("@/components/ra-wrappers/PremiumDatagrid", () => ({
-  PremiumDatagrid: ({ children, onRowClick }: any) => {
+  PremiumDatagrid: ({ children, onRowClick }: MockDatagridProps) => {
     // Clear previous column tracking
     sortableColumns.length = 0;
 
     // Process children to extract column configuration
-    const processChild = (child: any) => {
+    const processChild = (
+      child: React.ReactElement<MockDatagridColumnProps> | null | undefined
+    ) => {
       if (!child?.props) return;
 
       const { label, sortBy, sortable, source } = child.props;
@@ -299,7 +301,7 @@ vi.mock("../ProductsDatagridHeader", () => ({
 
 // Mock StandardListLayout
 vi.mock("@/components/layouts/StandardListLayout", () => ({
-  StandardListLayout: ({ children, filterComponent }: any) => (
+  StandardListLayout: ({ children, filterComponent }: MockLayoutProps) => (
     <div data-testid="standard-list-layout">
       <div data-testid="filter-sidebar">{filterComponent}</div>
       <div data-testid="list-content">{children}</div>

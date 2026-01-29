@@ -110,13 +110,23 @@ vi.mock("react-admin", async () => {
         </div>
       );
     },
-    ReferenceField: ({ children, source, reference }: any) => (
+    ReferenceField: ({
+      children,
+      source,
+      reference,
+    }: {
+      children: React.ReactNode;
+      source: string;
+      reference: string;
+    }) => (
       <div data-testid={`reference-field-${source}`} data-reference={reference}>
         {children}
       </div>
     ),
-    TextField: ({ source }: any) => <span data-testid={`text-field-${source}`}>{source}</span>,
-    DateField: ({ source, label }: any) => (
+    TextField: ({ source }: { source: string }) => (
+      <span data-testid={`text-field-${source}`}>{source}</span>
+    ),
+    DateField: ({ source, label }: { source: string; label?: string }) => (
       <span data-testid={`date-field-${source}`}>{label || source}</span>
     ),
   };
@@ -133,7 +143,7 @@ vi.mock("jsonexport/dist", () => ({
 
 // Mock ContactSlideOver to simplify testing
 vi.mock("../ContactSlideOver", () => ({
-  ContactSlideOver: ({ recordId, isOpen }: any) => (
+  ContactSlideOver: ({ recordId, isOpen }: { recordId: number | null; isOpen: boolean }) => (
     <div data-testid="contact-slide-over">
       {isOpen && <div data-testid={`slide-over-contact-${recordId}`}>Slide Over</div>}
     </div>

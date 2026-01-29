@@ -91,7 +91,7 @@ vi.mock("@/components/layouts/ResourceSlideOver", () => ({
     onModeToggle,
     tabs,
     recordRepresentation,
-  }: any) => {
+  }: MockResourceSlideOverProps) => {
     const mockRecord = {
       id: recordId,
       title: "Test Task Title",

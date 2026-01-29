@@ -62,7 +62,7 @@ describe("HTTP Error Patterns from Production", () => {
   describe("Data Provider Error Wrapping", () => {
     it("should wrap Supabase errors in HttpError format", async () => {
       // Mock the data provider wrapper that was throwing the error
-      const wrapMethod = async (method: () => Promise<any>) => {
+      const wrapMethod = async (method: () => Promise<unknown>) => {
         try {
           return await method();
         } catch (error: unknown) {

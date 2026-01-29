@@ -195,26 +195,29 @@ vi.mock("@/components/ui/select", () => ({
       {children}
     </div>
   ),
-  SelectTrigger: ({ children, className }: any) => (
+  SelectTrigger: ({ children, className }: MockChildrenClassNameProps) => (
     <button className={className} data-testid="select-trigger">
       {children}
     </button>
   ),
-  SelectValue: ({ placeholder }: any) => <span>{placeholder}</span>,
-  SelectContent: ({ children }: any) => <div data-testid="select-content">{children}</div>,
-  SelectItem: ({ children, value }: any) => (
+  SelectValue: ({ placeholder }: { placeholder?: string }) => <span>{placeholder}</span>,
+  SelectContent: ({ children }: MockChildrenProps) => (
+    <div data-testid="select-content">{children}</div>
+  ),
+  SelectItem: ({ children, value }: MockSelectItemProps) => (
     <div data-testid={`select-item-${value}`} data-value={value}>
       {children}
     </div>
   ),
-  // Missing exports that QuickLogForm imports - added to fix test failures
-  SelectGroup: ({ children }: any) => <div data-testid="select-group">{children}</div>,
-  SelectLabel: ({ children, className }: any) => (
+  SelectGroup: ({ children }: MockChildrenProps) => (
+    <div data-testid="select-group">{children}</div>
+  ),
+  SelectLabel: ({ children, className }: MockChildrenClassNameProps) => (
     <div data-testid="select-label" className={className}>
       {children}
     </div>
   ),
-  SelectSeparator: ({ className }: any) => (
+  SelectSeparator: ({ className }: { className?: string }) => (
     <hr data-testid="select-separator" className={className} />
   ),
 }));

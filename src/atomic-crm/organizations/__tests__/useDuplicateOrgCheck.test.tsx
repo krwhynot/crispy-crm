@@ -34,7 +34,7 @@ describe("useDuplicateOrgCheck", () => {
 
     const { result } = renderHook(() => useDuplicateOrgCheck());
 
-    let duplicate: any;
+    let duplicate: DuplicateResult = null;
     await act(async () => {
       duplicate = await result.current.checkForDuplicate("New Company");
     });
@@ -50,7 +50,7 @@ describe("useDuplicateOrgCheck", () => {
 
     const { result } = renderHook(() => useDuplicateOrgCheck());
 
-    let duplicate: any;
+    let duplicate: DuplicateResult = null;
     await act(async () => {
       duplicate = await result.current.checkForDuplicate("Existing Company");
     });
@@ -66,7 +66,7 @@ describe("useDuplicateOrgCheck", () => {
 
     const { result } = renderHook(() => useDuplicateOrgCheck());
 
-    let duplicate: any;
+    let duplicate: DuplicateResult = null;
     await act(async () => {
       // Check with currentOrgId matching the found record
       duplicate = await result.current.checkForDuplicate("My Company", "456");
@@ -104,7 +104,7 @@ describe("useDuplicateOrgCheck", () => {
     const { result } = renderHook(() => useDuplicateOrgCheck());
 
     // First check - should find duplicate
-    let duplicate: any;
+    let duplicate: DuplicateResult = null;
     await act(async () => {
       duplicate = await result.current.checkForDuplicate("Bypassed Company");
     });
@@ -125,7 +125,7 @@ describe("useDuplicateOrgCheck", () => {
   it("handles empty/whitespace names gracefully", async () => {
     const { result } = renderHook(() => useDuplicateOrgCheck());
 
-    let duplicate: any;
+    let duplicate: DuplicateResult = null;
     await act(async () => {
       duplicate = await result.current.checkForDuplicate("");
     });
@@ -146,7 +146,7 @@ describe("useDuplicateOrgCheck", () => {
 
     const { result } = renderHook(() => useDuplicateOrgCheck());
 
-    let duplicate: any;
+    let duplicate: DuplicateResult = null;
     await act(async () => {
       duplicate = await result.current.checkForDuplicate("Some Company");
     });
@@ -182,7 +182,7 @@ describe("useDuplicateOrgCheck", () => {
     const { result } = renderHook(() => useDuplicateOrgCheck());
 
     // First check with original case - should find duplicate
-    let duplicate: any;
+    let duplicate: DuplicateResult = null;
     await act(async () => {
       duplicate = await result.current.checkForDuplicate("Case Test Company");
     });

@@ -51,7 +51,7 @@ vi.mock("react-admin", async (importOriginal) => {
         {children}
       </form>
     ),
-    ReferenceInput: ({ children }: any) => <div>{children}</div>,
+    ReferenceInput: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
   };
 });
 

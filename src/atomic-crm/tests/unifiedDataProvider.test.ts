@@ -111,7 +111,7 @@ describe("Unified Data Provider - Real Schema Tests", () => {
         status: number;
         body: Record<string, unknown>;
 
-        constructor(message: string, status: number, body: any = {}) {
+        constructor(message: string, status: number, body: Record<string, unknown> = {}) {
           super(message);
           this.name = "HttpError";
           this.status = status;

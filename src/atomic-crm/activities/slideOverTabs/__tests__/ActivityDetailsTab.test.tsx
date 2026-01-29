@@ -130,7 +130,7 @@ vi.mock("@/components/ra-wrappers/reference-input", () => ({
 }));
 
 vi.mock("@/components/ra-wrappers/autocomplete-input", () => ({
-  AutocompleteInput: ({ label }: any) => (
+  AutocompleteInput: ({ label }: { label?: string }) => (
     <div data-testid="autocomplete-input">
       <label>{label}</label>
       <input type="text" />

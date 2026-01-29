@@ -108,7 +108,7 @@ describe("Data Provider Error Handling", () => {
           throw new Error(`No valid fields found for table ${table}`);
         }
 
-        const safeFilters: any = {};
+        const safeFilters: Record<string, unknown> = {};
         Object.keys(filters).forEach((key) => {
           if (validFields.includes(key)) {
             safeFilters[key] = filters[key];
