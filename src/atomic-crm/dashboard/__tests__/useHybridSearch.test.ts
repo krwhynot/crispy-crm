@@ -42,7 +42,15 @@ vi.mock("react-admin", async (importOriginal) => {
   const actual = await importOriginal<typeof ReactAdmin>();
   return {
     ...actual,
-    useGetList: (resource: string, params: any, options: any) => {
+    useGetList: (
+      resource: string,
+      params: {
+        filter?: Record<string, unknown>;
+        pagination?: { page: number; perPage: number };
+        sort?: { field: string; order: string };
+      },
+      options: { enabled?: boolean; staleTime?: number }
+    ) => {
       mockUseGetList(resource, params, options);
 
       // Determine which data to return based on search state

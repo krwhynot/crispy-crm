@@ -89,17 +89,19 @@ describe("useMyPerformance", () => {
 
     it("should return correct metric structure", async () => {
       // Mock: 10 activities this week, 5 last week
-      mockGetList.mockImplementation((resource: string, params: any) => {
-        const isThisWeek =
-          params.filter["activity_date@gte"] !== undefined &&
-          !params.filter["activity_date@gte"].includes("subWeeks");
+      mockGetList.mockImplementation(
+        (resource: string, params: { filter: Record<string, unknown> }) => {
+          const isThisWeek =
+            params.filter["activity_date@gte"] !== undefined &&
+            !params.filter["activity_date@gte"].includes("subWeeks");
 
-        if (resource === "activities") {
-          // This week = 10, last week = 5
-          return Promise.resolve(createMockResponse(isThisWeek ? 10 : 5));
+          if (resource === "activities") {
+            // This week = 10, last week = 5
+            return Promise.resolve(createMockResponse(isThisWeek ? 10 : 5));
+          }
+          return Promise.resolve(createMockResponse(0));
         }
-        return Promise.resolve(createMockResponse(0));
-      });
+      );
 
       const { result } = renderHook(() => useMyPerformance());
 

@@ -562,7 +562,9 @@ vi.mock("react-admin", async (importOriginal) => {
   const actual = await importOriginal<typeof ReactAdmin>();
   return {
     ...actual,
-    AdminProvider: ({ children }: any) => <div data-testid="admin-provider">{children}</div>,
+    AdminProvider: ({ children }: MockChildrenProps) => (
+      <div data-testid="admin-provider">{children}</div>
+    ),
     useDataProvider: () => mockDataProvider,
     useNotify: () => mockNotify,
     // useGetList is used by the refactored component for hybrid search
@@ -575,7 +577,7 @@ vi.mock("react-admin", async (importOriginal) => {
             return mockOrganizations;
           case "opportunities":
             return mockOpportunities.filter(
-              (o: any) => !["closed_won", "closed_lost"].includes(o.stage)
+              (o: MockOpportunity) => !["closed_won", "closed_lost"].includes(o.stage)
             );
           default:
             return [];
@@ -590,10 +592,10 @@ vi.mock("react-admin", async (importOriginal) => {
       };
     },
     // useGetOne is used to fetch a specific organization when not in paginated list
-    useGetOne: (resource: string, params: any) => {
+    useGetOne: (resource: string, params: { id?: string | number }) => {
       // Return the org from mock data if it exists
       if (resource === "organizations" && params?.id) {
-        const org = mockOrganizations.find((o: any) => o.id === params.id);
+        const org = mockOrganizations.find((o) => o.id === params.id);
         return { data: org, isPending: false, error: null };
       }
       return { data: undefined, isPending: false, error: null };
