@@ -1,6 +1,6 @@
 {
   "status": "complete",
-  "generated_at": "2026-01-28T05:48:27.858Z",
+  "generated_at": "2026-01-29T16:17:30.532Z",
   "generator": "scripts/discover/extractors/forms.ts",
   "source_globs": [
     "src/atomic-crm/**/*Create*.tsx",
@@ -8,7 +8,7 @@
     "src/atomic-crm/**/*Form*.tsx",
     "src/atomic-crm/**/*Inputs*.tsx"
   ],
-  "checksum": "sha256:5cb8ca3e2717b41b",
+  "checksum": "sha256:80c47f29d4c72354",
   "source_hashes": {
     "src/atomic-crm/activities/ActivityEdit.tsx": "ba97db9f3ada",
     "src/atomic-crm/activities/ActivityInputs.tsx": "85431cf76810",
@@ -24,14 +24,14 @@
     "src/atomic-crm/contacts/ContactEdit.tsx": "93d85f22b776",
     "src/atomic-crm/contacts/ContactFormTutorial.tsx": "9cd29ebd9e91",
     "src/atomic-crm/contacts/ContactInputs.tsx": "8deef55d87fd",
-    "src/atomic-crm/contacts/QuickCreateContactPopover.tsx": "b83bda012e5a",
+    "src/atomic-crm/contacts/QuickCreateContactPopover.tsx": "f18b4ee322b3",
     "src/atomic-crm/contacts/TagsListEdit.tsx": "1061b1fc5162",
     "src/atomic-crm/contexts/FormOptionsContext.tsx": "164b5fa6c2d5",
-    "src/atomic-crm/dashboard/QuickLogForm.tsx": "da125c59f4a7",
+    "src/atomic-crm/dashboard/QuickLogForm.tsx": "1e5b3a54d98e",
     "src/atomic-crm/layout/FormToolbar.tsx": "044f9a3b944a",
     "src/atomic-crm/notes/NoteCreate.tsx": "19f3362eedab",
     "src/atomic-crm/notes/NoteInputs.tsx": "530ab4f5e475",
-    "src/atomic-crm/opportunities/ActivityNoteForm.tsx": "757d606a6a63",
+    "src/atomic-crm/opportunities/ActivityNoteForm.tsx": "0e8bcde1f343",
     "src/atomic-crm/opportunities/OpportunityCompactForm.tsx": "4d1eb9b3e1de",
     "src/atomic-crm/opportunities/OpportunityCreate.tsx": "2fce834ca803",
     "src/atomic-crm/opportunities/OpportunityCreateFormFooter.tsx": "43eab356d8a1",
@@ -42,11 +42,11 @@
     "src/atomic-crm/opportunities/QuickAddFormActions.tsx": "196811264691",
     "src/atomic-crm/opportunities/slideOverTabs/OpportunityDetailsFormSection.tsx": "f2603be715b4",
     "src/atomic-crm/organizations/OrganizationCompactForm.tsx": "ebb98786e021",
-    "src/atomic-crm/organizations/OrganizationCreate.tsx": "b55857172954",
+    "src/atomic-crm/organizations/OrganizationCreate.tsx": "a8a629dd5db0",
     "src/atomic-crm/organizations/OrganizationCreateFormFooter.tsx": "3a546627a466",
     "src/atomic-crm/organizations/OrganizationEdit.tsx": "c570ebea189a",
     "src/atomic-crm/organizations/OrganizationInputs.tsx": "8752b8f423a8",
-    "src/atomic-crm/organizations/QuickCreatePopover.tsx": "02a942872fd5",
+    "src/atomic-crm/organizations/QuickCreatePopover.tsx": "e99abe480925",
     "src/atomic-crm/productDistributors/ProductDistributorCreate.tsx": "e050a042ace3",
     "src/atomic-crm/productDistributors/ProductDistributorEdit.tsx": "2d07c0f44d70",
     "src/atomic-crm/productDistributors/ProductDistributorInputs.tsx": "fd7d784c4fa5",
@@ -65,7 +65,7 @@
     "src/atomic-crm/tags/TagInputs.tsx": "f5adeb1846e5",
     "src/atomic-crm/tags/TagSelectWithCreate.tsx": "2e550c799bca",
     "src/atomic-crm/tasks/TaskCompactForm.tsx": "39309698a061",
-    "src/atomic-crm/tasks/TaskCreate.tsx": "86c06f3b71c0",
+    "src/atomic-crm/tasks/TaskCreate.tsx": "29b7a71352fb",
     "src/atomic-crm/tasks/TaskEdit.tsx": "1044b9be9f0a",
     "src/atomic-crm/tasks/TaskInputs.tsx": "f4d7201dd42f",
     "src/atomic-crm/tutorial/OpportunityCreateFormTutorial.tsx": "2cd05674ea84"
@@ -75,7 +75,7 @@
     "react_admin_forms": 33,
     "react19_action_forms": 0,
     "react_hook_form_direct": 5,
-    "with_zod_resolver": 9,
+    "with_zod_resolver": 0,
     "with_tabs": 0,
     "with_progress": 8
   },
@@ -270,7 +270,7 @@
       "inputComponents": [
         "Input"
       ],
-      "hasZodResolver": true,
+      "hasZodResolver": false,
       "features": {
         "hasTabs": false,
         "hasWizard": false,
@@ -282,8 +282,7 @@
       "inputComponentsDeep": [
         "Input"
       ],
-      "formContextWrappers": [],
-      "validationSchemaRef": "quickCreateContactFormSchema"
+      "formContextWrappers": []
     },
     {
       "componentName": "QuickCreateContactRA",
@@ -297,7 +296,7 @@
       "inputComponents": [
         "Input"
       ],
-      "hasZodResolver": true,
+      "hasZodResolver": false,
       "features": {
         "hasTabs": false,
         "hasWizard": false,
@@ -309,8 +308,7 @@
       "inputComponentsDeep": [
         "Input"
       ],
-      "formContextWrappers": [],
-      "validationSchemaRef": "quickCreateContactFormSchema"
+      "formContextWrappers": []
     },
     {
       "componentName": "QuickLogForm",
@@ -325,7 +323,7 @@
         ]
       },
       "inputComponents": [],
-      "hasZodResolver": true,
+      "hasZodResolver": false,
       "features": {
         "hasTabs": false,
         "hasWizard": false,
@@ -337,8 +335,7 @@
       "inputComponentsDeep": [],
       "formContextWrappers": [
         "QuickLogForm"
-      ],
-      "validationSchemaRef": "activityLogSchema"
+      ]
     },
     {
       "componentName": "NoteCreate",
@@ -407,7 +404,7 @@
       "inputComponents": [
         "Select"
       ],
-      "hasZodResolver": true,
+      "hasZodResolver": false,
       "features": {
         "hasTabs": false,
         "hasWizard": false,
@@ -419,8 +416,7 @@
         "ActivityNoteFormData"
       ],
       "inputComponentsDeep": [],
-      "formContextWrappers": [],
-      "validationSchemaRef": "activityNoteFormSchema"
+      "formContextWrappers": []
     },
     {
       "componentName": "OpportunityCompactForm",
@@ -702,7 +698,7 @@
         ]
       },
       "inputComponents": [],
-      "hasZodResolver": true,
+      "hasZodResolver": false,
       "features": {
         "hasTabs": false,
         "hasWizard": false,
@@ -715,8 +711,7 @@
         "OrganizationFormValues"
       ],
       "inputComponentsDeep": [],
-      "formContextWrappers": [],
-      "validationSchemaRef": "createOrganizationSchema"
+      "formContextWrappers": []
     },
     {
       "componentName": "OrganizationCreate",
@@ -730,7 +725,7 @@
         ]
       },
       "inputComponents": [],
-      "hasZodResolver": true,
+      "hasZodResolver": false,
       "features": {
         "hasTabs": false,
         "hasWizard": false,
@@ -743,8 +738,7 @@
         "OrganizationFormValues"
       ],
       "inputComponentsDeep": [],
-      "formContextWrappers": [],
-      "validationSchemaRef": "createOrganizationSchema"
+      "formContextWrappers": []
     },
     {
       "componentName": "OrganizationCreateFormFooter",
@@ -835,7 +829,7 @@
         "OrganizationTypeSelect",
         "PrioritySelect"
       ],
-      "hasZodResolver": true,
+      "hasZodResolver": false,
       "features": {
         "hasTabs": false,
         "hasWizard": false,
@@ -850,8 +844,7 @@
       "formContextWrappers": [
         "QuickCreatePopover",
         "QuickCreateOrganizationRA"
-      ],
-      "validationSchemaRef": "organizationQuickCreateSchema"
+      ]
     },
     {
       "componentName": "QuickCreateOrganizationRA",
@@ -867,7 +860,7 @@
         "OrganizationTypeSelect",
         "PrioritySelect"
       ],
-      "hasZodResolver": true,
+      "hasZodResolver": false,
       "features": {
         "hasTabs": false,
         "hasWizard": false,
@@ -882,8 +875,7 @@
       "formContextWrappers": [
         "QuickCreatePopover",
         "QuickCreateOrganizationRA"
-      ],
-      "validationSchemaRef": "organizationQuickCreateSchema"
+      ]
     },
     {
       "componentName": "ProductDistributorCreate",
@@ -1281,7 +1273,7 @@
         ]
       },
       "inputComponents": [],
-      "hasZodResolver": true,
+      "hasZodResolver": false,
       "features": {
         "hasTabs": false,
         "hasWizard": false,
@@ -1292,8 +1284,7 @@
         "TaskInputs"
       ],
       "inputComponentsDeep": [],
-      "formContextWrappers": [],
-      "validationSchemaRef": "taskCreateSchema"
+      "formContextWrappers": []
     },
     {
       "componentName": "TaskEdit",

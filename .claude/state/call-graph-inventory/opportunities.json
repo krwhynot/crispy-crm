@@ -1,6 +1,6 @@
 {
   "chunk_name": "opportunities",
-  "generated_at": "2026-01-28T05:48:30.287Z",
+  "generated_at": "2026-01-29T16:17:40.712Z",
   "items": {
     "nodes": [
       {
@@ -1600,8 +1600,8 @@
       },
       {
         "source": "src/atomic-crm/opportunities/ActivityNoteForm.tsx:38:ActivityNoteForm",
-        "target": "zodResolver",
-        "targetName": "zodResolver",
+        "target": "createFormResolver",
+        "targetName": "createFormResolver",
         "edgeType": "call",
         "line": 68,
         "conditional": false,
@@ -5272,8 +5272,8 @@
       },
       {
         "source": "src/atomic-crm/opportunities/CloseOpportunityModal.tsx:75:CloseOpportunityModal",
-        "target": "zodResolver",
-        "targetName": "zodResolver",
+        "target": "createFormResolver",
+        "targetName": "createFormResolver",
         "edgeType": "call",
         "line": 94,
         "conditional": false,

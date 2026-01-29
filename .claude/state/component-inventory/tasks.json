@@ -1,6 +1,6 @@
 {
   "chunk_name": "tasks",
-  "generated_at": "2026-01-28T05:48:19.354Z",
+  "generated_at": "2026-01-29T16:16:50.793Z",
   "item_count": 28,
   "items": [
     {
@@ -199,7 +199,7 @@
         "@/atomic-crm/components",
         "@/atomic-crm/utils/getContextAwareRedirect",
         "@/components/ra-wrappers/form",
-        "@hookform/resolvers/zod",
+        "@/lib/zodErrorFormatting",
         "ra-core",
         "react-router-dom"
       ],

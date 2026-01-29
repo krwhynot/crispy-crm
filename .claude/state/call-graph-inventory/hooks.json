@@ -1,6 +1,6 @@
 {
   "chunk_name": "hooks",
-  "generated_at": "2026-01-28T05:48:30.280Z",
+  "generated_at": "2026-01-29T16:17:40.690Z",
   "items": {
     "nodes": [
       {
@@ -76,10 +76,10 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/hooks/useSmartDefaults.ts:15:useSmartDefaults",
+        "id": "src/atomic-crm/hooks/useSmartDefaults.ts:16:useSmartDefaults",
         "name": "useSmartDefaults",
         "file": "src/atomic-crm/hooks/useSmartDefaults.ts",
-        "line": 15,
+        "line": 16,
         "nodeType": "hook",
         "exported": true,
         "async": false
@@ -1248,47 +1248,47 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/hooks/useSmartDefaults.ts:15:useSmartDefaults",
+        "source": "src/atomic-crm/hooks/useSmartDefaults.ts:16:useSmartDefaults",
         "target": "useGetIdentity",
         "targetName": "useGetIdentity",
-        "edgeType": "hook",
-        "line": 21,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/hooks/useSmartDefaults.ts:15:useSmartDefaults",
-        "target": "useRef",
-        "targetName": "useRef",
         "edgeType": "hook",
         "line": 22,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/hooks/useSmartDefaults.ts:15:useSmartDefaults",
+        "source": "src/atomic-crm/hooks/useSmartDefaults.ts:16:useSmartDefaults",
+        "target": "useRef",
+        "targetName": "useRef",
+        "edgeType": "hook",
+        "line": 23,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useSmartDefaults.ts:16:useSmartDefaults",
         "target": "format",
         "targetName": "format",
         "edgeType": "call",
-        "line": 26,
+        "line": 27,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/hooks/useSmartDefaults.ts:15:useSmartDefaults",
+        "source": "src/atomic-crm/hooks/useSmartDefaults.ts:16:useSmartDefaults",
         "target": "useEffect",
         "targetName": "useEffect",
         "edgeType": "hook",
-        "line": 29,
+        "line": 30,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/hooks/useSmartDefaults.ts:15:useSmartDefaults",
+        "source": "src/atomic-crm/hooks/useSmartDefaults.ts:16:useSmartDefaults",
         "target": "reset",
         "targetName": "reset",
         "edgeType": "call",
-        "line": 32,
+        "line": 33,
         "conditional": true,
         "inLoop": false
       },

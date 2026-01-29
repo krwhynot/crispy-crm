@@ -1,6 +1,6 @@
 {
   "chunk_name": "filters",
-  "generated_at": "2026-01-28T05:48:19.340Z",
+  "generated_at": "2026-01-29T16:16:50.741Z",
   "item_count": 7,
   "items": [
     {
@@ -95,7 +95,7 @@
     {
       "name": "FilterChipsPanel",
       "file": "src/atomic-crm/filters/FilterChipsPanel.tsx",
-      "line": 24,
+      "line": 20,
       "type": "presentational",
       "hooks": [
         "useCallback",
@@ -107,17 +107,19 @@
       "imports": [
         "./FilterChip",
         "./filterFormatters",
+        "./types",
         "./useFilterManagement",
         "./useOrganizationNames",
         "./useSalesNames",
         "./useTagNames",
-        "@/components/ui/accordion",
+        "@/components/ra-wrappers/form",
         "@/lib/utils",
         "react"
       ],
       "isDefaultExport": false,
       "childComponents": [
-        "FilterChip"
+        "FilterChip",
+        "SingleFilterValue"
       ],
       "contextDependencies": [],
       "componentRole": "wrapper"

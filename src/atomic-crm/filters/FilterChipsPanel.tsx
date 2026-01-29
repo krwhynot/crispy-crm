@@ -23,10 +23,15 @@ export const FilterChipsPanel = ({ className }: FilterChipsPanelProps) => {
   /**
    * Memoized callback for removing filters.
    * Stable reference allows FilterChip React.memo to prevent unnecessary re-renders.
+   * Note: flattenFilterValues already filters out undefined, so value is guaranteed to be defined here
    */
   const handleRemoveFilter = useCallback(
-    (key: string, value: unknown) => {
-      removeFilterValue(key, value);
+    (key: string, value: SingleFilterValue) => {
+      // Type guard: flattenFilterValues never includes undefined or empty strings
+      // This narrows the type to PrimitiveFilterValue (excludes undefined)
+      if (value !== undefined && value !== "") {
+        removeFilterValue(key, value as string | number | boolean | null);
+      }
     },
     [removeFilterValue]
   );

@@ -1,6 +1,6 @@
 {
   "chunk_name": "organizations",
-  "generated_at": "2026-01-28T05:48:19.345Z",
+  "generated_at": "2026-01-29T16:16:50.768Z",
   "item_count": 76,
   "items": [
     {
@@ -307,7 +307,7 @@
     {
       "name": "OrganizationAside",
       "file": "src/atomic-crm/organizations/OrganizationAside.tsx",
-      "line": 21,
+      "line": 22,
       "type": "presentational",
       "hooks": [
         "useRecordContext"
@@ -325,6 +325,7 @@
         "@/components/ra-wrappers/text-field",
         "@/components/ra-wrappers/url-field",
         "@/components/ui",
+        "@/lib/utils/urlUtils",
         "lucide-react",
         "ra-core"
       ],
@@ -586,8 +587,8 @@
         "@/components/ui/card",
         "@/hooks/usePermissions",
         "@/hooks/useUnsavedChangesWarning",
+        "@/lib/zodErrorFormatting",
         "@/types/database.generated",
-        "@hookform/resolvers/zod",
         "ra-core",
         "react",
         "react-router-dom"
@@ -636,8 +637,8 @@
         "@/components/ui/card",
         "@/hooks/usePermissions",
         "@/hooks/useUnsavedChangesWarning",
+        "@/lib/zodErrorFormatting",
         "@/types/database.generated",
-        "@hookform/resolvers/zod",
         "ra-core",
         "react",
         "react-router-dom"
@@ -1551,7 +1552,7 @@
         "@/components/ui/select",
         "@/hooks/useSupportCreateSuggestion",
         "@/lib/logger",
-        "@hookform/resolvers/zod",
+        "@/lib/zodErrorFormatting",
         "@tanstack/react-query",
         "ra-core",
         "react",
@@ -1589,7 +1590,7 @@
         "@/components/ui/select",
         "@/hooks/useSupportCreateSuggestion",
         "@/lib/logger",
-        "@hookform/resolvers/zod",
+        "@/lib/zodErrorFormatting",
         "@tanstack/react-query",
         "ra-core",
         "react",

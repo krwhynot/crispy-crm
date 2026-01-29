@@ -1,6 +1,6 @@
 {
   "chunk_name": "filters",
-  "generated_at": "2026-01-28T05:48:30.276Z",
+  "generated_at": "2026-01-29T16:17:40.674Z",
   "items": {
     "nodes": [
       {
@@ -49,10 +49,10 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/filters/FilterChipsPanel.tsx:24:FilterChipsPanel",
+        "id": "src/atomic-crm/filters/FilterChipsPanel.tsx:20:FilterChipsPanel",
         "name": "FilterChipsPanel",
         "file": "src/atomic-crm/filters/FilterChipsPanel.tsx",
-        "line": 24,
+        "line": 20,
         "nodeType": "component",
         "exported": true,
         "async": false
@@ -865,7 +865,7 @@
         "target": "useRef",
         "targetName": "useRef",
         "edgeType": "hook",
-        "line": 45,
+        "line": 49,
         "conditional": false,
         "inLoop": false
       },
@@ -874,7 +874,7 @@
         "target": "useFilterChipBar",
         "targetName": "useFilterChipBar",
         "edgeType": "hook",
-        "line": 55,
+        "line": 60,
         "conditional": false,
         "inLoop": false
       },
@@ -883,7 +883,7 @@
         "target": "useCallback",
         "targetName": "useCallback",
         "edgeType": "hook",
-        "line": 64,
+        "line": 66,
         "conditional": false,
         "inLoop": false
       },
@@ -892,8 +892,17 @@
         "target": "removeFilter",
         "targetName": "removeFilter",
         "edgeType": "call",
-        "line": 66,
+        "line": 68,
         "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/FilterChipBar.tsx:44:FilterChipBar",
+        "target": "focus",
+        "targetName": "focus",
+        "edgeType": "call",
+        "line": 78,
+        "conditional": true,
         "inLoop": false
       },
       {
@@ -901,7 +910,7 @@
         "target": "useCallback",
         "targetName": "useCallback",
         "edgeType": "hook",
-        "line": 75,
+        "line": 86,
         "conditional": false,
         "inLoop": false
       },
@@ -910,7 +919,7 @@
         "target": "querySelectorAll",
         "targetName": "querySelectorAll",
         "edgeType": "call",
-        "line": 76,
+        "line": 87,
         "conditional": false,
         "inLoop": false
       },
@@ -919,7 +928,7 @@
         "target": "findIndex",
         "targetName": "findIndex",
         "edgeType": "call",
-        "line": 79,
+        "line": 90,
         "conditional": false,
         "inLoop": false
       },
@@ -928,7 +937,7 @@
         "target": "from",
         "targetName": "from",
         "edgeType": "call",
-        "line": 79,
+        "line": 90,
         "conditional": false,
         "inLoop": false
       },
@@ -937,59 +946,14 @@
         "target": "preventDefault",
         "targetName": "preventDefault",
         "edgeType": "call",
-        "line": 83,
+        "line": 94,
         "conditional": true,
         "inLoop": false
       },
       {
         "source": "src/atomic-crm/filters/FilterChipBar.tsx:44:FilterChipBar",
-        "target": "focus",
-        "targetName": "focus",
-        "edgeType": "call",
-        "line": 84,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/filters/FilterChipBar.tsx:44:FilterChipBar",
-        "target": "preventDefault",
-        "targetName": "preventDefault",
-        "edgeType": "call",
-        "line": 87,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/filters/FilterChipBar.tsx:44:FilterChipBar",
-        "target": "focus",
-        "targetName": "focus",
-        "edgeType": "call",
-        "line": 88,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/filters/FilterChipBar.tsx:44:FilterChipBar",
-        "target": "preventDefault",
-        "targetName": "preventDefault",
-        "edgeType": "call",
-        "line": 91,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/filters/FilterChipBar.tsx:44:FilterChipBar",
-        "target": "focus",
-        "targetName": "focus",
-        "edgeType": "call",
-        "line": 92,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/filters/FilterChipBar.tsx:44:FilterChipBar",
-        "target": "preventDefault",
-        "targetName": "preventDefault",
+        "target": "focusButton",
+        "targetName": "focusButton",
         "edgeType": "call",
         "line": 95,
         "conditional": true,
@@ -997,10 +961,55 @@
       },
       {
         "source": "src/atomic-crm/filters/FilterChipBar.tsx:44:FilterChipBar",
-        "target": "focus",
-        "targetName": "focus",
+        "target": "preventDefault",
+        "targetName": "preventDefault",
         "edgeType": "call",
-        "line": 96,
+        "line": 98,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/FilterChipBar.tsx:44:FilterChipBar",
+        "target": "focusButton",
+        "targetName": "focusButton",
+        "edgeType": "call",
+        "line": 99,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/FilterChipBar.tsx:44:FilterChipBar",
+        "target": "preventDefault",
+        "targetName": "preventDefault",
+        "edgeType": "call",
+        "line": 102,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/FilterChipBar.tsx:44:FilterChipBar",
+        "target": "focusButton",
+        "targetName": "focusButton",
+        "edgeType": "call",
+        "line": 103,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/FilterChipBar.tsx:44:FilterChipBar",
+        "target": "preventDefault",
+        "targetName": "preventDefault",
+        "edgeType": "call",
+        "line": 106,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/FilterChipBar.tsx:44:FilterChipBar",
+        "target": "focusButton",
+        "targetName": "focusButton",
+        "edgeType": "call",
+        "line": 107,
         "conditional": true,
         "inLoop": false
       },
@@ -1009,7 +1018,7 @@
         "target": "cn",
         "targetName": "cn",
         "edgeType": "call",
-        "line": 113,
+        "line": 124,
         "conditional": false,
         "inLoop": false
       },
@@ -1018,7 +1027,7 @@
         "target": "map",
         "targetName": "map",
         "edgeType": "call",
-        "line": 126,
+        "line": 137,
         "conditional": false,
         "inLoop": false
       },
@@ -1027,7 +1036,7 @@
         "target": "handleRemoveFilter",
         "targetName": "handleRemoveFilter",
         "edgeType": "call",
-        "line": 130,
+        "line": 141,
         "conditional": false,
         "inLoop": false
       },
@@ -1036,7 +1045,7 @@
         "target": "handleKeyDown",
         "targetName": "handleKeyDown",
         "edgeType": "callback",
-        "line": 112,
+        "line": 123,
         "conditional": false,
         "inLoop": false
       },
@@ -1045,7 +1054,7 @@
         "target": "AdminButton",
         "targetName": "AdminButton",
         "edgeType": "render",
-        "line": 136,
+        "line": 147,
         "conditional": false,
         "inLoop": false
       },
@@ -1054,39 +1063,39 @@
         "target": "FilterChip",
         "targetName": "FilterChip",
         "edgeType": "render",
-        "line": 128,
+        "line": 139,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/filters/FilterChipsPanel.tsx:24:FilterChipsPanel",
+        "source": "src/atomic-crm/filters/FilterChipsPanel.tsx:20:FilterChipsPanel",
         "target": "useFilterManagement",
         "targetName": "useFilterManagement",
         "edgeType": "hook",
-        "line": 25,
+        "line": 21,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/filters/FilterChipsPanel.tsx:24:FilterChipsPanel",
+        "source": "src/atomic-crm/filters/FilterChipsPanel.tsx:20:FilterChipsPanel",
         "target": "useCallback",
         "targetName": "useCallback",
         "edgeType": "hook",
-        "line": 31,
+        "line": 28,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/filters/FilterChipsPanel.tsx:24:FilterChipsPanel",
+        "source": "src/atomic-crm/filters/FilterChipsPanel.tsx:20:FilterChipsPanel",
         "target": "removeFilterValue",
         "targetName": "removeFilterValue",
         "edgeType": "call",
-        "line": 33,
-        "conditional": false,
+        "line": 32,
+        "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/filters/FilterChipsPanel.tsx:24:FilterChipsPanel",
+        "source": "src/atomic-crm/filters/FilterChipsPanel.tsx:20:FilterChipsPanel",
         "target": "isArray",
         "targetName": "isArray",
         "edgeType": "call",
@@ -1095,7 +1104,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/filters/FilterChipsPanel.tsx:24:FilterChipsPanel",
+        "source": "src/atomic-crm/filters/FilterChipsPanel.tsx:20:FilterChipsPanel",
         "target": "map",
         "targetName": "map",
         "edgeType": "call",
@@ -1104,7 +1113,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/filters/FilterChipsPanel.tsx:24:FilterChipsPanel",
+        "source": "src/atomic-crm/filters/FilterChipsPanel.tsx:20:FilterChipsPanel",
         "target": "String",
         "targetName": "String",
         "edgeType": "call",
@@ -1113,7 +1122,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/filters/FilterChipsPanel.tsx:24:FilterChipsPanel",
+        "source": "src/atomic-crm/filters/FilterChipsPanel.tsx:20:FilterChipsPanel",
         "target": "isArray",
         "targetName": "isArray",
         "edgeType": "call",
@@ -1122,7 +1131,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/filters/FilterChipsPanel.tsx:24:FilterChipsPanel",
+        "source": "src/atomic-crm/filters/FilterChipsPanel.tsx:20:FilterChipsPanel",
         "target": "map",
         "targetName": "map",
         "edgeType": "call",
@@ -1131,7 +1140,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/filters/FilterChipsPanel.tsx:24:FilterChipsPanel",
+        "source": "src/atomic-crm/filters/FilterChipsPanel.tsx:20:FilterChipsPanel",
         "target": "String",
         "targetName": "String",
         "edgeType": "call",
@@ -1140,7 +1149,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/filters/FilterChipsPanel.tsx:24:FilterChipsPanel",
+        "source": "src/atomic-crm/filters/FilterChipsPanel.tsx:20:FilterChipsPanel",
         "target": "isArray",
         "targetName": "isArray",
         "edgeType": "call",
@@ -1149,7 +1158,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/filters/FilterChipsPanel.tsx:24:FilterChipsPanel",
+        "source": "src/atomic-crm/filters/FilterChipsPanel.tsx:20:FilterChipsPanel",
         "target": "map",
         "targetName": "map",
         "edgeType": "call",
@@ -1158,7 +1167,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/filters/FilterChipsPanel.tsx:24:FilterChipsPanel",
+        "source": "src/atomic-crm/filters/FilterChipsPanel.tsx:20:FilterChipsPanel",
         "target": "String",
         "targetName": "String",
         "edgeType": "call",
@@ -1167,7 +1176,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/filters/FilterChipsPanel.tsx:24:FilterChipsPanel",
+        "source": "src/atomic-crm/filters/FilterChipsPanel.tsx:20:FilterChipsPanel",
         "target": "isArray",
         "targetName": "isArray",
         "edgeType": "call",
@@ -1176,7 +1185,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/filters/FilterChipsPanel.tsx:24:FilterChipsPanel",
+        "source": "src/atomic-crm/filters/FilterChipsPanel.tsx:20:FilterChipsPanel",
         "target": "map",
         "targetName": "map",
         "edgeType": "call",
@@ -1185,7 +1194,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/filters/FilterChipsPanel.tsx:24:FilterChipsPanel",
+        "source": "src/atomic-crm/filters/FilterChipsPanel.tsx:20:FilterChipsPanel",
         "target": "String",
         "targetName": "String",
         "edgeType": "call",
@@ -1194,7 +1203,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/filters/FilterChipsPanel.tsx:24:FilterChipsPanel",
+        "source": "src/atomic-crm/filters/FilterChipsPanel.tsx:20:FilterChipsPanel",
         "target": "useOrganizationNames",
         "targetName": "useOrganizationNames",
         "edgeType": "hook",
@@ -1203,7 +1212,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/filters/FilterChipsPanel.tsx:24:FilterChipsPanel",
+        "source": "src/atomic-crm/filters/FilterChipsPanel.tsx:20:FilterChipsPanel",
         "target": "useSalesNames",
         "targetName": "useSalesNames",
         "edgeType": "hook",
@@ -1212,7 +1221,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/filters/FilterChipsPanel.tsx:24:FilterChipsPanel",
+        "source": "src/atomic-crm/filters/FilterChipsPanel.tsx:20:FilterChipsPanel",
         "target": "useTagNames",
         "targetName": "useTagNames",
         "edgeType": "hook",
@@ -1221,7 +1230,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/filters/FilterChipsPanel.tsx:24:FilterChipsPanel",
+        "source": "src/atomic-crm/filters/FilterChipsPanel.tsx:20:FilterChipsPanel",
         "target": "flattenFilterValues",
         "targetName": "flattenFilterValues",
         "edgeType": "call",
@@ -1230,7 +1239,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/filters/FilterChipsPanel.tsx:24:FilterChipsPanel",
+        "source": "src/atomic-crm/filters/FilterChipsPanel.tsx:20:FilterChipsPanel",
         "target": "cn",
         "targetName": "cn",
         "edgeType": "call",
@@ -1239,74 +1248,47 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/filters/FilterChipsPanel.tsx:24:FilterChipsPanel",
+        "source": "src/atomic-crm/filters/FilterChipsPanel.tsx:20:FilterChipsPanel",
         "target": "map",
         "targetName": "map",
         "edgeType": "call",
-        "line": 98,
+        "line": 96,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/filters/FilterChipsPanel.tsx:24:FilterChipsPanel",
+        "source": "src/atomic-crm/filters/FilterChipsPanel.tsx:20:FilterChipsPanel",
         "target": "formatFilterLabel",
         "targetName": "formatFilterLabel",
         "edgeType": "call",
-        "line": 99,
+        "line": 97,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/filters/FilterChipsPanel.tsx:24:FilterChipsPanel",
+        "source": "src/atomic-crm/filters/FilterChipsPanel.tsx:20:FilterChipsPanel",
         "target": "handleRemoveFilter",
         "targetName": "handleRemoveFilter",
         "edgeType": "call",
-        "line": 111,
+        "line": 109,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/filters/FilterChipsPanel.tsx:24:FilterChipsPanel",
-        "target": "Accordion",
-        "targetName": "Accordion",
+        "source": "src/atomic-crm/filters/FilterChipsPanel.tsx:20:FilterChipsPanel",
+        "target": "AccordionSection",
+        "targetName": "AccordionSection",
         "edgeType": "render",
         "line": 86,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/filters/FilterChipsPanel.tsx:24:FilterChipsPanel",
-        "target": "AccordionItem",
-        "targetName": "AccordionItem",
-        "edgeType": "render",
-        "line": 87,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/filters/FilterChipsPanel.tsx:24:FilterChipsPanel",
-        "target": "AccordionTrigger",
-        "targetName": "AccordionTrigger",
-        "edgeType": "render",
-        "line": 88,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/filters/FilterChipsPanel.tsx:24:FilterChipsPanel",
-        "target": "AccordionContent",
-        "targetName": "AccordionContent",
-        "edgeType": "render",
-        "line": 96,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/filters/FilterChipsPanel.tsx:24:FilterChipsPanel",
+        "source": "src/atomic-crm/filters/FilterChipsPanel.tsx:20:FilterChipsPanel",
         "target": "FilterChip",
         "targetName": "FilterChip",
         "edgeType": "render",
-        "line": 108,
+        "line": 106,
         "conditional": false,
         "inLoop": false
       },
@@ -2989,7 +2971,7 @@
         "target": "String",
         "targetName": "String",
         "edgeType": "call",
-        "line": 235,
+        "line": 237,
         "conditional": true,
         "inLoop": false
       },
@@ -2998,7 +2980,7 @@
         "target": "push",
         "targetName": "push",
         "edgeType": "call",
-        "line": 236,
+        "line": 238,
         "conditional": true,
         "inLoop": false
       },
@@ -3007,7 +2989,7 @@
         "target": "formatLabel",
         "targetName": "formatLabel",
         "edgeType": "call",
-        "line": 241,
+        "line": 243,
         "conditional": true,
         "inLoop": false
       },
@@ -3016,7 +2998,7 @@
         "target": "resolveChoices",
         "targetName": "resolveChoices",
         "edgeType": "call",
-        "line": 246,
+        "line": 248,
         "conditional": true,
         "inLoop": false
       },
@@ -3025,7 +3007,7 @@
         "target": "resolveChoices",
         "targetName": "resolveChoices",
         "edgeType": "call",
-        "line": 255,
+        "line": 257,
         "conditional": true,
         "inLoop": false
       },
@@ -3034,25 +3016,7 @@
         "target": "find",
         "targetName": "find",
         "edgeType": "call",
-        "line": 256,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/filters/useFilterChipBar.ts:77:useFilterChipBar",
-        "target": "String",
-        "targetName": "String",
-        "edgeType": "call",
-        "line": 257,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/filters/useFilterChipBar.ts:77:useFilterChipBar",
-        "target": "getOrganizationName",
-        "targetName": "getOrganizationName",
-        "edgeType": "call",
-        "line": 259,
+        "line": 258,
         "conditional": true,
         "inLoop": false
       },
@@ -3067,10 +3031,10 @@
       },
       {
         "source": "src/atomic-crm/filters/useFilterChipBar.ts:77:useFilterChipBar",
-        "target": "getSalesName",
-        "targetName": "getSalesName",
+        "target": "String",
+        "targetName": "String",
         "edgeType": "call",
-        "line": 263,
+        "line": 262,
         "conditional": true,
         "inLoop": false
       },
@@ -3079,16 +3043,7 @@
         "target": "String",
         "targetName": "String",
         "edgeType": "call",
-        "line": 263,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/filters/useFilterChipBar.ts:77:useFilterChipBar",
-        "target": "getTagName",
-        "targetName": "getTagName",
-        "edgeType": "call",
-        "line": 265,
+        "line": 266,
         "conditional": true,
         "inLoop": false
       },
@@ -3097,16 +3052,7 @@
         "target": "String",
         "targetName": "String",
         "edgeType": "call",
-        "line": 265,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/filters/useFilterChipBar.ts:77:useFilterChipBar",
-        "target": "getSegmentName",
-        "targetName": "getSegmentName",
-        "edgeType": "call",
-        "line": 267,
+        "line": 270,
         "conditional": true,
         "inLoop": false
       },
@@ -3115,16 +3061,7 @@
         "target": "String",
         "targetName": "String",
         "edgeType": "call",
-        "line": 267,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/filters/useFilterChipBar.ts:77:useFilterChipBar",
-        "target": "getCategoryName",
-        "targetName": "getCategoryName",
-        "edgeType": "call",
-        "line": 269,
+        "line": 274,
         "conditional": true,
         "inLoop": false
       },
@@ -3133,7 +3070,7 @@
         "target": "String",
         "targetName": "String",
         "edgeType": "call",
-        "line": 269,
+        "line": 278,
         "conditional": true,
         "inLoop": false
       },
@@ -3142,7 +3079,7 @@
         "target": "String",
         "targetName": "String",
         "edgeType": "call",
-        "line": 271,
+        "line": 282,
         "conditional": true,
         "inLoop": false
       },
@@ -3151,8 +3088,71 @@
         "target": "push",
         "targetName": "push",
         "edgeType": "call",
-        "line": 274,
+        "line": 285,
         "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useFilterChipBar.ts:77:useFilterChipBar",
+        "target": "useMemo",
+        "targetName": "useMemo",
+        "edgeType": "hook",
+        "line": 301,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useFilterChipBar.ts:77:useFilterChipBar",
+        "target": "map",
+        "targetName": "map",
+        "edgeType": "call",
+        "line": 302,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useFilterChipBar.ts:77:useFilterChipBar",
+        "target": "getOrganizationName",
+        "targetName": "getOrganizationName",
+        "edgeType": "call",
+        "line": 314,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useFilterChipBar.ts:77:useFilterChipBar",
+        "target": "getSalesName",
+        "targetName": "getSalesName",
+        "edgeType": "call",
+        "line": 317,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useFilterChipBar.ts:77:useFilterChipBar",
+        "target": "getTagName",
+        "targetName": "getTagName",
+        "edgeType": "call",
+        "line": 320,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useFilterChipBar.ts:77:useFilterChipBar",
+        "target": "getSegmentName",
+        "targetName": "getSegmentName",
+        "edgeType": "call",
+        "line": 323,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useFilterChipBar.ts:77:useFilterChipBar",
+        "target": "getCategoryName",
+        "targetName": "getCategoryName",
+        "edgeType": "call",
+        "line": 326,
+        "conditional": true,
         "inLoop": false
       },
       {
@@ -3160,7 +3160,7 @@
         "target": "useCallback",
         "targetName": "useCallback",
         "edgeType": "hook",
-        "line": 290,
+        "line": 338,
         "conditional": false,
         "inLoop": false
       },
@@ -3169,7 +3169,7 @@
         "target": "find",
         "targetName": "find",
         "edgeType": "call",
-        "line": 293,
+        "line": 341,
         "conditional": false,
         "inLoop": false
       },
@@ -3178,7 +3178,7 @@
         "target": "has",
         "targetName": "has",
         "edgeType": "call",
-        "line": 298,
+        "line": 346,
         "conditional": true,
         "inLoop": false
       },
@@ -3187,7 +3187,7 @@
         "target": "get",
         "targetName": "get",
         "edgeType": "call",
-        "line": 300,
+        "line": 348,
         "conditional": true,
         "inLoop": false
       },
@@ -3196,7 +3196,7 @@
         "target": "get",
         "targetName": "get",
         "edgeType": "call",
-        "line": 303,
+        "line": 351,
         "conditional": true,
         "inLoop": false
       },
@@ -3205,7 +3205,7 @@
         "target": "isArray",
         "targetName": "isArray",
         "edgeType": "call",
-        "line": 311,
+        "line": 359,
         "conditional": true,
         "inLoop": false
       },
@@ -3214,7 +3214,7 @@
         "target": "filter",
         "targetName": "filter",
         "edgeType": "call",
-        "line": 313,
+        "line": 361,
         "conditional": true,
         "inLoop": false
       },
@@ -3223,7 +3223,7 @@
         "target": "setFilters",
         "targetName": "setFilters",
         "edgeType": "call",
-        "line": 314,
+        "line": 362,
         "conditional": true,
         "inLoop": false
       },
@@ -3232,7 +3232,7 @@
         "target": "forEach",
         "targetName": "forEach",
         "edgeType": "call",
-        "line": 321,
+        "line": 369,
         "conditional": true,
         "inLoop": false
       },
@@ -3241,7 +3241,7 @@
         "target": "setFilters",
         "targetName": "setFilters",
         "edgeType": "call",
-        "line": 324,
+        "line": 372,
         "conditional": true,
         "inLoop": false
       },
@@ -3250,7 +3250,7 @@
         "target": "useCallback",
         "targetName": "useCallback",
         "edgeType": "hook",
-        "line": 330,
+        "line": 378,
         "conditional": false,
         "inLoop": false
       },
@@ -3259,7 +3259,7 @@
         "target": "fromEntries",
         "targetName": "fromEntries",
         "edgeType": "call",
-        "line": 332,
+        "line": 380,
         "conditional": false,
         "inLoop": false
       },
@@ -3268,7 +3268,7 @@
         "target": "filter",
         "targetName": "filter",
         "edgeType": "call",
-        "line": 333,
+        "line": 381,
         "conditional": false,
         "inLoop": false
       },
@@ -3277,7 +3277,7 @@
         "target": "entries",
         "targetName": "entries",
         "edgeType": "call",
-        "line": 333,
+        "line": 381,
         "conditional": false,
         "inLoop": false
       },
@@ -3286,7 +3286,7 @@
         "target": "includes",
         "targetName": "includes",
         "edgeType": "call",
-        "line": 333,
+        "line": 381,
         "conditional": false,
         "inLoop": false
       },
@@ -3295,7 +3295,7 @@
         "target": "setFilters",
         "targetName": "setFilters",
         "edgeType": "call",
-        "line": 335,
+        "line": 383,
         "conditional": false,
         "inLoop": false
       },

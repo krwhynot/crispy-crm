@@ -1,6 +1,6 @@
 {
   "chunk_name": "contacts",
-  "generated_at": "2026-01-28T05:48:30.258Z",
+  "generated_at": "2026-01-29T16:17:40.594Z",
   "items": {
     "nodes": [
       {
@@ -8935,8 +8935,8 @@
       },
       {
         "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:28:QuickCreateContactPopover",
-        "target": "zodResolver",
-        "targetName": "zodResolver",
+        "target": "createFormResolver",
+        "targetName": "createFormResolver",
         "edgeType": "call",
         "line": 43,
         "conditional": false,
@@ -9412,8 +9412,8 @@
       },
       {
         "source": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx:213:QuickCreateContactRA",
-        "target": "zodResolver",
-        "targetName": "zodResolver",
+        "target": "createFormResolver",
+        "targetName": "createFormResolver",
         "edgeType": "call",
         "line": 227,
         "conditional": false,

@@ -1,6 +1,6 @@
 {
   "chunk_name": "hooks",
-  "generated_at": "2026-01-28T05:48:26.514Z",
+  "generated_at": "2026-01-29T16:17:26.874Z",
   "item_count": 8,
   "items": [
     {
@@ -95,13 +95,14 @@
     {
       "name": "useSmartDefaults",
       "file": "src/atomic-crm/hooks/useSmartDefaults.ts",
-      "line": 15,
+      "line": 16,
       "parameters": [
         "options"
       ],
       "returnType": "{ defaults: SmartDefaults; isLoading: boolean; }",
       "dependencies": [
         "useEffect",
+        "useGetIdentity",
         "useRef"
       ],
       "isReact19Action": false

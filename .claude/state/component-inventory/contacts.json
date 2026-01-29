@@ -1,6 +1,6 @@
 {
   "chunk_name": "contacts",
-  "generated_at": "2026-01-28T05:48:19.336Z",
+  "generated_at": "2026-01-29T16:16:50.726Z",
   "item_count": 59,
   "items": [
     {
@@ -1206,7 +1206,7 @@
         "@/components/ui/popover",
         "@/hooks/useSupportCreateSuggestion",
         "@/lib/logger",
-        "@hookform/resolvers/zod",
+        "@/lib/zodErrorFormatting",
         "@tanstack/react-query",
         "ra-core",
         "react",
@@ -1242,7 +1242,7 @@
         "@/components/ui/popover",
         "@/hooks/useSupportCreateSuggestion",
         "@/lib/logger",
-        "@hookform/resolvers/zod",
+        "@/lib/zodErrorFormatting",
         "@tanstack/react-query",
         "ra-core",
         "react",

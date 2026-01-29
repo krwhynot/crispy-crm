@@ -1,6 +1,6 @@
 {
   "chunk_name": "tags",
-  "generated_at": "2026-01-28T05:48:19.354Z",
+  "generated_at": "2026-01-29T16:16:50.791Z",
   "item_count": 22,
   "items": [
     {
@@ -135,7 +135,7 @@
         "@/components/ui/label",
         "@/components/ui/unsaved-changes-dialog",
         "@/lib/color-types",
-        "@hookform/resolvers/zod",
+        "@/lib/zodErrorFormatting",
         "lucide-react",
         "react",
         "react-hook-form"

@@ -1,6 +1,6 @@
 {
   "chunk_name": "opportunities",
-  "generated_at": "2026-01-28T05:48:19.343Z",
+  "generated_at": "2026-01-29T16:16:50.745Z",
   "item_count": 83,
   "items": [
     {
@@ -56,7 +56,7 @@
         "@/components/ui/select-ui",
         "@/components/ui/textarea",
         "@/lib/logger",
-        "@hookform/resolvers/zod",
+        "@/lib/zodErrorFormatting",
         "@tanstack/react-query",
         "ra-core",
         "react-hook-form"
@@ -232,7 +232,7 @@
       "imports": [
         "../types",
         "@/atomic-crm/opportunities/constants",
-        "@/components/ui/accordion",
+        "@/components/ra-wrappers/form",
         "@/components/ui/badge",
         "@/components/ui/card",
         "lucide-react",
@@ -299,7 +299,7 @@
         "@/components/ra-wrappers/text-input",
         "@/components/ui/dialog",
         "@/lib/utils",
-        "@hookform/resolvers/zod",
+        "@/lib/zodErrorFormatting",
         "lucide-react",
         "react",
         "react-hook-form"
@@ -330,7 +330,7 @@
         "@/components/ra-wrappers/text-input",
         "@/components/ui/dialog",
         "@/lib/utils",
-        "@hookform/resolvers/zod",
+        "@/lib/zodErrorFormatting",
         "lucide-react",
         "react",
         "react-hook-form"
