@@ -1,14 +1,15 @@
 import { useEffect, useRef } from "react";
-import { useGetIdentity } from "react-admin";
+import { useGetIdentity, type Identifier } from "react-admin";
 import { format } from "date-fns";
+import type { FieldValues } from "react-hook-form";
 import type { UserIdentity } from "@/hooks/useUserRole";
 
 interface UseSmartDefaultsOptions {
-  reset?: (values: Record<string, any>, options?: { keepDirtyValues?: boolean }) => void;
+  reset?: (values: FieldValues, options?: { keepDirtyValues?: boolean }) => void;
 }
 
 interface SmartDefaults {
-  sales_id: string | null;
+  sales_id: Identifier | null;
   activity_date: string;
 }
 

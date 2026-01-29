@@ -1,9 +1,9 @@
-import { useGetIdentity } from "react-admin";
+import { useGetIdentity, type Identifier } from "react-admin";
 
 export type UserRole = "admin" | "manager" | "rep";
 
 export interface UserIdentity {
-  id: string;
+  id: Identifier;
   fullName: string;
   avatar?: string;
   role: UserRole;
