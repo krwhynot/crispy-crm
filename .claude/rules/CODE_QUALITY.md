@@ -215,8 +215,14 @@ grep -r "text-red-\|bg-blue-\|#[0-9a-fA-F]\{6\}" src/ \
 grep -r "h-[1-9] \|w-[1-9] \|h-10\|w-10" src/components/ \
   | grep -v "h-11\|w-11\|h-12\|w-12"
 ```
-## Storage Hygiene
+```bash
+Form Validation:
 
+DO: Use createFormResolver(schema) for all React Admin forms.
+
+DON'T: Use zodResolver(schema) directly or cast resolvers to any.
+## Storage Hygiene
+```
 DO:
 - **Centralized Config:** Define max file sizes and allowed types in `src/config/storage.ts`.
 - **Sanitization:** Sanitize filenames before upload (remove special chars, spaces) to prevent URL encoding issues.

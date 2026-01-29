@@ -1,4 +1,4 @@
-import { zodResolver } from "@hookform/resolvers/zod";
+import { createFormResolver } from "@/lib/zodErrorFormatting";
 import { useForm, useWatch } from "react-hook-form";
 import { useNotify, useDataProvider } from "react-admin";
 import { logger } from "@/lib/logger";
@@ -93,7 +93,7 @@ export function QuickLogForm({
   }, [initialDraft, initialContactId, initialOrganizationId, initialOpportunityId]);
 
   const form = useForm<ActivityLogInput>({
-    resolver: zodResolver(activityLogSchema),
+    resolver: createFormResolver(activityLogSchema),
     defaultValues,
   });
 

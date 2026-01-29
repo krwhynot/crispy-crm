@@ -64,7 +64,7 @@ export default function TaskCreate() {
             <Form
               defaultValues={defaultValues}
               mode="onBlur"
-              resolver={zodResolver(taskCreateSchema)}
+              resolver={createFormResolver(taskCreateSchema)}
             >
               <TaskInputs />
               <CreateFormFooter
