@@ -128,7 +128,7 @@ describe("FilterChipBar", () => {
       renderWithAdminContext(<FilterChipBar filterConfig={mockFilterConfig} />);
 
       const buttons = screen.getAllByRole("button", { name: /Remove/i });
-      const lastButton = buttons[buttons.length - 1];
+      const lastButton = buttons[buttons.length - 1]!;
       lastButton.focus();
 
       fireEvent.keyDown(lastButton, { key: "ArrowRight" });
@@ -139,9 +139,9 @@ describe("FilterChipBar", () => {
       renderWithAdminContext(<FilterChipBar filterConfig={mockFilterConfig} />);
 
       const buttons = screen.getAllByRole("button", { name: /Remove/i });
-      buttons[1].focus();
+      buttons[1]!.focus();
 
-      fireEvent.keyDown(buttons[1], { key: "Home" });
+      fireEvent.keyDown(buttons[1]!, { key: "Home" });
       expect(document.activeElement).toBe(buttons[0]);
     });
 
@@ -149,9 +149,9 @@ describe("FilterChipBar", () => {
       renderWithAdminContext(<FilterChipBar filterConfig={mockFilterConfig} />);
 
       const buttons = screen.getAllByRole("button", { name: /Remove/i });
-      buttons[0].focus();
+      buttons[0]!.focus();
 
-      fireEvent.keyDown(buttons[0], { key: "End" });
+      fireEvent.keyDown(buttons[0]!, { key: "End" });
       expect(document.activeElement).toBe(buttons[buttons.length - 1]);
     });
 
