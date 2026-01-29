@@ -159,7 +159,7 @@ vi.mock("../TaskSlideOverDetailsTab", () => ({
 }));
 
 vi.mock("../TaskRelatedItemsTab", () => ({
-  TaskRelatedItemsTab: ({ record, mode }: any) => (
+  TaskRelatedItemsTab: ({ record, mode }: MockTabComponentProps) => (
     <div data-testid="task-related-tab">
       <p>Related items for task {record.id}</p>
       <p>Mode: {mode}</p>
@@ -345,7 +345,11 @@ describe("TaskSlideOver", () => {
     it("displays fallback 'Task #id' when title is empty", async () => {
       // Override the mock to return empty title
       vi.doMock("@/components/layouts/ResourceSlideOver", () => ({
-        ResourceSlideOver: ({ recordId, isOpen, recordRepresentation }: any) => {
+        ResourceSlideOver: ({
+          recordId,
+          isOpen,
+          recordRepresentation,
+        }: MockDoMockSlideOverProps) => {
           const mockRecordNoTitle = {
             id: recordId,
             title: "",

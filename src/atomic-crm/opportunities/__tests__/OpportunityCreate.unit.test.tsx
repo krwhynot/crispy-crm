@@ -199,7 +199,7 @@ describe("OpportunityCreate - Error Handling", () => {
   });
 
   it("should handle RLS violations with field-specific errors", () => {
-    const formatRLSError = (error: any) => {
+    const formatRLSError = (error: { message: string; errors?: Record<string, string> }) => {
       if (error.message === "RLS policy violation" && error.errors) {
         return {
           fieldErrors: error.errors,

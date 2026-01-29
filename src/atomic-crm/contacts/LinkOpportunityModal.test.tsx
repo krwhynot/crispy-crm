@@ -182,13 +182,13 @@ describe("LinkOpportunityModal", () => {
     await waitFor(() => {
       const calls = mockQueryClient.invalidateQueries.mock.calls;
 
-      const hasOpportunityInvalidation = calls.some((call: any[]) =>
+      const hasOpportunityInvalidation = calls.some((call: Array<{ queryKey: unknown }>) =>
         JSON.stringify(call[0].queryKey).includes("opportunities")
       );
-      const hasContactInvalidation = calls.some((call: any[]) =>
+      const hasContactInvalidation = calls.some((call: Array<{ queryKey: unknown }>) =>
         JSON.stringify(call[0].queryKey).includes("contacts")
       );
-      const hasOpportunitContactInvalidation = calls.some((call: any[]) =>
+      const hasOpportunitContactInvalidation = calls.some((call: Array<{ queryKey: unknown }>) =>
         JSON.stringify(call[0].queryKey).includes("opportunity_contacts")
       );
 

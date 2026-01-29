@@ -198,7 +198,7 @@ vi.mock("@/components/ra-wrappers/search-input", () => ({
 // Mock FilterCategory to always show children (avoid collapsed state in tests)
 // Note: ContactListFilter imports from "@/atomic-crm/filters/FilterCategory"
 vi.mock("@/atomic-crm/filters/FilterCategory", () => ({
-  FilterCategory: ({ children, label }: any) => (
+  FilterCategory: ({ children, label }: { children: React.ReactNode; label: string }) => (
     <div data-testid={`filter-category-${label}`}>
       <div>{label}</div>
       {children}
@@ -218,7 +218,7 @@ vi.mock("@/atomic-crm/tutorial/TutorialProvider", () => ({
     previousStep: vi.fn(),
     skipTutorial: vi.fn(),
   }),
-  TutorialProvider: ({ children }: any) => children,
+  TutorialProvider: ({ children }: { children: React.ReactNode }) => children,
 }));
 
 // Mock PageTutorialTrigger to avoid tutorial context requirement
@@ -228,7 +228,13 @@ vi.mock("@/atomic-crm/tutorial/PageTutorialTrigger", () => ({
 
 // Mock StandardListLayout
 vi.mock("@/components/layouts/StandardListLayout", () => ({
-  StandardListLayout: ({ children, filterComponent }: any) => (
+  StandardListLayout: ({
+    children,
+    filterComponent,
+  }: {
+    children: React.ReactNode;
+    filterComponent: React.ReactNode;
+  }) => (
     <div data-testid="standard-list-layout">
       <div data-testid="filter-sidebar">{filterComponent}</div>
       <div data-testid="list-content">{children}</div>

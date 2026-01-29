@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeAll } from "vitest";
-import { createClient } from "@supabase/supabase-js";
+import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 
 // Types for our schema validation
 interface ColumnInfo {

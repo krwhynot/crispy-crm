@@ -39,7 +39,7 @@ vi.mock("react-admin", async (importOriginal) => {
     ...actual,
     useGetList: (
       resource: string,
-      params: any,
+      params: GetListParams,
       options?: { enabled?: boolean; staleTime?: number }
     ) => {
       // Support enabled option - if false, don't fetch

@@ -374,7 +374,7 @@ vi.mock("@/atomic-crm/hooks/useFilterCleanup", () => ({
 
 // Mock Badge component
 vi.mock("@/components/ui/badge", () => ({
-  Badge: ({ children, variant }: any) => (
+  Badge: ({ children, variant }: MockBadgeProps) => (
     <span data-testid={`badge-${variant || "default"}`} data-variant={variant || "default"}>
       {children}
     </span>
