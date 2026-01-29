@@ -7,6 +7,7 @@ import { useSalesNames } from "./useSalesNames";
 import { useTagNames } from "./useTagNames";
 import { formatFilterLabel, flattenFilterValues } from "./filterFormatters";
 import { useFilterManagement } from "./useFilterManagement";
+import type { SingleFilterValue } from "./types";
 
 interface FilterChipsPanelProps {
   className?: string;

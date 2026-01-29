@@ -19,7 +19,7 @@ export const useSmartDefaults = (
   defaults: SmartDefaults;
   isLoading: boolean;
 } => {
-  const { data: identity, isLoading } = useGetIdentity<UserIdentity>();
+  const { data: identity, isLoading } = useGetIdentity();
   const hasResetRef = useRef(false);
 
   const defaults: SmartDefaults = {
