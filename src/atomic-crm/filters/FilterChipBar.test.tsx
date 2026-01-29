@@ -1,4 +1,4 @@
-import { screen, fireEvent, waitFor } from "@testing-library/react";
+import { screen, fireEvent } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { renderWithAdminContext } from "@/tests/utils/render-admin";
 import { FilterChipBar } from "./FilterChipBar";
@@ -96,10 +96,10 @@ describe("FilterChipBar", () => {
       const buttons = screen.getAllByRole("button", { name: /Remove/i });
       expect(buttons.length).toBe(2);
 
-      buttons[0].focus();
+      buttons[0]!.focus();
       expect(document.activeElement).toBe(buttons[0]);
 
-      fireEvent.keyDown(buttons[0], { key: "ArrowRight" });
+      fireEvent.keyDown(buttons[0]!, { key: "ArrowRight" });
       expect(document.activeElement).toBe(buttons[1]);
     });
 
@@ -107,10 +107,10 @@ describe("FilterChipBar", () => {
       renderWithAdminContext(<FilterChipBar filterConfig={mockFilterConfig} />);
 
       const buttons = screen.getAllByRole("button", { name: /Remove/i });
-      buttons[1].focus();
+      buttons[1]!.focus();
       expect(document.activeElement).toBe(buttons[1]);
 
-      fireEvent.keyDown(buttons[1], { key: "ArrowLeft" });
+      fireEvent.keyDown(buttons[1]!, { key: "ArrowLeft" });
       expect(document.activeElement).toBe(buttons[0]);
     });
 
@@ -118,9 +118,9 @@ describe("FilterChipBar", () => {
       renderWithAdminContext(<FilterChipBar filterConfig={mockFilterConfig} />);
 
       const buttons = screen.getAllByRole("button", { name: /Remove/i });
-      buttons[0].focus();
+      buttons[0]!.focus();
 
-      fireEvent.keyDown(buttons[0], { key: "ArrowLeft" });
+      fireEvent.keyDown(buttons[0]!, { key: "ArrowLeft" });
       expect(document.activeElement).toBe(buttons[buttons.length - 1]);
     });
 
