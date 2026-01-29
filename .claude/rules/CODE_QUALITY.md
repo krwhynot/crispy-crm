@@ -53,12 +53,12 @@ logger.warn('Deprecated field used', {
 
 ## Type Safety Baseline
 
-**Production:** 0 `: any` in production code (Verified Jan 2026)
-**Tests:** ~236 instances across 32 test files (remediation in progress)
-**90-Day Goal:** 0 uses of `: any` in production code — **ACHIEVED**
+**Production:** 0 `: any` in production code (Verified Jan 2026) — **90-DAY GOAL ACHIEVED** ✅
+**Tests:** ~175 instances across 31 test files (remediation in progress)
 **Current Status:**
-- Production: `rg ": any|as any" src/ --type ts --glob "!*test*" --glob "!__tests__" -c | wc -l`
-- Tests: `rg ": any|as any" src/ --type ts --glob "*test*" -c | wc -l`
+- Production: `rg ": any|as any" src/ --type ts --glob "!*test*" --glob "!__tests__" -c | wc -l` (expect: 0)
+- Tests: `rg ": any|as any|any\[\]|Promise<any>" src/ --type ts --glob "*test*" -c | awk -F: '{sum += $NF} END {print sum}'` (target: <50)
+- Test file count: `rg ": any|as any" src/ --type ts --glob "*test*" -c | wc -l` (target: 0 files)
 
 ### Banned Patterns
 
