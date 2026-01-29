@@ -2,6 +2,7 @@ import { useMemo } from "react";
 import { useLocation, useSearchParams } from "react-router-dom";
 import { CreateBase, Form, type RedirectTo } from "ra-core";
 
+import { createFormResolver } from "@/lib/zodErrorFormatting";
 import { getContextAwareRedirect } from "@/atomic-crm/utils/getContextAwareRedirect";
 
 import {
