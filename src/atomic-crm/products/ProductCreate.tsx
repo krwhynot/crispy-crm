@@ -23,7 +23,11 @@ const ProductCreate = () => {
         <div className="max-w-4xl mx-auto create-form-card">
           <FormProgressProvider initialProgress={10}>
             <FormProgressBar schema={productSchema} className="mb-6" />
-            <Form defaultValues={defaultValues} mode="onBlur">
+            <Form
+              defaultValues={defaultValues}
+              mode="onBlur"
+              resolver={createFormResolver(productSchema)}
+            >
               <Card>
                 <CardContent>
                   <ProductFormContent />

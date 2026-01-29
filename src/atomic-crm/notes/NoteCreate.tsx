@@ -45,7 +45,11 @@ export const NoteCreate = ({
 
   return (
     <CreateBase resource={resource} redirect={false}>
-      <Form defaultValues={formDefaults}>
+      <Form
+        defaultValues={formDefaults}
+        mode="onBlur"
+        resolver={createFormResolver(baseNoteSchema)}
+      >
         <div className="space-y-3">
           <NoteFormContent reference={reference} record={record} />
         </div>

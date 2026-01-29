@@ -59,7 +59,12 @@ const ProductEditForm = () => {
   if (!record) return null;
 
   return (
-    <Form defaultValues={defaultValues} mode="onBlur" resolver={createFormResolver(productUpdateSchema)} key={record.id}>
+    <Form
+      defaultValues={defaultValues}
+      mode="onBlur"
+      resolver={createFormResolver(productUpdateSchema)}
+      key={record.id}
+    >
       <Card>
         <CardContent>
           <div className="mb-6">

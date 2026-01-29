@@ -37,7 +37,11 @@ const TagEditContent = () => {
             <CardTitle>Edit Tag</CardTitle>
           </CardHeader>
           <CardContent>
-            <Form defaultValues={defaultValues} mode="onBlur">
+            <Form
+              defaultValues={defaultValues}
+              mode="onBlur"
+              resolver={createFormResolver(tagSchema)}
+            >
               <TagInputs />
               <FormToolbar />
             </Form>

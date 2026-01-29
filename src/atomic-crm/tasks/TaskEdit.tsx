@@ -45,7 +45,12 @@ const TaskEditForm = () => {
 
   return (
     <div className="mt-2">
-      <Form className="flex flex-col gap-4" defaultValues={defaultValues}>
+      <Form
+        className="flex flex-col gap-4"
+        defaultValues={defaultValues}
+        mode="onBlur"
+        resolver={createFormResolver(taskSchema)}
+      >
         <Card>
           <CardContent className="pt-6">
             <h2 className="text-2xl font-semibold mb-4">Edit Task</h2>

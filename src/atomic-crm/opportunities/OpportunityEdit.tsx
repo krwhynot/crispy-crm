@@ -84,6 +84,8 @@ const OpportunityEditForm = () => {
       <Form
         className="flex flex-1 flex-col gap-4 pb-2"
         defaultValues={defaultValues}
+        mode="onBlur"
+        resolver={createFormResolver(opportunitySchema)}
         transform={(data: Opportunity) => {
           // WF-H1-004: Inject previous_stage for validation
           // Only include if stage field is present in the update

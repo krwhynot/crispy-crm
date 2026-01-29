@@ -3,6 +3,7 @@ import { useUpdate, useNotify, RecordContextProvider } from "ra-core";
 import { Form } from "react-admin";
 import { useFormContext } from "react-hook-form";
 import { logger } from "@/lib/logger";
+import { organizationSchema } from "@/atomic-crm/validation/organizations";
 import { notificationMessages } from "@/atomic-crm/constants/notificationMessages";
 import { TextInput } from "@/components/ra-wrappers/text-input";
 import { SelectInput } from "@/components/ra-wrappers/select-input";

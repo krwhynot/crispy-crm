@@ -23,7 +23,11 @@ export const TagCreate = () => {
               <CardTitle>Create Tag</CardTitle>
             </CardHeader>
             <CardContent>
-              <Form defaultValues={defaultValues} mode="onBlur">
+              <Form
+                defaultValues={defaultValues}
+                mode="onBlur"
+                resolver={createFormResolver(createTagSchema)}
+              >
                 <TagInputs />
                 <CreateFormFooter resourceName="tag" redirectPath="/tags" />
               </Form>
