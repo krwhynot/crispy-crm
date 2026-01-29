@@ -150,7 +150,9 @@ vi.mock("@/components/ui/form", () => ({
     const formState = { isSubmitting: false, errors: {} };
     return render({ field, fieldState, formState });
   },
-  FormItem: ({ children, className }: MockChildrenClassNameProps) => <div className={className}>{children}</div>,
+  FormItem: ({ children, className }: MockChildrenClassNameProps) => (
+    <div className={className}>{children}</div>
+  ),
   FormLabel: ({ children }: MockChildrenProps) => <label>{children}</label>,
   FormControl: ({ children }: MockChildrenProps) => <>{children}</>,
   FormDescription: ({ children }: MockChildrenProps) => <p>{children}</p>,
@@ -168,7 +170,7 @@ vi.mock("@/components/ui/button", () => ({
     "aria-label": ariaLabel,
     role,
     ...props
-  }: any) => (
+  }: MockButtonProps) => (
     <button
       onClick={onClick}
       disabled={disabled}

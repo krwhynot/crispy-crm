@@ -43,8 +43,8 @@ vi.mock("../commons/canAccess", () => ({
 vi.mock("./supabase", () => ({
   supabase: {
     auth: {
-      getSession: (...args: any[]) => mocks.mockGetSession(...args),
-      getUser: (...args: any[]) => mocks.mockGetUser(...args),
+      getSession: (...args: unknown[]) => mocks.mockGetSession(...args),
+      getUser: (...args: unknown[]) => mocks.mockGetUser(...args),
     },
     from: (...args: any[]) => mocks.mockFrom(...args),
   },

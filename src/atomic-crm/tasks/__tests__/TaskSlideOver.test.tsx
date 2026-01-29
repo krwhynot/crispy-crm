@@ -12,8 +12,42 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import type { ReactNode, ComponentType } from "react";
 import { renderWithAdminContext } from "@/tests/utils/render-admin";
 import { TaskSlideOver } from "../TaskSlideOver";
+
+interface MockTabConfig {
+  key: string;
+  label: string;
+  icon?: ComponentType<{ className?: string; "data-testid"?: string }>;
+  component: ComponentType<{
+    record: Record<string, unknown>;
+    mode: string;
+    onModeToggle: () => void;
+  }>;
+}
+
+interface MockResourceSlideOverProps {
+  resource: string;
+  recordId: number | null;
+  isOpen: boolean;
+  onClose: () => void;
+  mode: string;
+  onModeToggle: () => void;
+  tabs: MockTabConfig[];
+  recordRepresentation?: (record: Record<string, unknown>) => string;
+}
+
+interface MockTabComponentProps {
+  record: Record<string, unknown>;
+  mode: string;
+}
+
+interface MockDoMockSlideOverProps {
+  recordId: number;
+  isOpen: boolean;
+  recordRepresentation?: (record: Record<string, unknown>) => string;
+}
 
 // Mock dependencies
 vi.mock("ra-core", async () => {

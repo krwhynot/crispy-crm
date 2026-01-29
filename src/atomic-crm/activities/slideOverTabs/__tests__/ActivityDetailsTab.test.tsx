@@ -91,7 +91,7 @@ vi.mock("@/components/layouts/sidepane", async () => {
 
 // Mock form input components
 vi.mock("@/components/ra-wrappers/text-input", () => ({
-  TextInput: ({ source, label, type }: any) => (
+  TextInput: ({ source, label, type }: MockInputProps) => (
     <div data-testid={`text-input-${source}`}>
       <label>{label}</label>
       <input type={type || "text"} name={source} />
@@ -100,11 +100,11 @@ vi.mock("@/components/ra-wrappers/text-input", () => ({
 }));
 
 vi.mock("@/components/ra-wrappers/select-input", () => ({
-  SelectInput: ({ source, label, choices }: any) => (
+  SelectInput: ({ source, label, choices }: MockSelectInputProps) => (
     <div data-testid={`select-input-${source}`}>
       <label>{label}</label>
       <select name={source}>
-        {choices?.map((c: any) => (
+        {choices?.map((c: MockChoiceItem) => (
           <option key={c.id} value={c.id}>
             {c.name}
           </option>

@@ -207,7 +207,7 @@ vi.mock("@/components/ra-wrappers/reference-field", () => ({
 
 // Mock ProductSlideOver to simplify testing
 vi.mock("../ProductSlideOver", () => ({
-  ProductSlideOver: ({ recordId, isOpen }: any) => (
+  ProductSlideOver: ({ recordId, isOpen }: MockSlideOverProps) => (
     <div data-testid="product-slide-over">
       {isOpen && <div data-testid={`slide-over-product-${recordId}`}>Slide Over</div>}
     </div>
