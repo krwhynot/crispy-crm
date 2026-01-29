@@ -1,4 +1,4 @@
-import { zodResolver } from "@hookform/resolvers/zod";
+import { createFormResolver } from "@/lib/zodErrorFormatting";
 import { useForm, Controller } from "react-hook-form";
 import { useDataProvider, useGetList, useRefresh } from "ra-core";
 import { logger } from "@/lib/logger";
@@ -65,7 +65,7 @@ export const ActivityNoteForm = ({ opportunity, onSuccess }: ActivityNoteFormPro
     reset,
     formState: { errors, isSubmitting },
   } = useForm<ActivityNoteFormData>({
-    resolver: zodResolver(activityNoteFormSchema),
+    resolver: createFormResolver(activityNoteFormSchema),
     defaultValues: {
       // Convert ISO date string from schema to Date object for activityNoteFormSchema
       activity_date: new Date(schemaDefaults.activity_date!),

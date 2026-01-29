@@ -1,6 +1,6 @@
 import { useCallback, useEffect } from "react";
 import { useForm, FormProvider, useWatch } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { createFormResolver } from "@/lib/zodErrorFormatting";
 import { Trophy, XCircle, AlertCircle } from "lucide-react";
 
 import {
@@ -91,7 +91,7 @@ export const CloseOpportunityModal = ({
   });
 
   const form = useForm<CloseOpportunityInput>({
-    resolver: zodResolver(closeOpportunitySchema),
+    resolver: createFormResolver(closeOpportunitySchema),
     defaultValues,
     mode: "onBlur", // Validate on blur for better performance
   });
