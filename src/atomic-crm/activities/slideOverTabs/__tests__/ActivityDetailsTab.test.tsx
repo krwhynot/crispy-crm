@@ -70,7 +70,7 @@ vi.mock("react-admin", async () => {
         {children}
       </form>
     ),
-    ReferenceField: ({ children, source }: any) => (
+    ReferenceField: ({ children, source }: MockFieldProps) => (
       <span data-testid={`reference-field-${source}`}>{children}</span>
     ),
   };

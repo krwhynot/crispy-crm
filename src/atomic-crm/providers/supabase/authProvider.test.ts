@@ -36,7 +36,7 @@ vi.mock("ra-supabase-core", () => ({
 
 // Mock canAccess
 vi.mock("../commons/canAccess", () => ({
-  canAccess: (...args: any[]) => mocks.mockCanAccessFn(...args),
+  canAccess: (...args: unknown[]) => mocks.mockCanAccessFn(...args),
 }));
 
 // Mock the supabase client

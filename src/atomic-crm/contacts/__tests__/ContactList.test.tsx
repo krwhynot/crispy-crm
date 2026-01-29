@@ -77,8 +77,18 @@ vi.mock("react-admin", async () => {
       onToggleItem: vi.fn(),
       onUnselectItems: vi.fn(),
     })),
-    Datagrid: ({ children }: any) => <div data-testid="datagrid">{children}</div>,
-    FunctionField: ({ label, sortBy, sortable }: any) => {
+    Datagrid: ({ children }: { children: React.ReactNode }) => (
+      <div data-testid="datagrid">{children}</div>
+    ),
+    FunctionField: ({
+      label,
+      sortBy,
+      sortable,
+    }: {
+      label: React.ReactNode;
+      sortBy?: string;
+      sortable?: boolean;
+    }) => {
       // Extract label text for testid - handle both string and React element labels
       let labelText = "";
       if (typeof label === "string") {

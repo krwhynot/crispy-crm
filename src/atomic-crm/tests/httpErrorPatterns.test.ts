@@ -42,7 +42,7 @@ describe("HTTP Error Patterns from Production", () => {
       class HttpError extends Error {
         status: number;
         code?: string;
-        details?: any;
+        details?: { code?: string; hint?: string } | null;
 
         constructor(message: string, status: number) {
           super(message);

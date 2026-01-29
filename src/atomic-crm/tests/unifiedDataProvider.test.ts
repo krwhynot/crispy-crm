@@ -109,7 +109,7 @@ describe("Unified Data Provider - Real Schema Tests", () => {
       // Mock the data provider's error handling
       class HttpError extends Error {
         status: number;
-        body: any;
+        body: Record<string, unknown>;
 
         constructor(message: string, status: number, body: any = {}) {
           super(message);

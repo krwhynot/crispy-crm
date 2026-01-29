@@ -49,7 +49,7 @@ const exporter: Exporter<Organization> = async (records, fetchRelatedRecords) =>
       : {};
 
   const organizations = records.map((org) => {
-    const exportedOrg: any = {
+    const exportedOrg: ExportedOrganizationRow = {
       // Core fields
       id: org.id,
       name: org.name,

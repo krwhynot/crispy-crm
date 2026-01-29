@@ -63,10 +63,18 @@ vi.mock("../usePrincipalOpportunities", () => ({
 
 // Mock Tooltip components to avoid "must be used within TooltipProvider" error
 vi.mock("@/components/ui/tooltip", () => ({
-  TooltipProvider: ({ children }: any) => <>{children}</>,
-  Tooltip: ({ children }: any) => <>{children}</>,
-  TooltipTrigger: ({ children, asChild: _asChild }: any) => <>{children}</>,
-  TooltipContent: ({ children }: any) => <span data-testid="tooltip-content">{children}</span>,
+  TooltipProvider: ({ children }: { children: React.ReactNode }) => <>{children}</>,
+  Tooltip: ({ children }: { children: React.ReactNode }) => <>{children}</>,
+  TooltipTrigger: ({
+    children,
+    asChild: _asChild,
+  }: {
+    children: React.ReactNode;
+    asChild?: boolean;
+  }) => <>{children}</>,
+  TooltipContent: ({ children }: { children: React.ReactNode }) => (
+    <span data-testid="tooltip-content">{children}</span>
+  ),
 }));
 
 describe("PrincipalPipelineTable", () => {

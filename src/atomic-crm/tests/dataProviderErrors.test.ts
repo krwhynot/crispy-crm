@@ -96,7 +96,11 @@ describe("Data Provider Error Handling", () => {
   describe("Error Recovery Strategies", () => {
     it("should provide fallback when field does not exist", async () => {
       // When a field doesn't exist, provide a safe fallback
-      const safeQuery = (table: string, fields: string[], filters: any = {}) => {
+      const safeQuery = (
+        table: string,
+        fields: string[],
+        filters: Record<string, unknown> = {}
+      ) => {
         const validFields = getValidFields(table);
         const safeFields = fields.filter((f) => validFields.includes(f));
 

@@ -180,7 +180,7 @@ vi.mock("jsonexport/dist", () => ({
 
 // Mock @/components/ra-wrappers/text-field (used by ProductList)
 vi.mock("@/components/ra-wrappers/text-field", () => ({
-  TextField: ({ source, sortable, label }: any) => (
+  TextField: ({ source, sortable, label }: MockFieldProps) => (
     <span
       data-testid={`text-field-${source}`}
       data-sortable={sortable !== false ? "true" : "false"}
@@ -193,7 +193,7 @@ vi.mock("@/components/ra-wrappers/text-field", () => ({
 
 // Mock @/components/ra-wrappers/reference-field (used by ProductList)
 vi.mock("@/components/ra-wrappers/reference-field", () => ({
-  ReferenceField: ({ source, sortable, children, label }: any) => (
+  ReferenceField: ({ source, sortable, children, label }: MockFieldProps) => (
     <span
       data-testid={`ref-field-${source}`}
       data-sortable={sortable ? "true" : "false"}

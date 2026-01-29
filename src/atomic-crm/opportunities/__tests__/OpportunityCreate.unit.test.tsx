@@ -9,6 +9,13 @@
 
 import { describe, it, expect } from "vitest";
 
+interface OpportunityFormData {
+  name: string;
+  amount?: number;
+  products?: Array<{ product_id_reference: number; notes: string }>;
+  [key: string]: unknown;
+}
+
 describe("OpportunityCreate - Transform Function", () => {
   it("should extract products to products_to_sync", () => {
     // Test the transform logic directly

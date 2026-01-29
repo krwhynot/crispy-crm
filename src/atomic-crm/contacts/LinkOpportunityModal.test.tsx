@@ -34,7 +34,13 @@ vi.mock("react-admin", async (importOriginal) => {
     ...actual,
     useCreate: () => [mockCreate, { isLoading: false }],
     useNotify: () => mockNotify,
-    Form: ({ children, onSubmit }: any) => (
+    Form: ({
+      children,
+      onSubmit,
+    }: {
+      children: React.ReactNode;
+      onSubmit?: (data: Record<string, unknown>) => void;
+    }) => (
       <form
         onSubmit={(e) => {
           e.preventDefault();

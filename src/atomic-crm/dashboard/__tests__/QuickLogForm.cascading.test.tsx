@@ -150,10 +150,10 @@ vi.mock("@/components/ui/form", () => ({
     const formState = { isSubmitting: false, errors: {} };
     return render({ field, fieldState, formState });
   },
-  FormItem: ({ children, className }: any) => <div className={className}>{children}</div>,
-  FormLabel: ({ children }: any) => <label>{children}</label>,
-  FormControl: ({ children }: any) => <>{children}</>,
-  FormDescription: ({ children }: any) => <p>{children}</p>,
+  FormItem: ({ children, className }: MockChildrenClassNameProps) => <div className={className}>{children}</div>,
+  FormLabel: ({ children }: MockChildrenProps) => <label>{children}</label>,
+  FormControl: ({ children }: MockChildrenProps) => <>{children}</>,
+  FormDescription: ({ children }: MockChildrenProps) => <p>{children}</p>,
   FormMessage: () => null,
 }));
 

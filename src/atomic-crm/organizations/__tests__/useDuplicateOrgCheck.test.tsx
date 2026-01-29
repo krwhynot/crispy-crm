@@ -12,6 +12,8 @@ import { renderHook, act } from "@testing-library/react";
 import { vi, describe, it, expect, beforeEach } from "vitest";
 import { useDuplicateOrgCheck } from "../useDuplicateOrgCheck";
 
+type DuplicateResult = { id: string; name: string } | null;
+
 // Mock ra-core's useDataProvider and useNotify
 const mockGetList = vi.fn();
 const mockNotify = vi.fn();
