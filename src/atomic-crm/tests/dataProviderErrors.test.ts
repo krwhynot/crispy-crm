@@ -187,7 +187,7 @@ describe("Data Provider Error Handling", () => {
           return schema.includes(field);
         },
 
-        validateRequest: (table: string, request: any): ValidationResult => {
+        validateRequest: (table: string, request: SchemaValidationRequest): ValidationResult => {
           const errors: string[] = [];
 
           // Validate select fields

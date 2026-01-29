@@ -127,7 +127,7 @@ describe("Unified Data Provider - Real Schema Tests", () => {
         }
       }
 
-      const transformSupabaseError = (error: any): HttpError => {
+      const transformSupabaseError = (error: SupabaseError): HttpError => {
         // Extract status and message
         const status = error.status || 500;
         const message = error.message || "Unknown error";

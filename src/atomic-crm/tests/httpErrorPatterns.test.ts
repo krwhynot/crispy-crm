@@ -316,11 +316,14 @@ describe("HTTP Error Patterns from Production", () => {
 });
 
 // Export utility functions for use in production code
-export function isSchemaError(error: any): boolean {
+export function isSchemaError(error: unknown): boolean {
+  if (!error || typeof error !== "object") return false;
+  const err = error as { message?: string };
   return (
-    error?.message?.includes("does not exist") ||
-    error?.message?.includes("column") ||
-    error?.message?.includes("relation")
+    err.message?.includes("does not exist") ||
+    err.message?.includes("column") ||
+    err.message?.includes("relation") ||
+    false
   );
 }
 

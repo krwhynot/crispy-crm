@@ -383,7 +383,7 @@ vi.mock("@/components/ui/badge", () => ({
 
 // Mock FilterableBadge component
 vi.mock("@/components/ra-wrappers/FilterableBadge", () => ({
-  FilterableBadge: ({ children, source, value }: any) => (
+  FilterableBadge: ({ children, source, value }: MockFilterableBadgeProps) => (
     <div data-testid={`filterable-badge-${source}`} data-value={value}>
       {children}
     </div>

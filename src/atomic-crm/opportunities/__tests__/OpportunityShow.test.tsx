@@ -145,8 +145,8 @@ vi.mock("../OpportunityAside", () => ({
 }));
 
 vi.mock("../opportunity", () => ({
-  findOpportunityLabel: (stages: any[], value: string) => {
-    const stage = stages.find((s: any) => s.value === value);
+  findOpportunityLabel: (stages: Array<{ value: string; label: string }>, value: string) => {
+    const stage = stages.find((s: { value: string; label: string }) => s.value === value);
     return stage?.label || value;
   },
 }));

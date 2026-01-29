@@ -278,7 +278,7 @@ vi.mock("@/components/ui/popover", () => ({
 
 // Mock Textarea component
 vi.mock("@/components/ui/textarea", () => ({
-  Textarea: ({ placeholder, className, ...props }: any) => (
+  Textarea: ({ placeholder, className, ...props }: MockTextareaProps) => (
     <textarea data-testid="textarea" placeholder={placeholder} className={className} {...props} />
   ),
 }));

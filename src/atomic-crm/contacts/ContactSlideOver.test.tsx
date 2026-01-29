@@ -244,7 +244,7 @@ vi.mock("./slideOverTabs/ContactNotesTab", () => ({
 }));
 
 vi.mock("./ActivitiesTab", () => ({
-  ActivitiesTab: ({ contactId }: any) => (
+  ActivitiesTab: ({ contactId }: { contactId: string | number }) => (
     <div data-testid="activities-tab">
       <p>Activities for contact {contactId}</p>
     </div>

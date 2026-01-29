@@ -8,7 +8,7 @@ import type { Product } from "@/atomic-crm/types";
 // Mock ra-core
 const mockUseGetList = vi.fn();
 vi.mock("ra-core", () => ({
-  useGetList: (...args: any[]) => mockUseGetList(...args),
+  useGetList: (...args: unknown[]) => mockUseGetList(...args),
 }));
 
 // Test wrapper with QueryClient
