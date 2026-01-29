@@ -11,6 +11,10 @@ export { useFormShortcuts } from "./useFormShortcuts";
 
 // Compact form components
 export { CollapsibleSection } from "./CollapsibleSection";
+
+// Accordion components (Tier 2 wrappers for shadcn accordion)
+export { AccordionSection } from "./AccordionSection";
+export { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "./accordion";
 export { CompactFormRow } from "./CompactFormRow";
 export { CompactFormFieldWithButton } from "./CompactFormFieldWithButton";
 export { ButtonPlaceholder } from "./ButtonPlaceholder";

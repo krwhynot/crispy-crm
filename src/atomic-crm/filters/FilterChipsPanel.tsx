@@ -1,11 +1,6 @@
 import { useCallback } from "react";
 import { cn } from "@/lib/utils";
-import {
-  Accordion,
-  AccordionItem,
-  AccordionTrigger,
-  AccordionContent,
-} from "@/components/ui/accordion";
+import { AccordionSection } from "@/components/ra-wrappers/form";
 import { FilterChip } from "./FilterChip";
 import { useOrganizationNames } from "./useOrganizationNames";
 import { useSalesNames } from "./useSalesNames";
@@ -83,39 +78,35 @@ export const FilterChipsPanel = ({ className }: FilterChipsPanelProps) => {
 
   return (
     <div className={cn("w-full", className)}>
-      <Accordion type="single" collapsible defaultValue="filters">
-        <AccordionItem value="filters" className="border-b">
-          <AccordionTrigger className="py-2 hover:no-underline">
-            <div className="flex items-center gap-2">
-              <span className="text-sm font-medium">Active Filters</span>
-              <span className="text-xs text-muted-foreground">
-                ({filterChips.length} filter{filterChips.length !== 1 ? "s" : ""})
-              </span>
-            </div>
-          </AccordionTrigger>
-          <AccordionContent className="pb-3">
-            <div className="flex flex-wrap gap-2">
-              {filterChips.map((chip, index) => {
-                const label = formatFilterLabel(
-                  chip.key,
-                  chip.value,
-                  getOrganizationName,
-                  getSalesName,
-                  getTagName
-                );
+      <AccordionSection
+        title="Active Filters"
+        badge={
+          <span className="text-xs text-muted-foreground">
+            ({filterChips.length} filter{filterChips.length !== 1 ? "s" : ""})
+          </span>
+        }
+        contentClassName="pb-3"
+      >
+        <div className="flex flex-wrap gap-2">
+          {filterChips.map((chip, index) => {
+            const label = formatFilterLabel(
+              chip.key,
+              chip.value,
+              getOrganizationName,
+              getSalesName,
+              getTagName
+            );
 
-                return (
-                  <FilterChip
-                    key={`${chip.key}-${chip.value}-${index}`}
-                    label={label}
-                    onRemove={() => handleRemoveFilter(chip.key, chip.value)}
-                  />
-                );
-              })}
-            </div>
-          </AccordionContent>
-        </AccordionItem>
-      </Accordion>
+            return (
+              <FilterChip
+                key={`${chip.key}-${chip.value}-${index}`}
+                label={label}
+                onRemove={() => handleRemoveFilter(chip.key, chip.value)}
+              />
+            );
+          })}
+        </div>
+      </AccordionSection>
     </div>
   );
 };
