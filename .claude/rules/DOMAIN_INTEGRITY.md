@@ -160,7 +160,8 @@ Generic typed factories eliminate `as any` while maintaining type safety for any
 
 - [ ] Every table in `supabase/migrations/` has matching `z.object` in `validation/`
 - [ ] Exporting `z.infer<...>` types (not manual interfaces)
-- [ ] Schemas use `.strict()` to block illegal fields
+- [ ] Create schemas use `.strict()` to block illegal fields
+- [ ] Update schemas use `.passthrough()` to preserve metadata (`id`, `created_at`)
 - [ ] Form inputs use `z.coerce` for type conversion
 - [ ] No `as any` or `as unknown as` casts (use type guards or typed test data)
 - [ ] React Admin hook mocks use generic factories from `src/tests/utils/typed-mocks.ts`
