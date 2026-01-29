@@ -1,6 +1,6 @@
 {
   "chunk_name": "organizations",
-  "generated_at": "2026-01-29T16:16:50.768Z",
+  "generated_at": "2026-01-29T20:23:41.431Z",
   "item_count": 76,
   "items": [
     {
@@ -774,7 +774,7 @@
     {
       "name": "OrganizationEdit",
       "file": "src/atomic-crm/organizations/OrganizationEdit.tsx",
-      "line": 13,
+      "line": 15,
       "type": "presentational",
       "hooks": [
         "useQueryClient"
@@ -783,10 +783,12 @@
         "../layout/FormToolbar",
         "../queryKeys",
         "../types",
+        "../validation/organizations",
         "./OrganizationAside",
         "./OrganizationInputs",
         "@/components/design-system",
         "@/components/ui/card",
+        "@/lib/zodErrorFormatting",
         "@tanstack/react-query",
         "ra-core"
       ],
@@ -803,7 +805,7 @@
     {
       "name": "OrganizationEdit",
       "file": "src/atomic-crm/organizations/OrganizationEdit.tsx",
-      "line": 13,
+      "line": 15,
       "type": "presentational",
       "hooks": [
         "useQueryClient"
@@ -812,10 +814,12 @@
         "../layout/FormToolbar",
         "../queryKeys",
         "../types",
+        "../validation/organizations",
         "./OrganizationAside",
         "./OrganizationInputs",
         "@/components/design-system",
         "@/components/ui/card",
+        "@/lib/zodErrorFormatting",
         "@tanstack/react-query",
         "ra-core"
       ],
@@ -1665,7 +1669,7 @@
     {
       "name": "OrganizationEdit",
       "file": "src/atomic-crm/organizations/index.tsx",
-      "line": 13,
+      "line": 15,
       "type": "presentational",
       "hooks": [
         "useQueryClient"
@@ -1925,7 +1929,7 @@
     {
       "name": "OrganizationDetailsTab",
       "file": "src/atomic-crm/organizations/slideOverTabs/OrganizationDetailsTab.tsx",
-      "line": 67,
+      "line": 68,
       "type": "presentational",
       "hooks": [
         "useNotify",
@@ -1941,6 +1945,7 @@
         "../constants",
         "../types",
         "@/atomic-crm/constants/notificationMessages",
+        "@/atomic-crm/validation/organizations",
         "@/components/layouts/sidepane",
         "@/components/ra-wrappers/SegmentComboboxInput",
         "@/components/ra-wrappers/autocomplete-array-input",

@@ -1,6 +1,6 @@
 {
   "chunk_name": "notes",
-  "generated_at": "2026-01-29T16:16:50.744Z",
+  "generated_at": "2026-01-29T20:23:41.378Z",
   "item_count": 5,
   "items": [
     {
@@ -51,7 +51,7 @@
     {
       "name": "NoteCreate",
       "file": "src/atomic-crm/notes/NoteCreate.tsx",
-      "line": 28,
+      "line": 29,
       "type": "presentational",
       "hooks": [
         "useGetIdentity",
@@ -64,6 +64,7 @@
         "./NoteInputs",
         "@/components/ra-wrappers/FormErrorSummary",
         "@/components/ra-wrappers/form",
+        "@/lib/zodErrorFormatting",
         "ra-core",
         "react-hook-form"
       ],

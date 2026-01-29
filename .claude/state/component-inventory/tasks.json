@@ -1,6 +1,6 @@
 {
   "chunk_name": "tasks",
-  "generated_at": "2026-01-29T16:16:50.793Z",
+  "generated_at": "2026-01-29T20:23:41.499Z",
   "item_count": 28,
   "items": [
     {
@@ -213,7 +213,7 @@
     {
       "name": "TaskEdit",
       "file": "src/atomic-crm/tasks/TaskEdit.tsx",
-      "line": 18,
+      "line": 19,
       "type": "presentational",
       "hooks": [
         "useQueryClient"
@@ -225,6 +225,7 @@
         "./TaskInputs",
         "@/atomic-crm/validation/task",
         "@/components/ui/card",
+        "@/lib/zodErrorFormatting",
         "@tanstack/react-query",
         "ra-core",
         "react"
@@ -241,7 +242,7 @@
     {
       "name": "TaskEdit",
       "file": "src/atomic-crm/tasks/TaskEdit.tsx",
-      "line": 18,
+      "line": 19,
       "type": "presentational",
       "hooks": [
         "useQueryClient"
@@ -253,6 +254,7 @@
         "./TaskInputs",
         "@/atomic-crm/validation/task",
         "@/components/ui/card",
+        "@/lib/zodErrorFormatting",
         "@tanstack/react-query",
         "ra-core",
         "react"
@@ -489,7 +491,7 @@
     {
       "name": "TaskSlideOverDetailsTab",
       "file": "src/atomic-crm/tasks/TaskSlideOverDetailsTab.tsx",
-      "line": 52,
+      "line": 53,
       "type": "presentational",
       "hooks": [
         "useFormOptions",
@@ -506,6 +508,7 @@
         "../types",
         "./TaskCompletionDialog",
         "@/atomic-crm/constants/notificationMessages",
+        "@/atomic-crm/validation/task",
         "@/components/layouts/sidepane",
         "@/components/ra-wrappers/autocomplete-input",
         "@/components/ra-wrappers/boolean-input",

@@ -1,6 +1,6 @@
 {
   "chunk_name": "tags",
-  "generated_at": "2026-01-29T16:16:50.791Z",
+  "generated_at": "2026-01-29T20:23:41.484Z",
   "item_count": 22,
   "items": [
     {
@@ -44,7 +44,7 @@
     {
       "name": "TagCreate",
       "file": "src/atomic-crm/tags/TagCreate.tsx",
-      "line": 12,
+      "line": 13,
       "type": "presentational",
       "hooks": [
         "useMemo"
@@ -54,6 +54,7 @@
         "./TagInputs",
         "@/atomic-crm/components",
         "@/components/ui/card",
+        "@/lib/zodErrorFormatting",
         "ra-core",
         "react"
       ],
@@ -67,7 +68,7 @@
     {
       "name": "TagCreate",
       "file": "src/atomic-crm/tags/TagCreate.tsx",
-      "line": 12,
+      "line": 13,
       "type": "presentational",
       "hooks": [
         "useMemo"
@@ -77,6 +78,7 @@
         "./TagInputs",
         "@/atomic-crm/components",
         "@/components/ui/card",
+        "@/lib/zodErrorFormatting",
         "ra-core",
         "react"
       ],
@@ -154,7 +156,7 @@
     {
       "name": "TagEdit",
       "file": "src/atomic-crm/tags/TagEdit.tsx",
-      "line": 13,
+      "line": 14,
       "type": "presentational",
       "hooks": [],
       "imports": [
@@ -163,6 +165,7 @@
         "../validation/tags",
         "./TagInputs",
         "@/components/ui/card",
+        "@/lib/zodErrorFormatting",
         "ra-core",
         "react"
       ],
@@ -178,7 +181,7 @@
     {
       "name": "TagEdit",
       "file": "src/atomic-crm/tags/TagEdit.tsx",
-      "line": 13,
+      "line": 14,
       "type": "presentational",
       "hooks": [],
       "imports": [
@@ -187,6 +190,7 @@
         "../validation/tags",
         "./TagInputs",
         "@/components/ui/card",
+        "@/lib/zodErrorFormatting",
         "ra-core",
         "react"
       ],
@@ -356,7 +360,7 @@
     {
       "name": "TagCreate",
       "file": "src/atomic-crm/tags/index.tsx",
-      "line": 12,
+      "line": 13,
       "type": "presentational",
       "hooks": [
         "useMemo"
@@ -370,7 +374,7 @@
     {
       "name": "TagEdit",
       "file": "src/atomic-crm/tags/index.tsx",
-      "line": 13,
+      "line": 14,
       "type": "presentational",
       "hooks": [],
       "imports": [],

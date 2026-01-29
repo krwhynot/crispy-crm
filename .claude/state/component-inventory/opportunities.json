@@ -1,6 +1,6 @@
 {
   "chunk_name": "opportunities",
-  "generated_at": "2026-01-29T16:16:50.745Z",
+  "generated_at": "2026-01-29T20:23:41.427Z",
   "item_count": 83,
   "items": [
     {
@@ -808,7 +808,7 @@
     {
       "name": "OpportunityCreate",
       "file": "src/atomic-crm/opportunities/OpportunityCreate.tsx",
-      "line": 17,
+      "line": 18,
       "type": "presentational",
       "hooks": [
         "useGetIdentity",
@@ -828,6 +828,7 @@
         "@/components/ra-wrappers/form",
         "@/components/ui/card",
         "@/hooks/useUnsavedChangesWarning",
+        "@/lib/zodErrorFormatting",
         "ra-core",
         "react",
         "react-hook-form",
@@ -846,7 +847,7 @@
     {
       "name": "OpportunityCreate",
       "file": "src/atomic-crm/opportunities/OpportunityCreate.tsx",
-      "line": 17,
+      "line": 18,
       "type": "presentational",
       "hooks": [
         "useGetIdentity",
@@ -866,6 +867,7 @@
         "@/components/ra-wrappers/form",
         "@/components/ui/card",
         "@/hooks/useUnsavedChangesWarning",
+        "@/lib/zodErrorFormatting",
         "ra-core",
         "react",
         "react-hook-form",
@@ -987,7 +989,7 @@
     {
       "name": "OpportunityEdit",
       "file": "src/atomic-crm/opportunities/OpportunityEdit.tsx",
-      "line": 20,
+      "line": 21,
       "type": "presentational",
       "hooks": [
         "useQueryClient",
@@ -1009,6 +1011,7 @@
         "@/components/ra-wrappers/simple-form",
         "@/components/ui/card",
         "@/components/ui/separator",
+        "@/lib/zodErrorFormatting",
         "@tanstack/react-query",
         "ra-core",
         "react"
@@ -1026,7 +1029,7 @@
     {
       "name": "OpportunityEdit",
       "file": "src/atomic-crm/opportunities/OpportunityEdit.tsx",
-      "line": 20,
+      "line": 21,
       "type": "presentational",
       "hooks": [
         "useQueryClient",
@@ -1048,6 +1051,7 @@
         "@/components/ra-wrappers/simple-form",
         "@/components/ui/card",
         "@/components/ui/separator",
+        "@/lib/zodErrorFormatting",
         "@tanstack/react-query",
         "ra-core",
         "react"
@@ -2335,7 +2339,7 @@
     {
       "name": "OpportunitySlideOverDetailsTab",
       "file": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx",
-      "line": 28,
+      "line": 31,
       "type": "presentational",
       "hooks": [
         "useCallback",

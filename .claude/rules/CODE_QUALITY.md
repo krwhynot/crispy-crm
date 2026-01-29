@@ -179,9 +179,9 @@ grep -rn "console\.(log|warn|error|info|debug)(" src/ \
   | wc -l
 
 # 2. Any types — ZERO TOLERANCE (expect: 0 across ALL code)
-rg ": any|as any|any\[\]|Promise<any>" src/ --type ts -c \
-  | grep -v "typed-test-helpers" \
-  | awk -F: '{sum += $NF} END {print sum+0, "any instances (expect: 0)"}'
+rg ": any|as any|any\[\]|Promise<any>" src/ --type ts \
+  | grep -v "^\s*\*\|^\s*//\|^\s*\*/" \
+  | wc -l
 
 # 3. TypeScript errors (expect: 0 errors)
 npx tsc --noEmit

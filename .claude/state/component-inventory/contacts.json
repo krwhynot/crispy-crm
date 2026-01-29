@@ -1,6 +1,6 @@
 {
   "chunk_name": "contacts",
-  "generated_at": "2026-01-29T16:16:50.726Z",
+  "generated_at": "2026-01-29T20:23:41.328Z",
   "item_count": 59,
   "items": [
     {
@@ -286,7 +286,7 @@
     {
       "name": "ContactCreate",
       "file": "src/atomic-crm/contacts/ContactCreate.tsx",
-      "line": 19,
+      "line": 20,
       "type": "presentational",
       "hooks": [
         "useLocation",
@@ -303,6 +303,7 @@
         "@/atomic-crm/hooks/useSmartDefaults",
         "@/atomic-crm/utils/getContextAwareRedirect",
         "@/components/ra-wrappers/form",
+        "@/lib/zodErrorFormatting",
         "ra-core",
         "react",
         "react-router-dom"
@@ -355,7 +356,7 @@
     {
       "name": "ContactDetailsTab",
       "file": "src/atomic-crm/contacts/ContactDetailsTab.tsx",
-      "line": 47,
+      "line": 48,
       "type": "presentational",
       "hooks": [
         "useNotify",
@@ -366,6 +367,7 @@
         "../sales/SaleName",
         "../types",
         "../utils/formatName",
+        "../validation/contacts",
         "./Avatar",
         "./ContactInputs",
         "@/atomic-crm/constants/notificationMessages",
@@ -398,7 +400,7 @@
     {
       "name": "ContactEdit",
       "file": "src/atomic-crm/contacts/ContactEdit.tsx",
-      "line": 16,
+      "line": 17,
       "type": "presentational",
       "hooks": [
         "useQueryClient",
@@ -416,6 +418,7 @@
         "@/atomic-crm/validation/contacts",
         "@/components/design-system",
         "@/components/ui/card",
+        "@/lib/zodErrorFormatting",
         "@tanstack/react-query",
         "ra-core",
         "react"
@@ -433,7 +436,7 @@
     {
       "name": "ContactEdit",
       "file": "src/atomic-crm/contacts/ContactEdit.tsx",
-      "line": 16,
+      "line": 17,
       "type": "presentational",
       "hooks": [
         "useQueryClient",
@@ -451,6 +454,7 @@
         "@/atomic-crm/validation/contacts",
         "@/components/design-system",
         "@/components/ui/card",
+        "@/lib/zodErrorFormatting",
         "@tanstack/react-query",
         "ra-core",
         "react"
