@@ -59,7 +59,7 @@ logger.warn('Deprecated field used', {
 ```bash
 # Verify zero any in CODE (excludes JSDoc/comments) (expect: 0)
 rg ": any|as any|any\[\]|Promise<any>" src/ --type ts \
-  | grep -v "^\s*\*\|^\s*//\|^\s*\*/" \
+  | grep -v " \* \| \*/\|:\s*//" \
   | wc -l
 ```
 Note: JSDoc comments that mention `: any` (e.g., "replaces `as any` casts") are not violations — they document what the utility replaces.
