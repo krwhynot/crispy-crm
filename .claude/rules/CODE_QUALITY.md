@@ -164,8 +164,12 @@ grep -rn "console\.(log|warn|error|info|debug)(" src/ \
   --exclude="devLogger.ts" \
   | wc -l
 
-# 2. Any types (target: <50, goal: 0)
-grep -r ": any" src/ --exclude-dir=tests | wc -l
+# 2a. Production any types (expect: 0)
+rg ": any|as any" src/ --type ts --glob "!*test*" --glob "!__tests__*" --glob "!typed-mocks*" -c | wc -l
+
+# 2b. Test any types (target: <50, decreasing toward 0)
+rg ": any|as any|any\[\]|Promise<any>" src/ --type ts --glob "*test*" -c \
+  | awk -F: '{sum += $NF} END {print sum, "across", NR, "files"}'
 
 # 3. TypeScript errors (expect: 0 errors)
 npx tsc --noEmit

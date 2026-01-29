@@ -15,6 +15,33 @@ import { renderWithAdminContext } from "@/tests/utils/render-admin";
 import { ActivityDetailsTab } from "../ActivityDetailsTab";
 import type { ActivityRecord } from "@/atomic-crm/types";
 
+interface MockFormProps {
+  children: React.ReactNode;
+  id?: string;
+  onSubmit?: (data: Record<string, unknown>) => void;
+  record?: Record<string, unknown>;
+}
+
+interface MockFieldProps {
+  children?: React.ReactNode;
+  source: string;
+}
+
+interface MockInputProps {
+  source: string;
+  label?: string;
+  type?: string;
+}
+
+interface MockChoiceItem {
+  id: string;
+  name: string;
+}
+
+interface MockSelectInputProps extends MockInputProps {
+  choices?: MockChoiceItem[];
+}
+
 // Mock ra-core hooks
 vi.mock("ra-core", async () => {
   const actual = await vi.importActual("ra-core");
@@ -31,7 +58,7 @@ vi.mock("react-admin", async () => {
   const actual = await vi.importActual("react-admin");
   return {
     ...actual,
-    Form: ({ children, id, onSubmit, record }: any) => (
+    Form: ({ children, id, onSubmit, record }: MockFormProps) => (
       <form
         id={id}
         data-testid="activity-form"

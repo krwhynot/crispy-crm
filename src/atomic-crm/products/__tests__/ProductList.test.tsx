@@ -18,6 +18,48 @@ import { renderWithAdminContext } from "@/tests/utils/render-admin";
 import { createMockProduct } from "@/tests/utils/mock-providers";
 import { ProductList } from "../ProductList";
 
+interface MockFieldProps {
+  source?: string;
+  sortable?: boolean;
+  sortBy?: string;
+  label?: string | React.ReactElement;
+  children?: React.ReactNode;
+  render?: (record: Record<string, unknown>) => React.ReactNode;
+}
+
+interface MockSlideOverProps {
+  recordId?: number | null;
+  isOpen?: boolean;
+}
+
+interface MockDatagridProps {
+  children?: React.ReactNode;
+  onRowClick?: (id: number) => void;
+}
+
+interface MockDatagridColumnProps {
+  label?: string | React.ReactElement;
+  sortBy?: string;
+  sortable?: boolean;
+  source?: string;
+}
+
+interface MockLayoutProps {
+  children?: React.ReactNode;
+  filterComponent?: React.ReactNode;
+}
+
+interface MockBadgeProps {
+  children?: React.ReactNode;
+  variant?: string;
+}
+
+interface MockFilterableBadgeProps {
+  children?: React.ReactNode;
+  source?: string;
+  value?: string;
+}
+
 // Mock dependencies
 vi.mock("ra-core", async () => {
   const actual = await vi.importActual("ra-core");
@@ -46,7 +88,7 @@ vi.mock("ra-core", async () => {
       data: { id: 1, fullName: "Test User", sales_id: 1 },
       isPending: false,
     }),
-    FilterLiveForm: ({ children }: any) => <div>{children}</div>,
+    FilterLiveForm: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
     downloadCSV: vi.fn(),
   };
 });
@@ -74,7 +116,7 @@ vi.mock("react-admin", async () => {
       onToggleItem: vi.fn(),
       onUnselectItems: vi.fn(),
     })),
-    TextField: ({ source, sortable, label }: any) => (
+    TextField: ({ source, sortable, label }: MockFieldProps) => (
       <span
         data-testid={`text-field-${source}`}
         data-sortable={sortable !== false ? "true" : "false"}
@@ -83,7 +125,7 @@ vi.mock("react-admin", async () => {
         {label || source}
       </span>
     ),
-    ReferenceField: ({ source, sortable, children, label }: any) => (
+    ReferenceField: ({ source, sortable, children, label }: MockFieldProps) => (
       <span
         data-testid={`ref-field-${source}`}
         data-sortable={sortable ? "true" : "false"}
@@ -93,7 +135,7 @@ vi.mock("react-admin", async () => {
         {children}
       </span>
     ),
-    FunctionField: ({ label, sortBy, sortable, render }: any) => {
+    FunctionField: ({ label, sortBy, sortable, render }: MockFieldProps) => {
       // Extract label text for testid - handle both string and React element labels
       let labelText = "";
       if (typeof label === "string") {

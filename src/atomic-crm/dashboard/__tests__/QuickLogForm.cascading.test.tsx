@@ -19,8 +19,118 @@ import { render, screen, fireEvent } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import type * as ReactHookForm from "react-hook-form";
 import type * as ReactAdmin from "react-admin";
-import type { ReactNode } from "react";
+import type { ReactNode, FormEvent } from "react";
 import { QuickLogForm } from "../QuickLogForm";
+
+// ============================================================================
+// MOCK PROP INTERFACES
+// Type-safe alternatives to `any` for mock component props
+// ============================================================================
+
+interface MockChildrenProps {
+  children: ReactNode;
+}
+
+interface MockChildrenClassNameProps {
+  children: ReactNode;
+  className?: string;
+}
+
+interface MockButtonProps {
+  children: ReactNode;
+  onClick?: () => void;
+  disabled?: boolean;
+  type?: "button" | "submit" | "reset";
+  className?: string;
+  "aria-label"?: string;
+  role?: string;
+  "aria-expanded"?: boolean | "true" | "false";
+  "aria-haspopup"?: boolean | "true" | "false" | "listbox" | "menu" | "tree" | "grid" | "dialog";
+  "aria-controls"?: string;
+}
+
+interface MockSelectItemProps {
+  children: ReactNode;
+  value: string;
+}
+
+interface MockCommandProps {
+  children: ReactNode;
+  id?: string;
+}
+
+interface MockCommandInputProps {
+  placeholder?: string;
+  value?: string;
+  onValueChange?: (value: string) => void;
+}
+
+interface MockCommandItemProps {
+  children: ReactNode;
+  onSelect?: (value: string) => void;
+  value?: string;
+  className?: string;
+}
+
+interface MockPopoverProps {
+  children: ReactNode;
+  open?: boolean;
+}
+
+interface MockTextareaProps extends Record<string, unknown> {
+  placeholder?: string;
+  className?: string;
+}
+
+interface MockSwitchProps {
+  checked?: boolean;
+  onCheckedChange?: (checked: boolean) => void;
+}
+
+interface MockInputProps extends Record<string, unknown> {
+  type?: string;
+  placeholder?: string;
+  className?: string;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  value?: string;
+}
+
+interface MockCalendarProps {
+  onSelect?: (date: Date) => void;
+}
+
+interface MockFormFieldProps {
+  render: (props: {
+    field: { value: undefined; onChange: ReturnType<typeof vi.fn>; name: string };
+    fieldState: { error: undefined; invalid: boolean };
+    formState: { isSubmitting: boolean; errors: Record<string, unknown> };
+  }) => ReactNode;
+  name: string;
+}
+
+// ============================================================================
+// MOCK DATA INTERFACES
+// Type-safe shapes for test mock data
+// ============================================================================
+
+interface MockContact {
+  id: number;
+  name: string;
+  organization_id: number;
+  company_name: string;
+}
+
+interface MockOrganization {
+  id: number;
+  name: string;
+}
+
+interface MockOpportunity {
+  id: number;
+  name: string;
+  customer_organization_id: number;
+  stage: string;
+}
 
 // ============================================================================
 // SHADCN/UI COMPONENT MOCKS
@@ -29,12 +139,12 @@ import { QuickLogForm } from "../QuickLogForm";
 
 // Mock Form components (react-hook-form wrapper)
 vi.mock("@/components/ui/form", () => ({
-  Form: ({ children }: any) => (
-    <form data-testid="form-wrapper" onSubmit={(e: any) => e.preventDefault()}>
+  Form: ({ children }: MockChildrenProps) => (
+    <form data-testid="form-wrapper" onSubmit={(e: FormEvent) => e.preventDefault()}>
       {children}
     </form>
   ),
-  FormField: ({ render, name }: any) => {
+  FormField: ({ render, name }: MockFormFieldProps) => {
     const field = { value: undefined, onChange: vi.fn(), name };
     const fieldState = { error: undefined, invalid: false };
     const formState = { isSubmitting: false, errors: {} };

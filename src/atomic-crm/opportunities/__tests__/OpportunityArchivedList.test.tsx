@@ -2,6 +2,7 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { OpportunityArchivedList } from "../OpportunityArchivedList";
 import { useGetIdentity, useGetList } from "ra-core";
+import { mockUseGetIdentityReturn, mockUseGetListReturn } from "@/tests/utils/typed-mocks";
 
 // Mock react-admin hooks
 vi.mock("ra-core", () => ({
@@ -23,19 +24,19 @@ describe("OpportunityArchivedList", () => {
   });
 
   it("should fetch initial page with 25 items per page", () => {
-    vi.mocked(useGetIdentity).mockReturnValue({
-      data: { id: 1, name: "Test User" },
-      isLoading: false,
-      error: null,
-    } as any);
+    vi.mocked(useGetIdentity).mockReturnValue(
+      mockUseGetIdentityReturn({
+        identity: { id: 1, fullName: "Test User" },
+      })
+    );
 
-    vi.mocked(useGetList).mockReturnValue({
-      data: mockOpportunities.slice(0, 25),
-      total: 100,
-      isPending: false,
-      error: null,
-      refetch: vi.fn(),
-    } as any);
+    vi.mocked(useGetList).mockReturnValue(
+      mockUseGetListReturn({
+        data: mockOpportunities.slice(0, 25),
+        total: 100,
+        isPending: false,
+      })
+    );
 
     render(<OpportunityArchivedList />);
 
