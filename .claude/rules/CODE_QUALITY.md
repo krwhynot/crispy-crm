@@ -135,6 +135,25 @@ DO:
 - Semantic colors (no hardcoded hex)
 - Minimum touch target size
 
+### Framework-Specific: Radix UI & React Admin
+
+**Dialog/Modal Landmarks (Radix UI):**
+- Every `<DialogContent>` MUST contain a `<DialogTitle>` — Radix fires a console warning if missing
+- Every `<AlertDialogContent>` MUST contain an `<AlertDialogTitle>`
+- Every `<DrawerContent>` MUST contain a `<DrawerTitle>` (Vaul uses Radix Dialog internally)
+- If no visible title is appropriate, use `className="sr-only"` to hide it visually while keeping it accessible:
+
+```tsx
+// Visually hidden but accessible to screen readers
+<DialogHeader className="sr-only">
+  <DialogTitle>Search commands</DialogTitle>
+</DialogHeader>
+```
+
+**Datagrid Accessibility (React Admin):**
+- Use `PremiumDatagrid` wrapper instead of raw `Datagrid` — prevents prop leak warnings and ensures consistent keyboard navigation
+- Verify: `grep -r "import.*Datagrid.*from.*react-admin" src/ --include="*.tsx" | grep -v PremiumDatagrid.tsx` (expect: 0 results)
+
 WRONG:
 ```typescript
 // Missing ARIA, hardcoded color, small target
