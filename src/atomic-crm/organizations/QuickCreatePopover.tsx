@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useForm, useWatch } from "react-hook-form";
+import { useForm, useWatch, type UseFormReturn } from "react-hook-form";
 import { useDataProvider, useNotify } from "ra-core";
 import { useQueryClient } from "@tanstack/react-query";
 import { createFormResolver } from "@/lib/zodErrorFormatting";
@@ -24,13 +24,13 @@ import {
 } from "@/atomic-crm/validation/organizations";
 import { notificationMessages } from "@/atomic-crm/constants/notificationMessages";
 
-/**
- * P5: Isolated sub-components using useWatch for performance
- * These only re-render when their specific field changes, NOT on every keystroke
- */
+// ============================================================================
+// Shared sub-components (P5: useWatch isolates re-renders per field)
+// ============================================================================
+
 interface SelectFieldProps {
-  control: ReturnType<typeof useForm<OrganizationQuickCreateInput>>["control"];
-  setValue: ReturnType<typeof useForm<OrganizationQuickCreateInput>>["setValue"];
+  control: UseFormReturn<OrganizationQuickCreateInput>["control"];
+  setValue: UseFormReturn<OrganizationQuickCreateInput>["setValue"];
   id: string;
 }
 
@@ -79,6 +79,161 @@ function PrioritySelect({ control, setValue, id }: SelectFieldProps) {
   );
 }
 
+// ============================================================================
+// Shared form body — renders all quick-create fields
+// ============================================================================
+
+interface QuickCreateFormFieldsProps {
+  methods: UseFormReturn<OrganizationQuickCreateInput>;
+  idPrefix: string;
+  showDetails?: boolean;
+}
+
+function QuickCreateFormFields({ methods, idPrefix, showDetails = true }: QuickCreateFormFieldsProps) {
+  return (
+    <>
+      <div className="space-y-1">
+        <Label htmlFor={`${idPrefix}-name`}>Name</Label>
+        <Input
+          id={`${idPrefix}-name`}
+          {...methods.register("name")}
+          aria-invalid={!!methods.formState.errors.name}
+          aria-describedby={methods.formState.errors.name ? `${idPrefix}-name-error` : undefined}
+        />
+        {methods.formState.errors.name && (
+          <p id={`${idPrefix}-name-error`} className="text-xs text-destructive" role="alert">
+            {methods.formState.errors.name.message}
+          </p>
+        )}
+      </div>
+
+      {showDetails && (
+        <>
+          <div className="grid grid-cols-2 gap-2">
+            <OrganizationTypeSelect
+              control={methods.control}
+              setValue={methods.setValue}
+              id={`${idPrefix}-type`}
+            />
+            <PrioritySelect
+              control={methods.control}
+              setValue={methods.setValue}
+              id={`${idPrefix}-priority`}
+            />
+          </div>
+
+          <div className="grid grid-cols-2 gap-2">
+            <div className="space-y-1">
+              <Label htmlFor={`${idPrefix}-city`}>City</Label>
+              <Input
+                id={`${idPrefix}-city`}
+                {...methods.register("city")}
+                aria-invalid={!!methods.formState.errors.city}
+                aria-describedby={methods.formState.errors.city ? `${idPrefix}-city-error` : undefined}
+              />
+              {methods.formState.errors.city && (
+                <p id={`${idPrefix}-city-error`} className="text-xs text-destructive" role="alert">
+                  {methods.formState.errors.city.message}
+                </p>
+              )}
+            </div>
+
+            <div className="space-y-1">
+              <Label htmlFor={`${idPrefix}-state`}>State</Label>
+              <Input
+                id={`${idPrefix}-state`}
+                {...methods.register("state")}
+                aria-invalid={!!methods.formState.errors.state}
+                aria-describedby={methods.formState.errors.state ? `${idPrefix}-state-error` : undefined}
+              />
+              {methods.formState.errors.state && (
+                <p id={`${idPrefix}-state-error`} className="text-xs text-destructive" role="alert">
+                  {methods.formState.errors.state.message}
+                </p>
+              )}
+            </div>
+          </div>
+        </>
+      )}
+    </>
+  );
+}
+
+// ============================================================================
+// Shared hook — form setup + creation logic
+// ============================================================================
+
+interface UseQuickCreateOrgOptions {
+  name: string;
+  organizationType: "customer" | "prospect" | "principal" | "distributor";
+  onSuccess: (record: { id: number; name: string }) => void;
+  logContext?: string;
+}
+
+function useQuickCreateOrg({ name, organizationType, onSuccess, logContext }: UseQuickCreateOrgOptions) {
+  const [isPending, setIsPending] = useState(false);
+  const dataProvider = useDataProvider();
+  const notify = useNotify();
+  const queryClient = useQueryClient();
+
+  const methods = useForm<OrganizationQuickCreateInput>({
+    resolver: createFormResolver(organizationQuickCreateSchema),
+    defaultValues: {
+      name,
+      organization_type: organizationType,
+      priority: "C",
+      segment_id: PLAYBOOK_CATEGORY_IDS.Unknown,
+    },
+  });
+
+  const createOrg = async (data: OrganizationQuickCreateInput) => {
+    setIsPending(true);
+    try {
+      const result = await dataProvider.create("organizations", { data });
+      queryClient.invalidateQueries({ queryKey: organizationKeys.all });
+      notify(notificationMessages.created("Organization"), { type: "success" });
+      onSuccess(result.data as { id: number; name: string });
+      return result;
+    } catch (error: unknown) {
+      if (logContext) {
+        logger.error("Organization creation failed", error, {
+          feature: "QuickCreatePopover",
+          operation: logContext,
+        });
+      }
+      notify("Failed to create organization", { type: "error" });
+      throw error;
+    } finally {
+      setIsPending(false);
+    }
+  };
+
+  const handleSubmit = methods.handleSubmit(
+    (data) => createOrg(data),
+    // Focus first error field on validation failure (WCAG 3.3.1)
+    (errors) => {
+      const firstErrorField = Object.keys(errors)[0] as keyof OrganizationQuickCreateInput;
+      if (firstErrorField) {
+        methods.setFocus(firstErrorField);
+      }
+    }
+  );
+
+  const handleQuickCreate = () =>
+    createOrg({
+      name,
+      organization_type: organizationType,
+      priority: "C",
+      segment_id: PLAYBOOK_CATEGORY_IDS.Unknown,
+    });
+
+  return { methods, isPending, handleSubmit, handleQuickCreate };
+}
+
+// ============================================================================
+// Exported components
+// ============================================================================
+
 interface QuickCreatePopoverProps {
   name: string;
   organizationType: "customer" | "prospect" | "principal" | "distributor";
@@ -95,78 +250,15 @@ export function QuickCreatePopover({
   children,
 }: QuickCreatePopoverProps) {
   const [open, setOpen] = useState(true);
-  const [isPending, setIsPending] = useState(false);
-  const dataProvider = useDataProvider();
-  const notify = useNotify();
-  const queryClient = useQueryClient();
-
-  const methods = useForm<OrganizationQuickCreateInput>({
-    resolver: createFormResolver(organizationQuickCreateSchema),
-    defaultValues: {
-      name,
-      organization_type: organizationType,
-      priority: "C",
-      segment_id: PLAYBOOK_CATEGORY_IDS.Unknown,
-    },
-  });
-
-  const handleSubmit = methods.handleSubmit(
-    async (data) => {
-      setIsPending(true);
-      try {
-        const result = await dataProvider.create("organizations", {
-          data,
-        });
-        queryClient.invalidateQueries({ queryKey: organizationKeys.all });
-        notify(notificationMessages.created("Organization"), { type: "success" });
-        onCreated(result.data as { id: number; name: string });
-        setOpen(false);
-      } catch (error: unknown) {
-        logger.error("Organization creation failed", error, {
-          feature: "QuickCreatePopover",
-          operation: "handleSubmit",
-        });
-        notify("Failed to create organization", { type: "error" });
-        throw error;
-      } finally {
-        setIsPending(false);
-      }
-    },
-    // Focus first error field on validation failure (WCAG 3.3.1)
-    (errors) => {
-      const firstErrorField = Object.keys(errors)[0] as keyof OrganizationQuickCreateInput;
-      if (firstErrorField) {
-        methods.setFocus(firstErrorField);
-      }
-    }
-  );
-
-  const handleQuickCreate = async () => {
-    setIsPending(true);
-    try {
-      const result = await dataProvider.create("organizations", {
-        data: {
-          name,
-          organization_type: organizationType,
-          priority: "C",
-          segment_id: PLAYBOOK_CATEGORY_IDS.Unknown,
-        },
-      });
-      queryClient.invalidateQueries({ queryKey: organizationKeys.all });
-      notify(notificationMessages.created("Organization"), { type: "success" });
-      onCreated(result.data as { id: number; name: string });
+  const { methods, isPending, handleSubmit, handleQuickCreate } = useQuickCreateOrg({
+    name,
+    organizationType,
+    onSuccess: (record) => {
+      onCreated(record);
       setOpen(false);
-    } catch (error: unknown) {
-      logger.error("Quick organization creation failed", error, {
-        feature: "QuickCreatePopover",
-        operation: "handleQuickCreate",
-      });
-      notify("Failed to create organization", { type: "error" });
-      throw error;
-    } finally {
-      setIsPending(false);
-    }
-  };
+    },
+    logContext: "handleSubmit",
+  });
 
   return (
     <Popover open={open} onOpenChange={(isOpen) => !isOpen && onCancel()}>
@@ -174,73 +266,7 @@ export function QuickCreatePopover({
       <PopoverContent className="w-80 p-4" align="start">
         <form onSubmit={handleSubmit} className="space-y-3">
           <p className="font-medium text-sm">Quick Create: {name}</p>
-
-          {/* Name field - uses native Input instead of React Admin TextInput */}
-          <div className="space-y-1">
-            <Label htmlFor="org-name">Name</Label>
-            <Input
-              id="org-name"
-              {...methods.register("name")}
-              aria-invalid={!!methods.formState.errors.name}
-              aria-describedby={methods.formState.errors.name ? "name-error" : undefined}
-            />
-            {methods.formState.errors.name && (
-              <p id="name-error" className="text-xs text-destructive" role="alert">
-                {methods.formState.errors.name.message}
-              </p>
-            )}
-          </div>
-
-          <div className="grid grid-cols-2 gap-2">
-            {/* Organization Type - uses native Select instead of React Admin SelectInput */}
-            <OrganizationTypeSelect
-              control={methods.control}
-              setValue={methods.setValue}
-              id="org-type"
-            />
-
-            {/* Priority - uses native Select */}
-            <PrioritySelect
-              control={methods.control}
-              setValue={methods.setValue}
-              id="org-priority"
-            />
-          </div>
-
-          <div className="grid grid-cols-2 gap-2">
-            {/* City - uses native Input */}
-            <div className="space-y-1">
-              <Label htmlFor="org-city">City</Label>
-              <Input
-                id="org-city"
-                {...methods.register("city")}
-                aria-invalid={!!methods.formState.errors.city}
-                aria-describedby={methods.formState.errors.city ? "city-error" : undefined}
-              />
-              {methods.formState.errors.city && (
-                <p id="city-error" className="text-xs text-destructive" role="alert">
-                  {methods.formState.errors.city.message}
-                </p>
-              )}
-            </div>
-
-            {/* State - uses native Input */}
-            <div className="space-y-1">
-              <Label htmlFor="org-state">State</Label>
-              <Input
-                id="org-state"
-                {...methods.register("state")}
-                aria-invalid={!!methods.formState.errors.state}
-                aria-describedby={methods.formState.errors.state ? "state-error" : undefined}
-              />
-              {methods.formState.errors.state && (
-                <p id="state-error" className="text-xs text-destructive" role="alert">
-                  {methods.formState.errors.state.message}
-                </p>
-              )}
-            </div>
-          </div>
-
+          <QuickCreateFormFields methods={methods} idPrefix="org" />
           <div className="flex justify-between pt-2">
             <AdminButton
               type="button"
@@ -285,69 +311,13 @@ export function QuickCreateOrganizationRA({
   minimalMode = false,
 }: QuickCreateOrganizationRAProps) {
   const { filter, onCreate, onCancel } = useCreateSuggestionContext();
-  const [isPending, setIsPending] = useState(false);
-  const dataProvider = useDataProvider();
-  const notify = useNotify();
-  const queryClient = useQueryClient();
-
   const name = filter || "";
 
-  const methods = useForm<OrganizationQuickCreateInput>({
-    resolver: createFormResolver(organizationQuickCreateSchema),
-    defaultValues: {
-      name,
-      organization_type: organizationType,
-      priority: "C",
-      segment_id: PLAYBOOK_CATEGORY_IDS.Unknown,
-    },
+  const { methods, isPending, handleSubmit, handleQuickCreate } = useQuickCreateOrg({
+    name,
+    organizationType,
+    onSuccess: (record) => onCreate(record),
   });
-
-  const handleSubmit = methods.handleSubmit(
-    async (data) => {
-      setIsPending(true);
-      try {
-        const result = await dataProvider.create("organizations", {
-          data,
-        });
-        queryClient.invalidateQueries({ queryKey: organizationKeys.all });
-        notify(notificationMessages.created("Organization"), { type: "success" });
-        onCreate(result.data);
-      } catch (error: unknown) {
-        notify("Failed to create organization", { type: "error" });
-        throw error;
-      } finally {
-        setIsPending(false);
-      }
-    },
-    (errors) => {
-      const firstErrorField = Object.keys(errors)[0] as keyof OrganizationQuickCreateInput;
-      if (firstErrorField) {
-        methods.setFocus(firstErrorField);
-      }
-    }
-  );
-
-  const handleQuickCreate = async () => {
-    setIsPending(true);
-    try {
-      const result = await dataProvider.create("organizations", {
-        data: {
-          name,
-          organization_type: organizationType,
-          priority: "C",
-          segment_id: PLAYBOOK_CATEGORY_IDS.Unknown,
-        },
-      });
-      queryClient.invalidateQueries({ queryKey: organizationKeys.all });
-      notify(notificationMessages.created("Organization"), { type: "success" });
-      onCreate(result.data);
-    } catch (error: unknown) {
-      notify("Failed to create organization", { type: "error" });
-      throw error;
-    } finally {
-      setIsPending(false);
-    }
-  };
 
   const handleMinimalSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -360,71 +330,7 @@ export function QuickCreateOrganizationRA({
       <PopoverContent className="w-80 p-4" align="start">
         <form onSubmit={minimalMode ? handleMinimalSubmit : handleSubmit} className="space-y-3">
           <p className="font-medium text-sm">Quick Create: {name}</p>
-
-          <div className="space-y-1">
-            <Label htmlFor="ra-org-name">Name</Label>
-            <Input
-              id="ra-org-name"
-              {...methods.register("name")}
-              aria-invalid={!!methods.formState.errors.name}
-              aria-describedby={methods.formState.errors.name ? "ra-name-error" : undefined}
-            />
-            {methods.formState.errors.name && (
-              <p id="ra-name-error" className="text-xs text-destructive" role="alert">
-                {methods.formState.errors.name.message}
-              </p>
-            )}
-          </div>
-
-          {!minimalMode && (
-            <>
-              <div className="grid grid-cols-2 gap-2">
-                <OrganizationTypeSelect
-                  control={methods.control}
-                  setValue={methods.setValue}
-                  id="ra-org-type"
-                />
-                <PrioritySelect
-                  control={methods.control}
-                  setValue={methods.setValue}
-                  id="ra-org-priority"
-                />
-              </div>
-
-              <div className="grid grid-cols-2 gap-2">
-                <div className="space-y-1">
-                  <Label htmlFor="ra-org-city">City</Label>
-                  <Input
-                    id="ra-org-city"
-                    {...methods.register("city")}
-                    aria-invalid={!!methods.formState.errors.city}
-                    aria-describedby={methods.formState.errors.city ? "ra-city-error" : undefined}
-                  />
-                  {methods.formState.errors.city && (
-                    <p id="ra-city-error" className="text-xs text-destructive" role="alert">
-                      {methods.formState.errors.city.message}
-                    </p>
-                  )}
-                </div>
-
-                <div className="space-y-1">
-                  <Label htmlFor="ra-org-state">State</Label>
-                  <Input
-                    id="ra-org-state"
-                    {...methods.register("state")}
-                    aria-invalid={!!methods.formState.errors.state}
-                    aria-describedby={methods.formState.errors.state ? "ra-state-error" : undefined}
-                  />
-                  {methods.formState.errors.state && (
-                    <p id="ra-state-error" className="text-xs text-destructive" role="alert">
-                      {methods.formState.errors.state.message}
-                    </p>
-                  )}
-                </div>
-              </div>
-            </>
-          )}
-
+          <QuickCreateFormFields methods={methods} idPrefix="ra-org" showDetails={!minimalMode} />
           {minimalMode ? (
             <div className="flex justify-end gap-2 pt-2">
               <AdminButton type="button" variant="outline" size="sm" onClick={() => onCancel()}>

@@ -129,16 +129,7 @@ export async function validateDistributorAuthorization(data: unknown): Promise<v
   const result = distributorAuthorizationSchema.safeParse(data);
 
   if (!result.success) {
-    const formattedErrors: Record<string, string> = {};
-    result.error.issues.forEach((err) => {
-      const path = err.path.join(".");
-      formattedErrors[path] = err.message;
-    });
-
-    throw {
-      message: "Validation failed",
-      body: { errors: formattedErrors },
-    };
+    throw zodErrorToReactAdminError(result.error);
   }
 }
 
@@ -149,16 +140,7 @@ export async function validateCreateDistributorAuthorization(data: unknown): Pro
   const result = createDistributorAuthorizationSchema.safeParse(data);
 
   if (!result.success) {
-    const formattedErrors: Record<string, string> = {};
-    result.error.issues.forEach((err) => {
-      const path = err.path.join(".");
-      formattedErrors[path] = err.message;
-    });
-
-    throw {
-      message: "Validation failed",
-      body: { errors: formattedErrors },
-    };
+    throw zodErrorToReactAdminError(result.error);
   }
 }
 
@@ -280,15 +262,6 @@ export async function validateProductDistributorAuthorization(data: unknown): Pr
   const result = productDistributorAuthorizationSchema.safeParse(data);
 
   if (!result.success) {
-    const formattedErrors: Record<string, string> = {};
-    result.error.issues.forEach((err) => {
-      const path = err.path.join(".");
-      formattedErrors[path] = err.message;
-    });
-
-    throw {
-      message: "Validation failed",
-      body: { errors: formattedErrors },
-    };
+    throw zodErrorToReactAdminError(result.error);
   }
 }
