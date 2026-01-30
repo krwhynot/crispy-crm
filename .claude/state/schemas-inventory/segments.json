@@ -1,6 +1,6 @@
 {
   "chunk_name": "segments",
-  "generated_at": "2026-01-30T11:02:48.644Z",
+  "generated_at": "2026-01-30T20:45:22.181Z",
   "item_count": 3,
   "items": [
     {
@@ -109,9 +109,7 @@
         "getOrCreateSegmentParamsSchema",
         "playbookSegmentSchema"
       ],
-      "validationFunctions": [
-        "validateSegmentForSubmission"
-      ],
+      "validationFunctions": [],
       "hasTransforms": false,
       "hasSuperRefine": false
     },

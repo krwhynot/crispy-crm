@@ -1,12 +1,12 @@
 {
   "chunk_name": "sales",
-  "generated_at": "2026-01-30T11:02:49.289Z",
+  "generated_at": "2026-01-30T20:45:23.726Z",
   "item_count": 3,
   "items": [
     {
       "name": "validateSalesForm",
       "file": "src/atomic-crm/validation/sales.ts",
-      "line": 99,
+      "line": 100,
       "type": "formatter",
       "schemaReference": "salesSchema",
       "errorFormatting": true,
@@ -16,7 +16,7 @@
     {
       "name": "validateCreateSales",
       "file": "src/atomic-crm/validation/sales.ts",
-      "line": 153,
+      "line": 143,
       "type": "formatter",
       "schemaReference": "createSalesSchema",
       "errorFormatting": true,
@@ -26,7 +26,7 @@
     {
       "name": "validateUpdateSales",
       "file": "src/atomic-crm/validation/sales.ts",
-      "line": 172,
+      "line": 154,
       "type": "formatter",
       "schemaReference": "updateSalesSchema",
       "errorFormatting": true,

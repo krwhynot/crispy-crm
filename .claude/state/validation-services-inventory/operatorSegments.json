@@ -1,7 +1,7 @@
 {
   "chunk_name": "operatorSegments",
-  "generated_at": "2026-01-30T11:02:49.272Z",
-  "item_count": 5,
+  "generated_at": "2026-01-30T20:45:23.708Z",
+  "item_count": 4,
   "items": [
     {
       "name": "isOperatorParentSegment",
@@ -25,12 +25,6 @@
       "name": "validateUpdateOperatorSegment",
       "file": "src/atomic-crm/validation/operatorSegments.ts",
       "line": 470,
-      "pattern": "date"
-    },
-    {
-      "name": "validateOperatorSegmentForSubmission",
-      "file": "src/atomic-crm/validation/operatorSegments.ts",
-      "line": 479,
       "pattern": "date"
     }
   ]

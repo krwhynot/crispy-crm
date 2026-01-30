@@ -1,6 +1,6 @@
 {
   "chunk_name": "tags",
-  "generated_at": "2026-01-30T11:02:48.644Z",
+  "generated_at": "2026-01-30T20:45:22.182Z",
   "item_count": 4,
   "items": [
     {
@@ -14,7 +14,7 @@
           "zodType": "unknown",
           "constraints": [
             "min(1, \"Tag name is required\")",
-            "max(100, \"Tag name must be less than 100 characters\")",
+            "max(50, \"Tag name must be less than 50 characters\")",
             "trim()"
           ],
           "optional": false,
@@ -86,9 +86,7 @@
         "tagWithCountSchema",
         "tagFilterSchema"
       ],
-      "validationFunctions": [
-        "validateTagForSubmission"
-      ],
+      "validationFunctions": [],
       "hasTransforms": false,
       "hasSuperRefine": false
     },

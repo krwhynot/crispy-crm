@@ -1,6 +1,6 @@
 {
   "chunk_name": "operatorSegments",
-  "generated_at": "2026-01-30T11:02:48.637Z",
+  "generated_at": "2026-01-30T20:45:22.153Z",
   "item_count": 4,
   "items": [
     {
@@ -116,9 +116,7 @@
         "operatorSegmentSchema",
         "segmentSchema"
       ],
-      "validationFunctions": [
-        "validateOperatorSegmentForSubmission"
-      ],
+      "validationFunctions": [],
       "hasTransforms": false,
       "hasSuperRefine": false
     }

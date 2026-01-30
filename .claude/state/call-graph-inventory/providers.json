@@ -1,6 +1,6 @@
 {
   "chunk_name": "providers",
-  "generated_at": "2026-01-30T11:02:52.700Z",
+  "generated_at": "2026-01-30T20:45:32.122Z",
   "items": {
     "nodes": [
       {
@@ -202,37 +202,37 @@
         "async": true
       },
       {
-        "id": "src/atomic-crm/providers/supabase/callbacks/opportunitiesCallbacks.ts:245:opportunitiesBeforeGetList",
+        "id": "src/atomic-crm/providers/supabase/callbacks/opportunitiesCallbacks.ts:271:opportunitiesBeforeGetList",
         "name": "opportunitiesBeforeGetList",
         "file": "src/atomic-crm/providers/supabase/callbacks/opportunitiesCallbacks.ts",
-        "line": 245,
+        "line": 271,
         "nodeType": "function",
         "exported": false,
         "async": true
       },
       {
-        "id": "src/atomic-crm/providers/supabase/callbacks/opportunitiesCallbacks.ts:272:validateStageTransition",
+        "id": "src/atomic-crm/providers/supabase/callbacks/opportunitiesCallbacks.ts:298:validateStageTransition",
         "name": "validateStageTransition",
         "file": "src/atomic-crm/providers/supabase/callbacks/opportunitiesCallbacks.ts",
-        "line": 272,
+        "line": 298,
         "nodeType": "function",
         "exported": false,
         "async": false
       },
       {
-        "id": "src/atomic-crm/providers/supabase/callbacks/opportunitiesCallbacks.ts:289:opportunitiesBeforeUpdate",
+        "id": "src/atomic-crm/providers/supabase/callbacks/opportunitiesCallbacks.ts:315:opportunitiesBeforeUpdate",
         "name": "opportunitiesBeforeUpdate",
         "file": "src/atomic-crm/providers/supabase/callbacks/opportunitiesCallbacks.ts",
-        "line": 289,
+        "line": 315,
         "nodeType": "function",
         "exported": false,
         "async": true
       },
       {
-        "id": "src/atomic-crm/providers/supabase/callbacks/opportunitiesCallbacks.ts:343:opportunitiesBeforeSave",
+        "id": "src/atomic-crm/providers/supabase/callbacks/opportunitiesCallbacks.ts:369:opportunitiesBeforeSave",
         "name": "opportunitiesBeforeSave",
         "file": "src/atomic-crm/providers/supabase/callbacks/opportunitiesCallbacks.ts",
-        "line": 343,
+        "line": 369,
         "nodeType": "function",
         "exported": false,
         "async": true
@@ -1582,91 +1582,136 @@
       },
       {
         "source": "src/atomic-crm/providers/supabase/callbacks/opportunitiesCallbacks.ts:212:opportunitiesBeforeDelete",
-        "target": "rpc",
-        "targetName": "rpc",
+        "target": "catch",
+        "targetName": "catch",
         "edgeType": "call",
-        "line": 224,
+        "line": 225,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/callbacks/opportunitiesCallbacks.ts:272:validateStageTransition",
-        "target": "includes",
-        "targetName": "includes",
-        "edgeType": "call",
-        "line": 274,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/providers/supabase/callbacks/opportunitiesCallbacks.ts:289:opportunitiesBeforeUpdate",
-        "target": "validateStageTransition",
-        "targetName": "validateStageTransition",
-        "edgeType": "call",
-        "line": 298,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/providers/supabase/callbacks/opportunitiesCallbacks.ts:289:opportunitiesBeforeUpdate",
+        "source": "src/atomic-crm/providers/supabase/callbacks/opportunitiesCallbacks.ts:212:opportunitiesBeforeDelete",
         "target": "create",
         "targetName": "create",
         "edgeType": "call",
-        "line": 302,
-        "conditional": true,
+        "line": 225,
+        "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/callbacks/opportunitiesCallbacks.ts:289:opportunitiesBeforeUpdate",
+        "source": "src/atomic-crm/providers/supabase/callbacks/opportunitiesCallbacks.ts:212:opportunitiesBeforeDelete",
         "target": "toISOString",
         "targetName": "toISOString",
         "edgeType": "call",
-        "line": 312,
-        "conditional": true,
+        "line": 232,
+        "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/callbacks/opportunitiesCallbacks.ts:289:opportunitiesBeforeUpdate",
-        "target": "warn",
-        "targetName": "warn",
-        "edgeType": "call",
-        "line": 318,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/providers/supabase/callbacks/opportunitiesCallbacks.ts:289:opportunitiesBeforeUpdate",
+        "source": "src/atomic-crm/providers/supabase/callbacks/opportunitiesCallbacks.ts:212:opportunitiesBeforeDelete",
         "target": "String",
         "targetName": "String",
         "edgeType": "call",
-        "line": 320,
+        "line": 237,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/callbacks/opportunitiesCallbacks.ts:343:opportunitiesBeforeSave",
+        "source": "src/atomic-crm/providers/supabase/callbacks/opportunitiesCallbacks.ts:212:opportunitiesBeforeDelete",
+        "target": "warn",
+        "targetName": "warn",
+        "edgeType": "call",
+        "line": 238,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/callbacks/opportunitiesCallbacks.ts:212:opportunitiesBeforeDelete",
+        "target": "rpc",
+        "targetName": "rpc",
+        "edgeType": "call",
+        "line": 250,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/callbacks/opportunitiesCallbacks.ts:298:validateStageTransition",
+        "target": "includes",
+        "targetName": "includes",
+        "edgeType": "call",
+        "line": 300,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/callbacks/opportunitiesCallbacks.ts:315:opportunitiesBeforeUpdate",
+        "target": "validateStageTransition",
+        "targetName": "validateStageTransition",
+        "edgeType": "call",
+        "line": 324,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/callbacks/opportunitiesCallbacks.ts:315:opportunitiesBeforeUpdate",
+        "target": "create",
+        "targetName": "create",
+        "edgeType": "call",
+        "line": 328,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/callbacks/opportunitiesCallbacks.ts:315:opportunitiesBeforeUpdate",
+        "target": "toISOString",
+        "targetName": "toISOString",
+        "edgeType": "call",
+        "line": 338,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/callbacks/opportunitiesCallbacks.ts:315:opportunitiesBeforeUpdate",
+        "target": "warn",
+        "targetName": "warn",
+        "edgeType": "call",
+        "line": 344,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/callbacks/opportunitiesCallbacks.ts:315:opportunitiesBeforeUpdate",
+        "target": "String",
+        "targetName": "String",
+        "edgeType": "call",
+        "line": 346,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/callbacks/opportunitiesCallbacks.ts:369:opportunitiesBeforeSave",
         "target": "stripComputedFields",
         "targetName": "stripComputedFields",
         "edgeType": "call",
-        "line": 355,
+        "line": 381,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/callbacks/opportunitiesCallbacks.ts:343:opportunitiesBeforeSave",
+        "source": "src/atomic-crm/providers/supabase/callbacks/opportunitiesCallbacks.ts:369:opportunitiesBeforeSave",
         "target": "isArray",
         "targetName": "isArray",
         "edgeType": "call",
-        "line": 361,
+        "line": 387,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/providers/supabase/callbacks/opportunitiesCallbacks.ts:343:opportunitiesBeforeSave",
+        "source": "src/atomic-crm/providers/supabase/callbacks/opportunitiesCallbacks.ts:369:opportunitiesBeforeSave",
         "target": "mergeCreateDefaults",
         "targetName": "mergeCreateDefaults",
         "edgeType": "call",
-        "line": 369,
+        "line": 395,
         "conditional": true,
         "inLoop": false
       },

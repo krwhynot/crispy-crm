@@ -1,6 +1,6 @@
 {
   "chunk_name": "ui-props",
-  "generated_at": "2026-01-30T11:02:48.645Z",
+  "generated_at": "2026-01-30T20:45:22.184Z",
   "item_count": 5,
   "items": [
     {
@@ -88,7 +88,9 @@
         {
           "name": "record",
           "zodType": "record",
-          "constraints": [],
+          "constraints": [
+            "max(50)"
+          ],
           "optional": false,
           "nullable": false,
           "hasTransform": false,
@@ -167,7 +169,9 @@
         {
           "name": "initialDraft",
           "zodType": "record",
-          "constraints": [],
+          "constraints": [
+            "max(50)"
+          ],
           "optional": true,
           "nullable": true,
           "hasTransform": false,

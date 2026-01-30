@@ -1,6 +1,6 @@
 {
   "chunk_name": "validation",
-  "generated_at": "2026-01-30T11:02:52.729Z",
+  "generated_at": "2026-01-30T20:45:32.172Z",
   "items": {
     "nodes": [
       {
@@ -13,26 +13,26 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/validation/activities/validation.ts:20:formatZodErrors",
-        "name": "formatZodErrors",
-        "file": "src/atomic-crm/validation/activities/validation.ts",
-        "line": 20,
-        "nodeType": "function",
-        "exported": false,
-        "async": false
-      },
-      {
-        "id": "src/atomic-crm/validation/activities/validation.ts:32:throwReactAdminError",
-        "name": "throwReactAdminError",
-        "file": "src/atomic-crm/validation/activities/validation.ts",
-        "line": 32,
-        "nodeType": "function",
-        "exported": false,
-        "async": false
-      },
-      {
-        "id": "src/atomic-crm/validation/activities/validation.ts:43:validateActivitiesForm",
+        "id": "src/atomic-crm/validation/activities/validation.ts:22:validateActivitiesForm",
         "name": "validateActivitiesForm",
+        "file": "src/atomic-crm/validation/activities/validation.ts",
+        "line": 22,
+        "nodeType": "function",
+        "exported": true,
+        "async": true
+      },
+      {
+        "id": "src/atomic-crm/validation/activities/validation.ts:36:validateCreateActivities",
+        "name": "validateCreateActivities",
+        "file": "src/atomic-crm/validation/activities/validation.ts",
+        "line": 36,
+        "nodeType": "function",
+        "exported": true,
+        "async": true
+      },
+      {
+        "id": "src/atomic-crm/validation/activities/validation.ts:43:validateUpdateActivities",
+        "name": "validateUpdateActivities",
         "file": "src/atomic-crm/validation/activities/validation.ts",
         "line": 43,
         "nodeType": "function",
@@ -40,8 +40,8 @@
         "async": true
       },
       {
-        "id": "src/atomic-crm/validation/activities/validation.ts:57:validateCreateActivities",
-        "name": "validateCreateActivities",
+        "id": "src/atomic-crm/validation/activities/validation.ts:57:validateEngagementsForm",
+        "name": "validateEngagementsForm",
         "file": "src/atomic-crm/validation/activities/validation.ts",
         "line": 57,
         "nodeType": "function",
@@ -49,17 +49,8 @@
         "async": true
       },
       {
-        "id": "src/atomic-crm/validation/activities/validation.ts:64:validateUpdateActivities",
-        "name": "validateUpdateActivities",
-        "file": "src/atomic-crm/validation/activities/validation.ts",
-        "line": 64,
-        "nodeType": "function",
-        "exported": true,
-        "async": true
-      },
-      {
-        "id": "src/atomic-crm/validation/activities/validation.ts:71:validateEngagementsForm",
-        "name": "validateEngagementsForm",
+        "id": "src/atomic-crm/validation/activities/validation.ts:71:validateCreateEngagements",
+        "name": "validateCreateEngagements",
         "file": "src/atomic-crm/validation/activities/validation.ts",
         "line": 71,
         "nodeType": "function",
@@ -67,46 +58,37 @@
         "async": true
       },
       {
-        "id": "src/atomic-crm/validation/activities/validation.ts:85:validateCreateEngagements",
-        "name": "validateCreateEngagements",
-        "file": "src/atomic-crm/validation/activities/validation.ts",
-        "line": 85,
-        "nodeType": "function",
-        "exported": true,
-        "async": true
-      },
-      {
-        "id": "src/atomic-crm/validation/activities/validation.ts:92:validateUpdateEngagements",
+        "id": "src/atomic-crm/validation/activities/validation.ts:78:validateUpdateEngagements",
         "name": "validateUpdateEngagements",
         "file": "src/atomic-crm/validation/activities/validation.ts",
-        "line": 92,
+        "line": 78,
         "nodeType": "function",
         "exported": true,
         "async": true
       },
       {
-        "id": "src/atomic-crm/validation/activities/validation.ts:104:validateInteractionsForm",
+        "id": "src/atomic-crm/validation/activities/validation.ts:97:validateInteractionsForm",
         "name": "validateInteractionsForm",
         "file": "src/atomic-crm/validation/activities/validation.ts",
-        "line": 104,
+        "line": 97,
         "nodeType": "function",
         "exported": true,
         "async": true
       },
       {
-        "id": "src/atomic-crm/validation/activities/validation.ts:118:validateCreateInteractions",
+        "id": "src/atomic-crm/validation/activities/validation.ts:111:validateCreateInteractions",
         "name": "validateCreateInteractions",
         "file": "src/atomic-crm/validation/activities/validation.ts",
-        "line": 118,
+        "line": 111,
         "nodeType": "function",
         "exported": true,
         "async": true
       },
       {
-        "id": "src/atomic-crm/validation/activities/validation.ts:125:validateUpdateInteractions",
+        "id": "src/atomic-crm/validation/activities/validation.ts:118:validateUpdateInteractions",
         "name": "validateUpdateInteractions",
         "file": "src/atomic-crm/validation/activities/validation.ts",
-        "line": 125,
+        "line": 118,
         "nodeType": "function",
         "exported": true,
         "async": true
@@ -121,46 +103,46 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/validation/contacts/contacts-core.ts:21:filterEmptyArrayEntries",
+        "id": "src/atomic-crm/validation/contacts/contacts-core.ts:22:filterEmptyArrayEntries",
         "name": "filterEmptyArrayEntries",
         "file": "src/atomic-crm/validation/contacts/contacts-core.ts",
-        "line": 21,
+        "line": 22,
         "nodeType": "function",
         "exported": false,
         "async": false
       },
       {
-        "id": "src/atomic-crm/validation/contacts/contacts-core.ts:158:transformContactData",
+        "id": "src/atomic-crm/validation/contacts/contacts-core.ts:159:transformContactData",
         "name": "transformContactData",
         "file": "src/atomic-crm/validation/contacts/contacts-core.ts",
-        "line": 158,
+        "line": 159,
         "nodeType": "function",
         "exported": false,
         "async": false
       },
       {
-        "id": "src/atomic-crm/validation/contacts/contacts-core.ts:224:validateContactForm",
+        "id": "src/atomic-crm/validation/contacts/contacts-core.ts:225:validateContactForm",
         "name": "validateContactForm",
         "file": "src/atomic-crm/validation/contacts/contacts-core.ts",
-        "line": 224,
+        "line": 225,
         "nodeType": "function",
         "exported": true,
         "async": true
       },
       {
-        "id": "src/atomic-crm/validation/contacts/contacts-core.ts:412:validateCreateContact",
+        "id": "src/atomic-crm/validation/contacts/contacts-core.ts:398:validateCreateContact",
         "name": "validateCreateContact",
         "file": "src/atomic-crm/validation/contacts/contacts-core.ts",
-        "line": 412,
+        "line": 398,
         "nodeType": "function",
         "exported": true,
         "async": true
       },
       {
-        "id": "src/atomic-crm/validation/contacts/contacts-core.ts:532:validateUpdateContact",
+        "id": "src/atomic-crm/validation/contacts/contacts-core.ts:510:validateUpdateContact",
         "name": "validateUpdateContact",
         "file": "src/atomic-crm/validation/contacts/contacts-core.ts",
-        "line": 532,
+        "line": 510,
         "nodeType": "function",
         "exported": true,
         "async": true
@@ -175,64 +157,64 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/validation/distributorAuthorizations.ts:127:validateDistributorAuthorization",
+        "id": "src/atomic-crm/validation/distributorAuthorizations.ts:128:validateDistributorAuthorization",
         "name": "validateDistributorAuthorization",
         "file": "src/atomic-crm/validation/distributorAuthorizations.ts",
-        "line": 127,
+        "line": 128,
         "nodeType": "function",
         "exported": true,
         "async": true
       },
       {
-        "id": "src/atomic-crm/validation/distributorAuthorizations.ts:147:validateCreateDistributorAuthorization",
+        "id": "src/atomic-crm/validation/distributorAuthorizations.ts:139:validateCreateDistributorAuthorization",
         "name": "validateCreateDistributorAuthorization",
         "file": "src/atomic-crm/validation/distributorAuthorizations.ts",
-        "line": 147,
+        "line": 139,
         "nodeType": "function",
         "exported": true,
         "async": true
       },
       {
-        "id": "src/atomic-crm/validation/distributorAuthorizations.ts:278:validateProductDistributorAuthorization",
+        "id": "src/atomic-crm/validation/distributorAuthorizations.ts:261:validateProductDistributorAuthorization",
         "name": "validateProductDistributorAuthorization",
         "file": "src/atomic-crm/validation/distributorAuthorizations.ts",
-        "line": 278,
+        "line": 261,
         "nodeType": "function",
         "exported": true,
         "async": true
       },
       {
-        "id": "src/atomic-crm/validation/distributorAuthorizations.ts:39:notSameOrgRefinement",
+        "id": "src/atomic-crm/validation/distributorAuthorizations.ts:40:notSameOrgRefinement",
         "name": "notSameOrgRefinement",
         "file": "src/atomic-crm/validation/distributorAuthorizations.ts",
-        "line": 39,
+        "line": 40,
         "nodeType": "arrow",
         "exported": false,
         "async": false
       },
       {
-        "id": "src/atomic-crm/validation/distributorAuthorizations.ts:49:dateOrderRefinement",
+        "id": "src/atomic-crm/validation/distributorAuthorizations.ts:50:dateOrderRefinement",
         "name": "dateOrderRefinement",
         "file": "src/atomic-crm/validation/distributorAuthorizations.ts",
-        "line": 49,
+        "line": 50,
         "nodeType": "arrow",
         "exported": false,
         "async": false
       },
       {
-        "id": "src/atomic-crm/validation/favorites.ts:76:validateCreateFavorite",
+        "id": "src/atomic-crm/validation/favorites.ts:75:validateCreateFavorite",
         "name": "validateCreateFavorite",
         "file": "src/atomic-crm/validation/favorites.ts",
-        "line": 76,
+        "line": 75,
         "nodeType": "function",
         "exported": true,
         "async": false
       },
       {
-        "id": "src/atomic-crm/validation/favorites.ts:86:validateUpdateFavorite",
+        "id": "src/atomic-crm/validation/favorites.ts:84:validateUpdateFavorite",
         "name": "validateUpdateFavorite",
         "file": "src/atomic-crm/validation/favorites.ts",
-        "line": 86,
+        "line": 84,
         "nodeType": "function",
         "exported": true,
         "async": false
@@ -310,8 +292,8 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/validation/notes.ts:216:validateContactNoteForSubmission",
-        "name": "validateContactNoteForSubmission",
+        "id": "src/atomic-crm/validation/notes.ts:216:noteHasAttachments",
+        "name": "noteHasAttachments",
         "file": "src/atomic-crm/validation/notes.ts",
         "line": 216,
         "nodeType": "function",
@@ -319,26 +301,26 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/validation/notes.ts:232:validateOpportunityNoteForSubmission",
-        "name": "validateOpportunityNoteForSubmission",
+        "id": "src/atomic-crm/validation/notes.ts:228:validateAttachmentSize",
+        "name": "validateAttachmentSize",
         "file": "src/atomic-crm/validation/notes.ts",
-        "line": 232,
+        "line": 228,
         "nodeType": "function",
         "exported": true,
         "async": false
       },
       {
-        "id": "src/atomic-crm/validation/notes.ts:248:validateOrganizationNoteForSubmission",
-        "name": "validateOrganizationNoteForSubmission",
+        "id": "src/atomic-crm/validation/notes.ts:247:validateAttachmentType",
+        "name": "validateAttachmentType",
         "file": "src/atomic-crm/validation/notes.ts",
-        "line": 248,
+        "line": 247,
         "nodeType": "function",
         "exported": true,
         "async": false
       },
       {
-        "id": "src/atomic-crm/validation/notes.ts:264:noteHasAttachments",
-        "name": "noteHasAttachments",
+        "id": "src/atomic-crm/validation/notes.ts:264:getCurrentDate",
+        "name": "getCurrentDate",
         "file": "src/atomic-crm/validation/notes.ts",
         "line": 264,
         "nodeType": "function",
@@ -346,55 +328,28 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/validation/notes.ts:276:validateAttachmentSize",
-        "name": "validateAttachmentSize",
-        "file": "src/atomic-crm/validation/notes.ts",
-        "line": 276,
-        "nodeType": "function",
-        "exported": true,
-        "async": false
-      },
-      {
-        "id": "src/atomic-crm/validation/notes.ts:295:validateAttachmentType",
-        "name": "validateAttachmentType",
-        "file": "src/atomic-crm/validation/notes.ts",
-        "line": 295,
-        "nodeType": "function",
-        "exported": true,
-        "async": false
-      },
-      {
-        "id": "src/atomic-crm/validation/notes.ts:312:getCurrentDate",
-        "name": "getCurrentDate",
-        "file": "src/atomic-crm/validation/notes.ts",
-        "line": 312,
-        "nodeType": "function",
-        "exported": true,
-        "async": false
-      },
-      {
-        "id": "src/atomic-crm/validation/notes.ts:321:formatDateForInput",
+        "id": "src/atomic-crm/validation/notes.ts:273:formatDateForInput",
         "name": "formatDateForInput",
         "file": "src/atomic-crm/validation/notes.ts",
-        "line": 321,
+        "line": 273,
         "nodeType": "function",
         "exported": true,
         "async": false
       },
       {
-        "id": "src/atomic-crm/validation/notes.ts:331:transformNoteDate",
+        "id": "src/atomic-crm/validation/notes.ts:283:transformNoteDate",
         "name": "transformNoteDate",
         "file": "src/atomic-crm/validation/notes.ts",
-        "line": 331,
+        "line": 283,
         "nodeType": "function",
         "exported": true,
         "async": false
       },
       {
-        "id": "src/atomic-crm/validation/notes.ts:339:getCurrentNoteDate",
+        "id": "src/atomic-crm/validation/notes.ts:291:getCurrentNoteDate",
         "name": "getCurrentNoteDate",
         "file": "src/atomic-crm/validation/notes.ts",
-        "line": 339,
+        "line": 291,
         "nodeType": "function",
         "exported": true,
         "async": false
@@ -454,19 +409,10 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/validation/operatorSegments.ts:479:validateOperatorSegmentForSubmission",
-        "name": "validateOperatorSegmentForSubmission",
-        "file": "src/atomic-crm/validation/operatorSegments.ts",
-        "line": 479,
-        "nodeType": "function",
-        "exported": true,
-        "async": false
-      },
-      {
-        "id": "src/atomic-crm/validation/opportunities/opportunities-core.ts:268:validateOpportunityForm",
+        "id": "src/atomic-crm/validation/opportunities/opportunities-core.ts:269:validateOpportunityForm",
         "name": "validateOpportunityForm",
         "file": "src/atomic-crm/validation/opportunities/opportunities-core.ts",
-        "line": 268,
+        "line": 269,
         "nodeType": "function",
         "exported": true,
         "async": true
@@ -508,127 +454,118 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/validation/opportunities/opportunities-operations.ts:615:validateCreateOpportunity",
+        "id": "src/atomic-crm/validation/opportunities/opportunities-operations.ts:616:validateCreateOpportunity",
         "name": "validateCreateOpportunity",
         "file": "src/atomic-crm/validation/opportunities/opportunities-operations.ts",
-        "line": 615,
+        "line": 616,
         "nodeType": "function",
         "exported": true,
         "async": true
       },
       {
-        "id": "src/atomic-crm/validation/opportunities/opportunities-operations.ts:634:validateUpdateOpportunity",
+        "id": "src/atomic-crm/validation/opportunities/opportunities-operations.ts:627:validateUpdateOpportunity",
         "name": "validateUpdateOpportunity",
         "file": "src/atomic-crm/validation/opportunities/opportunities-operations.ts",
-        "line": 634,
+        "line": 627,
         "nodeType": "function",
         "exported": true,
         "async": true
       },
       {
-        "id": "src/atomic-crm/validation/opportunities/opportunities-operations.ts:657:validateCloseOpportunity",
+        "id": "src/atomic-crm/validation/opportunities/opportunities-operations.ts:642:validateCloseOpportunity",
         "name": "validateCloseOpportunity",
         "file": "src/atomic-crm/validation/opportunities/opportunities-operations.ts",
-        "line": 657,
+        "line": 642,
         "nodeType": "function",
         "exported": true,
         "async": true
       },
       {
-        "id": "src/atomic-crm/validation/organizationDistributors.ts:114:validateOrganizationDistributor",
+        "id": "src/atomic-crm/validation/organizationDistributors.ts:115:validateOrganizationDistributor",
         "name": "validateOrganizationDistributor",
         "file": "src/atomic-crm/validation/organizationDistributors.ts",
-        "line": 114,
+        "line": 115,
         "nodeType": "function",
         "exported": true,
         "async": true
       },
       {
-        "id": "src/atomic-crm/validation/organizationDistributors.ts:134:validateCreateOrganizationDistributor",
+        "id": "src/atomic-crm/validation/organizationDistributors.ts:126:validateCreateOrganizationDistributor",
         "name": "validateCreateOrganizationDistributor",
         "file": "src/atomic-crm/validation/organizationDistributors.ts",
-        "line": 134,
+        "line": 126,
         "nodeType": "function",
         "exported": true,
         "async": true
       },
       {
-        "id": "src/atomic-crm/validation/organizations.ts:235:validateOrganizationForSubmission",
-        "name": "validateOrganizationForSubmission",
-        "file": "src/atomic-crm/validation/organizations.ts",
-        "line": 235,
-        "nodeType": "function",
-        "exported": true,
-        "async": true
-      },
-      {
-        "id": "src/atomic-crm/validation/organizations.ts:291:validateCreateOrganization",
+        "id": "src/atomic-crm/validation/organizations.ts:279:validateCreateOrganization",
         "name": "validateCreateOrganization",
         "file": "src/atomic-crm/validation/organizations.ts",
-        "line": 291,
+        "line": 279,
         "nodeType": "function",
         "exported": true,
         "async": true
       },
       {
-        "id": "src/atomic-crm/validation/organizations.ts:310:validateUpdateOrganization",
+        "id": "src/atomic-crm/validation/organizations.ts:290:validateUpdateOrganization",
         "name": "validateUpdateOrganization",
         "file": "src/atomic-crm/validation/organizations.ts",
-        "line": 310,
+        "line": 290,
         "nodeType": "function",
         "exported": true,
         "async": true
       },
       {
-        "id": "src/atomic-crm/validation/organizations.ts:59:urlAutoPrefix",
+        "id": "src/atomic-crm/validation/organizations.ts:64:urlAutoPrefix",
         "name": "urlAutoPrefix",
         "file": "src/atomic-crm/validation/organizations.ts",
-        "line": 59,
+        "line": 64,
         "nodeType": "arrow",
         "exported": false,
         "async": false
       },
       {
-        "id": "src/atomic-crm/validation/productDistributors.ts:66:validateProductDistributorForm",
+        "id": "src/atomic-crm/validation/productDistributors.ts:67:validateProductDistributorForm",
         "name": "validateProductDistributorForm",
         "file": "src/atomic-crm/validation/productDistributors.ts",
-        "line": 66,
+        "line": 67,
         "nodeType": "function",
         "exported": true,
         "async": true
       },
       {
-        "id": "src/atomic-crm/validation/productDistributors.ts:82:validateCreateProductDistributor",
+        "id": "src/atomic-crm/validation/productDistributors.ts:75:validateCreateProductDistributor",
         "name": "validateCreateProductDistributor",
         "file": "src/atomic-crm/validation/productDistributors.ts",
-        "line": 82,
+        "line": 75,
         "nodeType": "function",
         "exported": true,
         "async": true
       },
       {
-        "id": "src/atomic-crm/validation/productDistributors.ts:98:validateUpdateProductDistributor",
+        "id": "src/atomic-crm/validation/productDistributors.ts:83:validateUpdateProductDistributor",
         "name": "validateUpdateProductDistributor",
         "file": "src/atomic-crm/validation/productDistributors.ts",
-        "line": 98,
+        "line": 83,
         "nodeType": "function",
         "exported": true,
         "async": true
       },
       {
-        "id": "src/atomic-crm/validation/productWithDistributors.ts:58:validateCreateProductWithDistributors",
+        "id": "src/atomic-crm/validation/productWithDistributors.ts:59:validateCreateProductWithDistributors",
         "name": "validateCreateProductWithDistributors",
         "file": "src/atomic-crm/validation/productWithDistributors.ts",
-        "line": 58,
+        "line": 59,
         "nodeType": "function",
         "exported": true,
         "async": true
       },
       {
-        "id": "src/atomic-crm/validation/productWithDistributors.ts:78:transformToRpcParams",
+        "id": "src/atomic-crm/validation/productWithDistributors.ts:71:transformToRpcParams",
         "name": "transformToRpcParams",
         "file": "src/atomic-crm/validation/productWithDistributors.ts",
-        "line": 78,
+        "line": 71,
         "nodeType": "function",
         "exported": true,
         "async": false
@@ -679,163 +616,145 @@
         "async": true
       },
       {
-        "id": "src/atomic-crm/validation/sales.ts:99:validateSalesForm",
+        "id": "src/atomic-crm/validation/sales.ts:100:validateSalesForm",
         "name": "validateSalesForm",
         "file": "src/atomic-crm/validation/sales.ts",
-        "line": 99,
+        "line": 100,
         "nodeType": "function",
         "exported": true,
         "async": true
       },
       {
-        "id": "src/atomic-crm/validation/sales.ts:153:validateCreateSales",
+        "id": "src/atomic-crm/validation/sales.ts:143:validateCreateSales",
         "name": "validateCreateSales",
         "file": "src/atomic-crm/validation/sales.ts",
-        "line": 153,
+        "line": 143,
         "nodeType": "function",
         "exported": true,
         "async": true
       },
       {
-        "id": "src/atomic-crm/validation/sales.ts:172:validateUpdateSales",
+        "id": "src/atomic-crm/validation/sales.ts:154:validateUpdateSales",
         "name": "validateUpdateSales",
         "file": "src/atomic-crm/validation/sales.ts",
-        "line": 172,
-        "nodeType": "function",
-        "exported": true,
-        "async": true
-      },
-      {
-        "id": "src/atomic-crm/validation/segments.ts:133:validateCreateSegment",
-        "name": "validateCreateSegment",
-        "file": "src/atomic-crm/validation/segments.ts",
-        "line": 133,
-        "nodeType": "function",
-        "exported": true,
-        "async": false
-      },
-      {
-        "id": "src/atomic-crm/validation/segments.ts:145:validateUpdateSegment",
-        "name": "validateUpdateSegment",
-        "file": "src/atomic-crm/validation/segments.ts",
-        "line": 145,
-        "nodeType": "function",
-        "exported": true,
-        "async": false
-      },
-      {
-        "id": "src/atomic-crm/validation/segments.ts:154:validateSegmentForSubmission",
-        "name": "validateSegmentForSubmission",
-        "file": "src/atomic-crm/validation/segments.ts",
         "line": 154,
         "nodeType": "function",
         "exported": true,
+        "async": true
+      },
+      {
+        "id": "src/atomic-crm/validation/segments.ts:132:validateCreateSegment",
+        "name": "validateCreateSegment",
+        "file": "src/atomic-crm/validation/segments.ts",
+        "line": 132,
+        "nodeType": "function",
+        "exported": true,
         "async": false
       },
       {
-        "id": "src/atomic-crm/validation/segments.ts:163:getSegmentIdByCategory",
+        "id": "src/atomic-crm/validation/segments.ts:143:validateUpdateSegment",
+        "name": "validateUpdateSegment",
+        "file": "src/atomic-crm/validation/segments.ts",
+        "line": 143,
+        "nodeType": "function",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/validation/segments.ts:152:getSegmentIdByCategory",
         "name": "getSegmentIdByCategory",
         "file": "src/atomic-crm/validation/segments.ts",
-        "line": 163,
+        "line": 152,
         "nodeType": "function",
         "exported": true,
         "async": false
       },
       {
-        "id": "src/atomic-crm/validation/segments.ts:172:isValidPlaybookCategory",
+        "id": "src/atomic-crm/validation/segments.ts:161:isValidPlaybookCategory",
         "name": "isValidPlaybookCategory",
         "file": "src/atomic-crm/validation/segments.ts",
-        "line": 172,
+        "line": 161,
         "nodeType": "function",
         "exported": true,
         "async": false
       },
       {
-        "id": "src/atomic-crm/validation/segments.ts:190:getSegmentTypeForOrganization",
+        "id": "src/atomic-crm/validation/segments.ts:179:getSegmentTypeForOrganization",
         "name": "getSegmentTypeForOrganization",
         "file": "src/atomic-crm/validation/segments.ts",
-        "line": 190,
-        "nodeType": "function",
-        "exported": true,
-        "async": false
-      },
-      {
-        "id": "src/atomic-crm/validation/tags.ts:146:validateCreateTag",
-        "name": "validateCreateTag",
-        "file": "src/atomic-crm/validation/tags.ts",
-        "line": 146,
-        "nodeType": "function",
-        "exported": true,
-        "async": false
-      },
-      {
-        "id": "src/atomic-crm/validation/tags.ts:157:validateUpdateTag",
-        "name": "validateUpdateTag",
-        "file": "src/atomic-crm/validation/tags.ts",
-        "line": 157,
-        "nodeType": "function",
-        "exported": true,
-        "async": false
-      },
-      {
-        "id": "src/atomic-crm/validation/tags.ts:166:validateTagFilter",
-        "name": "validateTagFilter",
-        "file": "src/atomic-crm/validation/tags.ts",
-        "line": 166,
-        "nodeType": "function",
-        "exported": true,
-        "async": false
-      },
-      {
-        "id": "src/atomic-crm/validation/tags.ts:179:validateTagUniqueness",
-        "name": "validateTagUniqueness",
-        "file": "src/atomic-crm/validation/tags.ts",
         "line": 179,
         "nodeType": "function",
         "exported": true,
         "async": false
       },
       {
-        "id": "src/atomic-crm/validation/tags.ts:207:validateTagForSubmission",
-        "name": "validateTagForSubmission",
+        "id": "src/atomic-crm/validation/tags.ts:145:validateCreateTag",
+        "name": "validateCreateTag",
         "file": "src/atomic-crm/validation/tags.ts",
-        "line": 207,
+        "line": 145,
         "nodeType": "function",
         "exported": true,
         "async": false
       },
       {
-        "id": "src/atomic-crm/validation/task.ts:116:getTaskDefaultValues",
+        "id": "src/atomic-crm/validation/tags.ts:155:validateUpdateTag",
+        "name": "validateUpdateTag",
+        "file": "src/atomic-crm/validation/tags.ts",
+        "line": 155,
+        "nodeType": "function",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/validation/tags.ts:164:validateTagFilter",
+        "name": "validateTagFilter",
+        "file": "src/atomic-crm/validation/tags.ts",
+        "line": 164,
+        "nodeType": "function",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/validation/tags.ts:177:validateTagUniqueness",
+        "name": "validateTagUniqueness",
+        "file": "src/atomic-crm/validation/tags.ts",
+        "line": 177,
+        "nodeType": "function",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/validation/task.ts:150:validateTaskForm",
+        "name": "validateTaskForm",
+        "file": "src/atomic-crm/validation/task.ts",
+        "line": 150,
+        "nodeType": "function",
+        "exported": true,
+        "async": true
+      },
+      {
+        "id": "src/atomic-crm/validation/task.ts:117:getTaskDefaultValues",
         "name": "getTaskDefaultValues",
         "file": "src/atomic-crm/validation/task.ts",
-        "line": 116,
+        "line": 117,
         "nodeType": "arrow",
         "exported": true,
         "async": false
       },
       {
-        "id": "src/atomic-crm/validation/task.ts:143:validateCreateTask",
+        "id": "src/atomic-crm/validation/task.ts:144:validateCreateTask",
         "name": "validateCreateTask",
         "file": "src/atomic-crm/validation/task.ts",
-        "line": 143,
+        "line": 144,
         "nodeType": "arrow",
         "exported": true,
         "async": false
       },
       {
-        "id": "src/atomic-crm/validation/task.ts:146:validateUpdateTask",
+        "id": "src/atomic-crm/validation/task.ts:147:validateUpdateTask",
         "name": "validateUpdateTask",
         "file": "src/atomic-crm/validation/task.ts",
-        "line": 146,
-        "nodeType": "arrow",
-        "exported": true,
-        "async": false
-      },
-      {
-        "id": "src/atomic-crm/validation/task.ts:149:validateTaskForSubmission",
-        "name": "validateTaskForSubmission",
-        "file": "src/atomic-crm/validation/task.ts",
-        "line": 149,
+        "line": 147,
         "nodeType": "arrow",
         "exported": true,
         "async": false
@@ -854,6 +773,15 @@
         "name": "formatZodErrors",
         "file": "src/atomic-crm/validation/utils.ts",
         "line": 183,
+        "nodeType": "function",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/validation/utils.ts:214:zodErrorToReactAdminError",
+        "name": "zodErrorToReactAdminError",
+        "file": "src/atomic-crm/validation/utils.ts",
+        "line": 214,
         "nodeType": "function",
         "exported": true,
         "async": false
@@ -924,210 +852,210 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/activities/validation.ts:20:formatZodErrors",
-        "target": "forEach",
-        "targetName": "forEach",
-        "edgeType": "call",
-        "line": 22,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/validation/activities/validation.ts:20:formatZodErrors",
-        "target": "join",
-        "targetName": "join",
-        "edgeType": "call",
-        "line": 23,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/validation/activities/validation.ts:32:throwReactAdminError",
-        "target": "formatZodErrors",
-        "targetName": "formatZodErrors",
-        "edgeType": "call",
-        "line": 35,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/validation/activities/validation.ts:43:validateActivitiesForm",
+        "source": "src/atomic-crm/validation/activities/validation.ts:22:validateActivitiesForm",
         "target": "parse",
         "targetName": "parse",
+        "edgeType": "call",
+        "line": 24,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/validation/activities/validation.ts:22:validateActivitiesForm",
+        "target": "zodErrorToReactAdminError",
+        "targetName": "zodErrorToReactAdminError",
+        "edgeType": "call",
+        "line": 27,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/validation/activities/validation.ts:36:validateCreateActivities",
+        "target": "validateActivitiesForm",
+        "targetName": "validateActivitiesForm",
+        "edgeType": "call",
+        "line": 37,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/validation/activities/validation.ts:43:validateUpdateActivities",
+        "target": "parseAsync",
+        "targetName": "parseAsync",
         "edgeType": "call",
         "line": 45,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/activities/validation.ts:43:validateActivitiesForm",
-        "target": "throwReactAdminError",
-        "targetName": "throwReactAdminError",
+        "source": "src/atomic-crm/validation/activities/validation.ts:43:validateUpdateActivities",
+        "target": "zodErrorToReactAdminError",
+        "targetName": "zodErrorToReactAdminError",
         "edgeType": "call",
         "line": 48,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/activities/validation.ts:57:validateCreateActivities",
-        "target": "validateActivitiesForm",
-        "targetName": "validateActivitiesForm",
-        "edgeType": "call",
-        "line": 58,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/validation/activities/validation.ts:64:validateUpdateActivities",
-        "target": "parseAsync",
-        "targetName": "parseAsync",
-        "edgeType": "call",
-        "line": 65,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/validation/activities/validation.ts:71:validateEngagementsForm",
+        "source": "src/atomic-crm/validation/activities/validation.ts:57:validateEngagementsForm",
         "target": "parse",
         "targetName": "parse",
         "edgeType": "call",
-        "line": 73,
+        "line": 59,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/activities/validation.ts:71:validateEngagementsForm",
-        "target": "throwReactAdminError",
-        "targetName": "throwReactAdminError",
+        "source": "src/atomic-crm/validation/activities/validation.ts:57:validateEngagementsForm",
+        "target": "zodErrorToReactAdminError",
+        "targetName": "zodErrorToReactAdminError",
         "edgeType": "call",
-        "line": 76,
+        "line": 62,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/activities/validation.ts:85:validateCreateEngagements",
+        "source": "src/atomic-crm/validation/activities/validation.ts:71:validateCreateEngagements",
         "target": "validateEngagementsForm",
         "targetName": "validateEngagementsForm",
         "edgeType": "call",
-        "line": 86,
+        "line": 72,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/activities/validation.ts:92:validateUpdateEngagements",
+        "source": "src/atomic-crm/validation/activities/validation.ts:78:validateUpdateEngagements",
         "target": "parseAsync",
         "targetName": "parseAsync",
         "edgeType": "call",
-        "line": 93,
+        "line": 80,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/activities/validation.ts:92:validateUpdateEngagements",
+        "source": "src/atomic-crm/validation/activities/validation.ts:78:validateUpdateEngagements",
         "target": "extend",
         "targetName": "extend",
         "edgeType": "call",
-        "line": 93,
+        "line": 80,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/activities/validation.ts:92:validateUpdateEngagements",
+        "source": "src/atomic-crm/validation/activities/validation.ts:78:validateUpdateEngagements",
         "target": "partial",
         "targetName": "partial",
         "edgeType": "call",
-        "line": 93,
+        "line": 80,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/activities/validation.ts:92:validateUpdateEngagements",
+        "source": "src/atomic-crm/validation/activities/validation.ts:78:validateUpdateEngagements",
         "target": "optional",
         "targetName": "optional",
         "edgeType": "call",
-        "line": 96,
+        "line": 83,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/activities/validation.ts:92:validateUpdateEngagements",
+        "source": "src/atomic-crm/validation/activities/validation.ts:78:validateUpdateEngagements",
         "target": "literal",
         "targetName": "literal",
         "edgeType": "call",
-        "line": 96,
+        "line": 83,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/activities/validation.ts:104:validateInteractionsForm",
-        "target": "parse",
-        "targetName": "parse",
+        "source": "src/atomic-crm/validation/activities/validation.ts:78:validateUpdateEngagements",
+        "target": "zodErrorToReactAdminError",
+        "targetName": "zodErrorToReactAdminError",
         "edgeType": "call",
-        "line": 106,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/validation/activities/validation.ts:104:validateInteractionsForm",
-        "target": "throwReactAdminError",
-        "targetName": "throwReactAdminError",
-        "edgeType": "call",
-        "line": 109,
+        "line": 88,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/activities/validation.ts:118:validateCreateInteractions",
+        "source": "src/atomic-crm/validation/activities/validation.ts:97:validateInteractionsForm",
+        "target": "parse",
+        "targetName": "parse",
+        "edgeType": "call",
+        "line": 99,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/validation/activities/validation.ts:97:validateInteractionsForm",
+        "target": "zodErrorToReactAdminError",
+        "targetName": "zodErrorToReactAdminError",
+        "edgeType": "call",
+        "line": 102,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/validation/activities/validation.ts:111:validateCreateInteractions",
         "target": "validateInteractionsForm",
         "targetName": "validateInteractionsForm",
         "edgeType": "call",
-        "line": 119,
+        "line": 112,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/activities/validation.ts:125:validateUpdateInteractions",
+        "source": "src/atomic-crm/validation/activities/validation.ts:118:validateUpdateInteractions",
         "target": "parseAsync",
         "targetName": "parseAsync",
         "edgeType": "call",
-        "line": 126,
+        "line": 120,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/activities/validation.ts:125:validateUpdateInteractions",
+        "source": "src/atomic-crm/validation/activities/validation.ts:118:validateUpdateInteractions",
         "target": "extend",
         "targetName": "extend",
         "edgeType": "call",
-        "line": 126,
+        "line": 120,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/activities/validation.ts:125:validateUpdateInteractions",
+        "source": "src/atomic-crm/validation/activities/validation.ts:118:validateUpdateInteractions",
         "target": "partial",
         "targetName": "partial",
         "edgeType": "call",
-        "line": 126,
+        "line": 120,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/activities/validation.ts:125:validateUpdateInteractions",
+        "source": "src/atomic-crm/validation/activities/validation.ts:118:validateUpdateInteractions",
         "target": "optional",
         "targetName": "optional",
         "edgeType": "call",
-        "line": 129,
+        "line": 123,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/activities/validation.ts:125:validateUpdateInteractions",
+        "source": "src/atomic-crm/validation/activities/validation.ts:118:validateUpdateInteractions",
         "target": "literal",
         "targetName": "literal",
         "edgeType": "call",
-        "line": 129,
+        "line": 123,
         "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/validation/activities/validation.ts:118:validateUpdateInteractions",
+        "target": "zodErrorToReactAdminError",
+        "targetName": "zodErrorToReactAdminError",
+        "edgeType": "call",
+        "line": 128,
+        "conditional": true,
         "inLoop": false
       },
       {
@@ -1140,507 +1068,471 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/contacts/contacts-core.ts:21:filterEmptyArrayEntries",
+        "source": "src/atomic-crm/validation/contacts/contacts-core.ts:22:filterEmptyArrayEntries",
         "target": "isArray",
         "targetName": "isArray",
-        "edgeType": "call",
-        "line": 24,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/validation/contacts/contacts-core.ts:21:filterEmptyArrayEntries",
-        "target": "filter",
-        "targetName": "filter",
         "edgeType": "call",
         "line": 25,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/contacts/contacts-core.ts:21:filterEmptyArrayEntries",
-        "target": "trim",
-        "targetName": "trim",
+        "source": "src/atomic-crm/validation/contacts/contacts-core.ts:22:filterEmptyArrayEntries",
+        "target": "filter",
+        "targetName": "filter",
         "edgeType": "call",
-        "line": 31,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/validation/contacts/contacts-core.ts:21:filterEmptyArrayEntries",
-        "target": "String",
-        "targetName": "String",
-        "edgeType": "call",
-        "line": 31,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/validation/contacts/contacts-core.ts:21:filterEmptyArrayEntries",
-        "target": "isArray",
-        "targetName": "isArray",
-        "edgeType": "call",
-        "line": 35,
+        "line": 26,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/contacts/contacts-core.ts:21:filterEmptyArrayEntries",
-        "target": "filter",
-        "targetName": "filter",
+        "source": "src/atomic-crm/validation/contacts/contacts-core.ts:22:filterEmptyArrayEntries",
+        "target": "trim",
+        "targetName": "trim",
+        "edgeType": "call",
+        "line": 32,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/validation/contacts/contacts-core.ts:22:filterEmptyArrayEntries",
+        "target": "String",
+        "targetName": "String",
+        "edgeType": "call",
+        "line": 32,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/validation/contacts/contacts-core.ts:22:filterEmptyArrayEntries",
+        "target": "isArray",
+        "targetName": "isArray",
         "edgeType": "call",
         "line": 36,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/contacts/contacts-core.ts:21:filterEmptyArrayEntries",
-        "target": "trim",
-        "targetName": "trim",
-        "edgeType": "call",
-        "line": 42,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/validation/contacts/contacts-core.ts:21:filterEmptyArrayEntries",
-        "target": "String",
-        "targetName": "String",
-        "edgeType": "call",
-        "line": 42,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/validation/contacts/contacts-core.ts:158:transformContactData",
-        "target": "join",
-        "targetName": "join",
-        "edgeType": "call",
-        "line": 161,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/validation/contacts/contacts-core.ts:158:transformContactData",
+        "source": "src/atomic-crm/validation/contacts/contacts-core.ts:22:filterEmptyArrayEntries",
         "target": "filter",
         "targetName": "filter",
         "edgeType": "call",
-        "line": 161,
+        "line": 37,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/contacts/contacts-core.ts:158:transformContactData",
-        "target": "split",
-        "targetName": "split",
+        "source": "src/atomic-crm/validation/contacts/contacts-core.ts:22:filterEmptyArrayEntries",
+        "target": "trim",
+        "targetName": "trim",
         "edgeType": "call",
-        "line": 166,
-        "conditional": true,
+        "line": 43,
+        "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/contacts/contacts-core.ts:158:transformContactData",
+        "source": "src/atomic-crm/validation/contacts/contacts-core.ts:22:filterEmptyArrayEntries",
+        "target": "String",
+        "targetName": "String",
+        "edgeType": "call",
+        "line": 43,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/validation/contacts/contacts-core.ts:159:transformContactData",
         "target": "join",
         "targetName": "join",
         "edgeType": "call",
-        "line": 169,
+        "line": 162,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/contacts/contacts-core.ts:158:transformContactData",
+        "source": "src/atomic-crm/validation/contacts/contacts-core.ts:159:transformContactData",
+        "target": "filter",
+        "targetName": "filter",
+        "edgeType": "call",
+        "line": 162,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/validation/contacts/contacts-core.ts:159:transformContactData",
+        "target": "split",
+        "targetName": "split",
+        "edgeType": "call",
+        "line": 167,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/validation/contacts/contacts-core.ts:159:transformContactData",
+        "target": "join",
+        "targetName": "join",
+        "edgeType": "call",
+        "line": 170,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/validation/contacts/contacts-core.ts:159:transformContactData",
         "target": "slice",
         "targetName": "slice",
         "edgeType": "call",
-        "line": 169,
+        "line": 170,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/contacts/contacts-core.ts:224:validateContactForm",
+        "source": "src/atomic-crm/validation/contacts/contacts-core.ts:225:validateContactForm",
         "target": "parse",
         "targetName": "parse",
         "edgeType": "call",
-        "line": 230,
+        "line": 231,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/contacts/contacts-core.ts:224:validateContactForm",
-        "target": "forEach",
-        "targetName": "forEach",
+        "source": "src/atomic-crm/validation/contacts/contacts-core.ts:225:validateContactForm",
+        "target": "zodErrorToReactAdminError",
+        "targetName": "zodErrorToReactAdminError",
         "edgeType": "call",
         "line": 235,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/contacts/contacts-core.ts:224:validateContactForm",
-        "target": "join",
-        "targetName": "join",
-        "edgeType": "call",
-        "line": 236,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/validation/contacts/contacts-core.ts:224:validateContactForm",
+        "source": "src/atomic-crm/validation/contacts/contacts-core.ts:225:validateContactForm",
         "target": "superRefine",
         "targetName": "superRefine",
         "edgeType": "call",
-        "line": 245,
+        "line": 242,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/contacts/contacts-core.ts:224:validateContactForm",
+        "source": "src/atomic-crm/validation/contacts/contacts-core.ts:225:validateContactForm",
         "target": "transform",
         "targetName": "transform",
         "edgeType": "call",
-        "line": 245,
+        "line": 242,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/contacts/contacts-core.ts:224:validateContactForm",
+        "source": "src/atomic-crm/validation/contacts/contacts-core.ts:225:validateContactForm",
         "target": "addIssue",
         "targetName": "addIssue",
         "edgeType": "call",
-        "line": 248,
+        "line": 245,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/contacts/contacts-core.ts:224:validateContactForm",
+        "source": "src/atomic-crm/validation/contacts/contacts-core.ts:225:validateContactForm",
         "target": "addIssue",
         "targetName": "addIssue",
         "edgeType": "call",
-        "line": 257,
+        "line": 254,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/contacts/contacts-core.ts:224:validateContactForm",
+        "source": "src/atomic-crm/validation/contacts/contacts-core.ts:225:validateContactForm",
         "target": "addIssue",
         "targetName": "addIssue",
         "edgeType": "call",
-        "line": 266,
+        "line": 263,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/contacts/contacts-core.ts:224:validateContactForm",
+        "source": "src/atomic-crm/validation/contacts/contacts-core.ts:225:validateContactForm",
         "target": "isArray",
         "targetName": "isArray",
+        "edgeType": "call",
+        "line": 271,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/validation/contacts/contacts-core.ts:225:validateContactForm",
+        "target": "email",
+        "targetName": "email",
+        "edgeType": "call",
+        "line": 272,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/validation/contacts/contacts-core.ts:225:validateContactForm",
+        "target": "string",
+        "targetName": "string",
+        "edgeType": "call",
+        "line": 272,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/validation/contacts/contacts-core.ts:225:validateContactForm",
+        "target": "forEach",
+        "targetName": "forEach",
+        "edgeType": "call",
+        "line": 273,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/validation/contacts/contacts-core.ts:225:validateContactForm",
+        "target": "safeParse",
+        "targetName": "safeParse",
         "edgeType": "call",
         "line": 274,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/contacts/contacts-core.ts:224:validateContactForm",
-        "target": "email",
-        "targetName": "email",
-        "edgeType": "call",
-        "line": 275,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/validation/contacts/contacts-core.ts:224:validateContactForm",
-        "target": "string",
-        "targetName": "string",
-        "edgeType": "call",
-        "line": 275,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/validation/contacts/contacts-core.ts:224:validateContactForm",
-        "target": "forEach",
-        "targetName": "forEach",
-        "edgeType": "call",
-        "line": 276,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/validation/contacts/contacts-core.ts:224:validateContactForm",
-        "target": "safeParse",
-        "targetName": "safeParse",
-        "edgeType": "call",
-        "line": 277,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/validation/contacts/contacts-core.ts:224:validateContactForm",
+        "source": "src/atomic-crm/validation/contacts/contacts-core.ts:225:validateContactForm",
         "target": "addIssue",
         "targetName": "addIssue",
         "edgeType": "call",
-        "line": 278,
+        "line": 275,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/contacts/contacts-core.ts:224:validateContactForm",
+        "source": "src/atomic-crm/validation/contacts/contacts-core.ts:225:validateContactForm",
         "target": "isArray",
         "targetName": "isArray",
+        "edgeType": "call",
+        "line": 285,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/validation/contacts/contacts-core.ts:225:validateContactForm",
+        "target": "forEach",
+        "targetName": "forEach",
+        "edgeType": "call",
+        "line": 287,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/validation/contacts/contacts-core.ts:225:validateContactForm",
+        "target": "trim",
+        "targetName": "trim",
         "edgeType": "call",
         "line": 288,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/contacts/contacts-core.ts:224:validateContactForm",
-        "target": "forEach",
-        "targetName": "forEach",
-        "edgeType": "call",
-        "line": 290,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/validation/contacts/contacts-core.ts:224:validateContactForm",
-        "target": "trim",
-        "targetName": "trim",
-        "edgeType": "call",
-        "line": 291,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/validation/contacts/contacts-core.ts:224:validateContactForm",
+        "source": "src/atomic-crm/validation/contacts/contacts-core.ts:225:validateContactForm",
         "target": "addIssue",
         "targetName": "addIssue",
         "edgeType": "call",
-        "line": 292,
+        "line": 289,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/contacts/contacts-core.ts:224:validateContactForm",
+        "source": "src/atomic-crm/validation/contacts/contacts-core.ts:225:validateContactForm",
         "target": "addIssue",
         "targetName": "addIssue",
         "edgeType": "call",
-        "line": 303,
+        "line": 300,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/contacts/contacts-core.ts:224:validateContactForm",
+        "source": "src/atomic-crm/validation/contacts/contacts-core.ts:225:validateContactForm",
         "target": "filterEmptyArrayEntries",
         "targetName": "filterEmptyArrayEntries",
         "edgeType": "call",
-        "line": 313,
+        "line": 310,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/contacts/contacts-core.ts:224:validateContactForm",
+        "source": "src/atomic-crm/validation/contacts/contacts-core.ts:225:validateContactForm",
         "target": "parse",
         "targetName": "parse",
         "edgeType": "call",
-        "line": 315,
+        "line": 312,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/contacts/contacts-core.ts:224:validateContactForm",
-        "target": "forEach",
-        "targetName": "forEach",
+        "source": "src/atomic-crm/validation/contacts/contacts-core.ts:225:validateContactForm",
+        "target": "zodErrorToReactAdminError",
+        "targetName": "zodErrorToReactAdminError",
         "edgeType": "call",
-        "line": 320,
+        "line": 315,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/contacts/contacts-core.ts:224:validateContactForm",
-        "target": "join",
-        "targetName": "join",
-        "edgeType": "call",
-        "line": 321,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/validation/contacts/contacts-core.ts:412:validateCreateContact",
+        "source": "src/atomic-crm/validation/contacts/contacts-core.ts:398:validateCreateContact",
         "target": "superRefine",
         "targetName": "superRefine",
         "edgeType": "call",
-        "line": 421,
+        "line": 407,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/contacts/contacts-core.ts:412:validateCreateContact",
+        "source": "src/atomic-crm/validation/contacts/contacts-core.ts:398:validateCreateContact",
         "target": "transform",
         "targetName": "transform",
         "edgeType": "call",
-        "line": 421,
+        "line": 407,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/contacts/contacts-core.ts:412:validateCreateContact",
+        "source": "src/atomic-crm/validation/contacts/contacts-core.ts:398:validateCreateContact",
         "target": "omit",
         "targetName": "omit",
         "edgeType": "call",
-        "line": 421,
+        "line": 407,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/contacts/contacts-core.ts:412:validateCreateContact",
+        "source": "src/atomic-crm/validation/contacts/contacts-core.ts:398:validateCreateContact",
         "target": "extend",
         "targetName": "extend",
         "edgeType": "call",
-        "line": 421,
+        "line": 407,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/contacts/contacts-core.ts:412:validateCreateContact",
+        "source": "src/atomic-crm/validation/contacts/contacts-core.ts:398:validateCreateContact",
         "target": "optional",
         "targetName": "optional",
         "edgeType": "call",
-        "line": 424,
+        "line": 410,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/contacts/contacts-core.ts:412:validateCreateContact",
+        "source": "src/atomic-crm/validation/contacts/contacts-core.ts:398:validateCreateContact",
         "target": "boolean",
         "targetName": "boolean",
         "edgeType": "call",
-        "line": 424,
+        "line": 410,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/contacts/contacts-core.ts:412:validateCreateContact",
+        "source": "src/atomic-crm/validation/contacts/contacts-core.ts:398:validateCreateContact",
         "target": "addIssue",
         "targetName": "addIssue",
         "edgeType": "call",
-        "line": 442,
+        "line": 428,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/contacts/contacts-core.ts:412:validateCreateContact",
+        "source": "src/atomic-crm/validation/contacts/contacts-core.ts:398:validateCreateContact",
         "target": "addIssue",
         "targetName": "addIssue",
         "edgeType": "call",
-        "line": 452,
+        "line": 438,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/contacts/contacts-core.ts:412:validateCreateContact",
+        "source": "src/atomic-crm/validation/contacts/contacts-core.ts:398:validateCreateContact",
         "target": "addIssue",
         "targetName": "addIssue",
         "edgeType": "call",
-        "line": 464,
+        "line": 450,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/contacts/contacts-core.ts:412:validateCreateContact",
+        "source": "src/atomic-crm/validation/contacts/contacts-core.ts:398:validateCreateContact",
         "target": "addIssue",
         "targetName": "addIssue",
         "edgeType": "call",
-        "line": 471,
+        "line": 457,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/contacts/contacts-core.ts:412:validateCreateContact",
+        "source": "src/atomic-crm/validation/contacts/contacts-core.ts:398:validateCreateContact",
         "target": "addIssue",
         "targetName": "addIssue",
         "edgeType": "call",
-        "line": 481,
+        "line": 467,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/contacts/contacts-core.ts:412:validateCreateContact",
+        "source": "src/atomic-crm/validation/contacts/contacts-core.ts:398:validateCreateContact",
         "target": "addIssue",
         "targetName": "addIssue",
         "edgeType": "call",
-        "line": 491,
+        "line": 477,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/contacts/contacts-core.ts:412:validateCreateContact",
+        "source": "src/atomic-crm/validation/contacts/contacts-core.ts:398:validateCreateContact",
         "target": "addIssue",
         "targetName": "addIssue",
         "edgeType": "call",
-        "line": 501,
+        "line": 487,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/contacts/contacts-core.ts:412:validateCreateContact",
+        "source": "src/atomic-crm/validation/contacts/contacts-core.ts:398:validateCreateContact",
         "target": "filterEmptyArrayEntries",
         "targetName": "filterEmptyArrayEntries",
         "edgeType": "call",
-        "line": 514,
+        "line": 500,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/contacts/contacts-core.ts:412:validateCreateContact",
+        "source": "src/atomic-crm/validation/contacts/contacts-core.ts:398:validateCreateContact",
         "target": "parse",
         "targetName": "parse",
+        "edgeType": "call",
+        "line": 501,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/validation/contacts/contacts-core.ts:398:validateCreateContact",
+        "target": "zodErrorToReactAdminError",
+        "targetName": "zodErrorToReactAdminError",
+        "edgeType": "call",
+        "line": 504,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/validation/contacts/contacts-core.ts:510:validateUpdateContact",
+        "target": "parse",
+        "targetName": "parse",
+        "edgeType": "call",
+        "line": 512,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/validation/contacts/contacts-core.ts:510:validateUpdateContact",
+        "target": "zodErrorToReactAdminError",
+        "targetName": "zodErrorToReactAdminError",
         "edgeType": "call",
         "line": 515,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/validation/contacts/contacts-core.ts:412:validateCreateContact",
-        "target": "forEach",
-        "targetName": "forEach",
-        "edgeType": "call",
-        "line": 519,
         "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/validation/contacts/contacts-core.ts:412:validateCreateContact",
-        "target": "join",
-        "targetName": "join",
-        "edgeType": "call",
-        "line": 520,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/validation/contacts/contacts-core.ts:532:validateUpdateContact",
-        "target": "parse",
-        "targetName": "parse",
-        "edgeType": "call",
-        "line": 534,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/validation/contacts/contacts-core.ts:532:validateUpdateContact",
-        "target": "forEach",
-        "targetName": "forEach",
-        "edgeType": "call",
-        "line": 538,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/validation/contacts/contacts-core.ts:532:validateUpdateContact",
-        "target": "join",
-        "targetName": "join",
-        "edgeType": "call",
-        "line": 539,
-        "conditional": false,
         "inLoop": false
       },
       {
@@ -1671,101 +1563,74 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/distributorAuthorizations.ts:127:validateDistributorAuthorization",
+        "source": "src/atomic-crm/validation/distributorAuthorizations.ts:128:validateDistributorAuthorization",
         "target": "safeParse",
         "targetName": "safeParse",
         "edgeType": "call",
-        "line": 128,
+        "line": 129,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/distributorAuthorizations.ts:127:validateDistributorAuthorization",
-        "target": "forEach",
-        "targetName": "forEach",
+        "source": "src/atomic-crm/validation/distributorAuthorizations.ts:128:validateDistributorAuthorization",
+        "target": "zodErrorToReactAdminError",
+        "targetName": "zodErrorToReactAdminError",
         "edgeType": "call",
         "line": 132,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/distributorAuthorizations.ts:127:validateDistributorAuthorization",
-        "target": "join",
-        "targetName": "join",
-        "edgeType": "call",
-        "line": 133,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/validation/distributorAuthorizations.ts:147:validateCreateDistributorAuthorization",
+        "source": "src/atomic-crm/validation/distributorAuthorizations.ts:139:validateCreateDistributorAuthorization",
         "target": "safeParse",
         "targetName": "safeParse",
         "edgeType": "call",
-        "line": 148,
+        "line": 140,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/distributorAuthorizations.ts:147:validateCreateDistributorAuthorization",
-        "target": "forEach",
-        "targetName": "forEach",
+        "source": "src/atomic-crm/validation/distributorAuthorizations.ts:139:validateCreateDistributorAuthorization",
+        "target": "zodErrorToReactAdminError",
+        "targetName": "zodErrorToReactAdminError",
         "edgeType": "call",
-        "line": 152,
+        "line": 143,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/distributorAuthorizations.ts:147:validateCreateDistributorAuthorization",
-        "target": "join",
-        "targetName": "join",
-        "edgeType": "call",
-        "line": 153,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/validation/distributorAuthorizations.ts:278:validateProductDistributorAuthorization",
+        "source": "src/atomic-crm/validation/distributorAuthorizations.ts:261:validateProductDistributorAuthorization",
         "target": "safeParse",
         "targetName": "safeParse",
         "edgeType": "call",
-        "line": 279,
+        "line": 262,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/distributorAuthorizations.ts:278:validateProductDistributorAuthorization",
-        "target": "forEach",
-        "targetName": "forEach",
+        "source": "src/atomic-crm/validation/distributorAuthorizations.ts:261:validateProductDistributorAuthorization",
+        "target": "zodErrorToReactAdminError",
+        "targetName": "zodErrorToReactAdminError",
         "edgeType": "call",
-        "line": 283,
+        "line": 265,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/distributorAuthorizations.ts:278:validateProductDistributorAuthorization",
-        "target": "join",
-        "targetName": "join",
+        "source": "src/atomic-crm/validation/favorites.ts:75:validateCreateFavorite",
+        "target": "parse",
+        "targetName": "parse",
         "edgeType": "call",
-        "line": 284,
+        "line": 76,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/favorites.ts:76:validateCreateFavorite",
+        "source": "src/atomic-crm/validation/favorites.ts:84:validateUpdateFavorite",
         "target": "parse",
         "targetName": "parse",
         "edgeType": "call",
-        "line": 77,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/validation/favorites.ts:86:validateUpdateFavorite",
-        "target": "parse",
-        "targetName": "parse",
-        "edgeType": "call",
-        "line": 87,
+        "line": 85,
         "conditional": false,
         "inLoop": false
       },
@@ -1851,155 +1716,101 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/notes.ts:216:validateContactNoteForSubmission",
-        "target": "parse",
-        "targetName": "parse",
+        "source": "src/atomic-crm/validation/notes.ts:216:noteHasAttachments",
+        "target": "isArray",
+        "targetName": "isArray",
         "edgeType": "call",
-        "line": 217,
+        "line": 219,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/notes.ts:216:validateContactNoteForSubmission",
-        "target": "transformNoteDate",
-        "targetName": "transformNoteDate",
+        "source": "src/atomic-crm/validation/notes.ts:247:validateAttachmentType",
+        "target": "substring",
+        "targetName": "substring",
         "edgeType": "call",
-        "line": 221,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/validation/notes.ts:232:validateOpportunityNoteForSubmission",
-        "target": "parse",
-        "targetName": "parse",
-        "edgeType": "call",
-        "line": 233,
+        "line": 251,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/notes.ts:232:validateOpportunityNoteForSubmission",
-        "target": "transformNoteDate",
-        "targetName": "transformNoteDate",
+        "source": "src/atomic-crm/validation/notes.ts:247:validateAttachmentType",
+        "target": "toLowerCase",
+        "targetName": "toLowerCase",
         "edgeType": "call",
-        "line": 237,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/validation/notes.ts:248:validateOrganizationNoteForSubmission",
-        "target": "parse",
-        "targetName": "parse",
-        "edgeType": "call",
-        "line": 249,
+        "line": 251,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/notes.ts:248:validateOrganizationNoteForSubmission",
-        "target": "transformNoteDate",
-        "targetName": "transformNoteDate",
+        "source": "src/atomic-crm/validation/notes.ts:247:validateAttachmentType",
+        "target": "lastIndexOf",
+        "targetName": "lastIndexOf",
+        "edgeType": "call",
+        "line": 251,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/validation/notes.ts:247:validateAttachmentType",
+        "target": "includes",
+        "targetName": "includes",
         "edgeType": "call",
         "line": 253,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/notes.ts:264:noteHasAttachments",
-        "target": "isArray",
-        "targetName": "isArray",
-        "edgeType": "call",
-        "line": 267,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/validation/notes.ts:295:validateAttachmentType",
-        "target": "substring",
-        "targetName": "substring",
-        "edgeType": "call",
-        "line": 299,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/validation/notes.ts:295:validateAttachmentType",
-        "target": "toLowerCase",
-        "targetName": "toLowerCase",
-        "edgeType": "call",
-        "line": 299,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/validation/notes.ts:295:validateAttachmentType",
-        "target": "lastIndexOf",
-        "targetName": "lastIndexOf",
-        "edgeType": "call",
-        "line": 299,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/validation/notes.ts:295:validateAttachmentType",
-        "target": "includes",
-        "targetName": "includes",
-        "edgeType": "call",
-        "line": 301,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/validation/notes.ts:295:validateAttachmentType",
+        "source": "src/atomic-crm/validation/notes.ts:247:validateAttachmentType",
         "target": "join",
         "targetName": "join",
         "edgeType": "call",
-        "line": 302,
+        "line": 254,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/notes.ts:312:getCurrentDate",
+        "source": "src/atomic-crm/validation/notes.ts:264:getCurrentDate",
         "target": "toISOString",
         "targetName": "toISOString",
         "edgeType": "call",
-        "line": 313,
+        "line": 265,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/notes.ts:321:formatDateForInput",
+        "source": "src/atomic-crm/validation/notes.ts:273:formatDateForInput",
         "target": "slice",
         "targetName": "slice",
         "edgeType": "call",
-        "line": 323,
+        "line": 275,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/notes.ts:321:formatDateForInput",
+        "source": "src/atomic-crm/validation/notes.ts:273:formatDateForInput",
         "target": "toISOString",
         "targetName": "toISOString",
         "edgeType": "call",
-        "line": 323,
+        "line": 275,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/notes.ts:331:transformNoteDate",
+        "source": "src/atomic-crm/validation/notes.ts:283:transformNoteDate",
         "target": "toISOString",
         "targetName": "toISOString",
         "edgeType": "call",
-        "line": 332,
+        "line": 284,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/notes.ts:339:getCurrentNoteDate",
+        "source": "src/atomic-crm/validation/notes.ts:291:getCurrentNoteDate",
         "target": "formatDateForInput",
         "targetName": "formatDateForInput",
         "edgeType": "call",
-        "line": 340,
+        "line": 292,
         "conditional": false,
         "inLoop": false
       },
@@ -2040,39 +1851,21 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/operatorSegments.ts:479:validateOperatorSegmentForSubmission",
+        "source": "src/atomic-crm/validation/opportunities/opportunities-core.ts:269:validateOpportunityForm",
         "target": "parse",
         "targetName": "parse",
         "edgeType": "call",
-        "line": 480,
+        "line": 271,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/opportunities/opportunities-core.ts:268:validateOpportunityForm",
-        "target": "parse",
-        "targetName": "parse",
+        "source": "src/atomic-crm/validation/opportunities/opportunities-core.ts:269:validateOpportunityForm",
+        "target": "zodErrorToReactAdminError",
+        "targetName": "zodErrorToReactAdminError",
         "edgeType": "call",
-        "line": 270,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/validation/opportunities/opportunities-core.ts:268:validateOpportunityForm",
-        "target": "forEach",
-        "targetName": "forEach",
-        "edgeType": "call",
-        "line": 275,
+        "line": 274,
         "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/validation/opportunities/opportunities-core.ts:268:validateOpportunityForm",
-        "target": "join",
-        "targetName": "join",
-        "edgeType": "call",
-        "line": 276,
-        "conditional": false,
         "inLoop": false
       },
       {
@@ -2130,354 +1923,228 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/opportunities/opportunities-operations.ts:615:validateCreateOpportunity",
+        "source": "src/atomic-crm/validation/opportunities/opportunities-operations.ts:616:validateCreateOpportunity",
         "target": "parse",
         "targetName": "parse",
         "edgeType": "call",
-        "line": 617,
+        "line": 618,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/opportunities/opportunities-operations.ts:615:validateCreateOpportunity",
-        "target": "forEach",
-        "targetName": "forEach",
+        "source": "src/atomic-crm/validation/opportunities/opportunities-operations.ts:616:validateCreateOpportunity",
+        "target": "zodErrorToReactAdminError",
+        "targetName": "zodErrorToReactAdminError",
         "edgeType": "call",
         "line": 621,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/opportunities/opportunities-operations.ts:615:validateCreateOpportunity",
-        "target": "join",
-        "targetName": "join",
-        "edgeType": "call",
-        "line": 622,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/validation/opportunities/opportunities-operations.ts:634:validateUpdateOpportunity",
+        "source": "src/atomic-crm/validation/opportunities/opportunities-operations.ts:627:validateUpdateOpportunity",
         "target": "parse",
         "targetName": "parse",
         "edgeType": "call",
-        "line": 636,
+        "line": 629,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/opportunities/opportunities-operations.ts:634:validateUpdateOpportunity",
-        "target": "forEach",
-        "targetName": "forEach",
+        "source": "src/atomic-crm/validation/opportunities/opportunities-operations.ts:627:validateUpdateOpportunity",
+        "target": "zodErrorToReactAdminError",
+        "targetName": "zodErrorToReactAdminError",
         "edgeType": "call",
-        "line": 640,
+        "line": 632,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/opportunities/opportunities-operations.ts:634:validateUpdateOpportunity",
-        "target": "join",
-        "targetName": "join",
-        "edgeType": "call",
-        "line": 641,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/validation/opportunities/opportunities-operations.ts:657:validateCloseOpportunity",
+        "source": "src/atomic-crm/validation/opportunities/opportunities-operations.ts:642:validateCloseOpportunity",
         "target": "parse",
         "targetName": "parse",
         "edgeType": "call",
-        "line": 659,
+        "line": 644,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/opportunities/opportunities-operations.ts:657:validateCloseOpportunity",
-        "target": "forEach",
-        "targetName": "forEach",
+        "source": "src/atomic-crm/validation/opportunities/opportunities-operations.ts:642:validateCloseOpportunity",
+        "target": "zodErrorToReactAdminError",
+        "targetName": "zodErrorToReactAdminError",
         "edgeType": "call",
-        "line": 663,
+        "line": 647,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/opportunities/opportunities-operations.ts:657:validateCloseOpportunity",
-        "target": "join",
-        "targetName": "join",
-        "edgeType": "call",
-        "line": 664,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/validation/organizationDistributors.ts:114:validateOrganizationDistributor",
+        "source": "src/atomic-crm/validation/organizationDistributors.ts:115:validateOrganizationDistributor",
         "target": "safeParse",
         "targetName": "safeParse",
         "edgeType": "call",
-        "line": 115,
+        "line": 116,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/organizationDistributors.ts:114:validateOrganizationDistributor",
-        "target": "forEach",
-        "targetName": "forEach",
+        "source": "src/atomic-crm/validation/organizationDistributors.ts:115:validateOrganizationDistributor",
+        "target": "zodErrorToReactAdminError",
+        "targetName": "zodErrorToReactAdminError",
         "edgeType": "call",
         "line": 119,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/organizationDistributors.ts:114:validateOrganizationDistributor",
-        "target": "join",
-        "targetName": "join",
-        "edgeType": "call",
-        "line": 120,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/validation/organizationDistributors.ts:134:validateCreateOrganizationDistributor",
+        "source": "src/atomic-crm/validation/organizationDistributors.ts:126:validateCreateOrganizationDistributor",
         "target": "safeParse",
         "targetName": "safeParse",
         "edgeType": "call",
-        "line": 135,
+        "line": 127,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/organizationDistributors.ts:134:validateCreateOrganizationDistributor",
-        "target": "forEach",
-        "targetName": "forEach",
+        "source": "src/atomic-crm/validation/organizationDistributors.ts:126:validateCreateOrganizationDistributor",
+        "target": "zodErrorToReactAdminError",
+        "targetName": "zodErrorToReactAdminError",
         "edgeType": "call",
-        "line": 139,
+        "line": 130,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/organizationDistributors.ts:134:validateCreateOrganizationDistributor",
-        "target": "join",
-        "targetName": "join",
-        "edgeType": "call",
-        "line": 140,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/validation/organizations.ts:235:validateOrganizationForSubmission",
+        "source": "src/atomic-crm/validation/organizations.ts:279:validateCreateOrganization",
         "target": "parse",
         "targetName": "parse",
         "edgeType": "call",
-        "line": 238,
+        "line": 281,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/organizations.ts:235:validateOrganizationForSubmission",
-        "target": "forEach",
-        "targetName": "forEach",
+        "source": "src/atomic-crm/validation/organizations.ts:279:validateCreateOrganization",
+        "target": "zodErrorToReactAdminError",
+        "targetName": "zodErrorToReactAdminError",
         "edgeType": "call",
-        "line": 243,
+        "line": 284,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/organizations.ts:235:validateOrganizationForSubmission",
-        "target": "join",
-        "targetName": "join",
-        "edgeType": "call",
-        "line": 244,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/validation/organizations.ts:291:validateCreateOrganization",
+        "source": "src/atomic-crm/validation/organizations.ts:290:validateUpdateOrganization",
         "target": "parse",
         "targetName": "parse",
         "edgeType": "call",
-        "line": 293,
+        "line": 292,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/organizations.ts:291:validateCreateOrganization",
-        "target": "forEach",
-        "targetName": "forEach",
+        "source": "src/atomic-crm/validation/organizations.ts:290:validateUpdateOrganization",
+        "target": "zodErrorToReactAdminError",
+        "targetName": "zodErrorToReactAdminError",
         "edgeType": "call",
-        "line": 297,
+        "line": 295,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/organizations.ts:291:validateCreateOrganization",
-        "target": "join",
-        "targetName": "join",
-        "edgeType": "call",
-        "line": 298,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/validation/organizations.ts:310:validateUpdateOrganization",
-        "target": "parse",
-        "targetName": "parse",
-        "edgeType": "call",
-        "line": 312,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/validation/organizations.ts:310:validateUpdateOrganization",
-        "target": "forEach",
-        "targetName": "forEach",
-        "edgeType": "call",
-        "line": 316,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/validation/organizations.ts:310:validateUpdateOrganization",
-        "target": "join",
-        "targetName": "join",
-        "edgeType": "call",
-        "line": 317,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/validation/organizations.ts:59:urlAutoPrefix",
+        "source": "src/atomic-crm/validation/organizations.ts:64:urlAutoPrefix",
         "target": "trim",
         "targetName": "trim",
         "edgeType": "call",
-        "line": 61,
+        "line": 66,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/organizations.ts:59:urlAutoPrefix",
+        "source": "src/atomic-crm/validation/organizations.ts:64:urlAutoPrefix",
         "target": "startsWith",
         "targetName": "startsWith",
         "edgeType": "call",
-        "line": 64,
+        "line": 69,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/organizations.ts:59:urlAutoPrefix",
+        "source": "src/atomic-crm/validation/organizations.ts:64:urlAutoPrefix",
         "target": "startsWith",
         "targetName": "startsWith",
         "edgeType": "call",
-        "line": 64,
+        "line": 69,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/productDistributors.ts:66:validateProductDistributorForm",
+        "source": "src/atomic-crm/validation/productDistributors.ts:67:validateProductDistributorForm",
         "target": "safeParse",
         "targetName": "safeParse",
         "edgeType": "call",
-        "line": 67,
+        "line": 68,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/productDistributors.ts:66:validateProductDistributorForm",
-        "target": "forEach",
-        "targetName": "forEach",
+        "source": "src/atomic-crm/validation/productDistributors.ts:67:validateProductDistributorForm",
+        "target": "zodErrorToReactAdminError",
+        "targetName": "zodErrorToReactAdminError",
         "edgeType": "call",
         "line": 71,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/productDistributors.ts:66:validateProductDistributorForm",
-        "target": "join",
-        "targetName": "join",
-        "edgeType": "call",
-        "line": 72,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/validation/productDistributors.ts:82:validateCreateProductDistributor",
+        "source": "src/atomic-crm/validation/productDistributors.ts:75:validateCreateProductDistributor",
         "target": "safeParse",
         "targetName": "safeParse",
         "edgeType": "call",
-        "line": 83,
+        "line": 76,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/productDistributors.ts:82:validateCreateProductDistributor",
-        "target": "forEach",
-        "targetName": "forEach",
+        "source": "src/atomic-crm/validation/productDistributors.ts:75:validateCreateProductDistributor",
+        "target": "zodErrorToReactAdminError",
+        "targetName": "zodErrorToReactAdminError",
+        "edgeType": "call",
+        "line": 79,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/validation/productDistributors.ts:83:validateUpdateProductDistributor",
+        "target": "safeParse",
+        "targetName": "safeParse",
+        "edgeType": "call",
+        "line": 84,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/validation/productDistributors.ts:83:validateUpdateProductDistributor",
+        "target": "zodErrorToReactAdminError",
+        "targetName": "zodErrorToReactAdminError",
         "edgeType": "call",
         "line": 87,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/productDistributors.ts:82:validateCreateProductDistributor",
-        "target": "join",
-        "targetName": "join",
-        "edgeType": "call",
-        "line": 88,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/validation/productDistributors.ts:98:validateUpdateProductDistributor",
+        "source": "src/atomic-crm/validation/productWithDistributors.ts:59:validateCreateProductWithDistributors",
         "target": "safeParse",
         "targetName": "safeParse",
         "edgeType": "call",
-        "line": 99,
+        "line": 60,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/productDistributors.ts:98:validateUpdateProductDistributor",
-        "target": "forEach",
-        "targetName": "forEach",
-        "edgeType": "call",
-        "line": 103,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/validation/productDistributors.ts:98:validateUpdateProductDistributor",
-        "target": "join",
-        "targetName": "join",
-        "edgeType": "call",
-        "line": 104,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/validation/productWithDistributors.ts:58:validateCreateProductWithDistributors",
-        "target": "safeParse",
-        "targetName": "safeParse",
-        "edgeType": "call",
-        "line": 59,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/validation/productWithDistributors.ts:58:validateCreateProductWithDistributors",
-        "target": "forEach",
-        "targetName": "forEach",
+        "source": "src/atomic-crm/validation/productWithDistributors.ts:59:validateCreateProductWithDistributors",
+        "target": "zodErrorToReactAdminError",
+        "targetName": "zodErrorToReactAdminError",
         "edgeType": "call",
         "line": 63,
         "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/validation/productWithDistributors.ts:58:validateCreateProductWithDistributors",
-        "target": "join",
-        "targetName": "join",
-        "edgeType": "call",
-        "line": 64,
-        "conditional": false,
         "inLoop": false
       },
       {
@@ -2571,97 +2238,88 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/sales.ts:99:validateSalesForm",
+        "source": "src/atomic-crm/validation/sales.ts:100:validateSalesForm",
         "target": "parse",
         "targetName": "parse",
         "edgeType": "call",
-        "line": 102,
+        "line": 103,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/sales.ts:99:validateSalesForm",
-        "target": "forEach",
-        "targetName": "forEach",
+        "source": "src/atomic-crm/validation/sales.ts:100:validateSalesForm",
+        "target": "zodErrorToReactAdminError",
+        "targetName": "zodErrorToReactAdminError",
         "edgeType": "call",
-        "line": 107,
+        "line": 106,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/sales.ts:99:validateSalesForm",
-        "target": "join",
-        "targetName": "join",
-        "edgeType": "call",
-        "line": 108,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/validation/sales.ts:153:validateCreateSales",
+        "source": "src/atomic-crm/validation/sales.ts:143:validateCreateSales",
         "target": "parse",
         "targetName": "parse",
         "edgeType": "call",
-        "line": 155,
+        "line": 145,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/sales.ts:153:validateCreateSales",
-        "target": "forEach",
-        "targetName": "forEach",
+        "source": "src/atomic-crm/validation/sales.ts:143:validateCreateSales",
+        "target": "zodErrorToReactAdminError",
+        "targetName": "zodErrorToReactAdminError",
+        "edgeType": "call",
+        "line": 148,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/validation/sales.ts:154:validateUpdateSales",
+        "target": "parse",
+        "targetName": "parse",
+        "edgeType": "call",
+        "line": 156,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/validation/sales.ts:154:validateUpdateSales",
+        "target": "zodErrorToReactAdminError",
+        "targetName": "zodErrorToReactAdminError",
         "edgeType": "call",
         "line": 159,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/sales.ts:153:validateCreateSales",
-        "target": "join",
-        "targetName": "join",
-        "edgeType": "call",
-        "line": 160,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/validation/sales.ts:172:validateUpdateSales",
+        "source": "src/atomic-crm/validation/segments.ts:132:validateCreateSegment",
         "target": "parse",
         "targetName": "parse",
         "edgeType": "call",
-        "line": 174,
+        "line": 133,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/sales.ts:172:validateUpdateSales",
-        "target": "forEach",
-        "targetName": "forEach",
-        "edgeType": "call",
-        "line": 178,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/validation/sales.ts:172:validateUpdateSales",
-        "target": "join",
-        "targetName": "join",
-        "edgeType": "call",
-        "line": 179,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/validation/segments.ts:133:validateCreateSegment",
+        "source": "src/atomic-crm/validation/segments.ts:143:validateUpdateSegment",
         "target": "parse",
         "targetName": "parse",
         "edgeType": "call",
-        "line": 134,
+        "line": 144,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/segments.ts:145:validateUpdateSegment",
+        "source": "src/atomic-crm/validation/segments.ts:161:isValidPlaybookCategory",
+        "target": "includes",
+        "targetName": "includes",
+        "edgeType": "call",
+        "line": 162,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/validation/tags.ts:145:validateCreateTag",
         "target": "parse",
         "targetName": "parse",
         "edgeType": "call",
@@ -2670,165 +2328,129 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/segments.ts:154:validateSegmentForSubmission",
+        "source": "src/atomic-crm/validation/tags.ts:155:validateUpdateTag",
+        "target": "parse",
+        "targetName": "parse",
+        "edgeType": "call",
+        "line": 156,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/validation/tags.ts:164:validateTagFilter",
+        "target": "parse",
+        "targetName": "parse",
+        "edgeType": "call",
+        "line": 165,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/validation/tags.ts:177:validateTagUniqueness",
+        "target": "toLowerCase",
+        "targetName": "toLowerCase",
+        "edgeType": "call",
+        "line": 182,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/validation/tags.ts:177:validateTagUniqueness",
+        "target": "trim",
+        "targetName": "trim",
+        "edgeType": "call",
+        "line": 182,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/validation/tags.ts:177:validateTagUniqueness",
+        "target": "some",
+        "targetName": "some",
+        "edgeType": "call",
+        "line": 184,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/validation/tags.ts:177:validateTagUniqueness",
+        "target": "toLowerCase",
+        "targetName": "toLowerCase",
+        "edgeType": "call",
+        "line": 190,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/validation/tags.ts:177:validateTagUniqueness",
+        "target": "trim",
+        "targetName": "trim",
+        "edgeType": "call",
+        "line": 190,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/validation/task.ts:150:validateTaskForm",
+        "target": "parse",
+        "targetName": "parse",
+        "edgeType": "call",
+        "line": 153,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/validation/task.ts:150:validateTaskForm",
         "target": "parse",
         "targetName": "parse",
         "edgeType": "call",
         "line": 155,
-        "conditional": false,
+        "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/segments.ts:172:isValidPlaybookCategory",
-        "target": "includes",
-        "targetName": "includes",
+        "source": "src/atomic-crm/validation/task.ts:150:validateTaskForm",
+        "target": "zodErrorToReactAdminError",
+        "targetName": "zodErrorToReactAdminError",
         "edgeType": "call",
-        "line": 173,
+        "line": 159,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/validation/task.ts:117:getTaskDefaultValues",
+        "target": "parse",
+        "targetName": "parse",
+        "edgeType": "call",
+        "line": 118,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/validation/tags.ts:146:validateCreateTag",
+        "source": "src/atomic-crm/validation/task.ts:117:getTaskDefaultValues",
+        "target": "partial",
+        "targetName": "partial",
+        "edgeType": "call",
+        "line": 118,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/validation/task.ts:144:validateCreateTask",
+        "target": "parse",
+        "targetName": "parse",
+        "edgeType": "call",
+        "line": 144,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/validation/task.ts:147:validateUpdateTask",
         "target": "parse",
         "targetName": "parse",
         "edgeType": "call",
         "line": 147,
         "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/validation/tags.ts:157:validateUpdateTag",
-        "target": "parse",
-        "targetName": "parse",
-        "edgeType": "call",
-        "line": 158,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/validation/tags.ts:166:validateTagFilter",
-        "target": "parse",
-        "targetName": "parse",
-        "edgeType": "call",
-        "line": 167,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/validation/tags.ts:179:validateTagUniqueness",
-        "target": "toLowerCase",
-        "targetName": "toLowerCase",
-        "edgeType": "call",
-        "line": 184,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/validation/tags.ts:179:validateTagUniqueness",
-        "target": "trim",
-        "targetName": "trim",
-        "edgeType": "call",
-        "line": 184,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/validation/tags.ts:179:validateTagUniqueness",
-        "target": "some",
-        "targetName": "some",
-        "edgeType": "call",
-        "line": 186,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/validation/tags.ts:179:validateTagUniqueness",
-        "target": "toLowerCase",
-        "targetName": "toLowerCase",
-        "edgeType": "call",
-        "line": 192,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/validation/tags.ts:179:validateTagUniqueness",
-        "target": "trim",
-        "targetName": "trim",
-        "edgeType": "call",
-        "line": 192,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/validation/tags.ts:207:validateTagForSubmission",
-        "target": "parse",
-        "targetName": "parse",
-        "edgeType": "call",
-        "line": 208,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/validation/tags.ts:207:validateTagForSubmission",
-        "target": "trim",
-        "targetName": "trim",
-        "edgeType": "call",
-        "line": 211,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/validation/task.ts:116:getTaskDefaultValues",
-        "target": "parse",
-        "targetName": "parse",
-        "edgeType": "call",
-        "line": 117,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/validation/task.ts:116:getTaskDefaultValues",
-        "target": "partial",
-        "targetName": "partial",
-        "edgeType": "call",
-        "line": 117,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/validation/task.ts:143:validateCreateTask",
-        "target": "parse",
-        "targetName": "parse",
-        "edgeType": "call",
-        "line": 143,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/validation/task.ts:146:validateUpdateTask",
-        "target": "parse",
-        "targetName": "parse",
-        "edgeType": "call",
-        "line": 146,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/validation/task.ts:149:validateTaskForSubmission",
-        "target": "parse",
-        "targetName": "parse",
-        "edgeType": "call",
-        "line": 150,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/validation/task.ts:149:validateTaskForSubmission",
-        "target": "parse",
-        "targetName": "parse",
-        "edgeType": "call",
-        "line": 150,
-        "conditional": true,
         "inLoop": false
       },
       {
@@ -2866,6 +2488,15 @@
         "line": 188,
         "conditional": false,
         "inLoop": true
+      },
+      {
+        "source": "src/atomic-crm/validation/utils.ts:214:zodErrorToReactAdminError",
+        "target": "formatZodErrors",
+        "targetName": "formatZodErrors",
+        "edgeType": "call",
+        "line": 218,
+        "conditional": false,
+        "inLoop": false
       }
     ]
   }

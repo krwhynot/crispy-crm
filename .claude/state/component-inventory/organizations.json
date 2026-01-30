@@ -1,6 +1,6 @@
 {
   "chunk_name": "organizations",
-  "generated_at": "2026-01-30T11:02:34.951Z",
+  "generated_at": "2026-01-30T20:45:03.613Z",
   "item_count": 76,
   "items": [
     {
@@ -525,10 +525,11 @@
     {
       "name": "OrganizationCompactForm",
       "file": "src/atomic-crm/organizations/OrganizationCompactForm.tsx",
-      "line": 23,
+      "line": 24,
       "type": "presentational",
       "hooks": [
-        "useCityStateMapping"
+        "useCityStateMapping",
+        "useRecordContext"
       ],
       "imports": [
         "../utils/saleOptionRenderer",
@@ -542,7 +543,8 @@
         "@/components/ra-wrappers/select-input",
         "@/components/ra-wrappers/state-combobox-input",
         "@/components/ra-wrappers/text-input",
-        "@/hooks"
+        "@/hooks",
+        "ra-core"
       ],
       "isDefaultExport": false,
       "childComponents": [
@@ -551,13 +553,15 @@
         "ParentOrganizationInput",
         "PrincipalAwareTypeInput"
       ],
-      "contextDependencies": [],
+      "contextDependencies": [
+        "useRecordContext"
+      ],
       "componentRole": "wrapper"
     },
     {
       "name": "OrganizationCreate",
       "file": "src/atomic-crm/organizations/OrganizationCreate.tsx",
-      "line": 66,
+      "line": 55,
       "type": "presentational",
       "hooks": [
         "useCallback",
@@ -565,7 +569,6 @@
         "useCreate",
         "useDuplicateOrgCheck",
         "useEffect",
-        "useGetList",
         "useLocation",
         "useNotify",
         "usePermissions",
@@ -588,7 +591,6 @@
         "@/hooks/usePermissions",
         "@/hooks/useUnsavedChangesWarning",
         "@/lib/zodErrorFormatting",
-        "@/types/database.generated",
         "ra-core",
         "react",
         "react-router-dom"
@@ -607,7 +609,7 @@
     {
       "name": "OrganizationCreate",
       "file": "src/atomic-crm/organizations/OrganizationCreate.tsx",
-      "line": 66,
+      "line": 55,
       "type": "presentational",
       "hooks": [
         "useCallback",
@@ -615,7 +617,6 @@
         "useCreate",
         "useDuplicateOrgCheck",
         "useEffect",
-        "useGetList",
         "useLocation",
         "useNotify",
         "usePermissions",
@@ -638,7 +639,6 @@
         "@/hooks/usePermissions",
         "@/hooks/useUnsavedChangesWarning",
         "@/lib/zodErrorFormatting",
-        "@/types/database.generated",
         "ra-core",
         "react",
         "react-router-dom"
@@ -657,7 +657,7 @@
     {
       "name": "OrganizationCreateFormFooter",
       "file": "src/atomic-crm/organizations/OrganizationCreateFormFooter.tsx",
-      "line": 32,
+      "line": 33,
       "type": "presentational",
       "hooks": [
         "useCallback",
@@ -674,6 +674,7 @@
         "@/atomic-crm/constants/notificationMessages",
         "@/atomic-crm/hooks/useSafeNotify",
         "@/components/admin/AdminButton",
+        "@/components/ra-wrappers/SegmentComboboxInput",
         "@/components/ra-wrappers/form",
         "@/components/ui/unsaved-changes-dialog",
         "ra-core",
@@ -1535,13 +1536,10 @@
     {
       "name": "QuickCreatePopover",
       "file": "src/atomic-crm/organizations/QuickCreatePopover.tsx",
-      "line": 90,
+      "line": 258,
       "type": "presentational",
       "hooks": [
-        "useDataProvider",
-        "useForm",
-        "useNotify",
-        "useQueryClient",
+        "useQuickCreateOrg",
         "useState"
       ],
       "imports": [
@@ -1564,23 +1562,17 @@
       ],
       "isDefaultExport": false,
       "childComponents": [],
-      "contextDependencies": [
-        "useDataProvider"
-      ],
+      "contextDependencies": [],
       "componentRole": "leaf"
     },
     {
       "name": "QuickCreateOrganizationRA",
       "file": "src/atomic-crm/organizations/QuickCreatePopover.tsx",
-      "line": 283,
+      "line": 322,
       "type": "presentational",
       "hooks": [
         "useCreateSuggestionContext",
-        "useDataProvider",
-        "useForm",
-        "useNotify",
-        "useQueryClient",
-        "useState"
+        "useQuickCreateOrg"
       ],
       "imports": [
         "@/atomic-crm/constants/notificationMessages",
@@ -1602,9 +1594,7 @@
       ],
       "isDefaultExport": false,
       "childComponents": [],
-      "contextDependencies": [
-        "useDataProvider"
-      ],
+      "contextDependencies": [],
       "componentRole": "leaf"
     },
     {
@@ -1643,7 +1633,7 @@
     {
       "name": "OrganizationCreate",
       "file": "src/atomic-crm/organizations/index.tsx",
-      "line": 66,
+      "line": 55,
       "type": "presentational",
       "hooks": [
         "useCallback",
@@ -1651,7 +1641,6 @@
         "useCreate",
         "useDuplicateOrgCheck",
         "useEffect",
-        "useGetList",
         "useLocation",
         "useNotify",
         "usePermissions",

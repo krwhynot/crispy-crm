@@ -1,6 +1,6 @@
 {
   "chunk_name": "rpc",
-  "generated_at": "2026-01-30T11:02:48.642Z",
+  "generated_at": "2026-01-30T20:45:22.173Z",
   "item_count": 18,
   "items": [
     {
@@ -663,7 +663,9 @@
         {
           "name": "activity_type_counts",
           "zodType": "record",
-          "constraints": [],
+          "constraints": [
+            "max(50)"
+          ],
           "optional": false,
           "nullable": false,
           "hasTransform": false,

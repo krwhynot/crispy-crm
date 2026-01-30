@@ -1,19 +1,18 @@
 {
   "chunk_name": "validation",
-  "generated_at": "2026-01-30T11:02:49.257Z",
-  "item_count": 7,
+  "generated_at": "2026-01-30T20:45:23.693Z",
+  "item_count": 6,
   "items": [
     {
       "name": "validateActivitiesForm",
       "file": "src/atomic-crm/validation/activities/validation.ts",
-      "line": 43,
+      "line": 22,
       "type": "formatter",
       "schemaReference": "activitiesSchema",
       "errorFormatting": true,
       "isAsync": true,
       "customValidators": [
         "validateCreateActivities",
-        "validateUpdateActivities",
         "validateCreateEngagements",
         "validateCreateInteractions"
       ]
@@ -21,26 +20,19 @@
     {
       "name": "validateCreateActivities",
       "file": "src/atomic-crm/validation/activities/validation.ts",
-      "line": 57,
-      "pattern": "date"
-    },
-    {
-      "name": "validateUpdateActivities",
-      "file": "src/atomic-crm/validation/activities/validation.ts",
-      "line": 64,
+      "line": 36,
       "pattern": "date"
     },
     {
       "name": "validateEngagementsForm",
       "file": "src/atomic-crm/validation/activities/validation.ts",
-      "line": 71,
+      "line": 57,
       "type": "formatter",
       "schemaReference": "engagementsSchema",
       "errorFormatting": true,
       "isAsync": true,
       "customValidators": [
         "validateCreateActivities",
-        "validateUpdateActivities",
         "validateCreateEngagements",
         "validateCreateInteractions"
       ]
@@ -48,20 +40,19 @@
     {
       "name": "validateCreateEngagements",
       "file": "src/atomic-crm/validation/activities/validation.ts",
-      "line": 85,
+      "line": 71,
       "pattern": "date"
     },
     {
       "name": "validateInteractionsForm",
       "file": "src/atomic-crm/validation/activities/validation.ts",
-      "line": 104,
+      "line": 97,
       "type": "formatter",
       "schemaReference": "interactionsSchema",
       "errorFormatting": true,
       "isAsync": true,
       "customValidators": [
         "validateCreateActivities",
-        "validateUpdateActivities",
         "validateCreateEngagements",
         "validateCreateInteractions"
       ]
@@ -69,7 +60,7 @@
     {
       "name": "validateCreateInteractions",
       "file": "src/atomic-crm/validation/activities/validation.ts",
-      "line": 118,
+      "line": 111,
       "pattern": "date"
     }
   ]

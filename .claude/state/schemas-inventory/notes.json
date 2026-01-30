@@ -1,6 +1,6 @@
 {
   "chunk_name": "notes",
-  "generated_at": "2026-01-30T11:02:48.636Z",
+  "generated_at": "2026-01-30T20:45:22.152Z",
   "item_count": 4,
   "items": [
     {
@@ -106,9 +106,7 @@
         "createContactSchema",
         "importContactSchema"
       ],
-      "validationFunctions": [
-        "validateContactNoteForSubmission"
-      ],
+      "validationFunctions": [],
       "hasTransforms": false,
       "hasSuperRefine": false
     },
@@ -122,9 +120,7 @@
         "createOpportunitySchema",
         "updateOpportunitySchema"
       ],
-      "validationFunctions": [
-        "validateOpportunityNoteForSubmission"
-      ],
+      "validationFunctions": [],
       "hasTransforms": false,
       "hasSuperRefine": false
     },
@@ -138,9 +134,7 @@
         "organizationSchema",
         "createOrganizationSchema"
       ],
-      "validationFunctions": [
-        "validateOrganizationNoteForSubmission"
-      ],
+      "validationFunctions": [],
       "hasTransforms": false,
       "hasSuperRefine": false
     }

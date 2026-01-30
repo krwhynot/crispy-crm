@@ -1,12 +1,12 @@
 {
   "chunk_name": "organizationDistributors",
-  "generated_at": "2026-01-30T11:02:48.639Z",
+  "generated_at": "2026-01-30T20:45:22.158Z",
   "item_count": 1,
   "items": [
     {
       "name": "baseOrganizationDistributorSchema",
       "file": "src/atomic-crm/validation/organizationDistributors.ts",
-      "line": 22,
+      "line": 23,
       "schemaType": "strictObject",
       "fields": [
         {

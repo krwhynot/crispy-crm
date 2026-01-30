@@ -1,12 +1,12 @@
 {
   "chunk_name": "productDistributors",
-  "generated_at": "2026-01-30T11:02:48.640Z",
+  "generated_at": "2026-01-30T20:45:22.168Z",
   "item_count": 2,
   "items": [
     {
       "name": "productDistributorStatusSchema",
       "file": "src/atomic-crm/validation/productDistributors.ts",
-      "line": 10,
+      "line": 11,
       "schemaType": "enum",
       "fields": [],
       "enumValues": [
@@ -25,7 +25,7 @@
     {
       "name": "productDistributorSchema",
       "file": "src/atomic-crm/validation/productDistributors.ts",
-      "line": 14,
+      "line": 15,
       "schemaType": "strictObject",
       "fields": [
         {

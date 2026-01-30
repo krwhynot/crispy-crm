@@ -1,7 +1,7 @@
 {
   "chunk_name": "notes",
-  "generated_at": "2026-01-30T11:02:49.272Z",
-  "item_count": 13,
+  "generated_at": "2026-01-30T20:45:23.707Z",
+  "item_count": 10,
   "items": [
     {
       "name": "validateCreateContactNote",
@@ -60,41 +60,20 @@
         "validateCreateOrganizationNote",
         "validateUpdateOrganizationNote",
         "validateAttachment",
-        "validateContactNoteForSubmission",
-        "validateOpportunityNoteForSubmission",
-        "validateOrganizationNoteForSubmission",
         "validateAttachmentSize",
         "validateAttachmentType"
       ]
     },
     {
-      "name": "validateContactNoteForSubmission",
-      "file": "src/atomic-crm/validation/notes.ts",
-      "line": 216,
-      "pattern": "date"
-    },
-    {
-      "name": "validateOpportunityNoteForSubmission",
-      "file": "src/atomic-crm/validation/notes.ts",
-      "line": 232,
-      "pattern": "date"
-    },
-    {
-      "name": "validateOrganizationNoteForSubmission",
-      "file": "src/atomic-crm/validation/notes.ts",
-      "line": 248,
-      "pattern": "date"
-    },
-    {
       "name": "validateAttachmentSize",
       "file": "src/atomic-crm/validation/notes.ts",
-      "line": 276,
+      "line": 228,
       "pattern": "date"
     },
     {
       "name": "validateAttachmentType",
       "file": "src/atomic-crm/validation/notes.ts",
-      "line": 295,
+      "line": 247,
       "pattern": "date"
     }
   ]

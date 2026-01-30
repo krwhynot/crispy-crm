@@ -1,6 +1,6 @@
 {
   "chunk_name": "filters",
-  "generated_at": "2026-01-30T11:02:48.636Z",
+  "generated_at": "2026-01-30T20:45:22.151Z",
   "item_count": 3,
   "items": [
     {
@@ -23,7 +23,9 @@
         {
           "name": "filter",
           "zodType": "record",
-          "constraints": [],
+          "constraints": [
+            "max(50)"
+          ],
           "optional": true,
           "nullable": false,
           "hasTransform": false,
@@ -63,7 +65,9 @@
         {
           "name": "displayedFilters",
           "zodType": "record",
-          "constraints": [],
+          "constraints": [
+            "max(50)"
+          ],
           "optional": true,
           "nullable": false,
           "hasTransform": false,

@@ -1,24 +1,31 @@
 {
   "chunk_name": "task",
-  "generated_at": "2026-01-30T11:02:49.291Z",
+  "generated_at": "2026-01-30T20:45:23.740Z",
   "item_count": 3,
   "items": [
     {
+      "name": "validateTaskForm",
+      "file": "src/atomic-crm/validation/task.ts",
+      "line": 150,
+      "type": "formatter",
+      "schemaReference": "taskUpdateSchema",
+      "errorFormatting": true,
+      "isAsync": true,
+      "customValidators": [
+        "validateCreateTask",
+        "validateUpdateTask"
+      ]
+    },
+    {
       "name": "validateCreateTask",
       "file": "src/atomic-crm/validation/task.ts",
-      "line": 143,
+      "line": 144,
       "pattern": "date"
     },
     {
       "name": "validateUpdateTask",
       "file": "src/atomic-crm/validation/task.ts",
-      "line": 146,
-      "pattern": "date"
-    },
-    {
-      "name": "validateTaskForSubmission",
-      "file": "src/atomic-crm/validation/task.ts",
-      "line": 149,
+      "line": 147,
       "pattern": "date"
     }
   ]

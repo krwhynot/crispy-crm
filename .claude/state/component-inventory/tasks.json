@@ -1,6 +1,6 @@
 {
   "chunk_name": "tasks",
-  "generated_at": "2026-01-30T11:02:34.960Z",
+  "generated_at": "2026-01-30T20:45:03.624Z",
   "item_count": 28,
   "items": [
     {
@@ -50,7 +50,7 @@
     {
       "name": "Task",
       "file": "src/atomic-crm/tasks/Task.tsx",
-      "line": 34,
+      "line": 35,
       "type": "presentational",
       "hooks": [
         "useDeleteWithUndoController",
@@ -65,6 +65,7 @@
         "../types",
         "./TaskCompletionDialog",
         "./TaskEdit",
+        "./types",
         "@/atomic-crm/constants/notificationMessages",
         "@/components/admin/AdminButton",
         "@/components/ra-wrappers/date-field",
@@ -81,8 +82,8 @@
       ],
       "isDefaultExport": false,
       "childComponents": [
-        "Contact",
         "Task",
+        "Contact",
         "TaskEdit",
         "TaskCompletionDialog"
       ],
@@ -221,8 +222,8 @@
       "imports": [
         "../layout/FormToolbar",
         "../queryKeys",
-        "../types",
         "./TaskInputs",
+        "./types",
         "@/atomic-crm/validation/task",
         "@/components/ui/card",
         "@/lib/zodErrorFormatting",
@@ -250,8 +251,8 @@
       "imports": [
         "../layout/FormToolbar",
         "../queryKeys",
-        "../types",
         "./TaskInputs",
+        "./types",
         "@/atomic-crm/validation/task",
         "@/components/ui/card",
         "@/lib/zodErrorFormatting",
@@ -326,7 +327,7 @@
     {
       "name": "TaskList",
       "file": "src/atomic-crm/tasks/TaskList.tsx",
-      "line": 126,
+      "line": 127,
       "type": "presentational",
       "hooks": [
         "useFilterCleanup",
@@ -348,6 +349,7 @@
         "./TasksDatagridHeader",
         "./hooks",
         "./taskFilterConfig",
+        "./types",
         "@/components/layouts/StandardListLayout",
         "@/components/ra-wrappers/FilterableBadge",
         "@/components/ra-wrappers/FloatingCreateButton",
@@ -423,7 +425,7 @@
       "hooks": [],
       "imports": [
         "../sales/SaleName",
-        "../types",
+        "./types",
         "@/components/layouts/sidepane",
         "@/components/ra-wrappers/reference-field",
         "@/components/ra-wrappers/text-field",
@@ -449,7 +451,7 @@
         "useShowContext"
       ],
       "imports": [
-        "../types",
+        "./types",
         "@/components/ra-wrappers/date-field",
         "@/components/ra-wrappers/reference-field",
         "@/components/ui/badge",
@@ -471,10 +473,10 @@
       "type": "presentational",
       "hooks": [],
       "imports": [
-        "../types",
         "./TaskHierarchyBreadcrumb",
         "./TaskRelatedItemsTab",
         "./TaskSlideOverDetailsTab",
+        "./types",
         "@/components/layouts/ResourceSlideOver",
         "lucide-react"
       ],
@@ -505,8 +507,8 @@
         "../queryKeys",
         "../root/ConfigurationContext",
         "../sales/SaleName",
-        "../types",
         "./TaskCompletionDialog",
+        "./types",
         "@/atomic-crm/constants/notificationMessages",
         "@/atomic-crm/validation/task",
         "@/components/layouts/sidepane",
@@ -654,7 +656,7 @@
       "type": "presentational",
       "hooks": [],
       "imports": [
-        "../types",
+        "./types",
         "@/components/ResourceErrorBoundary",
         "@/components/ra-wrappers/loading",
         "react"
@@ -673,7 +675,7 @@
       "type": "presentational",
       "hooks": [],
       "imports": [
-        "../types",
+        "./types",
         "@/components/ResourceErrorBoundary",
         "@/components/ra-wrappers/loading",
         "react"
@@ -692,7 +694,7 @@
       "type": "presentational",
       "hooks": [],
       "imports": [
-        "../types",
+        "./types",
         "@/components/ResourceErrorBoundary",
         "@/components/ra-wrappers/loading",
         "react"

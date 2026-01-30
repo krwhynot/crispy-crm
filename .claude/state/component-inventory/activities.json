@@ -1,6 +1,6 @@
 {
   "chunk_name": "activities",
-  "generated_at": "2026-01-30T11:02:34.939Z",
+  "generated_at": "2026-01-30T20:45:03.590Z",
   "item_count": 32,
   "items": [
     {
@@ -326,7 +326,7 @@
     {
       "name": "QuickLogActivity",
       "file": "src/atomic-crm/activities/QuickLogActivity.tsx",
-      "line": 98,
+      "line": 99,
       "type": "presentational",
       "hooks": [
         "useDataProvider",
@@ -337,6 +337,7 @@
         "useState"
       ],
       "imports": [
+        "../tasks/types",
         "../types",
         "@/atomic-crm/queryKeys",
         "@/components/admin/AdminButton",
@@ -518,7 +519,7 @@
     {
       "name": "QuickLogActivity",
       "file": "src/atomic-crm/activities/index.tsx",
-      "line": 98,
+      "line": 99,
       "type": "presentational",
       "hooks": [
         "useDataProvider",
