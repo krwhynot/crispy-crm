@@ -116,16 +116,7 @@ export async function validateOrganizationDistributor(data: unknown): Promise<vo
   const result = organizationDistributorSchema.safeParse(data);
 
   if (!result.success) {
-    const formattedErrors: Record<string, string> = {};
-    result.error.issues.forEach((err) => {
-      const path = err.path.join(".");
-      formattedErrors[path] = err.message;
-    });
-
-    throw {
-      message: "Validation failed",
-      body: { errors: formattedErrors },
-    };
+    throw zodErrorToReactAdminError(result.error);
   }
 }
 
@@ -136,15 +127,6 @@ export async function validateCreateOrganizationDistributor(data: unknown): Prom
   const result = createOrganizationDistributorSchema.safeParse(data);
 
   if (!result.success) {
-    const formattedErrors: Record<string, string> = {};
-    result.error.issues.forEach((err) => {
-      const path = err.path.join(".");
-      formattedErrors[path] = err.message;
-    });
-
-    throw {
-      message: "Validation failed",
-      body: { errors: formattedErrors },
-    };
+    throw zodErrorToReactAdminError(result.error);
   }
 }

@@ -366,7 +366,7 @@ export class ValidationService {
       update: async (data) => validateUpdateContact(data),
     },
     organizations: {
-      create: async (data) => validateOrganizationForSubmission(data),
+      create: async (data) => validateCreateOrganization(data),
       update: async (data) => validateUpdateOrganization(data),
     },
     // ... etc
