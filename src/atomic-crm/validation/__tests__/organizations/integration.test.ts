@@ -60,7 +60,8 @@ describe("Organization Validation Functions", () => {
         const err = error as { message: string; body: { errors: Record<string, string> } };
         expect(err.message).toBe("Validation failed");
         expect(err.body.errors).toBeDefined();
-        expect(err.body.errors.name).toBe("Organization name is required");
+        // getFriendlyErrorMessage maps too_small/min=1 to "This field is required."
+        expect(err.body.errors.name).toBe("This field is required.");
         expect(err.body.errors.organization_type).toBeDefined();
         expect(err.body.errors.website).toBe("Must be a valid URL (e.g., example.com)");
       }

@@ -116,10 +116,17 @@ export async function validateCreateInteractions(data: unknown): Promise<void> {
  * Update validation function for interactions
  */
 export async function validateUpdateInteractions(data: unknown): Promise<void> {
-  await baseActivitiesSchema
-    .partial()
-    .extend({
-      activity_type: z.literal("interaction").optional(),
-    })
-    .parseAsync(data);
+  try {
+    await baseActivitiesSchema
+      .partial()
+      .extend({
+        activity_type: z.literal("interaction").optional(),
+      })
+      .parseAsync(data);
+  } catch (error: unknown) {
+    if (error instanceof z.ZodError) {
+      throw zodErrorToReactAdminError(error);
+    }
+    throw error;
+  }
 }

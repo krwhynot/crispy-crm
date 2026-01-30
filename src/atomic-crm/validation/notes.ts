@@ -7,7 +7,6 @@
 
 import { z } from "zod";
 import { sanitizeHtml } from "@/lib/sanitization";
-import { zodErrorToReactAdminError } from "./utils";
 
 /**
  * Attachment validation schema
@@ -148,21 +147,33 @@ export async function validateCreateContactNote(data: unknown): Promise<void> {
 /**
  * Validate contact note update data
  * @param data - Note data to validate
- * @returns Validated note data
- * @throws Zod validation error if data is invalid
+ * @throws React Admin formatted error if data is invalid
  */
-export function validateUpdateContactNote(data: unknown): UpdateContactNoteInput {
-  return updateContactNoteSchema.parse(data);
+export async function validateUpdateContactNote(data: unknown): Promise<void> {
+  try {
+    updateContactNoteSchema.parse(data);
+  } catch (error: unknown) {
+    if (error instanceof z.ZodError) {
+      throw zodErrorToReactAdminError(error);
+    }
+    throw error;
+  }
 }
 
 /**
  * Validate opportunity note creation data
  * @param data - Note data to validate
- * @returns Validated note data
- * @throws Zod validation error if data is invalid
+ * @throws React Admin formatted error if data is invalid
  */
-export function validateCreateOpportunityNote(data: unknown): CreateOpportunityNoteInput {
-  return createOpportunityNoteSchema.parse(data);
+export async function validateCreateOpportunityNote(data: unknown): Promise<void> {
+  try {
+    createOpportunityNoteSchema.parse(data);
+  } catch (error: unknown) {
+    if (error instanceof z.ZodError) {
+      throw zodErrorToReactAdminError(error);
+    }
+    throw error;
+  }
 }
 
 /**
