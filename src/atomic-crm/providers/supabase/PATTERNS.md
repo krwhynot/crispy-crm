@@ -179,37 +179,30 @@ Cross-cutting concerns implemented as DataProvider decorators.
 
 ```typescript
 // wrappers/withErrorLogging.ts
-export function withErrorLogging<T extends DataProvider>(provider: T): T {
-  const wrappedProvider = { ...provider } as T;
+import { logger } from '@/lib/logger';
 
-  for (const method of dataProviderMethods) {
-    const original = provider[method];
-    if (typeof original === "function") {
-      wrappedProvider[method] = async (resource, params) => {
+export function withErrorLogging<T extends DataProvider>(
+  provider: T
+): T {
+  return new Proxy(provider, {
+    get(target, prop: string) {
+      const original = target[prop as keyof T];
+      if (typeof original !== 'function') return original;
+
+      return async (...args: unknown[]) => {
         try {
-          const result = await original.call(provider, resource, params);
-          logSuccess(method, resource, params, result);
-          return result;
+          return await original.apply(target, args);
         } catch (error) {
-          logError(method, resource, params, error);
-
-          // Handle idempotent delete
-          if (method === "delete" && isAlreadyDeletedError(error)) {
-            return { data: params.previousData };
-          }
-
-          // Transform Supabase errors to React Admin format
-          if (isSupabaseError(error)) {
-            throw transformSupabaseError(error);
-          }
-
+          logger.error(`DataProvider operation failed`, {
+            operation: prop,
+            error: error instanceof Error ? error.message : String(error),
+            resource: args[0],
+          });
           throw error;
         }
       };
-    }
-  }
-
-  return wrappedProvider;
+    },
+  });
 }
 ```
 

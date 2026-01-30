@@ -111,6 +111,8 @@ The `SaveButton` transform links the note to its parent entity:
 
 ```tsx
 // NoteCreateButton component
+import { getCurrentDate } from "@/atomic-crm/validation/notes";
+
 <SaveButton
   type="button"
   label="Add this note"

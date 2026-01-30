@@ -538,7 +538,10 @@ const handleFileSelect = async (file: File) => {
   }
 
   if (result.warnings?.length) {
-    console.warn("CSV warnings:", result.warnings);
+    logger.warn('CSV import warnings', {
+      warnings: result.warnings,
+      operation: 'csvImport'
+    });
   }
 
   // Proceed with parsing...
@@ -601,7 +604,10 @@ import { detectDuplicates, formatDuplicateSummary } from "@/atomic-crm/utils";
 
 const result = detectDuplicates(csvContacts, existingContacts);
 
-console.log(formatDuplicateSummary(result));
+logger.info('Duplicate detection summary', {
+  summary: formatDuplicateSummary(result),
+  operation: 'duplicateCheck'
+});
 // Duplicate Detection Summary:
 // - Total contacts in file: 100
 // - Clean (ready to import): 85
