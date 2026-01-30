@@ -281,8 +281,11 @@ export const createOrganizationSchema = organizationSchema
     organization_type: organizationTypeSchema, // Remove .default("prospect") - must be explicitly selected
     sales_id: z.coerce.number(), // Remove .nullish() - Account Manager required
     segment_id: z
-      .string()
-      .uuid()
+      .string({
+        required_error: "Please select a segment",
+        invalid_type_error: "Please select a segment",
+      })
+      .uuid("Please select a valid segment")
       .refine((val) => val !== UNKNOWN_SEGMENT_UUID, {
         message: "Please select a specific segment (not 'Unknown')",
       }),

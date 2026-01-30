@@ -35,8 +35,8 @@ describe("Tag Validation Schemas", () => {
       expect(() => tagSchema.parse(invalidData)).toThrow(z.ZodError);
     });
 
-    it("should reject name longer than 50 characters", () => {
-      const longName = "a".repeat(51);
+    it("should reject name longer than 100 characters", () => {
+      const longName = "a".repeat(101);
       const invalidData = { ...validTag, name: longName };
       expect(() => tagSchema.parse(invalidData)).toThrow(z.ZodError);
     });
@@ -211,7 +211,7 @@ describe("Tag Validation Schemas", () => {
       expect(() =>
         updateTagSchema.parse({
           id: "tag-1",
-          name: "a".repeat(51),
+          name: "a".repeat(101),
         })
       ).toThrow(z.ZodError);
     });
