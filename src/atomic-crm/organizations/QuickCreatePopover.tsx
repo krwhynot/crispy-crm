@@ -89,7 +89,11 @@ interface QuickCreateFormFieldsProps {
   showDetails?: boolean;
 }
 
-function QuickCreateFormFields({ methods, idPrefix, showDetails = true }: QuickCreateFormFieldsProps) {
+function QuickCreateFormFields({
+  methods,
+  idPrefix,
+  showDetails = true,
+}: QuickCreateFormFieldsProps) {
   return (
     <>
       <div className="space-y-1">
@@ -129,7 +133,9 @@ function QuickCreateFormFields({ methods, idPrefix, showDetails = true }: QuickC
                 id={`${idPrefix}-city`}
                 {...methods.register("city")}
                 aria-invalid={!!methods.formState.errors.city}
-                aria-describedby={methods.formState.errors.city ? `${idPrefix}-city-error` : undefined}
+                aria-describedby={
+                  methods.formState.errors.city ? `${idPrefix}-city-error` : undefined
+                }
               />
               {methods.formState.errors.city && (
                 <p id={`${idPrefix}-city-error`} className="text-xs text-destructive" role="alert">
@@ -144,7 +150,9 @@ function QuickCreateFormFields({ methods, idPrefix, showDetails = true }: QuickC
                 id={`${idPrefix}-state`}
                 {...methods.register("state")}
                 aria-invalid={!!methods.formState.errors.state}
-                aria-describedby={methods.formState.errors.state ? `${idPrefix}-state-error` : undefined}
+                aria-describedby={
+                  methods.formState.errors.state ? `${idPrefix}-state-error` : undefined
+                }
               />
               {methods.formState.errors.state && (
                 <p id={`${idPrefix}-state-error`} className="text-xs text-destructive" role="alert">
@@ -170,7 +178,12 @@ interface UseQuickCreateOrgOptions {
   logContext?: string;
 }
 
-function useQuickCreateOrg({ name, organizationType, onSuccess, logContext }: UseQuickCreateOrgOptions) {
+function useQuickCreateOrg({
+  name,
+  organizationType,
+  onSuccess,
+  logContext,
+}: UseQuickCreateOrgOptions) {
   const [isPending, setIsPending] = useState(false);
   const dataProvider = useDataProvider();
   const notify = useNotify();

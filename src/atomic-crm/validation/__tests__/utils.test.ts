@@ -6,7 +6,8 @@
  */
 
 import { describe, it, expect } from "vitest";
-import { getFriendlyErrorMessage, formatZodErrors } from "../utils";
+import { z } from "zod";
+import { getFriendlyErrorMessage, formatZodErrors, zodErrorToReactAdminError } from "../utils";
 
 describe("getFriendlyErrorMessage", () => {
   describe("invalid_type errors", () => {
@@ -600,5 +601,100 @@ describe("formatZodErrors", () => {
     const result = formatZodErrors(error);
 
     expect(result).toEqual({});
+  });
+});
+
+describe("zodErrorToReactAdminError", () => {
+  it("should transform missing required field to friendly message", () => {
+    const schema = z.object({ name: z.string() });
+
+    try {
+      schema.parse({});
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        const result = zodErrorToReactAdminError(error);
+
+        expect(result.message).toBe("Validation failed");
+        expect(result.body.errors.name).toBe("This field is required.");
+        expect(result.body.errors.name).not.toContain("expected string");
+      }
+    }
+  });
+
+  it("should transform invalid type to friendly message", () => {
+    const schema = z.object({ age: z.number() });
+
+    try {
+      schema.parse({ age: "not a number" });
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        const result = zodErrorToReactAdminError(error);
+
+        expect(result.body.errors.age).toContain("required");
+        expect(result.body.errors.age).not.toContain("expected number");
+      }
+    }
+  });
+
+  it("should handle nested paths correctly", () => {
+    const schema = z.object({
+      contact: z.object({ email: z.string().email() }),
+    });
+
+    try {
+      schema.parse({ contact: { email: "invalid" } });
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        const result = zodErrorToReactAdminError(error);
+
+        expect(result.body.errors["contact.email"]).toBe("Please enter a valid email address.");
+      }
+    }
+  });
+
+  it("should accept custom error message", () => {
+    const schema = z.object({ name: z.string() });
+
+    try {
+      schema.parse({});
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        const result = zodErrorToReactAdminError(error, "Custom validation error");
+
+        expect(result.message).toBe("Custom validation error");
+      }
+    }
+  });
+
+  it("should transform enum errors to friendly message", () => {
+    const schema = z.object({
+      status: z.enum(["active", "inactive"]),
+    });
+
+    try {
+      schema.parse({ status: "invalid" });
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        const result = zodErrorToReactAdminError(result);
+
+        expect(result.body.errors.status).toBe("Please select a valid option.");
+        expect(result.body.errors.status).not.toContain("Invalid enum value");
+      }
+    }
+  });
+
+  it("should work with safeParse pattern", () => {
+    const schema = z.object({
+      email: z.string().email(),
+    });
+
+    const result = schema.safeParse({ email: "invalid" });
+
+    if (!result.success) {
+      const reactAdminError = zodErrorToReactAdminError(result.error);
+
+      expect(reactAdminError.message).toBe("Validation failed");
+      expect(reactAdminError.body.errors.email).toBe("Please enter a valid email address.");
+    }
   });
 });

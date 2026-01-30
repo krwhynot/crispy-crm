@@ -30,7 +30,6 @@ export type { SalesRole, Sale } from "./validation/sales";
 
 // Re-export Zod-inferred types from validation schemas (P2 consolidation)
 export type { Tag } from "./validation/tags";
-export type { Task, TaskType, PriorityLevel } from "./validation/task";
 export type { RAFile } from "./validation/shared/ra-file";
 import type { RAFile as RAFileBase } from "./validation/shared/ra-file";
 export type {

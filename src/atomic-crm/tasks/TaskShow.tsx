@@ -4,7 +4,7 @@ import { DateField } from "@/components/ra-wrappers/date-field";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { PriorityBadge } from "@/components/ui/priority-badge";
-import type { Task as TTask } from "../types";
+import type { Task as TTask } from "./types";
 
 /**
  * TaskShow Component
