@@ -78,20 +78,6 @@ const OrganizationCreate = () => {
   const pendingValuesRef = useRef<OrganizationFormValues | null>(null);
   const [isCreating, setIsCreating] = useState(false);
 
-  const { data: segments = [] } = useGetList<Segment>(
-    "segments",
-    {
-      filter: { name: "Unknown" },
-      pagination: { page: 1, perPage: 1 },
-      sort: { field: "name", order: "ASC" },
-    },
-    {
-      enabled: true,
-    }
-  );
-
-  const unknownSegmentId = segments?.[0]?.id;
-
   // Read parent_organization_id from router state (set by "Add Branch" button)
   const parentOrgId = (location.state as { record?: { parent_organization_id?: string | number } })
     ?.record?.parent_organization_id;
@@ -170,14 +156,12 @@ const OrganizationCreate = () => {
   // IMPORTANT: Only include fields defined in organizationSchema (z.strictObject rejects unknown keys)
   const formDefaults = {
     sales_id: smartDefaults?.sales_id ?? null, // Handle loading state (also serves as Account Manager)
-    // Use null (not undefined) when no segment found - null is a valid value for nullable UUID fields
-    segment_id: unknownSegmentId ?? null,
     status: "active" as const, // Explicit UI default - not silent in validation
     organization_type: "prospect" as const, // Explicit UI default - not silent in validation
     priority: "C" as const, // Explicit UI default - not silent in validation
     ...(parentOrgId ? { parent_organization_id: parentOrgId } : {}), // Pre-fill parent when adding branch
   };
-  const formKey = unknownSegmentId ? `org-create-${unknownSegmentId}` : "org-create";
+  const formKey = "org-create";
 
   // Show loading skeleton while identity loads or checking permissions
   // NOTE: This early return is now AFTER all hooks have been called
