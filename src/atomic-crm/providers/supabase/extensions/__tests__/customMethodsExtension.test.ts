@@ -46,6 +46,19 @@ describe("extendWithCustomMethods", () => {
   let consoleErrorSpy: ReturnType<typeof vi.spyOn>;
 
   beforeEach(() => {
+    // Mock base provider with all 9 CRUD methods (used by Object.assign)
+    const mockBaseProvider = createMockDataProvider({
+      getList: vi.fn(),
+      getOne: vi.fn(),
+      getMany: vi.fn(),
+      getManyReference: vi.fn(),
+      create: vi.fn(),
+      update: vi.fn(),
+      updateMany: vi.fn(),
+      delete: vi.fn(),
+      deleteMany: vi.fn(),
+    });
+
     // Mock composed provider with all 9 CRUD methods using typed factory
     mockComposedProvider = createMockDataProvider({
       getList: vi.fn(),
@@ -108,6 +121,7 @@ describe("extendWithCustomMethods", () => {
     } as SupabaseClient;
 
     config = {
+      baseProvider: mockBaseProvider,
       composedProvider: mockComposedProvider,
       services: mockServices,
       supabaseClient: mockSupabaseClient,

@@ -25,8 +25,9 @@ export const OrganizationCompactForm = ({ isRep }: OrganizationCompactFormProps)
   useCityStateMapping();
 
   // Detect edit mode - allow Unknown segment for existing orgs
-  const editContext = useEditContext();
-  const isEditMode = !!editContext?.record;
+  // useRecordContext returns undefined in create mode (no throw), populated record in edit mode
+  const record = useRecordContext();
+  const isEditMode = !!record;
 
   return (
     <div className="space-y-6">
