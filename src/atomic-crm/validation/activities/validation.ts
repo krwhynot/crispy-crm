@@ -13,6 +13,7 @@ import {
   updateActivitiesSchema,
   baseActivitiesSchema,
 } from "./schemas";
+import { getFriendlyErrorMessage } from "../utils";
 
 /**
  * Format Zod validation errors for React Admin
@@ -21,7 +22,7 @@ function formatZodErrors(error: z.ZodError): Record<string, string> {
   const formattedErrors: Record<string, string> = {};
   error.issues.forEach((err) => {
     const path = err.path.join(".");
-    formattedErrors[path] = err.message;
+    formattedErrors[path] = getFriendlyErrorMessage(err);
   });
   return formattedErrors;
 }

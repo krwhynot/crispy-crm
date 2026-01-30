@@ -644,15 +644,7 @@ export async function validateCloseOpportunity(data: unknown): Promise<void> {
     closeOpportunitySchema.parse(data);
   } catch (error: unknown) {
     if (error instanceof z.ZodError) {
-      const formattedErrors: Record<string, string> = {};
-      error.issues.forEach((err) => {
-        const path = err.path.join(".");
-        formattedErrors[path] = err.message;
-      });
-      throw {
-        message: "Validation failed",
-        body: { errors: formattedErrors },
-      };
+      throw zodErrorToReactAdminError(error);
     }
     throw error;
   }

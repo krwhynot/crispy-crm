@@ -229,7 +229,7 @@ export function validateContactNoteForm(data: unknown): ContactNote {
  * @param data - Note data to validate and transform
  * @returns Transformed note data ready for database
  */
-export function validateOpportunityNoteForSubmission(data: unknown): OpportunityNote {
+export function validateOpportunityNoteForm(data: unknown): OpportunityNote {
   const validated = opportunityNoteSchema.parse(data);
 
   // Transform date to ISO format with milliseconds
@@ -245,7 +245,7 @@ export function validateOpportunityNoteForSubmission(data: unknown): Opportunity
  * @param data - Note data to validate and transform
  * @returns Transformed note data ready for database
  */
-export function validateOrganizationNoteForSubmission(data: unknown): OrganizationNote {
+export function validateOrganizationNoteForm(data: unknown): OrganizationNote {
   const validated = organizationNoteSchema.parse(data);
 
   // Transform date to ISO format with milliseconds

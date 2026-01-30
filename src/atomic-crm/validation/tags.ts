@@ -204,7 +204,7 @@ export function validateTagUniqueness(
  * @param data - Tag data to validate and normalize
  * @returns Normalized tag data ready for database
  */
-export function validateTagForSubmission(data: unknown): Tag {
+export function validateTagForm(data: unknown): Tag {
   const validated = tagSchema.parse(data);
 
   // Ensure name is trimmed
