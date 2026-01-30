@@ -1,6 +1,6 @@
 {
   "chunk_name": "contacts",
-  "generated_at": "2026-01-30T02:35:08.967Z",
+  "generated_at": "2026-01-30T11:02:52.648Z",
   "items": {
     "nodes": [
       {
@@ -8407,7 +8407,7 @@
         "target": "map",
         "targetName": "map",
         "edgeType": "call",
-        "line": 63,
+        "line": 67,
         "conditional": false,
         "inLoop": false
       },
@@ -8416,7 +8416,7 @@
         "target": "useGetMany",
         "targetName": "useGetMany",
         "edgeType": "hook",
-        "line": 66,
+        "line": 70,
         "conditional": false,
         "inLoop": false
       },
@@ -8425,7 +8425,7 @@
         "target": "useGetList",
         "targetName": "useGetList",
         "edgeType": "hook",
-        "line": 73,
+        "line": 77,
         "conditional": false,
         "inLoop": false
       },
@@ -8434,7 +8434,7 @@
         "target": "useMemo",
         "targetName": "useMemo",
         "edgeType": "hook",
-        "line": 85,
+        "line": 89,
         "conditional": false,
         "inLoop": false
       },
@@ -8443,7 +8443,7 @@
         "target": "slice",
         "targetName": "slice",
         "edgeType": "call",
-        "line": 87,
+        "line": 91,
         "conditional": false,
         "inLoop": false
       },
@@ -8452,7 +8452,7 @@
         "target": "filter",
         "targetName": "filter",
         "edgeType": "call",
-        "line": 87,
+        "line": 91,
         "conditional": false,
         "inLoop": false
       },
@@ -8461,7 +8461,7 @@
         "target": "isClosedStage",
         "targetName": "isClosedStage",
         "edgeType": "call",
-        "line": 87,
+        "line": 91,
         "conditional": false,
         "inLoop": false
       },
@@ -8470,7 +8470,7 @@
         "target": "refresh",
         "targetName": "refresh",
         "edgeType": "call",
-        "line": 95,
+        "line": 99,
         "conditional": false,
         "inLoop": false
       },
@@ -8479,7 +8479,7 @@
         "target": "setShowLinkModal",
         "targetName": "setShowLinkModal",
         "edgeType": "call",
-        "line": 96,
+        "line": 100,
         "conditional": false,
         "inLoop": false
       },
@@ -8488,7 +8488,7 @@
         "target": "refresh",
         "targetName": "refresh",
         "edgeType": "call",
-        "line": 100,
+        "line": 104,
         "conditional": false,
         "inLoop": false
       },
@@ -8497,7 +8497,7 @@
         "target": "setUnlinkingOpportunity",
         "targetName": "setUnlinkingOpportunity",
         "edgeType": "call",
-        "line": 101,
+        "line": 105,
         "conditional": false,
         "inLoop": false
       },
@@ -8506,7 +8506,7 @@
         "target": "create",
         "targetName": "create",
         "edgeType": "call",
-        "line": 106,
+        "line": 110,
         "conditional": false,
         "inLoop": false
       },
@@ -8515,7 +8515,7 @@
         "target": "notify",
         "targetName": "notify",
         "edgeType": "call",
-        "line": 116,
+        "line": 120,
         "conditional": false,
         "inLoop": false
       },
@@ -8524,7 +8524,7 @@
         "target": "refresh",
         "targetName": "refresh",
         "edgeType": "call",
-        "line": 117,
+        "line": 121,
         "conditional": false,
         "inLoop": false
       },
@@ -8533,7 +8533,7 @@
         "target": "create",
         "targetName": "create",
         "edgeType": "call",
-        "line": 121,
+        "line": 125,
         "conditional": false,
         "inLoop": false
       },
@@ -8542,7 +8542,7 @@
         "target": "toISOString",
         "targetName": "toISOString",
         "edgeType": "call",
-        "line": 126,
+        "line": 130,
         "conditional": false,
         "inLoop": false
       },
@@ -8551,7 +8551,7 @@
         "target": "invalidateQueries",
         "targetName": "invalidateQueries",
         "edgeType": "call",
-        "line": 131,
+        "line": 135,
         "conditional": false,
         "inLoop": false
       },
@@ -8559,15 +8559,6 @@
         "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:39:OpportunitiesTab",
         "target": "error",
         "targetName": "error",
-        "edgeType": "call",
-        "line": 133,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:39:OpportunitiesTab",
-        "target": "notify",
-        "targetName": "notify",
         "edgeType": "call",
         "line": 137,
         "conditional": false,
@@ -8587,7 +8578,16 @@
         "target": "notify",
         "targetName": "notify",
         "edgeType": "call",
-        "line": 146,
+        "line": 145,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:39:OpportunitiesTab",
+        "target": "notify",
+        "targetName": "notify",
+        "edgeType": "call",
+        "line": 150,
         "conditional": false,
         "inLoop": false
       },
@@ -8596,7 +8596,7 @@
         "target": "map",
         "targetName": "map",
         "edgeType": "call",
-        "line": 166,
+        "line": 170,
         "conditional": true,
         "inLoop": false
       },
@@ -8605,7 +8605,7 @@
         "target": "handleQuickLink",
         "targetName": "handleQuickLink",
         "edgeType": "call",
-        "line": 170,
+        "line": 174,
         "conditional": false,
         "inLoop": false
       },
@@ -8614,7 +8614,7 @@
         "target": "setShowLinkModal",
         "targetName": "setShowLinkModal",
         "edgeType": "call",
-        "line": 175,
+        "line": 179,
         "conditional": false,
         "inLoop": false
       },
@@ -8623,7 +8623,7 @@
         "target": "setShowLinkModal",
         "targetName": "setShowLinkModal",
         "edgeType": "call",
-        "line": 184,
+        "line": 188,
         "conditional": false,
         "inLoop": false
       },
@@ -8632,7 +8632,7 @@
         "target": "setShowLinkModal",
         "targetName": "setShowLinkModal",
         "edgeType": "call",
-        "line": 201,
+        "line": 205,
         "conditional": false,
         "inLoop": false
       },
@@ -8641,7 +8641,7 @@
         "target": "setShowLinkModal",
         "targetName": "setShowLinkModal",
         "edgeType": "call",
-        "line": 208,
+        "line": 212,
         "conditional": false,
         "inLoop": false
       },
@@ -8650,7 +8650,7 @@
         "target": "filter",
         "targetName": "filter",
         "edgeType": "call",
-        "line": 216,
+        "line": 220,
         "conditional": false,
         "inLoop": false
       },
@@ -8659,7 +8659,7 @@
         "target": "map",
         "targetName": "map",
         "edgeType": "call",
-        "line": 216,
+        "line": 220,
         "conditional": false,
         "inLoop": false
       },
@@ -8668,7 +8668,7 @@
         "target": "find",
         "targetName": "find",
         "edgeType": "call",
-        "line": 218,
+        "line": 222,
         "conditional": false,
         "inLoop": false
       },
@@ -8677,7 +8677,7 @@
         "target": "map",
         "targetName": "map",
         "edgeType": "call",
-        "line": 223,
+        "line": 227,
         "conditional": false,
         "inLoop": false
       },
@@ -8686,7 +8686,7 @@
         "target": "reduce",
         "targetName": "reduce",
         "edgeType": "call",
-        "line": 226,
+        "line": 230,
         "conditional": false,
         "inLoop": false
       },
@@ -8695,7 +8695,7 @@
         "target": "setShowLinkModal",
         "targetName": "setShowLinkModal",
         "edgeType": "call",
-        "line": 245,
+        "line": 249,
         "conditional": false,
         "inLoop": false
       },
@@ -8704,7 +8704,7 @@
         "target": "setUnlinkingOpportunity",
         "targetName": "setUnlinkingOpportunity",
         "edgeType": "call",
-        "line": 285,
+        "line": 289,
         "conditional": false,
         "inLoop": false
       },
@@ -8713,7 +8713,7 @@
         "target": "setShowLinkModal",
         "targetName": "setShowLinkModal",
         "edgeType": "call",
-        "line": 299,
+        "line": 303,
         "conditional": false,
         "inLoop": false
       },
@@ -8722,7 +8722,7 @@
         "target": "setUnlinkingOpportunity",
         "targetName": "setUnlinkingOpportunity",
         "edgeType": "call",
-        "line": 307,
+        "line": 311,
         "conditional": false,
         "inLoop": false
       },
@@ -8731,7 +8731,7 @@
         "target": "AdminButton",
         "targetName": "AdminButton",
         "edgeType": "render",
-        "line": 175,
+        "line": 179,
         "conditional": true,
         "inLoop": false
       },
@@ -8740,7 +8740,7 @@
         "target": "AdminButton",
         "targetName": "AdminButton",
         "edgeType": "render",
-        "line": 201,
+        "line": 205,
         "conditional": true,
         "inLoop": false
       },
@@ -8749,7 +8749,7 @@
         "target": "AdminButton",
         "targetName": "AdminButton",
         "edgeType": "render",
-        "line": 245,
+        "line": 249,
         "conditional": false,
         "inLoop": false
       },
@@ -8758,7 +8758,7 @@
         "target": "ListContextProvider",
         "targetName": "ListContextProvider",
         "edgeType": "render",
-        "line": 248,
+        "line": 252,
         "conditional": false,
         "inLoop": false
       },
@@ -8767,7 +8767,7 @@
         "target": "PremiumDatagrid",
         "targetName": "PremiumDatagrid",
         "edgeType": "render",
-        "line": 249,
+        "line": 253,
         "conditional": false,
         "inLoop": false
       },
@@ -8776,7 +8776,7 @@
         "target": "Link",
         "targetName": "Link",
         "edgeType": "render",
-        "line": 253,
+        "line": 257,
         "conditional": false,
         "inLoop": false
       },
@@ -8785,7 +8785,7 @@
         "target": "ReferenceField",
         "targetName": "ReferenceField",
         "edgeType": "render",
-        "line": 262,
+        "line": 266,
         "conditional": false,
         "inLoop": false
       },
@@ -8794,7 +8794,7 @@
         "target": "SuggestedOpportunityCard",
         "targetName": "SuggestedOpportunityCard",
         "edgeType": "render",
-        "line": 167,
+        "line": 171,
         "conditional": false,
         "inLoop": false
       },
@@ -8803,7 +8803,7 @@
         "target": "LinkOpportunityModal",
         "targetName": "LinkOpportunityModal",
         "edgeType": "render",
-        "line": 179,
+        "line": 183,
         "conditional": true,
         "inLoop": false
       },
@@ -8812,7 +8812,7 @@
         "target": "handleLinkSuccess",
         "targetName": "handleLinkSuccess",
         "edgeType": "callback",
-        "line": 185,
+        "line": 189,
         "conditional": true,
         "inLoop": false
       },
@@ -8821,7 +8821,7 @@
         "target": "LinkOpportunityModal",
         "targetName": "LinkOpportunityModal",
         "edgeType": "render",
-        "line": 203,
+        "line": 207,
         "conditional": true,
         "inLoop": false
       },
@@ -8830,7 +8830,7 @@
         "target": "handleLinkSuccess",
         "targetName": "handleLinkSuccess",
         "edgeType": "callback",
-        "line": 209,
+        "line": 213,
         "conditional": true,
         "inLoop": false
       },
@@ -8839,7 +8839,7 @@
         "target": "FunctionField",
         "targetName": "FunctionField",
         "edgeType": "render",
-        "line": 250,
+        "line": 254,
         "conditional": false,
         "inLoop": false
       },
@@ -8848,7 +8848,7 @@
         "target": "TextField",
         "targetName": "TextField",
         "edgeType": "render",
-        "line": 267,
+        "line": 271,
         "conditional": false,
         "inLoop": false
       },
@@ -8857,7 +8857,7 @@
         "target": "FunctionField",
         "targetName": "FunctionField",
         "edgeType": "render",
-        "line": 270,
+        "line": 274,
         "conditional": false,
         "inLoop": false
       },
@@ -8866,7 +8866,7 @@
         "target": "StageBadgeWithHealth",
         "targetName": "StageBadgeWithHealth",
         "edgeType": "render",
-        "line": 273,
+        "line": 277,
         "conditional": false,
         "inLoop": false
       },
@@ -8875,7 +8875,7 @@
         "target": "NumberField",
         "targetName": "NumberField",
         "edgeType": "render",
-        "line": 277,
+        "line": 281,
         "conditional": false,
         "inLoop": false
       },
@@ -8884,7 +8884,7 @@
         "target": "FunctionField",
         "targetName": "FunctionField",
         "edgeType": "render",
-        "line": 279,
+        "line": 283,
         "conditional": false,
         "inLoop": false
       },
@@ -8893,7 +8893,7 @@
         "target": "Trash2",
         "targetName": "Trash2",
         "edgeType": "render",
-        "line": 287,
+        "line": 291,
         "conditional": false,
         "inLoop": false
       },
@@ -8902,7 +8902,7 @@
         "target": "LinkOpportunityModal",
         "targetName": "LinkOpportunityModal",
         "edgeType": "render",
-        "line": 294,
+        "line": 298,
         "conditional": false,
         "inLoop": false
       },
@@ -8911,7 +8911,7 @@
         "target": "handleLinkSuccess",
         "targetName": "handleLinkSuccess",
         "edgeType": "callback",
-        "line": 300,
+        "line": 304,
         "conditional": false,
         "inLoop": false
       },
@@ -8920,7 +8920,7 @@
         "target": "UnlinkConfirmDialog",
         "targetName": "UnlinkConfirmDialog",
         "edgeType": "render",
-        "line": 303,
+        "line": 307,
         "conditional": false,
         "inLoop": false
       },
@@ -8929,7 +8929,7 @@
         "target": "handleUnlinkSuccess",
         "targetName": "handleUnlinkSuccess",
         "edgeType": "callback",
-        "line": 308,
+        "line": 312,
         "conditional": false,
         "inLoop": false
       },

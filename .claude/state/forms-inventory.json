@@ -1,6 +1,6 @@
 {
   "status": "complete",
-  "generated_at": "2026-01-30T02:35:03.502Z",
+  "generated_at": "2026-01-30T11:02:49.212Z",
   "generator": "scripts/discover/extractors/forms.ts",
   "source_globs": [
     "src/atomic-crm/**/*Create*.tsx",
@@ -8,7 +8,7 @@
     "src/atomic-crm/**/*Form*.tsx",
     "src/atomic-crm/**/*Inputs*.tsx"
   ],
-  "checksum": "sha256:6e8a8c4e270ef56f",
+  "checksum": "sha256:e23aaba86710120c",
   "source_hashes": {
     "src/atomic-crm/activities/ActivityEdit.tsx": "ba97db9f3ada",
     "src/atomic-crm/activities/ActivityInputs.tsx": "85431cf76810",
@@ -36,7 +36,7 @@
     "src/atomic-crm/opportunities/OpportunityCreate.tsx": "6cedc1fccda5",
     "src/atomic-crm/opportunities/OpportunityCreateFormFooter.tsx": "43eab356d8a1",
     "src/atomic-crm/opportunities/OpportunityCreateSaveButton.tsx": "83818b422465",
-    "src/atomic-crm/opportunities/OpportunityEdit.tsx": "4c805cb57528",
+    "src/atomic-crm/opportunities/OpportunityEdit.tsx": "889e8f9a13e4",
     "src/atomic-crm/opportunities/OpportunityInputs.tsx": "cbfd56f63ef9",
     "src/atomic-crm/opportunities/QuickAddForm.tsx": "90401ea3386d",
     "src/atomic-crm/opportunities/QuickAddFormActions.tsx": "196811264691",
@@ -46,7 +46,7 @@
     "src/atomic-crm/organizations/OrganizationCreateFormFooter.tsx": "3a546627a466",
     "src/atomic-crm/organizations/OrganizationEdit.tsx": "14fb4e782952",
     "src/atomic-crm/organizations/OrganizationInputs.tsx": "8752b8f423a8",
-    "src/atomic-crm/organizations/QuickCreatePopover.tsx": "e99abe480925",
+    "src/atomic-crm/organizations/QuickCreatePopover.tsx": "5958e727c4ab",
     "src/atomic-crm/productDistributors/ProductDistributorCreate.tsx": "e050a042ace3",
     "src/atomic-crm/productDistributors/ProductDistributorEdit.tsx": "2d07c0f44d70",
     "src/atomic-crm/productDistributors/ProductDistributorInputs.tsx": "fd7d784c4fa5",
@@ -849,7 +849,7 @@
     {
       "componentName": "QuickCreateOrganizationRA",
       "file": "src/atomic-crm/organizations/QuickCreatePopover.tsx",
-      "line": 282,
+      "line": 283,
       "formType": "react-hook-form-direct",
       "formPatterns": {
         "primary": "useForm",

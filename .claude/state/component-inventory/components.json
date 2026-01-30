@@ -1,6 +1,6 @@
 {
   "chunk_name": "components",
-  "generated_at": "2026-01-30T02:34:43.717Z",
+  "generated_at": "2026-01-30T11:02:34.943Z",
   "item_count": 25,
   "items": [
     {
@@ -434,7 +434,7 @@
     {
       "name": "SampleStatusStepper",
       "file": "src/atomic-crm/components/SampleStatusBadge.tsx",
-      "line": 484,
+      "line": 486,
       "type": "presentational",
       "hooks": [],
       "imports": [
@@ -506,7 +506,7 @@
     {
       "name": "SampleStatusBadge",
       "file": "src/atomic-crm/components/SampleStatusBadge.tsx",
-      "line": 185,
+      "line": 187,
       "type": "presentational",
       "hooks": [
         "useCallback",
@@ -536,7 +536,7 @@
     {
       "name": "SampleStatusBadge",
       "file": "src/atomic-crm/components/SampleStatusBadge.tsx",
-      "line": 185,
+      "line": 187,
       "type": "presentational",
       "hooks": [
         "useCallback",

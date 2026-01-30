@@ -1,6 +1,6 @@
 {
   "chunk_name": "components",
-  "generated_at": "2026-01-30T02:35:08.964Z",
+  "generated_at": "2026-01-30T11:02:52.646Z",
   "items": {
     "nodes": [
       {
@@ -58,10 +58,10 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/components/SampleStatusBadge.tsx:484:SampleStatusStepper",
+        "id": "src/atomic-crm/components/SampleStatusBadge.tsx:486:SampleStatusStepper",
         "name": "SampleStatusStepper",
         "file": "src/atomic-crm/components/SampleStatusBadge.tsx",
-        "line": 484,
+        "line": 486,
         "nodeType": "component",
         "exported": true,
         "async": false
@@ -618,47 +618,47 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/components/SampleStatusBadge.tsx:484:SampleStatusStepper",
+        "source": "src/atomic-crm/components/SampleStatusBadge.tsx:486:SampleStatusStepper",
         "target": "indexOf",
         "targetName": "indexOf",
         "edgeType": "call",
-        "line": 491,
+        "line": 493,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/components/SampleStatusBadge.tsx:484:SampleStatusStepper",
+        "source": "src/atomic-crm/components/SampleStatusBadge.tsx:486:SampleStatusStepper",
         "target": "cn",
         "targetName": "cn",
         "edgeType": "call",
-        "line": 494,
+        "line": 496,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/components/SampleStatusBadge.tsx:484:SampleStatusStepper",
+        "source": "src/atomic-crm/components/SampleStatusBadge.tsx:486:SampleStatusStepper",
         "target": "map",
         "targetName": "map",
         "edgeType": "call",
-        "line": 495,
+        "line": 497,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/components/SampleStatusBadge.tsx:484:SampleStatusStepper",
+        "source": "src/atomic-crm/components/SampleStatusBadge.tsx:486:SampleStatusStepper",
         "target": "cn",
         "targetName": "cn",
         "edgeType": "call",
-        "line": 502,
+        "line": 504,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/components/SampleStatusBadge.tsx:484:SampleStatusStepper",
+        "source": "src/atomic-crm/components/SampleStatusBadge.tsx:486:SampleStatusStepper",
         "target": "cn",
         "targetName": "cn",
         "edgeType": "call",
-        "line": 512,
+        "line": 514,
         "conditional": false,
         "inLoop": false
       },
