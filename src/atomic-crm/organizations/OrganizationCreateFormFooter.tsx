@@ -16,6 +16,7 @@ import { UnsavedChangesDialog } from "@/components/ui/unsaved-changes-dialog";
 import { useSafeNotify } from "@/atomic-crm/hooks/useSafeNotify";
 import { notificationMessages } from "@/atomic-crm/constants/notificationMessages";
 import type { OrganizationFormValues, DuplicateCheckCallback } from "./types";
+import { UNKNOWN_SEGMENT_ID } from "@/components/ra-wrappers/SegmentComboboxInput";
 
 interface OrganizationCreateFormFooterProps {
   onDuplicateFound: DuplicateCheckCallback;

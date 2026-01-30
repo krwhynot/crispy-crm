@@ -91,7 +91,12 @@ export const OrganizationCompactForm = ({ isRep }: OrganizationCompactFormProps)
             </ReferenceInput>
           </FormFieldWrapper>
           <FormFieldWrapper name="segment_id" isRequired>
-            <SegmentComboboxInput source="segment_id" label="Segment *" helperText={false} />
+            <SegmentComboboxInput
+              source="segment_id"
+              label="Segment *"
+              helperText={false}
+              allowUnknown={isEditMode}
+            />
           </FormFieldWrapper>
         </CompactFormRow>
       </FormSectionWithProgress>

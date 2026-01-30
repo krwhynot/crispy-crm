@@ -18,6 +18,7 @@ interface SegmentSelectInputProps {
   helperText?: string | false;
   className?: string;
   validate?: Validator | Validator[];
+  allowUnknown?: boolean;
 }
 
 export const UNKNOWN_SEGMENT_ID = PLAYBOOK_CATEGORY_IDS.Unknown;
@@ -66,10 +67,19 @@ export const SegmentSelectInput = (props: SegmentSelectInputProps) => {
     return isValid ? undefined : "Selected segment is not valid for this organization type";
   };
 
+  // Reject "Unknown" segment for create forms (allowUnknown=false by default)
+  const rejectUnknown = (value: unknown) => {
+    if (!props.allowUnknown && value === UNKNOWN_SEGMENT_ID) {
+      return "Please select a specific segment (not 'Unknown')";
+    }
+    return undefined;
+  };
+
   // Built-in required validation + choice validation + any additional validators from props
   const validators: Validator[] = [
     required("Segment is required"),
     validateInChoices,
+    rejectUnknown,
     ...(props.validate ? (Array.isArray(props.validate) ? props.validate : [props.validate]) : []),
   ];
 
