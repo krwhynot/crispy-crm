@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { productCategorySchema, productStatusSchema } from "./products";
 import { productDistributorStatusSchema } from "./productDistributors";
+import { zodErrorToReactAdminError } from "./utils";
 
 /**
  * Product with Distributors validation schema
@@ -59,15 +60,7 @@ export async function validateCreateProductWithDistributors(data: unknown): Prom
   const result = productWithDistributorsSchema.safeParse(data);
 
   if (!result.success) {
-    const formattedErrors: Record<string, string> = {};
-    result.error.issues.forEach((err) => {
-      const path = err.path.join(".");
-      formattedErrors[path] = err.message;
-    });
-    throw {
-      message: "Validation failed",
-      body: { errors: formattedErrors },
-    };
+    throw zodErrorToReactAdminError(result.error);
   }
 }
 

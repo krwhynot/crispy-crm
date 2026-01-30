@@ -84,14 +84,6 @@ export async function validateUpdateProductDistributor(data: unknown): Promise<v
   const result = updateProductDistributorSchema.safeParse(data);
 
   if (!result.success) {
-    const formattedErrors: Record<string, string> = {};
-    result.error.issues.forEach((err) => {
-      const path = err.path.join(".");
-      formattedErrors[path] = err.message;
-    });
-    throw {
-      message: "Validation failed",
-      body: { errors: formattedErrors },
-    };
+    throw zodErrorToReactAdminError(result.error);
   }
 }

@@ -149,7 +149,7 @@ describe("Note Transformation Utilities", () => {
   });
 
   describe("Submission Validation", () => {
-    describe("validateContactNoteForSubmission", () => {
+    describe("validateContactNoteForm", () => {
       it("should validate and transform date", () => {
         const inputData = {
           text: "Note for submission",
@@ -158,13 +158,13 @@ describe("Note Transformation Utilities", () => {
           sales_id: "user-456",
         };
 
-        const result = validateContactNoteForSubmission(inputData);
+        const result = validateContactNoteForm(inputData);
         expect(result.text).toBe("Note for submission");
         expect(result.date).toMatch(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/);
       });
     });
 
-    describe("validateOpportunityNoteForSubmission", () => {
+    describe("validateOpportunityNoteForm", () => {
       it("should validate and transform date", () => {
         const inputData = {
           text: "Opportunity note for submission",
@@ -173,7 +173,7 @@ describe("Note Transformation Utilities", () => {
           sales_id: "user-456",
         };
 
-        const result = validateOpportunityNoteForSubmission(inputData);
+        const result = validateOpportunityNoteForm(inputData);
         expect(result.text).toBe("Opportunity note for submission");
         expect(result.date).toMatch(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/);
       });

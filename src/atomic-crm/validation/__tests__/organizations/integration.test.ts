@@ -4,7 +4,7 @@
  */
 
 import { describe, it, expect } from "vitest";
-import { validateOrganizationForSubmission, validateOrganizationForm } from "../../organizations";
+import { validateOrganizationForm } from "../../organizations";
 
 describe("Organization Validation Functions", () => {
   // After audit fix (commit 4f0245d2b): Schema no longer provides silent defaults
@@ -88,7 +88,7 @@ describe("Organization Validation Functions", () => {
     });
   });
 
-  describe("validateOrganizationForSubmission", () => {
+  describe("validateOrganizationForm", () => {
     it("should validate and normalize organization data", async () => {
       const inputData = {
         name: "Submission Test",
@@ -96,7 +96,7 @@ describe("Organization Validation Functions", () => {
         website: "https://example.com",
       };
 
-      await expect(validateOrganizationForSubmission(inputData)).resolves.toBeUndefined();
+      await expect(validateOrganizationForm(inputData)).resolves.toBeUndefined();
     });
 
     it("should throw for missing required fields", async () => {
@@ -105,7 +105,7 @@ describe("Organization Validation Functions", () => {
         organization_type: "customer",
       };
 
-      await expect(validateOrganizationForSubmission(minimalData)).rejects.toMatchObject({
+      await expect(validateOrganizationForm(minimalData)).rejects.toMatchObject({
         message: "Validation failed",
       });
     });
@@ -117,7 +117,7 @@ describe("Organization Validation Functions", () => {
         ...requiredFields,
       };
 
-      await expect(validateOrganizationForSubmission(invalidData)).rejects.toMatchObject({
+      await expect(validateOrganizationForm(invalidData)).rejects.toMatchObject({
         message: "Validation failed",
       });
     });
@@ -132,7 +132,7 @@ describe("Organization Validation Functions", () => {
       };
 
       // z.strictObject() throws ZodError for unrecognized keys instead of silently stripping
-      await expect(validateOrganizationForSubmission(dataWithExtras)).rejects.toMatchObject({
+      await expect(validateOrganizationForm(dataWithExtras)).rejects.toMatchObject({
         message: "Validation failed",
       });
     });
