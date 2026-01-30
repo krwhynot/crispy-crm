@@ -80,14 +80,49 @@ Use `SHORT_STALE_TIME_MS` for:
 
 ## Refetch Patterns
 
+### Approved Pattern: Dashboard Refresh on Tab Return
+
+**Use refetchOnWindowFocus WITH staleTime** to intelligently refresh dashboard data:
+
+```typescript
+useGetList("tasks", filters, {
+  staleTime: SHORT_STALE_TIME_MS,  // 30 seconds (volatile data)
+  refetchOnWindowFocus: true,       // Check on tab return
+});
+
+useGetList("opportunities", filters, {
+  staleTime: DEFAULT_STALE_TIME_MS,  // 5 minutes (standard data)
+  refetchOnWindowFocus: true,         // Check on tab return
+});
+```
+
+**How it works:**
+1. User tabs back to app
+2. React Query checks: Is data older than `staleTime`?
+3. **NO** → Skip refetch (no API call, data still fresh)
+4. **YES** → Refetch (data was stale anyway)
+
+**Result:** No API storms. Dashboard refreshes intelligently only when needed.
+
+**When to use:**
+- Dashboard widgets that need fresh data after user tabs back
+- Activity timelines that may update while user is away
+- Task lists that change frequently
+- Any view where users expect "latest" data on return
+
+**CRITICAL:** Always pair `refetchOnWindowFocus: true` with explicit `staleTime`. Without `staleTime`, React Query defaults to `0` (always stale), causing refetch on every tab switch.
+
+### Standard Refetch Patterns
+
 DO:
-- `refetchOnMount: 'always'` - For dashboard data that must be fresh
-- `staleTime: SHORT_STALE_TIME_MS` - For volatile data
+- `refetchOnMount: 'always'` - For data that MUST be fresh on component mount
+- `staleTime: SHORT_STALE_TIME_MS` - For volatile data (task counts, hierarchy)
+- `staleTime: DEFAULT_STALE_TIME_MS` - For standard data (contacts, orgs)
 - Manual `queryClient.invalidateQueries()` after mutations
 
 DON'T:
-- `refetchOnWindowFocus: true` on high-frequency data - Causes API storms
-- `refetchInterval` except for notifications - Unnecessary polling
+- `refetchOnWindowFocus: true` **WITHOUT staleTime** - Refetches every tab switch
+- `refetchInterval` except for notifications - Unnecessary polling wastes bandwidth
 - Manual `queryClient.setQueryData()` - Bypasses validation, causes desync
 
 ## Anti-Patterns (BANNED)
@@ -134,24 +169,36 @@ RIGHT:
 queryClient.invalidateQueries({ queryKey: contactKeys.detail(123) });
 ```
 
-### Aggressive Window Focus Refetch
+### Window Focus Refetch Without staleTime Guard
 
 WRONG:
 ```typescript
 useQuery({
   queryKey: dashboardKeys.stats(),
-  refetchOnWindowFocus: true,  // Fires every tab switch!
+  refetchOnWindowFocus: true,  // DEFAULT staleTime is 0 - ALWAYS refetches!
 });
 ```
 
-RIGHT:
+RIGHT (Option 1 - Intelligent refresh):
 ```typescript
 useQuery({
   queryKey: dashboardKeys.stats(),
-  staleTime: SHORT_STALE_TIME_MS,  // Refetch only when stale
-  refetchOnWindowFocus: false,
+  staleTime: SHORT_STALE_TIME_MS,   // Only refetch if older than 30s
+  refetchOnWindowFocus: true,       // Check on tab return
 });
 ```
+
+RIGHT (Option 2 - Disable refresh):
+```typescript
+useQuery({
+  queryKey: dashboardKeys.stats(),
+  staleTime: SHORT_STALE_TIME_MS,   // Cache for 30s
+  refetchOnWindowFocus: false,      // Never refetch on tab return
+});
+```
+
+**Use Option 1** for dashboard/activity data where users expect fresh data on return.
+**Use Option 2** for reference data that rarely changes (tags, products, sales reps).
 
 ## Checklist
 
