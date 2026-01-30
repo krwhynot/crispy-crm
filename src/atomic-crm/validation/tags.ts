@@ -8,6 +8,7 @@
 import { z } from "zod";
 import type { TagColorName } from "@/lib/color-types";
 import { VALID_TAG_COLORS, HEX_TO_SEMANTIC_MAP } from "@/lib/color-types";
+import { zodErrorToReactAdminError } from "./utils";
 
 /**
  * Semantic color validation
@@ -140,22 +141,34 @@ export type TagFilterOptions = z.infer<typeof tagFilterSchema>;
  * Validate tag creation data
  * Expected by unifiedDataProvider
  * @param data - Tag data to validate
- * @returns Validated tag data
- * @throws Zod validation error if data is invalid
+ * @throws React Admin formatted error if data is invalid
  */
-export function validateCreateTag(data: unknown): CreateTagInput {
-  return createTagSchema.parse(data);
+export async function validateCreateTag(data: unknown): Promise<void> {
+  try {
+    createTagSchema.parse(data);
+  } catch (error: unknown) {
+    if (error instanceof z.ZodError) {
+      throw zodErrorToReactAdminError(error);
+    }
+    throw error;
+  }
 }
 
 /**
  * Validate tag update data
  * Expected by unifiedDataProvider
  * @param data - Tag data to validate
- * @returns Validated tag data
- * @throws Zod validation error if data is invalid
+ * @throws React Admin formatted error if data is invalid
  */
-export function validateUpdateTag(data: unknown): UpdateTagInput {
-  return updateTagSchema.parse(data);
+export async function validateUpdateTag(data: unknown): Promise<void> {
+  try {
+    updateTagSchema.parse(data);
+  } catch (error: unknown) {
+    if (error instanceof z.ZodError) {
+      throw zodErrorToReactAdminError(error);
+    }
+    throw error;
+  }
 }
 
 /**

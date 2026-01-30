@@ -20,6 +20,7 @@ import { z } from "zod";
 import { VALIDATION_LIMITS } from "./constants";
 import { SEGMENT_TYPES, type SegmentType } from "./operatorSegments";
 import type { OrganizationType } from "./organizations";
+import { zodErrorToReactAdminError } from "./utils";
 
 /**
  * Fixed Playbook category names - these are the ONLY valid segment names
@@ -127,11 +128,17 @@ export type UpdateSegmentInput = z.infer<typeof updateSegmentSchema>;
  * Expected by unifiedDataProvider
  * @deprecated Use fixed categories instead of creating new segments
  * @param data - Segment data to validate
- * @returns Validated segment data
- * @throws Zod validation error if data is invalid
+ * @throws React Admin formatted error if data is invalid
  */
-export function validateCreateSegment(data: unknown): CreateSegmentInput {
-  return createSegmentSchema.parse(data);
+export async function validateCreateSegment(data: unknown): Promise<void> {
+  try {
+    createSegmentSchema.parse(data);
+  } catch (error: unknown) {
+    if (error instanceof z.ZodError) {
+      throw zodErrorToReactAdminError(error);
+    }
+    throw error;
+  }
 }
 
 /**
