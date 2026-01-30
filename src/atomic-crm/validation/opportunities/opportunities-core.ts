@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { sanitizeHtml } from "@/lib/sanitization";
+import { zodErrorToReactAdminError } from "../utils";
 
 /**
  * Core opportunity validation schemas
