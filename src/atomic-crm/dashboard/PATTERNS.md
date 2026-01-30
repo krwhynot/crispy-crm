@@ -413,7 +413,10 @@ export function useKPIMetrics(): UseKPIMetricsReturn {
       if (openCountResult.status === "fulfilled") {
         openCount = openCountResult.value.total || 0;
       } else {
-        console.error("Failed to fetch open opportunities:", openCountResult.reason);
+        logger.error('Failed to fetch open opportunities', {
+          reason: openCountResult.reason,
+          metric: 'openCount'
+        });
       }
 
       // Client-side staleness calculation (per-stage thresholds)
@@ -1339,7 +1342,10 @@ export function useMyTasks() {
         // Invalidate caches
         queryClient.invalidateQueries({ queryKey: taskKeys.all });
       } catch (error: unknown) {
-        console.error("Failed to complete task:", error);
+        logger.error('Task completion failed', {
+          error: error instanceof Error ? error.message : String(error),
+          operation: 'completeTask'
+        });
         // Rollback optimistic update on failure
         setOptimisticUpdates((prev) => {
           const next = new Map(prev);

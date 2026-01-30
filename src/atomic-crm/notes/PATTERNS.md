@@ -390,22 +390,16 @@ Helper functions for date handling and Zod validation schemas.
 
 ### Date Utilities
 
+File: `src/atomic-crm/validation/notes.ts` (lines 312-314)
+
+Import: `import { getCurrentDate } from "@/atomic-crm/validation/notes"`
+
 ```tsx
-// src/atomic-crm/notes/utils.ts
+// src/atomic-crm/validation/notes.ts
 
-export const getCurrentDate = () => {
-  const now = new Date();
-  now.setSeconds(0);
-  now.setMilliseconds(0);
-  return now.toISOString();
-};
-
-export const formatNoteDate = (dateString: string) => {
-  const date = new Date(dateString);
-  date.setSeconds(0);
-  date.setMilliseconds(0);
-  return date.toISOString();
-};
+export function getCurrentDate(): string {
+  return new Date().toISOString();
+}
 ```
 
 ### Zod Validation Schemas
