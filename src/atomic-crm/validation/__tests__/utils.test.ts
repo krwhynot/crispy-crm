@@ -675,7 +675,7 @@ describe("zodErrorToReactAdminError", () => {
       schema.parse({ status: "invalid" });
     } catch (error) {
       if (error instanceof z.ZodError) {
-        const result = zodErrorToReactAdminError(result);
+        const result = zodErrorToReactAdminError(error);
 
         expect(result.body.errors.status).toBe("Please select a valid option.");
         expect(result.body.errors.status).not.toContain("Invalid enum value");

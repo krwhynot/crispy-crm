@@ -6,7 +6,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { SidepaneSection, SidepaneEmptyState } from "@/components/layouts/sidepane";
 import { SaleName } from "../sales/SaleName";
 import { Building2, UserCircle, Target } from "lucide-react";
-import type { Task } from "../types";
+import type { Task } from "./types";
 
 interface TaskRelatedItemsTabProps {
   record: Task;

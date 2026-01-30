@@ -36,7 +36,8 @@ import { TaskActionMenu } from "./TaskActionMenu";
 import { SortButton } from "@/components/ra-wrappers/sort-button";
 import { ExportButton } from "@/components/ra-wrappers/export-button";
 import { TaskCompletionDialog } from "./TaskCompletionDialog";
-import type { Task, Opportunity, Organization } from "../types";
+import type { Task } from "./types";
+import type { Opportunity, Organization } from "../types";
 
 /**
  * Memoized cell components for TaskList datagrid

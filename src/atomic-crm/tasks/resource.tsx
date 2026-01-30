@@ -1,5 +1,5 @@
 import * as React from "react";
-import type { Task } from "../types";
+import type { Task } from "./types";
 import { ResourceErrorBoundary } from "@/components/ResourceErrorBoundary";
 import { Loading } from "@/components/ra-wrappers/loading";
 

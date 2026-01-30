@@ -27,7 +27,7 @@ import {
 import { SaleName } from "../sales/SaleName";
 import { useFormOptions } from "../root/ConfigurationContext";
 import { contactOptionText } from "../contacts/ContactOption";
-import type { Task } from "../types";
+import type { Task } from "./types";
 
 interface TaskSlideOverDetailsTabProps {
   record: Task;
