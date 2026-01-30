@@ -179,7 +179,9 @@ interface SampleStatusBadgeProps {
  *   activityId={123}
  *   interactive
  *   showStepper
- *   onStatusChange={(s) => console.log('Updated to:', s)}
+ *   onStatusChange={(status) => {
+ *     // Handle status change - e.g., update state or show notification
+ *   }}
  * />
  */
 export const SampleStatusBadge = memo(function SampleStatusBadge({
