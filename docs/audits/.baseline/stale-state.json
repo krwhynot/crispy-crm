@@ -1,67 +1,72 @@
 {
-  "lastAudit": "2026-01-23T00:00:00Z",
+  "lastAudit": "2026-01-30T00:00:00Z",
   "findings": {
     "critical": [],
     "high": [],
     "medium": [],
-    "low": [
-      {
-        "id": "INFO-001",
-        "check": "stale-time",
-        "file": "src/hooks/useOrganizationDescendants.ts",
-        "line": 40,
-        "description": "Conservative staleTime: 30000 (acceptable for hierarchy data)",
-        "status": "acceptable"
-      }
-    ]
+    "low": []
   },
   "totals": {
     "critical": 0,
     "high": 0,
     "medium": 0,
-    "low": 1
+    "low": 0
   },
   "healthScore": {
     "cacheInvalidation": 100,
-    "optimisticUpdates": 95,
+    "optimisticUpdates": 100,
     "staleClosurePrevention": 100,
-    "refetchOnWindowFocus": 85,
-    "overall": 95
+    "refetchOnWindowFocus": 95,
+    "queryKeyHygiene": 100,
+    "overall": 98
   },
   "filesScanned": {
-    "totalTsxFiles": 466,
-    "totalLines": 46685,
-    "useMutation": 79,
-    "optimisticUpdates": 0,
-    "useEffect": 0
+    "totalTsxFiles": 945,
+    "useMutationInstances": 79,
+    "optimisticUpdates": 1,
+    "useEffectInstances": 83,
+    "refetchOnWindowFocusTrue": 7,
+    "hardcodedQueryKeys": 0,
+    "directSetQueryData": 0
   },
+  "exemplaryPatterns": [
+    {
+      "id": "PATTERN-001",
+      "pattern": "optimistic-update-with-rollback",
+      "file": "src/hooks/useFavorites.ts",
+      "lines": "88-156",
+      "description": "Gold standard optimistic update with comprehensive error handling and rollback"
+    },
+    {
+      "id": "PATTERN-002",
+      "pattern": "query-key-factory",
+      "file": "src/atomic-crm/queryKeys.ts",
+      "description": "Centralized hierarchical query key factory - zero hardcoded keys in features"
+    },
+    {
+      "id": "PATTERN-003",
+      "pattern": "smart-refetch-on-window-focus",
+      "files": ["src/atomic-crm/root/CRM.tsx:110", "src/atomic-crm/dashboard/useMyTasks.ts:48-49"],
+      "description": "Global default disabled, per-query override with staleTime guard for dashboard widgets"
+    }
+  ],
   "fixesSinceLastAudit": [
     {
-      "id": "STALE-001",
-      "file": "src/atomic-crm/opportunities/components/ArchiveActions.tsx",
-      "line": 34,
-      "description": "ArchiveButton now uses queryClient.invalidateQueries instead of refresh()",
-      "fixedDate": "2026-01-23"
-    },
+      "id": "INFO-001",
+      "file": "src/hooks/useOrganizationDescendants.ts",
+      "line": 40,
+      "description": "Conservative staleTime no longer flagged - accepted as appropriate for hierarchy data",
+      "fixedDate": "2026-01-30"
+    }
+  ],
+  "previousAudits": [
     {
-      "id": "STALE-002",
-      "file": "src/atomic-crm/opportunities/components/ArchiveActions.tsx",
-      "line": 81,
-      "description": "UnarchiveButton now uses queryClient.invalidateQueries instead of refresh()",
-      "fixedDate": "2026-01-23"
-    },
-    {
-      "id": "STALE-003",
-      "file": "src/atomic-crm/sales/SalesCreate.tsx",
-      "line": 59,
-      "description": "SalesCreate now properly invalidates cache after user creation",
-      "fixedDate": "2026-01-23"
-    },
-    {
-      "id": "STALE-004",
-      "file": "src/atomic-crm/settings/hooks/useSalesUpdate.ts",
-      "description": "File removed or refactored - no longer exists",
-      "fixedDate": "2026-01-23"
+      "date": "2026-01-23T00:00:00Z",
+      "overallHealth": 95,
+      "criticalIssues": 0,
+      "highIssues": 0,
+      "mediumIssues": 0,
+      "lowIssues": 1
     }
   ]
 }
