@@ -1,5 +1,5 @@
 {
-  "lastAudit": "2026-01-27",
+  "lastAudit": "2026-01-30",
   "lastMode": "full",
   "scope": "src/",
   "findings": {
@@ -47,26 +47,41 @@
         "id": "WF-M1-001",
         "check": "WF-M1",
         "type": "inconsistent-date-handling",
-        "location": "Multiple files (250 instances)",
+        "location": "Multiple files (30 instances)",
         "description": "Inconsistent use of new Date() and Date.now() across codebase",
         "firstSeen": "2026-01-20",
         "examples": [
-          "src/atomic-crm/providers/supabase/extensions/rpcExtension.ts:147",
-          "src/atomic-crm/providers/supabase/callbacks/tasksCallbacks.ts:52",
-          "src/atomic-crm/notes/NoteCreate.tsx:96"
+          "src/atomic-crm/notes/NoteCreate.tsx:101",
+          "src/atomic-crm/tasks/TaskActionMenu.tsx:78",
+          "src/lib/logger.ts:63"
         ],
         "note": "Most usages are correct (.toISOString() for DB storage)"
       },
       {
         "id": "WF-M2-001",
         "check": "WF-M2",
-        "type": "direct-stage-assignments",
-        "location": "Multiple files (31 instances)",
-        "description": "Direct stage comparisons instead of using helper functions",
+        "type": "direct-stage-comparisons",
+        "location": "Multiple files (24 instances)",
+        "description": "Direct stage comparisons using STAGE constants (acceptable pattern)",
         "firstSeen": "2026-01-20",
         "examples": [
           "src/atomic-crm/validation/opportunities/opportunities-operations.ts:474",
           "src/atomic-crm/opportunities/RelatedOpportunitiesSection.tsx:83"
+        ],
+        "note": "These are COMPARISONS (===), not ASSIGNMENTS (=). Misleading finding name."
+      },
+      {
+        "id": "WF-M5-001",
+        "check": "WF-M5",
+        "type": "nullable-critical-fields",
+        "location": "Multiple files (7 instances)",
+        "description": "Optional chaining on required fields signals data model confusion",
+        "firstSeen": "2026-01-30",
+        "verified": true,
+        "confidence": "88%",
+        "examples": [
+          "src/atomic-crm/opportunities/RelatedOpportunitiesSection.tsx:91",
+          "src/atomic-crm/opportunities/CampaignGroupedList.tsx:246"
         ]
       }
     ],
@@ -174,27 +189,27 @@
   "counts": {
     "critical": 0,
     "high": 3,
-    "medium": 2
+    "medium": 3
   },
   "verification": {
     "allCriticalVerified": true,
     "activityLoggingAuditComplete": true,
     "databaseChecksPass": true,
-    "confidence": "95%",
-    "verificationDate": "2026-01-27"
+    "confidence": "97%",
+    "verificationDate": "2026-01-30"
   },
   "notes": {
-    "auditDate": "2026-01-27",
-    "changes": "No new issues or resolutions since 2026-01-23",
+    "auditDate": "2026-01-30",
+    "changes": "One new medium issue found: WF-M5-001 (optional chaining on required fields)",
     "keyChanges": [
       "STABLE: All critical violations remain resolved",
       "STABLE: 3 high severity issues unchanged (WF-H1-001, WF-H2-001, WF-H2-002)",
-      "STABLE: 2 medium severity issues unchanged (WF-M1-001, WF-M2-001)",
+      "NEW: WF-M5-001 - Optional chaining on required fields (7 instances)",
       "DATABASE: All consistency checks PASS (0 violations)",
-      "RECOMMENDATION: WF-H1-001 should be downgraded - using STAGE constants is best practice",
+      "RECOMMENDATION: WF-H1-001 and WF-M2-001 should be downgraded - using STAGE constants is best practice",
       "FOCUS: Activity logging coverage (WF-H2) remains primary gap"
     ],
-    "focusAreas": "Activity logging coverage (WF-H2) is the highest priority. All critical violations resolved. Database health excellent. Consider downgrading WF-H1-001 as current pattern is acceptable.",
-    "progress": "STABLE - No regression, no improvement. 0 critical, 3 high, 2 medium remaining."
+    "focusAreas": "Activity logging coverage (WF-H2) is the highest priority. All critical violations resolved. Database health excellent. Consider downgrading WF-H1-001 and WF-M2-001 as current patterns are acceptable.",
+    "progress": "MOSTLY STABLE - No regression, +1 medium issue. 0 critical, 3 high, 3 medium remaining."
   }
 }
