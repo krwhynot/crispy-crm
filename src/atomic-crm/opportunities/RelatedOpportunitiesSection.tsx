@@ -88,7 +88,7 @@ export const RelatedOpportunitiesSection = ({ opportunity }: RelatedOpportunitie
                 }
                 className="text-xs"
               >
-                {parentOpportunity.stage?.replace(/_/g, " ")}
+                {parentOpportunity.stage.replace(/_/g, " ")}
               </Badge>
               {parentOpportunity.status && (
                 <Badge
@@ -146,7 +146,7 @@ export const RelatedOpportunitiesSection = ({ opportunity }: RelatedOpportunitie
                     }
                     className="text-xs"
                   >
-                    {childOpp.stage?.replace(/_/g, " ")}
+                    {childOpp.stage.replace(/_/g, " ")}
                   </Badge>
                   {childOpp.status && (
                     <Badge

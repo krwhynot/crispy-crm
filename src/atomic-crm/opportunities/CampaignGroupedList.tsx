@@ -243,7 +243,7 @@ const CampaignGroupedListComponent = ({ openSlideOver }: CampaignGroupedListProp
                                               }
                                               className="text-xs"
                                             >
-                                              {opp.stage?.replace(/_/g, " ")}
+                                              {opp.stage.replace(/_/g, " ")}
                                             </Badge>
                                             {opp.priority && (
                                               <Badge
