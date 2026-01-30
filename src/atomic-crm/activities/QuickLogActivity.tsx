@@ -24,7 +24,8 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { activityKeys, opportunityKeys, taskKeys } from "@/atomic-crm/queryKeys";
-import type { Task, Opportunity } from "../types";
+import type { Task } from "../tasks/types";
+import type { Opportunity } from "../types";
 
 interface QuickLogActivityProps {
   open: boolean;

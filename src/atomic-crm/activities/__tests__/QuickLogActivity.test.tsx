@@ -2,7 +2,7 @@ import { screen, fireEvent, waitFor } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { renderWithAdminContext } from "@/tests/utils/render-admin";
 import { QuickLogActivity } from "../QuickLogActivity";
-import type { Task } from "../../types";
+import type { Task } from "../../tasks/types";
 
 // Mock ra-core hooks
 const mockDataProvider = {

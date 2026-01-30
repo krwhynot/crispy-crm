@@ -148,10 +148,6 @@ export interface InteractionParticipant extends Pick<RaRecord, "id"> {
 
 // Tag type is now exported from validation/tags.ts (P2 consolidation)
 
-// Task type is now exported from validation/task.ts (P2 consolidation)
-// The schema includes: id, title, description, due_date, reminder_date, completed,
-// completed_at, priority, type, contact_id, opportunity_id, organization_id,
-// sales_id, snooze_until, created_by, created_at, updated_at, deleted_at
 
 export interface DashboardSnapshot extends Pick<RaRecord, "id"> {
   snapshot_date: string; // ISO date string (YYYY-MM-DD)

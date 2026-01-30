@@ -25,7 +25,8 @@ import {
 import { MoreVertical } from "lucide-react";
 import { useDeleteWithUndoController, useNotify, useUpdate } from "ra-core";
 import { useEffect, useState } from "react";
-import type { Contact, Task as TData } from "../types";
+import type { Task as TData } from "./types";
+import type { Contact } from "../types";
 import TaskEdit from "./TaskEdit";
 import { TaskCompletionDialog } from "./TaskCompletionDialog";
 import { cn } from "@/lib/utils";

@@ -3,7 +3,7 @@ import { useUpdate, useNotify } from "ra-core";
 import { useQueryClient } from "@tanstack/react-query";
 
 import { taskKeys, dashboardKeys } from "@/atomic-crm/queryKeys";
-import type { Task } from "@/atomic-crm/types";
+import type { Task } from "../types";
 
 interface UseTaskCompletionOptions {
   /**

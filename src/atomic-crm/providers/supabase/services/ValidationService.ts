@@ -5,12 +5,12 @@ import type {
   Opportunity,
   ContactNote,
   OpportunityNote,
-  Task,
   Tag,
   Organization,
   Sale,
   ActivityRecord,
 } from "../../../types";
+import type { Task } from "../../../validation/task";
 import type { ProductFormData } from "../../../validation/products";
 import type { Segment } from "../../../validation/segments";
 import type { ProductDistributor } from "../../../validation/productDistributors";
