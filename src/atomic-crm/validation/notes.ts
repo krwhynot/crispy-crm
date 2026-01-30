@@ -131,33 +131,21 @@ export type UpdateOrganizationNoteInput = z.infer<typeof updateOrganizationNoteS
 /**
  * Validate contact note creation data
  * @param data - Note data to validate
- * @throws React Admin formatted error if data is invalid
+ * @returns Validated and typed contact note data
+ * @throws Zod validation error if data is invalid
  */
-export async function validateCreateContactNote(data: unknown): Promise<void> {
-  try {
-    createContactNoteSchema.parse(data);
-  } catch (error: unknown) {
-    if (error instanceof z.ZodError) {
-      throw zodErrorToReactAdminError(error);
-    }
-    throw error;
-  }
+export function validateCreateContactNote(data: unknown): CreateContactNoteInput {
+  return createContactNoteSchema.parse(data);
 }
 
 /**
  * Validate contact note update data
  * @param data - Note data to validate
- * @throws React Admin formatted error if data is invalid
+ * @returns Validated and typed contact note update data
+ * @throws Zod validation error if data is invalid
  */
-export async function validateUpdateContactNote(data: unknown): Promise<void> {
-  try {
-    updateContactNoteSchema.parse(data);
-  } catch (error: unknown) {
-    if (error instanceof z.ZodError) {
-      throw zodErrorToReactAdminError(error);
-    }
-    throw error;
-  }
+export function validateUpdateContactNote(data: unknown): UpdateContactNoteInput {
+  return updateContactNoteSchema.parse(data);
 }
 
 /**

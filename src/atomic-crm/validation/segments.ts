@@ -20,7 +20,6 @@ import { z } from "zod";
 import { VALIDATION_LIMITS } from "./constants";
 import { SEGMENT_TYPES, type SegmentType } from "./operatorSegments";
 import type { OrganizationType } from "./organizations";
-import { zodErrorToReactAdminError } from "./utils";
 
 /**
  * Fixed Playbook category names - these are the ONLY valid segment names
@@ -128,17 +127,10 @@ export type UpdateSegmentInput = z.infer<typeof updateSegmentSchema>;
  * Expected by unifiedDataProvider
  * @deprecated Use fixed categories instead of creating new segments
  * @param data - Segment data to validate
- * @throws React Admin formatted error if data is invalid
+ * @returns Validated and typed segment data
  */
-export async function validateCreateSegment(data: unknown): Promise<void> {
-  try {
-    createSegmentSchema.parse(data);
-  } catch (error: unknown) {
-    if (error instanceof z.ZodError) {
-      throw zodErrorToReactAdminError(error);
-    }
-    throw error;
-  }
+export function validateCreateSegment(data: unknown): CreateSegmentInput {
+  return createSegmentSchema.parse(data);
 }
 
 /**
@@ -146,17 +138,10 @@ export async function validateCreateSegment(data: unknown): Promise<void> {
  * Expected by unifiedDataProvider
  * @deprecated Use fixed categories instead of updating segments
  * @param data - Segment data to validate
- * @throws React Admin formatted error if data is invalid
+ * @returns Validated and typed segment data
  */
-export async function validateUpdateSegment(data: unknown): Promise<void> {
-  try {
-    updateSegmentSchema.parse(data);
-  } catch (error: unknown) {
-    if (error instanceof z.ZodError) {
-      throw zodErrorToReactAdminError(error);
-    }
-    throw error;
-  }
+export function validateUpdateSegment(data: unknown): UpdateSegmentInput {
+  return updateSegmentSchema.parse(data);
 }
 
 /**
