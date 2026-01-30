@@ -362,3 +362,45 @@ ci:
 # Quick validation before pushing
 push-check:
     just typecheck && just lint && just test-ci
+
+# ─────────────────────────────────────────────────────────────
+# 🔍 Audits (Claude Code Commands)
+# ─────────────────────────────────────────────────────────────
+
+# Run UX blockers audit (quick scan, user-blocking issues only)
+audit:
+    @echo "Run /audit/ux-blockers in Claude Code"
+
+# Run UX blockers with automatic deep dives on failures
+audit-deep:
+    @echo "Run /audit/ux-blockers --deep in Claude Code"
+
+# Run forms deep dive
+audit-forms:
+    @echo "Run /audit/deep/forms in Claude Code"
+
+# Run filters deep dive
+audit-filters:
+    @echo "Run /audit/deep/filters in Claude Code"
+
+# Run actions deep dive
+audit-actions:
+    @echo "Run /audit/deep/actions in Claude Code"
+
+# Run data flow deep dive
+audit-data:
+    @echo "Run /audit/deep/data-flow in Claude Code"
+
+# Run navigation deep dive
+audit-nav:
+    @echo "Run /audit/deep/navigation in Claude Code"
+
+# Run fault lines deep dive (stack-specific architecture risks)
+audit-faults:
+    @echo "Run /audit/deep/fault-lines in Claude Code"
+
+# List all audit commands
+audit-list:
+    @echo "UX Blockers:  /audit/ux-blockers [--quick | --deep | --category=X]"
+    @echo "Deep Dives:   /audit/deep/{forms,filters,actions,data-flow,navigation,fault-lines}"
+    @echo "Engineering:  /audit/{data-integrity,workflow-gaps,stale-state,error-handling,forms}"
