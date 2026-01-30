@@ -143,7 +143,7 @@ export const OrganizationCreateFormFooter = ({
 
       // Defense-in-depth: Explicitly check segment_id since validation can be bypassed
       // when form mode="onBlur" and field is untouched with default value
-      if (!values.segment_id) {
+      if (!values.segment_id || values.segment_id === UNKNOWN_SEGMENT_ID) {
         await trigger("segment_id");
         return;
       }

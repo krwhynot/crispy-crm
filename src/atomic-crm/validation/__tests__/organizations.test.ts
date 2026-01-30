@@ -11,9 +11,11 @@ import {
   organizationSchema,
   organizationTypeSchema,
   organizationPrioritySchema,
+  createOrganizationSchema,
   type OrganizationType,
   type OrganizationPriority,
 } from "../organizations";
+import { PLAYBOOK_CATEGORY_IDS } from "../segments";
 
 describe("Organization Validation Schemas (organizations.ts)", () => {
   describe("organizationTypeSchema", () => {
@@ -210,6 +212,65 @@ describe("Organization Validation Schemas (organizations.ts)", () => {
     it("accepts empty phone", () => {
       const result = organizationSchema.partial().safeParse({
         phone: "",
+      });
+      expect(result.success).toBe(true);
+    });
+  });
+
+  describe("createOrganizationSchema - segment_id Unknown rejection", () => {
+    // Minimal valid data for the create schema
+    const validCreateData = {
+      name: "Test Organization",
+      organization_type: "prospect" as const,
+      sales_id: 1,
+      segment_id: PLAYBOOK_CATEGORY_IDS["Major Broadline"],
+      priority: "C" as const,
+      status: "active" as const,
+    };
+
+    it("should reject Unknown segment UUID on create", () => {
+      const dataWithUnknown = {
+        ...validCreateData,
+        segment_id: PLAYBOOK_CATEGORY_IDS.Unknown,
+      };
+
+      const result = createOrganizationSchema.safeParse(dataWithUnknown);
+      expect(result.success).toBe(false);
+      if (!result.success) {
+        const segmentError = result.error.issues.find((i) => i.path[0] === "segment_id");
+        expect(segmentError).toBeDefined();
+        expect(segmentError?.message).toMatch(/select a specific segment/i);
+      }
+    });
+
+    it("should reject missing segment_id on create", () => {
+      const { segment_id: _, ...dataWithoutSegment } = validCreateData;
+
+      const result = createOrganizationSchema.safeParse(dataWithoutSegment);
+      expect(result.success).toBe(false);
+    });
+
+    it("should accept valid segment UUID on create", () => {
+      const result = createOrganizationSchema.safeParse(validCreateData);
+      expect(result.success).toBe(true);
+    });
+
+    it("should accept all non-Unknown playbook category UUIDs", () => {
+      const nonUnknownCategories = Object.entries(PLAYBOOK_CATEGORY_IDS).filter(
+        ([name]) => name !== "Unknown"
+      );
+
+      nonUnknownCategories.forEach(([_name, id]) => {
+        const data = { ...validCreateData, segment_id: id };
+        const result = createOrganizationSchema.safeParse(data);
+        expect(result.success).toBe(true);
+      });
+    });
+
+    it("base organizationSchema still allows Unknown segment (edit compatibility)", () => {
+      // Base schema must NOT reject Unknown — edit forms rely on it
+      const result = organizationSchema.partial().safeParse({
+        segment_id: PLAYBOOK_CATEGORY_IDS.Unknown,
       });
       expect(result.success).toBe(true);
     });
