@@ -12,14 +12,7 @@
  * DuplicateOrgWarningDialog appears to let the user confirm or change the name.
  */
 import { useCallback, useEffect, useRef, useState } from "react";
-import {
-  CreateBase,
-  Form,
-  useCreate,
-  useRedirect,
-  useNotify,
-  useCanAccess,
-} from "ra-core";
+import { CreateBase, Form, useCreate, useRedirect, useNotify, useCanAccess } from "ra-core";
 import { createFormResolver } from "@/lib/zodErrorFormatting";
 import { Card, CardContent } from "@/components/ui/card";
 import {
@@ -35,13 +28,10 @@ import { useDuplicateOrgCheck } from "./useDuplicateOrgCheck";
 import { DuplicateOrgWarningDialog } from "./DuplicateOrgWarningDialog";
 import { OrganizationCreateFormFooter } from "./OrganizationCreateFormFooter";
 import { useSmartDefaults } from "@/atomic-crm/hooks/useSmartDefaults";
-import type { Database } from "@/types/database.generated";
 import type { OrganizationFormValues, DuplicateCheckCallback } from "./types";
 import { useUnsavedChangesWarning } from "@/hooks/useUnsavedChangesWarning";
 import { usePermissions } from "@/hooks/usePermissions";
 import { notificationMessages } from "@/atomic-crm/constants/notificationMessages";
-
-type Segment = Database["public"]["Tables"]["segments"]["Row"];
 
 /**
  * Prevents Enter key in form inputs from triggering form submission
