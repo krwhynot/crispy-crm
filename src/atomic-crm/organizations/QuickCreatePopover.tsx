@@ -106,6 +106,7 @@ export function QuickCreatePopover({
       name,
       organization_type: organizationType,
       priority: "C",
+      segment_id: PLAYBOOK_CATEGORY_IDS.Unknown,
     },
   });
 
@@ -114,7 +115,7 @@ export function QuickCreatePopover({
       setIsPending(true);
       try {
         const result = await dataProvider.create("organizations", {
-          data: { ...data, segment_id: PLAYBOOK_CATEGORY_IDS.Unknown },
+          data,
         });
         queryClient.invalidateQueries({ queryKey: organizationKeys.all });
         notify(notificationMessages.created("Organization"), { type: "success" });
@@ -297,6 +298,7 @@ export function QuickCreateOrganizationRA({
       name,
       organization_type: organizationType,
       priority: "C",
+      segment_id: PLAYBOOK_CATEGORY_IDS.Unknown,
     },
   });
 
@@ -305,7 +307,7 @@ export function QuickCreateOrganizationRA({
       setIsPending(true);
       try {
         const result = await dataProvider.create("organizations", {
-          data: { ...data, segment_id: PLAYBOOK_CATEGORY_IDS.Unknown },
+          data,
         });
         queryClient.invalidateQueries({ queryKey: organizationKeys.all });
         notify(notificationMessages.created("Organization"), { type: "success" });

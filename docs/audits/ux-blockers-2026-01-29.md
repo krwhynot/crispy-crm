@@ -6,17 +6,15 @@
 
 | Severity | Count |
 |----------|-------|
-| 🔴 Blockers | 1 |
-| 🟡 Warnings | 6 |
-| ✅ Clean | 49 |
+| 🔴 Blockers | 0 |
+| 🟡 Warnings | 5 |
+| ✅ Clean | 51 |
 
 ## Blockers
 
 High-confidence issues that **prevent users from completing tasks**. These require immediate attention.
 
-| # | Check | File | Line | Impact | Confidence |
-|---|-------|------|------|--------|------------|
-| 1 | Console.log in production code | src/atomic-crm/components/SampleStatusBadge.tsx | 182 | Debug noise in production console — masks real errors | 0.95 |
+**None found.** All identified issues require verification or are code quality concerns that don't block user workflows.
 
 ## Warnings
 
@@ -24,38 +22,44 @@ Moderate-confidence issues needing verification before classification as blocker
 
 | # | Check | File | Line | Impact | Confidence | Verify By |
 |---|-------|------|------|--------|------------|-----------|
-| 1 | onChange validation mode | src/components/ra-wrappers/__tests__/date-input.test.tsx | 41 | Aggressive error display on every keystroke disrupts data entry | 0.85 | Inspect test file - test-only usage is acceptable |
-| 2 | Hardcoded query key string | src/atomic-crm/products/__tests__/ProductEdit.test.tsx | 171 | Key drifts from factory — cache never invalidated, user sees stale data | 0.80 | Check if test mock or production code - test mocks are acceptable |
-| 3 | Aggressive refetchOnWindowFocus | src/atomic-crm/timeline/UnifiedTimeline.tsx | 63 | Every tab switch fires API storm — app freezes on return | 0.90 | Verify if staleTime is also configured to limit refetch frequency |
-| 4 | Aggressive refetchOnWindowFocus | src/atomic-crm/contacts/OpportunitiesTab.tsx | 59 | Every tab switch fires API storm — app freezes on return | 0.90 | Verify if staleTime is also configured to limit refetch frequency |
-| 5 | Aggressive refetchOnWindowFocus | src/atomic-crm/dashboard/usePrincipalOpportunities.ts | 55 | Every tab switch fires API storm — app freezes on return | 0.90 | Check if dashboard uses SHORT_STALE_TIME_MS to prevent excessive refetch |
-| 6 | Touch target too small | src/components/NotificationDropdown.tsx | 139 | Button/link too small for iPad touch — user misses tap target | 0.85 | Check if icon is inside a larger clickable parent (Button, etc) with h-11 or larger |
+| 1 | Console.log in JSDoc example | src/atomic-crm/components/SampleStatusBadge.tsx | 182 | Code quality violation — documentation shows console.log usage | 0.95 | Verify if executable code or just JSDoc comment |
+| 2 | Aggressive refetchOnWindowFocus | src/atomic-crm/timeline/UnifiedTimeline.tsx | 63 | Every tab switch fires API storm — app freezes on return | 0.90 | Verify if staleTime is also configured to limit refetch frequency |
+| 3 | Aggressive refetchOnWindowFocus | src/atomic-crm/contacts/OpportunitiesTab.tsx | 59 | Every tab switch fires API storm — app freezes on return | 0.90 | Verify if staleTime is also configured to limit refetch frequency |
+| 4 | Aggressive refetchOnWindowFocus | src/atomic-crm/dashboard/usePrincipalOpportunities.ts | 55 | Every tab switch fires API storm — app freezes on return | 0.90 | Check if dashboard uses SHORT_STALE_TIME_MS to prevent excessive refetch |
+| 5 | Touch target too small | src/components/NotificationDropdown.tsx | 139 | Button/link too small for iPad touch — user misses tap target | 0.85 | Check if icon is inside a larger clickable parent (Button, etc) with h-11 or larger |
 
 ## Analysis
 
-### Test File False Positives
+### Test File False Positives (Removed)
 
-**Good News:** Most warnings (4 out of 6) are in test files, which is expected and acceptable:
+**Good News:** Test file warnings have been removed from this report:
 
-- **FORM-B003:** Test files intentionally use `mode: "onChange"` to verify validation behavior
-- **DATA-B002:** Test mocks use hardcoded query keys — this doesn't affect production
+- **FORM-B003:** Test files intentionally use `mode: "onChange"` to verify validation behavior ✅
+- **DATA-B002:** Test mocks use hardcoded query keys — this doesn't affect production ✅
 
-### Real Issues Found
+These were incorrectly flagged as warnings. Test files are explicitly exempted from production code quality rules.
 
-**1. Console.log in Production (BLOCKER)**
+### Issues Requiring Verification
+
+**1. Console.log in JSDoc Example (WARNING - Code Quality)**
 - **File:** src/atomic-crm/components/SampleStatusBadge.tsx:182
 - **Evidence:** JSDoc example showing `console.log` usage
-- **Severity:** High — violates CODE_QUALITY.md baseline (0 console statements in production)
-- **Fix:** Remove console.log from JSDoc example or replace with logger
+- **Severity:** Low — documentation example, not executable code
+- **Classification:** Downgraded from BLOCKER to WARNING
+- **Reasoning:** Doesn't prevent users from completing tasks (blocker definition requires user impact)
+- **Fix:** Replace with logger in documentation example for consistency
 
-**2. Aggressive refetchOnWindowFocus (3 instances)**
-- **Files:** UnifiedTimeline, OpportunitiesTab, 5 dashboard hooks
-- **Impact:** Every tab switch triggers API refetch — can cause performance issues
-- **Recommendation:** Verify these use `SHORT_STALE_TIME_MS` (30s) to prevent excessive refetching per STALE_STATE_STRATEGY.md
+**2. Aggressive refetchOnWindowFocus (3 instances - WARNING)**
+- **Files:** UnifiedTimeline, OpportunitiesTab, usePrincipalOpportunities
+- **Impact:** Potential API storm on every tab switch IF staleTime is not configured
+- **Classification:** Correctly marked as WARNING (needs verification)
+- **Per STALE_STATE_STRATEGY.md:** `refetchOnWindowFocus: true` WITH `staleTime` is an approved pattern
+- **Recommendation:** Verify these use `SHORT_STALE_TIME_MS` (30s) to prevent excessive refetching
 
-**3. Small Touch Targets (needs verification)**
+**3. Small Touch Targets (WARNING - Accessibility)**
 - **File:** NotificationDropdown.tsx:139
 - **Evidence:** Icon using `h-8 w-8` (32px) instead of minimum 44px
+- **Classification:** WARNING (needs verification)
 - **Verify:** Check if icon is nested inside a larger clickable button that meets accessibility requirements
 
 ## Recommended Deep Dives
@@ -76,10 +80,14 @@ Based on findings, the following deep dive is recommended:
 
 ## Next Steps
 
-1. **Fix blocker:** Remove console.log from SampleStatusBadge.tsx JSDoc
-2. **Verify refetch patterns:** Check if dashboard hooks use SHORT_STALE_TIME_MS
-3. **Accessibility check:** Verify NotificationDropdown touch targets
-4. **Optional:** Run `/audit/deep/data-flow` for comprehensive cache analysis
+**Priority: All items are warnings requiring verification, not immediate blockers.**
+
+1. **Verify refetch patterns:** Check if UnifiedTimeline, OpportunitiesTab, and usePrincipalOpportunities use SHORT_STALE_TIME_MS to prevent API storms
+2. **Accessibility check:** Verify NotificationDropdown touch targets meet 44px minimum (check if icon is inside larger clickable area)
+3. **Code quality cleanup:** Remove console.log from SampleStatusBadge.tsx JSDoc example
+4. **Optional deep dive:** Run `/audit/deep/data-flow` for comprehensive cache invalidation analysis
+
+**No blockers found** - users can complete all tasks without being stopped by UI issues.
 
 ---
 
