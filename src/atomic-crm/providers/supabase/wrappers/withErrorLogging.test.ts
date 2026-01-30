@@ -218,9 +218,9 @@ describe("withErrorLogging", () => {
         await wrappedProvider.create("contacts", { data: { email: "test@test.com" } });
       } catch (error: unknown) {
         // Should transform to validation error format with field
-        const err = error as { errors?: Record<string, string> };
-        expect(err.errors).toBeDefined();
-        expect(err.errors?.email || err.errors?._error).toBeDefined();
+        const err = error as { body?: { errors?: Record<string, string> } };
+        expect(err.body?.errors).toBeDefined();
+        expect(err.body?.errors?.email || err.body?.errors?._error).toBeDefined();
       }
     });
   });
