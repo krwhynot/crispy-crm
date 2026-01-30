@@ -86,7 +86,7 @@ export const slideOverPropsWithCanEditSchema = slideOverPropsSchema.extend({
  * Each tab receives the parent record and mode state
  */
 export const tabComponentPropsSchema = z.strictObject({
-  record: z.record(z.string(), z.unknown()),
+  record: z.record(z.string().max(50), z.unknown()),
   mode: z.enum(["view", "edit"]),
   onModeToggle: voidCallbackSchema.optional(),
   isActiveTab: z.boolean(),
