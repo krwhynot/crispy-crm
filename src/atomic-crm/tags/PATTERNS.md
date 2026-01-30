@@ -340,7 +340,7 @@ export function TagChip({ tag, onUnlink }: TagChipProps) {
       <div
         className={cn(
           "inline-flex items-center gap-1 px-2 py-1 text-xs rounded-md cursor-pointer",
-          "border border-[var(--tag-border)]",
+          "border border-[var(--tag-border)]",  // CSS variable defined in src/index.css:962
           "transition-all duration-200",
           "hover:shadow-sm hover:scale-[1.02]",
           "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2",

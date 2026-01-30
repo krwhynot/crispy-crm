@@ -396,7 +396,10 @@ const handleSave = async (data: Partial<Task>) => {
     onModeToggle?.(); // Return to view mode after successful save
   } catch (error) {
     notify("Error updating task", { type: "error" });
-    console.error("Save error:", error);
+    logger.error('Task save failed', {
+      error: error instanceof Error ? error.message : String(error),
+      operation: 'saveTask'
+    });
   }
 };
 ```
