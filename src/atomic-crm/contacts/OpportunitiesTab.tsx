@@ -29,7 +29,7 @@ import { UnlinkConfirmDialog } from "./UnlinkConfirmDialog";
 import { SuggestedOpportunityCard } from "./SuggestedOpportunityCard";
 import { isClosedStage } from "@/atomic-crm/opportunities/constants";
 import type { Contact, Opportunity, OpportunityContact } from "../types";
-import { DEFAULT_PAGE_SIZE } from "@/atomic-crm/constants/appConstants";
+import { DEFAULT_PAGE_SIZE, DEFAULT_STALE_TIME_MS } from "@/atomic-crm/constants/appConstants";
 
 // Extended type for opportunities with junction table metadata
 interface OpportunityWithJunction extends Opportunity {
@@ -56,7 +56,11 @@ export function OpportunitiesTab() {
       pagination: { page: 1, perPage: DEFAULT_PAGE_SIZE },
       sort: { field: "created_at", order: "DESC" },
     },
-    { enabled: !!contact?.id, refetchOnWindowFocus: true }
+    {
+      enabled: !!contact?.id,
+      staleTime: DEFAULT_STALE_TIME_MS, // 5 minutes - prevent refetch if data is fresh
+      refetchOnWindowFocus: true, // Refresh on tab return only if stale
+    }
   );
 
   // Step 2: Extract opportunity IDs
