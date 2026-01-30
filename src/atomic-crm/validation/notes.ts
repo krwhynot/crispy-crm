@@ -209,54 +209,6 @@ export function validateAttachments(attachments: unknown[]): Attachment[] {
 }
 
 /**
- * Validate and transform contact note for submission
- * @param data - Note data to validate and transform
- * @returns Transformed note data ready for database
- */
-export function validateContactNoteForm(data: unknown): ContactNote {
-  const validated = contactNoteSchema.parse(data);
-
-  // Transform date to ISO format with milliseconds
-  if (validated.date) {
-    validated.date = transformNoteDate(validated.date);
-  }
-
-  return validated;
-}
-
-/**
- * Validate and transform opportunity note for submission
- * @param data - Note data to validate and transform
- * @returns Transformed note data ready for database
- */
-export function validateOpportunityNoteForm(data: unknown): OpportunityNote {
-  const validated = opportunityNoteSchema.parse(data);
-
-  // Transform date to ISO format with milliseconds
-  if (validated.date) {
-    validated.date = transformNoteDate(validated.date);
-  }
-
-  return validated;
-}
-
-/**
- * Validate and transform organization note for submission
- * @param data - Note data to validate and transform
- * @returns Transformed note data ready for database
- */
-export function validateOrganizationNoteForm(data: unknown): OrganizationNote {
-  const validated = organizationNoteSchema.parse(data);
-
-  // Transform date to ISO format with milliseconds
-  if (validated.date) {
-    validated.date = transformNoteDate(validated.date);
-  }
-
-  return validated;
-}
-
-/**
  * Check if a note has attachments
  * @param note - Note to check
  * @returns True if note has attachments

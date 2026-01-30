@@ -198,19 +198,3 @@ export function validateTagUniqueness(
 
   return undefined;
 }
-
-/**
- * Validate and normalize tag data for submission
- * @param data - Tag data to validate and normalize
- * @returns Normalized tag data ready for database
- */
-export function validateTagForm(data: unknown): Tag {
-  const validated = tagSchema.parse(data);
-
-  // Ensure name is trimmed
-  validated.name = validated.name.trim();
-
-  // Color is already transformed by the schema
-
-  return validated;
-}

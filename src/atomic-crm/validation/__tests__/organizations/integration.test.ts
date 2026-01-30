@@ -1,10 +1,28 @@
 /**
- * Tests for organization validation functions and API integration
- * Focus: Form validation and submission processing
+ * Tests for organization validation schemas and API integration
+ * Focus: Schema validation and error formatting
+ *
+ * Note: validateOrganizationForm was removed as dead code (no production callers).
+ * These tests now exercise organizationSchema directly, which is the underlying
+ * schema used by validateCreateOrganization / validateUpdateOrganization.
  */
 
 import { describe, it, expect } from "vitest";
-import { validateOrganizationForm } from "../../organizations";
+import { organizationSchema } from "../../organizations";
+import { zodErrorToReactAdminError } from "../../utils";
+import { z } from "zod";
+
+/** Helper: parse with organizationSchema and convert ZodErrors to RA format */
+async function parseOrganization(data: unknown): Promise<void> {
+  try {
+    organizationSchema.parse(data);
+  } catch (error: unknown) {
+    if (error instanceof z.ZodError) {
+      throw zodErrorToReactAdminError(error);
+    }
+    throw error;
+  }
+}
 
 describe("Organization Validation Functions", () => {
   // After audit fix (commit 4f0245d2b): Schema no longer provides silent defaults
@@ -15,14 +33,14 @@ describe("Organization Validation Functions", () => {
     status: "active" as const,
   };
 
-  describe("validateOrganizationForm", () => {
+  describe("organizationSchema validation", () => {
     it("should validate and pass valid data", async () => {
       const validData = {
         name: "Test Organization",
         ...requiredFields,
       };
 
-      await expect(validateOrganizationForm(validData)).resolves.toBeUndefined();
+      await expect(parseOrganization(validData)).resolves.toBeUndefined();
     });
 
     it("should format errors for React Admin", async () => {
@@ -36,7 +54,7 @@ describe("Organization Validation Functions", () => {
       };
 
       try {
-        await validateOrganizationForm(invalidData);
+        await parseOrganization(invalidData);
         expect.fail("Should have thrown validation error");
       } catch (error: unknown) {
         const err = error as { message: string; body: { errors: Record<string, string> } };
@@ -56,7 +74,7 @@ describe("Organization Validation Functions", () => {
       };
 
       try {
-        await validateOrganizationForm(invalidLinkedIn);
+        await parseOrganization(invalidLinkedIn);
         expect.fail("Should have thrown validation error");
       } catch (error: unknown) {
         const err = error as { body: { errors: Record<string, string> } };
@@ -79,7 +97,7 @@ describe("Organization Validation Functions", () => {
       };
 
       try {
-        await validateOrganizationForm(complexInvalidData);
+        await parseOrganization(complexInvalidData);
       } catch (error: unknown) {
         // z.strictObject() rejects unrecognized keys like 'address' and 'contact'
         const err = error as { body: { errors: Record<string, string> } };
@@ -88,7 +106,7 @@ describe("Organization Validation Functions", () => {
     });
   });
 
-  describe("validateOrganizationForm", () => {
+  describe("organizationSchema normalization", () => {
     it("should validate and normalize organization data", async () => {
       const inputData = {
         name: "Submission Test",
@@ -96,7 +114,7 @@ describe("Organization Validation Functions", () => {
         website: "https://example.com",
       };
 
-      await expect(validateOrganizationForm(inputData)).resolves.toBeUndefined();
+      await expect(parseOrganization(inputData)).resolves.toBeUndefined();
     });
 
     it("should throw for missing required fields", async () => {
@@ -105,7 +123,7 @@ describe("Organization Validation Functions", () => {
         organization_type: "customer",
       };
 
-      await expect(validateOrganizationForm(minimalData)).rejects.toMatchObject({
+      await expect(parseOrganization(minimalData)).rejects.toMatchObject({
         message: "Validation failed",
       });
     });
@@ -117,7 +135,7 @@ describe("Organization Validation Functions", () => {
         ...requiredFields,
       };
 
-      await expect(validateOrganizationForm(invalidData)).rejects.toMatchObject({
+      await expect(parseOrganization(invalidData)).rejects.toMatchObject({
         message: "Validation failed",
       });
     });
@@ -132,7 +150,7 @@ describe("Organization Validation Functions", () => {
       };
 
       // z.strictObject() throws ZodError for unrecognized keys instead of silently stripping
-      await expect(validateOrganizationForm(dataWithExtras)).rejects.toMatchObject({
+      await expect(parseOrganization(dataWithExtras)).rejects.toMatchObject({
         message: "Validation failed",
       });
     });
@@ -155,7 +173,7 @@ describe("Organization Validation Functions", () => {
 
       for (const { data, field } of testCases) {
         try {
-          await validateOrganizationForm(data);
+          await parseOrganization(data);
           expect.fail(`Should have thrown error for field: ${field}`);
         } catch (error: unknown) {
           const err = error as { body: { errors: Record<string, string> } };

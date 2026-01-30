@@ -147,15 +147,6 @@ export function validateUpdateSegment(data: unknown): UpdateSegmentInput {
 }
 
 /**
- * Validate and normalize segment data for submission
- * @param data - Segment data to validate and normalize
- * @returns Normalized segment data ready for database
- */
-export function validateSegmentForm(data: unknown): Segment {
-  return segmentSchema.parse(data);
-}
-
-/**
  * Get segment ID by category name
  * @param category - Playbook category name
  * @returns UUID for the category
