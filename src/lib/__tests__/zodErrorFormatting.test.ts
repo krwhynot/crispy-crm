@@ -225,8 +225,10 @@ describe("createFormResolver", () => {
     );
 
     expect(result.errors).toBeDefined();
-    expect(result.errors.company?.address?.street?.message).toBe("This field is required.");
-    expect(result.errors.company?.address?.city?.message).toBe("This field is required.");
+    // Type assertion for deeply nested error structure
+    const companyErrors = result.errors.company as Record<string, Record<string, { message: string }>>;
+    expect(companyErrors?.address?.street?.message).toBe("This field is required.");
+    expect(companyErrors?.address?.city?.message).toBe("This field is required.");
     expect(result.values).toEqual({});
   });
 
