@@ -9,7 +9,6 @@
  */
 
 import { z } from "zod";
-import { zodErrorToReactAdminError } from "./utils";
 
 /**
  * Allowed entity types for favorites
@@ -71,31 +70,17 @@ export type UpdateFavoriteInput = z.infer<typeof updateFavoriteSchema>;
 /**
  * Validate favorite creation data
  * @param data - Favorite data to validate
- * @throws React Admin formatted error if data is invalid
+ * @returns Validated and typed favorite data
  */
-export async function validateCreateFavorite(data: unknown): Promise<void> {
-  try {
-    createFavoriteSchema.parse(data);
-  } catch (error: unknown) {
-    if (error instanceof z.ZodError) {
-      throw zodErrorToReactAdminError(error);
-    }
-    throw error;
-  }
+export function validateCreateFavorite(data: unknown): CreateFavoriteInput {
+  return createFavoriteSchema.parse(data);
 }
 
 /**
  * Validate favorite update data
  * @param data - Favorite data to validate
- * @throws React Admin formatted error if data is invalid
+ * @returns Validated and typed favorite data
  */
-export async function validateUpdateFavorite(data: unknown): Promise<void> {
-  try {
-    updateFavoriteSchema.parse(data);
-  } catch (error: unknown) {
-    if (error instanceof z.ZodError) {
-      throw zodErrorToReactAdminError(error);
-    }
-    throw error;
-  }
+export function validateUpdateFavorite(data: unknown): UpdateFavoriteInput {
+  return updateFavoriteSchema.parse(data);
 }

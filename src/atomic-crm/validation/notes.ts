@@ -151,65 +151,41 @@ export function validateUpdateContactNote(data: unknown): UpdateContactNoteInput
 /**
  * Validate opportunity note creation data
  * @param data - Note data to validate
- * @throws React Admin formatted error if data is invalid
+ * @returns Validated and typed opportunity note data
+ * @throws Zod validation error if data is invalid
  */
-export async function validateCreateOpportunityNote(data: unknown): Promise<void> {
-  try {
-    createOpportunityNoteSchema.parse(data);
-  } catch (error: unknown) {
-    if (error instanceof z.ZodError) {
-      throw zodErrorToReactAdminError(error);
-    }
-    throw error;
-  }
+export function validateCreateOpportunityNote(data: unknown): CreateOpportunityNoteInput {
+  return createOpportunityNoteSchema.parse(data);
 }
 
 /**
  * Validate opportunity note update data
  * @param data - Note data to validate
- * @throws React Admin formatted error if data is invalid
+ * @returns Validated and typed opportunity note update data
+ * @throws Zod validation error if data is invalid
  */
-export async function validateUpdateOpportunityNote(data: unknown): Promise<void> {
-  try {
-    updateOpportunityNoteSchema.parse(data);
-  } catch (error: unknown) {
-    if (error instanceof z.ZodError) {
-      throw zodErrorToReactAdminError(error);
-    }
-    throw error;
-  }
+export function validateUpdateOpportunityNote(data: unknown): UpdateOpportunityNoteInput {
+  return updateOpportunityNoteSchema.parse(data);
 }
 
 /**
  * Validate organization note creation data
  * @param data - Note data to validate
- * @throws React Admin formatted error if data is invalid
+ * @returns Validated and typed organization note data
+ * @throws Zod validation error if data is invalid
  */
-export async function validateCreateOrganizationNote(data: unknown): Promise<void> {
-  try {
-    createOrganizationNoteSchema.parse(data);
-  } catch (error: unknown) {
-    if (error instanceof z.ZodError) {
-      throw zodErrorToReactAdminError(error);
-    }
-    throw error;
-  }
+export function validateCreateOrganizationNote(data: unknown): CreateOrganizationNoteInput {
+  return createOrganizationNoteSchema.parse(data);
 }
 
 /**
  * Validate organization note update data
  * @param data - Note data to validate
- * @throws React Admin formatted error if data is invalid
+ * @returns Validated and typed organization note update data
+ * @throws Zod validation error if data is invalid
  */
-export async function validateUpdateOrganizationNote(data: unknown): Promise<void> {
-  try {
-    updateOrganizationNoteSchema.parse(data);
-  } catch (error: unknown) {
-    if (error instanceof z.ZodError) {
-      throw zodErrorToReactAdminError(error);
-    }
-    throw error;
-  }
+export function validateUpdateOrganizationNote(data: unknown): UpdateOrganizationNoteInput {
+  return updateOrganizationNoteSchema.parse(data);
 }
 
 /**
