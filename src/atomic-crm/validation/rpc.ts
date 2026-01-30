@@ -227,11 +227,11 @@ export const checkSimilarOpportunitiesResponseSchema = z
   .array(
     z.strictObject({
       id: z.number(),
-      name: z.string(),
-      stage: z.string(),
+      name: z.string().max(500),
+      stage: z.string().max(50),
       similarity_score: z.number(),
-      principal_organization_name: z.string().nullable(),
-      customer_organization_name: z.string().nullable(),
+      principal_organization_name: z.string().max(255).nullable(),
+      customer_organization_name: z.string().max(255).nullable(),
     })
   )
   .max(50, "Maximum 50 similar opportunities");
@@ -264,7 +264,7 @@ const salesRepOptionSchema = z.strictObject({
 export const getCampaignReportStatsResponseSchema = z.strictObject({
   campaign_options: z.array(campaignOptionSchema).max(200, "Maximum 200 campaign options"),
   sales_rep_options: z.array(salesRepOptionSchema).max(200, "Maximum 200 sales rep options"),
-  activity_type_counts: z.record(z.string(), z.number().int().nonnegative()),
+  activity_type_counts: z.record(z.string().max(50), z.number().int().nonnegative()),
 });
 
 export type GetCampaignReportStatsParams = z.infer<typeof getCampaignReportStatsParamsSchema>;

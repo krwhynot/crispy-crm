@@ -4,6 +4,7 @@ import { emailAndTypeSchema, phoneNumberAndTypeSchema, EmailEntry } from "./cont
 import { contactDepartmentSchema } from "./contacts-department";
 import { quickCreateContactSchema } from "./contacts-quick-create";
 import { optionalRaFileSchema } from "../shared/ra-file";
+import { zodErrorToReactAdminError } from "../utils";
 
 /**
  * Core contact validation schemas and functions
@@ -231,11 +232,7 @@ export async function validateContactForm(data: unknown): Promise<void> {
       return; // Valid quick create
     } catch (error: unknown) {
       if (error instanceof z.ZodError) {
-        const formattedErrors: Record<string, string> = {};
-        error.issues.forEach((err) => {
-          formattedErrors[err.path.join(".")] = err.message;
-        });
-        throw { message: "Validation failed", body: { errors: formattedErrors } };
+        throw zodErrorToReactAdminError(error);
       }
       throw error;
     }
