@@ -338,6 +338,7 @@ export const organizationQuickCreateSchema = z.strictObject({
   organization_type: organizationTypeSchema,
   // Note: priority is required in the schema, default provided in form's defaultValues
   priority: organizationPrioritySchema,
+  segment_id: z.string().uuid(), // Required: defaults to "Unknown" via form defaultValues
   city: z.string().max(100).optional(),
   state: z.string().max(50).optional(),
 });

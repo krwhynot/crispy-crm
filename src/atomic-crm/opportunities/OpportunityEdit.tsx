@@ -3,7 +3,7 @@ import { EditBase, Form, useRecordContext, useRefresh } from "ra-core";
 import { useSafeNotify } from "../hooks/useSafeNotify";
 import { useQueryClient } from "@tanstack/react-query";
 
-import { opportunityKeys } from "../queryKeys";
+import { opportunityKeys, dashboardKeys } from "../queryKeys";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { DeleteButton } from "@/components/ra-wrappers/delete-button";
@@ -36,6 +36,8 @@ const OpportunityEdit = () => {
       mutationOptions={{
         onSuccess: () => {
           queryClient.invalidateQueries({ queryKey: opportunityKeys.all });
+          // Invalidate dashboard when stage/amount changes affect pipeline metrics
+          queryClient.invalidateQueries({ queryKey: dashboardKeys.all });
         },
         onError: (err: Error) => {
           if (err.message?.includes("CONFLICT")) {
