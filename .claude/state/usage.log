@@ -23,3 +23,6 @@
 [2026-01-11T19:41:51.494Z] ✓ find_references | symbolName="useKPIMetrics", includeDefinition=false | results: 20 | 30ms
 [2026-01-15T16:45:11.245Z] ✓ find_references | symbolName="genericMemo", includeDefinition=true | results: 9 | 163ms
 [2026-01-26T20:33:36.329Z] ✓ search_code | query: "ReferenceField created_by sales SaleName" | limit=10, type="all" | results: 0 | 10860ms
+[2026-01-30T01:37:52.481Z] ✓ search_code | query: "segment organizations form input field" | limit=20, type="all" | results: 0 | 10895ms
+[2026-01-30T01:38:03.118Z] ✓ search_code | query: "segment_id organizations schema validation" | limit=20, type="all" | results: 0 | 10562ms
+[2026-01-30T01:38:15.116Z] ✓ search_code | query: "ReferenceInput segments organizations" | limit=15, type="all" | results: 0 | 11929ms
