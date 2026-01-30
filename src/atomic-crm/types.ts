@@ -148,7 +148,6 @@ export interface InteractionParticipant extends Pick<RaRecord, "id"> {
 
 // Tag type is now exported from validation/tags.ts (P2 consolidation)
 
-
 export interface DashboardSnapshot extends Pick<RaRecord, "id"> {
   snapshot_date: string; // ISO date string (YYYY-MM-DD)
   sales_id: Identifier;
