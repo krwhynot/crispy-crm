@@ -146,5 +146,5 @@ export const validateCreateTask = (data: unknown) => taskCreateSchema.parse(data
 export const validateUpdateTask = (data: unknown) => taskUpdateSchema.parse(data);
 
 /** Validate task for submission - throws on invalid data */
-export const validateTaskForSubmission = (data: unknown, isUpdate = false) =>
+export const validateTaskForm = (data: unknown, isUpdate = false) =>
   isUpdate ? taskUpdateSchema.parse(data) : taskCreateSchema.parse(data);

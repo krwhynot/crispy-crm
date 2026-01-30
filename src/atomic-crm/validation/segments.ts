@@ -151,7 +151,7 @@ export function validateUpdateSegment(data: unknown): UpdateSegmentInput {
  * @param data - Segment data to validate and normalize
  * @returns Normalized segment data ready for database
  */
-export function validateSegmentForSubmission(data: unknown): Segment {
+export function validateSegmentForm(data: unknown): Segment {
   return segmentSchema.parse(data);
 }
 

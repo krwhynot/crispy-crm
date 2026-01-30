@@ -476,6 +476,6 @@ export function validateUpdateOperatorSegment(data: unknown): UpdateOperatorSegm
  * @param data - Operator segment data to validate and normalize
  * @returns Normalized operator segment data ready for database
  */
-export function validateOperatorSegmentForSubmission(data: unknown): OperatorSegmentRecord {
+export function validateOperatorSegmentForm(data: unknown): OperatorSegmentRecord {
   return operatorSegmentRecordSchema.parse(data);
 }
