@@ -15,7 +15,6 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import {
   CreateBase,
   Form,
-  useGetList,
   useCreate,
   useRedirect,
   useNotify,
