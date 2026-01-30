@@ -13,29 +13,7 @@ import {
   updateActivitiesSchema,
   baseActivitiesSchema,
 } from "./schemas";
-import { getFriendlyErrorMessage } from "../utils";
-
-/**
- * Format Zod validation errors for React Admin
- */
-function formatZodErrors(error: z.ZodError): Record<string, string> {
-  const formattedErrors: Record<string, string> = {};
-  error.issues.forEach((err) => {
-    const path = err.path.join(".");
-    formattedErrors[path] = getFriendlyErrorMessage(err);
-  });
-  return formattedErrors;
-}
-
-/**
- * Wrap Zod error for React Admin error format
- */
-function throwReactAdminError(error: z.ZodError): never {
-  throw {
-    message: "Validation failed",
-    body: { errors: formatZodErrors(error) },
-  };
-}
+import { zodErrorToReactAdminError } from "../utils";
 
 /**
  * Validation function matching expected signature from unifiedDataProvider
@@ -46,7 +24,7 @@ export async function validateActivitiesForm(data: unknown): Promise<void> {
     activitiesSchema.parse(data);
   } catch (error: unknown) {
     if (error instanceof z.ZodError) {
-      throwReactAdminError(error);
+      throw zodErrorToReactAdminError(error);
     }
     throw error;
   }
@@ -74,7 +52,7 @@ export async function validateEngagementsForm(data: unknown): Promise<void> {
     engagementsSchema.parse(data);
   } catch (error: unknown) {
     if (error instanceof z.ZodError) {
-      throwReactAdminError(error);
+      throw zodErrorToReactAdminError(error);
     }
     throw error;
   }
@@ -107,7 +85,7 @@ export async function validateInteractionsForm(data: unknown): Promise<void> {
     interactionsSchema.parse(data);
   } catch (error: unknown) {
     if (error instanceof z.ZodError) {
-      throwReactAdminError(error);
+      throw zodErrorToReactAdminError(error);
     }
     throw error;
   }

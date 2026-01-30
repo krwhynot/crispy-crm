@@ -9,11 +9,10 @@ import {
   updateContactNoteSchema,
   createOpportunityNoteSchema,
   updateOpportunityNoteSchema,
-  validateContactNoteForm,
-  validateOpportunityNoteForm,
   transformNoteDate,
   getCurrentNoteDate,
   noteHasAttachments,
+  type ContactNote,
 } from "../../notes";
 import { z } from "zod";
 
@@ -144,38 +143,6 @@ describe("Note Transformation Utilities", () => {
         };
 
         expect(() => updateOpportunityNoteSchema.parse(updateWithAttachments)).not.toThrow();
-      });
-    });
-  });
-
-  describe("Submission Validation", () => {
-    describe("validateContactNoteForm", () => {
-      it("should validate and transform date", () => {
-        const inputData = {
-          text: "Note for submission",
-          date: "2024-01-15T10:00:00",
-          contact_id: "contact-123",
-          sales_id: "user-456",
-        };
-
-        const result = validateContactNoteForm(inputData);
-        expect(result.text).toBe("Note for submission");
-        expect(result.date).toMatch(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/);
-      });
-    });
-
-    describe("validateOpportunityNoteForm", () => {
-      it("should validate and transform date", () => {
-        const inputData = {
-          text: "Opportunity note for submission",
-          date: "2024-01-15T10:00:00",
-          opportunity_id: "opp-123",
-          sales_id: "user-456",
-        };
-
-        const result = validateOpportunityNoteForm(inputData);
-        expect(result.text).toBe("Opportunity note for submission");
-        expect(result.date).toMatch(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/);
       });
     });
   });

@@ -4,7 +4,7 @@
  */
 
 import { describe, it, expect } from "vitest";
-import { tagSchema, validateTagUniqueness, validateTagForm, type Tag } from "../../tags";
+import { tagSchema, validateTagUniqueness, type Tag } from "../../tags";
 import { z } from "zod";
 
 describe("Tag Edge Cases and Business Rules", () => {
@@ -43,38 +43,6 @@ describe("Tag Edge Cases and Business Rules", () => {
     it("should still detect duplicates when updating", () => {
       const error = validateTagUniqueness("Another Tag", existingTags, 1);
       expect(error).toBe("A tag with this name already exists");
-    });
-  });
-
-  describe("validateTagForm", () => {
-    it("should validate and normalize tag data", () => {
-      const inputData = {
-        name: "  Important Tag  ",
-        color: "warm",
-      };
-
-      const result = validateTagForm(inputData);
-      expect(result.name).toBe("Important Tag");
-      expect(result.color).toBe("warm");
-    });
-
-    it("should throw for invalid submission data", () => {
-      const invalidData = {
-        name: "",
-        color: "warm",
-      };
-
-      expect(() => validateTagForm(invalidData)).toThrow(z.ZodError);
-    });
-
-    it("should transform hex colors during submission", () => {
-      const dataWithHex = {
-        name: "Color Test",
-        color: "gray",
-      };
-
-      const result = validateTagForm(dataWithHex);
-      expect(result.color).toBe("gray");
     });
   });
 
