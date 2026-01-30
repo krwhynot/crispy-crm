@@ -41,7 +41,14 @@ export async function validateCreateActivities(data: unknown): Promise<void> {
  * Update validation function matching expected signature from unifiedDataProvider
  */
 export async function validateUpdateActivities(data: unknown): Promise<void> {
-  await updateActivitiesSchema.parseAsync(data);
+  try {
+    await updateActivitiesSchema.parseAsync(data);
+  } catch (error: unknown) {
+    if (error instanceof z.ZodError) {
+      throw zodErrorToReactAdminError(error);
+    }
+    throw error;
+  }
 }
 
 /**
@@ -69,12 +76,19 @@ export async function validateCreateEngagements(data: unknown): Promise<void> {
  * Update validation function for engagements
  */
 export async function validateUpdateEngagements(data: unknown): Promise<void> {
-  await baseActivitiesSchema
-    .partial()
-    .extend({
-      activity_type: z.literal("engagement").optional(),
-    })
-    .parseAsync(data);
+  try {
+    await baseActivitiesSchema
+      .partial()
+      .extend({
+        activity_type: z.literal("engagement").optional(),
+      })
+      .parseAsync(data);
+  } catch (error: unknown) {
+    if (error instanceof z.ZodError) {
+      throw zodErrorToReactAdminError(error);
+    }
+    throw error;
+  }
 }
 
 /**

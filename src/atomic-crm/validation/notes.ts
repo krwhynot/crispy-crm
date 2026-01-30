@@ -7,6 +7,7 @@
 
 import { z } from "zod";
 import { sanitizeHtml } from "@/lib/sanitization";
+import { zodErrorToReactAdminError } from "./utils";
 
 /**
  * Attachment validation schema
@@ -131,11 +132,17 @@ export type UpdateOrganizationNoteInput = z.infer<typeof updateOrganizationNoteS
 /**
  * Validate contact note creation data
  * @param data - Note data to validate
- * @returns Validated note data
- * @throws Zod validation error if data is invalid
+ * @throws React Admin formatted error if data is invalid
  */
-export function validateCreateContactNote(data: unknown): CreateContactNoteInput {
-  return createContactNoteSchema.parse(data);
+export async function validateCreateContactNote(data: unknown): Promise<void> {
+  try {
+    createContactNoteSchema.parse(data);
+  } catch (error: unknown) {
+    if (error instanceof z.ZodError) {
+      throw zodErrorToReactAdminError(error);
+    }
+    throw error;
+  }
 }
 
 /**

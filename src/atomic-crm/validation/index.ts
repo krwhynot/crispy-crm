@@ -10,9 +10,9 @@
  * - Business rules and custom validators
  *
  * PAT-01 RESOLVED: Validation function naming standardized.
- * Two patterns are now canonical:
- * 1. validate[Resource]Form - General/base validation (e.g., validateOrganizationForm)
- * 2. validateCreate[Resource] / validateUpdate[Resource] - Operation-specific validation
+ * Canonical pattern: validateCreate[Resource] / validateUpdate[Resource] - Operation-specific validation
+ * Exception: validateTaskForm (dispatches to create/update based on isUpdate param)
+ * Exception: validateContactForm (used by ValidationService for contact creates)
  */
 
 // Re-export ZodError for UI error handling

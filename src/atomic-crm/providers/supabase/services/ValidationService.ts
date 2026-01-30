@@ -96,16 +96,90 @@ interface ResourceTypeMap {
 }
 
 /**
- * ValidationService handles all Zod validation at API boundaries
- * Following Engineering Constitution principle #5: Zod at API boundary only
+ * Validation Service
+ *
+ * Centralized registry of validation functions for all resources in the data provider.
+ * Ensures consistent validation at the API boundary before data reaches Supabase.
+ *
+ * ## Architecture: Dual-Layer Validation Safety
+ *
+ * The validation system uses a defense-in-depth approach with two safety layers:
+ *
+ * ### Layer 1: Provider-Layer Validation Functions
+ *
+ * Individual validation functions (e.g., `validateCreateContact`, `validateUpdateOrganization`)
+ * are registered in this service and called by the data provider before mutations.
+ *
+ * These functions:
+ * - Parse data using Zod schemas (e.g., `contactSchema.parse(data)`)
+ * - Catch ZodErrors and transform them using `zodErrorToReactAdminError()`
+ * - Throw formatted errors in React Admin's expected format: `{ message, body: { errors } }`
+ * - Provide immediate, consistent error feedback at the provider layer
+ *
+ * Example:
+ * ```typescript
+ * export async function validateCreateContact(data: unknown): Promise<void> {
+ *   try {
+ *     contactSchema.parse(data);
+ *   } catch (error: unknown) {
+ *     if (error instanceof z.ZodError) {
+ *       throw zodErrorToReactAdminError(error); // Layer 1 transformation
+ *     }
+ *     throw error;
+ *   }
+ * }
+ * ```
+ *
+ * ### Layer 2: withValidation Wrapper (Safety Net)
+ *
+ * The `withValidation` wrapper (applied to all data providers) acts as a fallback:
+ * - Catches any raw ZodErrors that escape Layer 1
+ * - Transforms them using the same `zodErrorToReactAdminError()` utility
+ * - Ensures NO technical Zod errors ever reach React Admin's UI layer
+ *
+ * This provides resilience even if:
+ * - A validation function is updated and accidentally removes error wrapping
+ * - A new schema is added without proper error handling
+ * - An edge case bypasses the primary transformation
+ *
+ * ## Why Both Layers?
+ *
+ * **Layer 1 (Explicit wrapping)**: Provides consistent, early feedback with clear error context
+ * **Layer 2 (Wrapper fallback)**: Prevents catastrophic failures if Layer 1 is bypassed
+ *
+ * This redundancy ensures user-friendly error messages are ALWAYS displayed,
+ * even during rapid development or refactoring.
+ *
+ * ## Validation Function Patterns
+ *
+ * All validation functions registered in this service should follow Pattern 1:
+ *
+ * ```typescript
+ * export async function validateCreateX(data: unknown): Promise<void> {
+ *   try {
+ *     xSchema.parse(data);
+ *   } catch (error: unknown) {
+ *     if (error instanceof z.ZodError) {
+ *       throw zodErrorToReactAdminError(error);
+ *     }
+ *     throw error;
+ *   }
+ * }
+ * ```
+ *
+ * ## Migration Notes
  *
  * This service consolidates all validation logic previously scattered
- * in the monolithic unifiedDataProvider (was ~100 lines)
+ * in the monolithic unifiedDataProvider (was ~100 lines).
  *
- * NOTE: Notes resources are registered under BOTH camelCase and snake_case keys
+ * Notes resources are registered under BOTH camelCase and snake_case keys
  * because composedDataProvider uses snake_case (contact_notes) but some legacy
  * code may use camelCase (contactNotes). This prevents silent validation bypass.
  * See: docs/PROVIDER_AUDIT_REPORT.md [CRITICAL-001]
+ *
+ * @see src/atomic-crm/providers/supabase/wrappers/withValidation.ts - Layer 2 wrapper
+ * @see src/atomic-crm/validation/utils.ts - Error transformation utilities
+ * @see src/lib/zodErrorFormatting.ts - Form-level error transformation (createFormResolver)
  */
 export class ValidationService {
   private validationRegistry: Record<string, ValidationHandlers<unknown>>;
