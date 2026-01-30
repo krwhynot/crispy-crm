@@ -146,11 +146,17 @@ export async function validateCreateSegment(data: unknown): Promise<void> {
  * Expected by unifiedDataProvider
  * @deprecated Use fixed categories instead of updating segments
  * @param data - Segment data to validate
- * @returns Validated segment data
- * @throws Zod validation error if data is invalid
+ * @throws React Admin formatted error if data is invalid
  */
-export function validateUpdateSegment(data: unknown): UpdateSegmentInput {
-  return updateSegmentSchema.parse(data);
+export async function validateUpdateSegment(data: unknown): Promise<void> {
+  try {
+    updateSegmentSchema.parse(data);
+  } catch (error: unknown) {
+    if (error instanceof z.ZodError) {
+      throw zodErrorToReactAdminError(error);
+    }
+    throw error;
+  }
 }
 
 /**
