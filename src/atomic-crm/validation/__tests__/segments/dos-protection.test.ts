@@ -11,9 +11,9 @@ import { z } from "zod";
 
 describe("Segment DoS Protection", () => {
   describe("segmentSchema - bounded string limits", () => {
-    it("should enforce 255 char limit on segment names", () => {
-      const maxName = "a".repeat(255);
-      const tooLongName = "a".repeat(256);
+    it("should enforce 100 char limit on segment names", () => {
+      const maxName = "a".repeat(100);
+      const tooLongName = "a".repeat(101);
 
       expect(() =>
         segmentSchema.parse({
@@ -95,9 +95,9 @@ describe("Segment DoS Protection", () => {
   });
 
   describe("createSegmentSchema - bounded string limits", () => {
-    it("should enforce 255 char limit on segment names", () => {
-      const maxName = "a".repeat(255);
-      const tooLongName = "a".repeat(256);
+    it("should enforce 100 char limit on segment names", () => {
+      const maxName = "a".repeat(100);
+      const tooLongName = "a".repeat(101);
 
       expect(() =>
         createSegmentSchema.parse({
@@ -137,10 +137,10 @@ describe("Segment DoS Protection", () => {
   });
 
   describe("updateSegmentSchema - bounded string limits", () => {
-    it("should enforce 255 char limit on segment names", () => {
+    it("should enforce 100 char limit on segment names", () => {
       const validUUID = "22222222-2222-4222-8222-000000000001";
-      const maxName = "a".repeat(255);
-      const tooLongName = "a".repeat(256);
+      const maxName = "a".repeat(100);
+      const tooLongName = "a".repeat(101);
 
       expect(() =>
         updateSegmentSchema.parse({

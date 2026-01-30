@@ -351,8 +351,11 @@ export const organizationQuickCreateSchema = z.strictObject({
   // Note: priority is required in the schema, default provided in form's defaultValues
   priority: organizationPrioritySchema,
   segment_id: z
-    .string()
-    .uuid()
+    .string({
+      required_error: "Please select a segment",
+      invalid_type_error: "Please select a segment",
+    })
+    .uuid("Please select a valid segment")
     .refine((val) => val !== UNKNOWN_SEGMENT_UUID, {
       message: "Please select a specific segment (not 'Unknown')",
     }),
