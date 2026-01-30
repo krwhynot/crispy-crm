@@ -80,7 +80,11 @@ export const useFilterCleanup = (resource: string) => {
       if (isValidFilterField(resource, filterKey)) {
         cleanedFilter[filterKey] = params.filter[filterKey];
       } else {
-        console.warn(`[useFilterCleanup] Stale filter "${filterKey}" removed`);
+        logger.warn('Stale filter removed', {
+          hook: 'useFilterCleanup',
+          filterKey,
+          operation: 'cleanup'
+        });
         modified = true;
       }
     }

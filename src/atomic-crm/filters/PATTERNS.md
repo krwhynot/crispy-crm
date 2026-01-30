@@ -524,7 +524,10 @@ export const saveStagePreferences = (selectedStages: string[]): void => {
   try {
     setStorageItem(STORAGE_KEY, selectedStages, { type: "session" });
   } catch (error) {
-    console.warn("Failed to save stage preferences:", error);
+    logger.warn('Failed to save stage preferences', {
+      error: error instanceof Error ? error.message : String(error),
+      operation: 'saveStagePreferences'
+    });
   }
 };
 
