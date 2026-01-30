@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { zodErrorToReactAdminError } from "./utils";
 
 /**
  * ProductDistributor validation schemas
@@ -67,15 +68,7 @@ export async function validateProductDistributorForm(data: unknown): Promise<voi
   const result = productDistributorSchema.safeParse(data);
 
   if (!result.success) {
-    const formattedErrors: Record<string, string> = {};
-    result.error.issues.forEach((err) => {
-      const path = err.path.join(".");
-      formattedErrors[path] = err.message;
-    });
-    throw {
-      message: "Validation failed",
-      body: { errors: formattedErrors },
-    };
+    throw zodErrorToReactAdminError(result.error);
   }
 }
 
@@ -83,15 +76,7 @@ export async function validateCreateProductDistributor(data: unknown): Promise<v
   const result = createProductDistributorSchema.safeParse(data);
 
   if (!result.success) {
-    const formattedErrors: Record<string, string> = {};
-    result.error.issues.forEach((err) => {
-      const path = err.path.join(".");
-      formattedErrors[path] = err.message;
-    });
-    throw {
-      message: "Validation failed",
-      body: { errors: formattedErrors },
-    };
+    throw zodErrorToReactAdminError(result.error);
   }
 }
 

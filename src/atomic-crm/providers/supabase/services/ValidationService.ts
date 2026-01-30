@@ -35,7 +35,7 @@ import {
   validateUpdateOrganizationNote,
 } from "../../../validation/notes";
 import type { OrganizationNote } from "../../../validation/notes";
-import { validateTaskForSubmission } from "../../../validation/task";
+import { validateTaskForm } from "../../../validation/task";
 import {
   validateProductFormWithDistributors,
   validateProductUpdateWithDistributors,
@@ -189,10 +189,10 @@ export class ValidationService {
 
       tasks: {
         create: async (data: unknown) => {
-          await validateTaskForSubmission(data, false);
+          await validateTaskForm(data, false);
         },
         update: async (data: unknown) => {
-          await validateTaskForSubmission(data, true);
+          await validateTaskForm(data, true);
         },
       },
       sales: {

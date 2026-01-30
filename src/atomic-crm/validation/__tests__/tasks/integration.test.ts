@@ -4,12 +4,7 @@
  */
 
 import { describe, it, expect } from "vitest";
-import {
-  taskSchema,
-  validateCreateTask,
-  validateUpdateTask,
-  validateTaskForSubmission,
-} from "../../task";
+import { taskSchema, validateCreateTask, validateUpdateTask, validateTaskForm } from "../../task";
 
 describe("Task API Boundary Integration", () => {
   it("should validate at creation boundary", () => {
@@ -101,7 +96,7 @@ describe("Task API Boundary Integration", () => {
       completed_at: "2024-12-20T18:45:30.456Z",
     };
 
-    const result = validateTaskForSubmission(apiPayload);
+    const result = validateTaskForm(apiPayload);
     // z.coerce.date() converts strings to Date objects (per schema design)
     expect(result.due_date).toBeInstanceOf(Date);
     expect(result.due_date.toISOString()).toBe("2024-12-31T15:30:45.123Z");

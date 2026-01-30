@@ -4,7 +4,7 @@
  */
 
 import { describe, it, expect } from "vitest";
-import { tagSchema, validateTagUniqueness, validateTagForSubmission, type Tag } from "../../tags";
+import { tagSchema, validateTagUniqueness, validateTagForm, type Tag } from "../../tags";
 import { z } from "zod";
 
 describe("Tag Edge Cases and Business Rules", () => {
@@ -46,14 +46,14 @@ describe("Tag Edge Cases and Business Rules", () => {
     });
   });
 
-  describe("validateTagForSubmission", () => {
+  describe("validateTagForm", () => {
     it("should validate and normalize tag data", () => {
       const inputData = {
         name: "  Important Tag  ",
         color: "warm",
       };
 
-      const result = validateTagForSubmission(inputData);
+      const result = validateTagForm(inputData);
       expect(result.name).toBe("Important Tag");
       expect(result.color).toBe("warm");
     });
@@ -64,7 +64,7 @@ describe("Tag Edge Cases and Business Rules", () => {
         color: "warm",
       };
 
-      expect(() => validateTagForSubmission(invalidData)).toThrow(z.ZodError);
+      expect(() => validateTagForm(invalidData)).toThrow(z.ZodError);
     });
 
     it("should transform hex colors during submission", () => {
@@ -73,7 +73,7 @@ describe("Tag Edge Cases and Business Rules", () => {
         color: "gray",
       };
 
-      const result = validateTagForSubmission(dataWithHex);
+      const result = validateTagForm(dataWithHex);
       expect(result.color).toBe("gray");
     });
   });
