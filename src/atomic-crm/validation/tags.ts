@@ -57,7 +57,7 @@ export const tagSchema = z.strictObject({
   name: z
     .string()
     .min(1, "Tag name is required")
-    .max(100, "Tag name must be less than 100 characters")
+    .max(50, "Tag name must be less than 50 characters")
     .trim(),
 
   color: semanticColorSchema,

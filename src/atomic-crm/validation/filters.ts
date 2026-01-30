@@ -20,7 +20,7 @@ export type FilterValue = z.infer<typeof filterValueSchema>;
  */
 export const listParamsSchema = z
   .object({
-    filter: z.record(z.string(), z.unknown()).optional(),
+    filter: z.record(z.string().max(50), z.unknown()).optional(),
     sort: z
       .object({
         field: z.string().max(100),
@@ -29,7 +29,7 @@ export const listParamsSchema = z
       .optional(),
     page: z.number().int().positive().optional(),
     perPage: z.number().int().positive().max(1000).optional(),
-    displayedFilters: z.record(z.string(), z.boolean()).optional(),
+    displayedFilters: z.record(z.string().max(50), z.boolean()).optional(),
   })
   .passthrough();
 
