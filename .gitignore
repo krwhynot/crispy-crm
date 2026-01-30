@@ -68,6 +68,9 @@ dist/
 # But DO track commands and config
 !.claude/commands/
 
+# Audit report outputs (generated, ephemeral)
+.claude/commands/audit/reports/*.json
+
 storybook-static
 
 # Debug scripts (may contain credentials)
