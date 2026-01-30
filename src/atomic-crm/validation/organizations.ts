@@ -235,19 +235,6 @@ export type Organization = z.infer<typeof organizationSchema>;
 export type OrganizationType = z.infer<typeof organizationTypeSchema>;
 export type OrganizationPriority = z.infer<typeof organizationPrioritySchema>;
 
-// General organization validation (PAT-01: validate[Resource]Form pattern)
-export async function validateOrganizationForm(data: unknown): Promise<void> {
-  try {
-    // Parse and validate the data
-    organizationSchema.parse(data);
-  } catch (error: unknown) {
-    if (error instanceof z.ZodError) {
-      throw zodErrorToReactAdminError(error);
-    }
-    throw error;
-  }
-}
-
 // Create-specific schema (stricter requirements)
 // Omits system-managed fields that are auto-populated by DB triggers
 // Uses .extend() to override nullish/default fields as truly required
