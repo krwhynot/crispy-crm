@@ -48,7 +48,7 @@ export const ProductDistributorList = () => (
     sort={{ field: "created_at", order: "DESC" }}
     perPage={25}
   >
-    <Datagrid rowClick="edit" bulkActionButtons={false}>
+    <PremiumDatagrid rowClick="edit" bulkActionButtons={false}>
       <ReferenceField source="product_id" reference="products" label="Product">
         <TextField source="name" />
       </ReferenceField>
@@ -59,7 +59,7 @@ export const ProductDistributorList = () => (
       <SelectField source="status" choices={PRODUCT_DISTRIBUTOR_STATUS_CHOICES} />
       <DateField source="valid_from" label="Valid From" />
       <DateField source="valid_to" label="Valid To" emptyText="-" />
-    </Datagrid>
+    </PremiumDatagrid>
   </List>
 );
 

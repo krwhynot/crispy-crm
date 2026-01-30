@@ -1,6 +1,6 @@
 {
   "chunk_name": "tags",
-  "generated_at": "2026-01-29T20:25:15.030Z",
+  "generated_at": "2026-01-29T22:43:31.690Z",
   "items": {
     "nodes": [
       {
@@ -85,10 +85,10 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/tags/TagList.tsx:10:TagList",
+        "id": "src/atomic-crm/tags/TagList.tsx:11:TagList",
         "name": "TagList",
         "file": "src/atomic-crm/tags/TagList.tsx",
-        "line": 10,
+        "line": 11,
         "nodeType": "component",
         "exported": true,
         "async": false
@@ -1077,65 +1077,65 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tags/TagList.tsx:10:TagList",
+        "source": "src/atomic-crm/tags/TagList.tsx:11:TagList",
         "target": "cn",
         "targetName": "cn",
         "edgeType": "call",
-        "line": 22,
+        "line": 23,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tags/TagList.tsx:10:TagList",
+        "source": "src/atomic-crm/tags/TagList.tsx:11:TagList",
         "target": "getTagColorClass",
         "targetName": "getTagColorClass",
         "edgeType": "call",
-        "line": 25,
+        "line": 26,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tags/TagList.tsx:10:TagList",
+        "source": "src/atomic-crm/tags/TagList.tsx:11:TagList",
         "target": "List",
         "targetName": "List",
-        "edgeType": "render",
-        "line": 12,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/tags/TagList.tsx:10:TagList",
-        "target": "Datagrid",
-        "targetName": "Datagrid",
         "edgeType": "render",
         "line": 13,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tags/TagList.tsx:10:TagList",
+        "source": "src/atomic-crm/tags/TagList.tsx:11:TagList",
+        "target": "PremiumDatagrid",
+        "targetName": "PremiumDatagrid",
+        "edgeType": "render",
+        "line": 14,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/tags/TagList.tsx:11:TagList",
         "target": "TextField",
         "targetName": "TextField",
         "edgeType": "render",
-        "line": 15,
+        "line": 16,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tags/TagList.tsx:10:TagList",
+        "source": "src/atomic-crm/tags/TagList.tsx:11:TagList",
         "target": "FunctionField",
         "targetName": "FunctionField",
         "edgeType": "render",
-        "line": 18,
+        "line": 19,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/tags/TagList.tsx:10:TagList",
+        "source": "src/atomic-crm/tags/TagList.tsx:11:TagList",
         "target": "FunctionField",
         "targetName": "FunctionField",
         "edgeType": "render",
-        "line": 34,
+        "line": 35,
         "conditional": false,
         "inLoop": false
       },

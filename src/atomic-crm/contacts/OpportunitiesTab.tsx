@@ -13,13 +13,13 @@ import { useQueryClient } from "@tanstack/react-query";
 import { activityKeys } from "../queryKeys";
 import { logger } from "@/lib/logger";
 import {
-  Datagrid,
   FunctionField,
   ReferenceField,
   TextField,
   NumberField,
   ListContextProvider,
 } from "react-admin";
+import { PremiumDatagrid } from "@/components/ra-wrappers/PremiumDatagrid";
 import { Link } from "react-router-dom";
 import { AdminButton } from "@/components/admin/AdminButton";
 import { Trash2 } from "lucide-react";
@@ -246,7 +246,7 @@ export function OpportunitiesTab() {
       </div>
 
       <ListContextProvider value={listContext}>
-        <Datagrid bulkActionButtons={false} rowClick={false} className="border rounded-lg">
+        <PremiumDatagrid bulkActionButtons={false} rowClick={false} className="border rounded-lg">
           <FunctionField
             label="Opportunity"
             render={(record: OpportunityWithJunction) => (
@@ -288,7 +288,7 @@ export function OpportunitiesTab() {
               </button>
             )}
           />
-        </Datagrid>
+        </PremiumDatagrid>
       </ListContextProvider>
 
       <LinkOpportunityModal

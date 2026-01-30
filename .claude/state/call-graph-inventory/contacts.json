@@ -1,6 +1,6 @@
 {
   "chunk_name": "contacts",
-  "generated_at": "2026-01-29T20:25:14.149Z",
+  "generated_at": "2026-01-29T22:43:31.558Z",
   "items": {
     "nodes": [
       {
@@ -8764,8 +8764,8 @@
       },
       {
         "source": "src/atomic-crm/contacts/OpportunitiesTab.tsx:39:OpportunitiesTab",
-        "target": "Datagrid",
-        "targetName": "Datagrid",
+        "target": "PremiumDatagrid",
+        "targetName": "PremiumDatagrid",
         "edgeType": "render",
         "line": 249,
         "conditional": false,

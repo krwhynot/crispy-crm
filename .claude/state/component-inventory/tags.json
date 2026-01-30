@@ -1,6 +1,6 @@
 {
   "chunk_name": "tags",
-  "generated_at": "2026-01-29T20:23:41.484Z",
+  "generated_at": "2026-01-29T22:42:51.284Z",
   "item_count": 22,
   "items": [
     {
@@ -257,12 +257,13 @@
     {
       "name": "TagList",
       "file": "src/atomic-crm/tags/TagList.tsx",
-      "line": 10,
+      "line": 11,
       "type": "presentational",
       "hooks": [],
       "imports": [
         "../types",
         "./tag-colors",
+        "@/components/ra-wrappers/PremiumDatagrid",
         "@/lib/utils",
         "react-admin"
       ],
@@ -276,12 +277,13 @@
     {
       "name": "TagList",
       "file": "src/atomic-crm/tags/TagList.tsx",
-      "line": 10,
+      "line": 11,
       "type": "presentational",
       "hooks": [],
       "imports": [
         "../types",
         "./tag-colors",
+        "@/components/ra-wrappers/PremiumDatagrid",
         "@/lib/utils",
         "react-admin"
       ],
@@ -348,7 +350,7 @@
     {
       "name": "TagList",
       "file": "src/atomic-crm/tags/index.tsx",
-      "line": 10,
+      "line": 11,
       "type": "presentational",
       "hooks": [],
       "imports": [],

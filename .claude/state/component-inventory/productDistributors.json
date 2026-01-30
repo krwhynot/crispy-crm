@@ -1,6 +1,6 @@
 {
   "chunk_name": "productDistributors",
-  "generated_at": "2026-01-29T20:23:41.448Z",
+  "generated_at": "2026-01-29T22:42:51.264Z",
   "item_count": 24,
   "items": [
     {
@@ -136,12 +136,13 @@
     {
       "name": "ProductDistributorList",
       "file": "src/atomic-crm/productDistributors/ProductDistributorList.tsx",
-      "line": 44,
+      "line": 45,
       "type": "presentational",
       "hooks": [],
       "imports": [
         "../utils/autocompleteDefaults",
         "./constants",
+        "@/components/ra-wrappers/PremiumDatagrid",
         "@/components/ra-wrappers/autocomplete-input",
         "@/components/ra-wrappers/reference-input",
         "@/components/ra-wrappers/select-input",
@@ -159,12 +160,13 @@
     {
       "name": "ProductDistributorList",
       "file": "src/atomic-crm/productDistributors/ProductDistributorList.tsx",
-      "line": 44,
+      "line": 45,
       "type": "presentational",
       "hooks": [],
       "imports": [
         "../utils/autocompleteDefaults",
         "./constants",
+        "@/components/ra-wrappers/PremiumDatagrid",
         "@/components/ra-wrappers/autocomplete-input",
         "@/components/ra-wrappers/reference-input",
         "@/components/ra-wrappers/select-input",

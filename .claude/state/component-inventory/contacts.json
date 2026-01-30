@@ -1,6 +1,6 @@
 {
   "chunk_name": "contacts",
-  "generated_at": "2026-01-29T20:23:41.328Z",
+  "generated_at": "2026-01-29T22:42:51.218Z",
   "item_count": 59,
   "items": [
     {
@@ -1149,6 +1149,7 @@
         "@/atomic-crm/constants/appConstants",
         "@/atomic-crm/opportunities/constants",
         "@/components/admin/AdminButton",
+        "@/components/ra-wrappers/PremiumDatagrid",
         "@/lib/logger",
         "@tanstack/react-query",
         "lucide-react",

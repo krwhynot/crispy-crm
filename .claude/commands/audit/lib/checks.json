@@ -1,0 +1,614 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "version": "1.0.0",
+  "description": "56 UX blocker checks across 6 categories. Each check maps to a ripgrep pattern that detects user-blocking issues in Crispy CRM.",
+  "categories": {
+    "FORM": {
+      "name": "Form Submission & Validation",
+      "description": "React Admin form submit, validation, field binding issues that block data entry",
+      "checks": [
+        {
+          "id": "FORM-B001",
+          "name": "Missing form resolver",
+          "pattern": "<SimpleForm(?!.*resolver)",
+          "glob": "**/*.tsx",
+          "user_impact": "Form submits without validation — invalid data reaches Supabase",
+          "confidence_base": 0.85,
+          "stack_specific": true,
+          "needs_verification": true
+        },
+        {
+          "id": "FORM-B002",
+          "name": "Raw zodResolver usage",
+          "pattern": "zodResolver\\(",
+          "glob": "**/*.{ts,tsx}",
+          "exclude_glob": "zodErrorFormatting.ts",
+          "user_impact": "Type mismatch causes silent form errors in React Admin",
+          "confidence_base": 0.95,
+          "stack_specific": true,
+          "needs_verification": false
+        },
+        {
+          "id": "FORM-B003",
+          "name": "onChange validation mode",
+          "pattern": "mode:\\s*['\"]onChange['\"]",
+          "glob": "**/*.tsx",
+          "user_impact": "Aggressive error display on every keystroke disrupts data entry",
+          "confidence_base": 0.90,
+          "stack_specific": false,
+          "needs_verification": false
+        },
+        {
+          "id": "FORM-B004",
+          "name": "watch() instead of useWatch()",
+          "pattern": "(?<!use)watch\\(",
+          "glob": "**/*.tsx",
+          "user_impact": "Entire form re-renders on every field change — lag on iPad",
+          "confidence_base": 0.80,
+          "stack_specific": true,
+          "needs_verification": true
+        },
+        {
+          "id": "FORM-B005",
+          "name": "Missing required field indicator",
+          "pattern": "<TextInput(?!.*required)(?!.*validate).*source=",
+          "glob": "**/*.tsx",
+          "user_impact": "User submits incomplete forms, gets cryptic Supabase NOT NULL error",
+          "confidence_base": 0.60,
+          "stack_specific": true,
+          "needs_verification": true
+        },
+        {
+          "id": "FORM-B006",
+          "name": "Inline validate function",
+          "pattern": "validate=\\{\\(",
+          "glob": "**/*.tsx",
+          "user_impact": "Validation bypasses Zod schema — inconsistent error messages",
+          "confidence_base": 0.85,
+          "stack_specific": true,
+          "needs_verification": true
+        },
+        {
+          "id": "FORM-B007",
+          "name": "Form without error boundary",
+          "pattern": "<(SimpleForm|TabbedForm)(?!.*ErrorBoundary)",
+          "glob": "**/*.tsx",
+          "user_impact": "Unhandled form error shows white screen instead of error message",
+          "confidence_base": 0.65,
+          "stack_specific": true,
+          "needs_verification": true
+        },
+        {
+          "id": "FORM-B008",
+          "name": "Missing z.coerce for numeric input",
+          "pattern": "z\\.number\\(\\)(?!.*coerce)",
+          "glob": "**/validation/*.ts",
+          "user_impact": "Number field submits as string — Zod rejects, save fails silently",
+          "confidence_base": 0.90,
+          "stack_specific": true,
+          "needs_verification": true
+        },
+        {
+          "id": "FORM-B009",
+          "name": "Form missing onSubmit/onBlur mode",
+          "pattern": "<SimpleForm(?!.*(mode|resolver))",
+          "glob": "**/*.tsx",
+          "user_impact": "Default validation mode may cause premature error display",
+          "confidence_base": 0.70,
+          "stack_specific": true,
+          "needs_verification": true
+        },
+        {
+          "id": "FORM-B010",
+          "name": "Strict schema used for updates",
+          "pattern": "\\.strict\\(\\).*[Uu]pdate",
+          "glob": "**/validation/*.ts",
+          "user_impact": "Update strips id/updated_at — save silently fails or corrupts record",
+          "confidence_base": 0.85,
+          "stack_specific": true,
+          "needs_verification": true
+        }
+      ]
+    },
+    "FILTER": {
+      "name": "List Filters & Pagination",
+      "description": "Filter controls, search, pagination, and empty state issues that block data discovery",
+      "checks": [
+        {
+          "id": "FILTER-B001",
+          "name": "Missing debounce on text filter",
+          "pattern": "TextInput.*source=.*alwaysOn(?!.*debounce)",
+          "glob": "**/column-filters/*.tsx",
+          "user_impact": "Each keystroke fires API request — search unusable on slow connections",
+          "confidence_base": 0.80,
+          "stack_specific": true,
+          "needs_verification": true
+        },
+        {
+          "id": "FILTER-B002",
+          "name": "Filter without useListContext",
+          "pattern": "filterValues(?!.*useListContext)",
+          "glob": "**/*.tsx",
+          "user_impact": "Filter reads stale values — user sees wrong results",
+          "confidence_base": 0.70,
+          "stack_specific": true,
+          "needs_verification": true
+        },
+        {
+          "id": "FILTER-B003",
+          "name": "Missing empty state handler",
+          "pattern": "<(List|Datagrid)(?!.*empty)",
+          "glob": "**/*.tsx",
+          "user_impact": "Empty filter results show blank page — user thinks app is broken",
+          "confidence_base": 0.65,
+          "stack_specific": true,
+          "needs_verification": true
+        },
+        {
+          "id": "FILTER-B004",
+          "name": "Hardcoded pagination limit",
+          "pattern": "perPage=\\{?\\d+\\}?",
+          "glob": "**/*.tsx",
+          "user_impact": "Fixed pagination may hide records or cause slow loads",
+          "confidence_base": 0.50,
+          "stack_specific": false,
+          "needs_verification": true
+        },
+        {
+          "id": "FILTER-B005",
+          "name": "Missing sort default",
+          "pattern": "<List(?!.*(sort|defaultSort))",
+          "glob": "**/*List.tsx",
+          "user_impact": "List shows random order — user cannot find recent records",
+          "confidence_base": 0.75,
+          "stack_specific": true,
+          "needs_verification": true
+        },
+        {
+          "id": "FILTER-B006",
+          "name": "Filter state not URL-synced",
+          "pattern": "useState.*filter(?!.*useSearchParams)",
+          "glob": "**/*.tsx",
+          "user_impact": "Filters reset on back navigation — user loses context",
+          "confidence_base": 0.60,
+          "stack_specific": false,
+          "needs_verification": true
+        },
+        {
+          "id": "FILTER-B007",
+          "name": "Deleted records visible in list",
+          "pattern": "getList(?!.*deleted_at)",
+          "glob": "**/handlers/*.ts",
+          "user_impact": "Soft-deleted records appear in lists — user sees ghost data",
+          "confidence_base": 0.85,
+          "stack_specific": true,
+          "needs_verification": true
+        },
+        {
+          "id": "FILTER-B008",
+          "name": "Missing loading skeleton",
+          "pattern": "<(List|Datagrid)(?!.*(loading|isLoading|skeleton|Skeleton))",
+          "glob": "**/*List.tsx",
+          "user_impact": "No loading indicator — user clicks repeatedly thinking app is frozen",
+          "confidence_base": 0.55,
+          "stack_specific": false,
+          "needs_verification": true
+        },
+        {
+          "id": "FILTER-B009",
+          "name": "ReferenceInput without filter",
+          "pattern": "<ReferenceInput(?!.*filter)",
+          "glob": "**/*.tsx",
+          "user_impact": "Dropdown loads all records — slow on 50+ distributors, may timeout",
+          "confidence_base": 0.70,
+          "stack_specific": true,
+          "needs_verification": true
+        },
+        {
+          "id": "FILTER-B010",
+          "name": "Self-referential dropdown without exclusion",
+          "pattern": "parent_id.*ReferenceInput(?!.*id_neq)",
+          "glob": "**/*.tsx",
+          "user_impact": "User can set record as its own parent — creates infinite loop",
+          "confidence_base": 0.90,
+          "stack_specific": true,
+          "needs_verification": true
+        }
+      ]
+    },
+    "ACTION": {
+      "name": "CRUD Actions & Operations",
+      "description": "Delete, create, update, and bulk operation issues that block task completion",
+      "checks": [
+        {
+          "id": "ACTION-B001",
+          "name": "Hard DELETE instead of soft delete",
+          "pattern": "\\.delete\\(\\)(?!.*deleted_at)",
+          "glob": "**/handlers/*.ts",
+          "user_impact": "Permanent data loss — no undo, violates soft-delete policy",
+          "confidence_base": 0.85,
+          "stack_specific": true,
+          "needs_verification": true
+        },
+        {
+          "id": "ACTION-B002",
+          "name": "Missing confirmation dialog on delete",
+          "pattern": "DeleteButton(?!.*confirm)",
+          "glob": "**/*.tsx",
+          "user_impact": "One-click delete with no confirmation — accidental data loss",
+          "confidence_base": 0.70,
+          "stack_specific": true,
+          "needs_verification": true
+        },
+        {
+          "id": "ACTION-B003",
+          "name": "Direct Supabase import in component",
+          "pattern": "import.*from.*@supabase|import.*supabaseClient",
+          "glob": "src/atomic-crm/**/*.tsx",
+          "user_impact": "Bypasses data provider — no validation, no error handling, no cache update",
+          "confidence_base": 0.95,
+          "stack_specific": true,
+          "needs_verification": false
+        },
+        {
+          "id": "ACTION-B004",
+          "name": "Missing error handling on mutation",
+          "pattern": "useMutation(?!.*onError)",
+          "glob": "**/*.{ts,tsx}",
+          "user_impact": "Failed save shows no feedback — user thinks data was saved",
+          "confidence_base": 0.80,
+          "stack_specific": false,
+          "needs_verification": true
+        },
+        {
+          "id": "ACTION-B005",
+          "name": "Fire-and-forget async without catch",
+          "pattern": "void\\s+\\w+\\((?!.*\\.catch)",
+          "glob": "**/*.{ts,tsx}",
+          "user_impact": "Side-effect failure silently swallowed — data inconsistency",
+          "confidence_base": 0.75,
+          "stack_specific": false,
+          "needs_verification": true
+        },
+        {
+          "id": "ACTION-B006",
+          "name": "Missing optimistic update rollback",
+          "pattern": "onMutate(?!.*onError)",
+          "glob": "**/*.{ts,tsx}",
+          "user_impact": "Optimistic UI shows success but server rejects — stale UI state",
+          "confidence_base": 0.80,
+          "stack_specific": false,
+          "needs_verification": true
+        },
+        {
+          "id": "ACTION-B007",
+          "name": "Create without redirect",
+          "pattern": "<Create(?!.*(redirect|onSuccess))",
+          "glob": "**/*Create.tsx",
+          "user_impact": "After creating record, user stays on blank form — confused",
+          "confidence_base": 0.70,
+          "stack_specific": true,
+          "needs_verification": true
+        },
+        {
+          "id": "ACTION-B008",
+          "name": "Missing loading state on action button",
+          "pattern": "<(SaveButton|Button)(?!.*(loading|disabled|isLoading))",
+          "glob": "**/*.tsx",
+          "user_impact": "No feedback during save — user double-clicks creating duplicates",
+          "confidence_base": 0.60,
+          "stack_specific": false,
+          "needs_verification": true
+        },
+        {
+          "id": "ACTION-B009",
+          "name": "Silent empty catch block",
+          "pattern": "catch\\s*\\([^)]*\\)\\s*\\{\\s*\\}",
+          "glob": "**/*.{ts,tsx}",
+          "user_impact": "Error silently swallowed — operation fails with no user feedback",
+          "confidence_base": 0.90,
+          "stack_specific": false,
+          "needs_verification": false
+        },
+        {
+          "id": "ACTION-B010",
+          "name": "Console.log in production code",
+          "pattern": "console\\.(log|warn|error|info|debug)\\(",
+          "glob": "src/**/*.{ts,tsx}",
+          "exclude_glob": "*.test.*,logger.ts,devLogger.ts",
+          "user_impact": "Debug noise in production console — masks real errors",
+          "confidence_base": 0.90,
+          "stack_specific": false,
+          "needs_verification": false
+        }
+      ]
+    },
+    "DATA": {
+      "name": "Data Flow & Cache",
+      "description": "Stale data, loading states, error handling, and cache invalidation issues",
+      "checks": [
+        {
+          "id": "DATA-B001",
+          "name": "Nuclear cache invalidation",
+          "pattern": "invalidateQueries\\(\\)(?!.*queryKey)",
+          "glob": "**/*.{ts,tsx}",
+          "user_impact": "All queries refetch — page freezes for seconds on slow connection",
+          "confidence_base": 0.90,
+          "stack_specific": true,
+          "needs_verification": false
+        },
+        {
+          "id": "DATA-B002",
+          "name": "Hardcoded query key string",
+          "pattern": "queryKey:\\s*\\[['\"]\\w+['\"]",
+          "glob": "**/*.{ts,tsx}",
+          "user_impact": "Key drifts from factory — cache never invalidated, user sees stale data",
+          "confidence_base": 0.80,
+          "stack_specific": true,
+          "needs_verification": true
+        },
+        {
+          "id": "DATA-B003",
+          "name": "Missing cross-resource invalidation",
+          "pattern": "invalidateQueries.*(?:contacts|organizations)(?!.*(?:contacts|organizations).*invalidate)",
+          "glob": "**/*.{ts,tsx}",
+          "user_impact": "Updating org name shows old name in contact list until page refresh",
+          "confidence_base": 0.65,
+          "stack_specific": true,
+          "needs_verification": true
+        },
+        {
+          "id": "DATA-B004",
+          "name": "Direct cache manipulation",
+          "pattern": "setQueryData\\(",
+          "glob": "**/*.{ts,tsx}",
+          "user_impact": "Cache bypasses validation — can show corrupted data shapes",
+          "confidence_base": 0.85,
+          "stack_specific": true,
+          "needs_verification": true
+        },
+        {
+          "id": "DATA-B005",
+          "name": "Aggressive refetchOnWindowFocus",
+          "pattern": "refetchOnWindowFocus:\\s*true",
+          "glob": "**/*.{ts,tsx}",
+          "user_impact": "Every tab switch fires API storm — app freezes on return",
+          "confidence_base": 0.85,
+          "stack_specific": false,
+          "needs_verification": false
+        },
+        {
+          "id": "DATA-B006",
+          "name": "Missing error boundary around data component",
+          "pattern": "<(List|Show|Edit)(?!.*ErrorBoundary)",
+          "glob": "**/*.tsx",
+          "user_impact": "API error crashes entire page — white screen of death",
+          "confidence_base": 0.60,
+          "stack_specific": true,
+          "needs_verification": true
+        },
+        {
+          "id": "DATA-B007",
+          "name": "Reading from base table instead of view",
+          "pattern": "from\\(['\"](?:contacts|opportunities|organizations)['\"]\\)(?!.*summary)",
+          "glob": "**/handlers/*.ts",
+          "user_impact": "Missing computed fields — user sees incomplete data (no counts, labels)",
+          "confidence_base": 0.80,
+          "stack_specific": true,
+          "needs_verification": true
+        },
+        {
+          "id": "DATA-B008",
+          "name": "Missing loading state in component",
+          "pattern": "useGetList|useGetOne(?!.*isLoading|loading)",
+          "glob": "**/*.tsx",
+          "user_impact": "Data arrives late — component renders with undefined, shows errors",
+          "confidence_base": 0.55,
+          "stack_specific": false,
+          "needs_verification": true
+        },
+        {
+          "id": "DATA-B009",
+          "name": "Polling without stale time",
+          "pattern": "refetchInterval(?!.*staleTime)",
+          "glob": "**/*.{ts,tsx}",
+          "user_impact": "Continuous polling wastes bandwidth — degrades mobile/iPad performance",
+          "confidence_base": 0.80,
+          "stack_specific": false,
+          "needs_verification": true
+        },
+        {
+          "id": "DATA-B010",
+          "name": "any type in data layer",
+          "pattern": ":\\s*any|as\\s+any",
+          "glob": "**/handlers/*.ts",
+          "exclude_glob": "*.test.*",
+          "user_impact": "Type safety bypassed — runtime crashes from unexpected data shapes",
+          "confidence_base": 0.95,
+          "stack_specific": false,
+          "needs_verification": false
+        }
+      ]
+    },
+    "NAV": {
+      "name": "Navigation & Modals",
+      "description": "Route, modal, slide-over, and breadcrumb issues that block user navigation",
+      "checks": [
+        {
+          "id": "NAV-B001",
+          "name": "Missing DialogTitle in modal",
+          "pattern": "<(Dialog|AlertDialog|Drawer)Content(?!.*Title)",
+          "glob": "**/*.tsx",
+          "user_impact": "Screen reader announces nothing — accessibility violation, Radix warning",
+          "confidence_base": 0.85,
+          "stack_specific": true,
+          "needs_verification": true
+        },
+        {
+          "id": "NAV-B002",
+          "name": "Modal without close mechanism",
+          "pattern": "<(Dialog|Sheet|Drawer)Content(?!.*(onClose|close|Close))",
+          "glob": "**/*.tsx",
+          "user_impact": "User cannot dismiss modal — stuck until page refresh",
+          "confidence_base": 0.75,
+          "stack_specific": false,
+          "needs_verification": true
+        },
+        {
+          "id": "NAV-B003",
+          "name": "SlideOver without proper width",
+          "pattern": "SlideOver(?!.*w-\\[40vw\\]|width)",
+          "glob": "**/*.tsx",
+          "user_impact": "Slide-over panel wrong size — overlaps main content or too narrow to use",
+          "confidence_base": 0.65,
+          "stack_specific": true,
+          "needs_verification": true
+        },
+        {
+          "id": "NAV-B004",
+          "name": "Missing focus trap in modal",
+          "pattern": "<(Dialog|Sheet)(?!.*focus|FocusTrap)",
+          "glob": "**/*.tsx",
+          "user_impact": "Tab key escapes modal — user interacts with hidden background content",
+          "confidence_base": 0.60,
+          "stack_specific": false,
+          "needs_verification": true
+        },
+        {
+          "id": "NAV-B005",
+          "name": "Route without error element",
+          "pattern": "<Route(?!.*errorElement|ErrorBoundary)",
+          "glob": "**/*.tsx",
+          "user_impact": "Navigation to broken page shows white screen instead of error page",
+          "confidence_base": 0.70,
+          "stack_specific": false,
+          "needs_verification": true
+        },
+        {
+          "id": "NAV-B006",
+          "name": "Hardcoded route path",
+          "pattern": "navigate\\(['\"]/(contacts|opportunities|organizations)",
+          "glob": "**/*.tsx",
+          "user_impact": "Route rename breaks hardcoded paths — 404 error for user",
+          "confidence_base": 0.75,
+          "stack_specific": false,
+          "needs_verification": true
+        },
+        {
+          "id": "NAV-B007",
+          "name": "Touch target too small",
+          "pattern": "h-[678]\\s|w-[678]\\s|h-\\[2[0-9]px\\]|w-\\[2[0-9]px\\]",
+          "glob": "**/*.tsx",
+          "user_impact": "Button/link too small for iPad touch — user misses tap target",
+          "confidence_base": 0.80,
+          "stack_specific": false,
+          "needs_verification": true
+        },
+        {
+          "id": "NAV-B008",
+          "name": "Missing aria-label on icon button",
+          "pattern": "<(Button|IconButton)(?!.*aria-label).*icon|<button(?!.*aria-label).*<.*Icon",
+          "glob": "**/*.tsx",
+          "user_impact": "Screen reader says 'button' with no label — inaccessible action",
+          "confidence_base": 0.70,
+          "stack_specific": false,
+          "needs_verification": true
+        }
+      ]
+    },
+    "ARCH": {
+      "name": "Architecture & Stack Risks",
+      "description": "View security, soft-delete zombies, and framework-specific fault lines",
+      "checks": [
+        {
+          "id": "ARCH-B001",
+          "name": "RLS policy with USING(true)",
+          "pattern": "USING\\s*\\(\\s*true\\s*\\)(?!.*service_role)",
+          "glob": "**/migrations/*.sql",
+          "user_impact": "Any authenticated user can read/write all records — data breach risk",
+          "confidence_base": 0.90,
+          "stack_specific": true,
+          "needs_verification": true
+        },
+        {
+          "id": "ARCH-B002",
+          "name": "Missing RLS on table",
+          "pattern": "CREATE TABLE(?!.*ENABLE ROW LEVEL SECURITY)",
+          "glob": "**/migrations/*.sql",
+          "user_impact": "Table has no access control — all data publicly accessible",
+          "confidence_base": 0.80,
+          "stack_specific": true,
+          "needs_verification": true
+        },
+        {
+          "id": "ARCH-B003",
+          "name": "View without deleted_at filter",
+          "pattern": "CREATE.*VIEW(?!.*deleted_at)",
+          "glob": "**/migrations/*.sql",
+          "user_impact": "View exposes soft-deleted records — zombie data in UI",
+          "confidence_base": 0.85,
+          "stack_specific": true,
+          "needs_verification": true
+        },
+        {
+          "id": "ARCH-B004",
+          "name": "Deprecated company_id on contacts",
+          "pattern": "contacts?\\.company_id|company_id.*contacts",
+          "glob": "src/**/*.{ts,tsx}",
+          "user_impact": "Using deprecated field — data writes to wrong column, contact unlinked",
+          "confidence_base": 0.95,
+          "stack_specific": true,
+          "needs_verification": false
+        },
+        {
+          "id": "ARCH-B005",
+          "name": "Deprecated archived_at on opportunities",
+          "pattern": "archived_at",
+          "glob": "src/**/*.{ts,tsx}",
+          "user_impact": "Using deprecated field — should use deleted_at for soft-delete",
+          "confidence_base": 0.95,
+          "stack_specific": true,
+          "needs_verification": false
+        },
+        {
+          "id": "ARCH-B006",
+          "name": "Missing Zod schema for handler",
+          "pattern": "Handler\\.ts$",
+          "glob": "**/handlers/*.ts",
+          "user_impact": "Handler accepts unvalidated data — invalid records corrupt database",
+          "confidence_base": 0.70,
+          "stack_specific": true,
+          "needs_verification": true
+        },
+        {
+          "id": "ARCH-B007",
+          "name": "Junction table missing both-side auth",
+          "pattern": "contact_organizations|opportunity_contacts.*INSERT(?!.*EXISTS.*EXISTS)",
+          "glob": "**/migrations/*.sql",
+          "user_impact": "Users can link unauthorized records — cross-tenant data leak",
+          "confidence_base": 0.80,
+          "stack_specific": true,
+          "needs_verification": true
+        },
+        {
+          "id": "ARCH-B008",
+          "name": "Raw Datagrid import instead of PremiumDatagrid",
+          "pattern": "import.*Datagrid.*from.*react-admin",
+          "glob": "src/**/*.tsx",
+          "exclude_glob": "PremiumDatagrid.tsx",
+          "user_impact": "Props leak to DOM — console warnings, potential rendering issues",
+          "confidence_base": 0.85,
+          "stack_specific": true,
+          "needs_verification": false
+        }
+      ]
+    }
+  },
+  "total_checks": 56,
+  "confidence_thresholds": {
+    "blocker": 0.95,
+    "warning": 0.80,
+    "info": 0.60
+  },
+  "max_findings": 50
+}
