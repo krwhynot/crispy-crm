@@ -211,13 +211,33 @@ function mergeCreateDefaults(data: Partial<RaRecord>): Partial<RaRecord> {
  */
 async function opportunitiesBeforeDelete(
   params: DeleteParams,
-  _dataProvider: DataProvider
+  dataProvider: DataProvider
 ): Promise<DeleteParams & { meta?: { skipDelete?: boolean } }> {
   // Validate ID before RPC call (fail-fast)
   const numericId = Number(params.id);
   if (!Number.isInteger(numericId) || numericId <= 0) {
     throw new Error(`Invalid opportunity ID: ${params.id}`);
   }
+
+  // FIX [WF-H2-002]: Log activity before archive (fire-and-forget, backup path)
+  // Primary activity logging is in OpportunitiesService.archiveOpportunity().
+  // This covers the React Admin DeleteButton path (if used).
+  void dataProvider.create("activities", {
+    data: {
+      activity_type: "interaction",
+      type: "note",
+      subject: "Opportunity archived",
+      description: `Opportunity archived via delete action`,
+      activity_date: new Date().toISOString(),
+      opportunity_id: numericId,
+    },
+  }).catch((err: unknown) => {
+    const errorMessage = err instanceof Error ? err.message : String(err);
+    logger.warn("Activity logging failed during beforeDelete", err instanceof Error ? err : new Error(errorMessage), {
+      feature: "opportunities",
+      opportunityId: numericId,
+    });
+  });
 
   // Use Supabase client directly - bypasses DataProvider abstraction
   // This is the React Admin recommended pattern for lifecycle callbacks

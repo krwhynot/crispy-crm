@@ -51,6 +51,27 @@ export class OpportunitiesService {
    */
   async archiveOpportunity(opportunity: Opportunity): Promise<Opportunity[]> {
     try {
+      // FIX [WF-H2-002]: Log activity before archive (fire-and-forget)
+      void this.dataProvider
+        .create("activities", {
+          data: {
+            activity_type: "interaction",
+            type: "note",
+            subject: "Opportunity archived",
+            description: `Opportunity "${opportunity.name}" was archived`,
+            activity_date: new Date().toISOString(),
+            opportunity_id: opportunity.id,
+            organization_id: opportunity.customer_organization_id ?? null,
+          },
+        })
+        .catch((err: unknown) => {
+          const errorMessage = err instanceof Error ? err.message : String(err);
+          devError("OpportunitiesService", "Activity logging failed during archive", {
+            opportunityId: opportunity.id,
+            error: errorMessage,
+          });
+        });
+
       return await this.dataProvider.rpc<Opportunity[]>("archive_opportunity_with_relations", {
         opp_id: opportunity.id,
       });
@@ -73,6 +94,27 @@ export class OpportunitiesService {
    */
   async unarchiveOpportunity(opportunity: Opportunity): Promise<Opportunity[]> {
     try {
+      // FIX [WF-H2-002]: Log activity before unarchive (fire-and-forget)
+      void this.dataProvider
+        .create("activities", {
+          data: {
+            activity_type: "interaction",
+            type: "note",
+            subject: "Opportunity restored",
+            description: `Opportunity "${opportunity.name}" was restored from archive`,
+            activity_date: new Date().toISOString(),
+            opportunity_id: opportunity.id,
+            organization_id: opportunity.customer_organization_id ?? null,
+          },
+        })
+        .catch((err: unknown) => {
+          const errorMessage = err instanceof Error ? err.message : String(err);
+          devError("OpportunitiesService", "Activity logging failed during unarchive", {
+            opportunityId: opportunity.id,
+            error: errorMessage,
+          });
+        });
+
       return await this.dataProvider.rpc<Opportunity[]>("unarchive_opportunity_with_relations", {
         opp_id: opportunity.id,
       });
