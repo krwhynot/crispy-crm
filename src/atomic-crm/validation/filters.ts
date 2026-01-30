@@ -5,8 +5,8 @@ import { z } from "zod";
  * Defensive validation to prevent injection attacks.
  */
 export const filterValueSchema = z.union([
-  z.string().max(1000),
-  z.array(z.string().max(1000)).max(100),
+  z.string().max(500),
+  z.array(z.string().max(500)).max(100),
   z.number(),
   z.boolean(),
   z.null(),

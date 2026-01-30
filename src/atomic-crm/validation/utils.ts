@@ -190,3 +190,35 @@ export function formatZodErrors(error: { issues: ZodIssueBase[] }): Record<strin
 
   return formattedErrors;
 }
+
+/**
+ * Transforms a ZodError into React Admin validation error format with friendly messages.
+ * Centralizes the error transformation pattern used across all validation functions.
+ *
+ * @param error - The ZodError from schema.parse()
+ * @param message - Optional custom error message (default: "Validation failed")
+ * @returns React Admin compatible error object
+ *
+ * @example
+ * ```typescript
+ * try {
+ *   schema.parse(data);
+ * } catch (error: unknown) {
+ *   if (error instanceof z.ZodError) {
+ *     throw zodErrorToReactAdminError(error);
+ *   }
+ *   throw error;
+ * }
+ * ```
+ */
+export function zodErrorToReactAdminError(
+  error: { issues: ZodIssueBase[] },
+  message = "Validation failed"
+): { message: string; body: { errors: Record<string, string> } } {
+  const formattedErrors = formatZodErrors(error);
+
+  return {
+    message,
+    body: { errors: formattedErrors },
+  };
+}

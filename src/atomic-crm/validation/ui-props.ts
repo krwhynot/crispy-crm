@@ -104,7 +104,7 @@ export const tabComponentPropsSchema = z.strictObject({
 export const quickLogFormPropsSchema = z.strictObject({
   onComplete: voidCallbackSchema,
   onRefresh: voidCallbackSchema.optional(),
-  initialDraft: z.record(z.string(), z.unknown()).optional().nullable(),
+  initialDraft: z.record(z.string().max(50), z.unknown()).optional().nullable(),
   onDraftChange: recordCallbackSchema.optional(),
   initialContactId: z.number().int().positive().optional(),
   initialOrganizationId: z.number().int().positive().optional(),
