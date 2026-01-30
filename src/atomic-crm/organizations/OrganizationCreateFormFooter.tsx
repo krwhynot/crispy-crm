@@ -35,7 +35,7 @@ export const OrganizationCreateFormFooter = ({
   checkForDuplicate,
   isChecking,
   redirectPath = "/organizations",
-  preserveFields = ["parent_organization_id", "organization_type", "segment_id", "sales_id"],
+  preserveFields = ["parent_organization_id", "organization_type", "sales_id"],
   transformValues,
   bypassDuplicate,
 }: OrganizationCreateFormFooterProps) => {
