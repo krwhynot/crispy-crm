@@ -1,6 +1,10 @@
 import { z } from "zod";
 import { sanitizeHtml } from "@/lib/sanitization";
 import { optionalRaFileSchema } from "./shared/ra-file";
+import { PLAYBOOK_CATEGORY_IDS } from "./segments";
+
+// Unknown segment UUID - reject during CREATE to force meaningful selection
+const UNKNOWN_SEGMENT_UUID = PLAYBOOK_CATEGORY_IDS.Unknown;
 
 /**
  * Organization validation schemas and functions
