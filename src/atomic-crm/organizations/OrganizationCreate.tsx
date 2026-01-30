@@ -199,25 +199,6 @@ const OrganizationCreate = () => {
     );
   }
 
-  if (!unknownSegmentId) {
-    return (
-      <div className="bg-muted px-6 py-6">
-        <div className="max-w-4xl mx-auto">
-          <Card>
-            <CardContent className="py-8 text-center">
-              <p className="text-destructive">
-                Database configuration error: Unknown segment missing.
-              </p>
-              <p className="text-muted-foreground text-sm mt-2">
-                Please contact your administrator.
-              </p>
-            </CardContent>
-          </Card>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <>
       <CreateBase redirect="show" transform={transformValues}>

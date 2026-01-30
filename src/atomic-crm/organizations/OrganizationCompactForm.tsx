@@ -14,6 +14,7 @@ import { saleOptionRenderer } from "../utils/saleOptionRenderer";
 import { OrganizationHierarchySection } from "./OrganizationHierarchySection";
 import { ParentOrganizationInput } from "./ParentOrganizationInput";
 import { useCityStateMapping } from "@/hooks";
+import { useEditContext } from "ra-core";
 import { PrincipalAwareTypeInput } from "./PrincipalAwareTypeInput";
 
 interface OrganizationCompactFormProps {
@@ -22,6 +23,10 @@ interface OrganizationCompactFormProps {
 
 export const OrganizationCompactForm = ({ isRep }: OrganizationCompactFormProps) => {
   useCityStateMapping();
+
+  // Detect edit mode - allow Unknown segment for existing orgs
+  const editContext = useEditContext();
+  const isEditMode = !!editContext?.record;
 
   return (
     <div className="space-y-6">
@@ -85,7 +90,7 @@ export const OrganizationCompactForm = ({ isRep }: OrganizationCompactFormProps)
               />
             </ReferenceInput>
           </FormFieldWrapper>
-          <FormFieldWrapper name="segment_id" isRequired countDefaultAsFilled>
+          <FormFieldWrapper name="segment_id" isRequired>
             <SegmentComboboxInput source="segment_id" label="Segment *" helperText={false} />
           </FormFieldWrapper>
         </CompactFormRow>
