@@ -63,8 +63,10 @@ describe("createFormResolver", () => {
     );
 
     expect(result.errors).toBeDefined();
-    expect(result.errors.contact?.email?.message).toBe("Please enter a valid email address.");
-    expect(result.errors.contact?.phone?.message).toBe("This field is required.");
+    // Type assertion for nested error structure
+    const contactErrors = result.errors.contact as Record<string, { message: string }>;
+    expect(contactErrors?.email?.message).toBe("Please enter a valid email address.");
+    expect(contactErrors?.phone?.message).toBe("This field is required.");
     expect(result.values).toEqual({});
   });
 
@@ -320,7 +322,7 @@ describe("zodErrorToFormErrors", () => {
 describe("getFieldError", () => {
   it("should extract specific field error", () => {
     const schema = z.object({
-      name: z.string(),
+      name: z.string().min(1),
       email: z.string().email(),
     });
 
@@ -338,7 +340,7 @@ describe("getFieldError", () => {
 
   it("should return undefined for field without error", () => {
     const schema = z.object({
-      name: z.string(),
+      name: z.string().min(1),
       email: z.string().email(),
     });
 
@@ -355,7 +357,7 @@ describe("getFieldError", () => {
 describe("hasFieldError", () => {
   it("should return true when field has error", () => {
     const schema = z.object({
-      name: z.string(),
+      name: z.string().min(1),
       email: z.string().email(),
     });
 
@@ -372,7 +374,7 @@ describe("hasFieldError", () => {
 describe("getAllErrorMessages", () => {
   it("should return array of formatted error messages", () => {
     const schema = z.object({
-      name: z.string(),
+      name: z.string().min(1),
       email: z.string().email(),
     });
 
@@ -392,7 +394,7 @@ describe("getAllErrorMessages", () => {
 describe("createValidationError", () => {
   it("should create React Admin compatible error", () => {
     const schema = z.object({
-      name: z.string(),
+      name: z.string().min(1),
       email: z.string().email(),
     });
 
@@ -412,7 +414,7 @@ describe("createValidationError", () => {
 
   it("should accept custom error message", () => {
     const schema = z.object({
-      name: z.string(),
+      name: z.string().min(1),
     });
 
     const parseResult = schema.safeParse({ name: "" });
