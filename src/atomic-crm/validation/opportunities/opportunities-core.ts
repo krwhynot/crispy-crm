@@ -271,17 +271,7 @@ export async function validateOpportunityForm(data: unknown): Promise<void> {
     opportunitySchema.parse(data);
   } catch (error: unknown) {
     if (error instanceof z.ZodError) {
-      // Format validation errors for React Admin
-      const formattedErrors: Record<string, string> = {};
-      error.issues.forEach((err) => {
-        const path = err.path.join(".");
-        formattedErrors[path] = err.message;
-      });
-
-      throw {
-        message: "Validation failed",
-        body: { errors: formattedErrors }, // React Admin expects errors at body.errors
-      };
+      throw zodErrorToReactAdminError(error);
     }
     throw error;
   }

@@ -235,9 +235,8 @@ export type Organization = z.infer<typeof organizationSchema>;
 export type OrganizationType = z.infer<typeof organizationTypeSchema>;
 export type OrganizationPriority = z.infer<typeof organizationPrioritySchema>;
 
-// Validation function matching expected signature from unifiedDataProvider
-// This is the ONLY place where organization validation occurs
-export async function validateOrganizationForSubmission(data: unknown): Promise<void> {
+// General organization validation (PAT-01: validate[Resource]Form pattern)
+export async function validateOrganizationForm(data: unknown): Promise<void> {
   try {
     // Parse and validate the data
     organizationSchema.parse(data);

@@ -10,6 +10,7 @@ import {
   type OpportunityStageValue,
 } from "./opportunities-core";
 import { STAGE, CLOSED_STAGES } from "@/atomic-crm/opportunities/constants";
+import { zodErrorToReactAdminError } from "../utils";
 
 /**
  * Operation-specific schemas for opportunities
