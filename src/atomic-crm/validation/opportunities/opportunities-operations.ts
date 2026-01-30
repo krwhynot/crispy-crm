@@ -618,15 +618,7 @@ export async function validateCreateOpportunity(data: unknown): Promise<void> {
     createOpportunitySchema.parse(data);
   } catch (error: unknown) {
     if (error instanceof z.ZodError) {
-      const formattedErrors: Record<string, string> = {};
-      error.issues.forEach((err) => {
-        const path = err.path.join(".");
-        formattedErrors[path] = err.message;
-      });
-      throw {
-        message: "Validation failed",
-        body: { errors: formattedErrors }, // React Admin expects errors at body.errors
-      };
+      throw zodErrorToReactAdminError(error);
     }
     throw error;
   }
@@ -637,15 +629,7 @@ export async function validateUpdateOpportunity(data: unknown): Promise<void> {
     updateOpportunitySchema.parse(data);
   } catch (error: unknown) {
     if (error instanceof z.ZodError) {
-      const formattedErrors: Record<string, string> = {};
-      error.issues.forEach((err) => {
-        const path = err.path.join(".");
-        formattedErrors[path] = err.message;
-      });
-      throw {
-        message: "Validation failed",
-        body: { errors: formattedErrors }, // React Admin expects errors at body.errors
-      };
+      throw zodErrorToReactAdminError(error);
     }
     throw error;
   }

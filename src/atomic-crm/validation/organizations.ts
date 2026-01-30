@@ -311,13 +311,6 @@ export async function validateUpdateOrganization(data: unknown): Promise<void> {
   }
 }
 
-// Standardized aliases (PAT-01: validate[Resource]Form as canonical pattern)
-// validateOrganizationForm is the canonical name for general validation
-export const validateOrganizationForm = validateOrganizationForSubmission;
-
-/** @deprecated Use validateOrganizationForm instead (PAT-01 naming standardization) */
-export { validateOrganizationForSubmission };
-
 /**
  * Form-level validation for QuickCreatePopover (Organizations)
  * Uses simple types matching form inputs for react-hook-form validation.

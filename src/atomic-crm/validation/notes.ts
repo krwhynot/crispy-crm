@@ -213,7 +213,7 @@ export function validateAttachments(attachments: unknown[]): Attachment[] {
  * @param data - Note data to validate and transform
  * @returns Transformed note data ready for database
  */
-export function validateContactNoteForSubmission(data: unknown): ContactNote {
+export function validateContactNoteForm(data: unknown): ContactNote {
   const validated = contactNoteSchema.parse(data);
 
   // Transform date to ISO format with milliseconds
