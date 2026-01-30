@@ -14,7 +14,7 @@ import { saleOptionRenderer } from "../utils/saleOptionRenderer";
 import { OrganizationHierarchySection } from "./OrganizationHierarchySection";
 import { ParentOrganizationInput } from "./ParentOrganizationInput";
 import { useCityStateMapping } from "@/hooks";
-import { useEditContext } from "ra-core";
+import { useRecordContext } from "ra-core";
 import { PrincipalAwareTypeInput } from "./PrincipalAwareTypeInput";
 
 interface OrganizationCompactFormProps {
