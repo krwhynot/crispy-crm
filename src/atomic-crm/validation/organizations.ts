@@ -280,7 +280,12 @@ export const createOrganizationSchema = organizationSchema
     // .required() doesn't remove .nullable() from .nullish() fields, so we redefine them
     organization_type: organizationTypeSchema, // Remove .default("prospect") - must be explicitly selected
     sales_id: z.coerce.number(), // Remove .nullish() - Account Manager required
-    segment_id: z.string().uuid(), // Remove .optional().nullable() - Segment required
+    segment_id: z
+      .string()
+      .uuid()
+      .refine((val) => val !== UNKNOWN_SEGMENT_UUID, {
+        message: "Please select a specific segment (not 'Unknown')",
+      }),
   })
   .required({
     name: true,
@@ -342,7 +347,12 @@ export const organizationQuickCreateSchema = z.strictObject({
   organization_type: organizationTypeSchema,
   // Note: priority is required in the schema, default provided in form's defaultValues
   priority: organizationPrioritySchema,
-  segment_id: z.string().uuid(), // Required: defaults to "Unknown" via form defaultValues
+  segment_id: z
+    .string()
+    .uuid()
+    .refine((val) => val !== UNKNOWN_SEGMENT_UUID, {
+      message: "Please select a specific segment (not 'Unknown')",
+    }),
   city: z.string().max(100).optional(),
   state: z.string().max(50).optional(),
 });
