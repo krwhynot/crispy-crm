@@ -16,14 +16,14 @@ import { UnsavedChangesDialog } from "@/components/ui/unsaved-changes-dialog";
 import { useSafeNotify } from "@/atomic-crm/hooks/useSafeNotify";
 import { notificationMessages } from "@/atomic-crm/constants/notificationMessages";
 import type { OrganizationFormValues, DuplicateCheckCallback } from "./types";
-import { UNKNOWN_SEGMENT_ID } from "@/components/ra-wrappers/SegmentComboboxInput";
+import { UNKNOWN_SEGMENT_ID } from "@/atomic-crm/validation/segments";
+import { ORGANIZATION_FORM_VARIANTS } from "../validation/organizationFormConfig";
 
 interface OrganizationCreateFormFooterProps {
   onDuplicateFound: DuplicateCheckCallback;
   checkForDuplicate: (name: string) => Promise<{ id: string | number; name: string } | null>;
   isChecking: boolean;
   redirectPath?: string;
-  preserveFields?: string[];
   transformValues: (values: OrganizationFormValues) => OrganizationFormValues;
   bypassDuplicate: () => void;
 }
@@ -35,7 +35,6 @@ export const OrganizationCreateFormFooter = ({
   checkForDuplicate,
   isChecking,
   redirectPath = "/organizations",
-  preserveFields = ["parent_organization_id", "organization_type", "sales_id"],
   transformValues,
   bypassDuplicate,
 }: OrganizationCreateFormFooterProps) => {
@@ -46,6 +45,10 @@ export const OrganizationCreateFormFooter = ({
   const [create] = useCreate();
   const [isCreating, setIsCreating] = useState(false);
   const [showCancelDialog, setShowCancelDialog] = useState(false);
+
+  // Get preserved fields from config
+  const variant = ORGANIZATION_FORM_VARIANTS.create;
+  const preserveFields = variant.preserveFields;
 
   // Track which save action was clicked
   const pendingActionRef = useRef<SaveAction | null>(null);

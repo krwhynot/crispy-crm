@@ -1,6 +1,6 @@
 {
   "chunk_name": "contacts",
-  "generated_at": "2026-01-30T20:45:03.599Z",
+  "generated_at": "2026-01-31T21:09:27.846Z",
   "item_count": 59,
   "items": [
     {
@@ -797,6 +797,7 @@
         "../layout/TopToolbar",
         "../tutorial",
         "../types",
+        "../utils/formatters",
         "./Avatar",
         "./ContactBadges",
         "./ContactBulkActionsToolbar",
@@ -806,7 +807,6 @@
         "./ContactSlideOver",
         "./contactExporter",
         "./contactFilterConfig",
-        "./formatters",
         "@/components/layouts/StandardListLayout",
         "@/components/ra-wrappers/FilterableBadge",
         "@/components/ra-wrappers/FloatingCreateButton",
@@ -860,6 +860,7 @@
         "../layout/TopToolbar",
         "../tutorial",
         "../types",
+        "../utils/formatters",
         "./Avatar",
         "./ContactBadges",
         "./ContactBulkActionsToolbar",
@@ -869,7 +870,6 @@
         "./ContactSlideOver",
         "./contactExporter",
         "./contactFilterConfig",
-        "./formatters",
         "@/components/layouts/StandardListLayout",
         "@/components/ra-wrappers/FilterableBadge",
         "@/components/ra-wrappers/FloatingCreateButton",

@@ -86,7 +86,6 @@ export const salesSchema = z.strictObject({
 });
 
 // Type inference
-export type SalesInput = z.input<typeof salesSchema>;
 export type Sales = z.infer<typeof salesSchema>;
 
 // P2 consolidation: Export enum types and aliases
@@ -210,8 +209,6 @@ export const userUpdateSchema = z.strictObject({
   role: UserRoleEnum.optional(),
   disabled: z.coerce.boolean().optional(),
 });
-
-export type UserUpdate = z.infer<typeof userUpdateSchema>;
 
 // =====================================================================
 // Form Default Schemas (per Engineering Constitution #5)

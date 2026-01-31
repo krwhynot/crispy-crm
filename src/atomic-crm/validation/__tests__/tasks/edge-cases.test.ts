@@ -4,7 +4,7 @@
  */
 
 import { describe, it, expect } from "vitest";
-import { taskSchema, createTaskSchema, updateTaskSchema } from "../../task";
+import { taskSchema, taskCreateSchema, taskUpdateSchema } from "../../task";
 import { z } from "zod";
 
 describe("Task Edge Cases and Business Rules", () => {
@@ -45,7 +45,7 @@ describe("Task Edge Cases and Business Rules", () => {
         sales_id: 456,
       };
 
-      const created = createTaskSchema.parse(newTask);
+      const created = taskCreateSchema.parse(newTask);
       expect(created.completed_at).toBeUndefined();
 
       // Mark as complete
@@ -54,7 +54,7 @@ describe("Task Edge Cases and Business Rules", () => {
         completed_at: "2024-12-20T10:00:00Z",
       };
 
-      const completed = updateTaskSchema.parse(completeUpdate);
+      const completed = taskUpdateSchema.parse(completeUpdate);
       expect(completed.completed_at).toBe("2024-12-20T10:00:00Z");
 
       // Reopen task
@@ -63,7 +63,7 @@ describe("Task Edge Cases and Business Rules", () => {
         completed_at: null,
       };
 
-      const reopened = updateTaskSchema.parse(reopenUpdate);
+      const reopened = taskUpdateSchema.parse(reopenUpdate);
       expect(reopened.completed_at).toBeNull();
     });
 

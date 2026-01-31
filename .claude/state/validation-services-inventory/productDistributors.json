@@ -1,24 +1,24 @@
 {
   "chunk_name": "productDistributors",
-  "generated_at": "2026-01-30T20:45:23.713Z",
+  "generated_at": "2026-01-31T21:09:39.969Z",
   "item_count": 3,
   "items": [
     {
       "name": "validateProductDistributorForm",
       "file": "src/atomic-crm/validation/productDistributors.ts",
-      "line": 67,
+      "line": 62,
       "pattern": "date"
     },
     {
       "name": "validateCreateProductDistributor",
       "file": "src/atomic-crm/validation/productDistributors.ts",
-      "line": 75,
+      "line": 70,
       "pattern": "date"
     },
     {
       "name": "validateUpdateProductDistributor",
       "file": "src/atomic-crm/validation/productDistributors.ts",
-      "line": 83,
+      "line": 78,
       "pattern": "date"
     }
   ]

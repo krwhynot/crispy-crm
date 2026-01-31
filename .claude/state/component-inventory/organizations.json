@@ -1,6 +1,6 @@
 {
   "chunk_name": "organizations",
-  "generated_at": "2026-01-30T20:45:03.613Z",
+  "generated_at": "2026-01-31T21:09:27.852Z",
   "item_count": 76,
   "items": [
     {
@@ -525,10 +525,11 @@
     {
       "name": "OrganizationCompactForm",
       "file": "src/atomic-crm/organizations/OrganizationCompactForm.tsx",
-      "line": 24,
+      "line": 25,
       "type": "presentational",
       "hooks": [
         "useCityStateMapping",
+        "useOrganizationVariant",
         "useRecordContext"
       ],
       "imports": [
@@ -537,6 +538,7 @@
         "./ParentOrganizationInput",
         "./PrincipalAwareTypeInput",
         "./constants",
+        "./hooks/useOrganizationVariant",
         "@/components/ra-wrappers/SegmentComboboxInput",
         "@/components/ra-wrappers/form",
         "@/components/ra-wrappers/reference-input",
@@ -561,7 +563,7 @@
     {
       "name": "OrganizationCreate",
       "file": "src/atomic-crm/organizations/OrganizationCreate.tsx",
-      "line": 55,
+      "line": 56,
       "type": "presentational",
       "hooks": [
         "useCallback",
@@ -578,6 +580,7 @@
         "useState"
       ],
       "imports": [
+        "../validation/organizationFormConfig",
         "../validation/organizations",
         "./DuplicateOrgWarningDialog",
         "./OrganizationCreateFormFooter",
@@ -598,6 +601,7 @@
       "isDefaultExport": false,
       "childComponents": [
         "OrganizationInputs",
+        "ORGANIZATION_FORM_VARIANTS",
         "DuplicateOrgWarningDialog",
         "OrganizationCreateFormFooter",
         "OrganizationFormValues",
@@ -609,7 +613,7 @@
     {
       "name": "OrganizationCreate",
       "file": "src/atomic-crm/organizations/OrganizationCreate.tsx",
-      "line": 55,
+      "line": 56,
       "type": "presentational",
       "hooks": [
         "useCallback",
@@ -626,6 +630,7 @@
         "useState"
       ],
       "imports": [
+        "../validation/organizationFormConfig",
         "../validation/organizations",
         "./DuplicateOrgWarningDialog",
         "./OrganizationCreateFormFooter",
@@ -646,6 +651,7 @@
       "isDefaultExport": true,
       "childComponents": [
         "OrganizationInputs",
+        "ORGANIZATION_FORM_VARIANTS",
         "DuplicateOrgWarningDialog",
         "OrganizationCreateFormFooter",
         "OrganizationFormValues",
@@ -670,11 +676,12 @@
         "useState"
       ],
       "imports": [
+        "../validation/organizationFormConfig",
         "./types",
         "@/atomic-crm/constants/notificationMessages",
         "@/atomic-crm/hooks/useSafeNotify",
+        "@/atomic-crm/validation/segments",
         "@/components/admin/AdminButton",
-        "@/components/ra-wrappers/SegmentComboboxInput",
         "@/components/ra-wrappers/form",
         "@/components/ui/unsaved-changes-dialog",
         "ra-core",
@@ -684,7 +691,8 @@
       "isDefaultExport": false,
       "childComponents": [
         "OrganizationFormValues",
-        "DuplicateCheckCallback"
+        "DuplicateCheckCallback",
+        "ORGANIZATION_FORM_VARIANTS"
       ],
       "contextDependencies": [
         "useFormContext",
@@ -1633,7 +1641,7 @@
     {
       "name": "OrganizationCreate",
       "file": "src/atomic-crm/organizations/index.tsx",
-      "line": 55,
+      "line": 56,
       "type": "presentational",
       "hooks": [
         "useCallback",

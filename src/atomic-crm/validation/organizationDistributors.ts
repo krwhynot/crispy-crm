@@ -59,22 +59,6 @@ export const organizationDistributorSchema = baseOrganizationDistributorSchema.r
 export type OrganizationDistributor = z.infer<typeof organizationDistributorSchema>;
 
 /**
- * Input type (before parsing) for form data
- */
-export type OrganizationDistributorInput = z.input<typeof organizationDistributorSchema>;
-
-/**
- * Extended type with joined organization names for display
- * Used in list views and relationship displays
- */
-export interface OrganizationDistributorWithNames extends OrganizationDistributor {
-  organization_name?: string;
-  distributor_name?: string;
-  distributor_city?: string;
-  distributor_state?: string;
-}
-
-/**
  * Create-specific schema (stricter requirements)
  * Omits system-managed fields, uses base schema for Zod v4 compatibility
  */

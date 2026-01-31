@@ -1,6 +1,6 @@
 {
   "chunk_name": "reports",
-  "generated_at": "2026-01-30T20:45:21.284Z",
+  "generated_at": "2026-01-31T21:09:38.929Z",
   "item_count": 5,
   "items": [
     {
@@ -10,7 +10,7 @@
       "parameters": [
         "options"
       ],
-      "returnType": "{ activities: CampaignActivity[]; activitiesError: Error; salesMap: Map<number, string>; campaignOptions: { name: string; count: number; }[]; salesRepOptions: { id: number; name: string; count: number; }[]; activityTypeCounts: Map<string, number>; totalCampaignActivitiesCount: number; totalCampaignOpportunities: number; isLoadingCampaigns: boolean; isLoadingActivities: boolean; staleOpportunities: { id: number; name: string; stage: string; days_inactive: number; stage_threshold: number; is_stale: boolean; customer_organization_name?: string; last_activity_date?: string; }[]; isLoadingStaleOpportunities: boolean; }",
+      "returnType": "{ activities: CampaignActivity[]; activitiesError: Error; salesMap: Map<number, string>; campaignOptions: any; salesRepOptions: any; activityTypeCounts: Map<string, unknown>; totalCampaignActivitiesCount: any; totalCampaignOpportunities: any; isLoadingCampaigns: boolean; isLoadingActivities: boolean; staleOpportunities: any; isLoadingStaleOpportunities: boolean; }",
       "dependencies": [
         "useDataProvider",
         "useMemo",

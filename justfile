@@ -85,8 +85,29 @@ fmt:
 colors:
     npm run validate:semantic-colors
 
-# Full quality check: typecheck + lint + colors
-check: typecheck lint colors
+# Code health check (enforced in CI/CD)
+health-check:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    echo "=== Code Health Check (CI/CD Enforced) ==="
+    echo "Checking for high-churn files (14 days, threshold: 16 edits)..."
+    HIGH_CHURN=$(git log --name-only --since="14 days ago" --pretty=format: -- 'src/**/*.ts' 'src/**/*.tsx' \
+      | grep -v '^$' | sort | uniq -c | sort -rn \
+      | awk '$1 >= 16 {print $1, $2}')
+    if [ -n "$HIGH_CHURN" ]; then
+      echo "❌ CHURN THRESHOLD EXCEEDED:"
+      echo "$HIGH_CHURN"
+      echo ""
+      echo "Action Required: Files with 16+ edits in 14 days need architectural review."
+      echo "See CLAUDE.md Code Health Monitoring section."
+      exit 1
+    else
+      echo "✅ All files below churn threshold"
+    fi
+
+# Full quality check: typecheck + lint + colors + health-check
+check: typecheck lint colors health-check
+    @echo "✅ All quality checks passed"
 
 # ─────────────────────────────────────────────────────────────
 # 🏗️ Build

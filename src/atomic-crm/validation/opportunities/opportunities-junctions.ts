@@ -27,8 +27,6 @@ export const opportunityParticipantRoleSchema = z.enum([
   "competitor",
 ]);
 
-export type OpportunityParticipantRole = z.infer<typeof opportunityParticipantRoleSchema>;
-
 /**
  * Opportunity Participant schema
  * Links organizations to opportunities with role metadata
@@ -51,7 +49,6 @@ export const opportunityParticipantSchema = z.strictObject({
 });
 
 export type OpportunityParticipant = z.infer<typeof opportunityParticipantSchema>;
-export type OpportunityParticipantInput = z.input<typeof opportunityParticipantSchema>;
 
 /**
  * Create schema - omits system-managed fields
@@ -63,16 +60,12 @@ export const createOpportunityParticipantSchema = opportunityParticipantSchema.o
   deleted_at: true,
 });
 
-export type CreateOpportunityParticipantInput = z.infer<typeof createOpportunityParticipantSchema>;
-
 /**
  * Update schema - all fields optional except id
  */
 export const updateOpportunityParticipantSchema = opportunityParticipantSchema
   .partial()
   .required({ id: true });
-
-export type UpdateOpportunityParticipantInput = z.infer<typeof updateOpportunityParticipantSchema>;
 
 // ============================================================================
 // Opportunity Contacts (Contacts linked to opportunities)
@@ -97,7 +90,6 @@ export const opportunityContactSchema = z.strictObject({
 });
 
 export type OpportunityContact = z.infer<typeof opportunityContactSchema>;
-export type OpportunityContactInput = z.input<typeof opportunityContactSchema>;
 
 /**
  * Create schema - omits system-managed fields
@@ -107,33 +99,9 @@ export const createOpportunityContactSchema = opportunityContactSchema.omit({
   created_at: true,
 });
 
-export type CreateOpportunityContactInput = z.infer<typeof createOpportunityContactSchema>;
-
 /**
  * Update schema - all fields optional except id
  */
 export const updateOpportunityContactSchema = opportunityContactSchema.partial().required({
   id: true,
 });
-
-export type UpdateOpportunityContactInput = z.infer<typeof updateOpportunityContactSchema>;
-
-// ============================================================================
-// Validation Functions
-// ============================================================================
-
-/**
- * Validate opportunity participant data
- * @throws Zod validation error if invalid
- */
-export function validateOpportunityParticipant(data: unknown): OpportunityParticipant {
-  return opportunityParticipantSchema.parse(data);
-}
-
-/**
- * Validate opportunity contact data
- * @throws Zod validation error if invalid
- */
-export function validateOpportunityContact(data: unknown): OpportunityContact {
-  return opportunityContactSchema.parse(data);
-}

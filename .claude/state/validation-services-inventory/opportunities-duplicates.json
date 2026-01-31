@@ -1,18 +1,18 @@
 {
   "chunk_name": "opportunities-duplicates",
-  "generated_at": "2026-01-30T20:45:23.709Z",
+  "generated_at": "2026-01-31T21:09:39.964Z",
   "item_count": 2,
   "items": [
     {
       "name": "checkExactDuplicate",
       "file": "src/atomic-crm/validation/opportunities/opportunities-duplicates.ts",
-      "line": 80,
+      "line": 68,
       "pattern": "unknown"
     },
     {
       "name": "validateNoDuplicate",
       "file": "src/atomic-crm/validation/opportunities/opportunities-duplicates.ts",
-      "line": 163,
+      "line": 151,
       "pattern": "date"
     }
   ]

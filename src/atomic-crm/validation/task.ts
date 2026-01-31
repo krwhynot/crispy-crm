@@ -103,8 +103,6 @@ export const taskUpdateSchema = taskSchema
 export type Task = z.infer<typeof taskSchema>;
 export type TaskType = z.infer<typeof taskTypeSchema>;
 export type PriorityLevel = z.infer<typeof priorityLevelSchema>;
-export type CreateTaskInput = z.infer<typeof taskCreateSchema>;
-export type UpdateTaskInput = z.infer<typeof taskUpdateSchema>;
 
 // ============================================================================
 // Form Defaults (per Engineering Constitution #5)
@@ -121,19 +119,6 @@ export const getTaskDefaultValues = () =>
     type: "Call" as const, // Changed from "None" - meaningful default reduces cognitive load
     due_date: new Date(),
   });
-
-// ============================================================================
-// Backward Compatibility Aliases (for legacy code)
-// ============================================================================
-
-/** @deprecated Use taskCreateSchema */
-export const createTaskSchema = taskCreateSchema;
-
-/** @deprecated Use taskUpdateSchema */
-export const updateTaskSchema = taskUpdateSchema;
-
-/** @deprecated Use taskTypeSchema */
-export const taskTypeEnum = taskTypeSchema;
 
 // ============================================================================
 // Validation Functions

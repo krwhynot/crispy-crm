@@ -76,20 +76,6 @@ export const distributorAuthorizationSchema = distributorAuthorizationBaseSchema
 export type DistributorAuthorization = z.infer<typeof distributorAuthorizationSchema>;
 
 /**
- * Input type (before parsing) for form data
- */
-export type DistributorAuthorizationInput = z.input<typeof distributorAuthorizationSchema>;
-
-/**
- * Extended type with joined organization names for display
- * Used in list views and the AuthorizationsTab component
- */
-export interface DistributorAuthorizationWithNames extends DistributorAuthorization {
-  principal_name?: string;
-  distributor_name?: string;
-}
-
-/**
  * Create-specific schema (stricter requirements)
  * Omits system-managed fields - uses BASE schema per Zod v4 requirements
  */
@@ -212,22 +198,6 @@ export const productDistributorAuthorizationSchema =
  * Type inference from schema
  */
 export type ProductDistributorAuthorization = z.infer<typeof productDistributorAuthorizationSchema>;
-
-/**
- * Input type (before parsing) for form data
- */
-export type ProductDistributorAuthorizationInput = z.input<
-  typeof productDistributorAuthorizationSchema
->;
-
-/**
- * Extended type with joined names for display
- */
-export interface ProductDistributorAuthorizationWithNames extends ProductDistributorAuthorization {
-  product_name?: string;
-  distributor_name?: string;
-  principal_name?: string; // From product's principal
-}
 
 /**
  * Create-specific schema (stricter requirements)

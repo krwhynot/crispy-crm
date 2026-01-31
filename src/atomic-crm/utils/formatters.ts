@@ -5,6 +5,15 @@ import type { Sale, Tag } from "../types";
 
 export const EMPTY_PLACEHOLDER = "--";
 
+/**
+ * Standard name formatting: trims and joins first/last name parts.
+ * Does NOT sanitize literal "null" strings from CSV imports.
+ *
+ * Distinct from {@link formatName} in `formatName.ts` which additionally
+ * sanitizes literal "null" strings stored in the database from CSV imports.
+ * Use `formatName` when data may originate from imports or legacy records.
+ * Use this function for display-only contexts with clean (validated) data.
+ */
 export function formatFullName(firstName?: string | null, lastName?: string | null): string {
   const first = firstName?.trim();
   const last = lastName?.trim();

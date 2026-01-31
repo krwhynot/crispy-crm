@@ -27,3 +27,4 @@
 [2026-01-30T01:38:03.118Z] ✓ search_code | query: "segment_id organizations schema validation" | limit=20, type="all" | results: 0 | 10562ms
 [2026-01-30T01:38:15.116Z] ✓ search_code | query: "ReferenceInput segments organizations" | limit=15, type="all" | results: 0 | 11929ms
 [2026-01-30T19:45:10.248Z] ✓ search_code | query: "custom hooks use" | limit=50, type="hook" | results: 0 | 12446ms
+[2026-01-30T22:25:13.711Z] ✓ search_code | query: "FormSectionWithProgress requiredFields" | limit=20, type="all" | results: 0 | 10642ms

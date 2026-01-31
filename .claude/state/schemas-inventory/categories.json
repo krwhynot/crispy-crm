@@ -1,6 +1,6 @@
 {
   "chunk_name": "categories",
-  "generated_at": "2026-01-30T20:45:22.136Z",
+  "generated_at": "2026-01-31T21:09:39.362Z",
   "item_count": 1,
   "items": [
     {
@@ -35,9 +35,7 @@
       "relatedSchemas": [
         "playbookCategorySchema"
       ],
-      "validationFunctions": [
-        "validateCategory"
-      ],
+      "validationFunctions": [],
       "hasTransforms": false,
       "hasSuperRefine": false
     }

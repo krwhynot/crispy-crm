@@ -1,6 +1,6 @@
 {
   "chunk_name": "filters",
-  "generated_at": "2026-01-30T20:45:22.151Z",
+  "generated_at": "2026-01-31T21:09:39.365Z",
   "item_count": 3,
   "items": [
     {
@@ -82,7 +82,7 @@
     {
       "name": "urlFilterSchema",
       "file": "src/atomic-crm/validation/filters.ts",
-      "line": 41,
+      "line": 39,
       "schemaType": "object",
       "fields": [
         {

@@ -16,6 +16,7 @@ import { ParentOrganizationInput } from "./ParentOrganizationInput";
 import { useCityStateMapping } from "@/hooks";
 import { useRecordContext } from "ra-core";
 import { PrincipalAwareTypeInput } from "./PrincipalAwareTypeInput";
+import { useOrganizationVariant } from "./hooks/useOrganizationVariant";
 
 interface OrganizationCompactFormProps {
   isRep?: boolean;
@@ -29,6 +30,8 @@ export const OrganizationCompactForm = ({ isRep }: OrganizationCompactFormProps)
   const record = useRecordContext();
   const isEditMode = !!record;
 
+  const { isRequired, variant } = useOrganizationVariant();
+
   return (
     <div className="space-y-6">
       <FormSectionWithProgress
@@ -38,7 +41,7 @@ export const OrganizationCompactForm = ({ isRep }: OrganizationCompactFormProps)
       >
         <CompactFormRow>
           <div data-tutorial="org-name">
-            <FormFieldWrapper name="name" isRequired>
+            <FormFieldWrapper name="name" isRequired={isRequired("name")}>
               <TextInput
                 source="name"
                 label="Organization Name *"
@@ -48,7 +51,7 @@ export const OrganizationCompactForm = ({ isRep }: OrganizationCompactFormProps)
             </FormFieldWrapper>
           </div>
           <div data-tutorial="org-type">
-            <FormFieldWrapper name="organization_type" isRequired>
+            <FormFieldWrapper name="organization_type" isRequired={isRequired("organization_type")}>
               <PrincipalAwareTypeInput />
             </FormFieldWrapper>
           </div>
@@ -76,7 +79,11 @@ export const OrganizationCompactForm = ({ isRep }: OrganizationCompactFormProps)
         requiredFields={["sales_id", "segment_id"]}
       >
         <CompactFormRow>
-          <FormFieldWrapper name="sales_id" isRequired countDefaultAsFilled>
+          <FormFieldWrapper
+            name="sales_id"
+            isRequired={isRequired("sales_id")}
+            countDefaultAsFilled
+          >
             <ReferenceInput
               reference="sales"
               source="sales_id"
@@ -91,12 +98,12 @@ export const OrganizationCompactForm = ({ isRep }: OrganizationCompactFormProps)
               />
             </ReferenceInput>
           </FormFieldWrapper>
-          <FormFieldWrapper name="segment_id" isRequired>
+          <FormFieldWrapper name="segment_id" isRequired={isRequired("segment_id")}>
             <SegmentComboboxInput
               source="segment_id"
               label="Segment *"
               helperText={false}
-              allowUnknown={isEditMode}
+              allowUnknown={variant.allowUnknownSegment}
             />
           </FormFieldWrapper>
         </CompactFormRow>

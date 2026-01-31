@@ -15,6 +15,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Full history for git log --since
 
       - uses: actions/setup-node@v4
         with:
@@ -38,12 +40,31 @@ jobs:
           VITE_SUPABASE_URL: https://placeholder.supabase.co
           VITE_SUPABASE_ANON_KEY: placeholder-key
 
+  health-check:
+    name: Code Health Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Required for git log
+
+      - name: Health Check
+        run: |
+          # Install just if not available
+          command -v just >/dev/null 2>&1 || {
+            wget -qO- https://github.com/casey/just/releases/download/1.16.0/just-1.16.0-x86_64-unknown-linux-musl.tar.gz | tar xz
+            sudo mv just /usr/local/bin/
+          }
+          just health-check
+
   test:
     name: Tests
     runs-on: ubuntu-latest
     continue-on-error: true
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Full history for git log --since
 
       - uses: actions/setup-node@v4
         with:

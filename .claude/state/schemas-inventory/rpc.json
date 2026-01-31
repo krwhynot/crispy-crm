@@ -1,12 +1,12 @@
 {
   "chunk_name": "rpc",
-  "generated_at": "2026-01-30T20:45:22.173Z",
+  "generated_at": "2026-01-31T21:09:39.372Z",
   "item_count": 18,
   "items": [
     {
       "name": "getOrCreateSegmentParamsSchema",
       "file": "src/atomic-crm/validation/rpc.ts",
-      "line": 7,
+      "line": 17,
       "schemaType": "strictObject",
       "fields": [
         {
@@ -33,7 +33,7 @@
     {
       "name": "setPrimaryOrganizationParamsSchema",
       "file": "src/atomic-crm/validation/rpc.ts",
-      "line": 15,
+      "line": 25,
       "schemaType": "strictObject",
       "fields": [
         {
@@ -66,7 +66,7 @@
     {
       "name": "archiveOpportunityWithRelationsParamsSchema",
       "file": "src/atomic-crm/validation/rpc.ts",
-      "line": 25,
+      "line": 35,
       "schemaType": "strictObject",
       "fields": [
         {
@@ -91,7 +91,7 @@
     {
       "name": "unarchiveOpportunityWithRelationsParamsSchema",
       "file": "src/atomic-crm/validation/rpc.ts",
-      "line": 34,
+      "line": 44,
       "schemaType": "strictObject",
       "fields": [
         {
@@ -116,7 +116,7 @@
     {
       "name": "syncOpportunityWithProductsParamsSchema",
       "file": "src/atomic-crm/validation/rpc.ts",
-      "line": 52,
+      "line": 62,
       "schemaType": "strictObject",
       "fields": [
         {
@@ -174,7 +174,7 @@
     {
       "name": "checkAuthorizationParamsSchema",
       "file": "src/atomic-crm/validation/rpc.ts",
-      "line": 77,
+      "line": 87,
       "schemaType": "strictObject",
       "fields": [
         {
@@ -213,7 +213,7 @@
     {
       "name": "checkAuthorizationResponseSchema",
       "file": "src/atomic-crm/validation/rpc.ts",
-      "line": 99,
+      "line": 109,
       "schemaType": "strictObject",
       "fields": [
         {
@@ -378,7 +378,7 @@
     {
       "name": "checkAuthorizationBatchParamsSchema",
       "file": "src/atomic-crm/validation/rpc.ts",
-      "line": 131,
+      "line": 138,
       "schemaType": "strictObject",
       "fields": [
         {
@@ -421,7 +421,7 @@
     {
       "name": "checkAuthorizationBatchResponseSchema",
       "file": "src/atomic-crm/validation/rpc.ts",
-      "line": 162,
+      "line": 169,
       "schemaType": "strictObject",
       "fields": [
         {
@@ -471,7 +471,7 @@
     {
       "name": "logActivityWithTaskParamsSchema",
       "file": "src/atomic-crm/validation/rpc.ts",
-      "line": 204,
+      "line": 208,
       "schemaType": "strictObject",
       "fields": [
         {
@@ -503,7 +503,7 @@
     {
       "name": "logActivityWithTaskResponseSchema",
       "file": "src/atomic-crm/validation/rpc.ts",
-      "line": 209,
+      "line": 213,
       "schemaType": "strictObject",
       "fields": [
         {
@@ -544,7 +544,7 @@
     {
       "name": "checkSimilarOpportunitiesParamsSchema",
       "file": "src/atomic-crm/validation/rpc.ts",
-      "line": 219,
+      "line": 223,
       "schemaType": "strictObject",
       "fields": [
         {
@@ -601,7 +601,7 @@
     {
       "name": "checkSimilarOpportunitiesResponseSchema",
       "file": "src/atomic-crm/validation/rpc.ts",
-      "line": 226,
+      "line": 230,
       "schemaType": "array",
       "fields": [],
       "relatedSchemas": [],
@@ -612,7 +612,7 @@
     {
       "name": "getCampaignReportStatsParamsSchema",
       "file": "src/atomic-crm/validation/rpc.ts",
-      "line": 249,
+      "line": 248,
       "schemaType": "strictObject",
       "fields": [
         {
@@ -635,7 +635,7 @@
     {
       "name": "getCampaignReportStatsResponseSchema",
       "file": "src/atomic-crm/validation/rpc.ts",
-      "line": 264,
+      "line": 263,
       "schemaType": "strictObject",
       "fields": [
         {
@@ -680,7 +680,7 @@
     {
       "name": "getStaleOpportunitiesParamsSchema",
       "file": "src/atomic-crm/validation/rpc.ts",
-      "line": 282,
+      "line": 278,
       "schemaType": "strictObject",
       "fields": [
         {
@@ -730,7 +730,7 @@
     {
       "name": "staleOpportunityRecordSchema",
       "file": "src/atomic-crm/validation/rpc.ts",
-      "line": 289,
+      "line": 285,
       "schemaType": "strictObject",
       "fields": [
         {
@@ -823,7 +823,7 @@
     {
       "name": "edgeFunctionSchemas",
       "file": "src/atomic-crm/validation/rpc.ts",
-      "line": 328,
+      "line": 320,
       "schemaType": "object",
       "fields": [],
       "relatedSchemas": [],

@@ -50,7 +50,7 @@ import {
   validateInteractionsForm,
   validateUpdateInteractions,
 } from "../../../validation/activities";
-import { validateCreateSegment, validateUpdateSegment } from "../../../validation/segments";
+import { validateCreateSegment } from "../../../validation/segments";
 import {
   validateCreateProductDistributor,
   validateUpdateProductDistributor,
@@ -299,9 +299,6 @@ export class ValidationService {
       segments: {
         create: async (data: unknown) => {
           validateCreateSegment(data);
-        },
-        update: async (data: unknown) => {
-          validateUpdateSegment(data);
         },
       },
       user_favorites: {

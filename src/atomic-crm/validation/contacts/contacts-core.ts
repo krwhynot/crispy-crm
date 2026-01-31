@@ -217,7 +217,6 @@ export const contactSchema = contactBaseSchema
   });
 
 // Type inference
-export type ContactInput = z.input<typeof contactSchema>;
 export type Contact = z.infer<typeof contactSchema>;
 
 // Validation function matching expected signature from unifiedDataProvider

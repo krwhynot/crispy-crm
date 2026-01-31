@@ -27,7 +27,7 @@ import { TopToolbar } from "../layout/TopToolbar";
 import { Avatar } from "./Avatar";
 import { ContactStatusBadge } from "./ContactBadges";
 import { ContactNameHeader, ContactStatusHeader } from "./ContactDatagridHeader";
-import { formatFullName, formatRoleAndDept } from "./formatters";
+import { formatFullName, formatRoleAndDept } from "../utils/formatters";
 import { contactExporter } from "./contactExporter";
 import { CONTACT_FILTER_CONFIG } from "./contactFilterConfig";
 import { PageTutorialTrigger } from "../tutorial";

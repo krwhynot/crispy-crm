@@ -89,7 +89,7 @@ export async function getContactAvatar(record: Partial<Contact>): Promise<string
     }
 
     // Step 2: Try to get favicon from email domain
-    const domain = email.split("@")[1] ?? "";
+    const domain = extractEmailDomain(email);
     const faviconUrl = await getFaviconUrl(domain);
     if (faviconUrl) {
       return faviconUrl;

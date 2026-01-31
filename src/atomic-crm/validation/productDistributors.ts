@@ -38,11 +38,6 @@ export const productDistributorSchema = z.strictObject({
 export type ProductDistributor = z.infer<typeof productDistributorSchema>;
 export type ProductDistributorInput = z.input<typeof productDistributorSchema>;
 
-// Form defaults (Engineering Constitution: form state from schema)
-export const productDistributorDefaults = productDistributorSchema.partial().parse({
-  status: "pending",
-});
-
 // Create schema (both FKs required, no system fields)
 export const createProductDistributorSchema = productDistributorSchema
   .omit({

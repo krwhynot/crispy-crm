@@ -79,9 +79,6 @@ export const opportunityProductSyncHandlerSchema = z.strictObject({
   notes: z.string().max(2000).optional().nullable(),
 });
 
-export type OpportunityProductSyncInput = z.infer<typeof opportunityProductSyncInputSchema>;
-export type OpportunityProductSyncHandler = z.infer<typeof opportunityProductSyncHandlerSchema>;
-
 // Re-create the base schema here to avoid circular dependency issues
 // This is a copy of opportunityBaseSchema from opportunities-core.ts
 const opportunityBaseSchema = z.strictObject({
@@ -339,8 +336,6 @@ export const quickCreateOpportunitySchema = z.strictObject({
     return date;
   }),
 });
-
-export type QuickCreateOpportunityInput = z.infer<typeof quickCreateOpportunitySchema>;
 
 // Update-specific schema (more flexible for partial updates)
 // IMPORTANT: React Admin v5 sends ALL form fields during update, not just dirty fields.

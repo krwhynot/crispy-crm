@@ -33,8 +33,6 @@ export const listParamsSchema = z
   })
   .passthrough();
 
-export type ListParams = z.infer<typeof listParamsSchema>;
-
 /**
  * Schema for URL filter parameters (opportunity stages, etc.)
  */

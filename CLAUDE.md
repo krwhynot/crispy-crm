@@ -94,6 +94,54 @@ Per official Claude Code guidance, large state databases (search.db, vectors.lan
 **DB:** Postgres 17, RLS (100%), Soft deletes (`deleted_at`), Edge functions (digest/overdue).
 **Security:** pgTAP for unit testing/security validation.
 
+## 📊 Code Health Monitoring (CI/CD Enforced)
+
+**Automated Check:** `just health-check` runs in CI/CD pipeline. **Fails build** if any file exceeds churn threshold.
+
+**Churn Thresholds (14 days):**
+- 0-10 edits: ✅ Normal (stable file)
+- 11-15 edits: ⚠️ Watch (monitor one more week)
+- 16+ edits: ❌ **CI/CD FAILS** - Architectural review required
+
+**Response Strategy (Boy Scout Rule):**
+
+1. **Watch State** (11-15 edits):
+   - Monitor for one more week
+   - If trend accelerates, move to Investigate
+
+2. **Investigate State** (16+ edits - triggers CI/CD failure):
+   - Run: `just health-check` to see violating files
+   - Identify implicit contracts (run `/health-summary` for analysis)
+   - Extract to config file (pattern: `organizationFormConfig.ts`)
+   - Submit PR that reduces churn
+
+**Pattern: Implicit Contract Extraction**
+
+When a file cluster churns together (3+ files with 8+ co-changes):
+1. Identify what changes together (defaults, required fields, validation rules)
+2. Create config file in appropriate layer (validation/ or feature/)
+3. Update dependent files to reference config
+4. Document the contract in config file comments
+5. Verify churn drops in next measurement period
+
+**Example:** Organization form cluster (52 edits → <10 edits after config extraction)
+
+**Why CI/CD Enforcement:**
+- Prevents "boiling frog" syndrome (gradual degradation)
+- Forces architectural review before code quality degrades
+- Makes health thresholds non-negotiable (not optional documentation)
+- Implements "Boy Scout Rule" automatically
+
+**Manual Check:**
+```bash
+# View churn report
+just health-check
+
+# Or manually:
+git log --name-only --since="14 days ago" --pretty=format: -- 'src/**/*.ts' 'src/**/*.tsx' \
+  | grep -v '^$' | sort | uniq -c | sort -rn | head -20
+```
+
 ## 💼 Business Domain (MFB)
 **Model:** Principal (Manufacturer) → Distributor → Operator (Restaurant). Broker: MFB.
 **Entities:** Principal (9), Distributor (50+, Auth/Territory), Operator, Opportunity (Deal/Activities).

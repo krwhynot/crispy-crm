@@ -103,6 +103,7 @@ export const updateTagSchema = tagSchema
 /**
  * Schema for soft deleting a tag
  * Used by withLifecycleCallbacks when supportsSoftDelete is true
+ * @remarks Test-only documentation — not used for runtime validation
  */
 export const deleteTagSchema = z.strictObject({
   id: z.union([z.string().max(50, "ID too long"), z.number()]),
@@ -111,6 +112,7 @@ export const deleteTagSchema = z.strictObject({
 
 /**
  * Schema for tag with usage count
+ * @remarks Test-only documentation — not used for runtime validation
  */
 export const tagWithCountSchema = tagSchema.extend({
   count: z.number().int().min(0),
@@ -118,6 +120,7 @@ export const tagWithCountSchema = tagSchema.extend({
 
 /**
  * Schema for tag filter options
+ * @remarks Test-only documentation — not used for runtime validation
  */
 export const tagFilterSchema = z.strictObject({
   colors: z

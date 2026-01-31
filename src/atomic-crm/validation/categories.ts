@@ -21,13 +21,3 @@ export const categorySchema = z.strictObject({
 });
 
 export type Category = z.infer<typeof categorySchema>;
-
-/**
- * Validate category data from database view
- * @param data - Raw data from database
- * @returns Validated Category object
- * @throws ZodError if validation fails
- */
-export function validateCategory(data: unknown): Category {
-  return categorySchema.parse(data);
-}

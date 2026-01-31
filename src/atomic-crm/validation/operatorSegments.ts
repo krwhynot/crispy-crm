@@ -73,8 +73,6 @@ export const OPERATOR_SEGMENTS = [...OPERATOR_PARENT_SEGMENTS, ...OPERATOR_CHILD
  * Type aliases for operator segments
  */
 export type OperatorSegment = (typeof OPERATOR_SEGMENTS)[number];
-export type OperatorParentSegment = (typeof OPERATOR_PARENT_SEGMENTS)[number];
-export type OperatorChildSegment = (typeof OPERATOR_CHILD_SEGMENTS)[number];
 
 /**
  * Operator segment UUIDs matching the database
@@ -185,29 +183,12 @@ export const operatorSegmentRecordSchema = z.strictObject({
 
 /**
  * Schema for creating a new operator segment
- * @deprecated Segments should not be created dynamically - use fixed categories
  */
 export const createOperatorSegmentSchema = operatorSegmentRecordSchema.omit({
   id: true,
   created_at: true,
   created_by: true,
 });
-
-/**
- * Schema for updating an existing operator segment
- * @deprecated Segments should not be updated - use fixed categories
- */
-export const updateOperatorSegmentSchema = operatorSegmentRecordSchema
-  .partial()
-  .required({ id: true })
-  .omit({ created_at: true, created_by: true });
-
-/**
- * Inferred types from schemas
- */
-export type OperatorSegmentRecord = z.infer<typeof operatorSegmentRecordSchema>;
-export type CreateOperatorSegmentInput = z.infer<typeof createOperatorSegmentSchema>;
-export type UpdateOperatorSegmentInput = z.infer<typeof updateOperatorSegmentSchema>;
 
 /**
  * UI choices array for SelectInput components - Parents only
@@ -450,23 +431,10 @@ export function isValidOperatorSegment(value: string): value is OperatorSegment 
 /**
  * Validate operator segment creation data
  * Expected by unifiedDataProvider
- * @deprecated Use fixed categories instead of creating new segments
  * @param data - Operator segment data to validate
  * @returns Validated operator segment data
  * @throws Zod validation error if data is invalid
  */
 export function validateCreateOperatorSegment(data: unknown): CreateOperatorSegmentInput {
   return createOperatorSegmentSchema.parse(data);
-}
-
-/**
- * Validate operator segment update data
- * Expected by unifiedDataProvider
- * @deprecated Use fixed categories instead of updating segments
- * @param data - Operator segment data to validate
- * @returns Validated operator segment data
- * @throws Zod validation error if data is invalid
- */
-export function validateUpdateOperatorSegment(data: unknown): UpdateOperatorSegmentInput {
-  return updateOperatorSegmentSchema.parse(data);
 }

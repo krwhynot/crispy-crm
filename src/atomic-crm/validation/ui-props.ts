@@ -1,19 +1,11 @@
 /**
- * UI Props Validation Schemas
+ * UI Props Schemas — Test-Only Documentation
  *
- * Zod schemas for high-churn UI component props following Engineering Constitution:
- * - z.strictObject() for mass assignment prevention
- * - Single source of truth for prop shapes
+ * These schemas define expected prop shapes for UI components. They are validated
+ * in tests to ensure component contracts remain stable, but are NOT used for
+ * runtime prop validation (React's type system handles that).
  *
- * These schemas validate props at component boundaries for:
- * - SlideOver components (7 variants)
- * - Tab components within SlideOvers
- * - Dashboard forms (QuickLogForm)
- * - List layout components
- *
- * NOTE: In Zod 4, z.function() is no longer a schema - it's a "function factory".
- * We use z.custom() to validate function props.
- * @see https://zod.dev/v4/changelog#zfunction
+ * @remarks Test-only — do not import into production component code.
  */
 
 import { z } from "zod";
@@ -128,18 +120,5 @@ export const contactListLayoutPropsSchema = z.strictObject({
 // Type Inference
 // ============================================================================
 
-export type SlideOverProps = z.infer<typeof slideOverPropsSchema>;
-export type SlideOverPropsWithCanEdit = z.infer<typeof slideOverPropsWithCanEditSchema>;
 export type TabComponentProps = z.infer<typeof tabComponentPropsSchema>;
 export type QuickLogFormProps = z.infer<typeof quickLogFormPropsSchema>;
-export type ContactListLayoutProps = z.infer<typeof contactListLayoutPropsSchema>;
-
-// ============================================================================
-// Input Types (for components accepting unvalidated props)
-// ============================================================================
-
-export type SlideOverPropsInput = z.input<typeof slideOverPropsSchema>;
-export type SlideOverPropsWithCanEditInput = z.input<typeof slideOverPropsWithCanEditSchema>;
-export type TabComponentPropsInput = z.input<typeof tabComponentPropsSchema>;
-export type QuickLogFormPropsInput = z.input<typeof quickLogFormPropsSchema>;
-export type ContactListLayoutPropsInput = z.input<typeof contactListLayoutPropsSchema>;

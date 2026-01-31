@@ -12,6 +12,7 @@ import {
   organizationTypeSchema,
   organizationPrioritySchema,
   createOrganizationSchema,
+  organizationQuickCreateSchema,
   type OrganizationType,
   type OrganizationPriority,
 } from "../organizations";
@@ -305,6 +306,76 @@ describe("Organization Validation Schemas (organizations.ts)", () => {
         postal_code: "",
       });
       expect(result.success).toBe(true);
+    });
+  });
+
+  describe("organizationQuickCreateSchema - Unknown segment allowed", () => {
+    // Minimal valid data for quick create
+    const validQuickCreateData = {
+      name: "Quick Org",
+      organization_type: "prospect" as const,
+      priority: "C" as const,
+      segment_id: PLAYBOOK_CATEGORY_IDS["Major Broadline"],
+    };
+
+    it("should ALLOW Unknown segment UUID (quick create exception)", () => {
+      const dataWithUnknown = {
+        ...validQuickCreateData,
+        segment_id: PLAYBOOK_CATEGORY_IDS.Unknown,
+      };
+
+      const result = organizationQuickCreateSchema.safeParse(dataWithUnknown);
+      expect(result.success).toBe(true);
+    });
+
+    it("should accept valid segment UUID", () => {
+      const result = organizationQuickCreateSchema.safeParse(validQuickCreateData);
+      expect(result.success).toBe(true);
+    });
+
+    it("should accept all playbook category UUIDs including Unknown", () => {
+      Object.entries(PLAYBOOK_CATEGORY_IDS).forEach(([_name, id]) => {
+        const data = { ...validQuickCreateData, segment_id: id };
+        const result = organizationQuickCreateSchema.safeParse(data);
+        expect(result.success).toBe(true);
+      });
+    });
+
+    it("should reject missing segment_id", () => {
+      const { segment_id: _, ...dataWithoutSegment } = validQuickCreateData;
+
+      const result = organizationQuickCreateSchema.safeParse(dataWithoutSegment);
+      expect(result.success).toBe(false);
+    });
+
+    it("should reject invalid UUID format", () => {
+      const dataWithInvalidUUID = {
+        ...validQuickCreateData,
+        segment_id: "not-a-valid-uuid",
+      };
+
+      const result = organizationQuickCreateSchema.safeParse(dataWithInvalidUUID);
+      expect(result.success).toBe(false);
+    });
+
+    it("createOrganizationSchema still rejects Unknown (maintains full create validation)", () => {
+      // Verify the full create schema still has stricter validation
+      const dataWithUnknown = {
+        name: "Test Organization",
+        organization_type: "prospect" as const,
+        sales_id: 1,
+        segment_id: PLAYBOOK_CATEGORY_IDS.Unknown,
+        priority: "C" as const,
+        status: "active" as const,
+      };
+
+      const result = createOrganizationSchema.safeParse(dataWithUnknown);
+      expect(result.success).toBe(false);
+      if (!result.success) {
+        const segmentError = result.error.issues.find((i) => i.path[0] === "segment_id");
+        expect(segmentError).toBeDefined();
+        expect(segmentError?.message).toMatch(/select a specific segment/i);
+      }
     });
   });
 });

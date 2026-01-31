@@ -43,14 +43,6 @@ export const productWithDistributorsSchema = z.strictObject({
 });
 
 export type ProductWithDistributors = z.infer<typeof productWithDistributorsSchema>;
-export type ProductWithDistributorsInput = z.input<typeof productWithDistributorsSchema>;
-
-// Form defaults (Engineering Constitution: form state from schema)
-export const productWithDistributorsDefaults = productWithDistributorsSchema.partial().parse({
-  status: "active",
-  category: "beverages",
-  distributors: [],
-});
 
 /**
  * Validation function for the combined payload

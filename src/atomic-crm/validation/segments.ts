@@ -56,6 +56,12 @@ export const PLAYBOOK_CATEGORY_IDS = {
 } as const;
 
 /**
+ * Unknown segment ID constant - single source of truth
+ * Used across the application for rejecting "Unknown" during CREATE operations
+ */
+export const UNKNOWN_SEGMENT_ID = PLAYBOOK_CATEGORY_IDS.Unknown;
+
+/**
  * Reverse lookup: Playbook category UUID → category name
  * Used for synchronous name resolution in filter chips (no async fetch needed)
  */
@@ -98,7 +104,6 @@ export const playbookSegmentSchema = segmentSchema.extend({
 
 /**
  * Schema for creating a new segment (admin only - categories are fixed)
- * @deprecated Segments should not be created dynamically - use fixed categories
  */
 export const createSegmentSchema = segmentSchema.omit({
   id: true,
@@ -107,41 +112,18 @@ export const createSegmentSchema = segmentSchema.omit({
 });
 
 /**
- * Schema for updating an existing segment (admin only - categories are fixed)
- * @deprecated Segments should not be updated - use fixed categories
- */
-export const updateSegmentSchema = segmentSchema
-  .partial()
-  .required({ id: true })
-  .omit({ created_at: true, created_by: true });
-
-/**
  * Inferred types from schemas
  */
 export type Segment = z.infer<typeof segmentSchema>;
-export type CreateSegmentInput = z.infer<typeof createSegmentSchema>;
-export type UpdateSegmentInput = z.infer<typeof updateSegmentSchema>;
 
 /**
  * Validate segment creation data
  * Expected by unifiedDataProvider
- * @deprecated Use fixed categories instead of creating new segments
  * @param data - Segment data to validate
  * @returns Validated and typed segment data
  */
 export function validateCreateSegment(data: unknown): CreateSegmentInput {
   return createSegmentSchema.parse(data);
-}
-
-/**
- * Validate segment update data
- * Expected by unifiedDataProvider
- * @deprecated Use fixed categories instead of updating segments
- * @param data - Segment data to validate
- * @returns Validated and typed segment data
- */
-export function validateUpdateSegment(data: unknown): UpdateSegmentInput {
-  return updateSegmentSchema.parse(data);
 }
 
 /**

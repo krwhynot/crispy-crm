@@ -6,11 +6,7 @@
  */
 
 import { describe, it, expect } from "vitest";
-import {
-  operatorSegmentRecordSchema,
-  createOperatorSegmentSchema,
-  updateOperatorSegmentSchema,
-} from "../../operatorSegments";
+import { operatorSegmentRecordSchema, createOperatorSegmentSchema } from "../../operatorSegments";
 import { z } from "zod";
 
 describe("Operator Segment DoS Protection", () => {
@@ -96,47 +92,6 @@ describe("Operator Segment DoS Protection", () => {
         createOperatorSegmentSchema.parse({
           name: "Fine Dining",
           segment_type: "operator",
-          parent_id: tooLongId,
-        })
-      ).toThrow(z.ZodError);
-    });
-  });
-
-  describe("updateOperatorSegmentSchema - bounded string limits", () => {
-    it("should enforce 50 char limit on ID UUID strings", () => {
-      const validUUID = "33333333-3333-4333-8333-000000000001";
-      const tooLongId = "a".repeat(51);
-
-      expect(() =>
-        updateOperatorSegmentSchema.parse({
-          id: validUUID,
-          name: "Fine Dining",
-        })
-      ).not.toThrow();
-
-      expect(() =>
-        updateOperatorSegmentSchema.parse({
-          id: tooLongId,
-          name: "Fine Dining",
-        })
-      ).toThrow(z.ZodError);
-    });
-
-    it("should enforce 50 char limit on parent_id UUID strings", () => {
-      const validUUID = "33333333-3333-4333-8333-000000000001";
-      const validParentUUID = "33333333-3333-4333-8333-000000000002";
-      const tooLongId = "a".repeat(51);
-
-      expect(() =>
-        updateOperatorSegmentSchema.parse({
-          id: validUUID,
-          parent_id: validParentUUID,
-        })
-      ).not.toThrow();
-
-      expect(() =>
-        updateOperatorSegmentSchema.parse({
-          id: validUUID,
           parent_id: tooLongId,
         })
       ).toThrow(z.ZodError);

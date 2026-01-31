@@ -1,6 +1,6 @@
 {
   "status": "complete",
-  "generated_at": "2026-01-30T20:45:23.554Z",
+  "generated_at": "2026-01-31T21:09:39.916Z",
   "generator": "scripts/discover/extractors/forms.ts",
   "source_globs": [
     "src/atomic-crm/**/*Create*.tsx",
@@ -8,7 +8,7 @@
     "src/atomic-crm/**/*Form*.tsx",
     "src/atomic-crm/**/*Inputs*.tsx"
   ],
-  "checksum": "sha256:9fe2360bf7a28609",
+  "checksum": "sha256:5a25b440f54d108d",
   "source_hashes": {
     "src/atomic-crm/activities/ActivityEdit.tsx": "ba97db9f3ada",
     "src/atomic-crm/activities/ActivityInputs.tsx": "85431cf76810",
@@ -41,10 +41,10 @@
     "src/atomic-crm/opportunities/QuickAddForm.tsx": "90401ea3386d",
     "src/atomic-crm/opportunities/QuickAddFormActions.tsx": "196811264691",
     "src/atomic-crm/opportunities/slideOverTabs/OpportunityDetailsFormSection.tsx": "f2603be715b4",
-    "src/atomic-crm/organizations/OrganizationCompactForm.tsx": "f1ff94b6ab7e",
-    "src/atomic-crm/organizations/OrganizationCreate.tsx": "e42b18d547a4",
-    "src/atomic-crm/organizations/OrganizationCreateFormFooter.tsx": "85203ca7640f",
-    "src/atomic-crm/organizations/OrganizationEdit.tsx": "14fb4e782952",
+    "src/atomic-crm/organizations/OrganizationCompactForm.tsx": "5a38259fcca8",
+    "src/atomic-crm/organizations/OrganizationCreate.tsx": "9d5d0e8faa24",
+    "src/atomic-crm/organizations/OrganizationCreateFormFooter.tsx": "f0dc6104dd5f",
+    "src/atomic-crm/organizations/OrganizationEdit.tsx": "d8ceea0863c8",
     "src/atomic-crm/organizations/OrganizationInputs.tsx": "8752b8f423a8",
     "src/atomic-crm/organizations/QuickCreatePopover.tsx": "ea021ede1f3c",
     "src/atomic-crm/productDistributors/ProductDistributorCreate.tsx": "e050a042ace3",
@@ -689,7 +689,7 @@
     {
       "componentName": "OrganizationCreate",
       "file": "src/atomic-crm/organizations/OrganizationCreate.tsx",
-      "line": 55,
+      "line": 56,
       "formType": "react-admin-simple",
       "formPatterns": {
         "primary": "Form",
@@ -716,7 +716,7 @@
     {
       "componentName": "OrganizationCreate",
       "file": "src/atomic-crm/organizations/OrganizationCreate.tsx",
-      "line": 55,
+      "line": 56,
       "formType": "react-admin-simple",
       "formPatterns": {
         "primary": "Form",

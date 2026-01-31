@@ -1,6 +1,6 @@
 {
   "chunk_name": "utils",
-  "generated_at": "2026-01-30T20:45:32.167Z",
+  "generated_at": "2026-01-31T21:09:44.038Z",
   "items": {
     "nodes": [
       {
@@ -355,19 +355,19 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/utils/formatName.ts:5:formatName",
+        "id": "src/atomic-crm/utils/formatName.ts:11:formatName",
         "name": "formatName",
         "file": "src/atomic-crm/utils/formatName.ts",
-        "line": 5,
+        "line": 11,
         "nodeType": "function",
         "exported": true,
         "async": false
       },
       {
-        "id": "src/atomic-crm/utils/formatName.ts:29:formatSingleName",
+        "id": "src/atomic-crm/utils/formatName.ts:35:formatSingleName",
         "name": "formatSingleName",
         "file": "src/atomic-crm/utils/formatName.ts",
-        "line": 29,
+        "line": 35,
         "nodeType": "function",
         "exported": true,
         "async": false
@@ -391,17 +391,8 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/utils/formatters.ts:8:formatFullName",
+        "id": "src/atomic-crm/utils/formatters.ts:17:formatFullName",
         "name": "formatFullName",
-        "file": "src/atomic-crm/utils/formatters.ts",
-        "line": 8,
-        "nodeType": "function",
-        "exported": true,
-        "async": false
-      },
-      {
-        "id": "src/atomic-crm/utils/formatters.ts:17:formatRoleAndDept",
-        "name": "formatRoleAndDept",
         "file": "src/atomic-crm/utils/formatters.ts",
         "line": 17,
         "nodeType": "function",
@@ -409,64 +400,73 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/utils/formatters.ts:27:formatSalesName",
+        "id": "src/atomic-crm/utils/formatters.ts:26:formatRoleAndDept",
+        "name": "formatRoleAndDept",
+        "file": "src/atomic-crm/utils/formatters.ts",
+        "line": 26,
+        "nodeType": "function",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/utils/formatters.ts:36:formatSalesName",
         "name": "formatSalesName",
         "file": "src/atomic-crm/utils/formatters.ts",
-        "line": 27,
+        "line": 36,
         "nodeType": "function",
         "exported": true,
         "async": false
       },
       {
-        "id": "src/atomic-crm/utils/formatters.ts:32:formatTagsForExport",
+        "id": "src/atomic-crm/utils/formatters.ts:41:formatTagsForExport",
         "name": "formatTagsForExport",
         "file": "src/atomic-crm/utils/formatters.ts",
-        "line": 32,
+        "line": 41,
         "nodeType": "function",
         "exported": true,
         "async": false
       },
       {
-        "id": "src/atomic-crm/utils/formatters.ts:43:formatCount",
+        "id": "src/atomic-crm/utils/formatters.ts:52:formatCount",
         "name": "formatCount",
         "file": "src/atomic-crm/utils/formatters.ts",
-        "line": 43,
+        "line": 52,
         "nodeType": "function",
         "exported": true,
         "async": false
       },
       {
-        "id": "src/atomic-crm/utils/formatters.ts:51:ucFirst",
+        "id": "src/atomic-crm/utils/formatters.ts:60:ucFirst",
         "name": "ucFirst",
         "file": "src/atomic-crm/utils/formatters.ts",
-        "line": 51,
+        "line": 60,
         "nodeType": "function",
         "exported": true,
         "async": false
       },
       {
-        "id": "src/atomic-crm/utils/formatters.ts:59:formatFieldLabel",
+        "id": "src/atomic-crm/utils/formatters.ts:68:formatFieldLabel",
         "name": "formatFieldLabel",
         "file": "src/atomic-crm/utils/formatters.ts",
-        "line": 59,
+        "line": 68,
         "nodeType": "function",
         "exported": true,
         "async": false
       },
       {
-        "id": "src/atomic-crm/utils/formatters.ts:69:getInitials",
+        "id": "src/atomic-crm/utils/formatters.ts:78:getInitials",
         "name": "getInitials",
         "file": "src/atomic-crm/utils/formatters.ts",
-        "line": 69,
+        "line": 78,
         "nodeType": "function",
         "exported": true,
         "async": false
       },
       {
-        "id": "src/atomic-crm/utils/formatters.ts:79:formatCurrency",
+        "id": "src/atomic-crm/utils/formatters.ts:88:formatCurrency",
         "name": "formatCurrency",
         "file": "src/atomic-crm/utils/formatters.ts",
-        "line": 79,
+        "line": 88,
         "nodeType": "function",
         "exported": true,
         "async": false
@@ -871,8 +871,8 @@
       },
       {
         "source": "src/atomic-crm/utils/avatar.utils.ts:74:getContactAvatar",
-        "target": "split",
-        "targetName": "split",
+        "target": "extractEmailDomain",
+        "targetName": "extractEmailDomain",
         "edgeType": "call",
         "line": 92,
         "conditional": false,
@@ -2634,47 +2634,47 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/formatName.ts:5:formatName",
+        "source": "src/atomic-crm/utils/formatName.ts:11:formatName",
         "target": "trim",
         "targetName": "trim",
         "edgeType": "call",
-        "line": 7,
+        "line": 13,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/formatName.ts:5:formatName",
+        "source": "src/atomic-crm/utils/formatName.ts:11:formatName",
         "target": "trim",
         "targetName": "trim",
         "edgeType": "call",
-        "line": 8,
+        "line": 14,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/formatName.ts:5:formatName",
+        "source": "src/atomic-crm/utils/formatName.ts:11:formatName",
         "target": "toLowerCase",
         "targetName": "toLowerCase",
         "edgeType": "call",
-        "line": 9,
+        "line": 15,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/formatName.ts:5:formatName",
+        "source": "src/atomic-crm/utils/formatName.ts:11:formatName",
         "target": "toLowerCase",
         "targetName": "toLowerCase",
         "edgeType": "call",
-        "line": 10,
+        "line": 16,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/formatName.ts:29:formatSingleName",
+        "source": "src/atomic-crm/utils/formatName.ts:35:formatSingleName",
         "target": "trim",
         "targetName": "trim",
         "edgeType": "call",
-        "line": 30,
+        "line": 36,
         "conditional": false,
         "inLoop": false
       },
@@ -2841,25 +2841,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/formatters.ts:8:formatFullName",
-        "target": "trim",
-        "targetName": "trim",
-        "edgeType": "call",
-        "line": 9,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/utils/formatters.ts:8:formatFullName",
-        "target": "trim",
-        "targetName": "trim",
-        "edgeType": "call",
-        "line": 10,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/utils/formatters.ts:17:formatRoleAndDept",
+        "source": "src/atomic-crm/utils/formatters.ts:17:formatFullName",
         "target": "trim",
         "targetName": "trim",
         "edgeType": "call",
@@ -2868,7 +2850,7 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/formatters.ts:17:formatRoleAndDept",
+        "source": "src/atomic-crm/utils/formatters.ts:17:formatFullName",
         "target": "trim",
         "targetName": "trim",
         "edgeType": "call",
@@ -2877,97 +2859,106 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/formatters.ts:27:formatSalesName",
+        "source": "src/atomic-crm/utils/formatters.ts:26:formatRoleAndDept",
+        "target": "trim",
+        "targetName": "trim",
+        "edgeType": "call",
+        "line": 27,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/formatters.ts:26:formatRoleAndDept",
+        "target": "trim",
+        "targetName": "trim",
+        "edgeType": "call",
+        "line": 28,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/formatters.ts:36:formatSalesName",
         "target": "formatFullName",
         "targetName": "formatFullName",
         "edgeType": "call",
-        "line": 29,
+        "line": 38,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/formatters.ts:32:formatTagsForExport",
+        "source": "src/atomic-crm/utils/formatters.ts:41:formatTagsForExport",
         "target": "join",
         "targetName": "join",
         "edgeType": "call",
-        "line": 37,
+        "line": 46,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/formatters.ts:32:formatTagsForExport",
+        "source": "src/atomic-crm/utils/formatters.ts:41:formatTagsForExport",
         "target": "filter",
         "targetName": "filter",
         "edgeType": "call",
-        "line": 37,
+        "line": 46,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/formatters.ts:32:formatTagsForExport",
+        "source": "src/atomic-crm/utils/formatters.ts:41:formatTagsForExport",
         "target": "map",
         "targetName": "map",
         "edgeType": "call",
-        "line": 37,
+        "line": 46,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/formatters.ts:51:ucFirst",
+        "source": "src/atomic-crm/utils/formatters.ts:60:ucFirst",
         "target": "toUpperCase",
         "targetName": "toUpperCase",
         "edgeType": "call",
-        "line": 52,
+        "line": 61,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/formatters.ts:51:ucFirst",
+        "source": "src/atomic-crm/utils/formatters.ts:60:ucFirst",
         "target": "charAt",
         "targetName": "charAt",
         "edgeType": "call",
-        "line": 52,
+        "line": 61,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/formatters.ts:51:ucFirst",
+        "source": "src/atomic-crm/utils/formatters.ts:60:ucFirst",
         "target": "slice",
         "targetName": "slice",
         "edgeType": "call",
-        "line": 52,
+        "line": 61,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/formatters.ts:59:formatFieldLabel",
+        "source": "src/atomic-crm/utils/formatters.ts:68:formatFieldLabel",
         "target": "replace",
         "targetName": "replace",
         "edgeType": "call",
-        "line": 61,
+        "line": 70,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/formatters.ts:59:formatFieldLabel",
+        "source": "src/atomic-crm/utils/formatters.ts:68:formatFieldLabel",
         "target": "replace",
         "targetName": "replace",
         "edgeType": "call",
-        "line": 61,
+        "line": 70,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/formatters.ts:59:formatFieldLabel",
-        "target": "toUpperCase",
-        "targetName": "toUpperCase",
-        "edgeType": "call",
-        "line": 61,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/utils/formatters.ts:69:getInitials",
+        "source": "src/atomic-crm/utils/formatters.ts:68:formatFieldLabel",
         "target": "toUpperCase",
         "targetName": "toUpperCase",
         "edgeType": "call",
@@ -2976,65 +2967,74 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/formatters.ts:69:getInitials",
+        "source": "src/atomic-crm/utils/formatters.ts:78:getInitials",
+        "target": "toUpperCase",
+        "targetName": "toUpperCase",
+        "edgeType": "call",
+        "line": 79,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/utils/formatters.ts:78:getInitials",
         "target": "charAt",
         "targetName": "charAt",
         "edgeType": "call",
-        "line": 70,
+        "line": 79,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/formatters.ts:69:getInitials",
+        "source": "src/atomic-crm/utils/formatters.ts:78:getInitials",
         "target": "trim",
         "targetName": "trim",
         "edgeType": "call",
-        "line": 70,
+        "line": 79,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/formatters.ts:69:getInitials",
+        "source": "src/atomic-crm/utils/formatters.ts:78:getInitials",
         "target": "toUpperCase",
         "targetName": "toUpperCase",
         "edgeType": "call",
-        "line": 71,
+        "line": 80,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/formatters.ts:69:getInitials",
+        "source": "src/atomic-crm/utils/formatters.ts:78:getInitials",
         "target": "charAt",
         "targetName": "charAt",
         "edgeType": "call",
-        "line": 71,
+        "line": 80,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/formatters.ts:69:getInitials",
+        "source": "src/atomic-crm/utils/formatters.ts:78:getInitials",
         "target": "trim",
         "targetName": "trim",
         "edgeType": "call",
-        "line": 71,
+        "line": 80,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/formatters.ts:79:formatCurrency",
+        "source": "src/atomic-crm/utils/formatters.ts:88:formatCurrency",
         "target": "isNaN",
         "targetName": "isNaN",
         "edgeType": "call",
-        "line": 88,
+        "line": 97,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/utils/formatters.ts:79:formatCurrency",
+        "source": "src/atomic-crm/utils/formatters.ts:88:formatCurrency",
         "target": "format",
         "targetName": "format",
         "edgeType": "call",
-        "line": 97,
+        "line": 106,
         "conditional": false,
         "inLoop": false
       },

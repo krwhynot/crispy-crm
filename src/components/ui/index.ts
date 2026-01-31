@@ -5,7 +5,5 @@ export { AsideSection, type AsideSectionProps } from "./aside-section";
 export { RelativeDate } from "./relative-date";
 export { DataRow, DataCell, DataHeaderCell } from "./data-cell";
 export type { DataRowProps, DataCellProps, DataHeaderCellProps } from "./data-cell";
-export { InlineCombobox } from "./inline-combobox";
-export type { InlineComboboxProps, ComboboxOption } from "./inline-combobox";
 export { EmptyState } from "./empty-state";
 export type { EmptyStateProps, EmptyStateAction } from "./empty-state";

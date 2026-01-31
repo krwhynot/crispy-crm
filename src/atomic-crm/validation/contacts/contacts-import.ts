@@ -7,21 +7,6 @@ import { contactSchema } from "./contacts-core";
  */
 
 /**
- * Result type for import row validation
- * Encapsulates Zod error handling - UI components import this type, not Zod
- */
-export interface ImportValidationError {
-  field: string;
-  message: string;
-}
-
-export interface ImportValidationResult {
-  row: number;
-  valid: boolean;
-  errors?: ImportValidationError[];
-}
-
-/**
  * Validates a single import row against the contact schema
  * Encapsulates Zod validation so UI components don't need to import Zod
  *

@@ -1,8 +1,20 @@
 {
   "chunk_name": "organizations",
-  "generated_at": "2026-01-30T20:45:21.283Z",
-  "item_count": 7,
+  "generated_at": "2026-01-31T21:09:38.928Z",
+  "item_count": 8,
   "items": [
+    {
+      "name": "useOrganizationVariant",
+      "file": "src/atomic-crm/organizations/hooks/useOrganizationVariant.ts",
+      "line": 61,
+      "parameters": [],
+      "returnType": "UseOrganizationVariantResult",
+      "dependencies": [
+        "useLocation",
+        "useRecordContext"
+      ],
+      "isReact19Action": false
+    },
     {
       "name": "useDuplicateOrgCheck",
       "file": "src/atomic-crm/organizations/useDuplicateOrgCheck.ts",

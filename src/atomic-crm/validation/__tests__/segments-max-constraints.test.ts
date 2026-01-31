@@ -4,12 +4,7 @@
  */
 
 import { describe, it, expect } from "vitest";
-import {
-  segmentSchema,
-  createSegmentSchema,
-  updateSegmentSchema,
-  playbookSegmentSchema,
-} from "../segments";
+import { segmentSchema, createSegmentSchema, playbookSegmentSchema } from "../segments";
 import { z } from "zod";
 
 describe("Segments .max() Constraints", () => {
@@ -178,22 +173,6 @@ describe("Segments .max() Constraints", () => {
         segment_type: "operator" as const,
       };
       expect(() => createSegmentSchema.parse(invalidCreate)).toThrow(z.ZodError);
-    });
-  });
-
-  describe("updateSegmentSchema", () => {
-    it("should enforce max constraints on partial updates", () => {
-      const validUpdate = {
-        id: "22222222-2222-4222-8222-000000000001",
-        name: "a".repeat(100),
-      };
-      expect(() => updateSegmentSchema.parse(validUpdate)).not.toThrow();
-
-      const invalidUpdate = {
-        id: "22222222-2222-4222-8222-000000000001",
-        name: "a".repeat(101),
-      };
-      expect(() => updateSegmentSchema.parse(invalidUpdate)).toThrow(z.ZodError);
     });
   });
 });

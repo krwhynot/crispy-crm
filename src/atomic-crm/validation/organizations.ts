@@ -1,11 +1,8 @@
 import { z } from "zod";
 import { sanitizeHtml } from "@/lib/sanitization";
 import { optionalRaFileSchema } from "./shared/ra-file";
-import { PLAYBOOK_CATEGORY_IDS } from "./segments";
+import { UNKNOWN_SEGMENT_ID } from "./segments";
 import { zodErrorToReactAdminError } from "./utils";
-
-// Unknown segment UUID - reject during CREATE to force meaningful selection
-const UNKNOWN_SEGMENT_UUID = PLAYBOOK_CATEGORY_IDS.Unknown;
 
 /**
  * Organization validation schemas and functions
@@ -26,11 +23,9 @@ export const organizationPrioritySchema = z.enum(["A", "B", "C", "D"]);
 
 // Organization scope enum
 export const orgScopeSchema = z.enum(["national", "regional", "local"]);
-export type OrgScope = z.infer<typeof orgScopeSchema>;
 
 // Organization status enum
 export const orgStatusSchema = z.enum(["active", "inactive"]);
-export type OrgStatus = z.infer<typeof orgStatusSchema>;
 
 // Status reason enum
 export const orgStatusReasonSchema = z.enum([
@@ -41,7 +36,6 @@ export const orgStatusReasonSchema = z.enum([
   "out_of_business",
   "disqualified",
 ]);
-export type OrgStatusReason = z.infer<typeof orgStatusReasonSchema>;
 
 // Payment terms enum
 export const paymentTermsSchema = z.enum([
@@ -52,7 +46,6 @@ export const paymentTermsSchema = z.enum([
   "prepaid",
   "2_10_net_30",
 ]);
-export type PaymentTerms = z.infer<typeof paymentTermsSchema>;
 
 /**
  * URL auto-prefix transform
@@ -228,7 +221,6 @@ export const organizationSchema = z.strictObject({
 });
 
 // Type inference
-export type OrganizationInput = z.input<typeof organizationSchema>;
 export type Organization = z.infer<typeof organizationSchema>;
 
 // Enum type exports (P1 consolidation - single source of truth)
@@ -262,7 +254,7 @@ export const createOrganizationSchema = organizationSchema
         invalid_type_error: "Please select a segment",
       })
       .uuid("Please select a valid segment")
-      .refine((val) => val !== UNKNOWN_SEGMENT_UUID, {
+      .refine((val) => val !== UNKNOWN_SEGMENT_ID, {
         message: "Please select a specific segment (not 'Unknown')",
       }),
   })
@@ -301,6 +293,10 @@ export async function validateUpdateOrganization(data: unknown): Promise<void> {
 /**
  * Form-level validation for QuickCreatePopover (Organizations)
  * Uses simple types matching form inputs for react-hook-form validation.
+ *
+ * Note: Unlike createOrganizationSchema, this allows "Unknown" segment_id.
+ * Quick create prioritizes speed - users can select Unknown now and refine later.
+ * The full create form (OrganizationCreate) enforces specific segment selection.
  */
 export const organizationQuickCreateSchema = z.strictObject({
   name: z.string().trim().min(1, "Name required").max(255),
@@ -312,10 +308,7 @@ export const organizationQuickCreateSchema = z.strictObject({
       required_error: "Please select a segment",
       invalid_type_error: "Please select a segment",
     })
-    .uuid("Please select a valid segment")
-    .refine((val) => val !== UNKNOWN_SEGMENT_UUID, {
-      message: "Please select a specific segment (not 'Unknown')",
-    }),
+    .uuid("Please select a valid segment"),
   city: z.string().max(100).optional(),
   state: z.string().max(50).optional(),
 });

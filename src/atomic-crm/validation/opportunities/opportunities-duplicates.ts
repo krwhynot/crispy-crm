@@ -6,18 +6,6 @@ import type { DataProvider, Identifier, RaRecord } from "ra-core";
  */
 
 /**
- * Parameters for duplicate opportunity check
- * All three fields must match for an opportunity to be considered a duplicate
- */
-export interface DuplicateCheckParams {
-  principal_id: Identifier;
-  customer_id: Identifier;
-  product_id: Identifier;
-  /** Optional: Exclude this opportunity ID from duplicate check (for updates) */
-  exclude_id?: Identifier;
-}
-
-/**
  * Opportunity record type for duplicate check response
  */
 interface OpportunityRecord extends RaRecord {

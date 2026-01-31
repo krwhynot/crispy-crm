@@ -1,13 +1,6 @@
 {
   "chunk_name": "categories",
-  "generated_at": "2026-01-30T20:45:23.694Z",
-  "item_count": 1,
-  "items": [
-    {
-      "name": "validateCategory",
-      "file": "src/atomic-crm/validation/categories.ts",
-      "line": 31,
-      "pattern": "date"
-    }
-  ]
+  "generated_at": "2026-01-31T21:09:39.954Z",
+  "item_count": 0,
+  "items": []
 }

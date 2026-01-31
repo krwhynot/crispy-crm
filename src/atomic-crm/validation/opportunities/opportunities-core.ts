@@ -106,9 +106,6 @@ export const opportunityProductSchema = z
   .optional()
   .nullable();
 
-// Type export for product item
-export type OpportunityProductItem = z.infer<typeof opportunityProductItemSchema>;
-
 // Base schema - validates only fields that have UI inputs in OpportunityInputs.tsx
 const opportunityBaseSchema = z.strictObject({
   // System fields
@@ -256,7 +253,6 @@ const opportunityBaseSchema = z.strictObject({
 export const opportunitySchema = opportunityBaseSchema;
 
 // Type inference
-export type OpportunityInput = z.input<typeof opportunitySchema>;
 export type Opportunity = z.infer<typeof opportunitySchema>;
 export type LeadSource = z.infer<typeof leadSourceSchema>;
 

@@ -1,12 +1,12 @@
 {
   "chunk_name": "productWithDistributors",
-  "generated_at": "2026-01-30T20:45:23.716Z",
+  "generated_at": "2026-01-31T21:09:39.969Z",
   "item_count": 1,
   "items": [
     {
       "name": "validateCreateProductWithDistributors",
       "file": "src/atomic-crm/validation/productWithDistributors.ts",
-      "line": 59,
+      "line": 51,
       "pattern": "date"
     }
   ]

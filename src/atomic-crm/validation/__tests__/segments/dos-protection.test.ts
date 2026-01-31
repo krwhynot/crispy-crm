@@ -6,7 +6,7 @@
  */
 
 import { describe, it, expect } from "vitest";
-import { segmentSchema, createSegmentSchema, updateSegmentSchema } from "../../segments";
+import { segmentSchema, createSegmentSchema } from "../../segments";
 import { z } from "zod";
 
 describe("Segment DoS Protection", () => {
@@ -130,67 +130,6 @@ describe("Segment DoS Protection", () => {
         createSegmentSchema.parse({
           name: "Child Segment",
           segment_type: "operator",
-          parent_id: tooLongId,
-        })
-      ).toThrow(z.ZodError);
-    });
-  });
-
-  describe("updateSegmentSchema - bounded string limits", () => {
-    it("should enforce 100 char limit on segment names", () => {
-      const validUUID = "22222222-2222-4222-8222-000000000001";
-      const maxName = "a".repeat(100);
-      const tooLongName = "a".repeat(101);
-
-      expect(() =>
-        updateSegmentSchema.parse({
-          id: validUUID,
-          name: maxName,
-        })
-      ).not.toThrow();
-
-      expect(() =>
-        updateSegmentSchema.parse({
-          id: validUUID,
-          name: tooLongName,
-        })
-      ).toThrow(z.ZodError);
-    });
-
-    it("should enforce 50 char limit on ID UUID strings", () => {
-      const validUUID = "22222222-2222-4222-8222-000000000001";
-      const tooLongId = "a".repeat(51);
-
-      expect(() =>
-        updateSegmentSchema.parse({
-          id: validUUID,
-          name: "Test",
-        })
-      ).not.toThrow();
-
-      expect(() =>
-        updateSegmentSchema.parse({
-          id: tooLongId,
-          name: "Test",
-        })
-      ).toThrow(z.ZodError);
-    });
-
-    it("should enforce 50 char limit on parent_id UUID strings", () => {
-      const validUUID = "22222222-2222-4222-8222-000000000001";
-      const validParentUUID = "22222222-2222-4222-8222-000000000002";
-      const tooLongId = "a".repeat(51);
-
-      expect(() =>
-        updateSegmentSchema.parse({
-          id: validUUID,
-          parent_id: validParentUUID,
-        })
-      ).not.toThrow();
-
-      expect(() =>
-        updateSegmentSchema.parse({
-          id: validUUID,
           parent_id: tooLongId,
         })
       ).toThrow(z.ZodError);

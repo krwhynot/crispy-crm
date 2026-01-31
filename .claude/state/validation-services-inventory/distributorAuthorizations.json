@@ -1,24 +1,24 @@
 {
   "chunk_name": "distributorAuthorizations",
-  "generated_at": "2026-01-30T20:45:23.705Z",
+  "generated_at": "2026-01-31T21:09:39.956Z",
   "item_count": 3,
   "items": [
     {
       "name": "validateDistributorAuthorization",
       "file": "src/atomic-crm/validation/distributorAuthorizations.ts",
-      "line": 128,
+      "line": 114,
       "pattern": "date"
     },
     {
       "name": "validateCreateDistributorAuthorization",
       "file": "src/atomic-crm/validation/distributorAuthorizations.ts",
-      "line": 139,
+      "line": 125,
       "pattern": "date"
     },
     {
       "name": "validateProductDistributorAuthorization",
       "file": "src/atomic-crm/validation/distributorAuthorizations.ts",
-      "line": 261,
+      "line": 231,
       "pattern": "date"
     }
   ]

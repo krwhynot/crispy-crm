@@ -1,12 +1,12 @@
 {
   "chunk_name": "segments",
-  "generated_at": "2026-01-30T20:45:22.181Z",
+  "generated_at": "2026-01-31T21:09:39.374Z",
   "item_count": 3,
   "items": [
     {
       "name": "playbookCategorySchema",
       "file": "src/atomic-crm/validation/segments.ts",
-      "line": 74,
+      "line": 80,
       "schemaType": "enum",
       "fields": [],
       "relatedSchemas": [
@@ -19,7 +19,7 @@
     {
       "name": "segmentSchema",
       "file": "src/atomic-crm/validation/segments.ts",
-      "line": 80,
+      "line": 86,
       "schemaType": "strictObject",
       "fields": [
         {
@@ -116,7 +116,7 @@
     {
       "name": "playbookSegmentSchema",
       "file": "src/atomic-crm/validation/segments.ts",
-      "line": 94,
+      "line": 100,
       "schemaType": "other",
       "fields": [],
       "relatedSchemas": [

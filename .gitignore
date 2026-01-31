@@ -148,3 +148,4 @@ screenshots/
 .claude/state/forms-inventory.json
 .claude/state/schema-discovery.json
 .claude/state/test-discovery.json
+.claude-backup-*.tar.gz

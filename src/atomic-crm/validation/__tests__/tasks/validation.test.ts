@@ -6,8 +6,8 @@
 import { describe, it, expect } from "vitest";
 import {
   taskSchema,
-  createTaskSchema,
-  updateTaskSchema,
+  taskCreateSchema,
+  taskUpdateSchema,
   validateCreateTask,
   validateUpdateTask,
 } from "../../task";
@@ -118,7 +118,7 @@ describe("Task Validation Schemas", () => {
     });
   });
 
-  describe("createTaskSchema", () => {
+  describe("taskCreateSchema", () => {
     it("should require essential fields for creation", () => {
       const validCreate = {
         title: "New Task",
@@ -128,20 +128,20 @@ describe("Task Validation Schemas", () => {
         sales_id: 456,
       };
 
-      expect(() => createTaskSchema.parse(validCreate)).not.toThrow();
+      expect(() => taskCreateSchema.parse(validCreate)).not.toThrow();
     });
 
     it("should reject creation without required fields", () => {
-      expect(() => createTaskSchema.parse({})).toThrow(z.ZodError);
+      expect(() => taskCreateSchema.parse({})).toThrow(z.ZodError);
 
       expect(() =>
-        createTaskSchema.parse({
+        taskCreateSchema.parse({
           title: "Test",
         })
       ).toThrow(z.ZodError);
 
       expect(() =>
-        createTaskSchema.parse({
+        taskCreateSchema.parse({
           title: "Test",
           contact_id: 123,
           type: "Call",
@@ -160,7 +160,7 @@ describe("Task Validation Schemas", () => {
       };
 
       // z.strictObject() rejects unrecognized keys (mass assignment prevention)
-      expect(() => createTaskSchema.parse(dataWithId)).toThrow(z.ZodError);
+      expect(() => taskCreateSchema.parse(dataWithId)).toThrow(z.ZodError);
     });
 
     it("should allow completed_at on creation", () => {
@@ -173,19 +173,19 @@ describe("Task Validation Schemas", () => {
         completed_at: "2024-12-30T10:00:00Z",
       };
 
-      const result = createTaskSchema.parse(dataWithCompletedAt);
+      const result = taskCreateSchema.parse(dataWithCompletedAt);
       expect(result.completed_at).toBe("2024-12-30T10:00:00Z");
     });
   });
 
-  describe("updateTaskSchema", () => {
+  describe("taskUpdateSchema", () => {
     it("should require id for updates", () => {
       const validUpdate = {
         id: 123,
         title: "Updated Text",
       };
 
-      expect(() => updateTaskSchema.parse(validUpdate)).not.toThrow();
+      expect(() => taskUpdateSchema.parse(validUpdate)).not.toThrow();
     });
 
     it("should reject updates without id", () => {
@@ -193,22 +193,22 @@ describe("Task Validation Schemas", () => {
         title: "Updated Text",
       };
 
-      expect(() => updateTaskSchema.parse(invalidUpdate)).toThrow(z.ZodError);
+      expect(() => taskUpdateSchema.parse(invalidUpdate)).toThrow(z.ZodError);
     });
 
     it("should allow partial updates", () => {
-      expect(() => updateTaskSchema.parse({ id: 1, title: "New text" })).not.toThrow();
-      expect(() => updateTaskSchema.parse({ id: 1, type: "Email" })).not.toThrow();
+      expect(() => taskUpdateSchema.parse({ id: 1, title: "New text" })).not.toThrow();
+      expect(() => taskUpdateSchema.parse({ id: 1, type: "Email" })).not.toThrow();
       expect(() =>
-        updateTaskSchema.parse({ id: 1, due_date: "2025-01-01T10:00:00Z" })
+        taskUpdateSchema.parse({ id: 1, due_date: "2025-01-01T10:00:00Z" })
       ).not.toThrow();
       expect(() =>
-        updateTaskSchema.parse({
+        taskUpdateSchema.parse({
           id: 1,
           completed_at: "2024-12-31T10:00:00Z",
         })
       ).not.toThrow();
-      expect(() => updateTaskSchema.parse({ id: 1 })).not.toThrow();
+      expect(() => taskUpdateSchema.parse({ id: 1 })).not.toThrow();
     });
 
     it("should allow marking task as done", () => {
@@ -217,7 +217,7 @@ describe("Task Validation Schemas", () => {
         completed_at: "2024-12-20T10:00:00Z",
       };
 
-      expect(() => updateTaskSchema.parse(markAsDone)).not.toThrow();
+      expect(() => taskUpdateSchema.parse(markAsDone)).not.toThrow();
     });
 
     it("should allow clearing completed_at", () => {
@@ -226,7 +226,7 @@ describe("Task Validation Schemas", () => {
         completed_at: null,
       };
 
-      expect(() => updateTaskSchema.parse(clearDone)).not.toThrow();
+      expect(() => taskUpdateSchema.parse(clearDone)).not.toThrow();
     });
   });
 

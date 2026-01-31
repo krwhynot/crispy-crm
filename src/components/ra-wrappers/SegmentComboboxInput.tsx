@@ -2,7 +2,7 @@ import { useWatch } from "react-hook-form";
 import type { Validator } from "react-admin";
 import { required } from "react-admin";
 import { SelectInput } from "@/components/ra-wrappers/select-input";
-import { PLAYBOOK_CATEGORY_CHOICES, PLAYBOOK_CATEGORY_IDS } from "@/atomic-crm/validation/segments";
+import { PLAYBOOK_CATEGORY_CHOICES, UNKNOWN_SEGMENT_ID } from "@/atomic-crm/validation/segments";
 import { OPERATOR_SEGMENT_CHOICES } from "@/atomic-crm/validation/operatorSegments";
 
 type SegmentChoice = {
@@ -20,8 +20,6 @@ interface SegmentSelectInputProps {
   validate?: Validator | Validator[];
   allowUnknown?: boolean;
 }
-
-export const UNKNOWN_SEGMENT_ID = PLAYBOOK_CATEGORY_IDS.Unknown;
 
 /**
  * Segment selection input with conditional display based on organization type

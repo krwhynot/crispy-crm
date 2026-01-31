@@ -64,8 +64,6 @@ export const updateFavoriteSchema = favoriteSchema.partial().required({ id: true
  * Inferred types from schemas
  */
 export type Favorite = z.infer<typeof favoriteSchema>;
-export type CreateFavoriteInput = z.infer<typeof createFavoriteSchema>;
-export type UpdateFavoriteInput = z.infer<typeof updateFavoriteSchema>;
 
 /**
  * Validate favorite creation data

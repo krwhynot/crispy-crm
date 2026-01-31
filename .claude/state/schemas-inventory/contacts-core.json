@@ -1,6 +1,6 @@
 {
   "chunk_name": "contacts-core",
-  "generated_at": "2026-01-30T20:45:22.137Z",
+  "generated_at": "2026-01-31T21:09:39.362Z",
   "item_count": 3,
   "items": [
     {
@@ -460,7 +460,7 @@
     {
       "name": "createContactSchema",
       "file": "src/atomic-crm/validation/contacts/contacts-core.ts",
-      "line": 322,
+      "line": 321,
       "schemaType": "other",
       "fields": [],
       "relatedSchemas": [

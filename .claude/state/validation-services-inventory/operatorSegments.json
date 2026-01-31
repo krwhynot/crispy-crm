@@ -1,30 +1,24 @@
 {
   "chunk_name": "operatorSegments",
-  "generated_at": "2026-01-30T20:45:23.708Z",
-  "item_count": 4,
+  "generated_at": "2026-01-31T21:09:39.959Z",
+  "item_count": 3,
   "items": [
     {
       "name": "isOperatorParentSegment",
       "file": "src/atomic-crm/validation/operatorSegments.ts",
-      "line": 417,
+      "line": 398,
       "pattern": "unknown"
     },
     {
       "name": "isValidOperatorSegment",
       "file": "src/atomic-crm/validation/operatorSegments.ts",
-      "line": 446,
+      "line": 427,
       "pattern": "unknown"
     },
     {
       "name": "validateCreateOperatorSegment",
       "file": "src/atomic-crm/validation/operatorSegments.ts",
-      "line": 458,
-      "pattern": "date"
-    },
-    {
-      "name": "validateUpdateOperatorSegment",
-      "file": "src/atomic-crm/validation/operatorSegments.ts",
-      "line": 470,
+      "line": 438,
       "pattern": "date"
     }
   ]

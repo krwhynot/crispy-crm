@@ -1,3 +1,13 @@
+/**
+ * RPC Contract Schemas — Test-Only Documentation
+ *
+ * These schemas define the expected shapes of Supabase RPC function parameters
+ * and return types. They are NOT used for runtime validation in handlers — instead,
+ * they serve as living documentation tested in src/tests/validation/rpc.test.ts.
+ *
+ * @remarks Test-only — do not import into production handler code.
+ * @see src/tests/validation/rpc.test.ts
+ */
 import { z } from "zod";
 
 /**
@@ -117,9 +127,6 @@ export const checkAuthorizationResponseSchema = z.strictObject({
   resolved_via: z.literal("product_lookup").optional(),
 });
 
-export type CheckAuthorizationParams = z.infer<typeof checkAuthorizationParamsSchema>;
-export type CheckAuthorizationResponse = z.infer<typeof checkAuthorizationResponseSchema>;
-
 /**
  * check_authorization_batch(
  *   _distributor_id bigint,
@@ -165,9 +172,6 @@ export const checkAuthorizationBatchResponseSchema = z.strictObject({
   all_authorized: z.boolean().nullable(),
   results: z.array(checkAuthorizationResponseSchema).max(500, "Maximum 500 results"),
 });
-
-export type CheckAuthorizationBatchParams = z.infer<typeof checkAuthorizationBatchParamsSchema>;
-export type CheckAuthorizationBatchResponse = z.infer<typeof checkAuthorizationBatchResponseSchema>;
 
 /**
  * Map of RPC function names to their validation schemas
@@ -236,11 +240,6 @@ export const checkSimilarOpportunitiesResponseSchema = z
   )
   .max(50, "Maximum 50 similar opportunities");
 
-export type CheckSimilarOpportunitiesParams = z.infer<typeof checkSimilarOpportunitiesParamsSchema>;
-export type CheckSimilarOpportunitiesResponse = z.infer<
-  typeof checkSimilarOpportunitiesResponseSchema
->;
-
 /**
  * get_campaign_report_stats(p_campaign TEXT DEFAULT NULL) RETURNS JSONB
  * Get campaign report statistics including campaign options, sales rep options, and activity type counts.
@@ -266,9 +265,6 @@ export const getCampaignReportStatsResponseSchema = z.strictObject({
   sales_rep_options: z.array(salesRepOptionSchema).max(200, "Maximum 200 sales rep options"),
   activity_type_counts: z.record(z.string().max(50), z.number().int().nonnegative()),
 });
-
-export type GetCampaignReportStatsParams = z.infer<typeof getCampaignReportStatsParamsSchema>;
-export type GetCampaignReportStatsResponse = z.infer<typeof getCampaignReportStatsResponseSchema>;
 
 /**
  * get_stale_opportunities(
@@ -300,10 +296,6 @@ export const staleOpportunityRecordSchema = z.strictObject({
 export const getStaleOpportunitiesResponseSchema = z
   .array(staleOpportunityRecordSchema)
   .max(1000, "Maximum 1000 stale opportunities");
-
-export type GetStaleOpportunitiesParams = z.infer<typeof getStaleOpportunitiesParamsSchema>;
-export type GetStaleOpportunitiesResponse = z.infer<typeof getStaleOpportunitiesResponseSchema>;
-export type StaleOpportunityRecord = z.infer<typeof staleOpportunityRecordSchema>;
 
 export const RPC_SCHEMAS = {
   get_or_create_segment: getOrCreateSegmentParamsSchema,

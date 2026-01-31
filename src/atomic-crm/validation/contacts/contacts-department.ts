@@ -15,5 +15,3 @@ export const contactDepartmentSchema = z.enum([
   "sales_support",
   "procurement",
 ]);
-
-export type ContactDepartment = z.infer<typeof contactDepartmentSchema>;

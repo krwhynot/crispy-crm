@@ -24,6 +24,7 @@ import { useLocation } from "react-router-dom";
 
 import { OrganizationInputs } from "./OrganizationInputs";
 import { createOrganizationSchema } from "../validation/organizations";
+import { ORGANIZATION_FORM_VARIANTS } from "../validation/organizationFormConfig";
 import { useDuplicateOrgCheck } from "./useDuplicateOrgCheck";
 import { DuplicateOrgWarningDialog } from "./DuplicateOrgWarningDialog";
 import { OrganizationCreateFormFooter } from "./OrganizationCreateFormFooter";
@@ -154,12 +155,11 @@ const OrganizationCreate = () => {
   // Generate defaults from schema, then merge with runtime values
   // Per Constitution #5: FORM STATE DERIVED FROM TRUTH
   // IMPORTANT: Only include fields defined in organizationSchema (z.strictObject rejects unknown keys)
+  const variant = ORGANIZATION_FORM_VARIANTS.create;
   const formDefaults = {
-    sales_id: smartDefaults?.sales_id ?? null, // Handle loading state (also serves as Account Manager)
-    status: "active" as const, // Explicit UI default - not silent in validation
-    organization_type: "prospect" as const, // Explicit UI default - not silent in validation
-    priority: "C" as const, // Explicit UI default - not silent in validation
-    ...(parentOrgId ? { parent_organization_id: parentOrgId } : {}), // Pre-fill parent when adding branch
+    ...variant.defaultValues,
+    sales_id: smartDefaults?.sales_id ?? null, // Runtime override - Account Manager from identity
+    ...(parentOrgId ? { parent_organization_id: parentOrgId } : {}), // Router state override - pre-fill parent when adding branch
   };
   const formKey = "org-create";
 
