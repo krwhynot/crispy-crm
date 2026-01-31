@@ -26,7 +26,7 @@
  * Uses a simplified interface compatible with both Zod v3 and v4
  * This interface captures the minimal properties needed for error formatting
  */
-export interface ZodIssueBase {
+interface ZodIssueBase {
   code: string;
   message: string;
   path: (string | number)[];
