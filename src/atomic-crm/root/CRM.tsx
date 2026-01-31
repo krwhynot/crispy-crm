@@ -107,7 +107,7 @@ const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       staleTime: 30 * 1000, // 30 seconds - CRM data changes frequently
-      refetchOnWindowFocus: true,
+      refetchOnWindowFocus: false, // Prevent API storms on tab switch (STALE_STATE_STRATEGY.md)
     },
   },
 });

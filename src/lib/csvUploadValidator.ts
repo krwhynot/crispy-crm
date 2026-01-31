@@ -14,7 +14,10 @@
  * });
  *
  * if (!result.isValid) {
- *   console.error('Validation failed:', result.errors);
+ *   logger.error('CSV validation failed', undefined, {
+ *     errors: result.errors,
+ *     feature: 'CsvUpload'
+ *   });
  * }
  * ```
  */

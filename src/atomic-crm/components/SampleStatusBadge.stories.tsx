@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
+import { action } from "@storybook/addon-actions";
 import type { DataProvider } from "react-admin";
 import { AdminContext, defaultDataProvider } from "react-admin";
 import {
@@ -17,7 +18,7 @@ const mockDataProvider: DataProvider = {
   update: async (resource, params) => {
     // Simulate network delay
     await new Promise((resolve) => setTimeout(resolve, 800));
-    console.log(`[Mock] PATCH ${resource}/${params.id}:`, params.data);
+    action(`[Mock] PATCH ${resource}/${params.id}`)({ data: params.data });
     return { data: { id: params.id, ...params.data } };
   },
 };
@@ -386,15 +387,13 @@ export const WithCallback: Story = {
     activityId: 999,
     interactive: true,
     showStepper: true,
-    onStatusChange: (newStatus: SampleStatus) => {
-      alert(`Status changed to: ${newStatus}`);
-    },
+    onStatusChange: action("onStatusChange"),
   },
   parameters: {
     docs: {
       description: {
         story:
-          "Interactive badge with onStatusChange callback. Alerts on status change for demo purposes.",
+          "Interactive badge with onStatusChange callback. Logs status changes to Storybook Actions panel.",
       },
     },
   },

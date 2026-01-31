@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, memo } from "react";
 import { useListContext } from "ra-core";
 import {
   Accordion,
@@ -48,7 +48,7 @@ interface CampaignGroupedListProps {
   openSlideOver: (id: number, mode?: "view" | "edit") => void;
 }
 
-export const CampaignGroupedList = ({ openSlideOver }: CampaignGroupedListProps) => {
+const CampaignGroupedListComponent = ({ openSlideOver }: CampaignGroupedListProps) => {
   const { data: opportunities, isPending } = useListContext<Opportunity>();
 
   // Group opportunities by campaign → principal → customer organization
@@ -285,3 +285,5 @@ export const CampaignGroupedList = ({ openSlideOver }: CampaignGroupedListProps)
     </div>
   );
 };
+
+export const CampaignGroupedList = memo(CampaignGroupedListComponent);

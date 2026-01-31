@@ -10,9 +10,12 @@
  *   await dataProvider.create('contacts', { data });
  * } catch (error: unknown) {
  *   if (isHttpError(error)) {
- *     console.error(`HTTP ${error.status}: ${error.message}`);
+ *     logger.error('HTTP error occurred', error, {
+ *       status: error.status,
+ *       feature: 'DataProvider'
+ *     });
  *   } else if (isError(error)) {
- *     console.error(error.message);
+ *     logger.error('Operation failed', error, { feature: 'DataProvider' });
  *   }
  * }
  * ```

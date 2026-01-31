@@ -349,7 +349,10 @@ function createDuplicateKey(
  * @example
  * const result = detectDuplicates(csvContacts, existingDbContacts);
  * if (result.exactDuplicates.length > 0) {
- *   console.log(`Found ${result.exactDuplicates.length} exact duplicates`);
+ *   logger.debug('Duplicate contacts detected', {
+ *     exactDuplicates: result.exactDuplicates.length,
+ *     feature: 'ContactImport'
+ *   });
  * }
  */
 export function detectDuplicates(

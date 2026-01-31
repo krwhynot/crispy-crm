@@ -20,9 +20,10 @@ const OrganizationEdit = () => {
       mutationOptions={{
         onSuccess: () => {
           // Invalidate related caches to prevent stale data
-          queryClient.invalidateQueries({ queryKey: organizationKeys.all });
-          queryClient.invalidateQueries({ queryKey: contactKeys.all });
-          queryClient.invalidateQueries({ queryKey: opportunityKeys.all });
+          // Use targeted .lists() invalidation instead of nuclear .all
+          queryClient.invalidateQueries({ queryKey: organizationKeys.lists() });
+          queryClient.invalidateQueries({ queryKey: contactKeys.lists() });
+          queryClient.invalidateQueries({ queryKey: opportunityKeys.lists() });
         },
       }}
       transform={(values) => {
