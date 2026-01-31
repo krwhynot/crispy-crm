@@ -43,5 +43,3 @@ export const urlFilterSchema = z
       .optional(),
   })
   .passthrough();
-
-export type UrlFilter = z.infer<typeof urlFilterSchema>;
