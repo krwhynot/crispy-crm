@@ -1,11 +1,11 @@
 {
   "chunk_name": "organizations",
-  "generated_at": "2026-01-31T21:17:35.201Z",
+  "generated_at": "2026-02-01T01:48:24.620Z",
   "item_count": 9,
   "items": [
     {
       "name": "organizationTypeSchema",
-      "file": "src/atomic-crm/validation/organizations.ts",
+      "file": "src\\atomic-crm\\validation\\organizations.ts",
       "line": 14,
       "schemaType": "enum",
       "fields": [],
@@ -25,7 +25,7 @@
     },
     {
       "name": "organizationPrioritySchema",
-      "file": "src/atomic-crm/validation/organizations.ts",
+      "file": "src\\atomic-crm\\validation\\organizations.ts",
       "line": 22,
       "schemaType": "enum",
       "fields": [],
@@ -45,7 +45,7 @@
     },
     {
       "name": "orgScopeSchema",
-      "file": "src/atomic-crm/validation/organizations.ts",
+      "file": "src\\atomic-crm\\validation\\organizations.ts",
       "line": 25,
       "schemaType": "enum",
       "fields": [],
@@ -61,7 +61,7 @@
     },
     {
       "name": "orgStatusSchema",
-      "file": "src/atomic-crm/validation/organizations.ts",
+      "file": "src\\atomic-crm\\validation\\organizations.ts",
       "line": 28,
       "schemaType": "enum",
       "fields": [],
@@ -78,7 +78,7 @@
     },
     {
       "name": "orgStatusReasonSchema",
-      "file": "src/atomic-crm/validation/organizations.ts",
+      "file": "src\\atomic-crm\\validation\\organizations.ts",
       "line": 31,
       "schemaType": "enum",
       "fields": [],
@@ -99,7 +99,7 @@
     },
     {
       "name": "paymentTermsSchema",
-      "file": "src/atomic-crm/validation/organizations.ts",
+      "file": "src\\atomic-crm\\validation\\organizations.ts",
       "line": 41,
       "schemaType": "enum",
       "fields": [],
@@ -118,7 +118,7 @@
     },
     {
       "name": "organizationSchema",
-      "file": "src/atomic-crm/validation/organizations.ts",
+      "file": "src\\atomic-crm\\validation\\organizations.ts",
       "line": 115,
       "schemaType": "strictObject",
       "fields": [
@@ -735,7 +735,7 @@
     },
     {
       "name": "createOrganizationSchema",
-      "file": "src/atomic-crm/validation/organizations.ts",
+      "file": "src\\atomic-crm\\validation\\organizations.ts",
       "line": 234,
       "schemaType": "other",
       "fields": [],
@@ -756,7 +756,7 @@
     },
     {
       "name": "organizationQuickCreateSchema",
-      "file": "src/atomic-crm/validation/organizations.ts",
+      "file": "src\\atomic-crm\\validation\\organizations.ts",
       "line": 301,
       "schemaType": "strictObject",
       "fields": [

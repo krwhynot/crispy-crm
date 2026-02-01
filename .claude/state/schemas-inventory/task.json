@@ -1,11 +1,11 @@
 {
   "chunk_name": "task",
-  "generated_at": "2026-01-31T21:17:35.205Z",
+  "generated_at": "2026-02-01T01:48:24.645Z",
   "item_count": 3,
   "items": [
     {
       "name": "taskTypeSchema",
-      "file": "src/atomic-crm/validation/task.ts",
+      "file": "src\\atomic-crm\\validation\\task.ts",
       "line": 17,
       "schemaType": "enum",
       "fields": [],
@@ -27,7 +27,7 @@
     },
     {
       "name": "priorityLevelSchema",
-      "file": "src/atomic-crm/validation/task.ts",
+      "file": "src\\atomic-crm\\validation\\task.ts",
       "line": 27,
       "schemaType": "enum",
       "fields": [],
@@ -44,7 +44,7 @@
     },
     {
       "name": "taskSchema",
-      "file": "src/atomic-crm/validation/task.ts",
+      "file": "src\\atomic-crm\\validation\\task.ts",
       "line": 36,
       "schemaType": "strictObject",
       "fields": [

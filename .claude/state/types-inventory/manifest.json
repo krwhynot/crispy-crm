@@ -1,228 +1,120 @@
 {
   "status": "complete",
-  "generated_at": "2026-01-31T21:17:35.358Z",
+  "generated_at": "2026-02-01T01:48:24.784Z",
   "generator": "scripts/discover/extractors/types.ts",
   "source_globs": [
     "src/atomic-crm/types.ts",
     "src/atomic-crm/**/types.ts",
     "src/types/**/*.ts"
   ],
-  "checksum": "sha256:c429c19d02615802",
+  "checksum": "sha256:801e70e01ed566ef",
   "source_hashes": {
-    "src/atomic-crm/dashboard/types.ts": "a7616a1f8934",
-    "src/atomic-crm/filters/types.ts": "3879550007ba",
-    "src/atomic-crm/organizations/types.ts": "e9dbc9c48e05",
-    "src/atomic-crm/providers/supabase/extensions/types.ts": "0ecffca12765",
-    "src/atomic-crm/providers/supabase/filters/types.ts": "4f1ec55ed6db",
-    "src/atomic-crm/providers/supabase/types.ts": "ac091ebdeac6",
-    "src/atomic-crm/providers/types.ts": "7d578b64ff67",
-    "src/atomic-crm/reports/types.ts": "f28725d85208",
-    "src/atomic-crm/tags/types.ts": "9cd98db1ff7b",
-    "src/atomic-crm/tasks/types.ts": "415ffb88b5c9",
-    "src/atomic-crm/tutorial/types.ts": "b66ec8c41b6f",
-    "src/atomic-crm/types.ts": "ed145ecee115",
-    "src/atomic-crm/validation/activities/types.ts": "f915ffeb8940",
-    "src/types/database.types.ts": "f383e2f197b2",
-    "src/types/diacritic.d.ts": "a0363d5aebaa",
-    "src/types/supabase.ts": "20e0b342ad5f"
+    "src\\atomic-crm\\dashboard\\types.ts": "a7616a1f8934",
+    "src\\atomic-crm\\filters\\types.ts": "3879550007ba",
+    "src\\atomic-crm\\organizations\\types.ts": "e9dbc9c48e05",
+    "src\\atomic-crm\\providers\\supabase\\extensions\\types.ts": "0ecffca12765",
+    "src\\atomic-crm\\providers\\supabase\\filters\\types.ts": "4f1ec55ed6db",
+    "src\\atomic-crm\\providers\\supabase\\types.ts": "ac091ebdeac6",
+    "src\\atomic-crm\\providers\\types.ts": "7d578b64ff67",
+    "src\\atomic-crm\\reports\\types.ts": "f28725d85208",
+    "src\\atomic-crm\\tags\\types.ts": "9cd98db1ff7b",
+    "src\\atomic-crm\\tasks\\types.ts": "9d108ee55648",
+    "src\\atomic-crm\\tutorial\\types.ts": "b66ec8c41b6f",
+    "src\\atomic-crm\\types.ts": "5a739942caed",
+    "src\\atomic-crm\\validation\\activities\\types.ts": "f915ffeb8940",
+    "src\\types\\database.types.ts": "60da9d7e2607"
   },
   "summary": {
-    "total_items": 110,
-    "total_chunks": 11,
+    "total_items": 101,
+    "total_chunks": 1,
     "interfaces": 52,
-    "type_aliases": 58,
+    "type_aliases": 49,
     "zod_derived": 9,
-    "exported": 106,
-    "complex": 61
+    "exported": 99,
+    "complex": 53
   },
   "chunks": [
     {
-      "name": "_root",
-      "file": "_root.json",
-      "item_count": 18,
-      "checksum": "sha256:315069f714b883da",
+      "name": "_other",
+      "file": "_other.json",
+      "item_count": 101,
+      "checksum": "sha256:3234d29b7db047ee",
       "source_files": [
-        "src/atomic-crm/types.ts"
+        "src\\atomic-crm\\dashboard\\types.ts",
+        "src\\atomic-crm\\filters\\types.ts",
+        "src\\atomic-crm\\organizations\\types.ts",
+        "src\\atomic-crm\\providers\\supabase\\extensions\\types.ts",
+        "src\\atomic-crm\\providers\\supabase\\filters\\types.ts",
+        "src\\atomic-crm\\providers\\supabase\\types.ts",
+        "src\\atomic-crm\\providers\\types.ts",
+        "src\\atomic-crm\\reports\\types.ts",
+        "src\\atomic-crm\\tags\\types.ts",
+        "src\\atomic-crm\\tasks\\types.ts",
+        "src\\atomic-crm\\tutorial\\types.ts",
+        "src\\atomic-crm\\types.ts",
+        "src\\atomic-crm\\validation\\activities\\types.ts",
+        "src\\types\\database.types.ts"
       ],
       "source_hashes": {
-        "src/atomic-crm/types.ts": "ed145ecee115"
-      }
-    },
-    {
-      "name": "dashboard",
-      "file": "dashboard.json",
-      "item_count": 13,
-      "checksum": "sha256:b930f33f8d0b948e",
-      "source_files": [
-        "src/atomic-crm/dashboard/types.ts"
-      ],
-      "source_hashes": {
-        "src/atomic-crm/dashboard/types.ts": "a7616a1f8934"
-      }
-    },
-    {
-      "name": "database",
-      "file": "database.json",
-      "item_count": 9,
-      "checksum": "sha256:932aa481fea8c6cd",
-      "source_files": [
-        "src/types/database.types.ts"
-      ],
-      "source_hashes": {
-        "src/types/database.types.ts": "f383e2f197b2"
-      }
-    },
-    {
-      "name": "filters",
-      "file": "filters.json",
-      "item_count": 13,
-      "checksum": "sha256:48e48487857423d6",
-      "source_files": [
-        "src/atomic-crm/filters/types.ts"
-      ],
-      "source_hashes": {
-        "src/atomic-crm/filters/types.ts": "3879550007ba"
-      }
-    },
-    {
-      "name": "organizations",
-      "file": "organizations.json",
-      "item_count": 17,
-      "checksum": "sha256:2a1c02ba3f012261",
-      "source_files": [
-        "src/atomic-crm/organizations/types.ts"
-      ],
-      "source_hashes": {
-        "src/atomic-crm/organizations/types.ts": "e9dbc9c48e05"
-      }
-    },
-    {
-      "name": "providers",
-      "file": "providers.json",
-      "item_count": 15,
-      "checksum": "sha256:bce6e7c119402248",
-      "source_files": [
-        "src/atomic-crm/providers/supabase/extensions/types.ts",
-        "src/atomic-crm/providers/supabase/filters/types.ts",
-        "src/atomic-crm/providers/supabase/types.ts",
-        "src/atomic-crm/providers/types.ts"
-      ],
-      "source_hashes": {
-        "src/atomic-crm/providers/supabase/extensions/types.ts": "0ecffca12765",
-        "src/atomic-crm/providers/supabase/filters/types.ts": "4f1ec55ed6db",
-        "src/atomic-crm/providers/supabase/types.ts": "ac091ebdeac6",
-        "src/atomic-crm/providers/types.ts": "7d578b64ff67"
-      }
-    },
-    {
-      "name": "reports",
-      "file": "reports.json",
-      "item_count": 3,
-      "checksum": "sha256:5d5eb688795991b6",
-      "source_files": [
-        "src/atomic-crm/reports/types.ts"
-      ],
-      "source_hashes": {
-        "src/atomic-crm/reports/types.ts": "f28725d85208"
-      }
-    },
-    {
-      "name": "supabase",
-      "file": "supabase.json",
-      "item_count": 9,
-      "checksum": "sha256:17a31e825fed0f91",
-      "source_files": [
-        "src/types/supabase.ts"
-      ],
-      "source_hashes": {
-        "src/types/supabase.ts": "20e0b342ad5f"
-      }
-    },
-    {
-      "name": "tags",
-      "file": "tags.json",
-      "item_count": 6,
-      "checksum": "sha256:3e40f1a97c293bcf",
-      "source_files": [
-        "src/atomic-crm/tags/types.ts"
-      ],
-      "source_hashes": {
-        "src/atomic-crm/tags/types.ts": "9cd98db1ff7b"
-      }
-    },
-    {
-      "name": "tutorial",
-      "file": "tutorial.json",
-      "item_count": 3,
-      "checksum": "sha256:0ce76140732bf811",
-      "source_files": [
-        "src/atomic-crm/tutorial/types.ts"
-      ],
-      "source_hashes": {
-        "src/atomic-crm/tutorial/types.ts": "b66ec8c41b6f"
-      }
-    },
-    {
-      "name": "validation",
-      "file": "validation.json",
-      "item_count": 4,
-      "checksum": "sha256:c56c2344b1449055",
-      "source_files": [
-        "src/atomic-crm/validation/activities/types.ts"
-      ],
-      "source_hashes": {
-        "src/atomic-crm/validation/activities/types.ts": "f915ffeb8940"
+        "src\\atomic-crm\\dashboard\\types.ts": "a7616a1f8934",
+        "src\\atomic-crm\\filters\\types.ts": "3879550007ba",
+        "src\\atomic-crm\\organizations\\types.ts": "e9dbc9c48e05",
+        "src\\atomic-crm\\providers\\supabase\\extensions\\types.ts": "0ecffca12765",
+        "src\\atomic-crm\\providers\\supabase\\filters\\types.ts": "4f1ec55ed6db",
+        "src\\atomic-crm\\providers\\supabase\\types.ts": "ac091ebdeac6",
+        "src\\atomic-crm\\providers\\types.ts": "7d578b64ff67",
+        "src\\atomic-crm\\reports\\types.ts": "f28725d85208",
+        "src\\atomic-crm\\tags\\types.ts": "9cd98db1ff7b",
+        "src\\atomic-crm\\tasks\\types.ts": "9d108ee55648",
+        "src\\atomic-crm\\tutorial\\types.ts": "b66ec8c41b6f",
+        "src\\atomic-crm\\types.ts": "5a739942caed",
+        "src\\atomic-crm\\validation\\activities\\types.ts": "f915ffeb8940",
+        "src\\types\\database.types.ts": "60da9d7e2607"
       }
     }
   ],
   "file_to_chunks": {
-    "src/atomic-crm/dashboard/types.ts": [
-      "dashboard"
+    "src\\atomic-crm\\dashboard\\types.ts": [
+      "_other"
     ],
-    "src/atomic-crm/filters/types.ts": [
-      "filters"
+    "src\\atomic-crm\\filters\\types.ts": [
+      "_other"
     ],
-    "src/atomic-crm/organizations/types.ts": [
-      "organizations"
+    "src\\atomic-crm\\organizations\\types.ts": [
+      "_other"
     ],
-    "src/atomic-crm/providers/supabase/extensions/types.ts": [
-      "providers"
+    "src\\atomic-crm\\providers\\supabase\\extensions\\types.ts": [
+      "_other"
     ],
-    "src/atomic-crm/providers/supabase/filters/types.ts": [
-      "providers"
+    "src\\atomic-crm\\providers\\supabase\\filters\\types.ts": [
+      "_other"
     ],
-    "src/atomic-crm/providers/supabase/types.ts": [
-      "providers"
+    "src\\atomic-crm\\providers\\supabase\\types.ts": [
+      "_other"
     ],
-    "src/atomic-crm/providers/types.ts": [
-      "providers"
+    "src\\atomic-crm\\providers\\types.ts": [
+      "_other"
     ],
-    "src/atomic-crm/reports/types.ts": [
-      "reports"
+    "src\\atomic-crm\\reports\\types.ts": [
+      "_other"
     ],
-    "src/atomic-crm/tags/types.ts": [
-      "tags"
+    "src\\atomic-crm\\tags\\types.ts": [
+      "_other"
     ],
-    "src/atomic-crm/tasks/types.ts": [
-      "tasks"
+    "src\\atomic-crm\\tasks\\types.ts": [
+      "_other"
     ],
-    "src/atomic-crm/tutorial/types.ts": [
-      "tutorial"
+    "src\\atomic-crm\\tutorial\\types.ts": [
+      "_other"
     ],
-    "src/atomic-crm/types.ts": [
-      "_root"
+    "src\\atomic-crm\\types.ts": [
+      "_other"
     ],
-    "src/atomic-crm/validation/activities/types.ts": [
-      "validation"
+    "src\\atomic-crm\\validation\\activities\\types.ts": [
+      "_other"
     ],
-    "src/types/database.types.ts": [
-      "database"
-    ],
-    "src/types/diacritic.d.ts": [
-      "diacritic"
-    ],
-    "src/types/supabase.ts": [
-      "supabase"
+    "src\\types\\database.types.ts": [
+      "_other"
     ]
   }
 }

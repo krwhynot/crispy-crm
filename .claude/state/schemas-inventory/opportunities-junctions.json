@@ -1,11 +1,11 @@
 {
   "chunk_name": "opportunities-junctions",
-  "generated_at": "2026-01-31T21:17:35.200Z",
+  "generated_at": "2026-02-01T01:48:24.613Z",
   "item_count": 3,
   "items": [
     {
       "name": "opportunityParticipantRoleSchema",
-      "file": "src/atomic-crm/validation/opportunities/opportunities-junctions.ts",
+      "file": "src\\atomic-crm\\validation\\opportunities\\opportunities-junctions.ts",
       "line": 23,
       "schemaType": "enum",
       "fields": [],
@@ -26,7 +26,7 @@
     },
     {
       "name": "opportunityParticipantSchema",
-      "file": "src/atomic-crm/validation/opportunities/opportunities-junctions.ts",
+      "file": "src\\atomic-crm\\validation\\opportunities\\opportunities-junctions.ts",
       "line": 36,
       "schemaType": "strictObject",
       "fields": [
@@ -141,7 +141,7 @@
     },
     {
       "name": "opportunityContactSchema",
-      "file": "src/atomic-crm/validation/opportunities/opportunities-junctions.ts",
+      "file": "src\\atomic-crm\\validation\\opportunities\\opportunities-junctions.ts",
       "line": 80,
       "schemaType": "strictObject",
       "fields": [

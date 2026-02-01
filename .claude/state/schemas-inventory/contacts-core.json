@@ -1,11 +1,11 @@
 {
   "chunk_name": "contacts-core",
-  "generated_at": "2026-01-31T21:17:35.197Z",
+  "generated_at": "2026-02-01T01:48:24.588Z",
   "item_count": 3,
   "items": [
     {
       "name": "contactBaseSchema",
-      "file": "src/atomic-crm/validation/contacts/contacts-core.ts",
+      "file": "src\\atomic-crm\\validation\\contacts\\contacts-core.ts",
       "line": 74,
       "schemaType": "strictObject",
       "fields": [
@@ -438,7 +438,7 @@
     },
     {
       "name": "contactSchema",
-      "file": "src/atomic-crm/validation/contacts/contacts-core.ts",
+      "file": "src\\atomic-crm\\validation\\contacts\\contacts-core.ts",
       "line": 183,
       "schemaType": "other",
       "fields": [],
@@ -459,7 +459,7 @@
     },
     {
       "name": "createContactSchema",
-      "file": "src/atomic-crm/validation/contacts/contacts-core.ts",
+      "file": "src\\atomic-crm\\validation\\contacts\\contacts-core.ts",
       "line": 321,
       "schemaType": "other",
       "fields": [],

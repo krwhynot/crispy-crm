@@ -1,11 +1,11 @@
 {
   "chunk_name": "ui-props",
-  "generated_at": "2026-01-31T21:17:35.205Z",
+  "generated_at": "2026-02-01T01:48:24.647Z",
   "item_count": 5,
   "items": [
     {
       "name": "slideOverPropsSchema",
-      "file": "src/atomic-crm/validation/ui-props.ts",
+      "file": "src\\atomic-crm\\validation\\ui-props.ts",
       "line": 56,
       "schemaType": "strictObject",
       "fields": [
@@ -68,7 +68,7 @@
     },
     {
       "name": "slideOverPropsWithCanEditSchema",
-      "file": "src/atomic-crm/validation/ui-props.ts",
+      "file": "src\\atomic-crm\\validation\\ui-props.ts",
       "line": 68,
       "schemaType": "other",
       "fields": [],
@@ -81,7 +81,7 @@
     },
     {
       "name": "tabComponentPropsSchema",
-      "file": "src/atomic-crm/validation/ui-props.ts",
+      "file": "src\\atomic-crm\\validation\\ui-props.ts",
       "line": 80,
       "schemaType": "strictObject",
       "fields": [
@@ -144,7 +144,7 @@
     },
     {
       "name": "quickLogFormPropsSchema",
-      "file": "src/atomic-crm/validation/ui-props.ts",
+      "file": "src\\atomic-crm\\validation\\ui-props.ts",
       "line": 96,
       "schemaType": "strictObject",
       "fields": [
@@ -223,7 +223,7 @@
     },
     {
       "name": "contactListLayoutPropsSchema",
-      "file": "src/atomic-crm/validation/ui-props.ts",
+      "file": "src\\atomic-crm\\validation\\ui-props.ts",
       "line": 114,
       "schemaType": "strictObject",
       "fields": [

@@ -4,13 +4,15 @@ import { required } from "react-admin";
 import { SelectInput } from "@/components/ra-wrappers/select-input";
 import { PLAYBOOK_CATEGORY_CHOICES, UNKNOWN_SEGMENT_ID } from "@/atomic-crm/validation/segments";
 import { OPERATOR_SEGMENT_CHOICES } from "@/atomic-crm/validation/operatorSegments";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Info } from "lucide-react";
 
-type SegmentChoice = {
+interface SegmentChoice {
   id: string;
   name: string;
   isParent?: boolean;
   parentId?: string;
-};
+}
 
 interface SegmentSelectInputProps {
   source: string;
@@ -34,24 +36,20 @@ interface SegmentSelectInputProps {
 export const SegmentSelectInput = (props: SegmentSelectInputProps) => {
   // Watch organization_type to determine which segments to show
   const organizationType = useWatch({ name: "organization_type" });
+  const parentOrgId = useWatch({ name: "parent_organization_id" });
 
   // Distributors/Principals use Playbook categories
   // Customers/Prospects/Unknown use Operator segments
   const usePlaybookCategories =
     organizationType === "distributor" || organizationType === "principal";
 
-  const UNKNOWN_SEGMENT = { id: UNKNOWN_SEGMENT_ID, name: "Unknown" };
-
   const baseChoices = usePlaybookCategories ? PLAYBOOK_CATEGORY_CHOICES : OPERATOR_SEGMENT_CHOICES;
 
-  // Ensure "Unknown" is always a selectable option, prepending it to the list.
-  // This handles cases where a record might have the default "Unknown" ID from the DB
-  // and makes it explicitly selectable by the user.
-  // We filter out any existing "Unknown" from the base lists to prevent duplicates.
-  const choices = [
-    UNKNOWN_SEGMENT,
-    ...baseChoices.filter((choice) => choice.id !== UNKNOWN_SEGMENT_ID),
-  ];
+  // Only include "Unknown" when allowUnknown is true (edit forms).
+  // Create forms should not offer "Unknown" as a selectable option.
+  const choices = props.allowUnknown
+    ? [{ id: UNKNOWN_SEGMENT_ID, name: "Unknown" }, ...baseChoices.filter((choice) => choice.id !== UNKNOWN_SEGMENT_ID)]
+    : baseChoices.filter((choice) => choice.id !== UNKNOWN_SEGMENT_ID);
 
   const defaultLabel = usePlaybookCategories ? "Playbook Category" : "Operator Segment";
 
@@ -65,24 +63,30 @@ export const SegmentSelectInput = (props: SegmentSelectInputProps) => {
     return isValid ? undefined : "Selected segment is not valid for this organization type";
   };
 
-  // Reject "Unknown" segment for create forms (allowUnknown=false by default)
-  const rejectUnknown = (value: unknown) => {
-    if (!props.allowUnknown && value === UNKNOWN_SEGMENT_ID) {
-      return "Please select a specific segment (not 'Unknown')";
-    }
-    return undefined;
-  };
-
   // Built-in required validation + choice validation + any additional validators from props
   const validators: Validator[] = [
     required("Segment is required"),
     validateInChoices,
-    rejectUnknown,
     ...(props.validate ? (Array.isArray(props.validate) ? props.validate : [props.validate]) : []),
   ];
 
+  // Detect distributor branch context for advisory alert
+  const isDistributorBranch =
+    (organizationType === "distributor" || organizationType === "principal") &&
+    parentOrgId;
+
   return (
-    <SelectInput
+    <>
+      {isDistributorBranch && (
+        <Alert className="mb-4">
+          <Info className="h-4 w-4" />
+          <AlertDescription>
+            Creating a distributor branch? Consider these segments:{" "}
+            <strong>Major Broadline, Specialty/Regional, GPO, Management Company</strong>
+          </AlertDescription>
+        </Alert>
+      )}
+      <SelectInput
       source={props.source}
       label={props.label ?? defaultLabel}
       choices={choices}
@@ -92,6 +96,7 @@ export const SegmentSelectInput = (props: SegmentSelectInputProps) => {
       parse={(value: string) => (value === "" ? null : value)}
       validate={validators}
     />
+    </>
   );
 };
 

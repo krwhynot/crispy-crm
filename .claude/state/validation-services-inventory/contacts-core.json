@@ -1,11 +1,11 @@
 {
   "chunk_name": "contacts-core",
-  "generated_at": "2026-01-31T21:17:35.678Z",
+  "generated_at": "2026-02-01T01:48:25.103Z",
   "item_count": 3,
   "items": [
     {
       "name": "validateContactForm",
-      "file": "src/atomic-crm/validation/contacts/contacts-core.ts",
+      "file": "src\\atomic-crm\\validation\\contacts\\contacts-core.ts",
       "line": 224,
       "type": "formatter",
       "schemaReference": "quickCreateContactSchema",
@@ -15,7 +15,7 @@
     },
     {
       "name": "validateCreateContact",
-      "file": "src/atomic-crm/validation/contacts/contacts-core.ts",
+      "file": "src\\atomic-crm\\validation\\contacts\\contacts-core.ts",
       "line": 397,
       "type": "formatter",
       "errorFormatting": true,
@@ -24,7 +24,7 @@
     },
     {
       "name": "validateUpdateContact",
-      "file": "src/atomic-crm/validation/contacts/contacts-core.ts",
+      "file": "src\\atomic-crm\\validation\\contacts\\contacts-core.ts",
       "line": 509,
       "type": "formatter",
       "schemaReference": "updateContactSchema",

@@ -1,11 +1,11 @@
 {
   "chunk_name": "opportunities-core",
-  "generated_at": "2026-01-31T21:17:35.200Z",
+  "generated_at": "2026-02-01T01:48:24.611Z",
   "item_count": 5,
   "items": [
     {
       "name": "opportunityStageSchema",
-      "file": "src/atomic-crm/validation/opportunities/opportunities-core.ts",
+      "file": "src\\atomic-crm\\validation\\opportunities\\opportunities-core.ts",
       "line": 11,
       "schemaType": "enum",
       "fields": [],
@@ -29,7 +29,7 @@
     },
     {
       "name": "opportunityPrioritySchema",
-      "file": "src/atomic-crm/validation/opportunities/opportunities-core.ts",
+      "file": "src\\atomic-crm\\validation\\opportunities\\opportunities-core.ts",
       "line": 21,
       "schemaType": "enum",
       "fields": [],
@@ -49,7 +49,7 @@
     },
     {
       "name": "leadSourceSchema",
-      "file": "src/atomic-crm/validation/opportunities/opportunities-core.ts",
+      "file": "src\\atomic-crm\\validation\\opportunities\\opportunities-core.ts",
       "line": 23,
       "schemaType": "enum",
       "fields": [],
@@ -70,7 +70,7 @@
     },
     {
       "name": "winReasonSchema",
-      "file": "src/atomic-crm/validation/opportunities/opportunities-core.ts",
+      "file": "src\\atomic-crm\\validation\\opportunities\\opportunities-core.ts",
       "line": 41,
       "schemaType": "enum",
       "fields": [],
@@ -88,7 +88,7 @@
     },
     {
       "name": "lossReasonSchema",
-      "file": "src/atomic-crm/validation/opportunities/opportunities-core.ts",
+      "file": "src\\atomic-crm\\validation\\opportunities\\opportunities-core.ts",
       "line": 50,
       "schemaType": "enum",
       "fields": [],

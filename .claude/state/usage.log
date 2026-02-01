@@ -28,3 +28,9 @@
 [2026-01-30T01:38:15.116Z] ✓ search_code | query: "ReferenceInput segments organizations" | limit=15, type="all" | results: 0 | 11929ms
 [2026-01-30T19:45:10.248Z] ✓ search_code | query: "custom hooks use" | limit=50, type="hook" | results: 0 | 12446ms
 [2026-01-30T22:25:13.711Z] ✓ search_code | query: "FormSectionWithProgress requiredFields" | limit=20, type="all" | results: 0 | 10642ms
+[2026-01-31T23:38:57.258Z] ✓ search_code | query: "FormProgressBar totalRequired context pattern usage" | limit=10, type="all" | results: 0 | 97ms
+[2026-01-31T23:38:57.371Z] ✓ search_code | query: "React Admin FieldTitle required asterisk automatic" | limit=10, type="all" | results: 0 | 28ms
+[2026-01-31T23:38:57.482Z] ✓ search_code | query: "FormSectionWithProgress Circle CheckCircle2 icon incomplete complete" | limit=10, type="all" | results: 0 | 26ms
+[2026-02-01T00:53:16.470Z] ✓ search_code | query: "Organization creation form Scope dropdown" | limit=20, type="all" | results: 0 | 94ms
+[2026-02-01T00:54:05.324Z] ✓ search_code | query: "useWatch form state reactive fields" | limit=10, type="all" | results: 0 | 22ms
+[2026-02-01T00:54:10.631Z] ✓ search_code | query: "ORG_SCOPE_CHOICES organization scope" | limit=10, type="all" | results: 0 | 12ms

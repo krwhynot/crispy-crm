@@ -104,7 +104,7 @@ export const ORGANIZATION_FORM_VARIANTS: Record<
       needs_review: false, // New manual entries don't need review
     },
     allowUnknownSegment: false, // Enforced: segment_id !== UNKNOWN_SEGMENT_ID
-    preserveFields: ["parent_organization_id", "organization_type", "sales_id"],
+    preserveFields: ["parent_organization_id", "organization_type", "sales_id", "org_scope"],
   },
 
   /**

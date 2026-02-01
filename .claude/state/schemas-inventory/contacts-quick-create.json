@@ -1,11 +1,11 @@
 {
   "chunk_name": "contacts-quick-create",
-  "generated_at": "2026-01-31T21:17:35.198Z",
+  "generated_at": "2026-02-01T01:48:24.595Z",
   "item_count": 2,
   "items": [
     {
       "name": "quickCreateContactFormSchema",
-      "file": "src/atomic-crm/validation/contacts/contacts-quick-create.ts",
+      "file": "src\\atomic-crm\\validation\\contacts\\contacts-quick-create.ts",
       "line": 19,
       "schemaType": "strictObject",
       "fields": [
@@ -58,7 +58,7 @@
     },
     {
       "name": "quickCreateContactSchema",
-      "file": "src/atomic-crm/validation/contacts/contacts-quick-create.ts",
+      "file": "src\\atomic-crm\\validation\\contacts\\contacts-quick-create.ts",
       "line": 31,
       "schemaType": "strictObject",
       "fields": [

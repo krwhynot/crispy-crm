@@ -1,11 +1,11 @@
 {
   "chunk_name": "products",
-  "generated_at": "2026-01-31T21:17:35.202Z",
+  "generated_at": "2026-02-01T01:48:24.626Z",
   "item_count": 5,
   "items": [
     {
       "name": "productStatusSchema",
-      "file": "src/atomic-crm/validation/products.ts",
+      "file": "src\\atomic-crm\\validation\\products.ts",
       "line": 43,
       "schemaType": "enum",
       "fields": [],
@@ -23,7 +23,7 @@
     },
     {
       "name": "productSchema",
-      "file": "src/atomic-crm/validation/products.ts",
+      "file": "src\\atomic-crm\\validation\\products.ts",
       "line": 49,
       "schemaType": "strictObject",
       "fields": [
@@ -163,11 +163,11 @@
         "opportunityProductSyncHandlerSchema",
         "productDistributorStatusSchema",
         "productDistributorSchema",
-        "productWithDistributorsSchema",
         "productStatusSchema",
         "productCreateWithDistributorsSchema",
         "productUpdateWithDistributorsSchema",
         "opportunityProductSchema",
+        "productWithDistributorsSchema",
         "syncOpportunityWithProductsParamsSchema"
       ],
       "validationFunctions": [
@@ -178,7 +178,7 @@
     },
     {
       "name": "productCreateWithDistributorsSchema",
-      "file": "src/atomic-crm/validation/products.ts",
+      "file": "src\\atomic-crm\\validation\\products.ts",
       "line": 141,
       "schemaType": "strictObject",
       "fields": [
@@ -324,7 +324,7 @@
     },
     {
       "name": "productUpdateWithDistributorsSchema",
-      "file": "src/atomic-crm/validation/products.ts",
+      "file": "src\\atomic-crm\\validation\\products.ts",
       "line": 190,
       "schemaType": "strictObject",
       "fields": [
@@ -536,7 +536,7 @@
     },
     {
       "name": "opportunityProductSchema",
-      "file": "src/atomic-crm/validation/products.ts",
+      "file": "src\\atomic-crm\\validation\\products.ts",
       "line": 261,
       "schemaType": "strictObject",
       "fields": [

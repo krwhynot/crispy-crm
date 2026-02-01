@@ -1,11 +1,11 @@
 {
   "chunk_name": "filters",
-  "generated_at": "2026-01-31T21:17:35.199Z",
+  "generated_at": "2026-02-01T01:48:24.605Z",
   "item_count": 3,
   "items": [
     {
       "name": "filterValueSchema",
-      "file": "src/atomic-crm/validation/filters.ts",
+      "file": "src\\atomic-crm\\validation\\filters.ts",
       "line": 7,
       "schemaType": "union",
       "fields": [],
@@ -16,7 +16,7 @@
     },
     {
       "name": "listParamsSchema",
-      "file": "src/atomic-crm/validation/filters.ts",
+      "file": "src\\atomic-crm\\validation\\filters.ts",
       "line": 21,
       "schemaType": "object",
       "fields": [
@@ -81,7 +81,7 @@
     },
     {
       "name": "urlFilterSchema",
-      "file": "src/atomic-crm/validation/filters.ts",
+      "file": "src\\atomic-crm\\validation\\filters.ts",
       "line": 39,
       "schemaType": "object",
       "fields": [

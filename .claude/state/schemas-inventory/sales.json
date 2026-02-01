@@ -1,11 +1,11 @@
 {
   "chunk_name": "sales",
-  "generated_at": "2026-01-31T21:17:35.203Z",
+  "generated_at": "2026-02-01T01:48:24.637Z",
   "item_count": 5,
   "items": [
     {
       "name": "salesSchema",
-      "file": "src/atomic-crm/validation/sales.ts",
+      "file": "src\\atomic-crm\\validation\\sales.ts",
       "line": 43,
       "schemaType": "strictObject",
       "fields": [
@@ -202,7 +202,7 @@
     },
     {
       "name": "userInviteSchema",
-      "file": "src/atomic-crm/validation/sales.ts",
+      "file": "src\\atomic-crm\\validation\\sales.ts",
       "line": 176,
       "schemaType": "strictObject",
       "fields": [
@@ -273,7 +273,7 @@
     },
     {
       "name": "userUpdateSchema",
-      "file": "src/atomic-crm/validation/sales.ts",
+      "file": "src\\atomic-crm\\validation\\sales.ts",
       "line": 195,
       "schemaType": "strictObject",
       "fields": [
@@ -338,7 +338,7 @@
     },
     {
       "name": "salesProfileSchema",
-      "file": "src/atomic-crm/validation/sales.ts",
+      "file": "src\\atomic-crm\\validation\\sales.ts",
       "line": 223,
       "schemaType": "strictObject",
       "fields": [
@@ -427,7 +427,7 @@
     },
     {
       "name": "salesPermissionsSchema",
-      "file": "src/atomic-crm/validation/sales.ts",
+      "file": "src\\atomic-crm\\validation\\sales.ts",
       "line": 258,
       "schemaType": "strictObject",
       "fields": [

@@ -1,11 +1,11 @@
 {
   "chunk_name": "opportunities-operations",
-  "generated_at": "2026-01-31T21:17:35.200Z",
+  "generated_at": "2026-02-01T01:48:24.616Z",
   "item_count": 6,
   "items": [
     {
       "name": "opportunityProductSyncInputSchema",
-      "file": "src/atomic-crm/validation/opportunities/opportunities-operations.ts",
+      "file": "src\\atomic-crm\\validation\\opportunities\\opportunities-operations.ts",
       "line": 62,
       "schemaType": "strictObject",
       "fields": [
@@ -42,7 +42,7 @@
     },
     {
       "name": "opportunityProductSyncHandlerSchema",
-      "file": "src/atomic-crm/validation/opportunities/opportunities-operations.ts",
+      "file": "src\\atomic-crm\\validation\\opportunities\\opportunities-operations.ts",
       "line": 74,
       "schemaType": "strictObject",
       "fields": [
@@ -110,7 +110,7 @@
     },
     {
       "name": "createOpportunitySchema",
-      "file": "src/atomic-crm/validation/opportunities/opportunities-operations.ts",
+      "file": "src\\atomic-crm\\validation\\opportunities\\opportunities-operations.ts",
       "line": 229,
       "schemaType": "union",
       "fields": [],
@@ -140,7 +140,7 @@
     },
     {
       "name": "quickCreateOpportunitySchema",
-      "file": "src/atomic-crm/validation/opportunities/opportunities-operations.ts",
+      "file": "src\\atomic-crm\\validation\\opportunities\\opportunities-operations.ts",
       "line": 311,
       "schemaType": "strictObject",
       "fields": [
@@ -240,7 +240,7 @@
     },
     {
       "name": "updateOpportunitySchema",
-      "file": "src/atomic-crm/validation/opportunities/opportunities-operations.ts",
+      "file": "src\\atomic-crm\\validation\\opportunities\\opportunities-operations.ts",
       "line": 347,
       "schemaType": "other",
       "fields": [],
@@ -270,7 +270,7 @@
     },
     {
       "name": "closeOpportunityBaseSchema",
-      "file": "src/atomic-crm/validation/opportunities/opportunities-operations.ts",
+      "file": "src\\atomic-crm\\validation\\opportunities\\opportunities-operations.ts",
       "line": 534,
       "schemaType": "strictObject",
       "fields": [

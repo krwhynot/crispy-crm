@@ -1,11 +1,11 @@
 {
   "chunk_name": "validation",
-  "generated_at": "2026-01-31T21:17:35.677Z",
+  "generated_at": "2026-02-01T01:48:25.095Z",
   "item_count": 6,
   "items": [
     {
       "name": "validateActivitiesForm",
-      "file": "src/atomic-crm/validation/activities/validation.ts",
+      "file": "src\\atomic-crm\\validation\\activities\\validation.ts",
       "line": 22,
       "type": "formatter",
       "schemaReference": "activitiesSchema",
@@ -19,13 +19,13 @@
     },
     {
       "name": "validateCreateActivities",
-      "file": "src/atomic-crm/validation/activities/validation.ts",
+      "file": "src\\atomic-crm\\validation\\activities\\validation.ts",
       "line": 36,
       "pattern": "date"
     },
     {
       "name": "validateEngagementsForm",
-      "file": "src/atomic-crm/validation/activities/validation.ts",
+      "file": "src\\atomic-crm\\validation\\activities\\validation.ts",
       "line": 57,
       "type": "formatter",
       "schemaReference": "engagementsSchema",
@@ -39,13 +39,13 @@
     },
     {
       "name": "validateCreateEngagements",
-      "file": "src/atomic-crm/validation/activities/validation.ts",
+      "file": "src\\atomic-crm\\validation\\activities\\validation.ts",
       "line": 71,
       "pattern": "date"
     },
     {
       "name": "validateInteractionsForm",
-      "file": "src/atomic-crm/validation/activities/validation.ts",
+      "file": "src\\atomic-crm\\validation\\activities\\validation.ts",
       "line": 97,
       "type": "formatter",
       "schemaReference": "interactionsSchema",
@@ -59,7 +59,7 @@
     },
     {
       "name": "validateCreateInteractions",
-      "file": "src/atomic-crm/validation/activities/validation.ts",
+      "file": "src\\atomic-crm\\validation\\activities\\validation.ts",
       "line": 111,
       "pattern": "date"
     }

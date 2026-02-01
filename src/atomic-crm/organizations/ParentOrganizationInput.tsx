@@ -1,7 +1,5 @@
-import { ReferenceInput } from "@/components/ra-wrappers/reference-input";
 import { useRecordContext } from "ra-core";
-import { AutocompleteInput } from "@/components/ra-wrappers/autocomplete-input";
-import { AUTOCOMPLETE_DEBOUNCE_MS } from "@/atomic-crm/utils/autocompleteDefaults";
+import { HierarchicalSelectInput } from "@/components/ra-wrappers/HierarchicalSelectInput";
 import { useOrganizationDescendants } from "@/hooks";
 
 /**
@@ -17,17 +15,14 @@ import { useOrganizationDescendants } from "@/hooks";
  *
  * 2. **Loading state pattern** - Prevents race condition where user could
  *    open dropdown before descendants filter is ready. The `isReady` guard
- *    ensures the exclusion filter is populated before ReferenceInput renders.
+ *    ensures the exclusion filter is populated before HierarchicalSelectInput renders.
  *
- * 3. **PostgREST string format** - Uses `@not.in` with pre-formatted string
- *    `(1,2,3)` rather than array format. This is the reliable PostgREST syntax
- *    for multi-value exclusion filters.
+ * 3. **HierarchicalSelectInput** - Uses tree visualization with search for better
+ *    UX with large datasets. Shows parent-child relationships with indentation.
+ *    Handles orphaned nodes (parent soft-deleted) separately.
  *
- * 4. **filterKey for refetch** - Forces ReferenceInput to remount when
- *    descendants change, preventing stale cached results.
- *
- * 5. **Smart default (root orgs)** - When search is empty, shows only root
- *    organizations (`parent_organization_id IS NULL`) for better UX.
+ * 4. **Circular prevention** - Uses excludeIds prop to filter out self + descendants
+ *    during tree building, preventing circular references at the UI layer.
  */
 export const ParentOrganizationInput = () => {
   const record = useRecordContext<{ id?: number; parent_organization_id?: number }>();
@@ -39,14 +34,8 @@ export const ParentOrganizationInput = () => {
   // This prevents race condition where user could select a child before filter is ready
   const isReady = !record?.id || descendantsFetched;
 
-  // Build filter: exclude self + all descendants
-  // Use @not.in with pre-formatted PostgREST syntax for reliable filtering
+  // Build excludeIds: self + all descendants
   const excludeIds = [record?.id, ...descendants].filter(Boolean) as number[];
-  const filter = excludeIds.length > 0 ? { "id@not.in": `(${excludeIds.join(",")})` } : {};
-
-  // Force ReferenceInput to refetch when descendants change
-  // This prevents stale results from before descendants query completed
-  const filterKey = excludeIds.join(",");
 
   // Show loading state while fetching descendants for existing records
   // This prevents the race condition where dropdown opens before filter is ready
@@ -68,22 +57,12 @@ export const ParentOrganizationInput = () => {
   }
 
   return (
-    <ReferenceInput
-      key={filterKey}
+    <HierarchicalSelectInput
       source="parent_organization_id"
-      reference="organizations"
-      filter={filter}
-    >
-      <AutocompleteInput
-        debounce={AUTOCOMPLETE_DEBOUNCE_MS}
-        label="Parent Organization"
-        emptyText="No parent organization"
-        helperText="Select a parent organization if this is a branch location"
-        optionText="name"
-        filterToQuery={(searchText) =>
-          searchText ? { "name@ilike": `%${searchText}%` } : { "parent_organization_id@is": "null" }
-        }
-      />
-    </ReferenceInput>
+      resource="organizations"
+      label="Parent Organization"
+      helperText="Select a parent organization if this is a branch location"
+      excludeIds={excludeIds}
+    />
   );
 };

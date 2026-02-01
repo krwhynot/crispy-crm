@@ -1,11 +1,11 @@
 {
   "chunk_name": "contacts-department",
-  "generated_at": "2026-01-31T21:17:35.198Z",
+  "generated_at": "2026-02-01T01:48:24.591Z",
   "item_count": 1,
   "items": [
     {
       "name": "contactDepartmentSchema",
-      "file": "src/atomic-crm/validation/contacts/contacts-department.ts",
+      "file": "src\\atomic-crm\\validation\\contacts\\contacts-department.ts",
       "line": 9,
       "schemaType": "enum",
       "fields": [],

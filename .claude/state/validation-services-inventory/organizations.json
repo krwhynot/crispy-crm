@@ -1,11 +1,11 @@
 {
   "chunk_name": "organizations",
-  "generated_at": "2026-01-31T21:17:35.683Z",
+  "generated_at": "2026-02-01T01:48:25.134Z",
   "item_count": 2,
   "items": [
     {
       "name": "validateCreateOrganization",
-      "file": "src/atomic-crm/validation/organizations.ts",
+      "file": "src\\atomic-crm\\validation\\organizations.ts",
       "line": 271,
       "type": "formatter",
       "schemaReference": "createOrganizationSchema",
@@ -15,7 +15,7 @@
     },
     {
       "name": "validateUpdateOrganization",
-      "file": "src/atomic-crm/validation/organizations.ts",
+      "file": "src\\atomic-crm\\validation\\organizations.ts",
       "line": 282,
       "type": "formatter",
       "schemaReference": "updateOrganizationSchema",

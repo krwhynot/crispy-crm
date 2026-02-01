@@ -1,11 +1,11 @@
 {
   "chunk_name": "tags",
-  "generated_at": "2026-01-31T21:17:35.204Z",
+  "generated_at": "2026-02-01T01:48:24.643Z",
   "item_count": 4,
   "items": [
     {
       "name": "tagSchema",
-      "file": "src/atomic-crm/validation/tags.ts",
+      "file": "src\\atomic-crm\\validation\\tags.ts",
       "line": 55,
       "schemaType": "strictObject",
       "fields": [
@@ -92,7 +92,7 @@
     },
     {
       "name": "deleteTagSchema",
-      "file": "src/atomic-crm/validation/tags.ts",
+      "file": "src\\atomic-crm\\validation\\tags.ts",
       "line": 108,
       "schemaType": "strictObject",
       "fields": [
@@ -128,7 +128,7 @@
     },
     {
       "name": "tagWithCountSchema",
-      "file": "src/atomic-crm/validation/tags.ts",
+      "file": "src\\atomic-crm\\validation\\tags.ts",
       "line": 117,
       "schemaType": "other",
       "fields": [],
@@ -141,7 +141,7 @@
     },
     {
       "name": "tagFilterSchema",
-      "file": "src/atomic-crm/validation/tags.ts",
+      "file": "src\\atomic-crm\\validation\\tags.ts",
       "line": 125,
       "schemaType": "strictObject",
       "fields": [
