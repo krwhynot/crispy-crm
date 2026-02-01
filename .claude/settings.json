@@ -80,7 +80,18 @@
     ]
   },
   "permissions": {
-    "allow": [],
+    "allow": [
+      "Bash(npm test*)",
+      "Bash(npm run build*)",
+      "Bash(npm run lint*)",
+      "Bash(npx tsc*)",
+      "Bash(npx vitest*)",
+      "Bash(npx playwright*)",
+      "Bash(git status*)",
+      "Bash(git log*)",
+      "Bash(git diff*)",
+      "Bash(just *)"
+    ],
     "deny": [
       "Read(./.env)",
       "Read(./.env.*)",

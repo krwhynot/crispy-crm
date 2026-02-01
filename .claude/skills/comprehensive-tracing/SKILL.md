@@ -159,7 +159,7 @@ Always check: "Are there other UI triggers? Events? Scheduled tasks?"
 This skill works with:
 - **enforcing-principles**: Architectural patterns to look for
 - **data-integrity-guards**: Validation layer tracing
-- **root-cause-tracing**: When debugging, trace comprehensively
+- **fail-fast-debugging**: When debugging, trace comprehensively
 
 ## Examples
 

@@ -1,6 +1,6 @@
 ---
 name: fail-fast-debugging
-description: Systematic debugging discipline that enforces root cause investigation BEFORE fixes. Includes backward call-chain tracing to find where bugs originate. Triggers on - bug, error, failing, broken, fix, not working, crash, issue, debug, investigate, diagnose, trace, root cause, call stack, why is, undefined, null, 500 error, RLS, timeout, infinite loop, exception, stack trace, test pollution, flaky test, bisect, find the source, where does this come from, track down. Integrates with Zen MCP, TodoWrite, and verification-before-completion. Aligns with fail-fast engineering principle.
+description: Systematic debugging discipline that enforces root cause investigation BEFORE fixes. Includes backward call-chain tracing to find where bugs originate. Triggers on - bug, error, failing, broken, fix, not working, crash, issue, debug, investigate, diagnose, trace, root cause, call stack, why is, undefined, null, 500 error, RLS, timeout, infinite loop, exception, stack trace, test pollution, flaky test, bisect, find the source, where does this come from, track down. Integrates with TodoWrite and verification-before-completion. Aligns with fail-fast engineering principle.
 ---
 
 # Fail-Fast Debugging
@@ -55,7 +55,7 @@ Automatically activates when you mention:
 1. Identify symptom location - Where does error appear?
 2. Trace at least 2 levels up - What called this? What called that?
 3. State hypothesis - Where do you believe root cause is?
-4. Verify with `mcp__zen__debug` - Use structured investigation
+4. Use extended thinking to structure your investigation
 
 **Quick reference - trace targets:**
 
@@ -67,10 +67,10 @@ Automatically activates when you mention:
 | API error 500 | Error handler | Request construction |
 | Render loop | Component | State management |
 
-**Required Tool:** Use `mcp__zen__debug` to structure your investigation:
+**Required Approach:** Structure your investigation with deep analysis:
 ```
-mcp__zen__debug: "Investigating [error]. Evidence gathered: [list].
-Hypothesis: [theory]. Next diagnostic step: [action]."
+Investigating [error]. Evidence gathered: [list].
+Hypothesis: [theory]. Next diagnostic step: [action].
 ```
 
 **Required Action:** Create investigation todos BEFORE any fix attempts:
@@ -117,7 +117,7 @@ After 2 failed attempts:
 1. Step back from implementation details
 2. Ask: "Is the underlying design sound?"
 3. Consider: Are we fighting the framework/pattern?
-4. Use `mcp__zen__thinkdeep` for architectural analysis
+4. Use extended thinking for deep architectural analysis
 
 ### One Change at a Time
 
@@ -195,16 +195,9 @@ See: `.claude/skills/fail-fast-debugging/find-polluter.sh`
 
 | Tool | When | Purpose |
 |------|------|---------|
-| `mcp__zen__debug` | Phase 1-3 | Structure investigation thinking |
+| Extended thinking | Phase 1-3 | Structure investigation thinking |
 | `TodoWrite` | Before fixes | Track investigation steps |
 | `verification-before-completion` | Phase 4 | Verify before claiming done |
-
-### Optional Tools
-
-| Tool | When | Purpose |
-|------|------|---------|
-| `mcp__zen__thinkdeep` | After 2 failures | Architectural analysis |
-| `mcp__zen__planner` | Complex bugs | Plan multi-step investigation |
 
 ---
 
@@ -232,7 +225,7 @@ Before proposing ANY fix, confirm:
 - [ ] I traced the problem to its ORIGIN using the 5-step backward trace
 - [ ] I traced at least 2 levels up from the symptom location
 - [ ] I created investigation todos
-- [ ] I used `mcp__zen__debug` to structure my thinking
+- [ ] I used structured analysis to organize my thinking
 - [ ] I have a specific hypothesis (not a guess)
 - [ ] I'm making ONE change at a time
 - [ ] This is attempt #1 or #2 (not #3+)

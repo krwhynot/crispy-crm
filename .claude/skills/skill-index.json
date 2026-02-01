@@ -1009,7 +1009,7 @@
       }
     },
     "trace": {
-      "primary": "root-cause-tracing",
+      "primary": "fail-fast-debugging",
       "context": {
         "comprehensive": "comprehensive-tracing"
       }

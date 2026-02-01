@@ -1,7 +1,7 @@
 ---
-description: Research-validate plan tasks to +85% confidence via Ref MCP
+description: Research-validate plan tasks to +85% confidence via web research
 argument-hint: [plan-file-path]
-allowed-tools: Read, Ref_MCP:ref_search_documentation, Ref_MCP:ref_read_url
+allowed-tools: Read, WebSearch, WebFetch
 model: sonnet
 ---
 
@@ -38,13 +38,13 @@ Each task receives a composite score:
 ## Research Protocol (Adaptive Depth)
 
 ### Simple Tasks (estimated <30 min)
-- 1-2 Ref MCP searches
+- 1-2 web searches
 - Verify approach against official docs
 - Confirm no obvious anti-patterns
 
 ### Complex Tasks (estimated 30+ min, architectural, or unfamiliar patterns)
-- 3-5 Ref MCP searches across related topics
-- Read full documentation pages for critical APIs
+- 3-5 web searches across related topics
+- Read full documentation pages for critical APIs via WebFetch
 - Cross-reference multiple doc sections
 - Check for breaking changes, deprecations, edge cases
 

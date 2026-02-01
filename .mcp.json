@@ -1,9 +1,9 @@
 {
   "mcpServers": {
     "crispy-code-intel": {
-      "command": "npx",
-      "args": ["-y", "tsx", "scripts/mcp/server.ts"],
-      "env": {}
+      "command": "cmd",
+      "args": ["/c", "npx", "tsx", "scripts/mcp/server.ts"],
+      "cwd": "C:\\Users\\NewAdmin\\Projects\\crispy-crm"
     },
     "vercel": {
       "url": "https://mcp.vercel.com?team=kyles-projects-c1b1ca33&project=crispy-crm"
