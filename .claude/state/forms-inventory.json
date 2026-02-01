@@ -1,6 +1,6 @@
 {
   "status": "complete",
-  "generated_at": "2026-02-01T09:17:22.229Z",
+  "generated_at": "2026-02-01T18:33:56.734Z",
   "generator": "scripts/discover/extractors/forms.ts",
   "source_globs": [
     "src/atomic-crm/**/*Create*.tsx",
@@ -8,7 +8,7 @@
     "src/atomic-crm/**/*Form*.tsx",
     "src/atomic-crm/**/*Inputs*.tsx"
   ],
-  "checksum": "sha256:18607de2e3170bb9",
+  "checksum": "sha256:32d064778c989c20",
   "source_hashes": {
     "src\\atomic-crm\\activities\\ActivityEdit.tsx": "ba97db9f3ada",
     "src\\atomic-crm\\activities\\ActivityInputs.tsx": "85431cf76810",
@@ -18,7 +18,7 @@
     "src\\atomic-crm\\activity-log\\ActivityLogOpportunityCreated.tsx": "796619cbf306",
     "src\\atomic-crm\\activity-log\\ActivityLogOpportunityNoteCreated.tsx": "25e42adad3e8",
     "src\\atomic-crm\\activity-log\\ActivityLogOrganizationCreated.tsx": "1d986129288e",
-    "src\\atomic-crm\\components\\CreateFormFooter.tsx": "eca7a91dbf8a",
+    "src\\atomic-crm\\components\\CreateFormFooter.tsx": "b57cfc0cbb30",
     "src\\atomic-crm\\contacts\\ContactCompactForm.tsx": "821d8de1c4c8",
     "src\\atomic-crm\\contacts\\ContactCreate.tsx": "97e586fd9e77",
     "src\\atomic-crm\\contacts\\ContactEdit.tsx": "7752fdbc8a83",
@@ -34,7 +34,7 @@
     "src\\atomic-crm\\opportunities\\ActivityNoteForm.tsx": "259a048ea903",
     "src\\atomic-crm\\opportunities\\OpportunityCompactForm.tsx": "4d1eb9b3e1de",
     "src\\atomic-crm\\opportunities\\OpportunityCreate.tsx": "a0a295b3c316",
-    "src\\atomic-crm\\opportunities\\OpportunityCreateFormFooter.tsx": "c0dd879c729d",
+    "src\\atomic-crm\\opportunities\\OpportunityCreateFormFooter.tsx": "2c75534166c3",
     "src\\atomic-crm\\opportunities\\OpportunityCreateSaveButton.tsx": "83818b422465",
     "src\\atomic-crm\\opportunities\\OpportunityEdit.tsx": "2534e3bec52b",
     "src\\atomic-crm\\opportunities\\OpportunityInputs.tsx": "cbfd56f63ef9",

@@ -164,68 +164,10 @@ const form = useForm({
 
 **Why:** Prevents drift between validation and UI.
 
-### 3b. ZOD SECURITY PATTERNS (OWASP Compliant)
+### 3b. Zod Security Patterns
 
-**Rule:** All Zod schemas at API boundary must follow security best practices.
-
-**String Length Limits (Prevent DoS):**
-```typescript
-// ✅ CORRECT: Always set max length
-const schema = z.object({
-  name: z.string().max(100),           // Names
-  title: z.string().max(200),          // Titles/labels
-  description: z.string().max(2000),   // Long text
-  url: z.string().url().max(2048),     // URLs (browser limit)
-});
-
-// ❌ WRONG: No length limit = DoS vulnerability
-const schema = z.object({
-  name: z.string(), // Attacker can send 10MB string
-});
-```
-
-**Strict Objects at API Boundary (Prevent Mass Assignment):**
-```typescript
-// ✅ CORRECT: Reject unknown keys at API boundary
-export const createContactSchema = z.strictObject({
-  name: z.string().max(100),
-  email: z.string().email(),
-}); // Unknown keys throw error
-
-// ⚠️ INTERNAL ONLY: z.object() for composition/partial updates
-const contactBaseSchema = z.object({
-  name: z.string().max(100),
-}); // Can extend, allows unknown keys
-```
-
-**Coercion for Form Inputs:**
-```typescript
-// ✅ CORRECT: HTML inputs return strings, coerce to type
-const schema = z.object({
-  age: z.coerce.number().min(0).max(150),
-  price: z.coerce.number().positive(),
-  isActive: z.coerce.boolean(),
-  dueDate: z.coerce.date(),
-});
-
-// ❌ WRONG: Will fail on form input "42" (string, not number)
-const schema = z.object({
-  age: z.number(), // z.number().parse("42") throws!
-});
-```
-
-**Allowlist Validation (OWASP):**
-```typescript
-// ✅ CORRECT: Allowlist with z.enum()
-const stageSchema = z.enum(['new_lead', 'closed_won', 'closed_lost']);
-const roleSchema = z.enum(['admin', 'manager', 'rep']);
-
-// ❌ WRONG: Denylist (easily bypassed)
-const badSchema = z.string().refine(
-  (val) => !val.includes('<script>'), // Attacker uses <SCRIPT>
-  'Invalid input'
-);
-```
+> Canonical reference: `.claude/rules/DOMAIN_INTEGRITY.md` (always loaded)
+> Key rules: `.strict()` for creates, `.passthrough()` for updates, `.max()` on strings, `z.coerce` for forms, `z.enum()` for allowlists.
 
 ### 4. BOY SCOUT RULE
 
@@ -273,21 +215,7 @@ import { TextInput, SelectInput } from 'react-admin'
 
 ### 7. COLORS - SEMANTIC VARIABLES ONLY
 
-**Rule:** Use semantic CSS variables, never hex codes or direct OKLCH.
-
-```css
-/* ✅ Semantic tokens */
-color: var(--primary);
-background: var(--brand-700);
-
-/* ❌ Hex codes */
-color: #7CB342;
-
-/* ❌ Direct OKLCH */
-color: oklch(65% 0.15 125);
-```
-
-**Note:** See `atomic-crm-ui-design` skill for complete color system guidance.
+> Color rules: See `.claude/rules/UI_STANDARDS.md` (always loaded). Use semantic Tailwind classes only.
 
 ### 8. MIGRATIONS - TIMESTAMP FORMAT
 
@@ -463,9 +391,9 @@ If you find yourself:
 | Array defaults | Sub-schema with `.default()` | `defaultValue` prop |
 | JSONB arrays | `ArrayInput` + `SimpleFormIterator` | Manual array state |
 | Submit transform | `transform` prop on CreateBase | Transform in component |
-| **Validation mode** | `mode: 'onSubmit'` or `'onBlur'` | `mode: 'onChange'` (perf issue) |
-| **Watch values** | `useWatch({ control, name })` | `watch()` (re-renders whole form) |
-| **RHF + resolver** | `zodResolver(schema)` ONLY | Mix resolver + `register` validation |
+| **RHF + resolver** | `createFormResolver(schema)` ONLY | Mix resolver + `register` validation |
+
+> Form mode rules: See `.claude/rules/MODULE_CHECKLIST.md` (always loaded). Use `onSubmit`/`onBlur`, never `onChange`. Use `useWatch()`, not `watch()`.
 
 ### Database
 
@@ -540,18 +468,14 @@ Comprehensive patterns with real code examples from Atomic CRM:
 8. **COLORS** - Semantic CSS variables only
 9. **MIGRATIONS** - Timestamp format via Supabase CLI
 
-### Zod Validation Rules (NEW - OWASP Compliant)
+### Zod Validation Rules (10-13)
 
-10. **STRING LIMITS** - All strings must have `.max()` constraint (100/200/2000 chars)
-11. **STRICT OBJECTS** - Use `z.strictObject()` at API boundary (prevents mass assignment)
-12. **COERCION** - Use `z.coerce` for all non-string form inputs (number, date, boolean)
-13. **ALLOWLIST** - Use `z.enum()` for constrained values (never denylist regex)
+> See `.claude/rules/DOMAIN_INTEGRITY.md` (always loaded) for full Zod security patterns.
 
-### Form Performance Rules (NEW)
+### Form Performance Rules (14-16)
 
-14. **VALIDATION MODE** - Use `onSubmit` or `onBlur` mode (never `onChange`)
-15. **WATCH ISOLATION** - Use `useWatch()` for subscriptions (not `watch()`)
-16. **RESOLVER ONLY** - Use `zodResolver(schema)` exclusively (don't mix with `register` validation)
+> See `.claude/rules/MODULE_CHECKLIST.md` (always loaded) for form mode and watch rules.
+> Resolver rule: Use `createFormResolver(schema)` from `@/lib/zodErrorFormatting` exclusively.
 
 ### Tailwind v4 CSS Rules (NEW)
 

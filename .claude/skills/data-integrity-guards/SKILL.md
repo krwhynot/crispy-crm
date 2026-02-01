@@ -15,52 +15,13 @@ This pattern addresses data corruption and validation gaps by implementing check
 
 ### Layer 1: API Boundary (Zod Validation)
 
-**Where:** `unifiedDataProvider.ts` via `ValidationService`
+**Where:** `ValidationService` in the data provider layer
 **Purpose:** Reject invalid input before database operations; prevent security vulnerabilities
 
-```typescript
-// ✓ CORRECT: Validation at API boundary only
-// src/atomic-crm/providers/supabase/services/ValidationService.ts
-export class ValidationService {
-  async validate(resource: string, method: string, data: unknown): Promise<void> {
-    const validator = this.validationRegistry[resource];
-    if (method === "create" && validator.create) {
-      await validator.create(data);  // Zod validation HERE
-    }
-  }
-}
+> Zod schema patterns and implementation details: `.claude/rules/DOMAIN_INTEGRITY.md` (always loaded)
+> Key patterns: `z.strictObject()` for creates, `.max()` on strings, `z.coerce` for forms, `z.enum()` for allowlists.
 
-// ✗ WRONG: Validation in form component
-const ContactCreate = () => {
-  const validate = (values) => { /* DON'T DO THIS */ };
-  return <SimpleForm validate={validate}>...</SimpleForm>;
-};
-```
-
-**Security Requirements (OWASP Compliant):**
-
-| Requirement | Implementation | Risk if Missing |
-|-------------|---------------|-----------------|
-| **String limits** | `.max(100)` on ALL strings | DoS via 10MB payloads |
-| **Strict objects** | `z.strictObject()` for create/update | Mass assignment attacks |
-| **Coercion** | `z.coerce.number()` for form inputs | Type validation failures |
-| **Allowlist** | `z.enum(['a','b'])` for options | Denylist bypass |
-
-```typescript
-// ✓ CORRECT: Secure schema at API boundary
-export const createContactSchema = z.strictObject({
-  name: z.string().min(1).max(100),        // Length limit
-  email: z.string().email().max(254),       // Email limit
-  age: z.coerce.number().min(0).max(150),   // Coerced from form
-  role: z.enum(['admin', 'user', 'guest']), // Allowlist
-}); // strictObject rejects unknown keys
-
-// ✗ WRONG: Vulnerable schema
-const badSchema = z.object({
-  name: z.string(),  // No max = DoS risk
-  role: z.string(),  // No enum = injection risk
-}); // object allows unknown keys = mass assignment
-```
+**Defense-in-depth perspective:** This layer is the primary security gate. Validation happens at the API boundary (provider), NOT in form components. Forms may display errors for UX, but the provider enforces correctness. This prevents mass assignment, DoS via oversized payloads, and type coercion failures.
 
 **Key Files:**
 - `src/atomic-crm/validation/*.ts` - Zod schemas per resource

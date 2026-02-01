@@ -28,264 +28,46 @@ Activate this skill for:
 
 ---
 
-## RAPID Framework
+## RAPID Framework (Overview)
 
-### R - Reproduce
-Confirm the issue is reproducible and gather exact error output.
+Structured 5-step process for systematic troubleshooting. See `references/rapid-framework.md` for full details.
 
-```bash
-# Capture exact error
-npm run build 2>&1 | tee build-error.log
-
-# Note environment
-node --version
-npm --version
-npx supabase --version
-```
-
-### A - Analyze
-Parse error messages, identify the failing component.
-
-```bash
-# TypeScript errors - get detailed output
-npx tsc --noEmit --pretty 2>&1 | head -50
-
-# Vite build errors
-npm run build -- --debug
-
-# Dependency tree issues
-npm ls --all | grep -i error
-```
-
-### P - Propose
-Form a hypothesis based on the error pattern.
-
-| Error Pattern | Likely Cause |
-|---------------|--------------|
-| `Cannot find module 'X'` | Missing dependency or wrong import path |
-| `Type 'X' is not assignable` | Type mismatch, need cast or fix |
-| `CORS error` | Missing headers in Edge Function |
-| `401 Unauthorized` | Missing or expired auth token |
-| `500 Internal Server Error` | Server-side crash, check logs |
-
-### I - Implement
-Apply the minimal fix for the hypothesis.
-
-### D - Document
-Record what worked for future reference.
+| Step | Action | Key Question |
+|------|--------|-------------|
+| **R** - Reproduce | Confirm issue, capture exact error output | Can I reliably trigger this? |
+| **A** - Analyze | Parse error messages, identify failing component | What component is failing and why? |
+| **P** - Propose | Form hypothesis from error pattern | What is the most likely root cause? |
+| **I** - Implement | Apply minimal fix for the hypothesis | What is the smallest change to verify? |
+| **D** - Document | Record what worked for future reference | What should the team know? |
 
 ---
 
-## Common Build Errors
+## Quick Decision Tree
 
-### TypeScript Errors
-
-```bash
-# Check types without building
-npx tsc --noEmit
-
-# Find specific error location
-npx tsc --noEmit 2>&1 | grep -A 3 "error TS"
 ```
-
-**Common Fixes:**
-
-| Error | Fix |
-|-------|-----|
-| `TS2307: Cannot find module` | Check import path, run `npm install` |
-| `TS2322: Type 'X' is not assignable` | Fix type or add assertion |
-| `TS7006: Parameter implicitly has 'any'` | Add explicit type annotation |
-| `TS2339: Property does not exist` | Check object shape, add optional chaining |
-
-### Vite Build Errors
-
-```bash
-# Debug build
-npm run build -- --debug
-
-# Check for circular dependencies
-npx madge --circular src/
-```
-
-**Common Issues:**
-
-| Error | Fix |
-|-------|-----|
-| `Failed to resolve import` | Check file exists, correct extension |
-| `Circular dependency` | Refactor to break the cycle |
-| `out of memory` | Increase Node memory: `NODE_OPTIONS=--max-old-space-size=4096` |
-
-### Dependency Errors
-
-```bash
-# Clear cache and reinstall
-rm -rf node_modules package-lock.json
-npm install
-
-# Check for peer dependency issues
-npm ls 2>&1 | grep "peer dep"
-
-# Force resolution
-npm install --legacy-peer-deps
-```
-
----
-
-## Performance Troubleshooting
-
-### Identifying Slow Queries
-
-```typescript
-// Add timing to Supabase queries
-const start = performance.now();
-const { data, error } = await supabase.from('contacts').select('*');
-console.log(`Query took ${performance.now() - start}ms`);
-```
-
-### N+1 Query Detection
-
-```typescript
-// BAD - N+1 pattern
-const contacts = await supabase.from('contacts').select('*');
-for (const contact of contacts.data) {
-  const notes = await supabase
-    .from('notes')
-    .select('*')
-    .eq('contact_id', contact.id); // N queries!
-}
-
-// GOOD - Single query with join
-const contacts = await supabase
-  .from('contacts')
-  .select('*, notes(*)');
-```
-
-### Memory Leak Detection
-
-```bash
-# Check heap usage over time
-node --expose-gc -e "
-  setInterval(() => {
-    global.gc();
-    console.log(process.memoryUsage().heapUsed / 1024 / 1024, 'MB');
-  }, 1000);
-"
-```
-
-### React Performance
-
-```typescript
-// Use React DevTools Profiler
-// Or add console timing:
-console.time('render');
-// ... component renders
-console.timeEnd('render');
-```
-
----
-
-## Deployment Troubleshooting
-
-### Edge Function Errors
-
-```bash
-# Check function logs
-npx supabase functions logs my-function --local
-
-# Test locally first
-npx supabase functions serve my-function --env-file .env.local
-
-# Deploy with debug output
-npx supabase functions deploy my-function --debug
-```
-
-**Common Edge Function Issues:**
-
-| Error | Cause | Fix |
-|-------|-------|-----|
-| `CORS error` | Missing headers | Add `corsHeaders` to response |
-| `TypeError: fetch failed` | Network/DNS issue | Check URL, use full domain |
-| `ReferenceError: X is not defined` | Missing import | Add Deno import |
-| Timeout | Function too slow | Optimize or increase timeout |
-
-### CORS Configuration
-
-```typescript
-// Required headers for Edge Functions
-const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers":
-    "authorization, x-client-info, apikey, content-type",
-};
-
-// Handle preflight
-if (req.method === "OPTIONS") {
-  return new Response("ok", { headers: corsHeaders });
-}
-
-// Include in all responses
-return new Response(JSON.stringify(data), {
-  headers: { ...corsHeaders, "Content-Type": "application/json" },
-});
-```
-
-### Environment Variables
-
-```bash
-# Check which env vars are set
-env | grep SUPABASE
-
-# Verify .env file is loaded
-cat .env.local
-
-# Set secrets for Edge Functions
-npx supabase secrets set MY_SECRET=value
-npx supabase secrets list
-```
-
----
-
-## HTTP Error Codes
-
-### 401 Unauthorized
-
-```typescript
-// Check auth header is present
-const authHeader = req.headers.get("Authorization");
-if (!authHeader) {
-  return new Response("Missing Authorization header", { status: 401 });
-}
-
-// Verify token
-const { data: { user }, error } = await supabase.auth.getUser(
-  authHeader.replace("Bearer ", "")
-);
-```
-
-### 403 Forbidden
-
-Usually an RLS policy issue:
-
-```sql
--- Check RLS policies
-SELECT * FROM pg_policies WHERE tablename = 'contacts';
-
--- Test as authenticated user
-SET request.jwt.claim.role = 'authenticated';
-SELECT * FROM contacts;
-```
-
-### 500 Internal Server Error
-
-```bash
-# Check Supabase logs
-npx supabase logs --type api
-
-# Check Edge Function logs
-npx supabase functions logs <function-name>
-
-# Enable verbose logging in code
-console.error("Full error:", JSON.stringify(error, null, 2));
+Issue reported
+  |
+  +-- Build fails?
+  |     +-- TypeScript error? --> See references/build-errors.md
+  |     +-- Vite/bundler error? --> See references/build-errors.md
+  |     +-- Dependency error? --> See references/build-errors.md
+  |
+  +-- HTTP error?
+  |     +-- 401? --> Check auth token (references/error-codes.md)
+  |     +-- 403? --> Check RLS policies (references/error-codes.md)
+  |     +-- 500? --> Check server logs (references/error-codes.md)
+  |
+  +-- Performance issue?
+  |     +-- Slow query? --> Check N+1, add timing (references/rapid-framework.md)
+  |     +-- Memory leak? --> Heap profiling (references/rapid-framework.md)
+  |     +-- Slow render? --> React DevTools Profiler (references/rapid-framework.md)
+  |
+  +-- Deployment failure?
+  |     +-- Edge Function? --> Check logs, CORS (references/rapid-framework.md)
+  |     +-- Env vars? --> Verify .env.local (references/rapid-framework.md)
+  |
+  +-- Code bug? --> Hand off to fail-fast-debugging
+  +-- Need tracing? --> Hand off to root-cause-tracing
 ```
 
 ---
@@ -309,6 +91,22 @@ npm outdated
 
 ---
 
+## Common Error Patterns (Quick Reference)
+
+| Error Pattern | Likely Cause | Reference |
+|---------------|--------------|-----------|
+| `Cannot find module 'X'` | Missing dependency or wrong import path | build-errors.md |
+| `Type 'X' is not assignable` | Type mismatch, need cast or fix | build-errors.md |
+| `TS2307: Cannot find module` | Bad import path, missing install | build-errors.md |
+| `CORS error` | Missing headers in Edge Function | error-codes.md |
+| `401 Unauthorized` | Missing or expired auth token | error-codes.md |
+| `403 Forbidden` | RLS policy issue | error-codes.md |
+| `500 Internal Server Error` | Server-side crash, check logs | error-codes.md |
+| `Circular dependency` | Refactor to break the cycle | build-errors.md |
+| `out of memory` | Increase Node `--max-old-space-size` | build-errors.md |
+
+---
+
 ## Escalation Path
 
 If troubleshooting fails after 2 attempts:
@@ -327,3 +125,11 @@ If troubleshooting fails after 2 attempts:
 - **supabase-cli** - For Supabase CLI commands
 - **supabase-crm** - For database/RLS patterns
 - **verification-before-completion** - Run before claiming "fixed"
+
+---
+
+## Resources
+
+<!-- @resource references/rapid-framework.md "Complete RAPID troubleshooting framework" -->
+<!-- @resource references/error-codes.md "Error code reference and resolution patterns" -->
+<!-- @resource references/build-errors.md "Build, TypeScript, and dependency error fixes" -->

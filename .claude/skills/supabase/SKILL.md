@@ -1,5 +1,5 @@
 ---
-name: supabase-cli
+name: supabase
 description: Comprehensive Supabase CLI reference for local development, migrations, Edge Functions, type generation, and deployment. Also covers CRM backend patterns including RLS policies, soft deletes, multi-tenant architecture, query optimization, and PostgreSQL 17 patterns. Triggers on supabase, npx supabase, migrations, db push, db pull, db reset, edge functions, supabase start, supabase stop, supabase link, gen types, supabase deploy, local development stack, database branching, secrets management, RLS, row level security, soft deletes, views, summary views, multi-tenant, pipeline stages.
 ---
 
@@ -328,82 +328,11 @@ The hook auto-detects your project ID from `supabase/config.toml` for correct co
 
 ### Purpose
 
-Backend architecture patterns for Crispy CRM's Supabase integration. Covers Row Level Security, query optimization, Edge Functions, and database migrations specific to the CRM domain model.
+Backend architecture patterns for Crispy CRM's Supabase integration. Covers query optimization, Edge Functions, and database migrations specific to the CRM domain model.
 
----
-
-### Core Architecture Principles
-
-#### 1. Soft Deletes Only
-
-**NEVER use hard deletes.** All tables use `deleted_at` timestamp:
-
-```sql
--- Table definition pattern
-CREATE TABLE IF NOT EXISTS public.contacts (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  -- ... other columns
-  deleted_at TIMESTAMPTZ DEFAULT NULL,
-  created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
-  updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
-);
-```
-
-#### 2. RLS Policy Pattern
-
-All tables must have Row Level Security enabled with soft delete filtering:
-
-```sql
--- Enable RLS
-ALTER TABLE public.contacts ENABLE ROW LEVEL SECURITY;
-
--- SELECT policy - always filter soft deletes
-CREATE POLICY "contacts_select_policy" ON public.contacts
-  FOR SELECT
-  USING (
-    deleted_at IS NULL
-    AND auth.role() = 'authenticated'
-  );
-
--- INSERT policy
-CREATE POLICY "contacts_insert_policy" ON public.contacts
-  FOR INSERT
-  WITH CHECK (auth.role() = 'authenticated');
-
--- UPDATE policy - prevent updating deleted records
-CREATE POLICY "contacts_update_policy" ON public.contacts
-  FOR UPDATE
-  USING (deleted_at IS NULL AND auth.role() = 'authenticated')
-  WITH CHECK (deleted_at IS NULL);
-
--- DELETE policy - actually performs soft delete
-CREATE POLICY "contacts_delete_policy" ON public.contacts
-  FOR DELETE
-  USING (deleted_at IS NULL AND auth.role() = 'authenticated');
-```
-
-#### 3. View/Table Duality
-
-Read from **Views** (computed fields), write to **Base Tables**:
-
-```sql
--- Summary view for reads (includes computed fields)
-CREATE OR REPLACE VIEW public.contacts_summary AS
-SELECT
-  c.*,
-  o.name AS organization_name,
-  COUNT(DISTINCT n.id) AS nb_notes,
-  COUNT(DISTINCT t.id) AS nb_tasks
-FROM public.contacts c
-LEFT JOIN public.organizations o ON c.organization_id = o.id
-LEFT JOIN public.notes n ON n.contact_id = c.id AND n.deleted_at IS NULL
-LEFT JOIN public.tasks t ON t.contact_id = c.id AND t.deleted_at IS NULL
-WHERE c.deleted_at IS NULL
-GROUP BY c.id, o.name;
-
--- Grant access to view
-GRANT SELECT ON public.contacts_summary TO authenticated;
-```
+### Database Security & Views
+> Full database rules: `.claude/rules/DATABASE_LAYER.md` (always loaded)
+> Covers: RLS policies, soft delete enforcement, view/table duality, access control, junction table security, storage layer.
 
 ---
 
@@ -607,43 +536,6 @@ CREATE TYPE pipeline_stage AS ENUM (
   'closed_won',
   'closed_lost'
 );
-```
-
----
-
-### Common Pitfalls
-
-#### 1. Forgetting Soft Delete in RLS
-
-```sql
--- WRONG - shows deleted records
-CREATE POLICY "select_contacts" ON contacts
-  FOR SELECT USING (auth.role() = 'authenticated');
-
--- CORRECT - filters deleted
-CREATE POLICY "select_contacts" ON contacts
-  FOR SELECT USING (
-    deleted_at IS NULL
-    AND auth.role() = 'authenticated'
-  );
-```
-
-#### 2. Writing to Views
-
-```typescript
-// WRONG - views are read-only
-await supabase.from('contacts_summary').insert({...});
-
-// CORRECT - write to base table
-await supabase.from('contacts').insert({...});
-```
-
-#### 3. Missing View Permissions
-
-```sql
--- Always grant access to views
-GRANT SELECT ON public.contacts_summary TO authenticated;
-GRANT SELECT ON public.contacts_summary TO anon;
 ```
 
 ---

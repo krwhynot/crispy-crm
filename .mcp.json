@@ -6,6 +6,7 @@
       "cwd": "C:\\Users\\NewAdmin\\Projects\\crispy-crm"
     },
     "vercel": {
+      "type": "http",
       "url": "https://mcp.vercel.com?team=kyles-projects-c1b1ca33&project=crispy-crm"
     }
   }
