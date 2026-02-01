@@ -1,6 +1,6 @@
 ---
 name: fail-fast-debugging
-description: Systematic debugging discipline that enforces root cause investigation BEFORE fixes. Triggers on - bug, error, failing, broken, fix, not working, crash, issue, debug, investigate, diagnose, trace, root cause, why is, undefined, null, 500 error, RLS, timeout, infinite loop, exception, stack trace. Integrates with Zen MCP, TodoWrite, and verification-before-completion. Aligns with fail-fast engineering principle.
+description: Systematic debugging discipline that enforces root cause investigation BEFORE fixes. Includes backward call-chain tracing to find where bugs originate. Triggers on - bug, error, failing, broken, fix, not working, crash, issue, debug, investigate, diagnose, trace, root cause, call stack, why is, undefined, null, 500 error, RLS, timeout, infinite loop, exception, stack trace, test pollution, flaky test, bisect, find the source, where does this come from, track down. Integrates with Zen MCP, TodoWrite, and verification-before-completion. Aligns with fail-fast engineering principle.
 ---
 
 # Fail-Fast Debugging
@@ -15,7 +15,9 @@ Enforce disciplined debugging that finds root causes BEFORE attempting fixes. Th
 
 Automatically activates when you mention:
 - Error terms: bug, error, failing, broken, crash, issue, exception
-- Investigation terms: debug, investigate, diagnose, trace, root cause, why is
+- Investigation terms: debug, investigate, diagnose, trace, root cause, call stack, why is
+- Tracing terms: find the source, where does this come from, track down, bisect
+- Test terms: test pollution, flaky test
 - Symptoms: undefined, null, 500 error, RLS policy, timeout, infinite loop
 - Fix attempts: fix, not working, still failing, try again
 
@@ -29,7 +31,41 @@ Automatically activates when you mention:
 2. **Reproduce consistently** - Confirm you can trigger the issue reliably
 3. **Check recent changes** - `git log -5 --oneline` and `git diff` for context
 4. **Gather diagnostic evidence** - Console logs, network tab, RLS policies
-5. **Trace data flow backward** - Find where the problem ORIGINATES, not where it MANIFESTS
+5. **Trace data flow backward** - Use the 5-Step Backward Trace (below)
+
+#### 5-Step Backward Trace (Call-Chain Tracing)
+
+**This sub-process BLOCKS edits to symptom-location files until tracing is complete.**
+
+```
+1. OBSERVE     -> Note where error appears (symptom location)
+2. IMMEDIATE   -> Identify direct code causing the symptom
+3. TRACE UP    -> Ask: "What called this? What passed these values?"
+4. KEEP GOING  -> Follow the chain - each level reveals context
+5. FIND SOURCE -> Locate where invalid data/state ORIGINATED
+```
+
+**Guardrail triggers (BLOCKS edits):**
+- Editing files where errors manifest without investigation
+- Adding try/catch, null checks, or defensive guards without tracing
+- Quick-fix patterns that treat symptoms
+- Phrases like "the error is in X" followed by editing X
+
+**Before edits are unblocked, you must:**
+1. Identify symptom location - Where does error appear?
+2. Trace at least 2 levels up - What called this? What called that?
+3. State hypothesis - Where do you believe root cause is?
+4. Verify with `mcp__zen__debug` - Use structured investigation
+
+**Quick reference - trace targets:**
+
+| Symptom | DON'T Fix Here | Trace To |
+|---------|----------------|----------|
+| Null in component | Component file | Data provider / API |
+| Type error in form | Form component | Schema / validation |
+| Test flaky | Test file | Shared state / isolation |
+| API error 500 | Error handler | Request construction |
+| Render loop | Component | State management |
 
 **Required Tool:** Use `mcp__zen__debug` to structure your investigation:
 ```
@@ -110,6 +146,9 @@ See [ANTI-PATTERNS.md](ANTI-PATTERNS.md) for detailed patterns. Summary:
 | Retry Logic | "Add error handling to catch this" | Masks root cause (violates fail-fast) |
 | Hope Fix | "Maybe this will work" | Guessing, not investigating |
 | Blame Shift | "Must be a library bug" | Avoids looking at your code |
+| Defensive Guard | `if (contact?.name) { ... }` without knowing WHY it's null | Hides the origin of invalid state |
+| Error Swallowing | `try { ... } catch (e) { console.error("failed") }` | Suppresses root cause; violates fail-fast |
+| Symptom-Location Fix | Error in X, immediately edit X | The null/error may originate from API, provider, or transform |
 
 ---
 
@@ -131,6 +170,22 @@ See [CRM-DEBUGGING.md](CRM-DEBUGGING.md) for Crispy CRM patterns. Quick referenc
 - Log at API boundary in `unifiedDataProvider`
 - Check Zod validation errors (they're intentionally loud)
 - Verify junction table relationships (e.g., `contact_organizations`)
+
+---
+
+## Test Pollution Detection
+
+For flaky tests or test pollution, use the find-polluter bisection script:
+
+```bash
+# Find which test creates unwanted .git directory
+./find-polluter.sh '.git' 'src/**/*.test.ts'
+
+# Find which test leaves database state
+./find-polluter.sh 'test.db' 'tests/**/*.spec.ts'
+```
+
+See: `.claude/skills/fail-fast-debugging/find-polluter.sh`
 
 ---
 
@@ -174,7 +229,8 @@ Before proposing ANY fix, confirm:
 - [ ] I read the FULL error message and stack trace
 - [ ] I can reproduce the issue consistently
 - [ ] I checked `git log` and `git diff` for recent changes
-- [ ] I traced the problem to its ORIGIN (not just where it shows)
+- [ ] I traced the problem to its ORIGIN using the 5-step backward trace
+- [ ] I traced at least 2 levels up from the symptom location
 - [ ] I created investigation todos
 - [ ] I used `mcp__zen__debug` to structure my thinking
 - [ ] I have a specific hypothesis (not a guess)

@@ -3,7 +3,82 @@
     "type": "command",
     "command": "node .claude/statusline.js"
   },
-  "hooks": {},
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "npx tsx .claude/hooks/file-protection.ts"
+          },
+          {
+            "type": "command",
+            "command": "npx tsx .claude/hooks/migration-guard.ts"
+          }
+        ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "npx tsx .claude/hooks/verification-before-git.ts"
+          },
+          {
+            "type": "command",
+            "command": "npx tsx .claude/hooks/check-deletions.ts"
+          },
+          {
+            "type": "command",
+            "command": "npx tsx .claude/hooks/supabase-cli-guard.ts"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "npx tsx .claude/hooks/prettier-format.ts"
+          },
+          {
+            "type": "command",
+            "command": "npx tsx .claude/hooks/eslint-check.ts"
+          },
+          {
+            "type": "command",
+            "command": "npx tsx .claude/hooks/post-tool-use-tracker.ts"
+          },
+          {
+            "type": "command",
+            "command": "npx tsx .claude/hooks/mark-state-stale.ts"
+          }
+        ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "npx tsx .claude/hooks/track-test-run.ts"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "npx tsx .claude/hooks/verify-tests-before-stop.ts"
+          }
+        ]
+      }
+    ]
+  },
   "permissions": {
     "allow": [],
     "deny": [
@@ -17,6 +92,5 @@
       "Read(./supabase/.env.local)"
     ],
     "ask": []
-  },
-  "description": "Project hooks disabled - Unix hooks incompatible with Windows. Permissions preserved."
+  }
 }

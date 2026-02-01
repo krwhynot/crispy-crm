@@ -491,94 +491,42 @@ If you find yourself:
 Starting implementation task?
 │
 ├─ Handling errors?
-│  └─ error-handling-basics.md → Fail fast (no retry)
-│     error-handling-bulk.md → Promise.allSettled for bulk
-│     error-handling-validation.md → Structured logging
+│  └─ error-handling.md → Fail fast, Promise.allSettled, structured logging
 │
 ├─ Adding validation?
-│  └─ validation-basics.md → Zod at API boundary, core patterns
-│     validation-arrays.md → JSONB arrays, sub-schemas
-│     validation-schemas.md → Create/Update schemas
-│     validation-advanced.md → Custom validators, transform
-│     anti-patterns-validation.md → Avoid multiple sources
+│  └─ validation.md → Zod at API boundary, schemas, arrays, transforms
+│     anti-patterns.md → Avoid multiple sources
 │
 ├─ Creating forms?
-│  └─ form-defaults.md → Defaults from schema
-│     form-arrays.md → JSONB array inputs
-│     form-patterns.md → Tabbed forms, submission
-│     form-advanced.md → Reset, debugging, conditional
-│     anti-patterns-validation.md → Avoid hardcoded defaults
+│  └─ forms.md → Defaults from schema, arrays, tabs, conditional fields
+│     anti-patterns.md → Avoid hardcoded defaults
 │
 ├─ Database changes?
-│  └─ database-security.md → GRANT + RLS (two-layer)
-│     database-migrations.md → Migration structure, enums
-│     database-roles.md → Role-based permissions
-│     database-advanced.md → Triggers, JSONB, views
-│     database-reference.md → Decision tree, best practices
-│     anti-patterns-database.md → Avoid common DB mistakes
+│  └─ database.md → GRANT + RLS, migrations, roles, triggers, views
+│     anti-patterns.md → Avoid common DB mistakes
 │
 ├─ Security concerns?
-│  └─ security-csv.md → CSV upload, formula injection
-│     security-sql.md → SQL injection prevention
-│     security-rls.md → RLS policies, authentication
-│     security-xss.md → XSS prevention, URL validation
+│  └─ security.md → CSV validation, SQL injection, XSS, RLS
 │
 ├─ Writing tests?
-│  └─ testing-unit.md → Vitest, validation, components
-│     testing-e2e.md → Playwright, critical journeys
-│     testing-reference.md → Coverage, organization
-│     anti-patterns-testing.md → Avoid testing implementation
+│  └─ testing.md → Vitest, Playwright, mocking, database testing
+│     anti-patterns.md → Avoid testing implementation details
 │
 └─ Unsure what to do?
-   └─ anti-patterns-engineering.md → Avoid over-engineering
-      error-handling-reference.md → Decision tree & rationalizations
+   └─ anti-patterns.md → Over-engineering, validation, database, testing
 ```
 
 ## Resource Files
 
 Comprehensive patterns with real code examples from Atomic CRM:
 
-### Error Handling
-- [error-handling-basics.md](resources/error-handling-basics.md) - Fail-fast core patterns, forbidden retry/circuit breaker
-- [error-handling-bulk.md](resources/error-handling-bulk.md) - Promise.allSettled for bulk operations
-- [error-handling-validation.md](resources/error-handling-validation.md) - Structured logging, Zod error formatting
-- [error-handling-reference.md](resources/error-handling-reference.md) - Decision tree, rationalizations, testing
-
-### Validation (Split for Focus)
-- [validation-basics.md](resources/validation-basics.md) - Core principles, basic schema, enum schemas
-- [validation-arrays.md](resources/validation-arrays.md) - JSONB arrays, sub-schemas, superRefine
-- [validation-schemas.md](resources/validation-schemas.md) - Create/Update schemas, error formatting
-- [validation-advanced.md](resources/validation-advanced.md) - Custom validators, transform, import schemas
-
-### Form State Management (Split for Focus)
-- [form-defaults.md](resources/form-defaults.md) - Core principle, defaults from schema
-- [form-arrays.md](resources/form-arrays.md) - JSONB array inputs, SimpleFormIterator
-- [form-patterns.md](resources/form-patterns.md) - Tabbed forms, submission, error display
-- [form-advanced.md](resources/form-advanced.md) - Reset, debugging, conditional fields
-
-### Database (Split for Focus)
-- [database-security.md](resources/database-security.md) - GRANT + RLS two-layer security
-- [database-migrations.md](resources/database-migrations.md) - Migration structure, enum types
-- [database-roles.md](resources/database-roles.md) - Role-based permissions, helper functions
-- [database-advanced.md](resources/database-advanced.md) - Triggers, JSONB, indexes, views
-- [database-reference.md](resources/database-reference.md) - Decision tree, best practices
-
-### Security (Split for Focus)
-- [security-csv.md](resources/security-csv.md) - CSV upload validation, formula injection, binary detection
-- [security-sql.md](resources/security-sql.md) - SQL injection prevention, parameterized queries
-- [security-rls.md](resources/security-rls.md) - RLS policies, authentication, role-based access
-- [security-xss.md](resources/security-xss.md) - XSS prevention, URL validation, React escaping
-
-### Testing (Split for Focus)
-- [testing-unit.md](resources/testing-unit.md) - Vitest, validation testing, component testing, mocking
-- [testing-e2e.md](resources/testing-e2e.md) - Playwright, critical journeys, accessibility
-- [testing-reference.md](resources/testing-reference.md) - Coverage, organization, database testing
-
-### Anti-Patterns (Split by Domain)
-- [anti-patterns-engineering.md](resources/anti-patterns-engineering.md) - Over-engineering, circuit breakers, Promise.all
-- [anti-patterns-validation.md](resources/anti-patterns-validation.md) - Multiple validation sources, form defaults
-- [anti-patterns-database.md](resources/anti-patterns-database.md) - RLS/GRANT, enums, migration verification
-- [anti-patterns-testing.md](resources/anti-patterns-testing.md) - Testing implementation details, error context
+- [error-handling.md](resources/error-handling.md) - Fail-fast patterns, Promise.allSettled, structured logging, error formatting
+- [validation.md](resources/validation.md) - Zod at API boundary, schemas, JSONB arrays, transforms, imports
+- [forms.md](resources/forms.md) - Schema-derived defaults, ArrayInput, tabbed forms, conditional fields
+- [database.md](resources/database.md) - GRANT + RLS, migrations, roles, triggers, JSONB, views, indexes
+- [security.md](resources/security.md) - CSV validation, SQL injection, XSS prevention, RLS authentication
+- [testing.md](resources/testing.md) - Vitest unit tests, Playwright E2E, mocking, database testing
+- [anti-patterns.md](resources/anti-patterns.md) - Engineering, validation, database, and testing anti-patterns
 
 ## Constitution Principles Summary
 
