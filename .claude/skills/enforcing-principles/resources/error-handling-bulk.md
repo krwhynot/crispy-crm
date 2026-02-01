@@ -112,7 +112,8 @@ if (failures === 0) {
 | Bulk updates | `Promise.allSettled()` | `Promise.all()` |
 | Bulk deletes | `Promise.allSettled()` | Sequential for-loop with try/catch |
 | Import operations | `Promise.allSettled()` | Stop on first error |
-| Parallel fetches | `Promise.allSettled()` | `Promise.all()` if independent |
+| Parallel reads (all required) | `Promise.all()` | Sequential awaits |
+| Parallel reads (partial OK) | `Promise.allSettled()` | `Promise.all()` |
 
 ## Related Resources
 

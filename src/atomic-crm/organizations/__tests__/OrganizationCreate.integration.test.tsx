@@ -53,22 +53,22 @@ describe("OrganizationCreate with Progress Tracking", () => {
     expect(progress).toBeLessThan(100);
   });
 
-  it("shows Basic Information section with incomplete indicator", async () => {
+  it("shows Company Profile section with incomplete indicator", async () => {
     renderOrganizationCreate();
     expect(await screen.findByTestId("section-incomplete-icon")).toBeInTheDocument();
   });
 
-  it("shows Basic Information section title", async () => {
+  it("shows Company Profile section title", async () => {
     renderOrganizationCreate();
-    expect(await screen.findByText("Basic Information")).toBeInTheDocument();
+    expect(await screen.findByText("Company Profile")).toBeInTheDocument();
   });
 
-  it("shows Account & Segment section without completion indicator", async () => {
+  it("shows Account Details section without completion indicator", async () => {
     renderOrganizationCreate();
-    expect(await screen.findByText("Account & Segment")).toBeInTheDocument();
+    expect(await screen.findByText("Account Details")).toBeInTheDocument();
     // Section has no required fields, so no icon should be shown
     const allIncompleteIcons = screen.queryAllByTestId("section-incomplete-icon");
-    // Only one incomplete icon for Basic Information section
+    // Only one incomplete icon for Company Profile section
     expect(allIncompleteIcons).toHaveLength(1);
   });
 
@@ -79,14 +79,14 @@ describe("OrganizationCreate with Progress Tracking", () => {
 
   it("renders all form sections", async () => {
     renderOrganizationCreate();
-    expect(await screen.findByText("Basic Information")).toBeInTheDocument();
-    expect(screen.getByText("Account & Segment")).toBeInTheDocument();
+    expect(await screen.findByText("Company Profile")).toBeInTheDocument();
+    expect(screen.getByText("Account Details")).toBeInTheDocument();
     expect(screen.getByText("Location")).toBeInTheDocument();
   });
 
   it("wraps organization name field with isRequired", async () => {
     renderOrganizationCreate();
-    const nameInput = await screen.findByLabelText(/Organization Name/i);
+    const nameInput = await screen.findByLabelText(/Company Name/i);
     expect(nameInput).toBeInTheDocument();
   });
 
@@ -94,7 +94,7 @@ describe("OrganizationCreate with Progress Tracking", () => {
     const user = userEvent.setup();
     renderOrganizationCreate();
 
-    const nameInput = await screen.findByLabelText(/Organization Name/i);
+    const nameInput = await screen.findByLabelText(/Company Name/i);
     await user.type(nameInput, "Test Organization");
 
     // Wait for the form to register the change
@@ -108,7 +108,7 @@ describe("OrganizationCreate with Progress Tracking", () => {
     const user = userEvent.setup();
     renderOrganizationCreate();
 
-    const nameInput = await screen.findByLabelText(/Organization Name/i);
+    const nameInput = await screen.findByLabelText(/Company Name/i);
     await user.type(nameInput, "Test Organization");
 
     await waitFor(() => {
@@ -124,7 +124,7 @@ describe("OrganizationCreate with Progress Tracking", () => {
     const progressBar = await screen.findByRole("progressbar");
     const initialProgress = progressBar.getAttribute("aria-valuenow");
 
-    const nameInput = await screen.findByLabelText(/Organization Name/i);
+    const nameInput = await screen.findByLabelText(/Company Name/i);
     await user.type(nameInput, "Test Organization");
 
     await waitFor(() => {
@@ -138,7 +138,7 @@ describe("OrganizationCreate with Progress Tracking", () => {
     const { container } = renderOrganizationCreate();
 
     // Wait for component to render by finding a known element first
-    await screen.findByText("Basic Information");
+    await screen.findByText("Company Profile");
 
     // Check for data-tutorial attributes using querySelector
     const orgNameTutorial = container.querySelector('[data-tutorial="org-name"]');
@@ -147,8 +147,8 @@ describe("OrganizationCreate with Progress Tracking", () => {
     const orgTypeTutorial = container.querySelector('[data-tutorial="org-type"]');
     expect(orgTypeTutorial).toBeInTheDocument();
 
-    // Additional Details is collapsed by default - need to expand it
-    const additionalDetailsButton = screen.getByRole("button", { name: /Additional Details/i });
+    // Contact & Web is collapsed by default - need to expand it
+    const additionalDetailsButton = screen.getByRole("button", { name: /Contact & Web/i });
     await user.click(additionalDetailsButton);
 
     await waitFor(() => {
@@ -180,7 +180,7 @@ describe("OrganizationCreate with Progress Tracking", () => {
     renderOrganizationCreate();
 
     // The form should exist
-    const nameInput = await screen.findByLabelText(/Organization Name/i);
+    const nameInput = await screen.findByLabelText(/Company Name/i);
     expect(nameInput).toBeInTheDocument();
 
     // Validation behavior test - type and blur to trigger validation
@@ -195,8 +195,8 @@ describe("OrganizationCreate with Progress Tracking", () => {
   it("shows section with requiredFields prop correctly", async () => {
     renderOrganizationCreate();
 
-    // Basic Information has requiredFields=['name']
-    const basicInfoSection = await screen.findByText("Basic Information");
+    // Company Profile has requiredFields=['name']
+    const basicInfoSection = await screen.findByText("Company Profile");
     expect(basicInfoSection).toBeInTheDocument();
 
     // Should have incomplete icon initially
@@ -204,13 +204,13 @@ describe("OrganizationCreate with Progress Tracking", () => {
     expect(incompleteIcon).toBeInTheDocument();
   });
 
-  it("wraps Additional Details fields with FormFieldWrapper", async () => {
+  it("wraps Contact & Web fields with FormFieldWrapper", async () => {
     const user = userEvent.setup();
     renderOrganizationCreate();
 
-    // Additional Details is in a collapsible section - need to expand it
+    // Contact & Web is in a collapsible section - need to expand it
     const additionalDetailsButton = await screen.findByRole("button", {
-      name: /Additional Details/i,
+      name: /Contact & Web/i,
     });
     await user.click(additionalDetailsButton);
 
@@ -234,7 +234,7 @@ describe("OrganizationCreate - Save & Add Another (Config-Driven)", () => {
     });
 
     // Wait for form to load
-    await screen.findByLabelText(/Organization Name/i);
+    await screen.findByLabelText(/Company Name/i);
 
     // Verify that the form will preserve parent_organization_id
     // (actual preservation logic tested in OrganizationCreate unit tests)
@@ -248,7 +248,7 @@ describe("OrganizationCreate - Save & Add Another (Config-Driven)", () => {
       dataProvider,
     });
 
-    await screen.findByLabelText(/Organization Name/i);
+    await screen.findByLabelText(/Company Name/i);
 
     // Organization type field should exist and be part of preserved fields
     // (tested via config in organizationFormConfig.test.ts)
@@ -261,9 +261,55 @@ describe("OrganizationCreate - Save & Add Another (Config-Driven)", () => {
       dataProvider,
     });
 
-    await screen.findByLabelText(/Organization Name/i);
+    await screen.findByLabelText(/Company Name/i);
 
     // Sales ID field should exist and be part of preserved fields
     // (tested via config in organizationFormConfig.test.ts)
+  });
+});
+
+/**
+ * CRITICAL BUG FIX: Cancel button regression tests
+ *
+ * Background: Cancel button was missing type="button" attribute, causing it
+ * to default to type="submit" and trigger form submission instead of just
+ * showing the discard dialog. This created unwanted database records.
+ *
+ * These tests verify the fix and prevent regression.
+ */
+describe("OrganizationCreate Cancel Button Behavior", () => {
+  it("should have type='button' attribute to prevent form submission", async () => {
+    renderOrganizationCreate();
+
+    // Wait for form to render
+    await screen.findByLabelText(/Company Name/i);
+
+    // Find Cancel button
+    const cancelButton = screen.getByRole("button", { name: /cancel/i });
+
+    // CRITICAL: Verify type="button" is set (not type="submit")
+    expect(cancelButton).toHaveAttribute("type", "button");
+  });
+
+  it("should show unsaved changes dialog when Cancel is clicked with dirty form", async () => {
+    const user = userEvent.setup();
+    renderOrganizationCreate();
+
+    // Fill in form to make it dirty
+    const nameInput = await screen.findByLabelText(/Company Name/i);
+    await user.type(nameInput, "Test Organization");
+
+    // Click Cancel
+    const cancelButton = screen.getByRole("button", { name: /cancel/i });
+    await user.click(cancelButton);
+
+    // Verify unsaved changes dialog appears
+    await waitFor(() => {
+      expect(screen.getByText(/discard unsaved changes/i)).toBeInTheDocument();
+    });
+
+    // Verify "Discard Changes" and "Keep Editing" buttons are present
+    expect(screen.getByRole("button", { name: /discard changes/i })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /keep editing/i })).toBeInTheDocument();
   });
 });

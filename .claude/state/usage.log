@@ -34,3 +34,8 @@
 [2026-02-01T00:53:16.470Z] ✓ search_code | query: "Organization creation form Scope dropdown" | limit=20, type="all" | results: 0 | 94ms
 [2026-02-01T00:54:05.324Z] ✓ search_code | query: "useWatch form state reactive fields" | limit=10, type="all" | results: 0 | 22ms
 [2026-02-01T00:54:10.631Z] ✓ search_code | query: "ORG_SCOPE_CHOICES organization scope" | limit=10, type="all" | results: 0 | 12ms
+[2026-02-01T02:23:22.297Z] ✓ find_references | symbolName="ParentOrganizationInput", includeDefinition=true | results: 4 | 3ms
+[2026-02-01T02:23:27.706Z] ✓ find_references | symbolName="HierarchicalSelectInput", includeDefinition=true | 1ms
+[2026-02-01T02:24:18.387Z] ✓ search_code | query: "get_organization_descendants RPC" | limit=15, type="all" | results: 0 | 21ms
+[2026-02-01T04:07:18.808Z] ✓ search_code | query: "parent_organization_id filter useGetList" | limit=10, type="all" | results: 0 | 24ms
+[2026-02-01T04:07:34.809Z] ✓ go_to_definition | symbolName="composedDataProvider", kind="any" | 2ms

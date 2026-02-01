@@ -257,6 +257,8 @@ type Status = 'active' | 'inactive'
 type ContactWithMeta = Contact & { created_at: string }
 ```
 
+**Exception:** Zod-derived types always use `type` since `z.infer` produces type aliases, not interfaces. This is the canonical pattern per DOMAIN_INTEGRITY.md: `export type Contact = z.infer<typeof contactSchema>`.
+
 ### 6. FORMS - USE REACT ADMIN COMPONENTS
 
 **Rule:** Always use admin layer (`src/components/admin/`) for forms.
@@ -434,7 +436,8 @@ If you find yourself:
 | Situation | DO | DON'T |
 |-----------|-----|-------|
 | Database error | Let it throw | Retry logic |
-| Bulk operations | `Promise.allSettled()` | `Promise.all()` |
+| Bulk mutations | `Promise.allSettled()` | `Promise.all()` |
+| Parallel reads | `Promise.all()` | Sequential awaits |
 | Validation error | Format for React Admin | Silent failure |
 | User notification | Show specific message | Generic "Error" |
 

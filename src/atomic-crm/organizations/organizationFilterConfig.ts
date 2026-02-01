@@ -58,4 +58,30 @@ export const ORGANIZATION_FILTER_CONFIG = validateFilterConfig([
     type: "reference",
     reference: "sales",
   },
+  // Hierarchy filters (sidebar toggles)
+  {
+    key: "child_branch_count@gt",
+    label: "Has branches",
+    type: "toggle",
+    formatLabel: () => "Has branches",
+  },
+  {
+    key: "parent_organization_id@not.is",
+    label: "Has parent",
+    type: "toggle",
+    formatLabel: () => "Has parent",
+  },
+  {
+    key: "parent_organization_id@is",
+    label: "Root orgs",
+    type: "toggle",
+    formatLabel: () => "Root orgs (no parent)",
+  },
+  // Context chip filter (from inline hierarchy chips)
+  {
+    key: "parent_organization_id",
+    label: "Parent org",
+    type: "reference",
+    reference: "organizations",
+  },
 ]);

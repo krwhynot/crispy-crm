@@ -130,7 +130,7 @@ function shouldExcludeFile(filePath) {
  * Check if a file is in the legacy list (violations logged but don't fail)
  */
 function isLegacyFile(filePath) {
-  const relativePath = relative(projectRoot, filePath);
+  const relativePath = relative(projectRoot, filePath).replace(/\\/g, "/");
   return CONFIG.legacyFiles.some((legacy) => relativePath.includes(legacy));
 }
 

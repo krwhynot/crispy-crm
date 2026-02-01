@@ -17,6 +17,7 @@ import { OrganizationListFilter } from "./OrganizationListFilter";
 import { OrganizationSlideOver } from "./OrganizationSlideOver";
 import { OrganizationTypeBadge, PriorityBadge } from "./OrganizationBadges";
 import { OrganizationEmpty } from "./OrganizationEmpty";
+import { OrganizationHierarchyChips } from "./OrganizationHierarchyChips";
 import { FilterableBadge } from "@/components/ra-wrappers/FilterableBadge";
 import { ListNoResults } from "@/components/ra-wrappers/ListNoResults";
 import { TopToolbar } from "../layout/TopToolbar";
@@ -39,6 +40,20 @@ import type { OrganizationExportRow, OrganizationRecord } from "./types";
  * Memoized cell components for OrganizationList datagrid
  * Following SampleStatusBadge pattern with named functions for React DevTools
  */
+
+/** OrganizationNameCell - Renders org name with hierarchy context chips */
+const OrganizationNameCell = memo(function OrganizationNameCell({
+  record,
+}: {
+  record: OrganizationRecord;
+}) {
+  return (
+    <div className="flex items-center gap-1.5 min-w-0">
+      <span className="truncate">{record.name}</span>
+      <OrganizationHierarchyChips record={record} />
+    </div>
+  );
+});
 
 /** OrganizationTypeCell - Renders organization type badge with FilterableBadge wrapper */
 const OrganizationTypeCell = memo(function OrganizationTypeCell({
@@ -218,12 +233,13 @@ const OrganizationListLayout = ({
           onRowClick={(id) => openSlideOver(Number(id), "view")}
           focusedIndex={focusedIndex}
         >
-          {/* Column 1: Name - Primary identifier (sortable) - always visible */}
-          <TextField
+          {/* Column 1: Name - Primary identifier with hierarchy chips (sortable) - always visible */}
+          <FunctionField
             source="name"
             label={<OrganizationNameHeader />}
-            sortable
-            cellClassName="truncate max-w-[250px]"
+            sortBy="name"
+            render={(record: OrganizationRecord) => <OrganizationNameCell record={record} />}
+            cellClassName="max-w-[250px]"
           />
 
           {/* Column 2: Type - Organization classification (sortable by organization_type) - always visible */}

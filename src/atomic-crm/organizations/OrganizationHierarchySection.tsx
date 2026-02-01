@@ -6,13 +6,15 @@ import {
   FormFieldWrapper,
 } from "@/components/ra-wrappers/form";
 import { ORG_SCOPE_CHOICES } from "./constants";
-import { useRecordContext, useGetOne, Link, useCreatePath } from "react-admin";
+import { ParentOrganizationInput } from "./ParentOrganizationInput";
+import { useRecordContext, useGetOne, useGetList, Link, useCreatePath } from "react-admin";
 import { useWatch, useFormContext } from "react-hook-form";
 import { useEffect, useRef, useState } from "react";
 import type { OrgScope } from "../validation/organizations";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { CheckCircle2, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { logger } from "@/lib/logger";
 
 export const OrganizationHierarchySection = (): JSX.Element => {
   const record = useRecordContext();
@@ -30,6 +32,33 @@ export const OrganizationHierarchySection = (): JSX.Element => {
     { id: parentOrgId },
     { enabled: !!parentOrgId }
   );
+
+  // Task 5: Query sibling organizations (other children of the same parent)
+  const { data: siblings, isLoading: siblingsLoading, error: siblingsError } = useGetList(
+    "organizations",
+    {
+      filter: {
+        parent_organization_id: parentOrgId,
+        id_neq: record?.id, // Exclude self (for edit mode safety)
+      },
+      pagination: { page: 1, perPage: 1 }, // Only need count
+    },
+    { enabled: !!parentOrgId && showConfirmation }
+  );
+
+  const siblingCount = siblings?.length || 0;
+
+  // Task 5: Log sibling query errors (degrade gracefully)
+  useEffect(() => {
+    if (siblingsError) {
+      logger.warn('Failed to fetch sibling count for parent confirmation alert', {
+        parentOrgId,
+        error: siblingsError instanceof Error ? siblingsError.message : String(siblingsError),
+        context: 'OrganizationHierarchySection',
+        note: 'Alert will show without sibling count - user experience not blocked',
+      });
+    }
+  }, [siblingsError, parentOrgId]);
 
   // P3: Show confirmation when parent selected (with stale data protection)
   useEffect(() => {
@@ -89,6 +118,13 @@ export const OrganizationHierarchySection = (): JSX.Element => {
           </AlertTitle>
           <AlertDescription className="text-success-foreground/90">
             This location will be created as a child of {parentOrg.name}.{" "}
+            {siblingsLoading ? (
+              <span className="text-muted-foreground">Loading branch count...</span>
+            ) : siblingsError ? null : siblingCount > 0 ? (
+              <span>Currently has {siblingCount} other branch{siblingCount !== 1 ? 'es' : ''}. </span>
+            ) : (
+              <span>This will be the first branch. </span>
+            )}
             <Link
               to={createPath({ resource: "organizations", id: parentOrgId, type: "show" })}
               target="_blank"
@@ -108,18 +144,22 @@ export const OrganizationHierarchySection = (): JSX.Element => {
           </Button>
         </Alert>
       )}
-      <CollapsibleSection title="Structure">
-      <CompactFormRow>
-        <FormFieldWrapper name="org_scope">
-          <SelectInput
-            source="org_scope"
-            label="Scope"
-            choices={ORG_SCOPE_CHOICES}
-            helperText="National = brand/HQ, Regional = operating company"
-            emptyText="Select scope"
-            parse={(v) => v || null}
-          />
+      <CollapsibleSection title="Organization Hierarchy">
+      <div className="space-y-4">
+        <FormFieldWrapper name="parent_organization_id">
+          <ParentOrganizationInput />
         </FormFieldWrapper>
+        <CompactFormRow>
+          <FormFieldWrapper name="org_scope">
+            <SelectInput
+              source="org_scope"
+              label="Organization Level"
+              choices={ORG_SCOPE_CHOICES}
+              helperText="National = brand/HQ, Regional = operating company"
+              emptyText="Select level"
+              parse={(v) => v || null}
+            />
+          </FormFieldWrapper>
         <div className="space-y-1">
           <FormFieldWrapper name="is_operating_entity">
             <BooleanInput
@@ -134,7 +174,8 @@ export const OrganizationHierarchySection = (): JSX.Element => {
             <strong>OFF:</strong> Corporate brand or holding company only (e.g., Sysco Corporation)
           </p>
         </div>
-      </CompactFormRow>
+        </CompactFormRow>
+      </div>
     </CollapsibleSection>
     </>
   );

@@ -293,7 +293,7 @@ describe("ParentOrganizationInput", () => {
       const props = mockAutocompleteInputProps.mock.calls[0]![0];
       expect(props.label).toBe("Parent Organization");
       expect(props.emptyText).toBe("No parent organization");
-      expect(props.helperText).toBe("Select a parent organization if this is a branch location");
+      expect(props.helperText).toBe("Link this organization to its parent (e.g., Sysco Chicago → Sysco Corporation for regional branches)");
       expect(props.optionText).toBe("name");
     });
 
@@ -338,7 +338,7 @@ describe("ParentOrganizationInput", () => {
       render(<ParentOrganizationInput />);
 
       expect(
-        screen.getByText("Select a parent organization if this is a branch location")
+        screen.getByText("Link this organization to its parent (e.g., Sysco Chicago → Sysco Corporation for regional branches)")
       ).toBeInTheDocument();
     });
   });

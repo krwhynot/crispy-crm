@@ -50,7 +50,7 @@ export const ParentOrganizationInput = () => {
           <span className="text-sm text-muted-foreground">Loading hierarchy...</span>
         </div>
         <p className="text-sm text-muted-foreground">
-          Select a parent organization if this is a branch location
+          Link this organization to its parent (e.g., Sysco Chicago → Sysco Corporation for regional branches)
         </p>
       </div>
     );
@@ -61,7 +61,7 @@ export const ParentOrganizationInput = () => {
       source="parent_organization_id"
       resource="organizations"
       label="Parent Organization"
-      helperText="Select a parent organization if this is a branch location"
+      helperText="Link this organization to its parent (e.g., Sysco Chicago → Sysco Corporation for regional branches)"
       excludeIds={excludeIds}
     />
   );

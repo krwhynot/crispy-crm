@@ -157,11 +157,12 @@ describe("FormProgressBar", () => {
       expect(screen.getByRole("group")).toBeInTheDocument();
     });
 
-    test("renders correct number of dots based on schema required fields", () => {
+    test("renders correct number of dots based on context totalRequired", () => {
       render(<FormProgressBar schema={mockSchema} />);
 
       const dots = screen.getAllByRole("img");
-      expect(dots).toHaveLength(3);
+      // Uses totalRequired from context (4), not schema introspection (3)
+      expect(dots).toHaveLength(4);
     });
 
     test("filled dots match completedRequired count", () => {
@@ -169,16 +170,19 @@ describe("FormProgressBar", () => {
 
       const dots = screen.getAllByRole("img");
 
+      // completedRequired = 2, totalRequired = 4
       expect(dots[0]).toHaveAttribute("aria-label", "Completed");
       expect(dots[1]).toHaveAttribute("aria-label", "Completed");
       expect(dots[2]).toHaveAttribute("aria-label", "Pending");
+      expect(dots[3]).toHaveAttribute("aria-label", "Pending");
     });
 
     test("dots have correct accessibility labels", () => {
       render(<FormProgressBar schema={mockSchema} />);
 
       const group = screen.getByRole("group");
-      expect(group).toHaveAttribute("aria-label", "2 of 3 required fields complete");
+      // Uses context totalRequired (4), not schema introspection (3)
+      expect(group).toHaveAttribute("aria-label", "2 of 4 required fields complete");
     });
 
     test("hides percentage in dot mode", () => {
@@ -190,7 +194,8 @@ describe("FormProgressBar", () => {
     test("shows field count text in dot mode", () => {
       render(<FormProgressBar schema={mockSchema} />);
 
-      expect(screen.getByText("2 of 3 required fields")).toBeInTheDocument();
+      // Uses context totalRequired (4), not schema introspection (3)
+      expect(screen.getByText("2 of 4 required fields")).toBeInTheDocument();
     });
 
     test("dot mode respects showStepInfo=false", () => {

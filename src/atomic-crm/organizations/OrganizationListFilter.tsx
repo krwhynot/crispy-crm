@@ -6,6 +6,7 @@ import { useListContext } from "ra-core";
 import { ToggleFilterButton } from "@/components/ra-wrappers/toggle-filter-button";
 import { FilterCategory } from "../filters/FilterCategory";
 import { StarredFilterToggle } from "../filters/StarredFilterToggle";
+import { HierarchyFilterSection } from "./HierarchyFilterSection";
 import { PLAYBOOK_CATEGORY_CHOICES } from "@/atomic-crm/validation/segments";
 import { OPERATOR_SEGMENT_PARENT_CHOICES } from "@/atomic-crm/validation/operatorSegments";
 import { OwnerFilterDropdown } from "@/components/ra-wrappers/OwnerFilterDropdown";
@@ -44,6 +45,9 @@ export const OrganizationListFilter = (): JSX.Element => {
     <div className="flex flex-col gap-4" data-tutorial="org-filters">
       {/* Starred Quick Filter - TOP of sidebar */}
       <StarredFilterToggle entityType="organizations" />
+
+      {/* Hierarchy Filters - parent/child structure */}
+      <HierarchyFilterSection />
 
       {/* Collapsible Filter Sections */}
       <div className="flex flex-col gap-2">

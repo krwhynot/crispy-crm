@@ -115,6 +115,7 @@ export const createSegmentSchema = segmentSchema.omit({
  * Inferred types from schemas
  */
 export type Segment = z.infer<typeof segmentSchema>;
+export type CreateSegmentInput = z.infer<typeof createSegmentSchema>;
 
 /**
  * Validate segment creation data

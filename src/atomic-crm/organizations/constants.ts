@@ -222,6 +222,17 @@ export const MAX_RELATED_ITEMS = 100;
 export const ACTIVITY_PAGE_SIZE = 50;
 
 /**
+ * Hierarchy filter value objects for ToggleFilterButton
+ * Keys use PostgREST operator syntax (field@operator)
+ * Values are JS null (not string "null") — provider transforms to "field=is.null"
+ */
+export const HIERARCHY_FILTERS = {
+  HAS_BRANCHES: { "child_branch_count@gt": 0 },
+  HAS_PARENT: { "parent_organization_id@not.is": null },
+  ROOT_ONLY: { "parent_organization_id@is": null },
+} as const;
+
+/**
  * Touch target minimum height for WCAG AA compliance (Fitts's Law)
  * 44px minimum ensures reliable touch/click interaction
  */

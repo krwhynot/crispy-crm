@@ -73,6 +73,9 @@ export const OPERATOR_SEGMENTS = [...OPERATOR_PARENT_SEGMENTS, ...OPERATOR_CHILD
  * Type aliases for operator segments
  */
 export type OperatorSegment = (typeof OPERATOR_SEGMENTS)[number];
+export type OperatorParentSegment = (typeof OPERATOR_PARENT_SEGMENTS)[number];
+export type OperatorChildSegment = (typeof OPERATOR_CHILD_SEGMENTS)[number];
+export type CreateOperatorSegmentInput = z.infer<typeof createOperatorSegmentSchema>;
 
 /**
  * Operator segment UUIDs matching the database

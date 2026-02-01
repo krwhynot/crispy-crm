@@ -6,13 +6,16 @@ interface StateComboboxInputProps {
   label?: string;
 }
 
-export function StateComboboxInput({ source, label: _label = "State" }: StateComboboxInputProps) {
+export function StateComboboxInput({ source, label = "State" }: StateComboboxInputProps) {
   return (
-    <GenericSelectInput
-      source={source}
-      choices={[...US_STATES]}
-      placeholder="Select state..."
-      searchable={true}
-    />
+    <div className="space-y-2">
+      <span className="text-sm font-medium leading-none">{label}</span>
+      <GenericSelectInput
+        source={source}
+        choices={[...US_STATES]}
+        placeholder="Select state..."
+        searchable={true}
+      />
+    </div>
   );
 }

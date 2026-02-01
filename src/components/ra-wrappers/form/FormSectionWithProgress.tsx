@@ -1,6 +1,6 @@
 import * as React from "react";
 import { cn } from "@/lib/utils";
-import { CheckCircle2, Circle } from "lucide-react";
+import { CheckCircle2 } from "lucide-react";
 import { useFormProgress } from "./formProgressUtils";
 
 interface FormSectionWithProgressProps {
@@ -55,21 +55,14 @@ function FormSectionWithProgress({
       {/* Section Header */}
       <div className="flex items-center justify-between border-b border-border pb-2">
         <div className="flex items-center gap-2">
-          {/* Completion icon - only shown when section has required fields */}
-          {requiredFields.length > 0 &&
-            (sectionComplete ? (
-              <CheckCircle2
-                className="h-5 w-5 text-primary"
-                aria-hidden="true"
-                data-testid="section-complete-icon"
-              />
-            ) : (
-              <Circle
-                className="h-5 w-5 text-muted-foreground"
-                aria-hidden="true"
-                data-testid="section-incomplete-icon"
-              />
-            ))}
+          {/* Completion icon - only shown when section is complete */}
+          {sectionComplete && (
+            <CheckCircle2
+              className="h-5 w-5 text-primary"
+              aria-hidden="true"
+              data-testid="section-complete-icon"
+            />
+          )}
 
           {/* Title */}
           <h3 className="text-lg font-semibold text-foreground">{title}</h3>

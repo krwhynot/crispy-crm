@@ -55,7 +55,9 @@ export const OrganizationCreateFormFooter = ({
   // Hidden submit button ref (not used for actual submission, but kept for pattern consistency)
   const hiddenSubmitRef = useRef<HTMLButtonElement>(null);
 
-  const handleCancel = useCallback(() => {
+  const handleCancel = useCallback((event?: React.MouseEvent<HTMLButtonElement>) => {
+    event?.preventDefault(); // Defense-in-depth: prevent any default behavior
+
     if (isDirty) {
       setShowCancelDialog(true);
       return;
@@ -190,7 +192,12 @@ export const OrganizationCreateFormFooter = ({
           tabIndex={-1}
         />
 
-        <AdminButton variant="outline" onClick={handleCancel} disabled={isCreating}>
+        <AdminButton
+          type="button"
+          variant="outline"
+          onClick={handleCancel}
+          disabled={isCreating}
+        >
           Cancel
         </AdminButton>
 

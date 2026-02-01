@@ -1,17 +1,17 @@
 {
   "status": "complete",
-  "generated_at": "2026-02-01T01:48:24.784Z",
+  "generated_at": "2026-02-01T09:17:21.706Z",
   "generator": "scripts/discover/extractors/types.ts",
   "source_globs": [
     "src/atomic-crm/types.ts",
     "src/atomic-crm/**/types.ts",
     "src/types/**/*.ts"
   ],
-  "checksum": "sha256:801e70e01ed566ef",
+  "checksum": "sha256:591031d24fbd3f99",
   "source_hashes": {
     "src\\atomic-crm\\dashboard\\types.ts": "a7616a1f8934",
     "src\\atomic-crm\\filters\\types.ts": "3879550007ba",
-    "src\\atomic-crm\\organizations\\types.ts": "e9dbc9c48e05",
+    "src\\atomic-crm\\organizations\\types.ts": "acefea8ee08f",
     "src\\atomic-crm\\providers\\supabase\\extensions\\types.ts": "0ecffca12765",
     "src\\atomic-crm\\providers\\supabase\\filters\\types.ts": "4f1ec55ed6db",
     "src\\atomic-crm\\providers\\supabase\\types.ts": "ac091ebdeac6",
@@ -38,7 +38,7 @@
       "name": "_other",
       "file": "_other.json",
       "item_count": 101,
-      "checksum": "sha256:3234d29b7db047ee",
+      "checksum": "sha256:855db0afa62fd561",
       "source_files": [
         "src\\atomic-crm\\dashboard\\types.ts",
         "src\\atomic-crm\\filters\\types.ts",
@@ -58,7 +58,7 @@
       "source_hashes": {
         "src\\atomic-crm\\dashboard\\types.ts": "a7616a1f8934",
         "src\\atomic-crm\\filters\\types.ts": "3879550007ba",
-        "src\\atomic-crm\\organizations\\types.ts": "e9dbc9c48e05",
+        "src\\atomic-crm\\organizations\\types.ts": "acefea8ee08f",
         "src\\atomic-crm\\providers\\supabase\\extensions\\types.ts": "0ecffca12765",
         "src\\atomic-crm\\providers\\supabase\\filters\\types.ts": "4f1ec55ed6db",
         "src\\atomic-crm\\providers\\supabase\\types.ts": "ac091ebdeac6",

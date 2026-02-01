@@ -64,7 +64,7 @@ export const OrganizationHierarchySection = () => {
           <FormFieldWrapper name="org_scope">
             <SelectInput
               source="org_scope"
-              label="Scope"
+              label="Organization Level"
               choices={ORG_SCOPE_CHOICES}
               helperText="National = brand/HQ, Regional = operating company"
             />
@@ -762,7 +762,7 @@ User changes type from "principal" → "customer"
 
 | Aspect | Bulk Reassign | Individual Edit |
 |--------|---------------|-----------------|
-| **Scope** | Multiple records | Single record |
+| **Organization Level** | Multiple records | Single record |
 | **Cancellation** | AbortController mid-operation | Browser back/cancel button |
 | **Partial success** | Yes, with counts | N/A (all or nothing) |
 | **Audit trail** | DB triggers (automatic) | DB triggers (automatic) |
@@ -893,7 +893,7 @@ const abortControllerRef = useRef<AbortController | null>(null);
 
 ### Extending the Hierarchy Model
 
-1. [ ] Add new scope choice to `ORG_SCOPE_CHOICES`
+1. [ ] Add new organization level choice to `ORG_SCOPE_CHOICES`
 2. [ ] Update `OrganizationHierarchySection` UI if needed
 3. [ ] Verify parent/child queries handle new scope
 4. [ ] Update import logic (Pattern C) for new field

@@ -170,10 +170,10 @@ export function OrganizationDetailsTab({
 
               <SelectInput
                 source="org_scope"
-                label="Scope"
+                label="Organization Level"
                 choices={ORG_SCOPE_CHOICES}
                 helperText="National = brand/HQ, Regional = operating company"
-                emptyText="Select scope"
+                emptyText="Select level"
                 parse={(v) => v || null}
                 disabled={isLoading}
               />
@@ -246,7 +246,7 @@ export function OrganizationDetailsTab({
 
               {record.org_scope && (
                 <div className="flex items-center gap-2">
-                  <span className="text-sm text-muted-foreground">Scope:</span>
+                  <span className="text-sm text-muted-foreground">Organization Level:</span>
                   <span className="text-sm capitalize">{record.org_scope}</span>
                 </div>
               )}

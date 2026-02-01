@@ -73,7 +73,7 @@ describe("FormSectionWithProgress", () => {
       expect(screen.queryByTestId("section-incomplete-icon")).not.toBeInTheDocument();
     });
 
-    it("shows empty circle when required fields are not registered", () => {
+    it("does not show icon when required fields are not registered", () => {
       render(
         <FormSectionWithProgress
           id="test"
@@ -84,12 +84,13 @@ describe("FormSectionWithProgress", () => {
         </FormSectionWithProgress>
       );
 
-      // Should show empty circle when fields aren't registered/valid
+      // Should not show any icon when fields aren't registered/valid
       expect(screen.queryByText("Complete")).not.toBeInTheDocument();
-      expect(screen.getByTestId("section-incomplete-icon")).toBeInTheDocument();
+      expect(screen.queryByTestId("section-incomplete-icon")).not.toBeInTheDocument();
+      expect(screen.queryByTestId("section-complete-icon")).not.toBeInTheDocument();
     });
 
-    it("shows empty circle when required fields are incomplete", async () => {
+    it("does not show icon when required fields are incomplete", async () => {
       render(
         <FormSectionWithProgress id="test" title="Test" requiredFields={["first_name"]}>
           <FormFieldWrapper name="first_name" isRequired>
@@ -99,9 +100,10 @@ describe("FormSectionWithProgress", () => {
         { defaultValues: { first_name: "" } }
       );
 
-      // Field registered but not valid - should show incomplete
+      // Field registered but not valid - should not show any icon
       expect(screen.queryByText("Complete")).not.toBeInTheDocument();
-      expect(screen.getByTestId("section-incomplete-icon")).toBeInTheDocument();
+      expect(screen.queryByTestId("section-incomplete-icon")).not.toBeInTheDocument();
+      expect(screen.queryByTestId("section-complete-icon")).not.toBeInTheDocument();
     });
 
     it("shows checkmark and Complete badge when all required fields valid", async () => {
@@ -138,10 +140,11 @@ describe("FormSectionWithProgress", () => {
         { defaultValues: { first_name: "John", last_name: "" } }
       );
 
-      // Only one field valid — not complete
+      // Only one field valid — not complete, no icon shown
       await waitFor(() => {
         expect(screen.queryByText("Complete")).not.toBeInTheDocument();
-        expect(screen.getByTestId("section-incomplete-icon")).toBeInTheDocument();
+        expect(screen.queryByTestId("section-incomplete-icon")).not.toBeInTheDocument();
+        expect(screen.queryByTestId("section-complete-icon")).not.toBeInTheDocument();
       });
     });
 
@@ -248,15 +251,15 @@ describe("FormSectionWithProgress", () => {
       });
     });
 
-    it("uses semantic color token for incomplete icon", () => {
+    it("does not show incomplete icon (design change: only show success)", () => {
       render(
         <FormSectionWithProgress id="test" title="Test" requiredFields={["name"]}>
           <div>content</div>
         </FormSectionWithProgress>
       );
 
-      const icon = screen.getByTestId("section-incomplete-icon");
-      expect(icon).toHaveClass("text-muted-foreground");
+      // No incomplete icon shown - only complete sections get visual indicator
+      expect(screen.queryByTestId("section-incomplete-icon")).not.toBeInTheDocument();
     });
 
     it("uses semantic color token for complete icon", async () => {

@@ -2,7 +2,6 @@ import * as React from "react";
 import type { z } from "zod";
 import { cn } from "@/lib/utils";
 import { useFormProgress } from "./formProgressUtils";
-import { getRequiredFields } from "@/atomic-crm/utils/getRequiredFields";
 
 interface FormProgressBarProps {
   schema?: z.ZodObject<z.ZodRawShape>;
@@ -26,12 +25,8 @@ function FormProgressBar({
   const isWizardMode = currentStep !== undefined && totalSteps !== undefined;
   const isDotMode = schema !== undefined && !isWizardMode;
 
-  // Get required fields from schema when in dot mode
-  const schemaRequiredFields = React.useMemo(
-    () => (schema ? getRequiredFields(schema) : []),
-    [schema]
-  );
-  const fieldCount = isDotMode ? schemaRequiredFields.length : totalRequired;
+  // Use totalRequired from context - reflects actual FormFieldWrapper registrations
+  const fieldCount = totalRequired;
 
   const ariaValueText = isWizardMode
     ? `Step ${currentStep} of ${totalSteps}${stepName ? `: ${stepName}` : ""}`

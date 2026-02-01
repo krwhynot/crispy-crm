@@ -44,9 +44,9 @@ export default defineConfig(({ mode }) => ({
       "@dnd-kit/sortable",
       "@dnd-kit/utilities",
 
-      // Chart libraries
-      "chart.js",
-      "react-chartjs-2",
+      // Chart libraries: NOT pre-bundled — loaded on-demand via lazy-loaded
+      // ReportsPage → OverviewTab. Separate "charts" chunk defined in manualChunks.
+      // Removing from optimizeDeps saves ~45KB gzip for users who never visit /reports.
 
       // Form libraries
       "react-hook-form",

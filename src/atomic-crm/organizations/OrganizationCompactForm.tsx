@@ -36,47 +36,41 @@ export const OrganizationCompactForm = ({ isRep }: OrganizationCompactFormProps)
     <div className="space-y-6">
       <FormSectionWithProgress
         id="basic-info"
-        title="Basic Information"
-        requiredFields={["name", "organization_type"]}
+        title="Company Profile"
+        requiredFields={["name", "organization_type", "segment_id"]}
       >
         <CompactFormRow>
           <div data-tutorial="org-name">
             <FormFieldWrapper name="name" isRequired={isRequired("name")}>
               <TextInput
                 source="name"
-                label="Organization Name *"
+                label="Company Name *"
                 helperText={false}
                 placeholder="Organization name"
               />
             </FormFieldWrapper>
           </div>
           <div data-tutorial="org-type">
-            <FormFieldWrapper name="organization_type" isRequired={isRequired("organization_type")}>
+            <FormFieldWrapper name="organization_type" isRequired={isRequired("organization_type")} countDefaultAsFilled>
               <PrincipalAwareTypeInput />
             </FormFieldWrapper>
           </div>
         </CompactFormRow>
 
-        <CompactFormRow>
-          <FormFieldWrapper name="parent_organization_id">
-            <ParentOrganizationInput />
-          </FormFieldWrapper>
-          <FormFieldWrapper name="priority">
-            <SelectInput
-              source="priority"
-              label="Priority"
-              choices={PRIORITY_CHOICES}
-              helperText={false}
-              emptyText="Select priority"
-            />
-          </FormFieldWrapper>
-        </CompactFormRow>
+        <FormFieldWrapper name="segment_id" isRequired={isRequired("segment_id")}>
+          <SegmentComboboxInput
+            source="segment_id"
+            label="Segment"
+            helperText={false}
+            allowUnknown={variant.allowUnknownSegment}
+          />
+        </FormFieldWrapper>
       </FormSectionWithProgress>
 
       <FormSectionWithProgress
-        id="account-segment"
-        title="Account & Segment"
-        requiredFields={["sales_id", "segment_id"]}
+        id="account"
+        title="Account Details"
+        requiredFields={["sales_id", "priority"]}
       >
         <CompactFormRow>
           <FormFieldWrapper
@@ -98,12 +92,16 @@ export const OrganizationCompactForm = ({ isRep }: OrganizationCompactFormProps)
               />
             </ReferenceInput>
           </FormFieldWrapper>
-          <FormFieldWrapper name="segment_id" isRequired={isRequired("segment_id")}>
-            <SegmentComboboxInput
-              source="segment_id"
-              label="Segment *"
+          <FormFieldWrapper
+            name="priority"
+            isRequired={isRequired("priority")}
+            countDefaultAsFilled
+          >
+            <SelectInput
+              source="priority"
+              label="Priority *"
+              choices={PRIORITY_CHOICES}
               helperText={false}
-              allowUnknown={variant.allowUnknownSegment}
             />
           </FormFieldWrapper>
         </CompactFormRow>
@@ -114,7 +112,7 @@ export const OrganizationCompactForm = ({ isRep }: OrganizationCompactFormProps)
           <FormFieldWrapper name="address">
             <TextInput
               source="address"
-              label="Street"
+              label="Street Address"
               helperText={false}
               autoComplete="address-line1"
             />
@@ -136,7 +134,7 @@ export const OrganizationCompactForm = ({ isRep }: OrganizationCompactFormProps)
           <FormFieldWrapper name="postal_code">
             <TextInput
               source="postal_code"
-              label="Zip Code"
+              label="ZIP Code"
               helperText="US ZIP: 12345 or 12345-6789"
               autoComplete="postal-code"
             />
@@ -144,7 +142,7 @@ export const OrganizationCompactForm = ({ isRep }: OrganizationCompactFormProps)
         </CompactFormRow>
       </FormSectionWithProgress>
 
-      <CollapsibleSection title="Additional Details">
+      <CollapsibleSection title="Contact & Web">
         <div className="space-y-4">
           <div data-tutorial="org-website">
             <FormFieldWrapper name="website">
@@ -158,7 +156,7 @@ export const OrganizationCompactForm = ({ isRep }: OrganizationCompactFormProps)
           <FormFieldWrapper name="phone">
             <TextInput
               source="phone"
-              label="Phone"
+              label="Phone Number"
               helperText="At least 10 digits"
               autoComplete="tel"
               maxLength={30}
@@ -167,7 +165,7 @@ export const OrganizationCompactForm = ({ isRep }: OrganizationCompactFormProps)
           <FormFieldWrapper name="linkedin_url">
             <TextInput
               source="linkedin_url"
-              label="LinkedIn URL"
+              label="LinkedIn"
               helperText="Format: https://linkedin.com/company/name"
             />
           </FormFieldWrapper>

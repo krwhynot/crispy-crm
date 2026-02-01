@@ -73,7 +73,7 @@ if (error) throw error; // Operator sees error immediately
 - Simple code = easy to maintain
 - Pre-launch = velocity over resilience
 
-## Anti-Pattern 2: Promise.all() for Bulk Operations
+## Anti-Pattern 2: Promise.all() for Bulk Mutations
 
 ### The Problem
 
@@ -130,12 +130,30 @@ const markAllAsRead = async (ids: number[]) => {
 - Accurate user feedback
 - No wasted work
 
+### When Promise.all() IS Correct
+
+Use `Promise.all()` for **parallel reads** where all results are required and any failure should abort:
+
+```typescript
+// ✅ Parallel reads - all must succeed
+const [user, config, permissions] = await Promise.all([
+  fetchUser(userId),
+  fetchConfig(),
+  fetchPermissions(userId),
+]);
+// If any fetch fails, we can't render the page - fail fast
+```
+
+**Rule of thumb:**
+- **Reads (fetching data):** `Promise.all()` -- fail fast if any dependency is missing
+- **Writes (bulk mutations):** `Promise.allSettled()` -- preserve partial success
+
 ## Checklist
 
 Before committing, check for:
 
 - [ ] ❌ Retry logic or circuit breakers (fail fast instead)
-- [ ] ❌ `Promise.all()` for bulk operations (use `Promise.allSettled()`)
+- [ ] ❌ `Promise.all()` for bulk mutations (use `Promise.allSettled()`; `Promise.all` is fine for parallel reads)
 - [ ] ❌ Graceful fallbacks hiding errors (let errors throw)
 - [ ] ❌ Complex error handling machinery (keep it simple)
 

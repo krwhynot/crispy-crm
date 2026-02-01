@@ -66,7 +66,9 @@ export function OpportunityCreateFormFooter({
   const hasDirtyFields = Object.keys(dirtyFields).length > 0;
   const disabled = !hasDirtyFields || isValidating || isSubmitting;
 
-  const handleCancel = useCallback(() => {
+  const handleCancel = useCallback((event?: React.MouseEvent<HTMLButtonElement>) => {
+    event?.preventDefault(); // Defense-in-depth: prevent any default behavior
+
     if (isDirty) {
       setShowCancelDialog(true);
       return;
@@ -203,7 +205,12 @@ export function OpportunityCreateFormFooter({
   return (
     <>
       <div className="sticky bottom-12 bg-card border-t border-border p-4 flex justify-between mt-6">
-        <AdminButton variant="outline" onClick={handleCancel} className="h-11">
+        <AdminButton
+          type="button"
+          variant="outline"
+          onClick={handleCancel}
+          className="h-11"
+        >
           {translate("ra.action.cancel", { _: "Cancel" })}
         </AdminButton>
         <div className="flex gap-2">

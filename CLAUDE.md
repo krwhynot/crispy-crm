@@ -73,6 +73,7 @@ Per official Claude Code guidance, large state databases (search.db, vectors.lan
 
 ## 📐 Engineering Principles
 **Core:** Fail Fast (no retries). Single Source of Truth (Provider). TS: `interface` (shapes), `type` (unions).
+**Implementation Protocol:** Explain the solution architecture FIRST before writing code. Earn the right to code by proving understanding of: (1) root cause, (2) why this layer/approach, (3) end-to-end data flow. No band-aids—fix problems at the right layer.
 **Forms:** `onSubmit`/`onBlur` (no `onChange`). Use `useWatch()` (isolated), not `watch()`.
 **Zod:** `z.coerce` (non-strings), `.max()` (strings), `z.strictObject()` (API), `z.enum()` (allowlists).
 

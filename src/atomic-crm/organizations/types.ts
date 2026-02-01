@@ -144,6 +144,9 @@ export interface OrganizationRecord extends Organization {
   nb_contacts?: number;
   nb_opportunities?: number;
   nb_notes?: number;
+  // Hierarchy fields from organizations_summary view
+  child_branch_count?: number;
+  parent_organization_name?: string | null;
 }
 
 /**
