@@ -17,6 +17,7 @@ import {
   ORG_TYPE_COLOR_MAP,
   PRIORITY_VARIANT_MAP,
   PRIORITY_CHOICES,
+  getSegmentColor,
   type OrganizationType,
   type PriorityLevel,
 } from "./constants";
@@ -74,3 +75,36 @@ export const PriorityBadge = memo(function PriorityBadge({ priority }: PriorityB
 });
 
 PriorityBadge.displayName = "PriorityBadge";
+
+interface SegmentBadgeProps {
+  /** Segment UUID from record.segment_id - used for color lookup */
+  segmentId: string | null | undefined;
+  /** Segment display name from record.segment_name */
+  segmentName: string | null | undefined;
+}
+
+/**
+ * Displays segment name with color-coded tag
+ *
+ * Color Strategy:
+ * - Playbook segments (9): Distinct colors mapped by UUID (tag-blue, tag-green, etc.)
+ * - Operator segments (16+): Default to tag-gray (too many for unique colors)
+ * - NULL: Shows "—" placeholder
+ *
+ * NOTE: Wrapped in min-h-[44px] container by FilterableBadge for touch target compliance.
+ * Raw badge height is ~24px; wrapper ensures WCAG AA compliance (44px minimum).
+ */
+export const SegmentBadge = memo(function SegmentBadge({
+  segmentId,
+  segmentName,
+}: SegmentBadgeProps) {
+  if (!segmentName) {
+    return <span className="text-muted-foreground text-xs">—</span>;
+  }
+
+  const colorClass = getSegmentColor(segmentId);
+
+  return <Badge className={`text-xs px-2 py-1 ${colorClass}`}>{segmentName}</Badge>;
+});
+
+SegmentBadge.displayName = "SegmentBadge";

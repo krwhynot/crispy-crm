@@ -51,7 +51,11 @@ export const OrganizationCompactForm = ({ isRep }: OrganizationCompactFormProps)
             </FormFieldWrapper>
           </div>
           <div data-tutorial="org-type">
-            <FormFieldWrapper name="organization_type" isRequired={isRequired("organization_type")} countDefaultAsFilled>
+            <FormFieldWrapper
+              name="organization_type"
+              isRequired={isRequired("organization_type")}
+              countDefaultAsFilled
+            >
               <PrincipalAwareTypeInput />
             </FormFieldWrapper>
           </div>
@@ -107,40 +111,42 @@ export const OrganizationCompactForm = ({ isRep }: OrganizationCompactFormProps)
         </CompactFormRow>
       </FormSectionWithProgress>
 
-      <FormSectionWithProgress id="location" title="Location" requiredFields={[]}>
-        <CompactFormRow>
-          <FormFieldWrapper name="address">
-            <TextInput
-              source="address"
-              label="Street Address"
-              helperText={false}
-              autoComplete="address-line1"
-            />
-          </FormFieldWrapper>
-          <FormFieldWrapper name="city">
-            <TextInput
-              source="city"
-              label="City"
-              helperText={false}
-              autoComplete="address-level2"
-            />
-          </FormFieldWrapper>
-        </CompactFormRow>
+      <CollapsibleSection title="Location">
+        <div className="space-y-4">
+          <CompactFormRow>
+            <FormFieldWrapper name="address">
+              <TextInput
+                source="address"
+                label="Street Address"
+                helperText={false}
+                autoComplete="address-line1"
+              />
+            </FormFieldWrapper>
+            <FormFieldWrapper name="city">
+              <TextInput
+                source="city"
+                label="City"
+                helperText={false}
+                autoComplete="address-level2"
+              />
+            </FormFieldWrapper>
+          </CompactFormRow>
 
-        <CompactFormRow>
-          <FormFieldWrapper name="state">
-            <StateComboboxInput source="state" label="State" />
-          </FormFieldWrapper>
-          <FormFieldWrapper name="postal_code">
-            <TextInput
-              source="postal_code"
-              label="ZIP Code"
-              helperText="US ZIP: 12345 or 12345-6789"
-              autoComplete="postal-code"
-            />
-          </FormFieldWrapper>
-        </CompactFormRow>
-      </FormSectionWithProgress>
+          <CompactFormRow>
+            <FormFieldWrapper name="state">
+              <StateComboboxInput source="state" label="State" />
+            </FormFieldWrapper>
+            <FormFieldWrapper name="postal_code">
+              <TextInput
+                source="postal_code"
+                label="ZIP Code"
+                helperText="US ZIP: 12345 or 12345-6789"
+                autoComplete="postal-code"
+              />
+            </FormFieldWrapper>
+          </CompactFormRow>
+        </div>
+      </CollapsibleSection>
 
       <CollapsibleSection title="Contact & Web">
         <div className="space-y-4">

@@ -67,7 +67,7 @@ function loadFromStorage(): RecentSearchItem[] {
     }
 
     // Sort by timestamp descending (most recent first)
-    return result.data.sort((a, b) => b.timestamp - a.timestamp);
+    return result.data.toSorted((a, b) => b.timestamp - a.timestamp);
   } catch (error: unknown) {
     logger.error("Error reading recent searches from storage", error, {
       feature: "useRecentSearches",

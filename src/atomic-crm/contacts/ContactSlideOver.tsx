@@ -65,7 +65,9 @@ export function ContactSlideOver({
     {
       key: "activities",
       label: "Activities",
-      component: ({ record }) => <ActivitiesTab contactId={record.id} />,
+      component: (props) => (
+        <ActivitiesTab contactId={props.record.id} organizationId={props.record.organization_id} />
+      ),
       icon: ActivityIcon,
       countFromRecord: (record: Contact) => record.nb_activities,
     },

@@ -84,7 +84,7 @@ const CampaignGroupedListComponent = ({ openSlideOver }: CampaignGroupedListProp
     return campaignGroups;
   }, [opportunities]);
 
-  const campaignNames = Object.keys(groupedData).sort();
+  const campaignNames = Object.keys(groupedData).toSorted();
 
   if (isPending) {
     return (
@@ -119,7 +119,7 @@ const CampaignGroupedListComponent = ({ openSlideOver }: CampaignGroupedListProp
       <Accordion type="multiple" className="space-y-2">
         {campaignNames.map((campaignName) => {
           const principalGroups = groupedData[campaignName];
-          const principalNames = Object.keys(principalGroups).sort();
+          const principalNames = Object.keys(principalGroups).toSorted();
 
           // Calculate total opportunities across all principals/customers in this campaign
           const totalOpportunities = principalNames.reduce((sum, principal) => {
@@ -158,7 +158,7 @@ const CampaignGroupedListComponent = ({ openSlideOver }: CampaignGroupedListProp
                 <Accordion type="multiple" className="space-y-2 mt-2">
                   {principalNames.map((principalName) => {
                     const customerGroups = principalGroups[principalName];
-                    const customerNames = Object.keys(customerGroups).sort();
+                    const customerNames = Object.keys(customerGroups).toSorted();
 
                     // Calculate opportunities for this principal across all customers
                     const principalTotalOpps = customerNames.reduce(

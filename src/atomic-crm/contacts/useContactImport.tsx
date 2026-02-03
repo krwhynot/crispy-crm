@@ -370,14 +370,18 @@ const fetchRecordsWithCache = async function <T extends RaRecord>(
   // Create missing records - fail-fast on any error
   // PERF-002 FIX: Use concurrency limit to prevent overwhelming backend
   try {
-    const tasks = uncachedRecordNames
-      .filter((name) => !cache.has(name))
-      .map((name) => async () => {
-        const response = await dataProvider.create(resource, {
-          data: getCreateData(name),
-        });
-        cache.set(name, response.data);
-      });
+    const tasks = uncachedRecordNames.flatMap((name) =>
+      !cache.has(name)
+        ? [
+            async () => {
+              const response = await dataProvider.create(resource, {
+                data: getCreateData(name),
+              });
+              cache.set(name, response.data);
+            },
+          ]
+        : []
+    );
     const results = await withConcurrencyLimit(tasks, 10);
     // Check for any failures and re-throw the first error for fail-fast behavior
     const firstFailure = results.find((r) => r.status === "rejected");

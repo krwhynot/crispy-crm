@@ -7,7 +7,7 @@ description: Use when designing UI, auditing UI/UX, choosing colors, implementin
 
 ## Overview
 
-Systematic framework for making UI/UX decisions grounded in cognitive science and user experience laws. This skill provides **universal principles** that apply to any project, with project-specific implementation details in resource files.
+Systematic framework for making UI/UX decisions grounded in cognitive science and user experience laws. Provides **universal principles** with project-specific implementation in resource files.
 
 **Core Mission:** Design experiences that are fast under pressure, effortless under fatigue, predictable by pattern, and emotionally confident.
 
@@ -15,13 +15,8 @@ Systematic framework for making UI/UX decisions grounded in cognitive science an
 
 Every UI/UX decision follows this structured approach:
 
-### 1. Cognitive Audit (Before Design)
-
-Identify context and friction:
-- **Who:** User role, expertise level, frequency of use
-- **Where:** Device (desktop/tablet/mobile), environment (office/field/dim lighting)
-- **What:** Task goals, current pain points, cognitive load
-- **Which laws:** Identify violated UX principles (see table below)
+### 1. Cognitive Audit
+Identify context: **Who** (role, expertise), **Where** (device, environment), **What** (task goals, pain points), **Which laws** apply (see UX Laws reference below).
 
 ### 2. Strategy Selection
 
@@ -29,342 +24,61 @@ Identify context and friction:
 |----------|-------|----------|
 | **A - Familiar Efficiency** | Low learning curve, speed | Power users, CRM/Excel veterans |
 | **B - Progressive Clarity** | Reduced cognitive load | New users, complex onboarding |
-| **C - Hybrid Field Resilience** | High contrast, large targets, feedback-rich | Field use, tablets, challenging environments |
-| **D - Behavioral Momentum** | Habit loops, emotional reinforcement | Repetitive workflows, gamification |
+| **C - Hybrid Field Resilience** | High contrast, large targets | Field use, tablets, challenging environments |
+| **D - Behavioral Momentum** | Habit loops, reinforcement | Repetitive workflows |
 
-**Default recommendation:** Strategy C (Hybrid Field Resilience) balances accessibility, speed, and adaptability.
+**Default:** Strategy C balances accessibility, speed, and adaptability.
 
-### 3. Decision Matrix Evaluation
+### 3. Decision Matrix
+Score criteria (1-5) weighted by importance. Redesign if Accessibility < 4, Usability < 3, Speed < 3, or 3+ criteria < 4.
 
-Score each criterion (1-5), multiply by weight:
-
-| Criterion | Weight | Target | Quick Check |
-|-----------|--------|--------|-------------|
-| **Usability** | ×3 | ≥4 | Can complete task without training? |
-| **Speed** | ×3 | ≥4 | Task time acceptable? |
-| **Accessibility** | ×3 | ≥4 | Touch ≥44px? Contrast ≥4.5:1? |
-| **Familiarity** | ×2 | ≥4 | Follows platform conventions? |
-| **Cognitive Load** | ×2 | ≥4 | ≤7 visible choices? |
-| **Visual Clarity** | ×2 | ≥4 | Clear hierarchy? |
-| **Feedback** | ×2 | ≥4 | Response <400ms? |
-| **Adaptability** | ×2 | ≥4 | Works across devices? |
-
-**Redesign triggers:**
-- Accessibility < 4 → WCAG blocker
-- Usability < 3 → Users can't complete tasks
-- Speed < 3 → Workflow unacceptably slow
-- 3+ criteria < 4 → Review against UX Laws
+**See:** [Decision Matrix Guide](resources/decision-matrix-guide.md) for scoring details and case studies.
 
 ### 4. Implementation Spec
+Output concrete code with exact CSS/Tailwind classes, ARIA attributes, responsive breakpoints, and feedback patterns.
 
-Output concrete, actionable code with:
-- Exact CSS/Tailwind classes
-- ARIA attributes for accessibility
-- Responsive breakpoints
-- Feedback patterns (loading states, success confirmation)
+## Quick Reference
 
----
-
-## UX Laws Reference
-
-### Interaction Laws
-
-| Law | Principle | Implementation |
-|-----|-----------|----------------|
-| **Jakob's Law** | Users spend most time on OTHER sites; expect familiar patterns | Use standard nav positions, button styles, form layouts |
-| **Hick's Law** | Decision time increases with choices | Limit visible options to 5-7; use progressive disclosure |
-| **Fitts's Law** | Larger + closer targets = faster/easier to hit | Min 44px touch targets; important actions largest |
-| **Tesler's Law** | Complexity can't be eliminated, only moved | Push complexity to system logic, not user workflows |
-| **Miller's Law** | Working memory holds ~7 items | Chunk information; avoid forcing mental juggling |
-| **Doherty Threshold** | <400ms response maintains flow state | Show immediate feedback; use optimistic updates |
-
-### Visual & Cognitive Laws
-
-| Law | Principle | Implementation |
-|-----|-----------|----------------|
-| **Aesthetic-Usability** | Beautiful interfaces seem easier to use | Consistent styling increases perceived reliability |
-| **Peak-End Rule** | Users remember most intense moment + ending | End flows with clear confirmation, positive closure |
-| **Von Restorff Effect** | Different items stand out | Use accent colors sparingly for CTAs |
-| **Serial Position Effect** | First and last items remembered best | Put key actions at start/end of lists |
-| **Gestalt: Proximity** | Close items appear grouped | Use spacing to show relationships |
-| **Gestalt: Similarity** | Similar items appear related | Consistent button styles, text treatments |
-| **Gestalt: Continuity** | Eye follows smooth paths | Align elements; guide natural reading flow |
-
-### Code Patterns for UX Laws
-
-```tsx
-// Fitts's Law: Large touch target (44px minimum)
-<Button className="h-11 min-w-[44px] px-4">
-  Save
-</Button>
-
-// Hick's Law: Progressive disclosure
-<Accordion>
-  <AccordionItem value="advanced">
-    <AccordionTrigger>Advanced Options</AccordionTrigger>
-    <AccordionContent>
-      {/* Hidden until explicitly requested */}
-    </AccordionContent>
-  </AccordionItem>
-</Accordion>
-
-// Doherty Threshold: Immediate feedback
-<Button onClick={async () => {
-  toast.loading("Saving...");  // Instant feedback (<100ms)
-  await save();
-  toast.success("Saved!");     // Closure (Peak-End)
-}}>
-  Save
-</Button>
-
-// Miller's Law: Chunked information
-<Tabs defaultValue="basics">
-  <TabsList>
-    <TabsTrigger value="basics">Basics</TabsTrigger>
-    <TabsTrigger value="details">Details</TabsTrigger>
-    <TabsTrigger value="advanced">Advanced</TabsTrigger>
-  </TabsList>
-  {/* Max 5-7 fields per tab */}
-</Tabs>
-```
-
----
-
-## Accessibility Non-Negotiables
-
-These are **blockers** - no exceptions:
-
-| Requirement | Standard | Implementation |
-|-------------|----------|----------------|
-| **Touch targets** | 44×44px minimum | `h-11 w-11` or `min-h-[44px] min-w-[44px]` |
-| **Color contrast** | WCAG AA (4.5:1 text) | Use semantic colors, never pure gray on white |
-| **Semantic HTML** | Native elements | `<button>` not `<div onClick>` |
-| **Labels** | All inputs labeled | Visible label or `aria-label` / `sr-only` |
-| **Keyboard nav** | Full functionality | Tab order logical, Enter/Space work |
-| **Focus visible** | Clear indicator | `:focus-visible` with visible ring |
-| **Motion** | Respect preferences | `prefers-reduced-motion` support |
-
-### ARIA Patterns
-
-```tsx
-// Dialog/Modal
-<div role="dialog" aria-modal="true" aria-labelledby="dialog-title">
-  <h2 id="dialog-title">Edit Contact</h2>
-  {/* Focus trap required */}
-</div>
-
-// Live regions for updates
-<div aria-live="polite" aria-atomic="true">
-  {statusMessage}
-</div>
-
-// Form errors (basic)
-<input aria-invalid={hasError} aria-describedby="error-msg" />
-<span id="error-msg" role="alert">{errorText}</span>
-```
-
-### Form Accessibility Patterns (WCAG 2.1 AA)
-
-**Required for ALL form inputs:**
-
-```tsx
-// ✅ CORRECT: Accessible form field with React Hook Form
-function AccessibleInput({ name, label, errors, register }) {
-  const hasError = !!errors[name];
-  const errorId = `${name}-error`;
-
-  return (
-    <div>
-      {/* 1. Visible label with htmlFor */}
-      <label htmlFor={name}>{label}</label>
-
-      {/* 2. Input with ARIA attributes */}
-      <input
-        id={name}
-        aria-invalid={hasError ? 'true' : 'false'}
-        aria-describedby={hasError ? errorId : undefined}
-        {...register(name)}
-      />
-
-      {/* 3. Error with role="alert" for screen readers */}
-      {hasError && (
-        <span id={errorId} role="alert" className="text-destructive">
-          {errors[name]?.message}
-        </span>
-      )}
-    </div>
-  );
-}
-
-// ❌ WRONG: Inaccessible form field
-<input {...register('email')} />
-{errors.email && <span>{errors.email.message}</span>}
-// Missing: label, aria-invalid, aria-describedby, role="alert"
-```
-
-**Form Accessibility Checklist:**
-
-| Requirement | Implementation | Screen Reader Behavior |
-|-------------|---------------|----------------------|
-| **Label association** | `<label htmlFor={id}>` | "Email, edit text" |
-| **Invalid state** | `aria-invalid="true"` | "Invalid entry" announced |
-| **Error description** | `aria-describedby={errorId}` | Error message read with field |
-| **Error announcement** | `role="alert"` | Immediate announcement on error |
-| **Required indication** | `aria-required="true"` | "Required" announced |
-
-**Focus Management on Validation Failure:**
-
-```tsx
-// ✅ CORRECT: Focus first invalid field after submit
-const { handleSubmit, setFocus } = useForm();
-
-const onSubmit = handleSubmit(
-  (data) => { /* success */ },
-  (errors) => {
-    // Focus first errored field
-    const firstError = Object.keys(errors)[0];
-    if (firstError) setFocus(firstError);
-  }
-);
-```
-
-**Live Validation Feedback:**
-
-```tsx
-// ✅ CORRECT: Live region for validation status
-<div aria-live="polite" aria-atomic="true" className="sr-only">
-  {isSubmitting && "Validating form..."}
-  {isSubmitSuccessful && "Form submitted successfully"}
-  {Object.keys(errors).length > 0 &&
-    `Form has ${Object.keys(errors).length} errors`}
-</div>
-```
-
----
-
-## Color System Principles
-
-### The 60-30-10 Rule
-
-| Role | Percentage | Usage |
-|------|------------|-------|
-| **Dominant (60%)** | Background, large surfaces | `bg-background`, `bg-card` |
-| **Secondary (30%)** | Supporting elements, sections | `bg-muted`, `border-border` |
-| **Accent (10%)** | CTAs, highlights, focus states | `bg-primary`, `text-primary` |
-
-### Semantic Color Categories
-
-| Category | Purpose | Examples |
-|----------|---------|----------|
-| **Brand** | Identity, primary actions | Primary button, logo, key CTAs |
-| **Neutral** | Text, backgrounds, borders | Body text, cards, dividers |
-| **Status** | Feedback states | Success (green), Warning (amber), Error (red), Info (blue) |
-| **Interactive** | Hover, focus, active states | Button hover, focus rings, selected items |
-
-### Color Anti-Patterns
-
-| Problem | Why It Fails | Fix |
-|---------|--------------|-----|
-| Hardcoded hex values | Bypasses design system | Use semantic tokens |
-| Pure black `#000` | Too harsh, poor readability | Use `slate-900` or similar |
-| Pure white `#FFF` | Glare, accessibility issues | Use `slate-50` or warm white |
-| Too many accent colors | Cognitive overload, no hierarchy | Max 2 accent colors |
-| Color-only meaning | Fails colorblind users | Add icons, text, patterns |
-
----
+| Topic | Resource | Key Rules |
+|-------|----------|-----------|
+| **UX Laws** | [resources/ux-laws-reference.md](resources/ux-laws-reference.md) | Fitts (44px targets), Hick (5-7 choices), Doherty (<400ms feedback), Jakob (familiar patterns), Miller (chunk to ~7 items), Tesler (push complexity to system), Von Restorff (accent sparingly for CTAs), Peak-End (end flows with confirmation), Gestalt: Proximity/Similarity/Continuity |
+| **Accessibility** | `.claude/rules/CODE_QUALITY.md` (always loaded) | `aria-invalid`, `aria-describedby`, `role="alert"`, `aria-required`, focus management |
+| **Form Patterns** | [resources/form-patterns.md](resources/form-patterns.md) | Field grouping, validation timing, error handling |
+| **Colors** | [resources/color-system.md](resources/color-system.md), [resources/color-status-semantic.md](resources/color-status-semantic.md) | 60-30-10 rule, semantic tokens, no hardcoded hex |
+| **Touch & Animation** | [resources/tokens-touch-animation.md](resources/tokens-touch-animation.md) | 44px minimum, easing curves, reduced motion |
+| **Component Architecture** | [resources/component-architecture.md](resources/component-architecture.md) | Three-tier (Atoms, Molecules, Organisms) |
+| **Data Tables** | [resources/data-tables.md](resources/data-tables.md) | Sortable columns, pagination, keyboard nav |
+| **Typography** | [resources/typography.md](resources/typography.md) | Font hierarchy, line height, weight scales |
 
 ## Response Format
 
 When answering UI/UX questions, structure responses as:
 
-### 1) Cognitive Audit (2-4 sentences)
-- Context: role, device, environment
-- Friction points identified
-- UX laws at stake
+1. **Cognitive Audit** (2-4 sentences) — Context, friction points, UX laws at stake
+2. **Strategy Recommendation** — Choose A/B/C/D with rationale
+3. **Implementation Spec** — Concrete code, ARIA attributes, responsive considerations, feedback patterns
 
-### 2) Strategy Recommendation
-- Choose A/B/C/D with rationale
-- Brief pros/cons
+## Pre-Commit Checklist
 
-### 3) Implementation Spec
-- Concrete code/CSS
-- ARIA attributes
-- Responsive considerations
-- Feedback patterns
-
-**Example:**
-
-> **Audit:** Field sales rep on iPad in warehouse (dim lighting, possible gloves). Current filter panel has 15 visible options (Hick's Law violation) with 38px buttons (Fitts's Law violation).
->
-> **Strategy:** C - Hybrid Field Resilience. High contrast, large targets essential for environment.
->
-> **Implementation:**
-> ```tsx
-> <FilterPanel className="bg-card p-4">
->   {/* Grouped to reduce visible choices */}
->   <FilterGroup label="Status">
->     <FilterButton className="h-11 min-w-[44px] text-base">
->       Active
->     </FilterButton>
->   </FilterGroup>
-> </FilterPanel>
-> ```
-
----
-
-## Quick Checklists
-
-### Pre-Design Checklist
-- [ ] Identified user context (who, where, what device)
-- [ ] Listed UX laws that apply
-- [ ] Chosen strategy (A/B/C/D)
-- [ ] Mapped colors to semantic tokens
-
-### Pre-Commit Checklist
-- [ ] Touch targets ≥ 44px on ALL screen sizes
+- [ ] Touch targets >= 44px on all screen sizes
 - [ ] No hardcoded colors (hex, rgb, hsl)
-- [ ] ARIA labels on interactive elements
-- [ ] Keyboard navigation works
+- [ ] ARIA labels on interactive elements (`aria-invalid`, `aria-describedby`, `role="alert"`)
+- [ ] All inputs have associated `<label htmlFor={id}>` or `aria-label`
+- [ ] Required fields have `aria-required="true"`
+- [ ] Focus moves to first error on submit failure
+- [ ] Keyboard navigation works (Tab order, Enter/Space)
 - [ ] Feedback on all actions (<400ms)
 - [ ] Tested on primary target device
 
-### Form-Specific Accessibility Checklist
-- [ ] All inputs have associated `<label htmlFor={id}>`
-- [ ] Invalid fields have `aria-invalid="true"`
-- [ ] Error messages have `role="alert"`
-- [ ] Errors linked via `aria-describedby`
-- [ ] Required fields have `aria-required="true"`
-- [ ] Focus moves to first error on submit failure
-- [ ] Live region announces validation status
+## Resource Navigation
 
-### Optimization Triggers
+This skill includes **18 detailed resource files** (308 KB). For a categorized index, see **AGENTS.md**:
 
-| Trigger | Problem | Action |
-|---------|---------|--------|
-| **Performance** | Feedback >400ms | Add skeleton/shimmer loader |
-| **Visual** | Contrast <4.5:1 | Use semantic colors with higher contrast |
-| **Ergonomic** | Targets <44px | Increase padding/hit area |
-| **Cognitive** | >7 visible choices | Progressive disclosure, grouping |
-| **Feedback** | Missing states | Add loading, success, error states |
-| **Emotional** | Abrupt flow endings | Add microcopy, confirmation |
-
----
-
-## Resource Files
-
-### Universal Principles
-- [UX Laws Deep Dive](resources/ux-laws-reference.md) - Extended explanations and research citations
-- [Decision Matrix Guide](resources/decision-matrix-guide.md) - Scoring examples and case studies
-- [Color Theory](resources/color-system.md) - OKLCH, semantic mappings, accessibility
-
-### Project-Specific Implementation
-- [Design Tokens](resources/design-tokens.md) - Spacing, CSS variables
-- [Typography](resources/typography.md) - Font scales, hierarchy
-- [Elevation](resources/elevation.md) - Shadows, depth, layering
-- [Form Patterns](resources/form-patterns.md) - Validation, arrays, accessibility
-- [Data Tables](resources/data-tables.md) - Sorting, pagination, responsive
-
----
+- **Colors & branding** → `resources/color-*.md`, `color-system.md`
+- **Component patterns** → `resources/form-patterns.md`, `data-tables.md`, `component-architecture.md`
+- **Layout & spacing** → `resources/dashboard-layouts.md`, `tokens-spacing-grid.md`, `elevation.md`
+- **Implementation** → `resources/react-performance.md`, `typescript-patterns.md`, `state-management.md`
+- **UX decision-making** → `resources/decision-matrix-guide.md`, `ux-laws-reference.md`
 
 ## Core Beliefs
 
@@ -376,10 +90,4 @@ When answering UI/UX questions, structure responses as:
 
 ---
 
-## Cross-Reference
-
-**See also:** `engineering-constitution` skill for:
-- Error handling patterns
-- Validation (Zod schemas)
-- Form state management
-- Testing patterns
+**Cross-Reference:** `enforcing-principles` skill for error handling, Zod validation, form state management, testing patterns.

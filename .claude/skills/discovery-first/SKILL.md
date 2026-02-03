@@ -1,6 +1,6 @@
 ---
 name: discovery-first
-description: Use pre-computed discovery files at .claude/state/ for codebase inventory questions. Triggers on component, hook, schema, form, type, inventory, what exists, list all, how many. Saves 90%+ tokens vs source scanning.
+description: Use pre-computed discovery files at .claude/state/ for codebase inventory questions (components, hooks, schemas, forms, types). ALWAYS check .claude/state/ JSON inventories before scanning source code. Saves 90%+ tokens vs source scanning.
 ---
 
 # Discovery-First Skill

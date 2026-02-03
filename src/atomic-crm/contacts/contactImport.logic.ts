@@ -97,20 +97,27 @@ export function validateTransformedContacts(contacts: ContactImportSchema[]) {
     };
   });
 
-  const successful = validationResults
-    .filter((r) => r.success)
-    .map((r) => ({ ...r.contact, originalIndex: r.index }));
+  const successful: Array<ContactImportSchema & { originalIndex: number }> = [];
+  const failed: Array<{
+    originalIndex: number;
+    data: ContactImportSchema;
+    errors: Array<{ field: string; message: string }>;
+  }> = [];
 
-  const failed = validationResults
-    .filter((r) => !r.success)
-    .map((r) => ({
-      originalIndex: r.index,
-      data: r.contact,
-      errors: r.error!.issues.map((issue) => ({
-        field: issue.path.join("."),
-        message: issue.message,
-      })),
-    }));
+  for (const r of validationResults) {
+    if (r.success) {
+      successful.push({ ...r.contact, originalIndex: r.index });
+    } else {
+      failed.push({
+        originalIndex: r.index,
+        data: r.contact,
+        errors: r.error!.issues.map((issue) => ({
+          field: issue.path.join("."),
+          message: issue.message,
+        })),
+      });
+    }
+  }
 
   return { successful, failed };
 }

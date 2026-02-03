@@ -20,6 +20,10 @@
 --   - segments
 --   - tags
 --
+-- FIX (Feb 2026): Added self-contained test user guard to avoid
+-- segments.created_by NOT NULL violation when no sales records exist.
+-- Uses dedicated auth.users insert (handle_new_user trigger creates sales row).
+--
 -- References:
 --   - Supabase RLS: https://supabase.com/docs/guides/database/postgres/row-level-security
 --   - pgTAP: https://pgtap.org
@@ -35,6 +39,14 @@ SELECT plan(30);
 -- ============================================================================
 -- SETUP: Create test data for soft-delete filtering verification
 -- ============================================================================
+
+-- Guard: create a dedicated test user so sales records are guaranteed to exist.
+-- The handle_new_user() trigger auto-creates a sales record on auth.users INSERT.
+DELETE FROM public.sales WHERE user_id = '99990020-aaaa-aaaa-aaaa-000000000001';
+DELETE FROM auth.users WHERE id = '99990020-aaaa-aaaa-aaaa-000000000001';
+
+INSERT INTO auth.users (id, email, encrypted_password, email_confirmed_at, created_at, updated_at, aud, role)
+VALUES ('99990020-aaaa-aaaa-aaaa-000000000001', 'test-020@test.local', 'password', NOW(), NOW(), NOW(), 'authenticated', 'authenticated');
 
 -- Insert test organization (needed as FK for other tables)
 INSERT INTO organizations (id, name, deleted_at)
@@ -52,8 +64,8 @@ VALUES
 -- principal_organization_id is required (NOT NULL constraint)
 INSERT INTO opportunities (id, name, customer_organization_id, principal_organization_id, opportunity_owner_id, deleted_at, stage)
 VALUES
-  (999901, 'Test Opp Active', 999901, 999901, (SELECT id FROM sales LIMIT 1), NULL, 'new_lead'),
-  (999902, 'Test Opp Deleted', 999901, 999901, (SELECT id FROM sales LIMIT 1), NOW(), 'new_lead');
+  (999901, 'Test Opp Active', 999901, 999901, (SELECT id FROM sales WHERE user_id = '99990020-aaaa-aaaa-aaaa-000000000001'), NULL, 'new_lead'),
+  (999902, 'Test Opp Deleted', 999901, 999901, (SELECT id FROM sales WHERE user_id = '99990020-aaaa-aaaa-aaaa-000000000001'), NOW(), 'new_lead');
 
 -- Insert test products
 INSERT INTO products (id, principal_id, name, category, deleted_at)
@@ -61,11 +73,11 @@ VALUES
   (999901, 999901, 'Test Product Active', 'Test', NULL),
   (999902, 999901, 'Test Product Deleted', 'Test', NOW());
 
--- Insert test segments
-INSERT INTO segments (id, name, deleted_at)
+-- Insert test segments (created_by is UUID, use auth user UUID directly)
+INSERT INTO segments (id, name, created_by, deleted_at)
 VALUES
-  ('99990001-0000-0000-0000-000000000001', 'Test Segment Active', NULL),
-  ('99990001-0000-0000-0000-000000000002', 'Test Segment Deleted', NOW());
+  ('99990001-0000-0000-0000-000000000001', 'Test Segment Active', '99990020-aaaa-aaaa-aaaa-000000000001'::uuid, NULL),
+  ('99990001-0000-0000-0000-000000000002', 'Test Segment Deleted', '99990020-aaaa-aaaa-aaaa-000000000001'::uuid, NOW());
 
 -- Insert test tags
 INSERT INTO tags (id, name, deleted_at)

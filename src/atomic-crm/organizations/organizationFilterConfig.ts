@@ -8,7 +8,12 @@
  */
 
 import { validateFilterConfig } from "../filters/filterConfigSchema";
-import { ORGANIZATION_TYPE_CHOICES, PRIORITY_CHOICES, US_STATES } from "./constants";
+import {
+  ORGANIZATION_TYPE_CHOICES,
+  ORG_SCOPE_CHOICES,
+  PRIORITY_CHOICES,
+  US_STATES,
+} from "./constants";
 
 /**
  * Filter configuration for Organizations list
@@ -17,7 +22,7 @@ import { ORGANIZATION_TYPE_CHOICES, PRIORITY_CHOICES, US_STATES } from "./consta
  * - organization_type: Organization classification (customer, prospect, etc.)
  * - priority: A-D priority scale
  * - state: US state code (IN, OH, etc.) - uses 2-letter codes, NOT full names
- * - segment_id: Playbook category reference
+ * - segment_id: Segment reference (playbook + operator)
  * - sales_id: Owner/sales rep reference
  */
 export const ORGANIZATION_FILTER_CONFIG = validateFilterConfig([
@@ -48,7 +53,7 @@ export const ORGANIZATION_FILTER_CONFIG = validateFilterConfig([
   },
   {
     key: "segment_id",
-    label: "Playbook",
+    label: "Category",
     type: "reference",
     reference: "segments",
   },
@@ -57,31 +62,5 @@ export const ORGANIZATION_FILTER_CONFIG = validateFilterConfig([
     label: "Owner",
     type: "reference",
     reference: "sales",
-  },
-  // Hierarchy filters (sidebar toggles)
-  {
-    key: "child_branch_count@gt",
-    label: "Has branches",
-    type: "toggle",
-    formatLabel: () => "Has branches",
-  },
-  {
-    key: "parent_organization_id@not.is",
-    label: "Has parent",
-    type: "toggle",
-    formatLabel: () => "Has parent",
-  },
-  {
-    key: "parent_organization_id@is",
-    label: "Root orgs",
-    type: "toggle",
-    formatLabel: () => "Root orgs (no parent)",
-  },
-  // Context chip filter (from inline hierarchy chips)
-  {
-    key: "parent_organization_id",
-    label: "Parent org",
-    type: "reference",
-    reference: "organizations",
   },
 ]);

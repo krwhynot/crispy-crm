@@ -1,13 +1,15 @@
 /**
  * OrganizationList column structure tests
  *
- * Tests for the OrganizationList with 6 columns:
+ * Tests for the OrganizationList with 8 columns:
  * 1. Name - Primary identifier (sortable)
  * 2. Type - Organization classification (sortable by organization_type)
  * 3. Priority - Business priority indicator (sortable)
- * 4. Parent - Hierarchy reference (sortable by parent_organization_id)
- * 5. Contacts - Computed count metric (non-sortable)
- * 6. Opportunities - Computed count metric (non-sortable)
+ * 4. Segment - Playbook/Operator category (sortable by segment_name)
+ * 5. State - US state code (sortable, filterable)
+ * 6. Parent - Hierarchy name from summary view (sortable by parent_organization_name)
+ * 7. Contacts - Computed count metric (non-sortable)
+ * 8. Opportunities - Computed count metric (non-sortable)
  */
 
 import { describe, test, expect, vi, beforeEach } from "vitest";
@@ -86,16 +88,6 @@ vi.mock("react-admin", async () => {
         data-sort-by={source}
       >
         {label || source}
-      </span>
-    ),
-    ReferenceField: ({ source, sortable, children, label }: MockFieldProps) => (
-      <span
-        data-testid={`ref-field-${source}`}
-        data-sortable={sortable ? "true" : "false"}
-        data-sort-by={source}
-      >
-        {label}
-        {children}
       </span>
     ),
     FunctionField: ({ label, sortBy, sortable }: MockFieldProps) => {
@@ -266,6 +258,10 @@ vi.mock("@/components/ra-wrappers/export-button", () => ({
   ExportButton: () => <button data-testid="export-button">Export</button>,
 }));
 
+vi.mock("../OrganizationImportButton", () => ({
+  OrganizationImportButton: () => <button data-testid="import-button">Import</button>,
+}));
+
 vi.mock("@/components/ra-wrappers/bulk-actions-toolbar", () => ({
   BulkActionsToolbar: () => <div data-testid="bulk-actions-toolbar">Bulk Actions</div>,
 }));
@@ -316,6 +312,8 @@ describe("OrganizationList 6-column structure", () => {
           name: "Tech Corp",
           organization_type: "restaurant",
           priority: "A",
+          segment_id: "22222222-2222-4222-8222-000000000001",
+          segment_name: "Major Broadline",
           parent_organization_id: null,
           nb_contacts: 5,
           nb_opportunities: 3,
@@ -342,22 +340,34 @@ describe("OrganizationList 6-column structure", () => {
     });
   });
 
-  test("renders 6 columns: Name, Type, Priority, Parent, Contacts, Opportunities", async () => {
+  test("renders 8 columns: Name, Type, Priority, Segment, State, Parent, Contacts, Opportunities", async () => {
     renderWithAdminContext(<OrganizationList />);
 
     await waitFor(() => {
       expect(screen.getByTestId("premium-datagrid")).toBeInTheDocument();
 
-      const nameFields = screen.getAllByTestId("text-field-name");
-      expect(nameFields.length).toBeGreaterThanOrEqual(1);
-      expect(nameFields[0]).toHaveTextContent("Organization Name");
+      // Column 1: Name (FunctionField)
+      expect(screen.getByTestId("function-field-Name")).toBeInTheDocument();
 
+      // Column 2: Type (FunctionField)
       expect(screen.getByTestId("function-field-Type")).toBeInTheDocument();
+
+      // Column 3: Priority (FunctionField)
       expect(screen.getByTestId("function-field-Priority")).toBeInTheDocument();
 
-      expect(screen.getByTestId("ref-field-parent_organization_id")).toBeInTheDocument();
+      // Column 4: Segment (FunctionField)
+      expect(screen.getByTestId("function-field-Segment")).toBeInTheDocument();
 
+      // Column 5: State (TextField)
+      expect(screen.getByTestId("text-field-state")).toBeInTheDocument();
+
+      // Column 6: Parent (FunctionField reading parent_organization_name from summary view)
+      expect(screen.getByTestId("function-field-Parent")).toBeInTheDocument();
+
+      // Column 7: Contacts (FunctionField)
       expect(screen.getByTestId("function-field-Contacts")).toBeInTheDocument();
+
+      // Column 8: Opportunities (FunctionField)
       expect(screen.getByTestId("function-field-Opportunities")).toBeInTheDocument();
     });
   });
@@ -380,6 +390,8 @@ describe("OrganizationList column sorting configuration", () => {
           name: "Test Org",
           organization_type: "restaurant",
           priority: "A",
+          segment_id: "22222222-2222-4222-8222-000000000001",
+          segment_name: "Major Broadline",
           parent_organization_id: null,
           nb_contacts: 5,
           nb_opportunities: 3,
@@ -410,8 +422,7 @@ describe("OrganizationList column sorting configuration", () => {
     renderWithAdminContext(<OrganizationList />);
 
     await waitFor(() => {
-      const nameFields = screen.getAllByTestId("text-field-name");
-      const nameField = nameFields[0];
+      const nameField = screen.getByTestId("function-field-Name");
       expect(nameField).toHaveAttribute("data-sortable", "true");
       expect(nameField).toHaveAttribute("data-sort-by", "name");
     });
@@ -437,13 +448,23 @@ describe("OrganizationList column sorting configuration", () => {
     });
   });
 
-  test("Parent column is sortable", async () => {
+  test("Segment column is sortable by segment_name", async () => {
     renderWithAdminContext(<OrganizationList />);
 
     await waitFor(() => {
-      const parentField = screen.getByTestId("ref-field-parent_organization_id");
+      const segmentField = screen.getByTestId("function-field-Segment");
+      expect(segmentField).toHaveAttribute("data-sortable", "true");
+      expect(segmentField).toHaveAttribute("data-sort-by", "segment_name");
+    });
+  });
+
+  test("Parent column is sortable by parent_organization_name", async () => {
+    renderWithAdminContext(<OrganizationList />);
+
+    await waitFor(() => {
+      const parentField = screen.getByTestId("function-field-Parent");
       expect(parentField).toHaveAttribute("data-sortable", "true");
-      expect(parentField).toHaveAttribute("data-sort-by", "parent_organization_id");
+      expect(parentField).toHaveAttribute("data-sort-by", "parent_organization_name");
     });
   });
 

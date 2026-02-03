@@ -195,7 +195,7 @@ export function useRelatedRecordCounts({
         const counts: RelatedRecordCount[] = Object.entries(countsByLabel)
           .map(([resourceLabel, count]) => ({ resourceLabel, count }))
           .filter((r) => r.count > 0) // Only show non-zero counts
-          .sort((a, b) => b.count - a.count); // Sort by count descending
+          .toSorted((a, b) => b.count - a.count); // Sort by count descending
 
         setRelatedCounts(counts);
       } catch (error: unknown) {

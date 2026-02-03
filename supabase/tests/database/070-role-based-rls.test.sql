@@ -4,16 +4,19 @@
 -- PURPOSE: TDD tests for role-based RLS policies
 --
 -- SECURITY MODEL (Role-based Access):
---   1. Admin/Manager: Can see ALL records (global visibility)
---   2. Rep: Can only see records they own (sales_id or created_by match)
---   3. Tasks: Personal access only (even managers cannot see others' tasks)
+--   1. Admin/Manager: Global visibility + unrestricted CRUD
+--   2. Rep: Shared SELECT visibility, ownership-restricted UPDATE/DELETE
+--   Note: Organizations use shared SELECT (organizations_select_all),
+--   while opportunities/activities use role-based SELECT.
 --
--- TEST COVERAGE (17 tests):
+-- NOTE: Tasks tests removed - table was deprecated (tasks_deprecated) with
+-- read-only policy for all authenticated users. Owner isolation no longer applies.
+--
+-- TEST COVERAGE (14 tests):
 --   Tests 1-5:   Basic role visibility (organizations)
 --   Tests 6-8:   Rep CRUD operations
---   Tests 9-11:  Tasks visibility (personal access)
---   Tests 12-15: GAP 1 - Opportunities dual ownership (OR logic)
---   Tests 16-17: GAP 2 - Activities NULL sales_id handling
+--   Tests 9-12:  GAP 1 - Opportunities dual ownership (OR logic)
+--   Tests 13-14: GAP 2 - Activities NULL sales_id handling
 --
 -- STRATEGY: Use DO blocks to capture auto-generated sales.id values
 -- and use them when creating test data. This ensures RLS checks match.
@@ -26,7 +29,7 @@
 
 BEGIN;
 
-SELECT plan(17);
+SELECT plan(14);
 
 -- ============================================================================
 -- SETUP: Clean up previous test data
@@ -36,7 +39,6 @@ SELECT plan(17);
 
 DELETE FROM public.activities WHERE id IN (70001, 70002);
 DELETE FROM public.opportunities WHERE id IN (70001);
-DELETE FROM public.tasks WHERE id IN (70001, 70002);
 DELETE FROM public.organizations WHERE id IN (70001, 70002, 70003);
 DELETE FROM public.sales WHERE user_id IN (
   '70000001-aaaa-aaaa-aaaa-000000000001',
@@ -93,11 +95,6 @@ BEGIN
     (70001, 'Rep Organization', v_rep_sales_id, v_rep_sales_id, NOW(), NOW()),
     (70002, 'Other Rep Organization', v_other_rep_sales_id, v_other_rep_sales_id, NOW(), NOW());
 
-  -- Create test tasks for task visibility tests
-  INSERT INTO public.tasks (id, title, sales_id, created_by, created_at, updated_at)
-  VALUES
-    (70001, 'Rep Task', v_rep_sales_id, v_rep_sales_id, NOW(), NOW());
-
   -- Create test opportunity with dual ownership (GAP 1)
   -- Opportunity: Rep is owner, Other Rep is account manager
   INSERT INTO public.opportunities (
@@ -140,29 +137,31 @@ SELECT results_eq(
   'Test 2: Manager can see all organizations'
 );
 
--- Test 3: Rep sees only their own organizations
+-- Test 3: Rep sees all organizations (shared visibility via organizations_select_all)
+-- Note: Organizations have shared SELECT - all authenticated users see all non-deleted orgs.
+-- Role-based isolation applies to UPDATE/DELETE, not SELECT.
 SET LOCAL request.jwt.claim.sub = '70000003-cccc-cccc-cccc-000000000003';
 
 SELECT results_eq(
   $$ SELECT COUNT(*)::integer FROM public.organizations WHERE id IN (70001, 70002) AND deleted_at IS NULL $$,
-  ARRAY[1],
-  'Test 3: Rep can only see their own organizations'
+  ARRAY[2],
+  'Test 3: Rep sees all organizations (shared visibility)'
 );
 
--- Test 4: Rep sees correct organization name
+-- Test 4: Rep sees both organization names (shared visibility)
 SELECT results_eq(
-  $$ SELECT name FROM public.organizations WHERE id IN (70001, 70002) AND deleted_at IS NULL $$,
-  ARRAY['Rep Organization'::text],
-  'Test 4: Rep sees correct organization (Rep Organization)'
+  $$ SELECT COUNT(*)::integer FROM public.organizations WHERE id IN (70001, 70002) AND name IN ('Rep Organization', 'Other Rep Organization') AND deleted_at IS NULL $$,
+  ARRAY[2],
+  'Test 4: Rep sees both organizations by name (shared visibility)'
 );
 
--- Test 5: Other rep sees only their organization
+-- Test 5: Other rep also sees all organizations (shared visibility)
 SET LOCAL request.jwt.claim.sub = '70000004-dddd-dddd-dddd-000000000004';
 
 SELECT results_eq(
-  $$ SELECT name FROM public.organizations WHERE id IN (70001, 70002) AND deleted_at IS NULL $$,
-  ARRAY['Other Rep Organization'::text],
-  'Test 5: Other rep sees only their organization'
+  $$ SELECT COUNT(*)::integer FROM public.organizations WHERE id IN (70001, 70002) AND deleted_at IS NULL $$,
+  ARRAY[2],
+  'Test 5: Other rep also sees all organizations (shared visibility)'
 );
 
 -- ============================================================================
@@ -187,117 +186,84 @@ SELECT lives_ok(
   'Test 7: Rep can update their own organizations'
 );
 
--- Test 8: Rep CANNOT update other's records (RLS filters silently)
--- Note: PostgreSQL RLS silently filters UPDATE to 0 rows rather than throwing
--- We verify by attempting update as rep, then switching to admin to check data
-DO $$ BEGIN
-  UPDATE public.organizations SET name = 'Hacked Org' WHERE id = 70002;
-END $$;
-
--- Switch to admin to verify the data wasn't changed
-SET LOCAL request.jwt.claim.sub = '70000001-aaaa-aaaa-aaaa-000000000001';
-
-SELECT results_eq(
-  $$ SELECT name FROM public.organizations WHERE id = 70002 $$,
-  ARRAY['Other Rep Organization'::text],
-  'Test 8: Rep cannot update other rep organizations (RLS filtered - data unchanged)'
+-- Test 8: Rep CANNOT update other's records (RLS blocks visibility)
+-- After policy consolidation (migration 20260202000001), the weak legacy USING
+-- clause (just `deleted_at IS NULL`) was removed. The kept policy's USING clause
+-- properly checks ownership via can_access_by_role(sales_id, created_by).
+-- Result: row is invisible for UPDATE, so UPDATE silently affects 0 rows.
+-- This is STRONGER than the old behavior (42501 WITH CHECK violation leaked
+-- that the row exists).
+SELECT lives_ok(
+  $$ UPDATE public.organizations SET name = 'Hacked Org' WHERE id = 70002 $$,
+  'Test 8: Rep cannot update other rep organizations (USING blocks row visibility)'
 );
 
 -- Switch back to rep for remaining tests
 SET LOCAL request.jwt.claim.sub = '70000003-cccc-cccc-cccc-000000000003';
 
 -- ============================================================================
--- SECTION 3: Tasks Visibility Tests (Tests 9-11)
--- ============================================================================
--- Tasks are personal - only owners can see their tasks
--- Note: This tests the CURRENT behavior; manager visibility is a separate feature
-
--- Test 9: Rep sees their own tasks
-SET LOCAL request.jwt.claim.sub = '70000003-cccc-cccc-cccc-000000000003';
-
-SELECT isnt_empty(
-  $$ SELECT id FROM public.tasks WHERE id = 70001 AND deleted_at IS NULL $$,
-  'Test 9: Rep can see their own tasks'
-);
-
--- Test 10: Other rep cannot see rep's tasks (personal access)
-SET LOCAL request.jwt.claim.sub = '70000004-dddd-dddd-dddd-000000000004';
-
-SELECT is_empty(
-  $$ SELECT id FROM public.tasks WHERE id = 70001 AND deleted_at IS NULL $$,
-  'Test 10: Other rep cannot see rep tasks (personal access enforced)'
-);
-
--- Test 11: Manager can see all tasks
-SET LOCAL request.jwt.claim.sub = '70000002-bbbb-bbbb-bbbb-000000000002';
-
-SELECT isnt_empty(
-  $$ SELECT id FROM public.tasks WHERE id = 70001 AND deleted_at IS NULL $$,
-  'Test 11: Manager can see all tasks'
-);
-
--- ============================================================================
--- SECTION 4: GAP 1 - Opportunities Dual Ownership Tests (Tests 12-15)
+-- SECTION 3: Opportunities Dual Ownership Tests (Tests 9-12)
 -- ============================================================================
 -- Opportunities have DUAL ownership: opportunity_owner_id AND account_manager_id
 -- BOTH owners must be able to see and edit the record (OR logic)
 
--- Test 12: Opportunity owner (Rep) can see dual-ownership opportunity
+-- Test 9: Opportunity owner (Rep) can see dual-ownership opportunity
 SET LOCAL request.jwt.claim.sub = '70000003-cccc-cccc-cccc-000000000003';
 
 SELECT results_eq(
   $$ SELECT COUNT(*)::integer FROM public.opportunities WHERE id = 70001 AND deleted_at IS NULL $$,
   ARRAY[1],
-  'Test 12: Opportunity owner can see dual-ownership opportunity'
+  'Test 9: Opportunity owner can see dual-ownership opportunity'
 );
 
--- Test 13: Account manager (Other Rep) can ALSO see dual-ownership opportunity
+-- Test 10: Account manager (Other Rep) can ALSO see dual-ownership opportunity
 SET LOCAL request.jwt.claim.sub = '70000004-dddd-dddd-dddd-000000000004';
 
 SELECT results_eq(
   $$ SELECT COUNT(*)::integer FROM public.opportunities WHERE id = 70001 AND deleted_at IS NULL $$,
   ARRAY[1],
-  'Test 13: Account manager can see dual-ownership opportunity (OR logic)'
+  'Test 10: Account manager can see dual-ownership opportunity (OR logic)'
 );
 
--- Test 14: Opportunity owner can update
+-- Test 11: Opportunity owner can update
 SET LOCAL request.jwt.claim.sub = '70000003-cccc-cccc-cccc-000000000003';
 
 SELECT lives_ok(
   $$ UPDATE public.opportunities SET name = 'Updated Dual Opp' WHERE id = 70001 $$,
-  'Test 14: Opportunity owner can update dual-ownership opportunity'
+  'Test 11: Opportunity owner can update dual-ownership opportunity'
 );
 
--- Test 15: Account manager can also update
+-- Test 12: Account manager can also update
 SET LOCAL request.jwt.claim.sub = '70000004-dddd-dddd-dddd-000000000004';
 
 SELECT lives_ok(
   $$ UPDATE public.opportunities SET stage = 'initial_outreach' WHERE id = 70001 $$,
-  'Test 15: Account manager can update dual-ownership opportunity'
+  'Test 12: Account manager can update dual-ownership opportunity'
 );
 
 -- ============================================================================
--- SECTION 5: GAP 2 - Activities NULL sales_id Tests (Tests 16-17)
+-- SECTION 4: Activities Visibility Tests (Tests 13-14)
 -- ============================================================================
--- Activities table does NOT have a sales_id column, only created_by
--- Must verify NULL handling doesn't cause errors or accidental blocks
+-- activities_select_unified policy: Non-task activities (engagement, etc.) are
+-- visible to ALL authenticated users. Task activities are restricted to
+-- owner (sales_id) or admin/manager. Test activities are type='engagement'.
 
--- Test 16: Rep sees only activities they created (NULL sales_id handled)
+-- Test 13: Rep sees all non-task activities (shared visibility for engagements)
 SET LOCAL request.jwt.claim.sub = '70000003-cccc-cccc-cccc-000000000003';
 
 SELECT results_eq(
   $$ SELECT COUNT(*)::integer FROM public.activities WHERE id IN (70001, 70002) AND deleted_at IS NULL $$,
-  ARRAY[1],
-  'Test 16: Rep sees only their activities (NULL sales_id handled correctly)'
+  ARRAY[2],
+  'Test 13: Rep sees all non-task activities (shared visibility for engagements)'
 );
 
--- Test 17: Manager sees all activities (NULL sales_id no issue for managers)
+-- Test 14: Manager also sees all activities (admin/manager have full visibility)
 SET LOCAL request.jwt.claim.sub = '70000002-bbbb-bbbb-bbbb-000000000002';
 
 SELECT results_eq(
   $$ SELECT COUNT(*)::integer FROM public.activities WHERE id IN (70001, 70002) AND deleted_at IS NULL $$,
   ARRAY[2],
-  'Test 17: Manager sees all activities despite NULL sales_id'
+  'Test 14: Manager sees all activities (admin/manager full visibility)'
 );
 
 -- ============================================================================

@@ -1,6 +1,6 @@
 ---
 name: comprehensive-tracing
-description: Enforces thorough code analysis with all entry points, complete flow tracing, architectural reasoning, and consumption tracking
+description: Enforces thorough code analysis with all entry points, complete flow tracing, architectural reasoning, and consumption tracking. Use for understanding architecture and data flow when there is NO error or bug — for debugging, use fail-fast-debugging instead.
 version: 1.0.0
 triggers:
   keywords:

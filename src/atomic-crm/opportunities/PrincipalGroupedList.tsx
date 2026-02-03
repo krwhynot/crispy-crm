@@ -90,7 +90,7 @@ function getStatusPriority(status: StageStatus): number {
  * Sort opportunities: Red status first → Earlier stages → Most days since activity
  */
 function sortOpportunities(opportunities: Opportunity[]): Opportunity[] {
-  return [...opportunities].sort((a, b) => {
+  return opportunities.toSorted((a, b) => {
     // Get status for each
     const aDate = a.estimated_close_date ? parseDateSafely(a.estimated_close_date) : null;
     const bDate = b.estimated_close_date ? parseDateSafely(b.estimated_close_date) : null;
@@ -139,7 +139,7 @@ const PrincipalGroupedListComponent = ({ openSlideOver }: PrincipalGroupedListPr
   }, [opportunities]);
 
   // Sort principals alphabetically
-  const principalNames = Object.keys(groupedData).sort();
+  const principalNames = Object.keys(groupedData).toSorted();
 
   if (isPending) {
     return (

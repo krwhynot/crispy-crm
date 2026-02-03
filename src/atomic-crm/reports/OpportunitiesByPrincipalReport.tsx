@@ -150,7 +150,7 @@ export default function OpportunitiesByPrincipalReport() {
     });
 
     // Convert to array and sort by total count (descending)
-    return Array.from(grouped.values()).sort((a, b) => b.totalCount - a.totalCount);
+    return Array.from(grouped.values()).toSorted((a, b) => b.totalCount - a.totalCount);
   }, [opportunities]);
 
   // Auto-expand first 3 principals on initial load

@@ -31,7 +31,7 @@ export function PrincipalGroupCard({
 }: PrincipalGroupCardProps) {
   // Get stage summary
   const stageSummary = Object.entries(group.stageBreakdown)
-    .sort(([, a], [, b]) => b - a)
+    .toSorted(([, a], [, b]) => b - a)
     .slice(0, 3)
     .map(([stage, count]) => `${stage}: ${count}`)
     .join(", ");

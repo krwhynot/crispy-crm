@@ -2,7 +2,7 @@ import { memo } from "react";
 import jsonExport from "jsonexport/dist";
 import type { Exporter } from "ra-core";
 import { downloadCSV, useGetIdentity, useListContext } from "ra-core";
-import { TextField, ReferenceField, FunctionField } from "react-admin";
+import { TextField, FunctionField } from "react-admin";
 import { OrganizationBulkActionsToolbar } from "./OrganizationBulkActionsToolbar";
 import { List } from "@/components/ra-wrappers/list";
 import { StandardListLayout } from "@/components/layouts/StandardListLayout";
@@ -15,7 +15,7 @@ import { useFilterCleanup } from "../hooks/useFilterCleanup";
 import { ListSearchBar } from "@/components/ra-wrappers/ListSearchBar";
 import { OrganizationListFilter } from "./OrganizationListFilter";
 import { OrganizationSlideOver } from "./OrganizationSlideOver";
-import { OrganizationTypeBadge, PriorityBadge } from "./OrganizationBadges";
+import { OrganizationTypeBadge, PriorityBadge, SegmentBadge } from "./OrganizationBadges";
 import { OrganizationEmpty } from "./OrganizationEmpty";
 import { OrganizationHierarchyChips } from "./OrganizationHierarchyChips";
 import { FilterableBadge } from "@/components/ra-wrappers/FilterableBadge";
@@ -23,18 +23,26 @@ import { ListNoResults } from "@/components/ra-wrappers/ListNoResults";
 import { TopToolbar } from "../layout/TopToolbar";
 import { SortButton } from "@/components/ra-wrappers/sort-button";
 import { ExportButton } from "@/components/ra-wrappers/export-button";
+import { OrganizationImportButton } from "./OrganizationImportButton";
 import { ORGANIZATION_FILTER_CONFIG } from "./organizationFilterConfig";
 import {
   OrganizationNameHeader,
   OrganizationTypeHeader,
   OrganizationPriorityHeader,
+  OrganizationSegmentHeader,
   OrganizationStateHeader,
 } from "./OrganizationDatagridHeader";
 import { PageTutorialTrigger } from "../tutorial";
-import type { Organization, Sale, Segment } from "../types";
+import type { Organization, Sale } from "../types";
 import { DEFAULT_LIST_PAGE_SIZE } from "./constants";
 import { SORT_BY_UPDATED_DESC } from "@/atomic-crm/constants/listDefaults";
 import type { OrganizationExportRow, OrganizationRecord } from "./types";
+
+// Define Segment locally since it's not exported from ../types
+interface Segment {
+  id: number;
+  name: string;
+}
 
 /**
  * Memoized cell components for OrganizationList datagrid
@@ -81,6 +89,19 @@ const OrganizationPriorityCell = memo(function OrganizationPriorityCell({
   );
 });
 
+/** OrganizationSegmentCell - Renders segment badge with FilterableBadge wrapper for 44px touch targets */
+const OrganizationSegmentCell = memo(function OrganizationSegmentCell({
+  record,
+}: {
+  record: OrganizationRecord;
+}) {
+  return (
+    <FilterableBadge source="segment_id" value={record.segment_id}>
+      <SegmentBadge segmentId={record.segment_id} segmentName={record.segment_name} />
+    </FilterableBadge>
+  );
+});
+
 /** OrganizationContactsCell - Renders contact count metric */
 const OrganizationContactsCell = memo(function OrganizationContactsCell({
   record,
@@ -101,15 +122,16 @@ const OrganizationOpportunitiesCell = memo(function OrganizationOpportunitiesCel
 
 const OrganizationListActions = () => (
   <TopToolbar>
+    <OrganizationImportButton />
     <SortButton
-      fields={["name", "organization_type", "priority", "created_at"]}
+      fields={["name", "organization_type", "priority", "segment_name", "created_at"]}
       dataTutorial="org-sort-btn"
     />
     <ExportButton dataTutorial="org-export-btn" />
   </TopToolbar>
 );
 
-const exporter: Exporter<Organization> = async (records, fetchRelatedRecords) => {
+const exporter: Exporter<OrganizationRecord> = async (records, fetchRelatedRecords) => {
   const sales = await fetchRelatedRecords<Sale>(records, "sales_id", "sales");
   const segments = await fetchRelatedRecords<Segment>(records, "segment_id", "segments");
 
@@ -146,25 +168,27 @@ const exporter: Exporter<Organization> = async (records, fetchRelatedRecords) =>
         : undefined,
 
       // Contact information
-      website: org.website,
-      phone: org.phone,
-      email: org.email,
+      website: org.website ?? null,
+      linkedin_url: org.linkedin_url ?? null,
+      phone: org.phone ?? null,
+      email: org.email ?? null,
+      description: org.description ?? null,
 
       // Location
-      address: org.address,
-      city: org.city,
-      state: org.state,
-      postal_code: org.postal_code,
+      address: org.address ?? null,
+      city: org.city ?? null,
+      state: org.state ?? null,
+      postal_code: org.postal_code ?? null,
 
       // Metrics
       nb_contacts: org.nb_contacts || 0,
       nb_opportunities: org.nb_opportunities || 0,
 
       // Metadata
-      created_at: org.created_at,
-      sales_id: org.sales_id,
-      segment_id: org.segment_id,
-      parent_organization_id: org.parent_organization_id,
+      created_at: org.created_at!,
+      sales_id: org.sales_id ? String(org.sales_id) : null,
+      segment_id: org.segment_id ? String(org.segment_id) : null,
+      parent_organization_id: org.parent_organization_id ? String(org.parent_organization_id) : null,
     };
 
     return exportedOrg;
@@ -182,7 +206,7 @@ const OrganizationListLayout = ({
   openSlideOver: (id: number, mode: "view" | "edit") => void;
   isSlideOverOpen: boolean;
 }) => {
-  const { data, isPending, filterValues } = useListContext();
+  const { data, error, isPending, filterValues } = useListContext();
   const { data: identity, isPending: isIdentityPending } = useGetIdentity();
 
   // Keyboard navigation for list rows
@@ -204,6 +228,16 @@ const OrganizationListLayout = ({
   }
 
   if (!identity) return null;
+
+  if (error) {
+    return (
+      <StandardListLayout resource="organizations" filterComponent={<OrganizationListFilter />}>
+        <div className="p-8 text-center text-destructive">
+          Error loading organizations. Please try refreshing the page.
+        </div>
+      </StandardListLayout>
+    );
+  }
 
   if (!data?.length && !hasFilters) return <OrganizationEmpty />;
 
@@ -258,7 +292,15 @@ const OrganizationListLayout = ({
             render={(record: OrganizationRecord) => <OrganizationPriorityCell record={record} />}
           />
 
-          {/* Column 4: State - US state code (sortable, filterable) - hidden on tablet */}
+          {/* Column 4: Segment - Playbook/Operator category (sortable by segment_name) - always visible */}
+          <FunctionField
+            source="segment_id"
+            label={<OrganizationSegmentHeader />}
+            sortBy="segment_name"
+            render={(record: OrganizationRecord) => <OrganizationSegmentCell record={record} />}
+          />
+
+          {/* Column 5: State - US state code (sortable, filterable) - hidden on tablet */}
           <TextField
             source="state"
             label={<OrganizationStateHeader />}
@@ -267,21 +309,21 @@ const OrganizationListLayout = ({
             headerClassName="hidden lg:table-cell"
           />
 
-          {/* Column 5: Parent - Hierarchy reference (sortable by parent_organization_id) - hidden on tablet */}
-          <ReferenceField
-            source="parent_organization_id"
-            reference="organizations"
+          {/* Column 6: Parent - Direct read from summary view (sortable by parent_organization_name) - hidden on tablet */}
+          <FunctionField
+            source="parent_organization_name"
             label="Parent"
-            link={false}
-            emptyText="-"
-            sortable
+            sortBy="parent_organization_name"
+            render={(record: OrganizationRecord) => (
+              <span className="truncate max-w-[200px]">
+                {record.parent_organization_name || "-"}
+              </span>
+            )}
             cellClassName="hidden lg:table-cell"
             headerClassName="hidden lg:table-cell"
-          >
-            <TextField source="name" className="truncate max-w-[200px]" />
-          </ReferenceField>
+          />
 
-          {/* Column 5: Contacts - Computed count metric (non-sortable) - hidden on mobile */}
+          {/* Column 7: Contacts - Computed count metric (non-sortable) - hidden on mobile */}
           <FunctionField
             source="nb_contacts"
             label="Contacts"
@@ -292,7 +334,7 @@ const OrganizationListLayout = ({
             headerClassName="hidden md:table-cell"
           />
 
-          {/* Column 6: Opportunities - Computed count metric (non-sortable) - hidden on mobile */}
+          {/* Column 8: Opportunities - Computed count metric (non-sortable) - hidden on mobile */}
           <FunctionField
             source="nb_opportunities"
             label="Opportunities"

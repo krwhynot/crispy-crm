@@ -7,8 +7,9 @@
  */
 
 import { useState } from "react";
-import { Plus, RefreshCw } from "lucide-react";
+import { Plus, RefreshCw, Building } from "lucide-react";
 import { useGetList } from "ra-core";
+import { ReferenceField, TextField } from "react-admin";
 import { AdminButton } from "@/components/admin/AdminButton";
 import { Skeleton } from "@/components/ui/skeleton";
 import { SidepaneEmptyState, EMPTY_STATE_CONTENT } from "@/components/layouts/sidepane";
@@ -94,12 +95,36 @@ export const UnifiedTimeline = ({
 
   return (
     <div className="space-y-4">
-      {/* Action buttons */}
-      <div className="flex justify-end gap-2">
-        <AdminButton variant="outline" className="h-11 gap-2" onClick={() => setIsDialogOpen(true)}>
-          <Plus className="h-4 w-4" />
-          Log Activity
-        </AdminButton>
+      {/* Header: Organization breadcrumb + Action buttons */}
+      <div className="flex items-center justify-between">
+        {/* Organization context breadcrumb - only in contact view */}
+        {contactId && organizationId && (
+          <div className="flex items-center gap-2 text-sm text-muted-foreground">
+            <Building className="h-4 w-4" />
+            <span>Organization:</span>
+            <ReferenceField
+              source="organization_id"
+              reference="organizations"
+              record={{ organization_id: organizationId }}
+              link="show"
+              className="font-medium hover:text-foreground transition-colors"
+            >
+              <TextField source="name" />
+            </ReferenceField>
+          </div>
+        )}
+
+        {/* Action buttons - maintain existing right alignment */}
+        <div className="flex justify-end gap-2 ml-auto">
+          <AdminButton
+            variant="outline"
+            className="h-11 gap-2"
+            onClick={() => setIsDialogOpen(true)}
+          >
+            <Plus className="h-4 w-4" />
+            Log Activity
+          </AdminButton>
+        </div>
       </div>
 
       {/* Timeline entries */}

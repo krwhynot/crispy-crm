@@ -454,7 +454,7 @@ export const organizationSteps: TutorialStep[] = [
     popover: {
       title: "Filter Organizations",
       description:
-        "Use filters to narrow down your view. Filter by Type (Principal, Distributor, Operator), Priority (A-D), Playbook Category, or your own accounts.",
+        "Use filters to narrow down your view. Filter by Type (Principal, Distributor, Operator), Priority (A-D), Category, or your own accounts.",
       side: "right",
     },
   },

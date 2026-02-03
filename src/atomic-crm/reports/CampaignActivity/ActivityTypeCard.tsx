@@ -61,7 +61,7 @@ export const ActivityTypeCard: React.FC<ActivityTypeCardProps> = ({
       orgCounts.set(activity.organization_id, (orgCounts.get(activity.organization_id) || 0) + 1);
     });
 
-    const sortedOrgCounts = Array.from(orgCounts.entries()).sort((a, b) => b[1] - a[1]);
+    const sortedOrgCounts = Array.from(orgCounts.entries()).toSorted((a, b) => b[1] - a[1]);
     const mostActiveOrgId = sortedOrgCounts[0]?.[0];
     mostActiveOrgCount = orgCounts.get(mostActiveOrgId || 0) || 0;
     mostActiveOrgDisplay = `Organization ${mostActiveOrgId}`;

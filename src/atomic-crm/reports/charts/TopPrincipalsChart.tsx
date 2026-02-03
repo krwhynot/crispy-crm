@@ -21,7 +21,7 @@ export function TopPrincipalsChart({ data }: TopPrincipalsChartProps) {
   // Memoize derived data to prevent unnecessary recalculations
   const topData = useMemo(() => {
     // Take top 5 and sort descending
-    return [...data].sort((a, b) => b.count - a.count).slice(0, 5);
+    return data.toSorted((a, b) => b.count - a.count).slice(0, 5);
   }, [data]);
 
   // Memoize chart data to prevent recalculation on every render

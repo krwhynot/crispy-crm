@@ -147,6 +147,7 @@ export interface OrganizationRecord extends Organization {
   // Hierarchy fields from organizations_summary view
   child_branch_count?: number;
   parent_organization_name?: string | null;
+  segment_name?: string | null;
 }
 
 /**

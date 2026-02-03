@@ -30,7 +30,7 @@ export function StarredFilterToggle({ entityType, className }: StarredFilterTogg
 
   // Get favorite IDs for this entity type
   const favoriteIds = useMemo(() => {
-    return favorites.filter((fav) => fav.entity_type === entityType).map((fav) => fav.entity_id);
+    return favorites.flatMap((fav) => (fav.entity_type === entityType ? [fav.entity_id] : []));
   }, [favorites, entityType]);
 
   const hasFavorites = favoriteIds.length > 0;

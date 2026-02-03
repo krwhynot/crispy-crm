@@ -10,13 +10,14 @@
  */
 
 import { useEffect } from "react";
-import { BuildingIcon, Users, Target, StickyNote, ShieldCheck } from "lucide-react";
+import { BuildingIcon, Users, Target, Activity, StickyNote, ShieldCheck } from "lucide-react";
 import type { TabConfig } from "@/components/layouts/ResourceSlideOver";
 import { ResourceSlideOver } from "@/components/layouts/ResourceSlideOver";
 import { OrganizationDetailSkeleton } from "@/components/ui/list-skeleton";
 import { OrganizationDetailsTab } from "./slideOverTabs/OrganizationDetailsTab";
 import { OrganizationContactsTab } from "./slideOverTabs/OrganizationContactsTab";
 import { OrganizationOpportunitiesTab } from "./slideOverTabs/OrganizationOpportunitiesTab";
+import { OrganizationActivitiesTab } from "./slideOverTabs/OrganizationActivitiesTab";
 import { OrganizationNotesTab } from "./slideOverTabs/OrganizationNotesTab";
 import { AuthorizationsTab } from "./AuthorizationsTab";
 import { useGetOne } from "react-admin";
@@ -82,6 +83,12 @@ export function OrganizationSlideOver({
       component: OrganizationOpportunitiesTab,
       icon: Target,
       countFromRecord: (record: OrganizationRecord) => record.nb_opportunities,
+    },
+    {
+      key: "activities",
+      label: "Activities",
+      component: OrganizationActivitiesTab,
+      icon: Activity,
     },
     {
       key: "notes",

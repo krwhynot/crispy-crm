@@ -129,9 +129,12 @@ DON'T:
 
 DO:
 - `aria-invalid="true"` on error fields
+- `aria-required="true"` on required form fields
 - `aria-describedby` linking to error messages
+- `<label htmlFor={id}>` associating labels to inputs
 - `role="alert"` on error containers
-- Focus management (modals, slide-overs)
+- `aria-live="polite"` regions for form status announcements
+- Focus management (modals, slide-overs, and validation failures)
 - Semantic colors (no hardcoded hex)
 - Minimum touch target size
 
@@ -178,6 +181,35 @@ RIGHT:
 <button className="h-11 w-11 focus-visible:ring-2">
   <X className="h-4 w-4" />
 </button>
+```
+
+### Form Validation Focus Management
+
+On form submit failure, focus the first invalid field:
+
+```typescript
+const { handleSubmit, setFocus } = useForm();
+
+const onSubmit = handleSubmit(
+  (data) => { /* success */ },
+  (errors) => {
+    const firstError = Object.keys(errors)[0];
+    if (firstError) setFocus(firstError);
+  }
+);
+```
+
+### Live Validation Feedback
+
+Announce form status to screen readers:
+
+```tsx
+<div aria-live="polite" aria-atomic="true" className="sr-only">
+  {isSubmitting && "Validating form..."}
+  {isSubmitSuccessful && "Form submitted successfully"}
+  {Object.keys(errors).length > 0 &&
+    `Form has ${Object.keys(errors).length} errors`}
+</div>
 ```
 
 ## Pre-Commit Verification

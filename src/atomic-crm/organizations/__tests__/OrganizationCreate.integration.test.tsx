@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, vi } from "vitest";
-import { screen, waitFor } from "@testing-library/react";
+import { screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { renderWithAdminContext } from "@/tests/utils/render-admin";
 import { createMockDataProvider } from "@/tests/utils/mock-providers";
@@ -44,18 +44,30 @@ describe("OrganizationCreate with Progress Tracking", () => {
     // Reset any test state if needed
   });
 
-  it("renders progress bar with initial progress", async () => {
+  it("renders progress indicator with initial state", async () => {
     renderOrganizationCreate();
-    const progressBar = await screen.findByRole("progressbar");
-    // Progress may be higher than 10% due to schema defaults and auto-filled fields
-    const progress = parseInt(progressBar.getAttribute("aria-valuenow") || "0", 10);
-    expect(progress).toBeGreaterThanOrEqual(10);
-    expect(progress).toBeLessThan(100);
+    // FormProgressBar in dot mode uses role="group"
+    const progressIndicator = await screen.findByRole("group", {
+      name: /required fields complete/i,
+    });
+    expect(progressIndicator).toBeInTheDocument();
+
+    // Should show text indicating progress (e.g., "3 of 5 required fields")
+    const progressText = await screen.findByText(/of \d+ required fields/i);
+    expect(progressText).toBeInTheDocument();
   });
 
-  it("shows Company Profile section with incomplete indicator", async () => {
+  it("shows Company Profile section without complete indicator initially", async () => {
     renderOrganizationCreate();
-    expect(await screen.findByTestId("section-incomplete-icon")).toBeInTheDocument();
+    await screen.findByText("Company Profile");
+
+    // Company Profile requires: name, organization_type, segment_id
+    // Only organization_type has default, so section is incomplete (1/3)
+    const companyProfileSection = screen
+      .getByText("Company Profile")
+      .closest('[data-slot="form-section-with-progress"]');
+    const completeIcon = within(companyProfileSection!).queryByTestId("section-complete-icon");
+    expect(completeIcon).not.toBeInTheDocument();
   });
 
   it("shows Company Profile section title", async () => {
@@ -63,13 +75,17 @@ describe("OrganizationCreate with Progress Tracking", () => {
     expect(await screen.findByText("Company Profile")).toBeInTheDocument();
   });
 
-  it("shows Account Details section without completion indicator", async () => {
+  it("shows Account Details section WITH completion indicator initially", async () => {
     renderOrganizationCreate();
-    expect(await screen.findByText("Account Details")).toBeInTheDocument();
-    // Section has no required fields, so no icon should be shown
-    const allIncompleteIcons = screen.queryAllByTestId("section-incomplete-icon");
-    // Only one incomplete icon for Company Profile section
-    expect(allIncompleteIcons).toHaveLength(1);
+    await screen.findByText("Account Details");
+
+    // Account Details has defaults for sales_id and priority with countDefaultAsFilled
+    // So it shows complete icon immediately
+    const accountDetailsSection = screen
+      .getByText("Account Details")
+      .closest('[data-slot="form-section-with-progress"]');
+    const completeIcon = within(accountDetailsSection!).queryByTestId("section-complete-icon");
+    expect(completeIcon).toBeInTheDocument();
   });
 
   it("shows Location section without completion indicator", async () => {
@@ -90,7 +106,7 @@ describe("OrganizationCreate with Progress Tracking", () => {
     expect(nameInput).toBeInTheDocument();
   });
 
-  it("shows complete icon when name is filled", async () => {
+  it("Company Profile remains incomplete when only name is filled", async () => {
     const user = userEvent.setup();
     renderOrganizationCreate();
 
@@ -98,38 +114,47 @@ describe("OrganizationCreate with Progress Tracking", () => {
     await user.type(nameInput, "Test Organization");
 
     // Wait for the form to register the change
-    await waitFor(() => {
-      const completeIcon = screen.queryByTestId("section-complete-icon");
-      expect(completeIcon).toBeInTheDocument();
+    await waitFor(async () => {
+      // Company Profile still incomplete (2/3 fields: organization_type and name filled, segment_id empty)
+      const companyProfileSection = screen
+        .getByText("Company Profile")
+        .closest('[data-slot="form-section-with-progress"]');
+      const completeIcon = within(companyProfileSection!).queryByTestId("section-complete-icon");
+      expect(completeIcon).not.toBeInTheDocument();
     });
   });
 
-  it("shows Complete badge when name field is valid", async () => {
-    const user = userEvent.setup();
+  it("Account Details shows Complete badge due to defaults", async () => {
     renderOrganizationCreate();
 
-    const nameInput = await screen.findByLabelText(/Company Name/i);
-    await user.type(nameInput, "Test Organization");
-
     await waitFor(() => {
-      const completeBadge = screen.queryByTestId("section-complete-badge");
+      // Account Details section has both required fields with defaults + countDefaultAsFilled
+      // So it shows complete badge immediately
+      const accountDetailsSection = screen
+        .getByText("Account Details")
+        .closest('[data-slot="form-section-with-progress"]');
+      const completeBadge = within(accountDetailsSection!).queryByTestId("section-complete-badge");
       expect(completeBadge).toBeInTheDocument();
     });
   });
 
-  it("increases progress bar when name is filled", async () => {
+  it("increases progress when name is filled", async () => {
     const user = userEvent.setup();
     renderOrganizationCreate();
 
-    const progressBar = await screen.findByRole("progressbar");
-    const initialProgress = progressBar.getAttribute("aria-valuenow");
+    // Get initial progress text
+    const initialProgressText = await screen.findByText(/\d+ of \d+ required fields/i);
+    const initialMatch = initialProgressText.textContent?.match(/(\d+) of (\d+)/);
+    const initialCompleted = initialMatch ? parseInt(initialMatch[1]) : 0;
 
     const nameInput = await screen.findByLabelText(/Company Name/i);
     await user.type(nameInput, "Test Organization");
 
     await waitFor(() => {
-      const newProgress = progressBar.getAttribute("aria-valuenow");
-      expect(Number(newProgress)).toBeGreaterThan(Number(initialProgress));
+      const newProgressText = screen.getByText(/\d+ of \d+ required fields/i);
+      const newMatch = newProgressText.textContent?.match(/(\d+) of (\d+)/);
+      const newCompleted = newMatch ? parseInt(newMatch[1]) : 0;
+      expect(newCompleted).toBeGreaterThan(initialCompleted);
     });
   });
 
@@ -160,20 +185,26 @@ describe("OrganizationCreate with Progress Tracking", () => {
   it("renders FormProgressProvider wrapper", async () => {
     renderOrganizationCreate();
 
-    // Progress bar should be rendered if provider exists
-    const progressBar = await screen.findByRole("progressbar");
-    expect(progressBar).toBeInTheDocument();
+    // Progress indicator should be rendered if provider exists
+    // FormProgressBar in dot mode uses role="group", not role="progressbar"
+    const progressIndicator = await screen.findByRole("group", {
+      name: /required fields complete/i,
+    });
+    expect(progressIndicator).toBeInTheDocument();
   });
 
   it("renders FormProgressBar before the form card", async () => {
     renderOrganizationCreate();
 
-    const progressBar = await screen.findByRole("progressbar");
-    expect(progressBar).toBeInTheDocument();
+    // FormProgressBar in dot mode uses role="group", not role="progressbar"
+    const progressIndicator = await screen.findByRole("group", {
+      name: /required fields complete/i,
+    });
+    expect(progressIndicator).toBeInTheDocument();
 
-    // The mb-6 class is on the wrapper div, not the progressbar itself
-    const progressBarWrapper = progressBar.parentElement;
-    expect(progressBarWrapper?.className).toContain("mb-6");
+    // The mb-6 class is on the wrapper div, not the progress indicator itself
+    const progressWrapper = progressIndicator.parentElement;
+    expect(progressWrapper?.className).toContain("mb-6");
   });
 
   it("validates form fields on blur and change (mode=all)", async () => {
@@ -195,13 +226,17 @@ describe("OrganizationCreate with Progress Tracking", () => {
   it("shows section with requiredFields prop correctly", async () => {
     renderOrganizationCreate();
 
-    // Company Profile has requiredFields=['name']
+    // Company Profile has requiredFields=['name', 'organization_type', 'segment_id']
     const basicInfoSection = await screen.findByText("Company Profile");
     expect(basicInfoSection).toBeInTheDocument();
 
-    // Should have incomplete icon initially
-    const incompleteIcon = screen.getByTestId("section-incomplete-icon");
-    expect(incompleteIcon).toBeInTheDocument();
+    // Company Profile should NOT have complete icon initially (only 1/3 fields filled)
+    // organization_type has default, but name and segment_id don't
+    const companyProfileSection = basicInfoSection.closest(
+      '[data-slot="form-section-with-progress"]'
+    );
+    const completeIcon = within(companyProfileSection!).queryByTestId("section-complete-icon");
+    expect(completeIcon).not.toBeInTheDocument();
   });
 
   it("wraps Contact & Web fields with FormFieldWrapper", async () => {

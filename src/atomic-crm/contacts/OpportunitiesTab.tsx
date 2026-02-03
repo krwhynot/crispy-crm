@@ -217,12 +217,10 @@ export function OpportunitiesTab() {
   }
 
   // Merge junction data with opportunities
-  const linkedOpportunities = junctionRecords
-    .map((junction: OpportunityContact) => {
-      const opp = opportunities?.find((o: Opportunity) => o.id === junction.opportunity_id);
-      return opp ? { ...opp, junctionId: junction.id } : null;
-    })
-    .filter(Boolean) as OpportunityWithJunction[];
+  const linkedOpportunities = junctionRecords.flatMap((junction: OpportunityContact) => {
+    const opp = opportunities?.find((o: Opportunity) => o.id === junction.opportunity_id);
+    return opp ? [{ ...opp, junctionId: junction.id } as OpportunityWithJunction] : [];
+  });
 
   const linkedOpportunityIds = linkedOpportunities.map((opp: OpportunityWithJunction) => opp.id);
 

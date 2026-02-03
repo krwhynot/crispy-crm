@@ -113,7 +113,7 @@ export const ChangeLogTab = () => {
   });
 
   // Extract unique field names and users for filter dropdowns
-  const uniqueFields = Array.from(new Set(auditEntries.map((e) => e.field_name))).sort();
+  const uniqueFields = Array.from(new Set(auditEntries.map((e) => e.field_name))).toSorted();
 
   const uniqueUsers = Array.from(
     new Set(

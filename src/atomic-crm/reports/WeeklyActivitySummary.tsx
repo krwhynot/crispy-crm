@@ -331,7 +331,9 @@ function RepActivityCard({ repGroup }: RepActivityCardProps) {
     0
   );
 
-  const principalStats = Array.from(repGroup.principals.values()).sort((a, b) => b.total - a.total);
+  const principalStats = Array.from(repGroup.principals.values()).toSorted(
+    (a, b) => b.total - a.total
+  );
 
   return (
     <Card>

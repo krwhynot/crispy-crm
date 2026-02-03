@@ -131,8 +131,8 @@ describe("OrganizationInputs - Compact Form", () => {
     );
 
     await waitFor(() => {
-      // Check for field labels - getAllByText to handle multiple matches
-      const nameLabels = screen.getAllByText(/organization name/i);
+      // Check for "Company Name" label (not "Organization Name")
+      const nameLabels = screen.getAllByText(/company name/i);
       expect(nameLabels.length).toBeGreaterThan(0);
     });
   });
@@ -171,7 +171,7 @@ describe("OrganizationInputs - Compact Form", () => {
     });
   });
 
-  it("should have collapsible section for additional details", async () => {
+  it("should have collapsible sections for Location, Contact & Web, and Organization Hierarchy", async () => {
     render(
       <TestWrapper>
         <OrganizationInputs />
@@ -179,26 +179,41 @@ describe("OrganizationInputs - Compact Form", () => {
     );
 
     await waitFor(() => {
-      // Check for collapsible trigger
-      const collapsibleTrigger = screen.getByRole("button", { name: /additional details/i });
-      expect(collapsibleTrigger).toBeInTheDocument();
+      // Check for all three collapsible sections
+      const locationTrigger = screen.getByRole("button", { name: /location/i });
+      expect(locationTrigger).toBeInTheDocument();
+
+      const contactWebTrigger = screen.getByRole("button", { name: /contact & web/i });
+      expect(contactWebTrigger).toBeInTheDocument();
+
+      const hierarchyTrigger = screen.getByRole("button", { name: /organization hierarchy/i });
+      expect(hierarchyTrigger).toBeInTheDocument();
     });
   });
 
-  it("should expand collapsible section when clicked", async () => {
+  it("should expand collapsible sections when clicked", async () => {
     render(
       <TestWrapper>
         <OrganizationInputs />
       </TestWrapper>
     );
 
-    // Find and click collapsible trigger
-    const collapsibleTrigger = screen.getByRole("button", { name: /additional details/i });
-    fireEvent.click(collapsibleTrigger);
+    // Find and click "Contact & Web" collapsible trigger
+    const contactWebTrigger = screen.getByRole("button", { name: /contact & web/i });
+    fireEvent.click(contactWebTrigger);
 
     // Check for fields in the expanded section
     await waitFor(() => {
       expect(screen.getByText(/website/i)).toBeInTheDocument();
+    });
+
+    // Find and click "Location" collapsible trigger
+    const locationTrigger = screen.getByRole("button", { name: /location/i });
+    fireEvent.click(locationTrigger);
+
+    // Check for address fields in the expanded section
+    await waitFor(() => {
+      expect(screen.getByText(/street address/i)).toBeInTheDocument();
     });
   });
 
@@ -239,7 +254,7 @@ describe("OrganizationInputs - Compact Form", () => {
     });
   });
 
-  it("should use 44px touch targets on collapsible trigger", async () => {
+  it("should use 44px touch targets on collapsible triggers", async () => {
     render(
       <TestWrapper>
         <OrganizationInputs />
@@ -247,23 +262,41 @@ describe("OrganizationInputs - Compact Form", () => {
     );
 
     await waitFor(() => {
-      const trigger = screen.getByRole("button", { name: /additional details/i });
-      expect(trigger).toHaveClass("h-11");
+      // Check all three collapsible section triggers have proper touch targets
+      const locationTrigger = screen.getByRole("button", { name: /location/i });
+      expect(locationTrigger).toHaveClass("h-11");
+
+      const contactWebTrigger = screen.getByRole("button", { name: /contact & web/i });
+      expect(contactWebTrigger).toHaveClass("h-11");
+
+      const hierarchyTrigger = screen.getByRole("button", { name: /organization hierarchy/i });
+      expect(hierarchyTrigger).toHaveClass("h-11");
     });
   });
 
-  it("should display address fields", async () => {
+  it("should display address fields when Location section is expanded", async () => {
     render(
       <TestWrapper>
         <OrganizationInputs />
       </TestWrapper>
     );
 
+    // Initially, address fields are hidden (Location section is collapsed)
     await waitFor(() => {
-      // Check for address-related input fields
       const textboxes = screen.getAllByRole("textbox");
-      // Should have name, street, city, zip at minimum
-      expect(textboxes.length).toBeGreaterThanOrEqual(4);
+      // Without expanding, only visible: name (and possibly description after expanding Contact & Web)
+      expect(textboxes.length).toBeGreaterThanOrEqual(1);
+    });
+
+    // Expand the Location section
+    const locationTrigger = screen.getByRole("button", { name: /location/i });
+    fireEvent.click(locationTrigger);
+
+    // Now address fields should be visible
+    await waitFor(() => {
+      expect(screen.getByLabelText(/street address/i)).toBeInTheDocument();
+      expect(screen.getByLabelText(/city/i)).toBeInTheDocument();
+      expect(screen.getByLabelText(/zip code/i)).toBeInTheDocument();
     });
   });
 });

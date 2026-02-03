@@ -22,7 +22,12 @@
  */
 
 import { FilterableColumnHeader } from "@/components/ra-wrappers/column-filters";
-import { ORGANIZATION_TYPE_CHOICES, PRIORITY_CHOICES, US_STATES } from "./constants";
+import {
+  ORGANIZATION_TYPE_CHOICES,
+  PRIORITY_CHOICES,
+  US_STATES,
+  SEGMENT_CHOICES,
+} from "./constants";
 import { SEARCH_DEBOUNCE_MS } from "@/atomic-crm/constants";
 
 /**
@@ -85,6 +90,26 @@ export function OrganizationStateHeader() {
       label="State"
       filterType="checkbox"
       choices={[...US_STATES]}
+    />
+  );
+}
+
+/**
+ * Filterable header for Segment column
+ * Uses checkbox filter with ALL segments (playbook + operator)
+ *
+ * Shows ALL 25+ segments (9 playbook + 16+ operator) with built-in scroll
+ * Follows State column pattern (50 US states) with CheckboxColumnFilter's max-h-64 scroll
+ *
+ * IMPORTANT: Filters by segment_id (UUID), not segment_name
+ */
+export function OrganizationSegmentHeader() {
+  return (
+    <FilterableColumnHeader
+      source="segment_id"
+      label="Category"
+      filterType="checkbox"
+      choices={[...SEGMENT_CHOICES]}
     />
   );
 }

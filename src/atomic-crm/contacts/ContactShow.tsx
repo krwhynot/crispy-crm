@@ -107,7 +107,7 @@ const ContactShowContent = () => {
                 </TabsContent>
 
                 <TabsContent value="activities" className="pt-2">
-                  <ActivitiesTab contactId={record.id} />
+                  <ActivitiesTab contactId={record.id} organizationId={record.organization_id} />
                 </TabsContent>
 
                 <TabsContent value="opportunities" className="pt-2">

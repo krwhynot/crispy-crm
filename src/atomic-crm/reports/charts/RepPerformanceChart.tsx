@@ -20,8 +20,8 @@ export function RepPerformanceChart({ data }: RepPerformanceChartProps) {
 
   // Memoize derived data - sort by total and take top 5
   const topData = useMemo(() => {
-    return [...data]
-      .sort((a, b) => b.activities + b.opportunities - (a.activities + a.opportunities))
+    return data
+      .toSorted((a, b) => b.activities + b.opportunities - (a.activities + a.opportunities))
       .slice(0, 5);
   }, [data]);
 

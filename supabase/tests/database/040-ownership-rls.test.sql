@@ -15,6 +15,14 @@
 --   - Verify permissive policies are removed
 --   - Verify ownership policies are in place
 --
+-- MIGRATION ALIGNMENT (Feb 2026):
+--   Policy names updated to match renames introduced by migrations:
+--   - 20260121000004: activities_delete_unified, activities_update_unified
+--   - 20260121053244: activities_select_unified, contacts_select_all
+--   - 20260122184338: delete_tags_admin, update_tags_admin
+--   - 20260125000001: delete_activities, delete_contacts (legacy duplicates)
+--   - 20260125233756: activities_insert_policy
+--
 -- ============================================================================
 
 BEGIN;
@@ -124,37 +132,46 @@ SELECT is_empty(
 -- ============================================================================
 
 -- Test 10: Activities has ownership INSERT policy (role-based SELECT)
+-- Policy names updated to match migration chain:
+--   activities_select_unified (20260121053244), activities_insert_policy (20260125233756),
+--   activities_update_unified + activities_delete_unified (20260121000004),
+--   activities_update_owner_or_privileged (20260123144656), delete_activities (20260125000001)
 SELECT policies_are(
   'public', 'activities',
   ARRAY[
-    'activities_delete_policy',
-    'activities_insert_owner',
+    'activities_delete_unified',
+    'activities_insert_policy',
+    'activities_select_unified',
     'activities_update_owner_or_privileged',
-    'activities_select_role_based'
+    'activities_update_unified',
+    'delete_activities'
   ],
   'activities table has correct ownership policies'
 );
 
--- Test 11: Contacts has ownership policies (role-based SELECT)
+-- Test 11: Contacts has ownership policies (shared SELECT)
+-- Policy names updated: contacts_select_all (20260121053244), delete_contacts (20260125000001)
 SELECT policies_are(
   'public', 'contacts',
   ARRAY[
     'contacts_delete_owner_or_privileged',
     'contacts_insert_owner',
+    'contacts_select_all',
     'contacts_update_owner_or_privileged',
-    'contacts_select_role_based'
+    'delete_contacts'
   ],
   'contacts table has correct ownership policies'
 );
 
 -- Test 12: Tags has manager/admin policies
+-- Policy names updated: delete_tags_admin + update_tags_admin (20260122184338)
 SELECT policies_are(
   'public', 'tags',
   ARRAY[
     'authenticated_select_tags',
-    'tags_delete_admin',
+    'delete_tags_admin',
     'tags_insert_privileged',
-    'tags_update_privileged'
+    'update_tags_admin'
   ],
   'tags table has correct manager/admin policies'
 );
@@ -188,10 +205,11 @@ SELECT policies_are(
 -- ============================================================================
 
 -- Test 15: Activities INSERT policy checks created_by = current_sales_id()
+-- Policy renamed to activities_insert_policy (20260125233756); regex handles (SELECT ...) wrapper
 SELECT matches(
   (SELECT with_check::text FROM pg_policies
-   WHERE tablename = 'activities' AND policyname = 'activities_insert_owner'),
-  'created_by = current_sales_id',
+   WHERE tablename = 'activities' AND policyname = 'activities_insert_policy'),
+  'created_by = .*current_sales_id',
   'activities INSERT policy checks ownership via current_sales_id()'
 );
 

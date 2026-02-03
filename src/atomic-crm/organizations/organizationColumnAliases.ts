@@ -321,7 +321,7 @@ export function getAvailableFields(): string[] {
   const fieldNames = Object.keys(ORGANIZATION_COLUMN_ALIASES);
 
   // Sort alphabetically for better UX
-  return fieldNames.sort();
+  return fieldNames.toSorted();
 }
 
 /**

@@ -41,7 +41,7 @@ function getLastActivityForOpportunity(
   const oppActivities = activities.filter((a) => a.opportunity_id === oppId);
   if (oppActivities.length === 0) return null;
 
-  const sortedActivities = oppActivities.sort((a, b) => {
+  const sortedActivities = oppActivities.toSorted((a, b) => {
     const dateA = parseDateSafely(a.created_at);
     const dateB = parseDateSafely(b.created_at);
     if (!dateA || !dateB) return 0;
@@ -99,7 +99,9 @@ export function useCampaignActivityMetrics(
       });
 
       const uniqueOrgs = orgCounts.size;
-      const sortedOrgs = Array.from(orgCounts.entries()).sort((a, b) => b[1].count - a[1].count);
+      const sortedOrgs = Array.from(orgCounts.entries()).toSorted(
+        (a, b) => b[1].count - a[1].count
+      );
       const [, mostActiveData] = sortedOrgs[0] || [null, { name: "N/A", count: 0 }];
 
       return {
@@ -111,7 +113,7 @@ export function useCampaignActivityMetrics(
       };
     });
 
-    return result.sort((a, b) => b.totalCount - a.totalCount);
+    return result.toSorted((a, b) => b.totalCount - a.totalCount);
   }, [activities]);
 
   const staleOpportunities = useMemo(() => {
@@ -154,7 +156,7 @@ export function useCampaignActivityMetrics(
         };
       })
       .filter((opp) => opp.isStale && opp.stageThreshold !== undefined)
-      .sort((a, b) => {
+      .toSorted((a, b) => {
         const aOverage = a.daysInactive - (a.stageThreshold || 0);
         const bOverage = b.daysInactive - (b.stageThreshold || 0);
         return bOverage - aOverage;

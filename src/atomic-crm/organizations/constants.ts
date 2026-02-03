@@ -70,6 +70,48 @@ export const ORG_TYPE_COLOR_MAP: Record<OrganizationType, string> = {
 };
 
 /**
+ * Playbook category color mapping
+ * Maps segment UUIDs to tag color classes
+ * Only playbook segments get distinct colors; operator segments default to tag-gray
+ * Avoids org-type colors (warm, sage, purple, teal) to prevent confusion
+ */
+import { PLAYBOOK_CATEGORY_IDS } from "@/atomic-crm/validation/segments";
+import { PLAYBOOK_CATEGORY_CHOICES } from "@/atomic-crm/validation/segments";
+import { OPERATOR_SEGMENT_CHOICES } from "@/atomic-crm/validation/operatorSegments";
+
+const PLAYBOOK_COLORS: Record<string, string> = {
+  [PLAYBOOK_CATEGORY_IDS["Major Broadline"]]: "tag-blue",
+  [PLAYBOOK_CATEGORY_IDS["Specialty/Regional"]]: "tag-green",
+  [PLAYBOOK_CATEGORY_IDS["Management Company"]]: "tag-cocoa",
+  [PLAYBOOK_CATEGORY_IDS.GPO]: "tag-amber",
+  [PLAYBOOK_CATEGORY_IDS.University]: "tag-clay",
+  [PLAYBOOK_CATEGORY_IDS["Restaurant Group"]]: "tag-pink",
+  [PLAYBOOK_CATEGORY_IDS["Chain Restaurant"]]: "tag-yellow",
+  [PLAYBOOK_CATEGORY_IDS["Hotel & Aviation"]]: "tag-gray",
+  [PLAYBOOK_CATEGORY_IDS.Unknown]: "tag-gray",
+};
+
+/**
+ * Get tag color for a segment
+ * @param segmentId - Segment UUID from organization record
+ * @returns Tag color class (tag-gray for operator segments and unknowns)
+ */
+export function getSegmentColor(segmentId: string | null | undefined): string {
+  if (!segmentId) return "tag-gray";
+  return PLAYBOOK_COLORS[segmentId] ?? "tag-gray"; // Operator segments default to gray
+}
+
+/**
+ * All segment choices for filter dropdowns
+ * Combines playbook (9) and operator (16+) segments
+ * Follows US_STATES pattern for handling 25+ choices with built-in scroll
+ */
+export const SEGMENT_CHOICES = [
+  ...PLAYBOOK_CATEGORY_CHOICES, // 9 playbook categories first
+  ...OPERATOR_SEGMENT_CHOICES, // 16+ operator segments after
+] as const;
+
+/**
  * Priority to badge variant mapping
  * Uses brand emphasis instead of error semantics for high priority
  * - A: default (brand primary - high importance, not danger)

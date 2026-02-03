@@ -410,7 +410,7 @@ const exporter: Exporter<Task> = async (records, fetchRelatedRecords) => {
 
   const organizationIds = Array.from(
     new Set(
-      opportunities.filter((opp) => opp.organization_id).map((opp) => opp.organization_id as number)
+      opportunities.flatMap((opp) => (opp.organization_id ? [opp.organization_id as number] : []))
     )
   );
 

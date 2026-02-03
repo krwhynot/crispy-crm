@@ -67,7 +67,7 @@ describe("SegmentComboboxInput", () => {
     );
 
     // Check for required indicator (asterisk) in label
-    const label = screen.getByText("Playbook Category");
+    const label = screen.getByText("Category");
     expect(label).toBeInTheDocument();
 
     // Required fields show asterisk via aria-hidden span
@@ -163,15 +163,14 @@ describe("SegmentComboboxInput", () => {
     );
 
     const trigger = screen.getByRole("combobox");
-    expect(trigger).toHaveTextContent("Select playbook category...");
+    expect(trigger).toHaveTextContent("Select category...");
 
     await user.click(trigger);
 
-    // Verify Playbook categories are displayed
+    // Verify only distributor-specific categories are displayed (Major Broadline and Specialty/Regional only)
     await waitFor(() => {
       expect(screen.getByRole("option", { name: "Major Broadline" })).toBeInTheDocument();
       expect(screen.getByRole("option", { name: "Specialty/Regional" })).toBeInTheDocument();
-      expect(screen.getByRole("option", { name: "GPO" })).toBeInTheDocument();
     });
   });
 
@@ -186,7 +185,7 @@ describe("SegmentComboboxInput", () => {
     );
 
     const trigger = screen.getByRole("combobox");
-    expect(trigger).toHaveTextContent("Select operator segment...");
+    expect(trigger).toHaveTextContent("Select category...");
 
     await user.click(trigger);
 
@@ -211,14 +210,13 @@ describe("SegmentComboboxInput", () => {
     );
 
     const trigger = screen.getByRole("combobox");
-    expect(trigger).toHaveTextContent("Select playbook category...");
+    expect(trigger).toHaveTextContent("Select category...");
 
     await user.click(trigger);
 
-    // Verify Playbook categories are displayed (same as distributors)
+    // Verify only Principal/Manufacturer category is displayed (principals get this segment only)
     await waitFor(() => {
-      expect(screen.getByRole("option", { name: "Major Broadline" })).toBeInTheDocument();
-      expect(screen.getByRole("option", { name: "University" })).toBeInTheDocument();
+      expect(screen.getByRole("option", { name: "Principal/Manufacturer" })).toBeInTheDocument();
     });
   });
 
@@ -233,7 +231,7 @@ describe("SegmentComboboxInput", () => {
     );
 
     const trigger = screen.getByRole("combobox");
-    expect(trigger).toHaveTextContent("Select operator segment...");
+    expect(trigger).toHaveTextContent("Select category...");
 
     await user.click(trigger);
 
@@ -256,7 +254,7 @@ describe("SegmentComboboxInput", () => {
 
     // Initially shows Playbook category placeholder
     const trigger = screen.getByRole("combobox");
-    expect(trigger).toHaveTextContent("Select playbook category...");
+    expect(trigger).toHaveTextContent("Select category...");
 
     // Verify Playbook categories available by checking hidden select element
     const hiddenSelect = document.querySelector("select[aria-hidden='true']");
@@ -270,10 +268,10 @@ describe("SegmentComboboxInput", () => {
       </FormWrapper>
     );
 
-    // Wait for component to re-render with new placeholder
+    // Wait for component to re-render (placeholder stays the same: "Select category...")
     await waitFor(() => {
       const updatedTrigger = screen.getByRole("combobox");
-      expect(updatedTrigger).toHaveTextContent("Select operator segment...");
+      expect(updatedTrigger).toHaveTextContent("Select category...");
     });
 
     // Verify Operator segments now available in hidden select

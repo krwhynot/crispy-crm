@@ -13,7 +13,9 @@ export const organizationsFilters = {
     "name",
     "type", // Alias for organization_type used in some filters
     "organization_type",
+    "org_scope",
     "parent_organization_id",
+    "parent_organization_name", // Computed: parent org name (used for sorting)
     "priority",
     "website",
     "city",
@@ -24,6 +26,7 @@ export const organizationsFilters = {
     "linkedin_url",
     "sales_id",
     "segment_id",
+    "segment_name", // Computed: segment name (from segments JOIN, used for sorting)
     "created_at",
     "updated_at",
     "deleted_at", // Soft delete timestamp
@@ -37,6 +40,7 @@ export const organizationsFilters = {
     "name",
     "type", // Alias for organization_type used in some filters
     "organization_type",
+    "org_scope",
     "parent_organization_id",
     "parent_organization_name", // Computed: parent org name
     "priority",
@@ -49,6 +53,7 @@ export const organizationsFilters = {
     "linkedin_url",
     "sales_id",
     "segment_id",
+    "segment_name", // Computed: segment name (from segments JOIN)
     "employee_count",
     "description",
     "created_at",

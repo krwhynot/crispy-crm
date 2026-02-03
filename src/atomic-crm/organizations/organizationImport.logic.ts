@@ -120,14 +120,14 @@ export function detectDuplicateOrganizations(
   });
 
   // Sort by count (descending) for better UX
-  duplicates.sort((a, b) => b.count - a.count);
+  const sortedDuplicates = duplicates.toSorted((a, b) => b.count - a.count);
 
   // Calculate total duplicate entries (excluding the first occurrence of each name)
   // e.g., if "Acme" appears 3 times, that's 2 duplicates (not 3)
-  const totalDuplicates = duplicates.reduce((sum, group) => sum + (group.count - 1), 0);
+  const totalDuplicates = sortedDuplicates.reduce((sum, group) => sum + (group.count - 1), 0);
 
   return {
-    duplicates,
+    duplicates: sortedDuplicates,
     totalDuplicates,
   };
 }

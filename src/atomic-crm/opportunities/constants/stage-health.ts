@@ -133,7 +133,7 @@ const STATUS_PRIORITY: Record<StageStatus, number> = {
  * @returns Sorted array (new array, does not mutate input)
  */
 export function sortOpportunitiesByStatus(opportunities: Opportunity[]): Opportunity[] {
-  return [...opportunities].sort((a, b) => {
+  return opportunities.toSorted((a, b) => {
     const aCloseDate = a.estimated_close_date ? parseDateSafely(a.estimated_close_date) : null;
     const bCloseDate = b.estimated_close_date ? parseDateSafely(b.estimated_close_date) : null;
 

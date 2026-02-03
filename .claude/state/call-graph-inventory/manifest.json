@@ -1,13 +1,13 @@
 {
   "status": "complete",
-  "generated_at": "2026-02-03T02:59:10.158Z",
+  "generated_at": "2026-02-03T03:09:23.591Z",
   "generator": "scripts/discover/extractors/call-graph.ts",
   "source_globs": [
     "src/atomic-crm/**/*.ts",
     "src/atomic-crm/**/*.tsx",
     "src/hooks/**/*.ts"
   ],
-  "checksum": "sha256:84eceee44aae8067",
+  "checksum": "sha256:203a900961b364f0",
   "source_hashes": {
     "src\\atomic-crm\\activities\\activityDraftSchema.ts": "fe17156bdf82",
     "src\\atomic-crm\\activities\\ActivityEdit.tsx": "ba97db9f3ada",
@@ -727,7 +727,7 @@
     {
       "name": "_root",
       "file": "_root.json",
-      "checksum": "sha256:59e7fe91cd69abf5",
+      "checksum": "sha256:f55c8533a559e723",
       "source_files": [
         "src\\atomic-crm\\activities\\ActivityEdit.tsx",
         "src\\atomic-crm\\activities\\ActivityInputs.tsx",

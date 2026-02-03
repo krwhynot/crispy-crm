@@ -96,8 +96,8 @@ SELECT ok(
 );
 
 SELECT ok(
-    (SELECT relrowsecurity FROM pg_class WHERE relname = 'tasks' AND relnamespace = 'public'::regnamespace),
-    'RLS should be enabled on tasks table'
+    (SELECT relrowsecurity FROM pg_class WHERE relname = 'tasks_deprecated' AND relnamespace = 'public'::regnamespace),
+    'RLS should be enabled on tasks_deprecated table'
 );
 
 -- Notification and audit tables

@@ -1,6 +1,6 @@
 {
   "version": "1.1",
-  "description": "Lightweight skill activation index - full definitions in SKILL.md folders. Built-in skills (supabase-postgres-best-practices, vercel-react-best-practices) are system-level and not indexed here.",
+  "description": "Lightweight skill activation index - full definitions in SKILL.md folders. Built-in skills (vercel-react-best-practices) are system-level and not indexed here.",
   "agents": {
     "sienna-ux": {
       "description": "UI/UX Auditor agent - audits components for accessibility, design system compliance, and UX violations",
@@ -281,7 +281,13 @@
         "row level security",
         "permissions",
         "postgres",
-        "postgresql"
+        "postgresql",
+        "query optimization",
+        "indexes",
+        "schema design",
+        "connection pooling",
+        "locking",
+        "monitoring"
       ],
       "intentPatterns": [
         "(run|execute|use).*?supabase.*?(cli|command)",
@@ -299,7 +305,9 @@
         "(add|modify|update|fix).*?(table|view|policy|permission)",
         "migration.*?(file|pattern|template|best practice)",
         "(deploy|push|apply).*?(migration|schema)",
-        "(grant|revoke).*?(select|insert|update|delete)"
+        "(grant|revoke).*?(select|insert|update|delete)",
+        "(query|postgres|database).*?(optimization|performance|slow)",
+        "(index|schema|RLS).*?(design|optimization|tuning)"
       ]
     },
     "discovery-first": {
@@ -543,21 +551,152 @@
         "skip.*?test"
       ]
     },
-    "validate-props": {
-      "priority": "medium",
+    "cache-invalidation-audit": {
+      "priority": "high",
       "keywords": [
-        "props validation",
-        "component props",
-        "SlideOver props",
-        "form props",
-        "validate props",
-        "props schema",
-        "ui-props"
+        "audit cache",
+        "cache audit",
+        "stale state",
+        "stale data",
+        "query keys",
+        "invalidation",
+        "refetch patterns",
+        "cache strategy",
+        "TanStack Query",
+        "React Query",
+        "useQuery",
+        "useMutation",
+        "invalidateQueries",
+        "refetchOnWindowFocus",
+        "staleTime",
+        "query key factory",
+        "cross-resource",
+        "over-invalidation",
+        "N+1 query",
+        "ReferenceField",
+        "API storm",
+        "cache compliance"
       ],
       "intentPatterns": [
-        "(validate|check|define).*?props",
-        "(component|form|slideover).*?props.*?(type|schema|validation)",
-        "props.*?(zod|schema|validation)"
+        "(audit|check|review|validate).*?(cache|stale|query.*?key|invalidation)",
+        "(find|detect).*?(stale.*?data|cache.*?issue|invalidation.*?problem)",
+        "(query|cache).*?(pattern|strategy|compliance)",
+        "(refetch|invalidate).*?(pattern|issue|violation)",
+        "STALE_STATE_STRATEGY",
+        "(API|query).*?storm",
+        "(N\\+1|n\\+1|reference.*?field).*?(query|issue|problem)",
+        "(cross-resource|cross resource).*?invalidation",
+        "(over-invalidation|over invalidation|nuclear.*?invalidation)",
+        "why.*?(stale|cache|refetch|invalidate)"
+      ]
+    },
+    "extract-implicit-contract": {
+      "priority": "high",
+      "keywords": [
+        "extract contract",
+        "implicit contract",
+        "extract config",
+        "config extraction",
+        "reduce churn",
+        "high churn",
+        "Boy Scout",
+        "Boy Scout cleanup",
+        "code churn",
+        "churn threshold",
+        "form patterns",
+        "repeated patterns",
+        "co-churn",
+        "coupling",
+        "centralize patterns",
+        "form config",
+        "default values",
+        "scattered defaults",
+        "field labels",
+        "column definitions",
+        "duplicated code",
+        "form variants"
+      ],
+      "intentPatterns": [
+        "(extract|centralize|consolidate).*?(contract|config|pattern|default)",
+        "(reduce|lower|decrease).*?churn",
+        "(high|over).*?(churn|threshold|edit)",
+        "Boy Scout.*?(cleanup|rule|refactor)",
+        "(find|detect|identify).*?(implicit.*?contract|repeated.*?pattern|duplication)",
+        "(form|field|column).*?(config|pattern|definition)",
+        "(co-churn|co churn|coupling|change.*?together)",
+        "(scattered|duplicated|repeated).*?(default|validation|pattern)",
+        "(centralize|extract).*?(label|field|column|route)",
+        "why.*?(churn|change.*?together|edit.*?multiple)"
+      ]
+    },
+    "soft-delete-rls-audit": {
+      "priority": "critical",
+      "keywords": [
+        "soft delete",
+        "soft-delete",
+        "RLS audit",
+        "RLS policy",
+        "row level security",
+        "deleted_at",
+        "security audit",
+        "data leak",
+        "cross-tenant",
+        "multi-tenant",
+        "tenant isolation",
+        "policy audit",
+        "deleted records",
+        "hard delete",
+        "cascade delete",
+        "company_id isolation",
+        "supportsSoftDelete"
+      ],
+      "intentPatterns": [
+        "(audit|check|review|validate).*?(soft.*?delete|RLS|row.*?level.*?security|policy)",
+        "(find|detect).*?(data.*?leak|cross.*?tenant|deleted.*?record|hard.*?delete)",
+        "(missing|check).*?(deleted_at|soft.*?delete|RLS.*?filter)",
+        "(tenant|company).*?(isolation|leak|access)",
+        "(security|privacy).*?(audit|violation|issue)",
+        "(view|policy).*?(expose|show).*?(deleted|wrong.*?company)",
+        "why.*?(see.*?deleted|other.*?company|wrong.*?data)",
+        "(cascade|soft).*?delete",
+        "supportsSoftDelete"
+      ]
+    },
+    "three-tier-architecture-audit": {
+      "priority": "high",
+      "keywords": [
+        "tier audit",
+        "UI audit",
+        "architecture audit",
+        "component layers",
+        "Tier 1",
+        "Tier 2",
+        "Tier 3",
+        "atoms",
+        "molecules",
+        "organisms",
+        "shadcn",
+        "ui components",
+        "ra-wrappers",
+        "react-admin wrappers",
+        "Datagrid",
+        "PremiumDatagrid",
+        "DialogTitle",
+        "prop leak",
+        "import violation",
+        "business logic",
+        "presentation layer"
+      ],
+      "intentPatterns": [
+        "(audit|check|review|validate).*?(tier|UI.*?layer|component.*?architecture)",
+        "(Tier 1|Tier 2|Tier 3|tier.*?violation)",
+        "(find|detect).*?(import.*?violation|prop.*?leak|raw.*?import)",
+        "(raw|direct).*?(Datagrid|shadcn|Tier 1)",
+        "(missing|check).*?(DialogTitle|wrapper|ARIA)",
+        "(should.*?use|replace.*?with).*?(wrapper|PremiumDatagrid)",
+        "(business.*?logic|data.*?fetch).*?(Tier 1|presentation)",
+        "(import|using).*?(react-admin|supabase).*?(Tier 1|ui/)",
+        "PremiumDatagrid.*?(vs|instead|replace).*?Datagrid"
       ]
     }
   },
@@ -565,16 +704,16 @@
     "postgres": {
       "primary": "supabase",
       "context": {
-        "optimization": "supabase-postgres-best-practices",
-        "EXPLAIN": "supabase-postgres-best-practices",
-        "index strategy": "supabase-postgres-best-practices",
+        "optimization": "supabase",
+        "EXPLAIN": "supabase",
+        "index strategy": "supabase",
         "CRM": "supabase",
         "RLS": "supabase",
         "migration": "supabase"
       }
     },
     "query optimization": {
-      "primary": "supabase-postgres-best-practices",
+      "primary": "supabase",
       "context": {
         "CRM": "supabase",
         "data provider": "crispy-data-provider"
@@ -593,7 +732,7 @@
       "primary": "enforcing-principles",
       "context": {
         "data": "data-integrity-guards",
-        "props": "validate-props",
+        "props": "enforcing-principles",
         "layer": "data-integrity-guards"
       }
     },
@@ -610,7 +749,7 @@
       "context": {
         "inventory": "discovery-first",
         "test": "testing-patterns",
-        "props": "validate-props"
+        "props": "enforcing-principles"
       }
     },
     "edge function": {
@@ -623,7 +762,9 @@
       "primary": "fail-fast-debugging",
       "context": {
         "comprehensive": "comprehensive-tracing",
-        "data flow": "comprehensive-tracing"
+        "data flow": "comprehensive-tracing",
+        "architecture": "comprehensive-tracing",
+        "flow": "comprehensive-tracing"
       }
     },
     "soft delete": {
@@ -631,6 +772,89 @@
       "context": {
         "audit": "data-integrity-guards",
         "RLS": "supabase"
+      }
+    },
+    "cache": {
+      "primary": "cache-invalidation-audit",
+      "context": {
+        "audit": "cache-invalidation-audit",
+        "strategy": "cache-invalidation-audit",
+        "stale": "cache-invalidation-audit"
+      }
+    },
+    "churn": {
+      "primary": "extract-implicit-contract",
+      "context": {
+        "reduce": "extract-implicit-contract",
+        "high": "extract-implicit-contract",
+        "threshold": "extract-implicit-contract"
+      }
+    },
+    "implicit contract": {
+      "primary": "extract-implicit-contract",
+      "context": {
+        "extract": "extract-implicit-contract",
+        "config": "extract-implicit-contract"
+      }
+    },
+    "query keys": {
+      "primary": "cache-invalidation-audit",
+      "context": {
+        "factory": "cache-invalidation-audit",
+        "hardcoded": "cache-invalidation-audit"
+      }
+    },
+    "invalidation": {
+      "primary": "cache-invalidation-audit",
+      "context": {
+        "cross-resource": "cache-invalidation-audit",
+        "mutation": "cache-invalidation-audit"
+      }
+    },
+    "soft delete": {
+      "primary": "soft-delete-rls-audit",
+      "context": {
+        "audit": "soft-delete-rls-audit",
+        "RLS": "soft-delete-rls-audit",
+        "cascade": "soft-delete-rls-audit"
+      }
+    },
+    "RLS": {
+      "primary": "soft-delete-rls-audit",
+      "context": {
+        "policy": "soft-delete-rls-audit",
+        "audit": "soft-delete-rls-audit",
+        "security": "soft-delete-rls-audit"
+      }
+    },
+    "deleted_at": {
+      "primary": "soft-delete-rls-audit",
+      "context": {
+        "missing": "soft-delete-rls-audit",
+        "filter": "soft-delete-rls-audit"
+      }
+    },
+    "tier": {
+      "primary": "three-tier-architecture-audit",
+      "context": {
+        "audit": "three-tier-architecture-audit",
+        "violation": "three-tier-architecture-audit",
+        "Tier 1": "three-tier-architecture-audit",
+        "Tier 2": "three-tier-architecture-audit"
+      }
+    },
+    "Datagrid": {
+      "primary": "three-tier-architecture-audit",
+      "context": {
+        "raw": "three-tier-architecture-audit",
+        "PremiumDatagrid": "three-tier-architecture-audit"
+      }
+    },
+    "DialogTitle": {
+      "primary": "three-tier-architecture-audit",
+      "context": {
+        "missing": "three-tier-architecture-audit",
+        "Radix": "three-tier-architecture-audit"
       }
     }
   }

@@ -133,7 +133,9 @@ export default function CampaignActivityReport() {
       });
 
       const uniqueOrgs = orgCounts.size;
-      const sortedOrgs = Array.from(orgCounts.entries()).sort((a, b) => b[1].count - a[1].count);
+      const sortedOrgs = Array.from(orgCounts.entries()).toSorted(
+        (a, b) => b[1].count - a[1].count
+      );
       const [, mostActiveData] = sortedOrgs[0] || [null, { name: "N/A", count: 0 }];
 
       return {
@@ -145,7 +147,7 @@ export default function CampaignActivityReport() {
       };
     });
 
-    return result.sort((a, b) => b.totalCount - a.totalCount);
+    return result.toSorted((a, b) => b.totalCount - a.totalCount);
   }, [activities]);
 
   // Map RPC response to component shape

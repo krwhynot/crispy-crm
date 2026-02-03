@@ -34,6 +34,7 @@ export const PLAYBOOK_CATEGORIES = [
   "Restaurant Group",
   "Chain Restaurant",
   "Hotel & Aviation",
+  "Principal/Manufacturer",
   "Unknown",
 ] as const;
 
@@ -52,6 +53,7 @@ export const PLAYBOOK_CATEGORY_IDS = {
   "Restaurant Group": "22222222-2222-4222-8222-000000000006",
   "Chain Restaurant": "22222222-2222-4222-8222-000000000007",
   "Hotel & Aviation": "22222222-2222-4222-8222-000000000008",
+  "Principal/Manufacturer": "22222222-2222-4222-8222-000000000010",
   Unknown: "22222222-2222-4222-8222-000000000009",
 } as const;
 

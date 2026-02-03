@@ -110,7 +110,7 @@ const DataTableHead = ({ children }: { children: ReactNode }) => {
     onSelect(
       checked
         ? selectedIds.concat(
-            data.filter((record) => !selectedIds.includes(record.id)).map((record) => record.id)
+            data.flatMap((record) => (!selectedIds.includes(record.id) ? [record.id] : []))
           )
         : []
     );
