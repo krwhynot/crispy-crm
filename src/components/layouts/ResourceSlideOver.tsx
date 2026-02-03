@@ -14,6 +14,7 @@ import { Tabs, TabsContent } from "@/components/ui/tabs";
 import { PriorityTabsList } from "@/components/ui/priority-tabs";
 import { Button } from "@/components/ui/button";
 import { SlideOverSkeleton } from "@/components/ui/list-skeleton";
+import { cn } from "@/lib/utils";
 import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
 import { useKeyboardShortcuts, formatShortcut } from "@/hooks/useKeyboardShortcuts";
 import { UnsavedChangesDialog } from "@/components/ui/unsaved-changes-dialog";
@@ -45,6 +46,17 @@ export interface TabConfig {
    * @example countFromRecord: (record) => record.nb_notes
    */
   countFromRecord?: (record: RaRecord) => number | undefined | null;
+}
+
+/**
+ * Props passed to the optional right panel render function
+ */
+export interface RightPanelProps {
+  record: RaRecord;
+  mode: "view" | "edit";
+  onModeToggle?: () => void;
+  onDirtyChange?: (isDirty: boolean) => void;
+  isLoading: boolean;
 }
 
 /**
@@ -85,6 +97,8 @@ export interface ResourceSlideOverProps {
    * Optional header action buttons (rendered before Edit button)
    */
   headerActions?: (record: RaRecord) => React.ReactNode;
+  /** Optional right panel for two-column layout (e.g., org details + notes) */
+  rightPanel?: (props: RightPanelProps) => React.ReactNode;
 }
 
 /**
@@ -142,6 +156,7 @@ export function ResourceSlideOver({
   breadcrumbComponent: BreadcrumbComponent,
   loadingSkeleton: LoadingSkeleton = SlideOverSkeleton,
   headerActions,
+  rightPanel,
 }: ResourceSlideOverProps) {
   const [activeTab, setActiveTab] = useState(tabs[0]?.key || "");
   const [isDirty, setIsDirty] = useState(false);
@@ -234,6 +249,7 @@ export function ResourceSlideOver({
         role="dialog"
         aria-modal="true"
         aria-labelledby="slide-over-title"
+        {...(rightPanel ? { "data-two-column": "" } : {})}
       >
         {!recordId ? (
           <div className="flex-1 flex items-center justify-center">
@@ -313,58 +329,94 @@ export function ResourceSlideOver({
               </div>
             </SheetHeader>
 
-            {/* Tabbed content area */}
-            <Tabs
-              value={activeTab}
-              onValueChange={setActiveTab}
-              className="flex-1 flex flex-col overflow-hidden"
+            {/* Two-column body container */}
+            <div
+              className={cn(
+                "flex-1 flex overflow-hidden",
+                rightPanel ? "flex-col lg:flex-row" : "flex-col"
+              )}
             >
-              {/* Priority+ tabs with overflow dropdown for narrow viewports */}
-              <PriorityTabsList
-                tabs={tabs}
-                value={activeTab}
-                onValueChange={setActiveTab}
-                record={record}
-              />
+              {/* Left column: tabs (or full width when no rightPanel) */}
+              <div
+                className={cn(
+                  "flex flex-col overflow-hidden",
+                  rightPanel ? "flex-1 min-w-0" : "flex-1"
+                )}
+              >
+                <Tabs
+                  value={activeTab}
+                  onValueChange={setActiveTab}
+                  className="flex-1 flex flex-col overflow-hidden"
+                >
+                  {/* Priority+ tabs with overflow dropdown for narrow viewports */}
+                  <PriorityTabsList
+                    tabs={tabs}
+                    value={activeTab}
+                    onValueChange={setActiveTab}
+                    record={record}
+                  />
 
-              {/* Tab content panels - only render active tab's component for performance */}
-              {tabs.map((tab) => {
-                const TabComponent = tab.component;
-                const isActive = activeTab === tab.key;
+                  {/* Tab content panels - only render active tab's component for performance */}
+                  {tabs.map((tab) => {
+                    const TabComponent = tab.component;
+                    const isActive = activeTab === tab.key;
 
-                return (
-                  <TabsContent
-                    key={tab.key}
-                    value={tab.key}
-                    className="flex-1 overflow-y-auto p-6 m-0"
-                  >
-                    {/* Only mount TabComponent when this tab is active to avoid:
-                        1. Unnecessary React component tree creation
-                        2. useEffect hooks firing in hidden tabs
-                        3. Memory allocation for unused tab state */}
-                    {isActive && (
-                      <>
-                        {isLoading ? (
-                          <LoadingSkeleton />
-                        ) : record ? (
-                          <TabErrorBoundary tabKey={tab.key} tabLabel={tab.label}>
-                            <TabComponent
-                              record={record}
-                              mode={mode}
-                              onModeToggle={onModeToggle}
-                              isActiveTab={isActive}
-                              onDirtyChange={setIsDirty}
-                            />
-                          </TabErrorBoundary>
-                        ) : (
-                          <p className="text-muted-foreground">Record not found</p>
+                    return (
+                      <TabsContent
+                        key={tab.key}
+                        value={tab.key}
+                        className="flex-1 overflow-y-auto p-6 m-0"
+                      >
+                        {/* Only mount TabComponent when this tab is active to avoid:
+                            1. Unnecessary React component tree creation
+                            2. useEffect hooks firing in hidden tabs
+                            3. Memory allocation for unused tab state */}
+                        {isActive && (
+                          <>
+                            {isLoading ? (
+                              <LoadingSkeleton />
+                            ) : record ? (
+                              <TabErrorBoundary tabKey={tab.key} tabLabel={tab.label}>
+                                <TabComponent
+                                  record={record}
+                                  mode={mode}
+                                  onModeToggle={onModeToggle}
+                                  isActiveTab={isActive}
+                                  onDirtyChange={setIsDirty}
+                                />
+                              </TabErrorBoundary>
+                            ) : (
+                              <p className="text-muted-foreground">Record not found</p>
+                            )}
+                          </>
                         )}
-                      </>
-                    )}
-                  </TabsContent>
-                );
-              })}
-            </Tabs>
+                      </TabsContent>
+                    );
+                  })}
+                </Tabs>
+              </div>
+
+              {/* Right column: always visible when provided */}
+              {rightPanel && (
+                <div className="w-full lg:w-[clamp(280px,34vw,360px)] lg:border-l border-t lg:border-t-0 border-border overflow-y-auto shrink-0">
+                  {isLoading ? (
+                    <div className="p-6">
+                      <LoadingSkeleton />
+                    </div>
+                  ) : record ? (
+                    <TabErrorBoundary tabKey="right-panel" tabLabel="Details">
+                      {rightPanel({
+                        record,
+                        mode,
+                        onModeToggle,
+                        onDirtyChange: setIsDirty,
+                        isLoading: false,
+                      })}
+                    </TabErrorBoundary>
+                  ) : null}
+                </div>
+              )}
+            </div>
 
             {/* Footer message (edit mode only, hidden when canEdit is false) */}
             {mode === "edit" && canEdit !== false && (

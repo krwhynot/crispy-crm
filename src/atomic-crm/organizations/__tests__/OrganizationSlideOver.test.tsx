@@ -3,19 +3,18 @@
  *
  * Tests the tab configuration logic and record representation
  * without full component rendering. Focuses on:
- * - Base tabs for all organizations
+ * - Base left tabs for all organizations (Activities, Contacts, Opportunities)
  * - Conditional authorizations tab for distributors
  * - Record representation formatting
+ *
+ * Note: Details and Notes are now in the always-visible right panel,
+ * not in the left tab array.
  */
 
 import { describe, it, expect, vi } from "vitest";
 import type { OrganizationRecord } from "../types";
 
-// Mock all the tab components to avoid React Admin dependency chain
-vi.mock("../slideOverTabs/OrganizationDetailsTab", () => ({
-  OrganizationDetailsTab: () => null,
-}));
-
+// Mock tab components to avoid React Admin dependency chain
 vi.mock("../slideOverTabs/OrganizationContactsTab", () => ({
   OrganizationContactsTab: () => null,
 }));
@@ -24,8 +23,8 @@ vi.mock("../slideOverTabs/OrganizationOpportunitiesTab", () => ({
   OrganizationOpportunitiesTab: () => null,
 }));
 
-vi.mock("../slideOverTabs/OrganizationNotesTab", () => ({
-  OrganizationNotesTab: () => null,
+vi.mock("../slideOverTabs/OrganizationActivitiesTab", () => ({
+  OrganizationActivitiesTab: () => null,
 }));
 
 vi.mock("../AuthorizationsTab", () => ({
@@ -34,33 +33,33 @@ vi.mock("../AuthorizationsTab", () => ({
 
 // Mock lucide-react icons
 vi.mock("lucide-react", () => ({
-  BuildingIcon: () => null,
   Users: () => null,
   Target: () => null,
-  StickyNote: () => null,
+  Activity: () => null,
   ShieldCheck: () => null,
 }));
 
 // Import mocked modules
-import { BuildingIcon, Users, Target, StickyNote, ShieldCheck } from "lucide-react";
-import { OrganizationDetailsTab } from "../slideOverTabs/OrganizationDetailsTab";
+import { Users, Target, Activity, ShieldCheck } from "lucide-react";
 import { OrganizationContactsTab } from "../slideOverTabs/OrganizationContactsTab";
 import { OrganizationOpportunitiesTab } from "../slideOverTabs/OrganizationOpportunitiesTab";
-import { OrganizationNotesTab } from "../slideOverTabs/OrganizationNotesTab";
+import { OrganizationActivitiesTab } from "../slideOverTabs/OrganizationActivitiesTab";
 import { AuthorizationsTab } from "../AuthorizationsTab";
 import type { TabConfig } from "@/components/layouts/ResourceSlideOver";
 
 /**
  * Extracts the tab configuration logic from OrganizationSlideOver.
  * This mirrors the component's internal logic for testability.
+ *
+ * Two-column layout: left tabs only (details + notes are in right panel).
  */
 function getOrganizationTabs(isDistributor: boolean): TabConfig[] {
   const baseTabs: TabConfig[] = [
     {
-      key: "details",
-      label: "Details",
-      component: OrganizationDetailsTab,
-      icon: BuildingIcon,
+      key: "activities",
+      label: "Activities",
+      component: OrganizationActivitiesTab,
+      icon: Activity,
     },
     {
       key: "contacts",
@@ -76,25 +75,18 @@ function getOrganizationTabs(isDistributor: boolean): TabConfig[] {
       icon: Target,
       countFromRecord: (record: OrganizationRecord) => record.nb_opportunities,
     },
-    {
-      key: "notes",
-      label: "Notes",
-      component: OrganizationNotesTab,
-      icon: StickyNote,
-      countFromRecord: (record: OrganizationRecord) => record.nb_notes,
-    },
   ];
 
   return isDistributor
     ? [
-        ...baseTabs.slice(0, 1), // Details first
+        baseTabs[0], // Activities first
         {
           key: "authorizations",
           label: "Authorizations",
           component: AuthorizationsTab,
           icon: ShieldCheck,
         },
-        ...baseTabs.slice(1), // Then Contacts, Opportunities, Notes
+        ...baseTabs.slice(1), // Then Contacts, Opportunities
       ]
     : baseTabs;
 }
@@ -107,41 +99,47 @@ function getRecordRepresentation(record: OrganizationRecord): string {
 }
 
 describe("OrganizationSlideOver", () => {
-  describe("Tab Configuration", () => {
-    it("has base tabs for all organizations", () => {
+  describe("Tab Configuration (Two-Column Layout)", () => {
+    it("has 3 base left tabs for all organizations", () => {
       const tabs = getOrganizationTabs(false);
 
-      expect(tabs).toHaveLength(4);
+      expect(tabs).toHaveLength(3);
 
-      // Verify tab keys
+      // Verify tab keys - no details or notes (they're in the right panel)
       const tabKeys = tabs.map((tab) => tab.key);
-      expect(tabKeys).toEqual(["details", "contacts", "opportunities", "notes"]);
+      expect(tabKeys).toEqual(["activities", "contacts", "opportunities"]);
 
       // Verify tab labels
       const tabLabels = tabs.map((tab) => tab.label);
-      expect(tabLabels).toEqual(["Details", "Contacts", "Opportunities", "Notes"]);
+      expect(tabLabels).toEqual(["Activities", "Contacts", "Opportunities"]);
 
       // Verify icons are assigned
-      expect(tabs[0].icon).toBe(BuildingIcon);
+      expect(tabs[0].icon).toBe(Activity);
       expect(tabs[1].icon).toBe(Users);
       expect(tabs[2].icon).toBe(Target);
-      expect(tabs[3].icon).toBe(StickyNote);
 
       // Verify components are assigned
-      expect(tabs[0].component).toBe(OrganizationDetailsTab);
+      expect(tabs[0].component).toBe(OrganizationActivitiesTab);
       expect(tabs[1].component).toBe(OrganizationContactsTab);
       expect(tabs[2].component).toBe(OrganizationOpportunitiesTab);
-      expect(tabs[3].component).toBe(OrganizationNotesTab);
+    });
+
+    it("does not include details or notes in left tabs", () => {
+      const tabs = getOrganizationTabs(false);
+      const tabKeys = tabs.map((tab) => tab.key);
+
+      expect(tabKeys).not.toContain("details");
+      expect(tabKeys).not.toContain("notes");
     });
 
     it("includes authorizations tab for distributors", () => {
       const tabs = getOrganizationTabs(true);
 
-      expect(tabs).toHaveLength(5);
+      expect(tabs).toHaveLength(4);
 
-      // Verify tab order: Details, Authorizations, Contacts, Opportunities, Notes
+      // Verify tab order: Activities, Authorizations, Contacts, Opportunities
       const tabKeys = tabs.map((tab) => tab.key);
-      expect(tabKeys).toEqual(["details", "authorizations", "contacts", "opportunities", "notes"]);
+      expect(tabKeys).toEqual(["activities", "authorizations", "contacts", "opportunities"]);
 
       // Verify authorizations tab is in correct position (second)
       const authTab = tabs[1];
@@ -156,7 +154,7 @@ describe("OrganizationSlideOver", () => {
 
       const tabKeys = tabs.map((tab) => tab.key);
       expect(tabKeys).not.toContain("authorizations");
-      expect(tabs).toHaveLength(4);
+      expect(tabs).toHaveLength(3);
     });
 
     it("has correct count badge functions for tabs with counts", () => {
@@ -172,7 +170,7 @@ describe("OrganizationSlideOver", () => {
         created_at: new Date().toISOString(),
       };
 
-      // Details tab has no count
+      // Activities tab has no count
       expect(tabs[0].countFromRecord).toBeUndefined();
 
       // Contacts tab count
@@ -182,10 +180,6 @@ describe("OrganizationSlideOver", () => {
       // Opportunities tab count
       expect(tabs[2].countFromRecord).toBeDefined();
       expect(tabs[2].countFromRecord!(mockRecord)).toBe(3);
-
-      // Notes tab count
-      expect(tabs[3].countFromRecord).toBeDefined();
-      expect(tabs[3].countFromRecord!(mockRecord)).toBe(7);
     });
 
     it("handles undefined count values gracefully", () => {
@@ -201,7 +195,6 @@ describe("OrganizationSlideOver", () => {
       // Should return undefined when count fields are missing
       expect(tabs[1].countFromRecord!(recordWithNoCounts)).toBeUndefined();
       expect(tabs[2].countFromRecord!(recordWithNoCounts)).toBeUndefined();
-      expect(tabs[3].countFromRecord!(recordWithNoCounts)).toBeUndefined();
     });
   });
 

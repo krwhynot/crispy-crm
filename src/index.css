@@ -1038,6 +1038,13 @@
   --shadow-col-inner: inset 0 1px 2px var(--shadow-ink) / 0.05;
 }
 
+/* Two-column slide-over override (e.g., organizations with right panel) */
+[data-slot="sheet-content"][data-two-column] {
+  --sidepane-width: 74vw;
+  --sidepane-width-min: 760px;
+  --sidepane-width-max: 1080px;
+}
+
 .dark {
   /* Browser UI theming - styles native scrollbars, inputs, etc. */
   color-scheme: dark;

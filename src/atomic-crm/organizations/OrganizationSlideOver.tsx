@@ -1,30 +1,29 @@
 /**
  * OrganizationSlideOver - Slide-over panel for viewing/editing organization details
  *
- * Uses the ResourceSlideOver pattern with tabbed navigation. Tabs are conditionally
- * rendered based on organization type:
- * - Details, Contacts, Opportunities, Notes: All organizations
- * - Authorizations: Only for distributor organizations
+ * Uses the ResourceSlideOver pattern with two-column layout:
+ * - Left tabs: Activities, Contacts, Opportunities (+Authorizations for distributors)
+ * - Right panel: Organization details (view/edit) and notes (always visible)
  *
  * @see docs/archive/plans/2025-11-16-unified-design-system-rollout.md
  */
 
 import { useEffect } from "react";
-import { BuildingIcon, Users, Target, Activity, StickyNote, ShieldCheck } from "lucide-react";
+import { Users, Target, Activity, ShieldCheck } from "lucide-react";
 import type { TabConfig } from "@/components/layouts/ResourceSlideOver";
 import { ResourceSlideOver } from "@/components/layouts/ResourceSlideOver";
 import { OrganizationDetailSkeleton } from "@/components/ui/list-skeleton";
-import { OrganizationDetailsTab } from "./slideOverTabs/OrganizationDetailsTab";
 import { OrganizationContactsTab } from "./slideOverTabs/OrganizationContactsTab";
 import { OrganizationOpportunitiesTab } from "./slideOverTabs/OrganizationOpportunitiesTab";
 import { OrganizationActivitiesTab } from "./slideOverTabs/OrganizationActivitiesTab";
-import { OrganizationNotesTab } from "./slideOverTabs/OrganizationNotesTab";
+import { OrganizationRightPanel } from "./slideOverTabs/OrganizationRightPanel";
 import { AuthorizationsTab } from "./AuthorizationsTab";
 import { useGetOne } from "react-admin";
 import { useRecentSearches } from "@/atomic-crm/hooks/useRecentSearches";
 import { FavoriteToggleButton, QuickAddTaskButton } from "@/atomic-crm/components";
 import { OrganizationHierarchyBreadcrumb } from "./OrganizationHierarchyBreadcrumb";
 import type { OrganizationRecord } from "./types";
+import type { OrganizationWithHierarchy } from "../types";
 
 interface OrganizationSlideOverProps {
   recordId: number | null;
@@ -62,13 +61,13 @@ export function OrganizationSlideOver({
 
   const isDistributor = organization?.organization_type === "distributor";
 
-  // Base tabs available for all organizations with count badges
+  // Base tabs available for all organizations (Details + Notes moved to right panel)
   const baseTabs: TabConfig[] = [
     {
-      key: "details",
-      label: "Details",
-      component: OrganizationDetailsTab,
-      icon: BuildingIcon,
+      key: "activities",
+      label: "Activities",
+      component: OrganizationActivitiesTab,
+      icon: Activity,
     },
     {
       key: "contacts",
@@ -84,32 +83,19 @@ export function OrganizationSlideOver({
       icon: Target,
       countFromRecord: (record: OrganizationRecord) => record.nb_opportunities,
     },
-    {
-      key: "activities",
-      label: "Activities",
-      component: OrganizationActivitiesTab,
-      icon: Activity,
-    },
-    {
-      key: "notes",
-      label: "Notes",
-      component: OrganizationNotesTab,
-      icon: StickyNote,
-      countFromRecord: (record: OrganizationRecord) => record.nb_notes,
-    },
   ];
 
-  // Conditionally add Authorizations tab for distributors
+  // Conditionally add Authorizations tab for distributors (after Activities)
   const tabs: TabConfig[] = isDistributor
     ? [
-        ...baseTabs.slice(0, 1), // Details first
+        baseTabs[0], // Activities
         {
           key: "authorizations",
           label: "Authorizations",
           component: AuthorizationsTab,
           icon: ShieldCheck,
         },
-        ...baseTabs.slice(1), // Then Contacts, Opportunities, Notes
+        ...baseTabs.slice(1), // Contacts, Opportunities
       ]
     : baseTabs;
 
@@ -138,6 +124,14 @@ export function OrganizationSlideOver({
           />
           <QuickAddTaskButton organizationId={Number(record.id)} />
         </>
+      )}
+      rightPanel={({ record, mode, onModeToggle, onDirtyChange }) => (
+        <OrganizationRightPanel
+          record={record as OrganizationWithHierarchy}
+          mode={mode}
+          onModeToggle={onModeToggle}
+          onDirtyChange={onDirtyChange}
+        />
       )}
     />
   );
