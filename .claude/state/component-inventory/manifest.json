@@ -1,11 +1,11 @@
 {
   "status": "complete",
-  "generated_at": "2026-02-03T15:11:50.915Z",
+  "generated_at": "2026-02-03T16:22:55.604Z",
   "generator": "scripts/discover/extractors/components.ts",
   "source_globs": [
     "src/atomic-crm/**/*.tsx"
   ],
-  "checksum": "sha256:e5768c1635f3baf0",
+  "checksum": "sha256:6218808ea08f81a9",
   "source_hashes": {
     "src\\atomic-crm\\activities\\ActivityEdit.tsx": "ba97db9f3ada",
     "src\\atomic-crm\\activities\\ActivityInputs.tsx": "85431cf76810",
@@ -509,7 +509,7 @@
       "name": "_root",
       "file": "_root.json",
       "item_count": 545,
-      "checksum": "sha256:66d1b57e4f653b7c",
+      "checksum": "sha256:d48c0b3cea8ae9fc",
       "source_files": [
         "src\\atomic-crm\\activities\\ActivityEdit.tsx",
         "src\\atomic-crm\\activities\\ActivityInputs.tsx",
