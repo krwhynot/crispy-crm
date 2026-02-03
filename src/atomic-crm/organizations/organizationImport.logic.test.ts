@@ -166,9 +166,9 @@ describe("applyDataQualityTransformations", () => {
 describe("validateTransformedOrganizations", () => {
   it("should validate all successful organizations", () => {
     const orgs: OrganizationImportSchema[] = [
-      { name: "Valid Company 1" },
-      { name: "Valid Company 2" },
-      { name: "Valid Company 3" },
+      { name: "Valid Company 1", organization_type: "prospect", priority: "C", status: "active" },
+      { name: "Valid Company 2", organization_type: "prospect", priority: "C", status: "active" },
+      { name: "Valid Company 3", organization_type: "prospect", priority: "C", status: "active" },
     ];
 
     const result = validateTransformedOrganizations(orgs);
@@ -183,9 +183,14 @@ describe("validateTransformedOrganizations", () => {
   it("should separate successful and failed validations", () => {
     // Intentionally testing undefined name for defensive coding
     const orgs: OrganizationImportSchema[] = [
-      { name: "Valid Company" },
+      { name: "Valid Company", organization_type: "prospect", priority: "C", status: "active" },
       { name: "" }, // Invalid - empty name
-      { name: "Another Valid Company" },
+      {
+        name: "Another Valid Company",
+        organization_type: "prospect",
+        priority: "C",
+        status: "active",
+      },
       { name: undefined as unknown as string }, // Invalid - missing name
     ];
 
@@ -233,7 +238,10 @@ describe("validateTransformedOrganizations", () => {
   });
 
   it("should include originalIndex in successful records", () => {
-    const orgs: OrganizationImportSchema[] = [{ name: "Company A" }, { name: "Company B" }];
+    const orgs: OrganizationImportSchema[] = [
+      { name: "Company A", organization_type: "prospect", priority: "C", status: "active" },
+      { name: "Company B", organization_type: "prospect", priority: "C", status: "active" },
+    ];
 
     const result = validateTransformedOrganizations(orgs);
 
@@ -268,6 +276,7 @@ describe("validateTransformedOrganizations", () => {
         linkedin_url: "https://www.linkedin.com/company/complex-org",
         website: "https://www.complex.com",
         organization_type: "customer",
+        status: "active",
         description: "A complex organization record",
       },
     ];
@@ -284,9 +293,9 @@ describe("Integration: Full import workflow", () => {
   it("should handle complete CSV import workflow", () => {
     // Step 1: Raw CSV data (after sanitization)
     const rawOrgs: OrganizationImportSchema[] = [
-      { name: "Company A", priority: "A" },
-      { name: "Company B", priority: "B" },
-      { name: "company a" }, // Duplicate
+      { name: "Company A", priority: "A", organization_type: "prospect", status: "active" },
+      { name: "Company B", priority: "B", organization_type: "prospect", status: "active" },
+      { name: "company a", organization_type: "prospect", priority: "C", status: "active" }, // Duplicate
     ];
 
     // Step 2: Detect duplicates
@@ -309,9 +318,9 @@ describe("Integration: Full import workflow", () => {
 
   it("should handle workflow with validation failures", () => {
     const rawOrgs: OrganizationImportSchema[] = [
-      { name: "Valid Company" },
+      { name: "Valid Company", organization_type: "prospect", priority: "C", status: "active" },
       { name: "" }, // Will fail validation
-      { name: "Another Valid" },
+      { name: "Another Valid", organization_type: "prospect", priority: "C", status: "active" },
     ];
 
     const transformResult = applyDataQualityTransformations(rawOrgs, {});

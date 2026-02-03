@@ -16,6 +16,7 @@ import {
   AccordionContent,
 } from "@/components/ui/accordion";
 import { OwnerFilterDropdown } from "@/components/ra-wrappers/OwnerFilterDropdown";
+import { OrganizationSavedQueries } from "./OrganizationSavedQueries";
 import {
   ORGANIZATION_TYPE_CHOICES,
   ORG_TYPE_COLOR_MAP,
@@ -129,6 +130,9 @@ export const OrganizationListFilter = (): React.ReactElement => {
     <div className="flex flex-col gap-4" data-tutorial="org-filters">
       {/* Starred Quick Filter - TOP of sidebar */}
       <StarredFilterToggle entityType="organizations" />
+
+      {/* Quick Filter Presets */}
+      <OrganizationSavedQueries />
 
       {/* Collapsible Filter Sections */}
       <div className="flex flex-col gap-2">

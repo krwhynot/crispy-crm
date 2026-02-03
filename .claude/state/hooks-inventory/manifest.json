@@ -1,6 +1,6 @@
 {
   "status": "complete",
-  "generated_at": "2026-02-03T03:09:18.811Z",
+  "generated_at": "2026-02-03T13:19:16.839Z",
   "generator": "scripts/discover/extractors/hooks.ts",
   "source_globs": [
     "src/**/use*.ts",
@@ -8,7 +8,7 @@
     "src/**/*.ts",
     "src/**/*.tsx"
   ],
-  "checksum": "sha256:7e0fcffe9af5b170",
+  "checksum": "sha256:24a9e1110eeb0a2d",
   "source_hashes": {
     "src\\App.tsx": "acaa54f99f2d",
     "src\\atomic-crm\\activities\\activityDraftSchema.ts": "fe17156bdf82",
@@ -331,6 +331,7 @@
     "src\\atomic-crm\\organizations\\AutocompleteOrganizationInput.tsx": "360536133cb1",
     "src\\atomic-crm\\organizations\\BranchLocationsSection.tsx": "bf910884ec29",
     "src\\atomic-crm\\organizations\\constants.ts": "5384618f4348",
+    "src\\atomic-crm\\organizations\\ContactListCells.tsx": "e3b0c44298fc",
     "src\\atomic-crm\\organizations\\csvConstants.ts": "cf43f452ed6b",
     "src\\atomic-crm\\organizations\\DuplicateOrgWarningDialog.tsx": "25563d1e6fc4",
     "src\\atomic-crm\\organizations\\hooks\\useOrganizationVariant.ts": "fb52a9879934",
@@ -360,7 +361,8 @@
     "src\\atomic-crm\\organizations\\OrganizationImportResult.tsx": "30041828cfd2",
     "src\\atomic-crm\\organizations\\OrganizationInputs.tsx": "8752b8f423a8",
     "src\\atomic-crm\\organizations\\OrganizationList.tsx": "2d6c44c86873",
-    "src\\atomic-crm\\organizations\\OrganizationListFilter.tsx": "112dc14457ee",
+    "src\\atomic-crm\\organizations\\OrganizationListFilter.tsx": "9aa5d672cafd",
+    "src\\atomic-crm\\organizations\\OrganizationSavedQueries.tsx": "2651b2dd20e4",
     "src\\atomic-crm\\organizations\\OrganizationShow.tsx": "269d24f36f53",
     "src\\atomic-crm\\organizations\\OrganizationSlideOver.tsx": "b5b87d31cb32",
     "src\\atomic-crm\\organizations\\OrganizationStatusSection.tsx": "a39a7eb5ecea",
@@ -1032,7 +1034,7 @@
       "name": "_root",
       "file": "_root.json",
       "item_count": 101,
-      "checksum": "sha256:47817847eb7228f8",
+      "checksum": "sha256:967c33490e927c6d",
       "source_files": [
         "src\\atomic-crm\\activity-log\\ActivityLogContext.tsx",
         "src\\atomic-crm\\contacts\\useColumnMapping.ts",

@@ -1,11 +1,11 @@
 {
   "status": "complete",
-  "generated_at": "2026-02-03T03:09:05.189Z",
+  "generated_at": "2026-02-03T13:18:40.566Z",
   "generator": "scripts/discover/extractors/components.ts",
   "source_globs": [
     "src/atomic-crm/**/*.tsx"
   ],
-  "checksum": "sha256:3e16034e72d22931",
+  "checksum": "sha256:3d6fa951bd87bd2a",
   "source_hashes": {
     "src\\atomic-crm\\activities\\ActivityEdit.tsx": "ba97db9f3ada",
     "src\\atomic-crm\\activities\\ActivityInputs.tsx": "85431cf76810",
@@ -289,6 +289,7 @@
     "src\\atomic-crm\\organizations\\AuthorizationsTab.tsx": "5d1898dcf569",
     "src\\atomic-crm\\organizations\\AutocompleteOrganizationInput.tsx": "360536133cb1",
     "src\\atomic-crm\\organizations\\BranchLocationsSection.tsx": "bf910884ec29",
+    "src\\atomic-crm\\organizations\\ContactListCells.tsx": "e3b0c44298fc",
     "src\\atomic-crm\\organizations\\DuplicateOrgWarningDialog.tsx": "25563d1e6fc4",
     "src\\atomic-crm\\organizations\\index.tsx": "a2b3ff9887eb",
     "src\\atomic-crm\\organizations\\OrganizationAddressSection.tsx": "f28039bd5d4c",
@@ -315,7 +316,8 @@
     "src\\atomic-crm\\organizations\\OrganizationInputs.tsx": "8752b8f423a8",
     "src\\atomic-crm\\organizations\\OrganizationList.spec.tsx": "34b392200ebb",
     "src\\atomic-crm\\organizations\\OrganizationList.tsx": "2d6c44c86873",
-    "src\\atomic-crm\\organizations\\OrganizationListFilter.tsx": "112dc14457ee",
+    "src\\atomic-crm\\organizations\\OrganizationListFilter.tsx": "9aa5d672cafd",
+    "src\\atomic-crm\\organizations\\OrganizationSavedQueries.tsx": "2651b2dd20e4",
     "src\\atomic-crm\\organizations\\OrganizationShow.tsx": "269d24f36f53",
     "src\\atomic-crm\\organizations\\OrganizationSlideOver.tsx": "b5b87d31cb32",
     "src\\atomic-crm\\organizations\\OrganizationStatusSection.tsx": "a39a7eb5ecea",
@@ -497,17 +499,17 @@
     "src\\atomic-crm\\utils\\__tests__\\getActivityIcon.test.tsx": "59d788ebef0e"
   },
   "summary": {
-    "total_items": 544,
+    "total_items": 545,
     "total_chunks": 1,
     "form_controllers": 0,
-    "presentational": 544
+    "presentational": 545
   },
   "chunks": [
     {
       "name": "_root",
       "file": "_root.json",
-      "item_count": 544,
-      "checksum": "sha256:ede9e54d09299bf9",
+      "item_count": 545,
+      "checksum": "sha256:b0fbc2c4fc72d847",
       "source_files": [
         "src\\atomic-crm\\activities\\ActivityEdit.tsx",
         "src\\atomic-crm\\activities\\ActivityInputs.tsx",
@@ -791,6 +793,7 @@
         "src\\atomic-crm\\organizations\\AuthorizationsTab.tsx",
         "src\\atomic-crm\\organizations\\AutocompleteOrganizationInput.tsx",
         "src\\atomic-crm\\organizations\\BranchLocationsSection.tsx",
+        "src\\atomic-crm\\organizations\\ContactListCells.tsx",
         "src\\atomic-crm\\organizations\\DuplicateOrgWarningDialog.tsx",
         "src\\atomic-crm\\organizations\\OrganizationAddressSection.tsx",
         "src\\atomic-crm\\organizations\\OrganizationAside.tsx",
@@ -817,6 +820,7 @@
         "src\\atomic-crm\\organizations\\OrganizationList.spec.tsx",
         "src\\atomic-crm\\organizations\\OrganizationList.tsx",
         "src\\atomic-crm\\organizations\\OrganizationListFilter.tsx",
+        "src\\atomic-crm\\organizations\\OrganizationSavedQueries.tsx",
         "src\\atomic-crm\\organizations\\OrganizationShow.tsx",
         "src\\atomic-crm\\organizations\\OrganizationSlideOver.tsx",
         "src\\atomic-crm\\organizations\\OrganizationStatusSection.tsx",
@@ -1281,6 +1285,7 @@
         "src\\atomic-crm\\organizations\\AuthorizationsTab.tsx": "5d1898dcf569",
         "src\\atomic-crm\\organizations\\AutocompleteOrganizationInput.tsx": "360536133cb1",
         "src\\atomic-crm\\organizations\\BranchLocationsSection.tsx": "bf910884ec29",
+        "src\\atomic-crm\\organizations\\ContactListCells.tsx": "e3b0c44298fc",
         "src\\atomic-crm\\organizations\\DuplicateOrgWarningDialog.tsx": "25563d1e6fc4",
         "src\\atomic-crm\\organizations\\index.tsx": "a2b3ff9887eb",
         "src\\atomic-crm\\organizations\\OrganizationAddressSection.tsx": "f28039bd5d4c",
@@ -1307,7 +1312,8 @@
         "src\\atomic-crm\\organizations\\OrganizationInputs.tsx": "8752b8f423a8",
         "src\\atomic-crm\\organizations\\OrganizationList.spec.tsx": "34b392200ebb",
         "src\\atomic-crm\\organizations\\OrganizationList.tsx": "2d6c44c86873",
-        "src\\atomic-crm\\organizations\\OrganizationListFilter.tsx": "112dc14457ee",
+        "src\\atomic-crm\\organizations\\OrganizationListFilter.tsx": "9aa5d672cafd",
+        "src\\atomic-crm\\organizations\\OrganizationSavedQueries.tsx": "2651b2dd20e4",
         "src\\atomic-crm\\organizations\\OrganizationShow.tsx": "269d24f36f53",
         "src\\atomic-crm\\organizations\\OrganizationSlideOver.tsx": "b5b87d31cb32",
         "src\\atomic-crm\\organizations\\OrganizationStatusSection.tsx": "a39a7eb5ecea",
@@ -2337,6 +2343,9 @@
     "src\\atomic-crm\\organizations\\BranchLocationsSection.tsx": [
       "_root"
     ],
+    "src\\atomic-crm\\organizations\\ContactListCells.tsx": [
+      "_root"
+    ],
     "src\\atomic-crm\\organizations\\DuplicateOrgWarningDialog.tsx": [
       "_root"
     ],
@@ -2416,6 +2425,9 @@
       "_root"
     ],
     "src\\atomic-crm\\organizations\\OrganizationListFilter.tsx": [
+      "_root"
+    ],
+    "src\\atomic-crm\\organizations\\OrganizationSavedQueries.tsx": [
       "_root"
     ],
     "src\\atomic-crm\\organizations\\OrganizationShow.tsx": [
