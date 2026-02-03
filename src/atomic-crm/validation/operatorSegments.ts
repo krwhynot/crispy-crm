@@ -4,7 +4,8 @@
  * Industry-standard foodservice classifications for customer/prospect organizations.
  * Two-level hierarchy: Parent Category → Child Segment
  *
- * Commercial: FSR, LSR, Bars, Entertainment, Hotels, Catering, Travel, Restaurant Group, Meal Prep
+ * Restaurant: FSR, LSR, Bars, Restaurant Group, Meal Prep
+ * Hospitality & Entertainment: Hotels, Entertainment, Catering, Travel
  * Institutional: K-12, Higher Ed, Healthcare, B&I, Military/Gov, Recreation, Vending
  *
  * Implements Zod validation following Core Principle #3: Single point validation at API boundaries
@@ -88,16 +89,18 @@ export type CreateOperatorSegmentInput = z.infer<typeof createOperatorSegmentSch
  * Children: Use parent prefix + child number (e.g., FSR children are 000000000101-104)
  */
 export const OPERATOR_SEGMENT_IDS = {
-  // Commercial - Parent Categories
+  // Restaurant - Parent Categories
   "Full-Service Restaurant": "33333333-3333-4333-8333-000000000001",
   "Limited-Service Restaurant": "33333333-3333-4333-8333-000000000002",
   "Bars & Lounges": "33333333-3333-4333-8333-000000000003",
+  "Restaurant Group": "33333333-3333-4333-8333-000000000008",
+  "Meal Prep Service": "33333333-3333-4333-8333-000000000009",
+
+  // Hospitality & Entertainment - Parent Categories
   Entertainment: "33333333-3333-4333-8333-000000000004",
   "Hotels & Lodging": "33333333-3333-4333-8333-000000000005",
   Catering: "33333333-3333-4333-8333-000000000006",
   Travel: "33333333-3333-4333-8333-000000000007",
-  "Restaurant Group": "33333333-3333-4333-8333-000000000008",
-  "Meal Prep Service": "33333333-3333-4333-8333-000000000009",
 
   // Institutional - Parent Categories
   "Education - K-12": "33333333-3333-4333-8333-000000000010",
@@ -203,6 +206,63 @@ export const OPERATOR_SEGMENT_PARENT_CHOICES = OPERATOR_PARENT_SEGMENTS.map((nam
   name,
   isParent: true,
 }));
+
+/**
+ * Operator segment group names for accordion filter UI
+ * Three-group taxonomy: Restaurant, Hospitality & Entertainment, Institutional
+ */
+const RESTAURANT_SEGMENT_NAMES: readonly OperatorParentSegment[] = [
+  "Full-Service Restaurant",
+  "Limited-Service Restaurant",
+  "Bars & Lounges",
+  "Restaurant Group",
+  "Meal Prep Service",
+];
+
+const HOSPITALITY_SEGMENT_NAMES: readonly OperatorParentSegment[] = [
+  "Hotels & Lodging",
+  "Entertainment",
+  "Catering",
+  "Travel",
+];
+
+const INSTITUTIONAL_SEGMENT_NAMES: readonly OperatorParentSegment[] = [
+  "Education - K-12",
+  "Education - Higher Ed",
+  "Healthcare",
+  "Business & Industry",
+  "Military/Government",
+  "Recreation/Clubs",
+  "Vending Services",
+];
+
+/**
+ * Operator segment groups for the accordion filter sidebar
+ * Each group contains label, segment names, and pre-computed choices + IDs
+ */
+export const OPERATOR_SEGMENT_GROUPS = [
+  {
+    label: "Restaurant",
+    choices: OPERATOR_SEGMENT_PARENT_CHOICES.filter((c) =>
+      RESTAURANT_SEGMENT_NAMES.includes(c.name as OperatorParentSegment)
+    ),
+    segmentIds: RESTAURANT_SEGMENT_NAMES.map((name) => OPERATOR_SEGMENT_IDS[name]),
+  },
+  {
+    label: "Hospitality & Entertainment",
+    choices: OPERATOR_SEGMENT_PARENT_CHOICES.filter((c) =>
+      HOSPITALITY_SEGMENT_NAMES.includes(c.name as OperatorParentSegment)
+    ),
+    segmentIds: HOSPITALITY_SEGMENT_NAMES.map((name) => OPERATOR_SEGMENT_IDS[name]),
+  },
+  {
+    label: "Institutional",
+    choices: OPERATOR_SEGMENT_PARENT_CHOICES.filter((c) =>
+      INSTITUTIONAL_SEGMENT_NAMES.includes(c.name as OperatorParentSegment)
+    ),
+    segmentIds: INSTITUTIONAL_SEGMENT_NAMES.map((name) => OPERATOR_SEGMENT_IDS[name]),
+  },
+];
 
 /**
  * UI choices array for SelectInput components - All segments with hierarchy

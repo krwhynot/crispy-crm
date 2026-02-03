@@ -1,6 +1,6 @@
 {
   "status": "complete",
-  "generated_at": "2026-02-01T18:33:56.734Z",
+  "generated_at": "2026-02-03T02:59:06.447Z",
   "generator": "scripts/discover/extractors/forms.ts",
   "source_globs": [
     "src/atomic-crm/**/*Create*.tsx",
@@ -8,7 +8,7 @@
     "src/atomic-crm/**/*Form*.tsx",
     "src/atomic-crm/**/*Inputs*.tsx"
   ],
-  "checksum": "sha256:32d064778c989c20",
+  "checksum": "sha256:796b92293de73af9",
   "source_hashes": {
     "src\\atomic-crm\\activities\\ActivityEdit.tsx": "ba97db9f3ada",
     "src\\atomic-crm\\activities\\ActivityInputs.tsx": "85431cf76810",
@@ -41,7 +41,7 @@
     "src\\atomic-crm\\opportunities\\QuickAddForm.tsx": "90401ea3386d",
     "src\\atomic-crm\\opportunities\\QuickAddFormActions.tsx": "196811264691",
     "src\\atomic-crm\\opportunities\\slideOverTabs\\OpportunityDetailsFormSection.tsx": "f2603be715b4",
-    "src\\atomic-crm\\organizations\\OrganizationCompactForm.tsx": "e17fc42233e4",
+    "src\\atomic-crm\\organizations\\OrganizationCompactForm.tsx": "607fb087491f",
     "src\\atomic-crm\\organizations\\OrganizationCreate.tsx": "ef6bdb26c22b",
     "src\\atomic-crm\\organizations\\OrganizationCreateFormFooter.tsx": "437e09ec671b",
     "src\\atomic-crm\\organizations\\OrganizationEdit.tsx": "74e9a09da694",
