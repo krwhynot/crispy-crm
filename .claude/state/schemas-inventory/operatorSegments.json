@@ -1,12 +1,12 @@
 {
   "chunk_name": "operatorSegments",
-  "generated_at": "2026-02-03T13:19:17.870Z",
+  "generated_at": "2026-02-03T15:12:22.703Z",
   "item_count": 4,
   "items": [
     {
       "name": "operatorSegmentSchema",
       "file": "src\\atomic-crm\\validation\\operatorSegments.ts",
-      "line": 166,
+      "line": 175,
       "schemaType": "enum",
       "fields": [],
       "relatedSchemas": [
@@ -20,7 +20,7 @@
     {
       "name": "operatorParentSegmentSchema",
       "file": "src\\atomic-crm\\validation\\operatorSegments.ts",
-      "line": 171,
+      "line": 180,
       "schemaType": "enum",
       "fields": [],
       "relatedSchemas": [
@@ -33,7 +33,7 @@
     {
       "name": "operatorChildSegmentSchema",
       "file": "src\\atomic-crm\\validation\\operatorSegments.ts",
-      "line": 176,
+      "line": 185,
       "schemaType": "enum",
       "fields": [],
       "relatedSchemas": [
@@ -46,7 +46,7 @@
     {
       "name": "operatorSegmentRecordSchema",
       "file": "src\\atomic-crm\\validation\\operatorSegments.ts",
-      "line": 181,
+      "line": 190,
       "schemaType": "strictObject",
       "fields": [
         {

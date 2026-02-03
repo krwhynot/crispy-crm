@@ -8,7 +8,7 @@
  * @template T - Resource type (must have id field)
  */
 
-import { useEffect, useState, useCallback, useMemo } from "react";
+import { useEffect, useState, useCallback, useMemo, useRef } from "react";
 import { useDataProvider } from "ra-core";
 import type {
   ResourceWithId,
@@ -48,6 +48,12 @@ export function useResourceNamesBase<T extends ResourceWithId>(
   const [namesMap, setNamesMap] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(false);
 
+  // Track IDs that returned no results to avoid infinite retry loops.
+  // When getMany returns empty data for certain IDs, the old code would
+  // call setNamesMap(prev => ({...prev})) creating a new reference,
+  // which re-triggered the effect, causing an infinite loop.
+  const failedIdsRef = useRef<Set<string>>(new Set());
+
   // Create stable key for dependency array
   const idsKey = useMemo(() => ids?.join(",") || "", [ids]);
 
@@ -57,8 +63,8 @@ export function useResourceNamesBase<T extends ResourceWithId>(
     }
 
     const fetchNames = async () => {
-      // Only fetch IDs we don't already have cached
-      const idsToFetch = ids.filter((id) => !namesMap[id]);
+      // Only fetch IDs we don't already have cached or previously failed
+      const idsToFetch = ids.filter((id) => !namesMap[id] && !failedIdsRef.current.has(id));
 
       if (idsToFetch.length === 0) {
         return;
@@ -77,8 +83,25 @@ export function useResourceNamesBase<T extends ResourceWithId>(
           return acc;
         }, {});
 
-        setNamesMap((prev) => ({ ...prev, ...newMap }));
+        // Track IDs that were not returned by getMany
+        const resolvedIds = new Set(data.map((item) => String(item.id)));
+        for (const id of idsToFetch) {
+          if (!resolvedIds.has(id)) {
+            failedIdsRef.current.add(id);
+          }
+        }
+
+        // Only update state if we actually got new names.
+        // Skipping no-op updates prevents creating a new namesMap reference
+        // that would re-trigger this effect (infinite loop).
+        if (Object.keys(newMap).length > 0) {
+          setNamesMap((prev) => ({ ...prev, ...newMap }));
+        }
       } catch (error: unknown) {
+        // Mark all attempted IDs as failed on error to prevent retry loops
+        for (const id of idsToFetch) {
+          failedIdsRef.current.add(id);
+        }
         logger.error("Failed to fetch resource names", error, {
           feature: "useResourceNamesBase",
           resource: resourceName,

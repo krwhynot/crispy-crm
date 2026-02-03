@@ -11,6 +11,7 @@ import {
   type SegmentType,
   OPERATOR_SEGMENT_CHOICES,
   OPERATOR_SEGMENT_PARENT_CHOICES,
+  OPERATOR_SEGMENT_NAMES_BY_ID,
 } from "../validation/operatorSegments";
 import type { OrganizationType } from "../validation/organizations";
 import type { ExtendedDataProvider } from "../providers/supabase/extensions/types";
@@ -57,23 +58,26 @@ export class SegmentsService {
 
   /**
    * Get segment by ID
-   * Returns the matching Playbook category or undefined
+   * Returns the matching Playbook category or operator segment, or undefined
    *
    * @param id Category UUID to find
    * @returns Segment object or undefined if not found
    */
   getSegmentById(id: string): Segment | undefined {
-    const entry = Object.entries(PLAYBOOK_CATEGORY_IDS).find(([, uuid]) => uuid === id);
-
-    if (!entry) {
-      logger.warn("Unknown category ID", { feature: "SegmentsService", categoryId: id });
-      return undefined;
+    // Check playbook categories first (22222222-... pattern)
+    const playbookEntry = Object.entries(PLAYBOOK_CATEGORY_IDS).find(([, uuid]) => uuid === id);
+    if (playbookEntry) {
+      return { id, name: playbookEntry[0] as PlaybookCategory };
     }
 
-    return {
-      id,
-      name: entry[0] as PlaybookCategory,
-    };
+    // Check operator segments (33333333-... pattern)
+    const operatorName = OPERATOR_SEGMENT_NAMES_BY_ID[id];
+    if (operatorName) {
+      return { id, name: operatorName };
+    }
+
+    logger.warn("Unknown category ID", { feature: "SegmentsService", categoryId: id });
+    return undefined;
   }
 
   /**

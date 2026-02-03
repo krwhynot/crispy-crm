@@ -13,6 +13,7 @@
 import { useCallback, useMemo } from "react";
 import type { Segment } from "../validation/segments";
 import { PLAYBOOK_CATEGORY_NAMES_BY_ID } from "../validation/segments";
+import { OPERATOR_SEGMENT_NAMES_BY_ID } from "../validation/operatorSegments";
 import { useResourceNamesBase } from "./hooks/useResourceNamesBase";
 
 /**
@@ -22,10 +23,20 @@ import { useResourceNamesBase } from "./hooks/useResourceNamesBase";
 const segmentExtractor = (segment: Segment & { id: string | number }) => segment.name;
 
 /**
+ * Combined static lookup for all known segment types.
+ * Playbook categories (22222222-...) and operator segments (33333333-...)
+ * both resolve synchronously without async fetch.
+ */
+const STATIC_SEGMENT_NAMES: Record<string, string> = {
+  ...PLAYBOOK_CATEGORY_NAMES_BY_ID,
+  ...OPERATOR_SEGMENT_NAMES_BY_ID,
+};
+
+/**
  * Fetch and cache segment names for display in FilterChipBar
  *
- * Uses synchronous static lookup for known playbook categories (instant display),
- * only falling back to async fetch for unknown segment types.
+ * Uses synchronous static lookup for known playbook AND operator segments
+ * (instant display), only falling back to async fetch for truly unknown types.
  *
  * @param segmentIds - Array of segment UUIDs to look up
  * @returns Object with segmentMap, getSegmentName function, and loading state
@@ -37,13 +48,13 @@ const segmentExtractor = (segment: Segment & { id: string | number }) => segment
  * ```
  */
 export const useSegmentNames = (segmentIds: string[] | undefined) => {
-  // Filter out known playbook IDs - no need to fetch these from database
+  // Filter out known segment IDs (playbook + operator) - no need to fetch these
   const unknownIds = useMemo(
-    () => segmentIds?.filter((id) => !PLAYBOOK_CATEGORY_NAMES_BY_ID[id]),
+    () => segmentIds?.filter((id) => !STATIC_SEGMENT_NAMES[id]),
     [segmentIds]
   );
 
-  // Only fetch unknown segments (operator segments, etc.)
+  // Only fetch truly unknown segments
   const { namesMap, loading } = useResourceNamesBase<Segment>(
     "segments",
     unknownIds,
@@ -54,8 +65,8 @@ export const useSegmentNames = (segmentIds: string[] | undefined) => {
   // Check static map first (instant!), then fall back to async-fetched names
   const getSegmentName = useCallback(
     (id: string): string => {
-      // Static lookup for known playbook categories - no loading, no fallback
-      const staticName = PLAYBOOK_CATEGORY_NAMES_BY_ID[id];
+      // Static lookup for known segments - no loading, no fallback
+      const staticName = STATIC_SEGMENT_NAMES[id];
       if (staticName) return staticName;
 
       // Fall back to async-fetched name for unknown segments
@@ -65,7 +76,7 @@ export const useSegmentNames = (segmentIds: string[] | undefined) => {
   );
 
   // Merge static names with dynamically fetched ones
-  const segmentMap = useMemo(() => ({ ...PLAYBOOK_CATEGORY_NAMES_BY_ID, ...namesMap }), [namesMap]);
+  const segmentMap = useMemo(() => ({ ...STATIC_SEGMENT_NAMES, ...namesMap }), [namesMap]);
 
   return {
     segmentMap,

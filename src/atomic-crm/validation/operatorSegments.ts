@@ -135,6 +135,15 @@ export const OPERATOR_SEGMENT_IDS = {
 } as const;
 
 /**
+ * Reverse lookup: operator segment UUID → name
+ * Mirrors PLAYBOOK_CATEGORY_NAMES_BY_ID pattern from segments.ts
+ * Used for synchronous segment name resolution in useSegmentNames
+ */
+export const OPERATOR_SEGMENT_NAMES_BY_ID: Record<string, string> = Object.fromEntries(
+  Object.entries(OPERATOR_SEGMENT_IDS).map(([name, id]) => [id, name])
+);
+
+/**
  * Parent-child hierarchy mapping
  * Maps parent segments to their child segments
  */

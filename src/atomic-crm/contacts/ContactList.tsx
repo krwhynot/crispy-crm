@@ -1,5 +1,7 @@
 import React from "react";
 import { useGetIdentity, useListContext } from "ra-core";
+import { Link } from "react-router-dom";
+import { differenceInDays, formatDistanceToNow } from "date-fns";
 
 import { ContactBulkActionsToolbar } from "./ContactBulkActionsToolbar";
 import { List } from "@/components/ra-wrappers/list";
@@ -8,11 +10,7 @@ import { StandardListLayout } from "@/components/layouts/StandardListLayout";
 import { SortButton } from "@/components/ra-wrappers/sort-button";
 import { ExportButton } from "@/components/ra-wrappers/export-button";
 import { PremiumDatagrid } from "@/components/ra-wrappers/PremiumDatagrid";
-import { TextField } from "@/components/ra-wrappers/text-field";
-import { ReferenceField } from "@/components/ra-wrappers/reference-field";
-import { DateField } from "@/components/ra-wrappers/date-field";
 import { FunctionField } from "react-admin";
-import { TruncatedText } from "@/components/ui/truncated-text";
 import { useSlideOverState } from "@/hooks/useSlideOverState";
 import { useListKeyboardNavigation } from "@/hooks/useListKeyboardNavigation";
 import { ContactListSkeleton } from "@/components/ui/list-skeleton";
@@ -27,41 +25,85 @@ import { TopToolbar } from "../layout/TopToolbar";
 import { Avatar } from "./Avatar";
 import { ContactStatusBadge } from "./ContactBadges";
 import { ContactNameHeader, ContactStatusHeader } from "./ContactDatagridHeader";
-import { formatFullName, formatRoleAndDept } from "../utils/formatters";
+import { formatFullName } from "../utils/formatters";
 import { contactExporter } from "./contactExporter";
 import { CONTACT_FILTER_CONFIG } from "./contactFilterConfig";
 import { PageTutorialTrigger } from "../tutorial";
 import { FilterableBadge } from "@/components/ra-wrappers/FilterableBadge";
+import { TagsList } from "./TagsList";
 
 /**
- * Memoized cell components for ContactList datagrid
- * These prevent unnecessary re-renders when other rows update
+ * Memoized cell components for ContactList datagrid.
+ * "Directory" layout: Identity, Context, Tags, Status, Last Seen.
  */
 
-const ContactAvatarCell = React.memo(function ContactAvatarCell({ record }: { record: Contact }) {
-  return <Avatar record={record} width={40} height={40} />;
-});
-
-const ContactNameCell = React.memo(function ContactNameCell({ record }: { record: Contact }) {
+const ContactIdentityCell = React.memo(function ContactIdentityCell({
+  record,
+}: {
+  record: Contact;
+}) {
+  const emails = record?.email as Array<{ value: string; type: string }> | undefined;
   return (
-    <TruncatedText className="max-w-[200px]">
-      {formatFullName(record.first_name, record.last_name)}
-    </TruncatedText>
+    <div className="flex items-center gap-3">
+      <Avatar record={record} width={40} height={40} />
+      <div className="flex flex-col gap-0.5">
+        <span className="font-medium text-sm">
+          {formatFullName(record.first_name, record.last_name)}
+        </span>
+        <span className="text-xs text-muted-foreground">{emails?.[0]?.value || "—"}</span>
+      </div>
+    </div>
   );
 });
 
-const ContactEmailCell = React.memo(function ContactEmailCell({ record }: { record: Contact }) {
-  const emails = record?.email as Array<{ value: string; type: string }> | undefined;
-  return <span className="text-muted-foreground">{emails?.[0]?.value || "—"}</span>;
+const ContactContextCell = React.memo(function ContactContextCell({ record }: { record: Contact }) {
+  return (
+    <div className="flex flex-col">
+      <span className="text-sm">{record.title || "—"}</span>
+      {record.organization_id && record.company_name ? (
+        <Link
+          to={`/organizations/${record.organization_id}`}
+          className="text-xs text-primary hover:underline"
+          onClick={(e) => e.stopPropagation()}
+        >
+          {record.company_name}
+        </Link>
+      ) : (
+        <span className="text-xs text-muted-foreground">—</span>
+      )}
+    </div>
+  );
 });
 
-const ContactPhoneCell = React.memo(function ContactPhoneCell({ record }: { record: Contact }) {
-  const phones = record?.phone as Array<{ value: string; type: string }> | undefined;
-  return <span className="text-muted-foreground">{phones?.[0]?.value || "—"}</span>;
+const ContactTagsCell = React.memo(function ContactTagsCell({ record }: { record: Contact }) {
+  const tags = record?.tags as string[] | undefined;
+  if (!tags?.length) return <span className="text-muted-foreground">—</span>;
+  return <TagsList />;
 });
 
-const ContactRoleCell = React.memo(function ContactRoleCell({ record }: { record: Contact }) {
-  return <>{formatRoleAndDept(record.title, record.department)}</>;
+function getLastSeenColor(date: Date): string {
+  const days = differenceInDays(new Date(), date);
+  if (days < 7) return "text-green-600 dark:text-green-400";
+  if (days < 30) return "text-amber-600 dark:text-amber-400";
+  return "text-muted-foreground";
+}
+
+const ContactLastSeenCell = React.memo(function ContactLastSeenCell({
+  record,
+}: {
+  record: Contact;
+}) {
+  if (!record.last_seen) {
+    return <span className="text-muted-foreground">Never</span>;
+  }
+  const date = new Date(record.last_seen as string);
+  const relative = formatDistanceToNow(date, { addSuffix: true });
+  const absolute = date.toLocaleDateString();
+  return (
+    <span className={getLastSeenColor(date)} title={absolute}>
+      {relative}
+    </span>
+  );
 });
 
 const ContactStatusCell = React.memo(function ContactStatusCell({ record }: { record: Contact }) {
@@ -70,10 +112,6 @@ const ContactStatusCell = React.memo(function ContactStatusCell({ record }: { re
       <ContactStatusBadge status={record.status} />
     </FilterableBadge>
   );
-});
-
-const ContactNotesCell = React.memo(function ContactNotesCell({ record }: { record: Contact }) {
-  return <>{record.nb_notes ?? 0}</>;
 });
 
 export const ContactList = () => {
@@ -175,95 +213,41 @@ const ContactListLayout = ({
           onRowClick={(id) => openSlideOver(Number(id), "view")}
           focusedIndex={focusedIndex}
         >
-          {/* Column 1: Avatar - Visual identifier (non-sortable) - hidden on mobile */}
-          <FunctionField
-            label=""
-            sortable={false}
-            render={(record: Contact) => <ContactAvatarCell record={record} />}
-            cellClassName="hidden lg:table-cell"
-            headerClassName="hidden lg:table-cell"
-          />
-
-          {/* Column 2: Name - Primary identifier (sortable by first_name) - always visible */}
+          {/* Col 1: Identity — Avatar + Name + Email */}
           <FunctionField
             label={<ContactNameHeader />}
             sortBy="first_name"
-            render={(record: Contact) => <ContactNameCell record={record} />}
+            render={(record: Contact) => <ContactIdentityCell record={record} />}
           />
 
-          {/* Column 3: Email - Primary email from JSONB array - visible on md+ */}
+          {/* Col 2: Context — Title + Organization */}
           <FunctionField
-            source="email"
-            label="Email"
+            label="Role"
+            sortBy="title"
+            render={(record: Contact) => <ContactContextCell record={record} />}
+          />
+
+          {/* Col 3: Tags — Colored chips (hidden on mobile) */}
+          <FunctionField
+            label="Tags"
             sortable={false}
-            render={(record: Contact) => <ContactEmailCell record={record} />}
+            render={(record: Contact) => <ContactTagsCell record={record} />}
             cellClassName="hidden md:table-cell"
             headerClassName="hidden md:table-cell"
           />
 
-          {/* Column 4: Phone - Primary phone from JSONB array - visible on lg+ */}
-          <FunctionField
-            source="phone"
-            label="Phone"
-            sortable={false}
-            render={(record: Contact) => <ContactPhoneCell record={record} />}
-            cellClassName="hidden lg:table-cell"
-            headerClassName="hidden lg:table-cell"
-          />
-
-          {/* Column 5: Title - Job title standalone - visible on lg+ */}
-          <TextField
-            source="title"
-            label="Title"
-            cellClassName="hidden lg:table-cell"
-            headerClassName="hidden lg:table-cell"
-          />
-
-          {/* Column 6: Role - Merged Title + Department (sortable by title) - hidden on tablet */}
-          <FunctionField
-            label="Role"
-            sortBy="title"
-            render={(record: Contact) => <ContactRoleCell record={record} />}
-            cellClassName="hidden lg:table-cell"
-            headerClassName="hidden lg:table-cell"
-          />
-
-          {/* Column 4: Organization - Relationship reference (sortable) - always visible */}
-          <ReferenceField
-            source="organization_id"
-            reference="organizations"
-            label="Organization"
-            link={false}
-            sortable
-          >
-            <TextField source="name" />
-          </ReferenceField>
-
-          {/* Column 5: Status - Badge-based indicator (filterable) - always visible */}
+          {/* Col 4: Status — Badge (filterable) */}
           <FunctionField
             label={<ContactStatusHeader />}
             sortable={false}
             render={(record: Contact) => <ContactStatusCell record={record} />}
           />
 
-          {/* Column 6: Notes - Activity count metric (non-sortable) - hidden on tablet */}
+          {/* Col 5: Last Seen — Relative date with color */}
           <FunctionField
-            label="Notes"
-            sortable={false}
-            render={(record: Contact) => <ContactNotesCell record={record} />}
-            textAlign="center"
-            cellClassName="hidden lg:table-cell"
-            headerClassName="hidden lg:table-cell"
-          />
-
-          {/* Column 7: Last Activity - Recency metric (sortable) - hidden on mobile */}
-          <DateField
-            source="last_seen"
-            label="Last Activity"
-            sortable
-            showTime={false}
-            cellClassName="hidden lg:table-cell"
-            headerClassName="hidden lg:table-cell"
+            label="Last Seen"
+            sortBy="last_seen"
+            render={(record: Contact) => <ContactLastSeenCell record={record} />}
           />
         </PremiumDatagrid>
       </StandardListLayout>

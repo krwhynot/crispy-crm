@@ -531,18 +531,14 @@ describe("ContactList", () => {
   });
 });
 
-describe("ContactList 7-column structure", () => {
+describe("ContactList 5-column directory layout", () => {
   /**
-   * Tests for the refactored ContactList with 7 columns:
-   * 1. Avatar (non-sortable)
-   * 2. Name (computed first_name + last_name, sortable)
-   * 3. Role (merged Title + Department, sortable by title)
-   * 4. Organization (reference field, sortable)
-   * 5. Status (ContactStatusBadge, non-sortable)
-   * 6. Notes (nb_notes count, non-sortable)
-   * 7. Last Activity (date field, sortable)
-   *
-   * Removed columns: Tags, Actions
+   * Tests for the directory-style ContactList with 5 columns:
+   * 1. Identity (Avatar + Name + Email, sortable by first_name)
+   * 2. Context (Title + Organization, sortable by title)
+   * 3. Tags (colored chips, non-sortable, hidden on mobile)
+   * 4. Status (ContactStatusBadge, non-sortable)
+   * 5. Last Seen (relative date with color, sortable)
    */
 
   const mockTags = [
@@ -553,7 +549,6 @@ describe("ContactList 7-column structure", () => {
   beforeEach(() => {
     vi.clearAllMocks();
 
-    // Mock useGetList for tags (used by ContactListFilter)
     vi.mocked(useGetList).mockReturnValue({
       data: mockTags,
       total: mockTags.length,
@@ -572,6 +567,9 @@ describe("ContactList 7-column structure", () => {
           last_seen: "2024-01-15T10:00:00Z",
           nb_notes: 5,
           nb_tasks: 2,
+          tags: [1],
+          company_name: "Tech Corp",
+          organization_id: 1,
         },
       ],
       total: 1,
@@ -595,52 +593,42 @@ describe("ContactList 7-column structure", () => {
     });
   });
 
-  test("renders 7 columns: Avatar, Name, Role, Organization, Status, Notes, Last Activity", async () => {
+  test("renders 5 columns: Identity, Context, Tags, Status, Last Seen", async () => {
     renderWithAdminContext(<ContactList />);
 
     await waitFor(() => {
-      // PremiumDatagrid should render
       expect(screen.getByTestId("premium-datagrid")).toBeInTheDocument();
 
-      // FunctionField for Name, Role, Status, and Notes columns (via mock)
+      // Identity column (ContactNameHeader resolves to "Name" testid)
       expect(screen.getByTestId("function-field-Name")).toBeInTheDocument();
+      // Context column (label="Role")
       expect(screen.getByTestId("function-field-Role")).toBeInTheDocument();
+      // Tags column
+      expect(screen.getByTestId("function-field-Tags")).toBeInTheDocument();
+      // Status column (ContactStatusHeader resolves to "Status" testid)
       expect(screen.getByTestId("function-field-Status")).toBeInTheDocument();
-      expect(screen.getByTestId("function-field-Notes")).toBeInTheDocument();
-
-      // Empty label for Avatar column
-      expect(screen.getByTestId("function-field-")).toBeInTheDocument();
+      // Last Seen column
+      expect(screen.getByTestId("function-field-Last Seen")).toBeInTheDocument();
     });
   });
 
-  test("does NOT render Tags column (removed)", async () => {
+  test("does NOT render removed columns (standalone Avatar, Notes, Actions)", async () => {
     renderWithAdminContext(<ContactList />);
 
     await waitFor(() => {
-      // Tags column should NOT exist
-      expect(screen.queryByTestId("function-field-Tags")).not.toBeInTheDocument();
-      expect(screen.queryByTestId("tags-list")).not.toBeInTheDocument();
-    });
-  });
-
-  test("does NOT render Actions column (removed)", async () => {
-    renderWithAdminContext(<ContactList />);
-
-    await waitFor(() => {
-      // Actions column should NOT exist
+      // Standalone Avatar column with empty label is gone
+      expect(screen.queryByTestId("function-field-")).not.toBeInTheDocument();
+      // Notes column is gone
+      expect(screen.queryByTestId("function-field-Notes")).not.toBeInTheDocument();
+      // Actions column is gone
       expect(screen.queryByTestId("function-field-Actions")).not.toBeInTheDocument();
-      // EditButton should NOT be rendered in the list
-      // (It's now accessed via slide-over, not inline in the table)
     });
   });
 
   test("uses ContactStatusBadge for status display", async () => {
-    // This test verifies the badge component is used instead of the dot indicator
-    // The mock for ContactBadges creates an element with data-testid="contact-status-badge"
     renderWithAdminContext(<ContactList />);
 
     await waitFor(() => {
-      // Status field should render (via FunctionField mock)
       expect(screen.getByTestId("function-field-Status")).toBeInTheDocument();
     });
   });

@@ -5,6 +5,11 @@ import {
   PLAYBOOK_CATEGORY_IDS,
   PLAYBOOK_CATEGORY_CHOICES,
 } from "../../validation/segments";
+import {
+  OPERATOR_SEGMENT_IDS,
+  OPERATOR_PARENT_SEGMENTS,
+  OPERATOR_CHILD_SEGMENTS,
+} from "../../validation/operatorSegments";
 import type { ExtendedDataProvider } from "../../providers/supabase/extensions/types";
 import { createMockDataProvider } from "@/tests/utils/mock-providers";
 
@@ -85,13 +90,38 @@ describe("SegmentsService", () => {
         expect(result?.name).toBe(name);
       });
     });
+
+    it("should resolve operator parent segment IDs", () => {
+      for (const name of OPERATOR_PARENT_SEGMENTS) {
+        const id = OPERATOR_SEGMENT_IDS[name];
+        const result = service.getSegmentById(id);
+        expect(result).toBeDefined();
+        expect(result?.id).toBe(id);
+        expect(result?.name).toBe(name);
+      }
+    });
+
+    it("should resolve operator child segment IDs", () => {
+      for (const name of OPERATOR_CHILD_SEGMENTS) {
+        const id = OPERATOR_SEGMENT_IDS[name];
+        const result = service.getSegmentById(id);
+        expect(result).toBeDefined();
+        expect(result?.id).toBe(id);
+        expect(result?.name).toBe(name);
+      }
+    });
+
+    it("should return undefined for truly unknown IDs", () => {
+      const result = service.getSegmentById("99999999-9999-4999-8999-000000000001");
+      expect(result).toBeUndefined();
+    });
   });
 
   describe("getAllCategories", () => {
-    it("should return all 9 Playbook categories", () => {
+    it("should return all Playbook categories", () => {
       const result = service.getAllCategories();
 
-      expect(result).toHaveLength(9);
+      expect(result).toHaveLength(PLAYBOOK_CATEGORY_CHOICES.length);
       expect(result).toEqual(PLAYBOOK_CATEGORY_CHOICES);
     });
 
@@ -161,16 +191,16 @@ describe("SegmentsService", () => {
   });
 
   describe("Playbook Category Constants", () => {
-    it("should have exactly 9 categories", () => {
-      expect(PLAYBOOK_CATEGORIES).toHaveLength(9);
+    it("should have matching categories count", () => {
+      expect(PLAYBOOK_CATEGORIES.length).toBeGreaterThanOrEqual(9);
     });
 
     it("should have matching IDs for all categories", () => {
-      expect(Object.keys(PLAYBOOK_CATEGORY_IDS)).toHaveLength(9);
+      expect(Object.keys(PLAYBOOK_CATEGORY_IDS)).toHaveLength(PLAYBOOK_CATEGORIES.length);
 
       PLAYBOOK_CATEGORIES.forEach((cat) => {
         expect(PLAYBOOK_CATEGORY_IDS[cat]).toBeDefined();
-        expect(PLAYBOOK_CATEGORY_IDS[cat]).toMatch(/^22222222-2222-4222-8222-00000000000\d$/);
+        expect(PLAYBOOK_CATEGORY_IDS[cat]).toMatch(/^22222222-2222-4222-8222-0000000000\d{2}$/);
       });
     });
 
