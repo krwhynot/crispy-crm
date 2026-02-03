@@ -6,42 +6,31 @@
  * - Record representation (name formatting)
  * - Header actions (QuickAddTaskButton integration)
  *
- * These tests extract and test the configuration directly rather than
- * rendering the full component tree for better isolation and performance.
+ * Two-column layout: Activities tab only (left),
+ * contact details/notes/tasks in right panel.
  *
  * @see ContactSlideOver.tsx
  */
 
 import { describe, it, expect } from "vitest";
-import { UserIcon, ActivityIcon, FileTextIcon } from "lucide-react";
+import { ActivityIcon } from "lucide-react";
 import type { Contact } from "../../types";
 import type { TabConfig } from "@/components/layouts/ResourceSlideOver";
 
 /**
  * Extract the tab configuration from ContactSlideOver for testing.
  * This mirrors the structure defined in the component.
+ *
+ * Only Activities tab - all details, notes, and tasks are in the right panel.
  */
 function createContactTabs(): TabConfig[] {
   return [
-    {
-      key: "details",
-      label: "Details",
-      component: () => null,
-      icon: UserIcon,
-    },
     {
       key: "activities",
       label: "Activities",
       component: () => null,
       icon: ActivityIcon,
       countFromRecord: (record) => (record as Contact).nb_activities,
-    },
-    {
-      key: "notes",
-      label: "Notes",
-      component: () => null,
-      icon: FileTextIcon,
-      countFromRecord: (record) => (record as Contact).nb_notes,
     },
   ];
 }
@@ -51,7 +40,7 @@ function createContactTabs(): TabConfig[] {
  * This mirrors the function defined in the component.
  */
 function getContactName(record: Contact): string {
-  return `${record.first_name} ${record.last_name}`;
+  return `${record.first_name || ""} ${record.last_name || ""}`.trim();
 }
 
 /**
@@ -81,40 +70,36 @@ function createMockContact(overrides: Partial<Contact> = {}): Contact {
 }
 
 describe("ContactSlideOver", () => {
-  describe("Tab Configuration", () => {
-    it("has exactly 3 tabs", () => {
+  describe("Tab Configuration (Two-Column Layout)", () => {
+    it("has exactly 1 tab (Activities only)", () => {
       const tabs = createContactTabs();
-      expect(tabs).toHaveLength(3);
+      expect(tabs).toHaveLength(1);
     });
 
-    it("has correct tab keys", () => {
+    it("has correct tab key", () => {
       const tabs = createContactTabs();
       const keys = tabs.map((tab) => tab.key);
-      expect(keys).toEqual(["details", "activities", "notes"]);
+      expect(keys).toEqual(["activities"]);
     });
 
-    it("has correct tab labels", () => {
+    it("has correct tab label", () => {
       const tabs = createContactTabs();
       const labels = tabs.map((tab) => tab.label);
-      expect(labels).toEqual(["Details", "Activities", "Notes"]);
+      expect(labels).toEqual(["Activities"]);
     });
 
-    it("details tab has UserIcon", () => {
+    it("does not include details or notes in left tabs", () => {
       const tabs = createContactTabs();
-      const detailsTab = tabs.find((tab) => tab.key === "details");
-      expect(detailsTab?.icon).toBe(UserIcon);
+      const tabKeys = tabs.map((tab) => tab.key);
+
+      expect(tabKeys).not.toContain("details");
+      expect(tabKeys).not.toContain("notes");
     });
 
     it("activities tab has ActivityIcon", () => {
       const tabs = createContactTabs();
       const activitiesTab = tabs.find((tab) => tab.key === "activities");
       expect(activitiesTab?.icon).toBe(ActivityIcon);
-    });
-
-    it("notes tab has FileTextIcon", () => {
-      const tabs = createContactTabs();
-      const notesTab = tabs.find((tab) => tab.key === "notes");
-      expect(notesTab?.icon).toBe(FileTextIcon);
     });
 
     it("activities tab uses nb_activities for count badge", () => {
@@ -126,21 +111,6 @@ describe("ContactSlideOver", () => {
       expect(count).toBe(42);
     });
 
-    it("notes tab uses nb_notes for count badge", () => {
-      const tabs = createContactTabs();
-      const notesTab = tabs.find((tab) => tab.key === "notes");
-      const mockContact = createMockContact({ nb_notes: 7 });
-
-      const count = notesTab?.countFromRecord?.(mockContact);
-      expect(count).toBe(7);
-    });
-
-    it("details tab has no count badge function", () => {
-      const tabs = createContactTabs();
-      const detailsTab = tabs.find((tab) => tab.key === "details");
-      expect(detailsTab?.countFromRecord).toBeUndefined();
-    });
-
     it("activities tab returns undefined count when nb_activities is undefined", () => {
       const tabs = createContactTabs();
       const activitiesTab = tabs.find((tab) => tab.key === "activities");
@@ -150,23 +120,12 @@ describe("ContactSlideOver", () => {
       expect(count).toBeUndefined();
     });
 
-    it("notes tab returns undefined count when nb_notes is undefined", () => {
-      const tabs = createContactTabs();
-      const notesTab = tabs.find((tab) => tab.key === "notes");
-      const mockContact = createMockContact({ nb_notes: undefined });
-
-      const count = notesTab?.countFromRecord?.(mockContact);
-      expect(count).toBeUndefined();
-    });
-
-    it("count badges handle zero values", () => {
+    it("count badge handles zero value", () => {
       const tabs = createContactTabs();
       const activitiesTab = tabs.find((tab) => tab.key === "activities");
-      const notesTab = tabs.find((tab) => tab.key === "notes");
-      const mockContact = createMockContact({ nb_activities: 0, nb_notes: 0 });
+      const mockContact = createMockContact({ nb_activities: 0 });
 
       expect(activitiesTab?.countFromRecord?.(mockContact)).toBe(0);
-      expect(notesTab?.countFromRecord?.(mockContact)).toBe(0);
     });
   });
 
@@ -208,7 +167,7 @@ describe("ContactSlideOver", () => {
       });
 
       const result = getContactName(contact);
-      expect(result).toBe(" Doe");
+      expect(result).toBe("Doe");
     });
 
     it("handles empty last name", () => {
@@ -218,7 +177,7 @@ describe("ContactSlideOver", () => {
       });
 
       const result = getContactName(contact);
-      expect(result).toBe("John ");
+      expect(result).toBe("John");
     });
 
     it("handles both names empty", () => {
@@ -228,7 +187,27 @@ describe("ContactSlideOver", () => {
       });
 
       const result = getContactName(contact);
-      expect(result).toBe(" ");
+      expect(result).toBe("");
+    });
+
+    it("handles null first name", () => {
+      const contact = createMockContact({
+        first_name: null as unknown as string,
+        last_name: "Doe",
+      });
+
+      const result = getContactName(contact);
+      expect(result).toBe("Doe");
+    });
+
+    it("handles null last name", () => {
+      const contact = createMockContact({
+        first_name: "Rose",
+        last_name: null as unknown as string,
+      });
+
+      const result = getContactName(contact);
+      expect(result).toBe("Rose");
     });
 
     it("preserves whitespace in names", () => {

@@ -2,14 +2,13 @@
  * Tests for ContactSlideOver component
  *
  * Tests slide-over functionality:
- * - Tab switching (3 tabs: Details, Activities, Notes)
+ * - Tab switching (1 tab: Activities only, details in right panel)
  * - View/edit mode toggle
- * - Save/cancel in edit mode
- * - Validation errors display
- * - Record fetching (useGetOne)
  * - Close handling
+ * - Record fetching (useGetOne)
+ * - Right panel integration
  *
- * Target coverage: ≥70%
+ * Target coverage: >= 70%
  */
 
 import { describe, test, expect, vi, beforeEach, afterEach } from "vitest";
@@ -143,6 +142,15 @@ interface MockTabConfig {
   }>;
 }
 
+// Type for right panel props
+interface MockRightPanelProps {
+  record: { id: number | null; first_name: string; last_name: string };
+  mode: "view" | "edit";
+  onModeToggle?: () => void;
+  onDirtyChange?: (isDirty: boolean) => void;
+  isLoading: boolean;
+}
+
 // Type for ResourceSlideOver props
 interface MockResourceSlideOverProps {
   resource: string;
@@ -157,6 +165,7 @@ interface MockResourceSlideOverProps {
     first_name: string;
     last_name: string;
   }) => string;
+  rightPanel?: (props: MockRightPanelProps) => ReactNode;
 }
 
 // Mock ResourceSlideOver (the wrapper)
@@ -170,6 +179,7 @@ vi.mock("@/components/layouts/ResourceSlideOver", () => ({
     onModeToggle,
     tabs,
     recordRepresentation,
+    rightPanel,
   }: MockResourceSlideOverProps) => {
     const mockRecord = {
       id: recordId,
@@ -211,42 +221,45 @@ vi.mock("@/components/layouts/ResourceSlideOver", () => ({
             );
           })}
         </div>
+
+        {rightPanel && (
+          <div data-testid="right-panel">
+            {rightPanel({
+              record: mockRecord,
+              mode,
+              onModeToggle,
+              onDirtyChange: vi.fn(),
+              isLoading: false,
+            })}
+          </div>
+        )}
       </div>
     );
   },
-}));
-
-// Mock tab components
-vi.mock("./ContactDetailsTab", () => ({
-  ContactDetailsTab: ({
-    record,
-    mode,
-  }: {
-    record: { first_name: string; last_name: string };
-    mode: string;
-  }) => (
-    <div data-testid="contact-details-tab">
-      <p>
-        Details for {record.first_name} {record.last_name}
-      </p>
-      <p>Mode: {mode}</p>
-    </div>
-  ),
-}));
-
-vi.mock("./slideOverTabs/ContactNotesTab", () => ({
-  ContactNotesTab: ({ record, mode }: { record: { id: number | null }; mode: string }) => (
-    <div data-testid="contact-notes-tab">
-      <p>Notes for contact {record.id}</p>
-      <p>Mode: {mode}</p>
-    </div>
-  ),
 }));
 
 vi.mock("./ActivitiesTab", () => ({
   ActivitiesTab: ({ contactId }: { contactId: string | number }) => (
     <div data-testid="activities-tab">
       <p>Activities for contact {contactId}</p>
+    </div>
+  ),
+}));
+
+// Mock ContactRightPanel
+vi.mock("./ContactRightPanel", () => ({
+  ContactRightPanel: ({
+    record,
+    mode,
+  }: {
+    record: { id: number | null; first_name: string; last_name: string };
+    mode: string;
+  }) => (
+    <div data-testid="contact-right-panel">
+      <p>
+        Details for {record.first_name} {record.last_name}
+      </p>
+      <p>Mode: {mode}</p>
     </div>
   ),
 }));
@@ -269,7 +282,7 @@ describe("ContactSlideOver", () => {
   const mockNotify = vi.fn();
 
   beforeEach(() => {
-    vi.clearAllMocks();
+    vi.resetAllMocks();
 
     // Setup default mocks
     vi.mocked(useGetOne).mockReturnValue(
@@ -336,8 +349,8 @@ describe("ContactSlideOver", () => {
     });
   });
 
-  describe("Tab Navigation", () => {
-    test("renders all 3 tabs (Details, Activities, Notes)", async () => {
+  describe("Tab Navigation (Two-Column Layout)", () => {
+    test("renders only Activities tab (details in right panel)", async () => {
       renderWithAdminContext(
         <ContactSlideOver
           recordId={123}
@@ -349,13 +362,13 @@ describe("ContactSlideOver", () => {
       );
 
       await waitFor(() => {
-        expect(screen.getByTestId("tab-details")).toBeInTheDocument();
         expect(screen.getByTestId("tab-activities")).toBeInTheDocument();
-        expect(screen.getByTestId("tab-notes")).toBeInTheDocument();
+        expect(screen.queryByTestId("tab-details")).not.toBeInTheDocument();
+        expect(screen.queryByTestId("tab-notes")).not.toBeInTheDocument();
       });
     });
 
-    test("all tab content panels are rendered", async () => {
+    test("Activities tab content panel is rendered", async () => {
       renderWithAdminContext(
         <ContactSlideOver
           recordId={123}
@@ -367,26 +380,7 @@ describe("ContactSlideOver", () => {
       );
 
       await waitFor(() => {
-        expect(screen.getByTestId("tab-panel-details")).toBeInTheDocument();
         expect(screen.getByTestId("tab-panel-activities")).toBeInTheDocument();
-        expect(screen.getByTestId("tab-panel-notes")).toBeInTheDocument();
-      });
-    });
-
-    test("Details tab shows contact details component", async () => {
-      renderWithAdminContext(
-        <ContactSlideOver
-          recordId={123}
-          isOpen={true}
-          mode="view"
-          onClose={mockOnClose}
-          onModeToggle={mockOnModeToggle}
-        />
-      );
-
-      await waitFor(() => {
-        expect(screen.getByTestId("contact-details-tab")).toBeInTheDocument();
-        expect(screen.getByText(/Details for John Doe/)).toBeInTheDocument();
       });
     });
 
@@ -406,8 +400,10 @@ describe("ContactSlideOver", () => {
         expect(screen.getByText(/Activities for contact 123/)).toBeInTheDocument();
       });
     });
+  });
 
-    test("Notes tab shows notes component", async () => {
+  describe("Right Panel Integration", () => {
+    test("renders right panel with contact details", async () => {
       renderWithAdminContext(
         <ContactSlideOver
           recordId={123}
@@ -419,8 +415,43 @@ describe("ContactSlideOver", () => {
       );
 
       await waitFor(() => {
-        expect(screen.getByTestId("contact-notes-tab")).toBeInTheDocument();
-        expect(screen.getByText(/Notes for contact 123/)).toBeInTheDocument();
+        expect(screen.getByTestId("right-panel")).toBeInTheDocument();
+        expect(screen.getByTestId("contact-right-panel")).toBeInTheDocument();
+      });
+    });
+
+    test("right panel shows contact details in view mode", async () => {
+      renderWithAdminContext(
+        <ContactSlideOver
+          recordId={123}
+          isOpen={true}
+          mode="view"
+          onClose={mockOnClose}
+          onModeToggle={mockOnModeToggle}
+        />
+      );
+
+      await waitFor(() => {
+        const rightPanel = screen.getByTestId("contact-right-panel");
+        expect(within(rightPanel).getByText(/Details for John Doe/)).toBeInTheDocument();
+        expect(within(rightPanel).getByText("Mode: view")).toBeInTheDocument();
+      });
+    });
+
+    test("right panel shows edit mode", async () => {
+      renderWithAdminContext(
+        <ContactSlideOver
+          recordId={123}
+          isOpen={true}
+          mode="edit"
+          onClose={mockOnClose}
+          onModeToggle={mockOnModeToggle}
+        />
+      );
+
+      await waitFor(() => {
+        const rightPanel = screen.getByTestId("contact-right-panel");
+        expect(within(rightPanel).getByText("Mode: edit")).toBeInTheDocument();
       });
     });
   });
@@ -481,28 +512,6 @@ describe("ContactSlideOver", () => {
 
       expect(mockOnModeToggle).toHaveBeenCalledTimes(1);
     });
-
-    test("passes mode prop to tab components", async () => {
-      renderWithAdminContext(
-        <ContactSlideOver
-          recordId={123}
-          isOpen={true}
-          mode="edit"
-          onClose={mockOnClose}
-          onModeToggle={mockOnModeToggle}
-        />
-      );
-
-      await waitFor(() => {
-        // Details tab should show edit mode
-        const detailsTab = screen.getByTestId("contact-details-tab");
-        expect(within(detailsTab).getByText("Mode: edit")).toBeInTheDocument();
-
-        // Notes tab should show edit mode
-        const notesTab = screen.getByTestId("contact-notes-tab");
-        expect(within(notesTab).getByText("Mode: edit")).toBeInTheDocument();
-      });
-    });
   });
 
   describe("Close Handling", () => {
@@ -541,9 +550,7 @@ describe("ContactSlideOver", () => {
         />
       );
 
-      // Sheet renders but shows empty state (our mock doesn't handle this, but real component does)
-      // In the real implementation, ResourceSlideOver shows "Select a record to view details"
-      // Our mock always renders content, so we just verify it's present
+      // Sheet renders but shows empty state
       expect(screen.getByRole("dialog")).toBeInTheDocument();
     });
 
@@ -566,7 +573,7 @@ describe("ContactSlideOver", () => {
   });
 
   describe("Tab Configuration", () => {
-    test("passes correct tab config with icons", async () => {
+    test("passes correct tab config with single Activities tab", async () => {
       renderWithAdminContext(
         <ContactSlideOver
           recordId={123}
@@ -580,14 +587,12 @@ describe("ContactSlideOver", () => {
       await waitFor(() => {
         const tabList = screen.getByTestId("tab-list");
 
-        // All 3 tabs should be present
+        // Only 1 tab should be present (Activities)
         const tabs = within(tabList).getAllByRole("tab");
-        expect(tabs).toHaveLength(3);
+        expect(tabs).toHaveLength(1);
 
-        // Verify tab labels
-        expect(tabs[0]).toHaveTextContent("Details");
-        expect(tabs[1]).toHaveTextContent("Activities");
-        expect(tabs[2]).toHaveTextContent("Notes");
+        // Verify tab label
+        expect(tabs[0]).toHaveTextContent("Activities");
       });
     });
   });

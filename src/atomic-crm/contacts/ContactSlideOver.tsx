@@ -1,11 +1,10 @@
 import { useEffect } from "react";
 import { useGetOne } from "react-admin";
-import { UserIcon, ActivityIcon, FileTextIcon } from "lucide-react";
+import { ActivityIcon } from "lucide-react";
 import { ResourceSlideOver, type TabConfig } from "@/components/layouts/ResourceSlideOver";
 import { ContactDetailSkeleton } from "@/components/ui/list-skeleton";
-import { ContactDetailsTab } from "./ContactDetailsTab";
-import { ContactNotesTab } from "./slideOverTabs/ContactNotesTab";
 import { ActivitiesTab } from "./ActivitiesTab";
+import { ContactRightPanel } from "./ContactRightPanel";
 import { ContactHierarchyBreadcrumb } from "./ContactHierarchyBreadcrumb";
 import { QuickAddTaskButton, FavoriteToggleButton } from "@/atomic-crm/components";
 import { useRecentSearches } from "@/atomic-crm/hooks/useRecentSearches";
@@ -22,10 +21,12 @@ interface ContactSlideOverProps {
 /**
  * Slide-over panel for viewing and editing contact records.
  *
- * Provides a tabbed interface with:
- * - Details: Contact information (view/edit)
- * - Activities: Activity timeline
- * - Notes: Contact notes (create/edit)
+ * Two-column layout:
+ * - Left: Activities tab (activity timeline)
+ * - Right: Contact details, notes, and tasks (ContactRightPanel)
+ *
+ * In edit mode, the right panel shows the full contact form above
+ * the notes and tasks sections.
  *
  * Uses ResourceSlideOver wrapper for consistent UI.
  */
@@ -54,14 +55,8 @@ export function ContactSlideOver({
     }
   }, [record?.id, record?.first_name, record?.last_name, addRecent]);
 
-  // Tab configuration with count badges
+  // Tab configuration - Activities only (details/notes/tasks in right panel)
   const contactTabs: TabConfig[] = [
-    {
-      key: "details",
-      label: "Details",
-      component: ContactDetailsTab,
-      icon: UserIcon,
-    },
     {
       key: "activities",
       label: "Activities",
@@ -71,18 +66,11 @@ export function ContactSlideOver({
       icon: ActivityIcon,
       countFromRecord: (record: Contact) => record.nb_activities,
     },
-    {
-      key: "notes",
-      label: "Notes",
-      component: ContactNotesTab,
-      icon: FileTextIcon,
-      countFromRecord: (record: Contact) => record.nb_notes,
-    },
   ];
 
   // Record representation function
   const getContactName = (record: Contact) => {
-    return `${record.first_name} ${record.last_name}`;
+    return `${record.first_name || ""} ${record.last_name || ""}`.trim();
   };
 
   return (
@@ -97,6 +85,14 @@ export function ContactSlideOver({
       recordRepresentation={getContactName}
       breadcrumbComponent={ContactHierarchyBreadcrumb}
       loadingSkeleton={ContactDetailSkeleton}
+      rightPanel={({ record, mode, onModeToggle, onDirtyChange }) => (
+        <ContactRightPanel
+          record={record as Contact}
+          mode={mode}
+          onModeToggle={onModeToggle}
+          onDirtyChange={onDirtyChange}
+        />
+      )}
       headerActions={(record) => (
         <>
           <FavoriteToggleButton
