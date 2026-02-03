@@ -29,7 +29,7 @@
 interface ZodIssueBase {
   code: string;
   message: string;
-  path: (string | number)[];
+  path: PropertyKey[]; // PropertyKey = string | number | symbol (Zod v4 compat)
 }
 
 /**

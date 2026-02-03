@@ -169,6 +169,24 @@ describe("Task Validation Schemas (task.ts)", () => {
       }
     });
 
+    it("should reject null due_date", () => {
+      // ISSUE-3: DateInput "Clear date" sends null, which z.coerce.date()
+      // converted to Unix epoch (1970-01-01). Preprocess now maps null to undefined.
+      const invalidTask = { ...validTask, due_date: null };
+      const result = taskSchema.safeParse(invalidTask);
+      expect(result.success).toBe(false);
+      if (!result.success) {
+        expect(result.error.issues[0].message).toContain("Due date is required");
+      }
+    });
+
+    it("should reject undefined due_date", () => {
+      // Missing due_date should fail validation (required field)
+      const invalidTask = { ...validTask, due_date: undefined };
+      const result = taskSchema.safeParse(invalidTask);
+      expect(result.success).toBe(false);
+    });
+
     it("should accept valid ISO date formats", () => {
       const validDates = [
         "2025-01-15",
@@ -567,6 +585,14 @@ describe("Task Validation Schemas (task.ts)", () => {
       expect(defaults.due_date).toBeInstanceOf(Date);
       // Check it's today (same date, ignoring time)
       expect(defaults.due_date?.toISOString().slice(0, 10)).toBe(today.toISOString().slice(0, 10));
+    });
+
+    it("should pass new Date() through preprocess unchanged", () => {
+      // ISSUE-3 regression guard: preprocess converts null/undefined/empty to undefined
+      // but must pass valid Date objects through to z.coerce.date() unchanged
+      const defaults = getTaskDefaultValues();
+      expect(defaults.due_date).toBeInstanceOf(Date);
+      expect(defaults.due_date?.getFullYear()).toBeGreaterThanOrEqual(2025);
     });
 
     it("should return object that passes partial schema validation", () => {

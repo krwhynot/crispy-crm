@@ -37,7 +37,10 @@ export const taskSchema = z.strictObject({
   id: idSchema.optional(),
   title: z.string().trim().min(1, "Title is required").max(500, "Title too long"),
   description: z.string().max(2000, "Description too long").nullable().optional(),
-  due_date: z.coerce.date({ error: "Due date is required" }),
+  due_date: z.preprocess(
+    (val) => (val === null || val === undefined || val === "" ? undefined : val),
+    z.coerce.date({ error: "Due date is required" })
+  ),
   reminder_date: z.coerce.date().nullable().optional(),
   completed: z.coerce.boolean().default(false),
   completed_at: z.string().max(50).nullable().optional(),

@@ -1,37 +1,18 @@
-# Tasks Module E2E Manual Testing Checklist
+# Tasks Module E2E Testing - Claude Chrome Prompts
 
-Comprehensive manual E2E test checklist for the Tasks module. This module has limited automated test coverage (14 tests), so this checklist is designed to be extra thorough.
+Executable test prompts for Claude Chrome browser automation. Each section is a self-contained prompt.
 
-## Test Environment Setup
+**Architecture Note (STI):** Tasks are stored in the `activities` table with `activity_type = 'task'`. The `tasksHandler` virtualizes a "tasks" resource. All network traffic targets `/rest/v1/activities`, never `/rest/v1/tasks`. Field mapping: UI `title` = DB `subject`, UI task types (Title Case) = DB interaction types (snake_case).
 
-**Environment Selection:**
+---
+
+## Environment
+
 | Environment | Base URL | Credentials |
 |-------------|----------|-------------|
 | Local | http://localhost:5173 | admin@test.com / password123 |
-| Production | https://crm.kjrcloud.com | [production credentials] |
 
-**Claude Chrome Commands:**
-- Local: "Run tasks tests against localhost:5173"
-- Production: "Run tasks tests against crm.kjrcloud.com"
-
-- **Browser:** Chrome (recommended for Claude Chrome testing)
-- **Seed Data Required:** Run `just seed-e2e` before testing
-- **Test Data Naming:** Use timestamps like `Test Task 2025-12-31-143022`
-
-### Pre-Test Checklist
-
-- [ ] Development server running (`npm run dev` or `just dev`)
-- [ ] Browser DevTools open (F12), Console tab visible
-- [ ] Seed data loaded (verify "Ryan Wabeke" opportunity exists)
-- [ ] Logged in as admin@test.com
-
-### Seed Data References
-
-| Entity | Name | Purpose |
-|--------|------|---------|
-| Opportunity | Ryan Wabeke | For opportunity linking tests |
-| Contact | Hancotte | For contact linking tests |
-| User | Admin | Default assigned user |
+**Seed data:** `just seed-e2e` (verify "Ryan Wabeke" opportunity and "Hancotte" contact exist)
 
 ---
 
@@ -39,339 +20,254 @@ Comprehensive manual E2E test checklist for the Tasks module. This module has li
 
 ### Test 1.1: Create Task - Minimal Required Fields
 
-**Objective:** Verify task creation with only required fields.
+Navigate to `{BASE_URL}/#/tasks/create`. Wait for the form to load. Take a screenshot.
 
-**Steps:**
+Verify the form structure:
+- There are form tabs (e.g. "General" and "Details" or similar grouping)
+- Title field is marked required (asterisk)
+- Due Date field is marked required (asterisk)
+- Type defaults to "Call"
+- Priority defaults to "Medium"
+- "Assigned To" is pre-filled with the current user (Admin)
 
-1. Navigate to `${BASE_URL}/#/tasks/create`
-2. Wait for form to load completely
-3. Fill in:
-   - **Title:** `Test Task 2025-12-31-143022`
-   - **Due Date:** Select tomorrow's date
-   - **Type:** Leave as "Call" (default)
-4. Verify "Assigned To" is pre-filled with current user
-5. Click "Save & Close"
+Fill in:
+- Title: `Test Task CRUD-1.1`
+- Due Date: select tomorrow's date
 
-**Expected Results:**
+Click "Save & Close". Wait for navigation.
 
-- [ ] Form loads with 2 tabs: "General" and "Details"
-- [ ] Title field shows asterisk (*) indicating required
-- [ ] Due Date field shows asterisk (*) indicating required
-- [ ] Type defaults to "Call"
-- [ ] Priority defaults to "Medium"
-- [ ] Assigned To pre-fills with logged-in user (Admin)
-- [ ] Form submits successfully
-- [ ] Redirects to tasks list (`/#/tasks`)
-- [ ] New task appears in list
-- [ ] No console errors
+Verify:
+- Success notification appears
+- Redirected to tasks list (`/#/tasks`)
+- The new task "Test Task CRUD-1.1" appears in the list
+- Read console messages and confirm no errors
+
+Open the Network tab (use `read_network_requests` with pattern `/rest/v1/activities`). Verify:
+- The POST request went to `/rest/v1/activities` (NOT `/rest/v1/tasks`)
+- Request body contains `activity_type: "task"`
+- Request body contains `subject: "Test Task CRUD-1.1"` (NOT `title`)
 
 ---
 
 ### Test 1.2: Create Task - All Fields Populated
 
-**Objective:** Verify task creation with all optional fields.
+Navigate to `{BASE_URL}/#/tasks/create`.
 
-**Test Data:**
-
-- Title: `Full Task 2025-12-31-143022`
-- Description: `This is a comprehensive test task with all fields`
+Fill in the General section:
+- Title: `Full Task CRUD-1.2`
+- Description: `Comprehensive test task with all fields`
 - Due Date: 7 days from now
 - Reminder Date: 5 days from now
-- Priority: High
-- Type: Meeting
-- Organization: Search for any organization
-- Opportunity: Search for "Ryan Wabeke"
-- Contact: Search for "Hancotte"
-- Assigned To: Admin
 
-**Steps:**
+Switch to the Details section/tab. Fill in:
+- Priority: select "High"
+- Type: select "Meeting"
+- Organization: type in the autocomplete and select any result
+- Opportunity: type "Ryan" and select "Ryan Wabeke"
+- Contact: type "Hancotte" and select from dropdown
+- Assigned To: leave as Admin
 
-1. Navigate to `/#/tasks/create`
-2. Fill in General tab:
-   - Title
-   - Description (multi-line textarea)
-   - Due Date
-   - Reminder Date
-3. Click "Details" tab
-4. Fill in Details tab:
-   - Priority: Select "High"
-   - Type: Select "Meeting"
-   - Organization: Use autocomplete, type organization name
-   - Opportunity: Use autocomplete, type "Ryan"
-   - Contact: Use autocomplete, type "Hancotte"
-   - Assigned To: Leave as Admin
-5. Click "Save & Close"
+Click "Save & Close". Wait for navigation.
 
-**Expected Results:**
-
-- [ ] Tab navigation works between General and Details
-- [ ] All autocomplete fields search and select correctly
-- [ ] Form submits successfully
-- [ ] All fields saved correctly (verify in slide-over)
-- [ ] No console errors
+Verify:
+- Success notification appears
+- Task appears in list
+- Click the new task row to open the slide-over
+- All fields are displayed correctly: priority High, type Meeting, linked contact, linked opportunity
+- Read console messages and confirm no errors
 
 ---
 
-### Test 1.3: Read - Task List Display
+### Test 1.3: Task List Display
 
-**Objective:** Verify task list displays all columns correctly.
+Navigate to `{BASE_URL}/#/tasks`. Wait for list to load. Take a screenshot.
 
-**Steps:**
+Verify the datagrid columns (at 1440px desktop width):
+- Done (checkbox column)
+- Title
+- Due Date
+- Priority (colored badge)
+- Type (outline badge)
+- Assigned To
+- Contact
+- Opportunity
+- Actions ("..." menu button)
 
-1. Navigate to `/#/tasks`
-2. Observe the task list datagrid
-
-**Expected Results:**
-
-- [ ] List loads with skeleton during fetch
-- [ ] Columns visible (desktop): Done, Title, Due Date, Priority, Type, Assigned To, Contact, Opportunity, Actions
-- [ ] "Done" column shows checkbox for each row
-- [ ] Priority displays as colored badge
-- [ ] Type displays as outline badge
-- [ ] Actions column shows "..." menu button
-- [ ] Rows are sorted by Due Date ascending by default
-- [ ] Keyboard navigation works (arrow keys)
-
----
-
-### Test 1.4: Read - Task Slide-Over View
-
-**Objective:** Verify slide-over displays task details correctly.
-
-**Steps:**
-
-1. Navigate to `/#/tasks`
-2. Click on any task row (not the checkbox or menu)
-3. Observe the slide-over panel
-
-**Expected Results:**
-
-- [ ] Slide-over opens from right (40vw width)
-- [ ] Two tabs visible: "Details" and "Related Items"
-- [ ] Task title appears in header
-- [ ] Details tab shows all task fields
-- [ ] Toggle between View/Edit mode works
-- [ ] ESC key closes slide-over
-- [ ] URL updates with `?view=[id]`
+Verify:
+- Rows are sorted by Due Date ascending by default
+- "Done" column shows a checkbox for each row
+- Read console messages and confirm no errors
 
 ---
 
-### Test 1.5: Update - Edit Task via Slide-Over
+### Test 1.4: Task Slide-Over View
 
-**Objective:** Verify task editing in slide-over edit mode.
+Navigate to `{BASE_URL}/#/tasks`. Click on any task row (NOT the checkbox, NOT the "..." menu). Wait for slide-over to open. Take a screenshot.
 
-**Steps:**
+Verify:
+- Slide-over opens from the right
+- Task title appears in the header
+- Task detail fields are visible (due date, priority, type, description)
+- There is a View/Edit mode toggle (pencil icon or "Edit" button)
+- URL updated to include `?view=[id]`
 
-1. Navigate to `/#/tasks`
-2. Click on a task to open slide-over
-3. Click "Edit" button (pencil icon) to switch to edit mode
-4. Modify Title: Append ` - EDITED`
-5. Change Priority from current to "Critical"
-6. Click "Save" button
-
-**Expected Results:**
-
-- [ ] Slide-over switches to edit mode
-- [ ] Form fields become editable
-- [ ] Changes save successfully
-- [ ] Slide-over refreshes with new data
-- [ ] List updates to reflect changes
-- [ ] No console errors
+Press Escape. Verify the slide-over closes and URL returns to `/#/tasks`.
 
 ---
 
-### Test 1.6: Update - Edit Task via Standalone Page
+### Test 1.5: Edit Task via Slide-Over
 
-**Objective:** Verify standalone edit page functionality.
+Navigate to `{BASE_URL}/#/tasks`. Click on a task row to open the slide-over. Click the "Edit" button (pencil icon) to switch to edit mode. Take a screenshot.
 
-**Steps:**
+Verify edit mode:
+- Form fields are now editable
+- There is a Save button and a Cancel button
 
-1. Navigate directly to `/#/tasks/[id]` (use existing task ID)
-2. Or: From list, click Actions menu > "Edit"
-3. Modify the description
-4. Click "Save"
+Modify the Title field: append ` - EDITED` to the existing title. Change Priority to "Critical". Click Save. Wait for the save to complete.
 
-**Expected Results:**
+Verify:
+- Success notification appears
+- Slide-over shows updated data (title with " - EDITED", priority "Critical")
+- Close the slide-over and verify the list row reflects the changes
+- Read console messages and confirm no errors
 
-- [ ] Edit page loads with card layout
-- [ ] TaskInputs component renders (2 tabs)
-- [ ] Changes save successfully
-- [ ] Redirects to show page
-- [ ] No console errors
-
----
-
-### Test 1.7: Delete - Task via Actions Menu
-
-**Objective:** Verify task deletion (soft-delete).
-
-**Steps:**
-
-1. Navigate to `/#/tasks`
-2. Find a test task to delete
-3. Click the "..." actions menu on that row
-4. Click "Delete"
-5. Observe result
-
-**Expected Results:**
-
-- [ ] Actions menu opens correctly
-- [ ] Delete option appears with red/destructive styling
-- [ ] Task is removed from list after delete
-- [ ] Success notification appears: "Task deleted"
-- [ ] No console errors
-- [ ] Task uses soft-delete (deleted_at set, not hard deleted)
+Check network requests with pattern `/rest/v1/activities`. Verify:
+- The PATCH request went to `/rest/v1/activities` with the task's ID
+- Request body uses `subject` field (not `title`)
 
 ---
 
-## Section 2: Completion Flow Tests
+### Test 1.6: Delete Task via Actions Menu
+
+Navigate to `{BASE_URL}/#/tasks`. Find a test task (e.g. "Test Task CRUD-1.1"). Click the "..." actions menu on that row. Take a screenshot of the menu.
+
+Verify:
+- Menu contains a Delete option with destructive/red styling
+
+Click "Delete". Wait for the operation to complete.
+
+Verify:
+- Task is removed from the list
+- Success notification appears
+- Read console messages and confirm no errors
+
+Check network requests. Verify:
+- The delete used a PATCH to `/rest/v1/activities` setting `deleted_at` (soft-delete, NOT an HTTP DELETE)
+
+---
+
+## Section 2: Completion Flow
 
 ### Test 2.1: Complete Task via List Checkbox
 
-**Objective:** Verify inline task completion from list view.
+Navigate to `{BASE_URL}/#/tasks`. Find an incomplete task (unchecked checkbox in the "Done" column). Note the task title. Click the checkbox.
 
-**Steps:**
+Verify:
+- The checkbox click did NOT open the slide-over (stop propagation working)
+- Success notification appears (e.g. "Task completed")
+- The checkbox now shows as checked
+- No completion dialog appeared (dialog is Kanban-only, not list view)
+- Read console messages and confirm no errors
 
-1. Navigate to `/#/tasks`
-2. Find an incomplete task
-3. Click the checkbox in the "Done" column
-4. Observe result
-
-**Expected Results:**
-
-- [ ] Checkbox click does NOT trigger row click (slide-over should not open)
-- [ ] Task marked as completed immediately
-- [ ] Success notification: "Task completed"
-- [ ] Checkbox shows as checked
-- [ ] completed_at timestamp is set
+Check network requests with pattern `/rest/v1/activities`. Verify:
+- PATCH request includes `completed: true`
+- Response includes a `completed_at` timestamp
 
 ---
 
 ### Test 2.2: Reopen Completed Task
 
-**Objective:** Verify task can be uncompleted.
+Navigate to `{BASE_URL}/#/tasks`. Find a completed task (checked checkbox). Click the checkbox to uncheck it.
 
-**Steps:**
+Verify:
+- Success notification appears (e.g. "Task reopened")
+- Checkbox shows as unchecked
+- Read console messages and confirm no errors
 
-1. Navigate to `/#/tasks`
-2. Find a completed task (checkbox checked)
-3. Click the checkbox to uncheck
-
-**Expected Results:**
-
-- [ ] Task marked as incomplete
-- [ ] Success notification: "Task reopened"
-- [ ] Checkbox shows as unchecked
-- [ ] completed_at is cleared (null)
+Check network requests. Verify:
+- PATCH request includes `completed: false`
+- `completed_at` is set to `null`
 
 ---
 
-### Test 2.3: Completion Dialog Flow - Log Activity
+### Test 2.3: Completion Dialog - Log Activity (Kanban)
 
-**Objective:** Verify completion triggers activity logging dialog.
+Navigate to `{BASE_URL}/#/dashboard-v3` (Dashboard V3). Take a screenshot. Find a task card in the Kanban panel. Note the task title and type. Click the checkbox on the task card to complete it.
 
-**Note:** This test applies to the Dashboard Kanban view (TasksKanbanPanel) which shows the TaskCompletionDialog.
+Verify the completion dialog:
+- Dialog opens with title "Task Completed!" (or similar)
+- Task subject is shown
+- Three options visible: "Log Activity", "Create Follow-up", "Just Complete"
 
-**Steps:**
+Click "Log Activity".
 
-1. Navigate to `/#/dashboard-v3` (Dashboard V3)
-2. Find a task card in the Kanban panel
-3. Complete the task (method depends on Kanban UI)
-4. Observe the completion dialog
+Verify:
+- A QuickLogActivityDialog opens inline (does NOT navigate to `/activities/create`)
+- Type is pre-filled, mapped from task type (e.g. Call -> call, Email -> email)
+- Subject is pre-filled from the task title
+- Contact/Opportunity IDs are carried over from the original task
+- Date defaults to today
 
-**Expected Results:**
+Submit the activity form. Wait for completion.
 
-- [ ] Completion dialog opens with title "Task Completed!"
-- [ ] Task subject shown in dialog
-- [ ] Three options visible:
-  - [ ] "Log Activity" - primary button
-  - [ ] "Create Follow-up" - primary button
-  - [ ] "Just Complete" - outline button
-- [ ] "Log Activity" navigates to `/activities/create` with pre-filled params
-- [ ] Activity type is mapped from task type (Call->Call, Email->Email, etc.)
-- [ ] Contact/Opportunity IDs passed in URL params
+Verify:
+- Dialog closes and returns to dashboard
+- Read console messages and confirm no errors
 
----
-
-### Test 2.4: Completion Dialog Flow - Create Follow-up
-
-**Objective:** Verify follow-up task creation from completion dialog.
-
-**Steps:**
-
-1. Complete a task to trigger completion dialog
-2. Click "Create Follow-up"
-
-**Expected Results:**
-
-- [ ] Navigates to `/tasks/create`
-- [ ] Title pre-filled as: `Follow-up: [original task subject]`
-- [ ] Type pre-filled as "Follow-up"
-- [ ] Contact/Opportunity IDs preserved from original task
-- [ ] Task completes before navigation
+Check network requests with pattern `/rest/v1/activities`. Verify:
+- A POST created a new activity record with `activity_type` = `interaction` or `engagement` (NOT `task`)
+- The new activity has `related_task_id` set to the completed task's ID
 
 ---
 
-### Test 2.5: Completion Dialog Flow - Just Complete
+### Test 2.4: Completion Dialog - Create Follow-up
 
-**Objective:** Verify simple completion without follow-up.
+Navigate to `{BASE_URL}/#/dashboard-v3`. Complete a task via checkbox on a Kanban card to trigger the completion dialog. Click "Create Follow-up".
 
-**Steps:**
-
-1. Complete a task to trigger completion dialog
-2. Click "Just Complete"
-
-**Expected Results:**
-
-- [ ] Dialog closes
-- [ ] Task marked as completed
-- [ ] No navigation occurs
-- [ ] Returns to previous view
+Verify:
+- Navigates to `/#/tasks/create`
+- Title is pre-filled as: `Follow-up: [original task subject]`
+- Type is pre-filled as "Follow-up" (regardless of original type)
+- Contact and Opportunity IDs are preserved from the original task
+- The original task was marked completed before navigation
 
 ---
 
-## Section 3: Snooze Functionality Tests
+### Test 2.5: Completion Dialog - Just Complete
 
-### Test 3.1: Snooze Field - Empty String to Null Transform
+Navigate to `{BASE_URL}/#/dashboard-v3`. Complete a task via checkbox on a Kanban card to trigger the completion dialog. Click "Just Complete".
 
-**Objective:** Verify snooze_until empty string is transformed to null.
+Verify:
+- Dialog closes
+- Task is marked as completed
+- No navigation occurred (still on dashboard)
+- Read console messages and confirm no errors
 
-**Steps:**
+---
 
-1. Navigate to `/#/tasks/create`
-2. Fill required fields (Title, Due Date)
-3. Leave snooze_until empty (if visible in form)
-4. Submit form
-5. Check database or API response
+## Section 3: Snooze Functionality
 
-**Expected Results:**
+### Test 3.1: Snooze Field - Null Transform
 
-- [ ] Form accepts empty snooze field
-- [ ] snooze_until saved as NULL (not empty string)
-- [ ] Task is active (not hidden)
-- [ ] No validation errors
+Navigate to `{BASE_URL}/#/tasks/create`. Fill required fields (Title: `Snooze Test 3.1`, Due Date: tomorrow). Do NOT set any snooze date. Submit the form.
+
+Check network requests with pattern `/rest/v1/activities`. Verify:
+- `snooze_until` is `null` in the request body (not empty string)
+- Task saves successfully
+- Task appears in the task list (not hidden)
 
 ---
 
 ### Test 3.2: Snooze Until Future Date
 
-**Objective:** Verify snoozing a task hides it until specified date.
+Navigate to `{BASE_URL}/#/tasks`. Click on an existing task to open the slide-over. Switch to edit mode. If a snooze_until field is visible, set it to 3 days from now. Save.
 
-**Note:** This test requires snooze_until field to be editable. Check if exposed in form or only via API.
+Verify:
+- Task saves with the snooze date
+- Check if the task is filtered from the list (behavior depends on list filters)
+- Read console messages and confirm no errors
 
-**Steps:**
-
-1. Edit an existing task
-2. Set snooze_until to a future date (e.g., 3 days from now)
-3. Save the task
-4. Return to task list
-
-**Expected Results:**
-
-- [ ] Task saves with snooze_until date
-- [ ] Task behavior on list depends on filter (may be hidden)
-- [ ] After snooze date passes, task reappears
-- [ ] No console errors
+Note: If snooze_until is not exposed in the form UI, note this as a known limitation.
 
 ---
 
@@ -379,691 +275,501 @@ Comprehensive manual E2E test checklist for the Tasks module. This module has li
 
 ### Test 4.1: Postpone to Tomorrow
 
-**Objective:** Verify postponing a task by 1 day.
+Navigate to `{BASE_URL}/#/tasks`. Find a task and note its current due date. Click the "..." actions menu on that row. Click "Postpone to Tomorrow".
 
-**Steps:**
-
-1. Navigate to `/#/tasks`
-2. Find a task (preferably with past due date)
-3. Click Actions menu ("...")
-4. Click "Postpone to Tomorrow"
-
-**Expected Results:**
-
-- [ ] Due date updates to tomorrow
-- [ ] Success notification: "Task postponed to tomorrow"
-- [ ] List refreshes with new date
-- [ ] No console errors
+Verify:
+- Success notification appears (e.g. "Task postponed to tomorrow")
+- Due date in the list updates to tomorrow's date
+- Read console messages and confirm no errors
 
 ---
 
 ### Test 4.2: Postpone to Next Week
 
-**Objective:** Verify postponing a task by 7 days.
+Navigate to `{BASE_URL}/#/tasks`. Find a task. Click the "..." actions menu. Click "Postpone to Next Week".
 
-**Steps:**
-
-1. Navigate to `/#/tasks`
-2. Find a task
-3. Click Actions menu ("...")
-4. Click "Postpone to Next Week"
-
-**Expected Results:**
-
-- [ ] Due date updates to +7 days from current due date
-- [ ] Success notification: "Task postponed to next week"
-- [ ] List refreshes with new date
-- [ ] No console errors
+Verify:
+- Success notification appears
+- Due date updates to +7 days from current due date
+- Read console messages and confirm no errors
 
 ---
 
 ### Test 4.3: Postpone Overdue Task
 
-**Objective:** Verify postpone calculates from current date, not original due date.
+Navigate to `{BASE_URL}/#/tasks`. Find or create a task with a past due date. Click the "..." actions menu. Click "Postpone to Tomorrow".
 
-**Steps:**
-
-1. Find or create a task with past due date
-2. Postpone to Tomorrow
-3. Verify new due date
-
-**Expected Results:**
-
-- [ ] New due date is tomorrow (not original date + 1 day)
-- [ ] Date calculation uses current date as base
-- [ ] No console errors
+Verify:
+- New due date is tomorrow (based on current date, NOT original due date + 1)
+- Read console messages and confirm no errors
 
 ---
 
-## Section 5: Quick Actions Menu Tests
+## Section 5: Quick Actions Menu
 
-### Test 5.1: Actions Menu - View Option
+### Test 5.1: Actions Menu - View
 
-**Objective:** Verify View action opens slide-over in view mode.
+Navigate to `{BASE_URL}/#/tasks`. Click the "..." actions menu on any task row. Click "View".
 
-**Steps:**
-
-1. Navigate to `/#/tasks`
-2. Click Actions menu on any task row
-3. Click "View"
-
-**Expected Results:**
-
-- [ ] Slide-over opens
-- [ ] Slide-over is in VIEW mode (not edit)
-- [ ] Task details displayed
-- [ ] Row click event not triggered (no double slide-over)
+Verify:
+- Slide-over opens in VIEW mode (not edit)
+- Task details are displayed
+- Clicking "..." did NOT also trigger a row click (no double slide-over)
 
 ---
 
-### Test 5.2: Actions Menu - Edit Option
+### Test 5.2: Actions Menu - Edit
 
-**Objective:** Verify Edit action opens slide-over in edit mode.
+Navigate to `{BASE_URL}/#/tasks`. Click the "..." actions menu on any task row. Click "Edit".
 
-**Steps:**
-
-1. Navigate to `/#/tasks`
-2. Click Actions menu on any task row
-3. Click "Edit"
-
-**Expected Results:**
-
-- [ ] Slide-over opens in EDIT mode
-- [ ] Form fields are editable
-- [ ] Can modify and save changes
+Verify:
+- Slide-over opens in EDIT mode
+- Form fields are editable
+- Can modify and save changes
 
 ---
 
 ### Test 5.3: Actions Menu - Stop Propagation
 
-**Objective:** Verify actions menu click does not trigger row click.
+Navigate to `{BASE_URL}/#/tasks`. Click the "..." button on a task row.
 
-**Steps:**
-
-1. Navigate to `/#/tasks`
-2. Click the "..." button to open Actions menu
-3. Click anywhere in the menu
-
-**Expected Results:**
-
-- [ ] Clicking "..." button does NOT open slide-over
-- [ ] Clicking menu items performs only that action
-- [ ] No double slide-over opening
-- [ ] No conflicting navigation
+Verify:
+- Clicking "..." does NOT open the slide-over (only the menu opens)
+- Clicking a menu item performs only that action (no conflicting navigation)
 
 ---
 
 ### Test 5.4: Actions Menu - Loading State
 
-**Objective:** Verify menu shows loading indicator during operations.
+Navigate to `{BASE_URL}/#/tasks`. Click the "..." actions menu. Click "Postpone to Tomorrow". Immediately take a screenshot.
 
-**Steps:**
-
-1. Navigate to `/#/tasks`
-2. Click Actions menu
-3. Click "Postpone to Tomorrow"
-4. Observe button during update
-
-**Expected Results:**
-
-- [ ] Button shows spinner/loading indicator
-- [ ] Menu is disabled during operation
-- [ ] Loading clears after success/failure
+Verify:
+- Button or menu shows a loading indicator during the operation
+- Menu is disabled during the operation
+- Loading state clears after success
 
 ---
 
 ## Section 6: Task Type Tests (All 7 Types)
 
-### Test 6.1: Create Task - Type: Call
+For each type below, navigate to `{BASE_URL}/#/tasks/create`, fill Title (`Type Test: [TYPE]`) and Due Date (tomorrow), go to Details section, select the type, and save.
 
-**Steps:**
+### Test 6.1: Type "Call"
+Create task with Type "Call". Verify it saves and shows "Call" badge in list.
 
-1. Navigate to `/#/tasks/create`
-2. Fill Title and Due Date
-3. Go to Details tab, select Type: "Call"
-4. Save
+### Test 6.2: Type "Email"
+Create task with Type "Email". Verify it saves and shows "Email" badge in list.
 
-**Expected Results:**
+### Test 6.3: Type "Meeting"
+Create task with Type "Meeting". Verify it saves.
 
-- [ ] Type "Call" saves correctly
-- [ ] Type badge shows "Call" in list
+### Test 6.4: Type "Follow-up"
+Create task with Type "Follow-up". Verify it saves (with hyphen).
 
----
+### Test 6.5: Type "Demo"
+Create task with Type "Demo". Verify it saves.
 
-### Test 6.2: Create Task - Type: Email
+### Test 6.6: Type "Proposal"
+Create task with Type "Proposal". Verify it saves.
 
-**Steps:**
+### Test 6.7: Type "Other"
+Create task with Type "Other". Verify it saves.
 
-1. Navigate to `/#/tasks/create`
-2. Fill Title and Due Date
-3. Go to Details tab, select Type: "Email"
-4. Save
-
-**Expected Results:**
-
-- [ ] Type "Email" saves correctly
-- [ ] Type badge shows "Email" in list
+After creating all 7, check network requests for the last create. Verify:
+- The `type` field in the POST body uses snake_case (e.g. `follow_up`, not `Follow-up`)
+- The `activity_type` is `task` in every request
 
 ---
 
-### Test 6.3: Create Task - Type: Meeting
-
-**Steps:**
-
-1. Navigate to `/#/tasks/create`
-2. Fill Title and Due Date
-3. Go to Details tab, select Type: "Meeting"
-4. Save
-
-**Expected Results:**
-
-- [ ] Type "Meeting" saves correctly
-
----
-
-### Test 6.4: Create Task - Type: Follow-up
-
-**Steps:**
-
-1. Navigate to `/#/tasks/create`
-2. Fill Title and Due Date
-3. Go to Details tab, select Type: "Follow-up"
-4. Save
-
-**Expected Results:**
-
-- [ ] Type "Follow-up" saves correctly (with hyphen)
-
----
-
-### Test 6.5: Create Task - Type: Demo
-
-**Steps:**
-
-1. Navigate to `/#/tasks/create`
-2. Fill Title and Due Date
-3. Go to Details tab, select Type: "Demo"
-4. Save
-
-**Expected Results:**
-
-- [ ] Type "Demo" saves correctly
-
----
-
-### Test 6.6: Create Task - Type: Proposal
-
-**Steps:**
-
-1. Navigate to `/#/tasks/create`
-2. Fill Title and Due Date
-3. Go to Details tab, select Type: "Proposal"
-4. Save
-
-**Expected Results:**
-
-- [ ] Type "Proposal" saves correctly
-
----
-
-### Test 6.7: Create Task - Type: Other
-
-**Steps:**
-
-1. Navigate to `/#/tasks/create`
-2. Fill Title and Due Date
-3. Go to Details tab, select Type: "Other"
-4. Save
-
-**Expected Results:**
-
-- [ ] Type "Other" saves correctly
-
----
-
-## Section 7: Entity Linking Tests
+## Section 7: Entity Linking
 
 ### Test 7.1: Link Task to Contact
 
-**Objective:** Verify task can be linked to a contact.
+Navigate to `{BASE_URL}/#/tasks/create`. Fill Title (`Linked Contact Test`) and Due Date. Go to Details section. In the Contact field, type "Hancotte". Select from the autocomplete dropdown. Save.
 
-**Steps:**
-
-1. Navigate to `/#/tasks/create`
-2. Fill Title and Due Date
-3. Go to Details tab
-4. In Contact field, type "Hancotte"
-5. Select from autocomplete dropdown
-6. Save
-
-**Expected Results:**
-
-- [ ] Contact autocomplete searches contacts_summary
-- [ ] Contact selection saves correctly
-- [ ] Contact name appears in task list (desktop)
-- [ ] Contact link appears in slide-over Related Items tab
+Verify:
+- Contact name appears in the task list (desktop)
+- Open the task slide-over and verify the contact link is displayed
+- Read console messages and confirm no errors
 
 ---
 
 ### Test 7.2: Link Task to Opportunity
 
-**Objective:** Verify task can be linked to an opportunity.
+Navigate to `{BASE_URL}/#/tasks/create`. Fill Title (`Linked Opp Test`) and Due Date. Go to Details section. In the Opportunity field, type "Ryan". Select "Ryan Wabeke". Save.
 
-**Steps:**
-
-1. Navigate to `/#/tasks/create`
-2. Fill Title and Due Date
-3. Go to Details tab
-4. In Opportunity field, type "Ryan"
-5. Select "Ryan Wabeke" from dropdown
-6. Save
-
-**Expected Results:**
-
-- [ ] Opportunity autocomplete searches opportunities
-- [ ] Opportunity selection saves correctly
-- [ ] Opportunity title appears in task list (desktop)
-- [ ] Opportunity link appears in slide-over Related Items tab
+Verify:
+- Opportunity title appears in the task list (desktop)
+- Open the task slide-over and verify the opportunity link is displayed
 
 ---
 
 ### Test 7.3: Link Task to Organization
 
-**Objective:** Verify task can be linked to an organization.
+Navigate to `{BASE_URL}/#/tasks/create`. Fill Title (`Linked Org Test`) and Due Date. Go to Details section. In the Organization field, search for any organization. Select it. Save.
 
-**Steps:**
-
-1. Navigate to `/#/tasks/create`
-2. Fill Title and Due Date
-3. Go to Details tab
-4. In Organization field, search for any organization
-5. Select from dropdown
-6. Save
-
-**Expected Results:**
-
-- [ ] Organization autocomplete searches organizations
-- [ ] Organization selection saves correctly
-- [ ] Organization link appears in slide-over Related Items tab
+Verify:
+- Open the task slide-over and verify the organization link is displayed
 
 ---
 
 ### Test 7.4: Pre-filled Task from URL Parameters
 
-**Objective:** Verify task create accepts URL params for pre-filling.
+Navigate to `{BASE_URL}/#/tasks/create?title=Follow-up%20Test&type=follow_up&contact_id=1`. Wait for form to load. Take a screenshot.
 
-**Steps:**
-
-1. Navigate to: `/#/tasks/create?title=Follow-up%20Test&type=follow_up&contact_id=1`
-2. Observe form fields
-
-**Expected Results:**
-
-- [ ] Title pre-filled: "Follow-up Test"
-- [ ] Type pre-filled: "Follow-up" (mapped from URL "follow_up")
-- [ ] Contact ID pre-filled (if valid ID)
-- [ ] Form is ready to submit with pre-filled data
+Verify:
+- Title pre-filled: "Follow-up Test"
+- Type pre-filled: "Follow-up" (mapped from URL "follow_up")
+- Contact field pre-filled (if contact ID 1 exists)
+- Form is ready to submit
 
 ---
 
-### Test 7.5: QuickAddTaskButton from Opportunity Slide-Over
+### Test 7.5: QuickAddTaskButton from Contact Slide-Over
 
-**Objective:** Verify creating a task from an opportunity context.
+Navigate to `{BASE_URL}/#/contacts`. Click on a contact to open the slide-over. Look for an "Add Task" button in the header actions area. Click it.
 
-**Steps:**
-
-1. Navigate to `/#/opportunities`
-2. Click on an opportunity to open slide-over
-3. Look for "Add Task" or similar quick action button
-4. Click to create task
-5. Observe pre-filled values
-
-**Expected Results:**
-
-- [ ] Navigates to task create form
-- [ ] Opportunity ID pre-filled
-- [ ] Can complete and save task
-- [ ] Task appears linked to opportunity
+Verify:
+- Task creation form or dialog opens
+- Contact ID is pre-filled from the contact context
+- Can complete and save the task
+- New task appears in the contact's right panel Tasks section
 
 ---
 
 ## Section 8: Validation Edge Cases
 
-### Test 8.1: Empty Title Validation
+### Test 8.1: Empty Title
 
-**Objective:** Verify title is required.
+Navigate to `{BASE_URL}/#/tasks/create`. Leave Title empty. Fill Due Date. Try to submit.
 
-**Steps:**
-
-1. Navigate to `/#/tasks/create`
-2. Leave Title empty
-3. Fill Due Date
-4. Attempt to submit (or blur title field)
-
-**Expected Results:**
-
-- [ ] Validation error shows: "Title is required"
-- [ ] Form does not submit
-- [ ] Error styling on title input
-
----
+Verify: Validation error appears, form does not submit, error styling on title input.
 
 ### Test 8.2: Title Max Length (500 chars)
 
-**Objective:** Verify title max length enforcement.
+Navigate to `{BASE_URL}/#/tasks/create`. Paste a 501+ character string in Title. Fill Due Date. Submit.
 
-**Steps:**
-
-1. Navigate to `/#/tasks/create`
-2. Paste 501+ character string in Title
-3. Fill Due Date
-4. Submit
-
-**Expected Results:**
-
-- [ ] Validation error shows: "Title too long"
-- [ ] Form does not submit
-- [ ] Or: Input truncates at 500 characters
-
----
+Verify: Validation error or input truncation at 500 characters. Form does not submit with oversized title.
 
 ### Test 8.3: Description Max Length (2000 chars)
 
-**Objective:** Verify description max length enforcement.
+Navigate to `{BASE_URL}/#/tasks/create`. Fill Title and Due Date. Paste a 2001+ character string in Description. Submit.
 
-**Steps:**
+Verify: Validation error or truncation at 2000 characters.
 
-1. Navigate to `/#/tasks/create`
-2. Fill Title and Due Date
-3. Paste 2001+ character string in Description
-4. Submit
+### Test 8.4: Due Date Required
 
-**Expected Results:**
+Navigate to `{BASE_URL}/#/tasks/create`. Fill Title. Clear Due Date field. Try to submit.
 
-- [ ] Validation error shows: "Description too long"
-- [ ] Form does not submit
-- [ ] Or: Input truncates at 2000 characters
+Verify: Validation error "Due date is required". Form does not submit.
 
----
+### Test 8.5: Date Coercion
 
-### Test 8.4: Due Date Required Validation
+Navigate to `{BASE_URL}/#/tasks/create`. Fill Title. Use the date picker to select a Due Date. Submit.
 
-**Objective:** Verify due_date is required.
+Verify: Date saves as ISO format. Read console messages and confirm no coercion errors.
 
-**Steps:**
+### Test 8.6: Priority Enum
 
-1. Navigate to `/#/tasks/create`
-2. Fill Title
-3. Clear Due Date field (if pre-filled)
-4. Attempt to submit
+Navigate to `{BASE_URL}/#/tasks/create`. Fill required fields. Open the Priority dropdown.
 
-**Expected Results:**
+Verify: Exactly 4 options: low, medium, high, critical. Each can be selected.
 
-- [ ] Validation error shows: "Due date is required"
-- [ ] Form does not submit
+### Test 8.7: Assigned User Required
 
----
+Navigate to `{BASE_URL}/#/tasks/create`. Fill Title and Due Date. Clear the "Assigned To" field. Try to submit.
 
-### Test 8.5: Date Coercion - String to Date
-
-**Objective:** Verify date fields accept various input formats.
-
-**Steps:**
-
-1. Navigate to `/#/tasks/create`
-2. Fill Title
-3. Enter Due Date via date picker
-4. Submit
-
-**Expected Results:**
-
-- [ ] Date picker works correctly
-- [ ] Date saves as ISO format in database
-- [ ] No coercion errors in console
-
----
-
-### Test 8.6: Priority Enum Validation
-
-**Objective:** Verify only valid priority values accepted.
-
-**Steps:**
-
-1. Navigate to `/#/tasks/create`
-2. Fill required fields
-3. Select each priority option: low, medium, high, critical
-4. Verify dropdown contains only these 4 options
-
-**Expected Results:**
-
-- [ ] Dropdown shows exactly 4 options
-- [ ] Each option can be selected and saved
-- [ ] No invalid priority values possible via UI
-
----
-
-### Test 8.7: Assigned User (sales_id) Required
-
-**Objective:** Verify sales_id cannot be empty.
-
-**Steps:**
-
-1. Navigate to `/#/tasks/create`
-2. Fill Title and Due Date
-3. Clear "Assigned To" field
-4. Attempt to submit
-
-**Expected Results:**
-
-- [ ] sales_id is auto-filled with current user
-- [ ] If manually cleared, validation error appears
-- [ ] Form does not submit without assignee
+Verify: Validation error appears. `sales_id` cannot be empty.
 
 ---
 
 ## Section 9: Viewport Testing
 
-### Test 9.1: Desktop View (1440px+)
+### Test 9.1: Desktop (1440px+)
 
-**Objective:** Verify full column visibility on desktop.
+Resize browser to 1440px wide. Navigate to `{BASE_URL}/#/tasks`. Take a screenshot.
 
-**Steps:**
+Verify all 9 columns visible: Done, Title, Due Date, Priority, Type, Assigned To, Contact, Opportunity, Actions. No horizontal scrolling needed.
 
-1. Set browser width to 1440px or wider
-2. Navigate to `/#/tasks`
-3. Observe all columns
+### Test 9.2: iPad (1024px)
 
-**Expected Results:**
+Resize browser to 1024px wide. Navigate to `{BASE_URL}/#/tasks`. Take a screenshot.
 
-- [ ] All 9 columns visible
-- [ ] Type column visible
-- [ ] Assigned To column visible
-- [ ] Contact column visible
-- [ ] Opportunity column visible
-- [ ] No horizontal scrolling needed
-
----
-
-### Test 9.2: iPad View (1024px-1279px)
-
-**Objective:** Verify responsive column hiding on tablet.
-
-**Steps:**
-
-1. Set browser width to 1024px
-2. Navigate to `/#/tasks`
-3. Observe column visibility
-
-**Expected Results:**
-
-- [ ] Essential columns visible: Done, Title, Due Date, Priority, Actions
-- [ ] "Desktop only" columns hidden: Type, Assigned To, Contact, Opportunity
-- [ ] Touch targets minimum 44x44px (h-11 w-11)
-- [ ] Slide-over still usable
-
----
+Verify:
+- Essential columns visible: Done, Title, Due Date, Priority, Actions
+- Desktop-only columns hidden: Type, Assigned To, Contact, Opportunity
+- Touch targets are at least 44x44px
 
 ### Test 9.3: Slide-Over on iPad
 
-**Objective:** Verify slide-over width on tablet viewport.
+At 1024px width, click a task to open the slide-over. Take a screenshot.
 
-**Steps:**
-
-1. Set browser width to 1024px
-2. Navigate to `/#/tasks`
-3. Click a task to open slide-over
-
-**Expected Results:**
-
-- [ ] Slide-over width is appropriate (40vw = ~410px)
-- [ ] Content not clipped
-- [ ] Close button accessible
-- [ ] Edit mode functional
-
----
+Verify: Content is not clipped. Close button is accessible. Edit mode is functional.
 
 ### Test 9.4: Form on iPad
 
-**Objective:** Verify create/edit forms work on tablet.
+At 1024px width, navigate to `{BASE_URL}/#/tasks/create`. Fill out and submit.
 
-**Steps:**
-
-1. Set browser width to 1024px
-2. Navigate to `/#/tasks/create`
-3. Fill out form
-4. Submit
-
-**Expected Results:**
-
-- [ ] Form layout adapts to width
-- [ ] All inputs accessible
-- [ ] Tab navigation works
-- [ ] Submit buttons visible and functional
+Verify: Form layout adapts. All inputs accessible. Tab navigation works. Submit buttons visible.
 
 ---
 
-## Section 10: Console Monitoring Checklist
+## Section 10: Console and Network Monitoring
 
-Monitor browser DevTools Console during all tests for these error patterns:
+Run these checks throughout all test sections.
 
-### Critical Errors (Test Failure)
+### Console Checks
 
-- [ ] No RLS errors ("permission denied", "row-level security", "42501")
-- [ ] No React errors (red error messages)
-- [ ] No unhandled promise rejections
-- [ ] No Zod validation failures (ZodError)
-- [ ] No 500/403/401 network errors
+Read console messages after each major action. Look for:
 
-### Warnings (Note But Not Failure)
+**Fail the test if any of these appear:**
+- RLS errors ("permission denied", "row-level security", "42501")
+- React errors (red error messages)
+- Unhandled promise rejections
+- Zod validation failures (ZodError)
+- 500/403/401 network errors
 
-- [ ] ResizeObserver errors (known browser quirk, can ignore)
-- [ ] React deprecation warnings
-- [ ] Third-party library warnings
+**Note but do not fail:**
+- ResizeObserver errors (known browser quirk)
+- React deprecation warnings
 
-### Network Tab Checks
+### Network Checks (STI-Aware)
 
-- [ ] All API calls return 200/201
-- [ ] No failed requests to `/rest/v1/tasks`
-- [ ] Auth token present in headers
+Tasks use Single Table Inheritance. All task API traffic goes to the `activities` endpoint.
 
----
+After any task create/update/delete, read network requests with pattern `/rest/v1/activities` and verify:
 
-## Section 11: Edge Cases and Regression Tests
+- Task reads: GET `/rest/v1/activities` with filter `activity_type=eq.task`
+- Task creates: POST to `/rest/v1/activities` with `activity_type: "task"` in body
+- Task updates: PATCH to `/rest/v1/activities?id=eq.[id]`
+- Task deletes: PATCH to `/rest/v1/activities?id=eq.[id]` setting `deleted_at` (NOT HTTP DELETE)
+- Auth token present in all request headers
+- Field mapping: `subject` in payload (not `title`), snake_case types (not Title Case)
 
-### Test 11.1: Create Task Then Immediate Edit
-
-**Objective:** Verify no race conditions on create/edit sequence.
-
-**Steps:**
-
-1. Create a new task
-2. Immediately click on it in list
-3. Switch to edit mode
-4. Make a change
-5. Save
-
-**Expected Results:**
-
-- [ ] No stale data errors
-- [ ] Edit saves correctly
-- [ ] No "record not found" errors
+If any request targets `/rest/v1/tasks`, flag it as a regression.
 
 ---
+
+## Section 11: Edge Cases
+
+### Test 11.1: Create Then Immediate Edit
+
+Navigate to `{BASE_URL}/#/tasks/create`. Create a task (Title: `Race Condition Test`, Due Date: tomorrow). After redirect to list, immediately click the new task row. Switch to edit mode. Append ` - EDITED` to the title. Save.
+
+Verify: No stale data. Edit saves correctly. No "record not found" errors.
 
 ### Test 11.2: Bulk Selection
 
-**Objective:** Verify bulk actions toolbar appears.
+Navigate to `{BASE_URL}/#/tasks`. Select multiple task checkboxes (header checkbox for "select all" or individual row checkboxes).
 
-**Steps:**
-
-1. Navigate to `/#/tasks`
-2. Select multiple tasks (method depends on UI)
-3. Observe bulk actions toolbar
-
-**Expected Results:**
-
-- [ ] Bulk selection works
-- [ ] BulkActionsToolbar appears
-- [ ] Can perform bulk operations
-
----
+Verify: A bulk actions toolbar appears. Bulk operations are available.
 
 ### Test 11.3: Empty State
 
-**Objective:** Verify empty list state displays correctly.
+Navigate to `{BASE_URL}/#/tasks`. Apply a filter that returns no results (or if no tasks exist).
 
-**Steps:**
+Verify: An empty state component renders with a friendly message and a create button.
 
-1. Navigate to `/#/tasks`
-2. Delete all tasks (or use filter that returns no results)
-3. Observe empty state
+### Test 11.4: Filter Persistence
 
-**Expected Results:**
+Navigate to `{BASE_URL}/#/tasks`. Apply a filter (e.g. Priority = High). Navigate to `{BASE_URL}/#/contacts`. Navigate back to `{BASE_URL}/#/tasks`.
 
-- [ ] TaskEmpty component renders
-- [ ] Friendly message displayed
-- [ ] Create button available
-- [ ] No JavaScript errors
-
----
-
-### Test 11.4: List Filter Persistence
-
-**Objective:** Verify filter state survives navigation.
-
-**Steps:**
-
-1. Navigate to `/#/tasks`
-2. Apply a filter (e.g., Priority = High)
-3. Navigate away to `/#/contacts`
-4. Navigate back to `/#/tasks`
-5. Observe filter state
-
-**Expected Results:**
-
-- [ ] Filter persists (or intentionally cleared)
-- [ ] useFilterCleanup removes stale filters
-- [ ] No stale filter causing empty results
-
----
+Verify: Filter state either persists or is intentionally cleared. No stale filter causing empty results.
 
 ### Test 11.5: CSV Export
 
-**Objective:** Verify task list can be exported to CSV.
+Navigate to `{BASE_URL}/#/tasks`. Look for an Export button in the toolbar. Click to export.
 
-**Steps:**
+Verify: A CSV file downloads. It contains columns: id, subject (or title), description, type, priority, due_date, completed. Note: the CSV may use `subject` instead of `title` due to STI field mapping.
 
-1. Navigate to `/#/tasks`
-2. Look for Export button (if available in TopToolbar)
-3. Click to export
-4. Open downloaded CSV
+---
 
-**Expected Results:**
+## Section 12: STI Data Integrity
 
-- [ ] CSV file downloads
-- [ ] Contains columns: id, title, description, type, priority, due_date, completed, etc.
-- [ ] Related data (principal name) included
-- [ ] No console errors during export
+These tests verify the Single Table Inheritance pattern works correctly end-to-end.
+
+### Test 12.1: Task Create Network Payload
+
+Navigate to `{BASE_URL}/#/tasks/create`. Fill Title: `STI Verify 12.1`, Due Date: tomorrow, Type: "Email". Save.
+
+Immediately read network requests with pattern `/rest/v1/activities`.
+
+Verify the POST request body contains:
+- `activity_type`: `"task"` (discriminator set by handler)
+- `subject`: `"STI Verify 12.1"` (title mapped to subject)
+- `type`: `"email"` (Title Case "Email" mapped to snake_case "email")
+- `completed`: `false`
+- `due_date`: an ISO date string
+- `sales_id`: a number (the assigned user)
+
+Verify the POST target URL is `/rest/v1/activities` (NOT `/rest/v1/tasks`).
+
+---
+
+### Test 12.2: Task Update Field Mapping
+
+Navigate to `{BASE_URL}/#/tasks`. Click on the "STI Verify 12.1" task. Switch to edit mode. Change the Title to `STI Updated 12.2`. Change the Type to "Meeting". Save.
+
+Read network requests with pattern `/rest/v1/activities`.
+
+Verify the PATCH request body contains:
+- `subject`: `"STI Updated 12.2"` (not `title`)
+- `type`: `"meeting"` (not `Meeting`)
+
+---
+
+### Test 12.3: Task Read Filters
+
+Navigate to `{BASE_URL}/#/tasks`. Wait for the list to load.
+
+Read network requests with pattern `/rest/v1/activities`.
+
+Verify the GET request URL includes `activity_type=eq.task` as a query parameter. This confirms the handler filters to only show task records from the shared activities table.
+
+---
+
+## Section 13: Completion Activity Linkage
+
+### Test 13.1: Logged Activity Links Back to Task
+
+Navigate to `{BASE_URL}/#/dashboard-v3`. Find an incomplete task in the Kanban panel. Note the task title and its ID (check the URL or network requests). Complete the task by clicking its checkbox. When the completion dialog appears, click "Log Activity".
+
+Fill in the QuickLogActivityDialog form (add a brief outcome or description if required). Submit.
+
+Read network requests with pattern `/rest/v1/activities`.
+
+Find the POST request that created the new activity (NOT the PATCH that completed the task). Verify:
+- `activity_type` is `"interaction"` or `"engagement"` (NOT `"task"`)
+- `related_task_id` is set to the completed task's ID
+- `subject` is pre-filled from the original task's title
+- `contact_id` and/or `opportunity_id` match the original task
+
+---
+
+### Test 13.2: Follow-up Task Links Back to Original
+
+Navigate to `{BASE_URL}/#/dashboard-v3`. Complete a task via the Kanban checkbox. Click "Create Follow-up" in the completion dialog. Wait for navigation to `/#/tasks/create`.
+
+Verify:
+- Title is pre-filled as `Follow-up: [original task subject]`
+- Type is "Follow-up"
+
+Submit the follow-up task. Read network requests. Find the POST for the new task.
+
+Verify: The new task's `related_task_id` references the original completed task's ID (if this field is set for follow-ups).
+
+---
+
+## Section 14: Priority Tasks View (Dashboard)
+
+### Test 14.1: Incomplete Tasks in Dashboard Priority List
+
+Navigate to `{BASE_URL}/#/dashboard-v3`. Take a screenshot. Look for a priority tasks panel or widget that shows upcoming/overdue tasks.
+
+Verify:
+- Incomplete tasks appear in the priority list
+- Tasks are ordered by priority and/or due date
+- Each task shows: title, due date, priority badge
+
+Read network requests. Look for a request that uses the `priority_tasks` view or filters tasks by `completed=eq.false`.
+
+---
+
+### Test 14.2: Completed Task Disappears from Priority List
+
+Note a task currently visible in the dashboard priority list. Complete it (via checkbox). Wait for the list to refresh.
+
+Verify:
+- The completed task disappears from the priority list
+- Read console messages and confirm no errors
+
+---
+
+### Test 14.3: Snoozed Task Hidden from Priority List
+
+If a snoozed task exists (or can be created via API), navigate to the dashboard.
+
+Verify:
+- Snoozed tasks (with `snooze_until` in the future) do NOT appear in the priority list
+- Only active, unsnoozed, incomplete tasks are shown
+
+---
+
+## Section 15: Entity Timeline Integration
+
+### Test 15.1: Task Appears in Contact Timeline
+
+Navigate to `{BASE_URL}/#/tasks/create`. Create a task linked to a contact:
+- Title: `Timeline Test 15.1`
+- Due Date: today
+- Contact: search and select "Hancotte"
+
+Save. Then navigate to `{BASE_URL}/#/contacts`. Find and click on "Hancotte" to open the contact slide-over. Look at the Activities tab (left column).
+
+Verify:
+- The task "Timeline Test 15.1" appears in the unified activity timeline
+- It is rendered with a task-specific style (different from regular activities)
+- The entry shows as `entry_type = task` (check visually - task icon or label)
+
+---
+
+### Test 15.2: Logged Activity Appears in Timeline After Completion
+
+Navigate to `{BASE_URL}/#/dashboard-v3`. Complete a task that is linked to a contact. Choose "Log Activity" in the completion dialog and submit.
+
+Navigate to the contact's slide-over. Open the Activities tab.
+
+Verify:
+- Both the original task AND the logged activity appear in the timeline
+- The activity shows as a regular activity entry (not a task)
+- They are chronologically ordered
+
+---
+
+## Section 16: Cross-Entity Task Visibility
+
+### Test 16.1: Tasks in Contact Slide-Over Right Panel
+
+Navigate to `{BASE_URL}/#/contacts`. Click on a contact that has tasks linked to them. Wait for the slide-over to open. Scroll down in the right panel.
+
+Verify:
+- A "Tasks" section appears in the right panel
+- Tasks are listed with their titles and due dates
+- There is an "Add task" button at the bottom of the Tasks section
+- Only tasks with matching `contact_id` are shown (filtered)
+
+---
+
+### Test 16.2: Create Task from Contact Slide-Over
+
+In the contact slide-over right panel, click the "Add task" button (or "+ Add task"). Fill in the task details. Submit.
+
+Verify:
+- The new task appears in the contact's Tasks section
+- The task is linked to this contact (contact_id is set)
+
+---
+
+### Test 16.3: nb_tasks Count Badge Update
+
+Navigate to `{BASE_URL}/#/contacts`. Note the current task-related information for a contact. Open the contact slide-over. Count the tasks in the right panel.
+
+Create a new task linked to this contact (either from the slide-over or from `/#/tasks/create`). Return to the contact slide-over.
+
+Verify:
+- The task count or task list in the right panel reflects the new task
+- The Activities tab badge (`nb_activities`) also incremented (since tasks are activities)
+
+---
+
+### Test 16.4: Completed Task Behavior in Right Panel
+
+Open a contact slide-over. Find a task in the right panel Tasks section. Complete it (if a checkbox is available).
+
+Verify:
+- Recently completed tasks remain visible briefly (within ~5 minutes)
+- Older completed tasks are filtered out by `TasksIterator`
+- Read console messages and confirm no errors
 
 ---
 
@@ -1071,77 +777,106 @@ Monitor browser DevTools Console during all tests for these error patterns:
 
 ### Minimum for Module Approval
 
-- [ ] All Section 1 tests pass (CRUD Operations)
-- [ ] All Section 2 tests pass (Completion Flow)
-- [ ] All Section 4 tests pass (Postpone)
-- [ ] All Section 6 tests pass (Task Types)
-- [ ] All Section 8 tests pass (Validation)
-- [ ] No critical console errors in any test
+- All Section 1 tests pass (CRUD Operations)
+- All Section 2 tests pass (Completion Flow)
+- All Section 4 tests pass (Postpone)
+- All Section 8 tests pass (Validation)
+- All Section 12 tests pass (STI Data Integrity)
+- No critical console errors in any test
 
 ### Full Module Certification
 
-- [ ] ALL sections pass
-- [ ] Both Desktop and iPad viewports tested
-- [ ] All 7 task types verified
-- [ ] Entity linking (contact, opportunity, organization) verified
-- [ ] Snooze functionality verified
-- [ ] Completion dialog flow verified
+- ALL sections pass (1-16)
+- Both Desktop and iPad viewports tested (Section 9)
+- All 7 task types verified (Section 6)
+- Entity linking verified (Section 7)
+- Snooze functionality verified (Section 3)
+- Completion dialog all 3 flows verified (Section 2)
+- STI field mapping verified at network level (Section 12)
+- Activity linkage verified with `related_task_id` (Section 13)
+- Dashboard priority tasks view verified (Section 14)
+- Entity timeline integration verified (Section 15)
+- Cross-entity task visibility verified (Section 16)
 
 ---
 
 ## Test Result Summary
 
-| Section | Test Count | Passed | Failed | Skipped |
-|---------|------------|--------|--------|---------|
-| 1. CRUD Operations | 7 | [ ] | [ ] | [ ] |
-| 2. Completion Flow | 5 | [ ] | [ ] | [ ] |
-| 3. Snooze Functionality | 2 | [ ] | [ ] | [ ] |
-| 4. Postpone Tests | 3 | [ ] | [ ] | [ ] |
-| 5. Quick Actions Menu | 4 | [ ] | [ ] | [ ] |
-| 6. Task Type Tests | 7 | [ ] | [ ] | [ ] |
-| 7. Entity Linking | 5 | [ ] | [ ] | [ ] |
-| 8. Validation Edge Cases | 7 | [ ] | [ ] | [ ] |
-| 9. Viewport Testing | 4 | [ ] | [ ] | [ ] |
-| 10. Console Monitoring | - | [ ] | [ ] | [ ] |
-| 11. Edge Cases | 5 | [ ] | [ ] | [ ] |
-| **TOTAL** | **49** | | | |
+**Last Updated:** February 3, 2026 | **Test Report:** `24-tasks-e2e-results.md`
+
+| Section | Test Count | Passed | Failed | Skipped | Status |
+|---------|------------|--------|--------|---------|--------|
+| 1. CRUD Operations | 6 | 6 | 0 | 0 | :white_check_mark: 100% |
+| 2. Completion Flow | 5 | 5 | 0 | 0 | :white_check_mark: 100% |
+| 3. Snooze Functionality | 2 | 1 | 0 | 1 | 🟡 50% |
+| 4. Postpone Tests | 3 | 3 | 0 | 0 | :white_check_mark: 100% |
+| 5. Quick Actions Menu | 4 | 4 | 0 | 0 | :white_check_mark: 100% |
+| 6. Task Type Tests | 7 | 7 | 0 | 0 | :white_check_mark: 100% |
+| 7. Entity Linking | 5 | 2 | 1 | 2 | 🟡 40% |
+| 8. Validation Edge Cases | 7 | 6 | 0 | 1 | 🟡 86% (8.4 FIXED, re-test pending) |
+| 9. Viewport Testing | 4 | 2 | 0 | 2 | 🟡 50% |
+| 10. Console/Network Monitoring | 2 | 0 | 0 | 2 | ⚪ 0% |
+| 11. Edge Cases | 5 | 0 | 0 | 5 | ⚪ 0% |
+| 12. STI Data Integrity | 3 | 0 | 0 | 3 | ⚪ 0% |
+| 13. Completion Activity Linkage | 2 | 0 | 0 | 2 | ⚪ 0% |
+| 14. Priority Tasks View | 3 | 0 | 0 | 3 | ⚪ 0% |
+| 15. Entity Timeline | 2 | 0 | 0 | 2 | ⚪ 0% |
+| 16. Cross-Entity Visibility | 4 | 0 | 0 | 4 | ⚪ 0% |
+| **TOTAL** | **62** | **36** | **2** | **24** | **58%** |
+
+**Module Status:** 🟡 **In Progress** - ISSUE-3 & OBS-1 fixed. Blocking: Section 12 (STI), re-test 8.4. ISSUE-1 open (needs live debug).
 
 ---
 
 ## Notes
+
+### Architecture Reference
+
+- **STI Pattern:** Tasks stored in `activities` table with `activity_type = 'task'`
+- **Handler:** `tasksHandler.ts` wraps `activitiesHandler.ts` with auto-filter and field mapping
+- **Field Mapping:** UI `title` = DB `subject`, UI types (Title Case) = DB types (snake_case)
+- **Deprecated:** `tasks_deprecated` table exists but is not used by the app (scheduled for deletion 2026-03-21)
+
+### Key Files
+
+| Purpose | File |
+|---------|------|
+| Task Zod schema | `src/atomic-crm/validation/task.ts` |
+| Activity schemas | `src/atomic-crm/validation/activities/schemas.ts` |
+| Tasks handler (STI) | `src/atomic-crm/providers/supabase/handlers/tasksHandler.ts` |
+| Activities callbacks | `src/atomic-crm/providers/supabase/callbacks/activitiesCallbacks.ts` |
+| TasksIterator UI | `src/atomic-crm/tasks/TasksIterator.tsx` |
+| Contact slide-over | `src/atomic-crm/contacts/ContactSlideOver.tsx` |
+| Contact right panel | `src/atomic-crm/contacts/ContactRightPanel.tsx` |
+| Entity timeline view | `supabase/migrations/20260121000003_create_entity_timeline_view.sql` |
 
 ### Known Limitations
 
 1. **Snooze Field:** May not be exposed in standard create/edit forms - verify via slide-over or API
 2. **Completion Dialog:** Only appears in Dashboard Kanban view, not in TaskList checkbox flow
 3. **Postpone Visibility:** Currently shows for all tasks (visibility condition for overdue-only is a future enhancement)
+4. **TasksIterator Filter:** Completed tasks older than ~5 minutes are hidden from the contact right panel
 
 ### Debugging Tips
 
-1. Use React DevTools to inspect component state
-2. Check Network tab for API request/response payloads
-3. Verify Zod schema matches database columns
-4. Check localStorage for stale filter values
-
-### Related Documentation
-
-- Zod Schema: `src/atomic-crm/validation/task.ts`
-- Task Types: Call, Email, Meeting, Follow-up, Demo, Proposal, Other
-- Priority Levels: low, medium, high, critical
-- Form Mode: `onBlur` validation (not onChange)
+1. Use `read_console_messages` with pattern "error" to find issues
+2. Use `read_network_requests` with pattern `/rest/v1/activities` to inspect API payloads
+3. Verify field mapping: `subject` in network (not `title`), snake_case types
+4. Check localStorage for stale filter values if lists show unexpected results
 
 ---
 
 ## Production Safety
 
 **Safe for Production:**
-- [ ] Read/List operations
-- [ ] View operations (slide-over, details)
-- [ ] Navigation tests
-- [ ] Console monitoring
+- Read/List operations (Sections 1.3, 1.4, 9, 10, 14.1)
+- View operations (slide-over, details)
+- Navigation tests
+- Console monitoring
 
 **Local Only (Skip in Production):**
-- [ ] Create operations
-- [ ] Update operations
-- [ ] Delete operations
-- [ ] Bulk operations
+- All create operations
+- All update operations
+- All delete operations
+- Bulk operations
+- Completion flow tests (modifies data)

@@ -82,8 +82,9 @@ const DateFieldImpl = <RecordType extends Record<string, any> = Record<string, a
       // force timezone to UTC to fix issue with people in negative time zones
       // who may see a different date when calling toLocaleDateString().
       const dateOptions =
-        options ??
-        (typeof value === "string" && value.length <= 10 ? { timeZone: "UTC" } : undefined);
+        typeof value === "string" && value.length <= 10
+          ? { timeZone: "UTC" as const, ...(options ?? {}) }
+          : options;
       dateString = toLocaleStringSupportsLocales
         ? date.toLocaleDateString(locales, dateOptions)
         : date.toLocaleDateString();
