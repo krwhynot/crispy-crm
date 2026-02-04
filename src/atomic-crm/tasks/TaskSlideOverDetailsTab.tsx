@@ -187,6 +187,14 @@ export function TaskSlideOverDetailsTab({
               </ReferenceInput>
 
               <ReferenceInput
+                source="organization_id"
+                reference="organizations"
+                disabled={isLoading}
+              >
+                <AutocompleteInput label="Organization" optionText="name" />
+              </ReferenceInput>
+
+              <ReferenceInput
                 source="opportunity_id"
                 reference="opportunities"
                 disabled={isLoading}

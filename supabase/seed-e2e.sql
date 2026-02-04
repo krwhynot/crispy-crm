@@ -99,6 +99,17 @@ BEGIN
     97, v_sales_id, 'low', NOW() - INTERVAL '45 days', NOW(), v_sales_id, NOW()
   ) RETURNING id INTO v_opp_id;
 
+  -- Opportunity 7: Ryan Wabeke (for E2E linking tests)
+  INSERT INTO opportunities (
+    name, description, stage, status, expected_close_date,
+    organization_id, account_manager_id, priority, created_at, updated_at, created_by
+  ) VALUES (
+    'Ryan Wabeke',
+    'E2E test opportunity for relationship linking tests',
+    'qualification', 'active', NOW() + INTERVAL '25 days',
+    1, v_sales_id, 'medium', NOW() - INTERVAL '20 days', NOW(), v_sales_id
+  ) RETURNING id INTO v_opp_id;
+
   -- ============================================================================
   -- TASKS (for My Tasks This Week widget)
   -- ============================================================================

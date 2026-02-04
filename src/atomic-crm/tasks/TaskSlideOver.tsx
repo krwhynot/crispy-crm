@@ -1,8 +1,7 @@
-import { CheckSquareIcon, LinkIcon } from "lucide-react";
+import { CheckSquareIcon } from "lucide-react";
 import type { TabConfig } from "@/components/layouts/ResourceSlideOver";
 import { ResourceSlideOver } from "@/components/layouts/ResourceSlideOver";
 import { TaskSlideOverDetailsTab } from "./TaskSlideOverDetailsTab";
-import { TaskRelatedItemsTab } from "./TaskRelatedItemsTab";
 import { TaskHierarchyBreadcrumb } from "./TaskHierarchyBreadcrumb";
 import type { Task } from "./types";
 
@@ -19,7 +18,6 @@ interface TaskSlideOverProps {
  *
  * Features:
  * - Details tab: All task fields including inline completion checkbox
- * - Related Items tab: Contact, Opportunity, Sales rep links
  * - View/Edit mode toggle
  * - URL synchronization
  * - ESC key to close
@@ -27,7 +25,7 @@ interface TaskSlideOverProps {
  * Design:
  * - 40vw width (480-720px)
  * - Slide-in from right
- * - Two tabs with icons
+ * - Single tab interface
  */
 export function TaskSlideOver({
   recordId,
@@ -43,12 +41,6 @@ export function TaskSlideOver({
       label: "Details",
       component: TaskSlideOverDetailsTab,
       icon: CheckSquareIcon,
-    },
-    {
-      key: "related",
-      label: "Related Items",
-      component: TaskRelatedItemsTab,
-      icon: LinkIcon,
     },
   ];
 
