@@ -274,11 +274,49 @@ vi.mock("../hooks/useFilterCleanup", () => ({
   useFilterCleanup: vi.fn(),
 }));
 
+vi.mock("../OrganizationViewSwitcher", () => ({
+  OrganizationViewSwitcher: ({
+    view,
+    onViewChange,
+  }: {
+    view: string;
+    onViewChange: (v: string) => void;
+  }) => (
+    <div data-testid="org-view-switcher" data-view={view}>
+      <button data-testid="switch-to-list" onClick={() => onViewChange("list")}>
+        List
+      </button>
+      <button data-testid="switch-to-card" onClick={() => onViewChange("card")}>
+        Card
+      </button>
+    </div>
+  ),
+}));
+
+vi.mock("../OrganizationCardGrid", () => ({
+  OrganizationCardGrid: ({ onCardClick }: { onCardClick: (id: number) => void }) => (
+    <div data-testid="organization-card-grid">
+      <div
+        data-testid="mock-card-1"
+        onClick={() => onCardClick(1)}
+        onKeyDown={(e: React.KeyboardEvent) => {
+          if (e.key === "Enter") onCardClick(1);
+        }}
+        role="button"
+        tabIndex={0}
+      >
+        Mock Card
+      </div>
+    </div>
+  ),
+}));
+
 import { useListContext, useGetList } from "ra-core";
 
 describe("OrganizationList rendering", () => {
   beforeEach(() => {
     resetMocks();
+    localStorage.removeItem("organization.view.preference");
     vi.mocked(useListContext).mockReturnValue(createDefaultListContext());
     vi.mocked(useGetList).mockReturnValue({
       data: [],
@@ -289,6 +327,7 @@ describe("OrganizationList rendering", () => {
 
   afterEach(() => {
     vi.restoreAllMocks();
+    localStorage.removeItem("organization.view.preference");
   });
 
   test("renders PremiumDatagrid with table structure", async () => {
@@ -366,6 +405,64 @@ describe("OrganizationList rendering", () => {
     await waitFor(() => {
       const noResults = screen.getByTestId("list-no-results");
       expect(noResults).toBeInTheDocument();
+    });
+  });
+
+  test("renders view switcher in toolbar", async () => {
+    renderWithAdminContext(<OrganizationList />);
+
+    await waitFor(() => {
+      expect(screen.getByTestId("org-view-switcher")).toBeInTheDocument();
+    });
+  });
+
+  test("defaults to list view showing PremiumDatagrid", async () => {
+    renderWithAdminContext(<OrganizationList />);
+
+    await waitFor(() => {
+      expect(screen.getByTestId("premium-datagrid")).toBeInTheDocument();
+      expect(screen.queryByTestId("organization-card-grid")).not.toBeInTheDocument();
+    });
+  });
+
+  test("switches to card view when card toggle is clicked", async () => {
+    renderWithAdminContext(<OrganizationList />);
+
+    await waitFor(() => {
+      expect(screen.getByTestId("premium-datagrid")).toBeInTheDocument();
+    });
+
+    fireEvent.click(screen.getByTestId("switch-to-card"));
+
+    await waitFor(() => {
+      expect(screen.getByTestId("organization-card-grid")).toBeInTheDocument();
+      expect(screen.queryByTestId("premium-datagrid")).not.toBeInTheDocument();
+    });
+  });
+
+  test("renders card grid when localStorage preference is card", async () => {
+    localStorage.setItem("organization.view.preference", "card");
+
+    renderWithAdminContext(<OrganizationList />);
+
+    await waitFor(() => {
+      expect(screen.getByTestId("organization-card-grid")).toBeInTheDocument();
+      expect(screen.queryByTestId("premium-datagrid")).not.toBeInTheDocument();
+    });
+  });
+
+  test("card click calls openSlideOver with correct ID", async () => {
+    localStorage.setItem("organization.view.preference", "card");
+
+    renderWithAdminContext(<OrganizationList />);
+
+    await waitFor(() => {
+      const mockCard = screen.getByTestId("mock-card-1");
+      expect(mockCard).toBeInTheDocument();
+
+      fireEvent.click(mockCard);
+
+      expect(mockOpenSlideOver).toHaveBeenCalledWith(1, "view");
     });
   });
 });

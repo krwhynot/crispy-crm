@@ -1,6 +1,6 @@
 {
   "status": "complete",
-  "generated_at": "2026-02-03T23:32:18.925Z",
+  "generated_at": "2026-02-04T00:09:18.908Z",
   "generator": "scripts/discover/extractors/hooks.ts",
   "source_globs": [
     "src/**/use*.ts",
@@ -8,7 +8,7 @@
     "src/**/*.ts",
     "src/**/*.tsx"
   ],
-  "checksum": "sha256:d6b4480756037fee",
+  "checksum": "sha256:c1043ee3814f1a08",
   "source_hashes": {
     "src\\App.tsx": "acaa54f99f2d",
     "src\\atomic-crm\\activities\\activityDraftSchema.ts": "fe17156bdf82",
@@ -1035,7 +1035,7 @@
       "name": "_root",
       "file": "_root.json",
       "item_count": 101,
-      "checksum": "sha256:85b5a1e93e6a6716",
+      "checksum": "sha256:10aad9fd8c56d502",
       "source_files": [
         "src\\atomic-crm\\activity-log\\ActivityLogContext.tsx",
         "src\\atomic-crm\\contacts\\useColumnMapping.ts",
