@@ -297,94 +297,101 @@ const OrganizationListLayout = ({
             <OrganizationViewSwitcher view={view} onViewChange={onViewChange} />
           </div>
         </div>
-        {view === "card" ? (
-          <OrganizationCardGrid onCardClick={(id) => openSlideOver(id, "view")} />
-        ) : (
-          <PremiumDatagrid
-            onRowClick={(id) => openSlideOver(Number(id), "view")}
-            focusedIndex={focusedIndex}
-          >
-            {/* Column 1: Name - Primary identifier with hierarchy chips (sortable) - always visible */}
-            <FunctionField
-              source="name"
-              label={<OrganizationNameHeader />}
-              sortBy="name"
-              render={(record: OrganizationRecord) => <OrganizationNameCell record={record} />}
-              cellClassName="max-w-[250px]"
-            />
+        {/* Flex container enables scroll in child components - mirrors OpportunityList pattern */}
+        <div className="flex h-full min-h-0 w-full flex-1 flex-col overflow-hidden">
+          {view === "card" ? (
+            <OrganizationCardGrid onCardClick={(id) => openSlideOver(id, "view")} />
+          ) : (
+            <PremiumDatagrid
+              onRowClick={(id) => openSlideOver(Number(id), "view")}
+              focusedIndex={focusedIndex}
+            >
+              {/* Column 1: Name - Primary identifier with hierarchy chips (sortable) - always visible */}
+              <FunctionField
+                source="name"
+                label={<OrganizationNameHeader />}
+                sortBy="name"
+                render={(record: OrganizationRecord) => <OrganizationNameCell record={record} />}
+                cellClassName="max-w-[250px]"
+              />
 
-            {/* Column 2: Type - Organization classification (sortable by organization_type) - always visible */}
-            <FunctionField
-              source="organization_type"
-              label={<OrganizationTypeHeader />}
-              sortBy="organization_type"
-              render={(record: OrganizationRecord) => <OrganizationTypeCell record={record} />}
-            />
+              {/* Column 2: Type - Organization classification (sortable by organization_type) - always visible */}
+              <FunctionField
+                source="organization_type"
+                label={<OrganizationTypeHeader />}
+                sortBy="organization_type"
+                render={(record: OrganizationRecord) => <OrganizationTypeCell record={record} />}
+              />
 
-            {/* Column 3: Priority - Business priority indicator (sortable) - always visible */}
-            <FunctionField
-              source="priority"
-              label={<OrganizationPriorityHeader />}
-              sortBy="priority"
-              render={(record: OrganizationRecord) => <OrganizationPriorityCell record={record} />}
-            />
+              {/* Column 3: Priority - Business priority indicator (sortable) - always visible */}
+              <FunctionField
+                source="priority"
+                label={<OrganizationPriorityHeader />}
+                sortBy="priority"
+                render={(record: OrganizationRecord) => (
+                  <OrganizationPriorityCell record={record} />
+                )}
+              />
 
-            {/* Column 4: Segment - Playbook/Operator category (sortable by segment_name) - always visible */}
-            <FunctionField
-              source="segment_id"
-              label={<OrganizationSegmentHeader />}
-              sortBy="segment_name"
-              render={(record: OrganizationRecord) => <OrganizationSegmentCell record={record} />}
-            />
+              {/* Column 4: Segment - Playbook/Operator category (sortable by segment_name) - always visible */}
+              <FunctionField
+                source="segment_id"
+                label={<OrganizationSegmentHeader />}
+                sortBy="segment_name"
+                render={(record: OrganizationRecord) => <OrganizationSegmentCell record={record} />}
+              />
 
-            {/* Column 5: State - US state code (sortable, filterable) - hidden on tablet */}
-            <TextField
-              source="state"
-              label={<OrganizationStateHeader />}
-              sortable
-              cellClassName="hidden lg:table-cell"
-              headerClassName="hidden lg:table-cell"
-            />
+              {/* Column 5: State - US state code (sortable, filterable) - hidden on tablet */}
+              <TextField
+                source="state"
+                label={<OrganizationStateHeader />}
+                sortable
+                cellClassName="hidden lg:table-cell"
+                headerClassName="hidden lg:table-cell"
+              />
 
-            {/* Column 6: Parent - Direct read from summary view (sortable by parent_organization_name) - hidden on tablet */}
-            <FunctionField
-              source="parent_organization_name"
-              label="Parent"
-              sortBy="parent_organization_name"
-              render={(record: OrganizationRecord) => (
-                <span className="truncate max-w-[200px]">
-                  {record.parent_organization_name || "-"}
-                </span>
-              )}
-              cellClassName="hidden lg:table-cell"
-              headerClassName="hidden lg:table-cell"
-            />
+              {/* Column 6: Parent - Direct read from summary view (sortable by parent_organization_name) - hidden on tablet */}
+              <FunctionField
+                source="parent_organization_name"
+                label="Parent"
+                sortBy="parent_organization_name"
+                render={(record: OrganizationRecord) => (
+                  <span className="truncate max-w-[200px]">
+                    {record.parent_organization_name || "-"}
+                  </span>
+                )}
+                cellClassName="hidden lg:table-cell"
+                headerClassName="hidden lg:table-cell"
+              />
 
-            {/* Column 7: Contacts - Computed count metric (non-sortable) - hidden on mobile */}
-            <FunctionField
-              source="nb_contacts"
-              label="Contacts"
-              sortable={false}
-              render={(record: OrganizationRecord) => <OrganizationContactsCell record={record} />}
-              textAlign="center"
-              cellClassName="hidden md:table-cell"
-              headerClassName="hidden md:table-cell"
-            />
+              {/* Column 7: Contacts - Computed count metric (non-sortable) - hidden on mobile */}
+              <FunctionField
+                source="nb_contacts"
+                label="Contacts"
+                sortable={false}
+                render={(record: OrganizationRecord) => (
+                  <OrganizationContactsCell record={record} />
+                )}
+                textAlign="center"
+                cellClassName="hidden md:table-cell"
+                headerClassName="hidden md:table-cell"
+              />
 
-            {/* Column 8: Opportunities - Computed count metric (non-sortable) - hidden on mobile */}
-            <FunctionField
-              source="nb_opportunities"
-              label="Opportunities"
-              sortable={false}
-              render={(record: OrganizationRecord) => (
-                <OrganizationOpportunitiesCell record={record} />
-              )}
-              textAlign="center"
-              cellClassName="hidden md:table-cell"
-              headerClassName="hidden md:table-cell"
-            />
-          </PremiumDatagrid>
-        )}
+              {/* Column 8: Opportunities - Computed count metric (non-sortable) - hidden on mobile */}
+              <FunctionField
+                source="nb_opportunities"
+                label="Opportunities"
+                sortable={false}
+                render={(record: OrganizationRecord) => (
+                  <OrganizationOpportunitiesCell record={record} />
+                )}
+                textAlign="center"
+                cellClassName="hidden md:table-cell"
+                headerClassName="hidden md:table-cell"
+              />
+            </PremiumDatagrid>
+          )}
+        </div>
       </StandardListLayout>
       {view === "list" && <OrganizationBulkActionsToolbar />}
     </>

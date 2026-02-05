@@ -17,7 +17,7 @@ export const OrganizationCard = memo(function OrganizationCard({
 }: OrganizationCardProps) {
   return (
     <Card
-      className="p-4 cursor-pointer hover:bg-muted/50 transition-colors"
+      className="p-3 cursor-pointer hover:bg-muted/50 transition-colors"
       onClick={() => onClick(Number(record.id))}
       role="button"
       tabIndex={0}
@@ -30,7 +30,7 @@ export const OrganizationCard = memo(function OrganizationCard({
       aria-label={`View ${record.name}`}
     >
       {/* Top: Avatar + Name + Hierarchy */}
-      <div className="flex items-start gap-3 mb-3">
+      <div className="flex items-start gap-2 mb-2">
         <OrganizationAvatar record={record} />
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-1.5 min-w-0">

@@ -3,6 +3,7 @@ import { useDataProvider } from "ra-core";
 
 import { orgDescendantKeys } from "@/atomic-crm/queryKeys";
 import { SHORT_STALE_TIME_MS } from "@/atomic-crm/constants";
+import { logger } from "@/lib/logger";
 
 /**
  * Hook to fetch all descendant organization IDs for hierarchy cycle prevention.
@@ -32,10 +33,21 @@ export function useOrganizationDescendants(
     queryKey: orgDescendantKeys.detail(orgId!),
     queryFn: async () => {
       if (!orgId) return [];
-      const result = await dataProvider.invoke("get_organization_descendants", {
-        org_id: orgId,
-      });
-      return (result.data as number[]) || [];
+      try {
+        const result = await dataProvider.invoke("get_organization_descendants", {
+          org_id: orgId,
+        });
+        return (result.data as number[]) || [];
+      } catch (error: unknown) {
+        // RPC can fail mid-mutation when parent_id is being updated
+        // Return empty array to allow ParentOrganizationInput to render
+        logger.warn("Failed to fetch organization descendants (possibly mid-mutation)", {
+          orgId,
+          error: error instanceof Error ? error.message : String(error),
+          operation: "useOrganizationDescendants",
+        });
+        return [];
+      }
     },
     enabled: !!orgId,
     staleTime: SHORT_STALE_TIME_MS, // Cache for 30s - hierarchy doesn't change often

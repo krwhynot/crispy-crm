@@ -2,9 +2,11 @@ import { useRef } from "react";
 import { useUpdate, useNotify, RecordContextProvider } from "ra-core";
 import { Form } from "react-admin";
 import { useFormContext } from "react-hook-form";
+import { useQueryClient } from "@tanstack/react-query";
 import { logger } from "@/lib/logger";
 import { organizationSchema } from "@/atomic-crm/validation/organizations";
 import { notificationMessages } from "@/atomic-crm/constants/notificationMessages";
+import { organizationKeys, segmentKeys } from "@/atomic-crm/queryKeys";
 import { TextInput } from "@/components/ra-wrappers/text-input";
 import { SelectInput } from "@/components/ra-wrappers/select-input";
 import { BooleanInput } from "@/components/ra-wrappers/boolean-input";
@@ -76,6 +78,7 @@ export function OrganizationRightPanel({
 }: OrganizationRightPanelProps) {
   const [update, { isLoading }] = useUpdate();
   const notify = useNotify();
+  const queryClient = useQueryClient();
   const getValuesRef = useRef<(() => Record<string, unknown>) | null>(null);
 
   const handleSave = async (formData: Partial<OrganizationWithHierarchy>) => {
@@ -103,6 +106,18 @@ export function OrganizationRightPanel({
         data: result.data,
         previousData: record,
       });
+
+      // Detect if segment changed and invalidate segment cache
+      if (result.data.segment_id !== record.segment_id) {
+        queryClient.invalidateQueries({ queryKey: segmentKeys.all });
+      }
+
+      // Refetch queries and WAIT for completion before showing success
+      await Promise.all([
+        queryClient.refetchQueries({ queryKey: organizationKeys.detail(record.id) }),
+        queryClient.invalidateQueries({ queryKey: organizationKeys.lists() }),
+      ]);
+
       notify(notificationMessages.updated("Organization"), { type: "success" });
       onModeToggle?.();
     } catch (error: unknown) {

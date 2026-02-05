@@ -24,10 +24,10 @@ export const COLUMN_VISIBILITY = {
     cellClassName: "hidden xl:table-cell",
     headerClassName: "hidden xl:table-cell",
   },
-  /** Only visible on desktop (1024px+). Use for secondary information. */
+  /** Only visible on desktop (1280px+). Use for secondary information. */
   desktopOnly: {
-    cellClassName: "hidden lg:table-cell",
-    headerClassName: "hidden lg:table-cell",
+    cellClassName: "hidden xl:table-cell",
+    headerClassName: "hidden xl:table-cell",
   },
   /** Visible on tablet and desktop (768px+). Use for important but not critical columns. */
   tabletUp: {
