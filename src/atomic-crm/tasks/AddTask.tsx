@@ -33,6 +33,8 @@ import { contactOptionText } from "../contacts/ContactOption";
 import { useFormOptions } from "../root/ConfigurationContext";
 import { getTaskDefaultValues } from "../validation/task";
 import { getQSearchAutocompleteProps } from "@/atomic-crm/utils/autocompleteDefaults";
+import { taskKeys, dashboardKeys } from "../queryKeys";
+import { useQueryClient } from "@tanstack/react-query";
 
 export const AddTask = ({
   selectContact,
@@ -43,6 +45,7 @@ export const AddTask = ({
 }) => {
   const { data: identity, isPending: isIdentityPending } = useGetIdentity();
   const dataProvider = useDataProvider();
+  const queryClient = useQueryClient();
   const [update] = useUpdate();
   const notify = useNotify();
   const { taskTypes } = useFormOptions();
@@ -77,6 +80,10 @@ export const AddTask = ({
       logger.warn("Failed to update contact last_seen", { feature: "AddTask", error });
       notify("Task created, but couldn't update contact", { type: "warning" });
     }
+
+    // Invalidate task caches so new task appears immediately
+    queryClient.invalidateQueries({ queryKey: taskKeys.all });
+    queryClient.invalidateQueries({ queryKey: dashboardKeys.all });
   };
 
   if (isIdentityPending || !identity) return null;

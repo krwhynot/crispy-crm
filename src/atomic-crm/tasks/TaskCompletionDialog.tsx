@@ -155,6 +155,7 @@ export const TaskCompletionDialog = ({
             | "Check-in"
             | "Follow-up",
           enableDraftPersistence: false,
+          relatedTaskId: task.id,
         }}
       />
     </>

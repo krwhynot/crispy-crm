@@ -1,11 +1,13 @@
 import { CreateBase, Form, useGetIdentity } from "ra-core";
 import { useSearchParams } from "react-router-dom";
+import { useQueryClient } from "@tanstack/react-query";
 import { getContextAwareRedirect } from "@/atomic-crm/utils/getContextAwareRedirect";
 import { createFormResolver } from "@/lib/zodErrorFormatting";
 import { FormProgressProvider, FormProgressBar } from "@/components/ra-wrappers/form";
 import { CreateFormFooter } from "@/atomic-crm/components";
 import { TaskInputs } from "./TaskInputs";
 import { getTaskDefaultValues, taskCreateSchema } from "../validation/task";
+import { taskKeys, opportunityKeys, contactKeys, dashboardKeys } from "../queryKeys";
 
 // Map URL param values to task type enum values
 const URL_TYPE_MAP: Record<string, string> = {
@@ -33,6 +35,7 @@ const URL_TYPE_MAP: Record<string, string> = {
 export default function TaskCreate() {
   const { data: identity } = useGetIdentity();
   const [searchParams] = useSearchParams();
+  const queryClient = useQueryClient();
 
   // Compute context-aware redirect (returns to parent entity if navigated from one)
   const redirect = getContextAwareRedirect(searchParams);
@@ -56,7 +59,17 @@ export default function TaskCreate() {
   };
 
   return (
-    <CreateBase redirect={redirect}>
+    <CreateBase
+      redirect={redirect}
+      mutationOptions={{
+        onSuccess: () => {
+          queryClient.invalidateQueries({ queryKey: taskKeys.all });
+          queryClient.invalidateQueries({ queryKey: opportunityKeys.all });
+          queryClient.invalidateQueries({ queryKey: contactKeys.lists() });
+          queryClient.invalidateQueries({ queryKey: dashboardKeys.all });
+        },
+      }}
+    >
       <div className="bg-muted px-6 py-6">
         <div className="max-w-4xl mx-auto create-form-card">
           <FormProgressProvider initialProgress={10}>
