@@ -17,7 +17,7 @@ describe("OpportunitiesTab (Contact) - WF-H2-005", () => {
     // When a contact is linked to an opportunity:
     // 1. Create should be called for "opportunity_contacts" junction
     // 2. Create should be called for "activities" with:
-    //    - activity_type: "interaction"
+    //    - activity_type: "activity"
     //    - opportunity_id: the linked opportunity id
     //    - type: "note"
     //    - subject containing "contact" and contact name
@@ -30,7 +30,7 @@ describe("OpportunitiesTab (Contact) - WF-H2-005", () => {
     //   "activities",
     //   expect.objectContaining({
     //     data: expect.objectContaining({
-    //       activity_type: "interaction",
+    //       activity_type: "activity",
     //       type: "note",
     //       subject: expect.stringContaining("contact"),
     //       opportunity_id: expect.any(Number),

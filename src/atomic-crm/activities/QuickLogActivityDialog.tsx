@@ -45,7 +45,7 @@ export interface ActivityEntityContext {
   contactId?: number;
   /** Pre-fill and lock the organization field */
   organizationId?: number;
-  /** Pre-fill and lock the opportunity field (also sets activity_type to "interaction") */
+  /** Pre-fill and lock the opportunity field (also sets activity_type to "activity") */
   opportunityId?: number;
 }
 
@@ -100,6 +100,12 @@ export interface QuickLogActivityDialogConfig {
    * @default true
    */
   showSaveAndNew?: boolean;
+
+  /**
+   * Link activity to a completed task
+   * Used when logging activity after task completion
+   */
+  relatedTaskId?: number;
 }
 
 /**
@@ -470,6 +476,7 @@ export function QuickLogActivityDialog({
               onComplete={handleComplete}
               initialDraft={initialDraft}
               onDraftChange={enableDraftPersistence ? handleDraftChange : undefined}
+              relatedTaskId={config?.relatedTaskId}
               // Note: QuickLogForm needs enhancement to support:
               // - lockedFields prop to disable certain entity comboboxes
               // - showSaveAndNew prop to hide that button

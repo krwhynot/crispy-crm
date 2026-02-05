@@ -1,7 +1,7 @@
 /**
  * Activity Zod schemas
  *
- * Core validation schemas for activities, engagements, and interactions.
+ * Core validation schemas for activities and tasks.
  */
 
 import { z } from "zod";
@@ -20,7 +20,7 @@ import { SAMPLE_ACTIVE_STATUSES } from "./constants";
  */
 export const baseActivitiesSchema = z.strictObject({
   id: z.union([z.string(), z.number()]).optional(),
-  activity_type: activityTypeSchema.default("interaction"), // Default to interaction
+  activity_type: activityTypeSchema.default("activity"),
   type: interactionTypeSchema.default("call"), // Default to call
   subject: z.string().trim().min(1, "Subject is required").max(255, "Subject too long"),
   description: z
@@ -175,66 +175,8 @@ function applyActivityRefinements(
  * per Engineering Constitution - all validation happens at API boundary only
  */
 export const activitiesSchema = baseActivitiesSchema.superRefine((data, ctx) => {
-  // Validation rules based on activity_type
-  if (data.activity_type === "interaction" && !data.opportunity_id) {
-    ctx.addIssue({
-      code: z.ZodIssueCode.custom,
-      path: ["opportunity_id"],
-      message: "Opportunity is required for interaction activities",
-    });
-  }
-
-  if (data.activity_type === "engagement" && data.opportunity_id) {
-    ctx.addIssue({
-      code: z.ZodIssueCode.custom,
-      path: ["opportunity_id"],
-      message: "Opportunity should not be set for engagement activities",
-    });
-  }
-
   applyActivityRefinements(data, ctx);
 });
-
-/**
- * Engagement-specific schema (activity_type = "engagement")
- * Extends base schema and adds engagement-specific validation
- */
-export const engagementsSchema = baseActivitiesSchema
-  .extend({
-    activity_type: z.literal("engagement"),
-  })
-  .superRefine((data, ctx) => {
-    if (data.opportunity_id) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        path: ["opportunity_id"],
-        message: "Opportunity should not be set for engagement activities",
-      });
-    }
-
-    applyActivityRefinements(data, ctx);
-  });
-
-/**
- * Interaction-specific schema (activity_type = "interaction")
- * Extends base schema and adds interaction-specific validation
- */
-export const interactionsSchema = baseActivitiesSchema
-  .extend({
-    activity_type: z.literal("interaction"),
-    opportunity_id: z.union([z.string(), z.number()]), // Required for interactions
-  })
-  .superRefine((data, ctx) => {
-    if (!data.opportunity_id) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        path: ["opportunity_id"],
-        message: "Opportunity is required for interaction activities",
-      });
-    }
-
-    applyActivityRefinements(data, ctx);
-  });
 
 /**
  * Schema for Updates - .partial() makes all fields optional
@@ -259,10 +201,6 @@ export const activityNoteFormSchema = z.strictObject({
 // Type inference for main schemas
 export type ActivitiesInput = z.input<typeof activitiesSchema>;
 export type Activities = z.infer<typeof activitiesSchema>;
-export type EngagementsInput = z.input<typeof engagementsSchema>;
-export type Engagements = z.infer<typeof engagementsSchema>;
-export type InteractionsInput = z.input<typeof interactionsSchema>;
-export type Interactions = z.infer<typeof interactionsSchema>;
 export type ActivityNoteFormData = z.infer<typeof activityNoteFormSchema>;
 
 // P2 consolidation: Alias for backward compatibility with types.ts interface name

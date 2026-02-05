@@ -165,7 +165,7 @@ export function useQuickAddOpportunityForm({
       try {
         await dataProvider.create("activities", {
           data: {
-            activity_type: "interaction", // Required when opportunity_id is set
+            activity_type: "activity", // Required when opportunity_id is set
             type: "note",
             subject: "Opportunity created",
             description: `Created via Quick Add in stage: ${stageLabel}. Principal: ${principalOrgName}, Customer: ${customerOrgName}.`,

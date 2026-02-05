@@ -44,14 +44,14 @@ describe("ActivitiesService", () => {
       const mockActivities = [
         {
           id: 1,
-          activity_type: "interaction",
+          activity_type: "activity",
           type: "call",
           subject: "Sales call",
           activity_date: "2024-01-15",
         },
         {
           id: 2,
-          activity_type: "engagement",
+          activity_type: "activity",
           type: "email",
           subject: "Follow-up email",
           activity_date: "2024-01-14",
@@ -106,11 +106,11 @@ describe("ActivitiesService", () => {
       // The RPC function consolidates 5 separate queries into 1 UNION ALL
       // This test verifies we receive activities from all sources
       const mockActivities = [
-        { id: 1, activity_type: "interaction", source_table: "activities" },
-        { id: 2, activity_type: "engagement", source_table: "contact_notes" },
-        { id: 3, activity_type: "engagement", source_table: "opportunity_notes" },
-        { id: 4, activity_type: "interaction", source_table: "tasks" },
-        { id: 5, activity_type: "interaction", source_table: "opportunities" },
+        { id: 1, activity_type: "activity", source_table: "activities" },
+        { id: 2, activity_type: "activity", source_table: "contact_notes" },
+        { id: 3, activity_type: "activity", source_table: "opportunity_notes" },
+        { id: 4, activity_type: "activity", source_table: "tasks" },
+        { id: 5, activity_type: "activity", source_table: "opportunities" },
       ];
 
       mockGetActivityLog.mockResolvedValue(mockActivities);
@@ -127,7 +127,7 @@ describe("ActivitiesService", () => {
       // Generate 250 mock activities
       const mockActivities = Array.from({ length: 250 }, (_, i) => ({
         id: i + 1,
-        activity_type: "interaction",
+        activity_type: "activity",
         subject: `Activity ${i + 1}`,
         activity_date: "2024-01-15",
       }));

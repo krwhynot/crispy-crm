@@ -88,7 +88,7 @@ export const ActivityNoteForm = ({ opportunity, onSuccess }: ActivityNoteFormPro
 
       await dataProvider.create("activities", {
         data: {
-          activity_type: "engagement",
+          activity_type: "activity",
           type: "note",
           subject: `Stage changed from ${getOpportunityStageLabel(oldStage)} to ${getOpportunityStageLabel(newStage)}`,
           activity_date: new Date().toISOString(),
@@ -117,7 +117,7 @@ export const ActivityNoteForm = ({ opportunity, onSuccess }: ActivityNoteFormPro
     try {
       await dataProvider.create("activities", {
         data: {
-          activity_type: "interaction",
+          activity_type: "activity",
           type: data.type,
           subject: data.subject,
           activity_date: data.activity_date.toISOString(),

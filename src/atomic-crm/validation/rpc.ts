@@ -183,7 +183,7 @@ export const checkAuthorizationBatchResponseSchema = z.strictObject({
  * Used by QuickLogForm to ensure consistency.
  */
 const logActivityWithTaskActivitySchema = z.strictObject({
-  activity_type: z.enum(["engagement", "interaction"]),
+  activity_type: z.literal("activity"),
   type: z.string().min(1, "Interaction type is required").max(50, "Type too long"),
   outcome: z.string().max(2000, "Outcome too long").nullable(),
   subject: z.string().min(1, "Subject is required").max(255, "Subject too long"),
@@ -195,6 +195,7 @@ const logActivityWithTaskActivitySchema = z.strictObject({
   opportunity_id: z.number().int().positive().nullable(),
   follow_up_required: z.boolean(),
   follow_up_date: z.string().max(50, "Follow-up date too long").nullable(),
+  related_task_id: z.number().int().positive().nullable().optional(),
 });
 
 const logActivityWithTaskTaskSchema = z.strictObject({

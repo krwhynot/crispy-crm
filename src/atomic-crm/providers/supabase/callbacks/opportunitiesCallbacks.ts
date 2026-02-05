@@ -225,7 +225,7 @@ async function opportunitiesBeforeDelete(
   void dataProvider
     .create("activities", {
       data: {
-        activity_type: "interaction",
+        activity_type: "activity",
         type: "note",
         subject: "Opportunity archived",
         description: `Opportunity archived via delete action`,
@@ -327,7 +327,7 @@ async function opportunitiesBeforeUpdate(
       // Log stage transition activity
       await dataProvider.create("activities", {
         data: {
-          activity_type: "interaction",
+          activity_type: "activity",
           type: "note",
           subject: `Stage changed: ${previousData.stage} → ${data.stage}`,
           description: `Opportunity stage transitioned from ${previousData.stage} to ${data.stage}`,

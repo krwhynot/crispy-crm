@@ -373,7 +373,7 @@ describe("useBulkActionsState - Parallel Execution", () => {
     // Verify activity data structure
     expect(mockDataProvider.create).toHaveBeenCalledWith("activities", {
       data: expect.objectContaining({
-        activity_type: "interaction",
+        activity_type: "activity",
         type: "note",
         subject: "Stage changed to Demo Scheduled (bulk update)",
         opportunity_id: 1,
@@ -383,7 +383,7 @@ describe("useBulkActionsState - Parallel Execution", () => {
 
     expect(mockDataProvider.create).toHaveBeenCalledWith("activities", {
       data: expect.objectContaining({
-        activity_type: "interaction",
+        activity_type: "activity",
         type: "note",
         subject: "Stage changed to Demo Scheduled (bulk update)",
         opportunity_id: 2,
@@ -393,7 +393,7 @@ describe("useBulkActionsState - Parallel Execution", () => {
 
     expect(mockDataProvider.create).toHaveBeenCalledWith("activities", {
       data: expect.objectContaining({
-        activity_type: "interaction",
+        activity_type: "activity",
         type: "note",
         subject: "Stage changed to Demo Scheduled (bulk update)",
         opportunity_id: 3,
@@ -507,7 +507,7 @@ describe("useBulkActionsState - Parallel Execution", () => {
     // Verify activity data structure for first opportunity
     expect(mockDataProvider.create).toHaveBeenCalledWith("activities", {
       data: expect.objectContaining({
-        activity_type: "interaction",
+        activity_type: "activity",
         type: "note",
         subject: "Opportunity archived (bulk update)",
         opportunity_id: 1,
@@ -518,7 +518,7 @@ describe("useBulkActionsState - Parallel Execution", () => {
     // Verify activity data structure for second opportunity
     expect(mockDataProvider.create).toHaveBeenCalledWith("activities", {
       data: expect.objectContaining({
-        activity_type: "interaction",
+        activity_type: "activity",
         type: "note",
         subject: "Opportunity archived (bulk update)",
         opportunity_id: 2,

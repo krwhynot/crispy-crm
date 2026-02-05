@@ -16,7 +16,7 @@ describe("Activities .max() Constraints", () => {
     it("should accept subject at max length (255 chars)", () => {
       const validActivity = {
         subject: "a".repeat(255),
-        activity_type: "interaction" as const,
+        activity_type: "activity" as const,
         type: "call" as const,
         contact_id: 1,
         opportunity_id: 1,
@@ -27,7 +27,7 @@ describe("Activities .max() Constraints", () => {
     it("should reject subject over max length (256 chars)", () => {
       const invalidActivity = {
         subject: "a".repeat(256),
-        activity_type: "interaction" as const,
+        activity_type: "activity" as const,
         type: "call" as const,
         contact_id: 1,
         opportunity_id: 1,
@@ -41,7 +41,7 @@ describe("Activities .max() Constraints", () => {
       const validActivity = {
         subject: "Test",
         description: "a".repeat(10000),
-        activity_type: "interaction" as const,
+        activity_type: "activity" as const,
         type: "call" as const,
         contact_id: 1,
         opportunity_id: 1,
@@ -53,7 +53,7 @@ describe("Activities .max() Constraints", () => {
       const invalidActivity = {
         subject: "Test",
         description: "a".repeat(10001),
-        activity_type: "interaction" as const,
+        activity_type: "activity" as const,
         type: "call" as const,
         contact_id: 1,
         opportunity_id: 1,
@@ -67,7 +67,7 @@ describe("Activities .max() Constraints", () => {
       const validActivity = {
         subject: "Test",
         follow_up_notes: "a".repeat(10000),
-        activity_type: "interaction" as const,
+        activity_type: "activity" as const,
         type: "call" as const,
         contact_id: 1,
         opportunity_id: 1,
@@ -79,7 +79,7 @@ describe("Activities .max() Constraints", () => {
       const invalidActivity = {
         subject: "Test",
         follow_up_notes: "a".repeat(10001),
-        activity_type: "interaction" as const,
+        activity_type: "activity" as const,
         type: "call" as const,
         contact_id: 1,
         opportunity_id: 1,
@@ -93,7 +93,7 @@ describe("Activities .max() Constraints", () => {
       const validActivity = {
         subject: "Test",
         outcome: "a".repeat(2000),
-        activity_type: "interaction" as const,
+        activity_type: "activity" as const,
         type: "call" as const,
         contact_id: 1,
         opportunity_id: 1,
@@ -105,7 +105,7 @@ describe("Activities .max() Constraints", () => {
       const invalidActivity = {
         subject: "Test",
         outcome: "a".repeat(2001),
-        activity_type: "interaction" as const,
+        activity_type: "activity" as const,
         type: "call" as const,
         contact_id: 1,
         opportunity_id: 1,
@@ -119,7 +119,7 @@ describe("Activities .max() Constraints", () => {
       const validActivity = {
         subject: "Test",
         location: "a".repeat(255),
-        activity_type: "interaction" as const,
+        activity_type: "activity" as const,
         type: "call" as const,
         contact_id: 1,
         opportunity_id: 1,
@@ -131,7 +131,7 @@ describe("Activities .max() Constraints", () => {
       const invalidActivity = {
         subject: "Test",
         location: "a".repeat(256),
-        activity_type: "interaction" as const,
+        activity_type: "activity" as const,
         type: "call" as const,
         contact_id: 1,
         opportunity_id: 1,
@@ -145,7 +145,7 @@ describe("Activities .max() Constraints", () => {
       const validActivity = {
         subject: "Test",
         attachments: ["a".repeat(2048)],
-        activity_type: "interaction" as const,
+        activity_type: "activity" as const,
         type: "call" as const,
         contact_id: 1,
         opportunity_id: 1,
@@ -157,7 +157,7 @@ describe("Activities .max() Constraints", () => {
       const invalidActivity = {
         subject: "Test",
         attachments: ["a".repeat(2049)],
-        activity_type: "interaction" as const,
+        activity_type: "activity" as const,
         type: "call" as const,
         contact_id: 1,
         opportunity_id: 1,
@@ -169,7 +169,7 @@ describe("Activities .max() Constraints", () => {
       const invalidActivity = {
         subject: "Test",
         attachments: Array(21).fill("test.pdf"),
-        activity_type: "interaction" as const,
+        activity_type: "activity" as const,
         type: "call" as const,
         contact_id: 1,
         opportunity_id: 1,
@@ -183,7 +183,7 @@ describe("Activities .max() Constraints", () => {
       const validActivity = {
         subject: "Test",
         attendees: ["a".repeat(255)],
-        activity_type: "interaction" as const,
+        activity_type: "activity" as const,
         type: "call" as const,
         contact_id: 1,
         opportunity_id: 1,
@@ -195,7 +195,7 @@ describe("Activities .max() Constraints", () => {
       const invalidActivity = {
         subject: "Test",
         attendees: ["a".repeat(256)],
-        activity_type: "interaction" as const,
+        activity_type: "activity" as const,
         type: "call" as const,
         contact_id: 1,
         opportunity_id: 1,
@@ -207,7 +207,7 @@ describe("Activities .max() Constraints", () => {
       const invalidActivity = {
         subject: "Test",
         attendees: Array(51).fill("John Doe"),
-        activity_type: "interaction" as const,
+        activity_type: "activity" as const,
         type: "call" as const,
         contact_id: 1,
         opportunity_id: 1,
@@ -221,7 +221,7 @@ describe("Activities .max() Constraints", () => {
       const validActivity = {
         subject: "Test",
         tags: ["a".repeat(100)],
-        activity_type: "interaction" as const,
+        activity_type: "activity" as const,
         type: "call" as const,
         contact_id: 1,
         opportunity_id: 1,
@@ -233,7 +233,7 @@ describe("Activities .max() Constraints", () => {
       const invalidActivity = {
         subject: "Test",
         tags: ["a".repeat(101)],
-        activity_type: "interaction" as const,
+        activity_type: "activity" as const,
         type: "call" as const,
         contact_id: 1,
         opportunity_id: 1,
@@ -245,7 +245,7 @@ describe("Activities .max() Constraints", () => {
       const invalidActivity = {
         subject: "Test",
         tags: Array(21).fill("tag"),
-        activity_type: "interaction" as const,
+        activity_type: "activity" as const,
         type: "call" as const,
         contact_id: 1,
         opportunity_id: 1,
@@ -264,7 +264,7 @@ describe("Activities .max() Constraints", () => {
         opportunity_id: "a".repeat(50),
         created_by: "a".repeat(50),
         related_task_id: "a".repeat(50),
-        activity_type: "interaction" as const,
+        activity_type: "activity" as const,
         type: "call" as const,
       };
       expect(() => baseActivitiesSchema.parse(validActivity)).not.toThrow();
@@ -274,7 +274,7 @@ describe("Activities .max() Constraints", () => {
       const invalidActivity = {
         subject: "Test",
         contact_id: "a".repeat(51),
-        activity_type: "interaction" as const,
+        activity_type: "activity" as const,
         type: "call" as const,
         organization_id: 1,
       };
@@ -289,7 +289,7 @@ describe("Activities .max() Constraints", () => {
         created_at: "2024-01-01T00:00:00.000Z",
         updated_at: "2024-01-01T00:00:00.000Z",
         deleted_at: "2024-01-01T00:00:00.000Z",
-        activity_type: "interaction" as const,
+        activity_type: "activity" as const,
         type: "call" as const,
         contact_id: 1,
         opportunity_id: 1,
@@ -301,7 +301,7 @@ describe("Activities .max() Constraints", () => {
       const invalidActivity = {
         subject: "Test",
         created_at: "a".repeat(51),
-        activity_type: "interaction" as const,
+        activity_type: "activity" as const,
         type: "call" as const,
         contact_id: 1,
         opportunity_id: 1,

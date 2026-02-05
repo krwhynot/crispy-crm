@@ -92,7 +92,7 @@ export function LinkOpportunityModal({
 
               await dataProvider.create("activities", {
                 data: {
-                  activity_type: "interaction",
+                  activity_type: "activity",
                   type: "note",
                   subject: `Contact linked: ${contactName}`,
                   activity_date: new Date().toISOString(),

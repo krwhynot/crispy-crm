@@ -116,7 +116,7 @@ export function useBulkActionsState({
           try {
             await dataProvider.create("activities", {
               data: {
-                activity_type: "interaction",
+                activity_type: "activity",
                 type: "note",
                 subject: `Stage changed to ${getOpportunityStageLabel(selectedStage)} (bulk update)`,
                 activity_date: new Date().toISOString(),
@@ -194,7 +194,7 @@ export function useBulkActionsState({
           try {
             await dataProvider.create("activities", {
               data: {
-                activity_type: "interaction",
+                activity_type: "activity",
                 type: "note",
                 subject: "Opportunity archived (bulk update)",
                 activity_date: new Date().toISOString(),

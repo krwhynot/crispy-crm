@@ -47,6 +47,11 @@ interface QuickLogFormProps {
    * Takes precedence over initialDraft.opportunityId
    */
   initialOpportunityId?: number;
+  /**
+   * Link activity to a completed task
+   * Set when logging activity from task completion flow
+   */
+  relatedTaskId?: number;
 }
 
 /**
@@ -67,6 +72,7 @@ export function QuickLogForm({
   initialContactId,
   initialOrganizationId,
   initialOpportunityId,
+  relatedTaskId,
 }: QuickLogFormProps) {
   const notify = useNotify();
   const queryClient = useQueryClient();
@@ -191,7 +197,7 @@ export function QuickLogForm({
 
         // Build activity payload for RPC (explicitly typed to avoid inference issues)
         const activityPayload: LogActivityWithTaskParams["p_activity"] = {
-          activity_type: data.opportunityId ? "interaction" : "engagement",
+          activity_type: "activity" as const,
           type: ACTIVITY_TYPE_MAP[activityType] ?? activityType,
           outcome: data.outcome || null,
           subject: data.notes.substring(0, 100) || `${activityType} update`,
@@ -203,6 +209,7 @@ export function QuickLogForm({
           opportunity_id: data.opportunityId || null,
           follow_up_required: data.createFollowUp === true,
           follow_up_date: followUpDateStr,
+          related_task_id: relatedTaskId ?? null,
         };
 
         // Build optional task payload for RPC using if statement for proper narrowing
@@ -251,7 +258,17 @@ export function QuickLogForm({
         logger.error("Activity log error", error, { feature: "QuickLogForm" });
       }
     },
-    [salesId, notify, queryClient, dataProvider, form, onComplete, onRefresh, entityData]
+    [
+      salesId,
+      notify,
+      queryClient,
+      dataProvider,
+      form,
+      onComplete,
+      onRefresh,
+      entityData,
+      relatedTaskId,
+    ]
   );
 
   // Cascading entity selection handlers

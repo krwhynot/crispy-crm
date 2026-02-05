@@ -160,7 +160,7 @@ vi.mock("@/components/ra-wrappers/date-input", () => ({
 function createMockActivity(overrides: Partial<ActivityRecord> = {}): ActivityRecord {
   return {
     id: 1,
-    activity_type: "interaction",
+    activity_type: "activity",
     type: "call",
     subject: "Test Activity",
     activity_date: "2024-01-15",
@@ -206,13 +206,13 @@ describe("ActivityDetailsTab", () => {
     });
 
     it("renders activity type badge", () => {
-      const record = createMockActivity({ activity_type: "interaction" });
+      const record = createMockActivity({ activity_type: "activity" });
 
       renderWithAdminContext(
         <ActivityDetailsTab record={record} mode="view" onModeToggle={mockOnModeToggle} />
       );
 
-      expect(screen.getByText("interaction")).toBeInTheDocument();
+      expect(screen.getByText("activity")).toBeInTheDocument();
     });
 
     it("renders interaction type badge", () => {
@@ -540,16 +540,8 @@ describe("ActivityDetailsTab", () => {
       expect(form).toHaveAttribute("id", "slide-over-edit-form");
     });
 
-    it("includes activity type select input", () => {
-      const record = createMockActivity();
-
-      renderWithAdminContext(
-        <ActivityDetailsTab record={record} mode="edit" onModeToggle={mockOnModeToggle} />
-      );
-
-      expect(screen.getByTestId("select-input-activity_type")).toBeInTheDocument();
-      expect(screen.getByText("Activity Type")).toBeInTheDocument();
-    });
+    // Activity type select was removed — activity_type is now auto-set to "activity"
+    // (engagement/interaction distinction removed in simplify-activity-types migration)
 
     it("includes interaction type select input", () => {
       const record = createMockActivity();
@@ -777,7 +769,7 @@ describe("ActivityDetailsTab", () => {
     it("handles record with minimal fields", () => {
       const minimalRecord: ActivityRecord = {
         id: 1,
-        activity_type: "engagement",
+        activity_type: "activity",
         type: "note",
         subject: "Minimal",
         activity_date: "2024-01-01",

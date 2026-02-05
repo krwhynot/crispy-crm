@@ -86,7 +86,7 @@ export function OpportunityCardActions({ opportunityId, onDelete }: OpportunityC
 
         await dataProvider.create("activities", {
           data: {
-            activity_type: "interaction",
+            activity_type: "activity",
             type: "note",
             subject: `Opportunity ${closeTargetStage === STAGE.CLOSED_WON ? "won" : "lost"}`,
             opportunity_id: opportunityId,

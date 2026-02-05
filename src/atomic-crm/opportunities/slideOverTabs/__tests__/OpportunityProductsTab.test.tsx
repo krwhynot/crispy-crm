@@ -19,7 +19,7 @@ describe("OpportunityProductsTab - WF-H2-004", () => {
     // When products are synced:
     // 1. Update should be called for "opportunities" with products_to_sync
     // 2. Create should be called for "activities" with:
-    //    - activity_type: "interaction"
+    //    - activity_type: "activity"
     //    - opportunity_id: record.id
     //    - type: "note"
     //    - subject containing "product" names
@@ -33,7 +33,7 @@ describe("OpportunityProductsTab - WF-H2-004", () => {
     //   "activities",
     //   expect.objectContaining({
     //     data: expect.objectContaining({
-    //       activity_type: "interaction",
+    //       activity_type: "activity",
     //       type: "note",
     //       subject: expect.stringContaining("product"),
     //       opportunity_id: 1,  // The opportunity ID

@@ -19,7 +19,7 @@ describe("OpportunitySlideOverDetailsTab - WF-H2-003", () => {
     // When the SlideOver details are saved:
     // 1. Update should be called for "opportunities"
     // 2. Create should be called for "activities" with:
-    //    - activity_type: "interaction"
+    //    - activity_type: "activity"
     //    - opportunity_id: record.id
     //    - type: "note"
     //    - subject containing "updated" or similar
@@ -33,7 +33,7 @@ describe("OpportunitySlideOverDetailsTab - WF-H2-003", () => {
     //   "activities",
     //   expect.objectContaining({
     //     data: expect.objectContaining({
-    //       activity_type: "interaction",
+    //       activity_type: "activity",
     //       opportunity_id: 1,  // The opportunity ID
     //     }),
     //   })

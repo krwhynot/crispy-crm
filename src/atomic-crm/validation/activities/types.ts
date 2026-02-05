@@ -11,8 +11,7 @@ import { z } from "zod";
  * After STI migration, 'task' distinguishes planned items from logged interactions
  */
 export const activityTypeSchema = z.enum([
-  "engagement", // Standalone activity not linked to opportunity
-  "interaction", // Activity linked to an opportunity
+  "activity", // Logged activity (call, email, meeting, etc.)
   "task", // Planned task (STI pattern - stored in same table)
 ]);
 

@@ -292,7 +292,7 @@ interface MockTask {
  */
 interface MockActivity {
   id: number;
-  activity_type: "engagement" | "interaction" | "task";
+  activity_type: "activity" | "task";
   type: string; // interaction type: call, email, meeting, demo, sample, etc.
   subject: string;
   description: string | null;
@@ -449,11 +449,11 @@ export const createMockTask = (overrides?: Partial<MockTask>): MockTask => ({
 
 /**
  * Create a mock activity record
- * Matches the Activities schema for interaction/engagement/sample activities
+ * Matches the Activities schema for activity/sample activities
  */
 export const createMockActivity = (overrides?: Partial<MockActivity>): MockActivity => ({
   id: faker.number.int({ min: 1, max: 10000 }),
-  activity_type: faker.helpers.arrayElement(["engagement", "interaction"] as const),
+  activity_type: "activity" as const,
   type: faker.helpers.arrayElement([
     "call",
     "email",

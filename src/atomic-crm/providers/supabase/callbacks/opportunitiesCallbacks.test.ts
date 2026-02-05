@@ -107,7 +107,7 @@ describe("opportunitiesCallbacks", () => {
 
       expect(mockDataProvider.create).toHaveBeenCalledWith("activities", {
         data: expect.objectContaining({
-          activity_type: "interaction",
+          activity_type: "activity",
           type: "note",
           subject: "Stage changed: sample_visit_offered → demo_scheduled",
           opportunity_id: 1,

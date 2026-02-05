@@ -1,18 +1,18 @@
 {
   "status": "complete",
-  "generated_at": "2026-02-04T04:25:04.754Z",
+  "generated_at": "2026-02-05T15:07:05.501Z",
   "generator": "scripts/discover/extractors/types.ts",
   "source_globs": [
     "src/atomic-crm/types.ts",
     "src/atomic-crm/**/types.ts",
     "src/types/**/*.ts"
   ],
-  "checksum": "sha256:6fc752a8886ab62d",
+  "checksum": "sha256:f6decbe7df28c85e",
   "source_hashes": {
     "src\\atomic-crm\\dashboard\\types.ts": "a7616a1f8934",
     "src\\atomic-crm\\filters\\types.ts": "3879550007ba",
     "src\\atomic-crm\\organizations\\types.ts": "eee2c2b4841c",
-    "src\\atomic-crm\\providers\\supabase\\extensions\\types.ts": "0ecffca12765",
+    "src\\atomic-crm\\providers\\supabase\\extensions\\types.ts": "213088748d2b",
     "src\\atomic-crm\\providers\\supabase\\filters\\types.ts": "4f1ec55ed6db",
     "src\\atomic-crm\\providers\\supabase\\types.ts": "ac091ebdeac6",
     "src\\atomic-crm\\providers\\types.ts": "7d578b64ff67",
@@ -21,8 +21,8 @@
     "src\\atomic-crm\\tasks\\types.ts": "9d108ee55648",
     "src\\atomic-crm\\tutorial\\types.ts": "b66ec8c41b6f",
     "src\\atomic-crm\\types.ts": "5a739942caed",
-    "src\\atomic-crm\\validation\\activities\\types.ts": "f915ffeb8940",
-    "src\\types\\database.types.ts": "60da9d7e2607"
+    "src\\atomic-crm\\validation\\activities\\types.ts": "0e79a0e8ac95",
+    "src\\types\\database.types.ts": "b446283726cf"
   },
   "summary": {
     "total_items": 101,
@@ -38,7 +38,7 @@
       "name": "_other",
       "file": "_other.json",
       "item_count": 101,
-      "checksum": "sha256:d2ce7d5c132e5174",
+      "checksum": "sha256:4e684a829f1bfe58",
       "source_files": [
         "src\\atomic-crm\\dashboard\\types.ts",
         "src\\atomic-crm\\filters\\types.ts",
@@ -59,7 +59,7 @@
         "src\\atomic-crm\\dashboard\\types.ts": "a7616a1f8934",
         "src\\atomic-crm\\filters\\types.ts": "3879550007ba",
         "src\\atomic-crm\\organizations\\types.ts": "eee2c2b4841c",
-        "src\\atomic-crm\\providers\\supabase\\extensions\\types.ts": "0ecffca12765",
+        "src\\atomic-crm\\providers\\supabase\\extensions\\types.ts": "213088748d2b",
         "src\\atomic-crm\\providers\\supabase\\filters\\types.ts": "4f1ec55ed6db",
         "src\\atomic-crm\\providers\\supabase\\types.ts": "ac091ebdeac6",
         "src\\atomic-crm\\providers\\types.ts": "7d578b64ff67",
@@ -68,8 +68,8 @@
         "src\\atomic-crm\\tasks\\types.ts": "9d108ee55648",
         "src\\atomic-crm\\tutorial\\types.ts": "b66ec8c41b6f",
         "src\\atomic-crm\\types.ts": "5a739942caed",
-        "src\\atomic-crm\\validation\\activities\\types.ts": "f915ffeb8940",
-        "src\\types\\database.types.ts": "60da9d7e2607"
+        "src\\atomic-crm\\validation\\activities\\types.ts": "0e79a0e8ac95",
+        "src\\types\\database.types.ts": "b446283726cf"
       }
     }
   ],

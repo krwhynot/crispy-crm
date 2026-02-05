@@ -42,7 +42,7 @@ import { useShowContext } from "ra-core";
 function createMockActivity(overrides: Partial<ActivityRecord> = {}): ActivityRecord {
   return {
     id: 1,
-    activity_type: "interaction",
+    activity_type: "activity",
     type: "call",
     subject: "Follow-up call with client",
     activity_date: "2024-01-15",
@@ -106,7 +106,7 @@ describe("ActivityShow", () => {
 
     test("displays activity_type and type badges", async () => {
       const mockActivity = createMockActivity({
-        activity_type: "interaction",
+        activity_type: "activity",
         type: "call",
       });
 
@@ -120,7 +120,7 @@ describe("ActivityShow", () => {
       });
 
       await waitFor(() => {
-        expect(screen.getByText("interaction")).toBeInTheDocument();
+        expect(screen.getByText("activity")).toBeInTheDocument();
         // Type is formatted through ACTIVITY_TYPE_FROM_API - "Call" badge exists
         expect(screen.getByText("Call")).toBeInTheDocument();
       });

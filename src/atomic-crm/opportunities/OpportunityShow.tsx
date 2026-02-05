@@ -47,7 +47,7 @@ const OpportunityShowContent = () => {
   // Memoize the activities filter to prevent infinite re-renders
   // This ensures the filter object reference stays stable unless activityFilters changes
   const activitiesListFilter = useMemo(
-    () => ({ activity_type: "interaction", ...activityFilters }),
+    () => ({ activity_type: "activity", ...activityFilters }),
     [activityFilters]
   );
 

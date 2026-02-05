@@ -16,8 +16,8 @@ import ActivitySinglePage from "../ActivitySinglePage";
 const TestWrapper = ({ children }: { children: React.ReactNode }) => {
   const methods = useForm({
     defaultValues: {
-      // activity_type: "interaction" makes Opportunity field visible (conditionally rendered)
-      activity_type: "interaction",
+      // activity_type: "activity" makes Opportunity field visible (conditionally rendered)
+      activity_type: "activity",
       type: "",
       subject: "",
       activity_date: "",

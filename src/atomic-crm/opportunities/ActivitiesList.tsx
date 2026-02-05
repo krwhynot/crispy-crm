@@ -21,9 +21,6 @@ export const ActivitiesList = () => {
               <Badge variant="outline" className="capitalize">
                 {activity.type.replace("_", " ")}
               </Badge>
-              {activity.activity_type === "interaction" && (
-                <Badge className="bg-primary text-primary-foreground">Interaction</Badge>
-              )}
               {activity.sentiment && (
                 <Badge
                   variant="outline"

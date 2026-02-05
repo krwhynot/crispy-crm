@@ -5666,7 +5666,7 @@ export type Database = {
       };
     };
     Enums: {
-      activity_type: "engagement" | "interaction" | "task";
+      activity_type: "activity" | "engagement" | "interaction" | "task";
       contact_role:
         | "decision_maker"
         | "influencer"

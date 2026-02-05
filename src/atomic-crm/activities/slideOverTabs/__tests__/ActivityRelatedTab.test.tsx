@@ -79,7 +79,7 @@ describe("ActivityRelatedTab", () => {
   const createTestActivity = (overrides: Partial<ActivityRecord> = {}): ActivityRecord =>
     createMockActivity({
       id: 1,
-      activity_type: "interaction",
+      activity_type: "activity",
       type: "call",
       subject: "Test Activity",
       activity_date: "2024-01-15",

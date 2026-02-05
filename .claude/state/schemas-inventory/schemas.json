@@ -1,7 +1,7 @@
 {
   "chunk_name": "schemas",
-  "generated_at": "2026-02-04T04:25:04.542Z",
-  "item_count": 6,
+  "generated_at": "2026-02-05T15:07:05.213Z",
+  "item_count": 3,
   "items": [
     {
       "name": "baseActivitiesSchema",
@@ -364,7 +364,6 @@
         }
       ],
       "relatedSchemas": [
-        "activitiesSchema",
         "updateActivitiesSchema"
       ],
       "validationFunctions": [],
@@ -372,50 +371,13 @@
       "hasSuperRefine": false
     },
     {
-      "name": "activitiesSchema",
-      "file": "src\\atomic-crm\\validation\\activities\\schemas.ts",
-      "line": 177,
-      "schemaType": "other",
-      "fields": [],
-      "relatedSchemas": [
-        "baseActivitiesSchema",
-        "updateActivitiesSchema"
-      ],
-      "validationFunctions": [],
-      "hasTransforms": false,
-      "hasSuperRefine": true
-    },
-    {
-      "name": "engagementsSchema",
-      "file": "src\\atomic-crm\\validation\\activities\\schemas.ts",
-      "line": 202,
-      "schemaType": "other",
-      "fields": [],
-      "relatedSchemas": [],
-      "validationFunctions": [],
-      "hasTransforms": false,
-      "hasSuperRefine": true
-    },
-    {
-      "name": "interactionsSchema",
-      "file": "src\\atomic-crm\\validation\\activities\\schemas.ts",
-      "line": 222,
-      "schemaType": "union",
-      "fields": [],
-      "relatedSchemas": [],
-      "validationFunctions": [],
-      "hasTransforms": false,
-      "hasSuperRefine": true
-    },
-    {
       "name": "updateActivitiesSchema",
       "file": "src\\atomic-crm\\validation\\activities\\schemas.ts",
-      "line": 243,
+      "line": 185,
       "schemaType": "union",
       "fields": [],
       "relatedSchemas": [
-        "baseActivitiesSchema",
-        "activitiesSchema"
+        "baseActivitiesSchema"
       ],
       "validationFunctions": [],
       "hasTransforms": false,
@@ -424,7 +386,7 @@
     {
       "name": "activityNoteFormSchema",
       "file": "src\\atomic-crm\\validation\\activities\\schemas.ts",
-      "line": 251,
+      "line": 193,
       "schemaType": "strictObject",
       "fields": [
         {

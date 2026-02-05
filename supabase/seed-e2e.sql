@@ -33,15 +33,15 @@ BEGIN
   -- ============================================================================
   -- Create active opportunities in various stages to trigger Pipeline Summary display
 
-  -- Opportunity 1: Lead stage (organization 1 - RJC)
+  -- Opportunity 1: Lead stage (organization 1)
   INSERT INTO opportunities (
-    name, description, stage, status, expected_close_date,
-    organization_id, account_manager_id, priority, created_at, updated_at, created_by
+    name, description, stage, status, estimated_close_date,
+    customer_organization_id, principal_organization_id, account_manager_id, priority, created_at, updated_at, created_by
   ) VALUES (
     'RJC - Artisan Cheese Program',
     'Premium cheese selection for upscale menu',
-    'lead', 'active', NOW() + INTERVAL '45 days',
-    1, v_sales_id, 'high', NOW() - INTERVAL '5 days', NOW(), v_sales_id
+    'new_lead', 'active', CURRENT_DATE + INTERVAL '45 days',
+    1, 1, v_sales_id, 'high', NOW() - INTERVAL '5 days', NOW(), v_sales_id
   ) RETURNING id INTO v_opp_id;
 
   -- Opportunity 2: Qualification stage (organization 7 - Rapid Rasoi)
@@ -220,7 +220,7 @@ BEGIN
     activity_type, type, subject, description, activity_date, duration_minutes,
     organization_id, opportunity_id, sentiment, created_by, created_at
   ) VALUES (
-    'interaction', 'call', 'Pricing discussion with RJC chef',
+    'activity', 'call', 'Pricing discussion with RJC chef',
     'Reviewed artisan cheese pricing and seasonal availability. Chef interested in monthly featured selections.',
     NOW() - INTERVAL '1 day', 35,
     1, (SELECT id FROM opportunities WHERE name = 'RJC - Artisan Cheese Program' LIMIT 1),
@@ -232,7 +232,7 @@ BEGIN
     activity_type, type, subject, description, activity_date, duration_minutes,
     organization_id, opportunity_id, sentiment, created_by, created_at
   ) VALUES (
-    'interaction', 'email', 'Contract sent to Rapid Rasoi',
+    'activity', 'email', 'Contract sent to Rapid Rasoi',
     'Sent final contract draft for paneer supply program. Awaiting procurement team review.',
     NOW() - INTERVAL '2 days', NULL,
     7, (SELECT id FROM opportunities WHERE name = 'Rapid Rasoi - Paneer Supply Contract' LIMIT 1),
@@ -244,7 +244,7 @@ BEGIN
     activity_type, type, subject, description, activity_date, duration_minutes,
     organization_id, opportunity_id, sentiment, created_by, created_at
   ) VALUES (
-    'engagement', 'meeting', 'Spring menu planning with Kaufholds',
+    'activity', 'meeting', 'Spring menu planning with Kaufholds',
     'Met with culinary team to discuss seasonal cheese offerings. Strong interest in cheese curds for appetizer menu.',
     NOW() - INTERVAL '3 days', 60,
     13, (SELECT id FROM opportunities WHERE name = 'Kaufholds - Spring Menu Launch' LIMIT 1),
@@ -256,7 +256,7 @@ BEGIN
     activity_type, type, subject, description, activity_date, duration_minutes,
     organization_id, opportunity_id, sentiment, created_by, created_at
   ) VALUES (
-    'interaction', 'call', 'Sample tasting scheduled with Better Balance',
+    'activity', 'call', 'Sample tasting scheduled with Better Balance',
     'Confirmed vegan cheese tasting session for next week. Chef is excited about plant-based options.',
     NOW() - INTERVAL '4 days', 20,
     26, (SELECT id FROM opportunities WHERE name = 'Better Balance - Plant-Based Program' LIMIT 1),
@@ -268,7 +268,7 @@ BEGIN
     activity_type, type, subject, description, activity_date, duration_minutes,
     organization_id, opportunity_id, sentiment, created_by, created_at
   ) VALUES (
-    'engagement', 'meeting', 'Contract negotiation with Frites Street',
+    'activity', 'meeting', 'Contract negotiation with Frites Street',
     'Discussed import logistics and exclusivity terms. Owner has concerns about pricing structure.',
     NOW() - INTERVAL '5 days', 90,
     44, (SELECT id FROM opportunities WHERE name = 'Frites Street - Belgian Cheese Import Deal' LIMIT 1),
@@ -280,7 +280,7 @@ BEGIN
     activity_type, type, subject, description, activity_date, duration_minutes,
     organization_id, opportunity_id, sentiment, created_by, created_at
   ) VALUES (
-    'interaction', 'email', 'Welcome email to Wicks',
+    'activity', 'email', 'Welcome email to Wicks',
     'Sent welcome package for subscription program. Included delivery schedule and product catalog.',
     NOW() - INTERVAL '6 days', NULL,
     97, (SELECT id FROM opportunities WHERE name = 'Wicks - Monthly Subscription Program' LIMIT 1),
@@ -292,7 +292,7 @@ BEGIN
     activity_type, type, subject, description, activity_date, duration_minutes,
     organization_id, opportunity_id, sentiment, created_by, created_at
   ) VALUES (
-    'interaction', 'call', 'Quick check-in with RJC',
+    'activity', 'call', 'Quick check-in with RJC',
     'Brief call to confirm meeting time for next week. Chef is available Tuesday afternoon.',
     NOW() - INTERVAL '2 hours', 10,
     1, (SELECT id FROM opportunities WHERE name = 'RJC - Artisan Cheese Program' LIMIT 1),

@@ -1,6 +1,6 @@
 {
   "status": "complete",
-  "generated_at": "2026-02-04T04:25:05.033Z",
+  "generated_at": "2026-02-05T15:07:05.857Z",
   "generator": "scripts/discover/extractors/forms.ts",
   "source_globs": [
     "src/atomic-crm/**/*Create*.tsx",
@@ -8,7 +8,7 @@
     "src/atomic-crm/**/*Form*.tsx",
     "src/atomic-crm/**/*Inputs*.tsx"
   ],
-  "checksum": "sha256:119aa5566fe4107a",
+  "checksum": "sha256:fa18e5e6f48fdb48",
   "source_hashes": {
     "src\\atomic-crm\\activities\\ActivityEdit.tsx": "ba97db9f3ada",
     "src\\atomic-crm\\activities\\ActivityInputs.tsx": "85431cf76810",
@@ -27,11 +27,11 @@
     "src\\atomic-crm\\contacts\\QuickCreateContactPopover.tsx": "f6b3b7a2e1d7",
     "src\\atomic-crm\\contacts\\TagsListEdit.tsx": "1061b1fc5162",
     "src\\atomic-crm\\contexts\\FormOptionsContext.tsx": "164b5fa6c2d5",
-    "src\\atomic-crm\\dashboard\\QuickLogForm.tsx": "43cbea6d32a9",
+    "src\\atomic-crm\\dashboard\\QuickLogForm.tsx": "b66a041f0ba0",
     "src\\atomic-crm\\layout\\FormToolbar.tsx": "044f9a3b944a",
     "src\\atomic-crm\\notes\\NoteCreate.tsx": "d60f77ade7e6",
     "src\\atomic-crm\\notes\\NoteInputs.tsx": "530ab4f5e475",
-    "src\\atomic-crm\\opportunities\\ActivityNoteForm.tsx": "259a048ea903",
+    "src\\atomic-crm\\opportunities\\ActivityNoteForm.tsx": "e0170ae5f916",
     "src\\atomic-crm\\opportunities\\OpportunityCompactForm.tsx": "4d1eb9b3e1de",
     "src\\atomic-crm\\opportunities\\OpportunityCreate.tsx": "a0a295b3c316",
     "src\\atomic-crm\\opportunities\\OpportunityCreateFormFooter.tsx": "2c75534166c3",
@@ -65,7 +65,7 @@
     "src\\atomic-crm\\tags\\TagInputs.tsx": "f5adeb1846e5",
     "src\\atomic-crm\\tags\\TagSelectWithCreate.tsx": "2e550c799bca",
     "src\\atomic-crm\\tasks\\TaskCompactForm.tsx": "39309698a061",
-    "src\\atomic-crm\\tasks\\TaskCreate.tsx": "c21139d99c2a",
+    "src\\atomic-crm\\tasks\\TaskCreate.tsx": "b2417e453176",
     "src\\atomic-crm\\tasks\\TaskEdit.tsx": "ea0dd4f0d3ca",
     "src\\atomic-crm\\tasks\\TaskInputs.tsx": "f4d7201dd42f",
     "src\\atomic-crm\\tutorial\\OpportunityCreateFormTutorial.tsx": "2cd05674ea84"
@@ -313,7 +313,7 @@
     {
       "componentName": "QuickLogForm",
       "file": "src\\atomic-crm\\dashboard\\QuickLogForm.tsx",
-      "line": 62,
+      "line": 67,
       "formType": "react-admin-simple",
       "formPatterns": {
         "primary": "Form",
@@ -1202,7 +1202,7 @@
     {
       "componentName": "TaskCreate",
       "file": "src\\atomic-crm\\tasks\\TaskCreate.tsx",
-      "line": 33,
+      "line": 35,
       "formType": "react-admin-simple",
       "formPatterns": {
         "primary": "Form",

@@ -135,7 +135,7 @@ export const QuickLogActivity: React.FC<QuickLogActivityProps> = ({ open, onClos
     try {
       await dataProvider.create("activities", {
         data: {
-          activity_type: "interaction", // Required field for activities table
+          activity_type: "activity",
           type: activityType, // The interaction_type enum
           subject: `Completed: ${task.title}`,
           description: notes,

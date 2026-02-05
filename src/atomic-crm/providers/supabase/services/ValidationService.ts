@@ -42,14 +42,7 @@ import {
 } from "../../../validation/products";
 import { validateCreateTag, validateUpdateTag } from "../../../validation/tags";
 import { validateSalesForm } from "../../../validation/sales";
-import {
-  validateActivitiesForm,
-  validateUpdateActivities,
-  validateEngagementsForm,
-  validateUpdateEngagements,
-  validateInteractionsForm,
-  validateUpdateInteractions,
-} from "../../../validation/activities";
+import { validateActivitiesForm, validateUpdateActivities } from "../../../validation/activities";
 import { validateCreateSegment } from "../../../validation/segments";
 import {
   validateCreateProductDistributor,
@@ -89,8 +82,6 @@ interface ResourceTypeMap {
   organization_distributors: OrganizationDistributor;
   sales: Sale;
   activities: ActivityRecord;
-  engagements: ActivityRecord;
-  interactions: ActivityRecord;
   segments: Segment;
   user_favorites: Favorite;
 }
@@ -285,16 +276,6 @@ export class ValidationService {
         // Use partial schema for updates - allows PATCH-style partial updates
         // Critical for soft-delete (beforeDelete → update with only deleted_at)
         update: async (data: unknown) => validateUpdateActivities(data),
-      },
-      engagements: {
-        create: async (data: unknown) => validateEngagementsForm(data),
-        // Use partial schema for updates
-        update: async (data: unknown) => validateUpdateEngagements(data),
-      },
-      interactions: {
-        create: async (data: unknown) => validateInteractionsForm(data),
-        // Use partial schema for updates
-        update: async (data: unknown) => validateUpdateInteractions(data),
       },
       segments: {
         create: async (data: unknown) => {

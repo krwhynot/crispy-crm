@@ -39,7 +39,7 @@ export function OpportunityNotesTab({ record, mode: _mode }: OpportunityNotesTab
             <ReferenceManyField
               target="opportunity_id"
               reference="activities"
-              filter={{ activity_type: "interaction" }}
+              filter={{ activity_type: "activity" }}
               sort={{ field: "activity_date", order: "DESC" }}
             >
               <ActivitiesList />

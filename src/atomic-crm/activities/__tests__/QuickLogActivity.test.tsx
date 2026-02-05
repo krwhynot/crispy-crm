@@ -110,7 +110,7 @@ describe("QuickLogActivity", () => {
     await waitFor(() => {
       expect(mockDataProvider.create).toHaveBeenCalledWith("activities", {
         data: {
-          activity_type: "interaction",
+          activity_type: "activity",
           type: "call",
           subject: "Completed: Call customer about order",
           description: "Discussed pricing, customer wants 2 cases",

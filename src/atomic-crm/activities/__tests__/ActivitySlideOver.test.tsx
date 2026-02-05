@@ -54,7 +54,7 @@ function getActivityRepresentation(record: ActivityRecord): string {
 function createMockActivity(overrides: Partial<ActivityRecord> = {}): ActivityRecord {
   return {
     id: 1,
-    activity_type: "interaction",
+    activity_type: "activity",
     type: "call",
     subject: "Follow-up call with client",
     activity_date: "2024-01-15",

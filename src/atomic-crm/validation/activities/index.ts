@@ -1,7 +1,7 @@
 /**
  * Activities validation module
  *
- * Implements validation rules for customer interactions and engagements.
+ * Implements validation rules for activities and tasks.
  * This is the public API - import from '@/atomic-crm/validation/activities'
  */
 
@@ -33,16 +33,10 @@ export {
 export {
   baseActivitiesSchema,
   activitiesSchema,
-  engagementsSchema,
-  interactionsSchema,
   updateActivitiesSchema,
   activityNoteFormSchema,
   type ActivitiesInput,
   type Activities,
-  type EngagementsInput,
-  type Engagements,
-  type InteractionsInput,
-  type Interactions,
   type ActivityNoteFormData,
   type ActivityRecord,
 } from "./schemas";
@@ -52,12 +46,6 @@ export {
   validateActivitiesForm,
   validateCreateActivities,
   validateUpdateActivities,
-  validateEngagementsForm,
-  validateCreateEngagements,
-  validateUpdateEngagements,
-  validateInteractionsForm,
-  validateCreateInteractions,
-  validateUpdateInteractions,
 } from "./validation";
 
 // UI transforms and QuickLogForm schemas

@@ -1,66 +1,24 @@
 {
   "chunk_name": "validation",
-  "generated_at": "2026-02-04T04:25:05.078Z",
-  "item_count": 6,
+  "generated_at": "2026-02-05T15:07:05.912Z",
+  "item_count": 2,
   "items": [
     {
       "name": "validateActivitiesForm",
       "file": "src\\atomic-crm\\validation\\activities\\validation.ts",
-      "line": 22,
+      "line": 16,
       "type": "formatter",
       "schemaReference": "activitiesSchema",
       "errorFormatting": true,
       "isAsync": true,
       "customValidators": [
-        "validateCreateActivities",
-        "validateCreateEngagements",
-        "validateCreateInteractions"
+        "validateCreateActivities"
       ]
     },
     {
       "name": "validateCreateActivities",
       "file": "src\\atomic-crm\\validation\\activities\\validation.ts",
-      "line": 36,
-      "pattern": "date"
-    },
-    {
-      "name": "validateEngagementsForm",
-      "file": "src\\atomic-crm\\validation\\activities\\validation.ts",
-      "line": 57,
-      "type": "formatter",
-      "schemaReference": "engagementsSchema",
-      "errorFormatting": true,
-      "isAsync": true,
-      "customValidators": [
-        "validateCreateActivities",
-        "validateCreateEngagements",
-        "validateCreateInteractions"
-      ]
-    },
-    {
-      "name": "validateCreateEngagements",
-      "file": "src\\atomic-crm\\validation\\activities\\validation.ts",
-      "line": 71,
-      "pattern": "date"
-    },
-    {
-      "name": "validateInteractionsForm",
-      "file": "src\\atomic-crm\\validation\\activities\\validation.ts",
-      "line": 97,
-      "type": "formatter",
-      "schemaReference": "interactionsSchema",
-      "errorFormatting": true,
-      "isAsync": true,
-      "customValidators": [
-        "validateCreateActivities",
-        "validateCreateEngagements",
-        "validateCreateInteractions"
-      ]
-    },
-    {
-      "name": "validateCreateInteractions",
-      "file": "src\\atomic-crm\\validation\\activities\\validation.ts",
-      "line": 111,
+      "line": 30,
       "pattern": "date"
     }
   ]

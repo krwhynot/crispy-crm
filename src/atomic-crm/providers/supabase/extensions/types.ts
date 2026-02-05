@@ -421,7 +421,7 @@ export interface ExtendedDataProvider extends DataProvider {
    * ```typescript
    * const result = await dataProvider.logActivityWithTask({
    *   p_activity: {
-   *     activity_type: "engagement",
+   *     activity_type: "activity",
    *     type: "call",
    *     outcome: "Connected",
    *     subject: "Follow-up call with customer",

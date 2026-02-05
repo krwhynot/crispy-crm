@@ -27,11 +27,6 @@ import {
 import type { ActivityRecord } from "../../types";
 import { ucFirst } from "@/atomic-crm/utils";
 
-const ACTIVITY_TYPE_CHOICES = [
-  { id: "engagement", name: "Engagement" },
-  { id: "interaction", name: "Interaction" },
-];
-
 const SENTIMENT_CHOICES = [
   { id: "positive", name: "Positive" },
   { id: "neutral", name: "Neutral" },
@@ -92,12 +87,6 @@ export function ActivityDetailsTab({
           <DirtyStateTracker onDirtyChange={onDirtyChange} />
           <div className="space-y-6" role="form" aria-label="Edit activity form">
             <div className="space-y-4">
-              <SelectInput
-                source="activity_type"
-                label="Activity Type"
-                choices={ACTIVITY_TYPE_CHOICES}
-              />
-
               <SelectInput
                 source="type"
                 label="Interaction Type"
