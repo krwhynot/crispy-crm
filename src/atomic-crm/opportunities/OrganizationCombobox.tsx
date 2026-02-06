@@ -40,7 +40,7 @@ function InlineCreateOrganization({ name, onCreated, onCancel }: InlineCreateOrg
           segment_id: PLAYBOOK_CATEGORY_IDS.Unknown,
         },
       });
-      queryClient.invalidateQueries({ queryKey: organizationKeys.all });
+      queryClient.invalidateQueries({ queryKey: organizationKeys.lists() });
       notify(notificationMessages.created("Organization"), { type: "success" });
       onCreated(result.data as { id: number; name: string });
     } catch {

@@ -245,8 +245,8 @@ export const OpportunityListContent = ({
                 },
               });
 
-              queryClient.invalidateQueries({ queryKey: activityKeys.all });
-              queryClient.invalidateQueries({ queryKey: opportunityKeys.all });
+              queryClient.invalidateQueries({ queryKey: activityKeys.lists() });
+              queryClient.invalidateQueries({ queryKey: opportunityKeys.lists() });
             } catch (error: unknown) {
               // WG-002 FIX: Notify user that activity log failed (audit trail incomplete)
               logger.error("Failed to create stage change activity", error, {

@@ -1,5 +1,9 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi, beforeEach } from "vitest";
+import { renderHook, waitFor } from "@testing-library/react";
+import type { GetListParams } from "ra-core";
 import type { OpportunitySummary } from "../usePrincipalOpportunities";
+import { usePrincipalOpportunities } from "../usePrincipalOpportunities";
+import { SHORT_STALE_TIME_MS } from "@/atomic-crm/constants/appConstants";
 
 /**
  * Raw opportunity data as returned from the database/API.
@@ -15,6 +19,54 @@ interface RawOpportunityData {
   estimated_close_date?: string | null;
   expected_close_date?: string;
 }
+
+// Track staleTime options passed to useGetList for verification
+let lastUseGetListOptions: { enabled?: boolean; staleTime?: number } | undefined;
+
+// Mock react-admin's useGetList to capture options
+vi.mock("react-admin", async (importOriginal) => {
+  // eslint-disable-next-line @typescript-eslint/consistent-type-imports -- typeof import() required in vi.mock factory (runs before static imports)
+  const actual = (await importOriginal()) as typeof import("react-admin");
+  const React = await import("react");
+
+  return {
+    ...actual,
+    useGetList: (
+      _resource: string,
+      _params: GetListParams,
+      options?: { enabled?: boolean; staleTime?: number }
+    ) => {
+      // Capture options for staleTime verification
+      lastUseGetListOptions = options;
+
+      const enabled = options?.enabled !== false;
+
+      // State shape for the mock useGetList
+      interface MockUseGetListState {
+        data: RawOpportunityData[];
+        total: number;
+        isPending: boolean;
+        error: Error | null;
+      }
+
+      const [state] = React.useState<MockUseGetListState>({
+        data: [],
+        total: 0,
+        isPending: !enabled,
+        error: null,
+      });
+
+      return {
+        data: state.data,
+        total: state.total,
+        isPending: state.isPending,
+        isLoading: state.isPending,
+        error: state.error,
+        refetch: () => {},
+      };
+    },
+  };
+});
 
 /**
  * Tests for usePrincipalOpportunities hook logic
@@ -253,6 +305,32 @@ describe("usePrincipalOpportunities", () => {
 
       expect(mapped.expectedCloseDate).toBeInstanceOf(Date);
       expect(mapped.lastActivityDate).toBeInstanceOf(Date);
+    });
+  });
+
+  describe("Stale Time Configuration", () => {
+    beforeEach(() => {
+      lastUseGetListOptions = undefined;
+    });
+
+    /**
+     * STALE_STATE_STRATEGY.md requires dashboard widget data to use SHORT_STALE_TIME_MS (30s)
+     * because dashboard data changes frequently (counts, metrics).
+     *
+     * Current implementation uses 5 * 60 * 1000 (5 minutes) - this test should FAIL.
+     */
+    it("should use SHORT_STALE_TIME_MS for dashboard opportunity data", async () => {
+      const { result } = renderHook(() =>
+        usePrincipalOpportunities({ principalId: 123, enabled: true })
+      );
+
+      await waitFor(() => {
+        expect(result.current.loading).toBe(false);
+      });
+
+      // Per STALE_STATE_STRATEGY.md: Dashboard widget data should use SHORT_STALE_TIME_MS (30s)
+      // This test will FAIL because the hook currently uses 5 * 60 * 1000 (5 minutes)
+      expect(lastUseGetListOptions?.staleTime).toBe(SHORT_STALE_TIME_MS);
     });
   });
 });

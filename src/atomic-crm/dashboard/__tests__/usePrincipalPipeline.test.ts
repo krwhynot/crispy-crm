@@ -15,6 +15,7 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import type { GetListParams } from "ra-core";
 import { usePrincipalPipeline } from "../usePrincipalPipeline";
 import type { PipelineSummaryRow } from "../types";
+import { SHORT_STALE_TIME_MS } from "@/atomic-crm/constants/appConstants";
 
 interface MockGetListState {
   data: PipelineSummaryRow[];
@@ -22,6 +23,9 @@ interface MockGetListState {
   isPending: boolean;
   error: Error | null;
 }
+
+// Track staleTime options passed to useGetList for verification
+let lastUseGetListOptions: { enabled?: boolean; staleTime?: number } | undefined;
 
 // Create stable mock functions
 const mockGetList = vi.fn();
@@ -42,6 +46,9 @@ vi.mock("react-admin", async (importOriginal) => {
       params: GetListParams,
       options?: { enabled?: boolean; staleTime?: number }
     ) => {
+      // Capture options for staleTime verification
+      lastUseGetListOptions = options;
+
       // Support enabled option - if false, don't fetch
       const enabled = options?.enabled !== false;
 
@@ -130,6 +137,7 @@ describe("usePrincipalPipeline", () => {
     currentSaleState.salesId = 42;
     currentSaleState.loading = false;
     currentSaleState.error = null;
+    lastUseGetListOptions = undefined;
   });
 
   describe("Data Fetching", () => {
@@ -369,6 +377,28 @@ describe("usePrincipalPipeline", () => {
         }),
         true // enabled=true
       );
+    });
+  });
+
+  describe("Stale Time Configuration", () => {
+    /**
+     * STALE_STATE_STRATEGY.md requires dashboard widget data to use SHORT_STALE_TIME_MS (30s)
+     * because dashboard data changes frequently (task counts, metrics).
+     *
+     * Current implementation uses 5 * 60 * 1000 (5 minutes) - this test should FAIL.
+     */
+    it("should use SHORT_STALE_TIME_MS for dashboard pipeline data", async () => {
+      mockGetList.mockResolvedValueOnce({ data: [], total: 0 });
+
+      const { result } = renderHook(() => usePrincipalPipeline());
+
+      await waitFor(() => {
+        expect(result.current.loading).toBe(false);
+      });
+
+      // Per STALE_STATE_STRATEGY.md: Dashboard widget data should use SHORT_STALE_TIME_MS (30s)
+      // This test will FAIL because the hook currently uses 5 * 60 * 1000 (5 minutes)
+      expect(lastUseGetListOptions?.staleTime).toBe(SHORT_STALE_TIME_MS);
     });
   });
 });

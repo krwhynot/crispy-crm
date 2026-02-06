@@ -35,7 +35,7 @@ const OpportunityEdit = () => {
       }}
       mutationOptions={{
         onSuccess: () => {
-          queryClient.invalidateQueries({ queryKey: opportunityKeys.all });
+          queryClient.invalidateQueries({ queryKey: opportunityKeys.lists() });
           // Invalidate dashboard when stage/amount changes affect pipeline metrics
           queryClient.invalidateQueries({ queryKey: dashboardKeys.all });
         },

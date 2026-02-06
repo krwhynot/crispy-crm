@@ -3,6 +3,7 @@ import { useGetList } from "react-admin";
 import type { OpportunityApiResponse } from "./types";
 import { parseDateSafely } from "@/lib/date-utils";
 import { MAX_PAGE_SIZE } from "@/atomic-crm/constants";
+import { SHORT_STALE_TIME_MS } from "@/atomic-crm/constants/appConstants";
 
 /**
  * Opportunity summary for drill-down display
@@ -51,7 +52,7 @@ export function usePrincipalOpportunities({
     },
     {
       enabled: enabled && !!principalId,
-      staleTime: 5 * 60 * 1000, // 5 minutes
+      staleTime: SHORT_STALE_TIME_MS, // 30 seconds for dashboard data
       refetchOnWindowFocus: true, // Refresh when user tabs back
     }
   );

@@ -10,6 +10,7 @@
 
 import { describe, it, expect, vi, type Mock } from "vitest";
 import { createMockOpportunity } from "@/tests/utils/mock-providers";
+import { opportunityKeys } from "../../queryKeys";
 
 /**
  * Typed interface for QueryClient invalidateQueries options
@@ -105,13 +106,13 @@ describe("OpportunityEdit - Cache Invalidation", () => {
 
     // Simulate onSuccess callback
     const onSuccess = () => {
-      mockQueryClient.invalidateQueries({ queryKey: ["opportunities"] });
+      mockQueryClient.invalidateQueries({ queryKey: opportunityKeys.all });
     };
 
     onSuccess();
 
     expect(mockQueryClient.invalidateQueries).toHaveBeenCalledWith({
-      queryKey: ["opportunities"],
+      queryKey: opportunityKeys.all,
     });
   });
 
@@ -123,7 +124,7 @@ describe("OpportunityEdit - Cache Invalidation", () => {
     // onSuccess should not throw even if cache invalidation fails
     const onSuccess = async () => {
       try {
-        await mockQueryClient.invalidateQueries({ queryKey: ["opportunities"] });
+        await mockQueryClient.invalidateQueries({ queryKey: opportunityKeys.all });
       } catch (error: unknown) {
         // Silently handle cache errors - the update was successful
         console.warn("Cache invalidation failed:", error);

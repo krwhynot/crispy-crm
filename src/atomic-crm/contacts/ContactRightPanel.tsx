@@ -118,7 +118,7 @@ export function ContactRightPanel({
       });
 
       // Invalidate contact caches after successful update
-      queryClient.invalidateQueries({ queryKey: contactKeys.all });
+      queryClient.invalidateQueries({ queryKey: contactKeys.lists() });
       queryClient.invalidateQueries({ queryKey: contactKeys.detail(record.id) });
 
       notify(notificationMessages.updated("Contact"), { type: "success" });

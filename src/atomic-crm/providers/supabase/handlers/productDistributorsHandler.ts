@@ -88,7 +88,11 @@ export function createProductDistributorsHandler(baseProvider: DataProvider): Da
         return baseProvider.getList<RecordType>(resource, params);
       }
 
-      const result = await baseProvider.getList<ProductDistributor>(resource, params);
+      // Query summary view for list operations to eliminate N+1 queries
+      // Summary view has product_name and distributor_name pre-joined
+      const result = await baseProvider.getList<
+        ProductDistributor & { product_name: string; distributor_name: string }
+      >("product_distributors_summary", params);
 
       const dataWithIds = result.data.map((record) => ({
         ...record,

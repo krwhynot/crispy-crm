@@ -1,13 +1,13 @@
 {
   "status": "complete",
-  "generated_at": "2026-02-06T04:19:20.905Z",
+  "generated_at": "2026-02-06T12:46:15.240Z",
   "generator": "scripts/discover/extractors/types.ts",
   "source_globs": [
     "src/atomic-crm/types.ts",
     "src/atomic-crm/**/types.ts",
     "src/types/**/*.ts"
   ],
-  "checksum": "sha256:6f53f4e9b12ff90f",
+  "checksum": "sha256:aa6c6df59d6cc078",
   "source_hashes": {
     "src\\atomic-crm\\dashboard\\types.ts": "f600204b541d",
     "src\\atomic-crm\\filters\\types.ts": "3879550007ba",
@@ -38,7 +38,7 @@
       "name": "_other",
       "file": "_other.json",
       "item_count": 100,
-      "checksum": "sha256:45eb5acbc40c8693",
+      "checksum": "sha256:0e458598a05d7004",
       "source_files": [
         "src\\atomic-crm\\dashboard\\types.ts",
         "src\\atomic-crm\\filters\\types.ts",

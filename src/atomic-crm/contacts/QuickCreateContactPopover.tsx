@@ -64,8 +64,8 @@ export function QuickCreateContactPopover({
             last_seen: now,
           },
         });
-        queryClient.invalidateQueries({ queryKey: contactKeys.all });
-        queryClient.invalidateQueries({ queryKey: organizationKeys.all });
+        queryClient.invalidateQueries({ queryKey: contactKeys.lists() });
+        queryClient.invalidateQueries({ queryKey: organizationKeys.lists() });
         notify(notificationMessages.created("Contact"), { type: "success" });
         onCreated(result.data as { id: number; first_name: string; last_name: string });
         setOpen(false);
@@ -99,8 +99,8 @@ export function QuickCreateContactPopover({
           quickCreate: true, // Bypass last_name and email validation for "Just use name" flow
         },
       });
-      queryClient.invalidateQueries({ queryKey: contactKeys.all });
-      queryClient.invalidateQueries({ queryKey: organizationKeys.all });
+      queryClient.invalidateQueries({ queryKey: contactKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: organizationKeys.lists() });
       notify(notificationMessages.created("Contact"), { type: "success" });
       onCreated(result.data as { id: number; first_name: string; last_name: string });
       setOpen(false);
@@ -248,8 +248,8 @@ export function QuickCreateContactRA({
             last_seen: now,
           },
         });
-        queryClient.invalidateQueries({ queryKey: contactKeys.all });
-        queryClient.invalidateQueries({ queryKey: organizationKeys.all });
+        queryClient.invalidateQueries({ queryKey: contactKeys.lists() });
+        queryClient.invalidateQueries({ queryKey: organizationKeys.lists() });
         notify(notificationMessages.created("Contact"), { type: "success" });
         onCreate(result.data); // KEY FIX: Pass real record back to RA
       } catch (error: unknown) {
@@ -283,8 +283,8 @@ export function QuickCreateContactRA({
           quickCreate: true,
         },
       });
-      queryClient.invalidateQueries({ queryKey: contactKeys.all });
-      queryClient.invalidateQueries({ queryKey: organizationKeys.all });
+      queryClient.invalidateQueries({ queryKey: contactKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: organizationKeys.lists() });
       notify(notificationMessages.created("Contact"), { type: "success" });
       onCreate(result.data); // KEY FIX: Pass real record back to RA
     } catch (error: unknown) {

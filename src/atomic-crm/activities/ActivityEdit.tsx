@@ -23,7 +23,7 @@ const ActivityEdit = () => {
       mutationOptions={{
         onSuccess: () => {
           // Invalidate activities cache to refresh list views
-          queryClient.invalidateQueries({ queryKey: activityKeys.all });
+          queryClient.invalidateQueries({ queryKey: activityKeys.lists() });
         },
       }}
     >

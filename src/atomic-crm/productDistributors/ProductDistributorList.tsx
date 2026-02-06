@@ -1,4 +1,4 @@
-import { List, TextField, ReferenceField, DateField, SelectField } from "react-admin";
+import { List, TextField, DateField, SelectField } from "react-admin";
 import { PremiumDatagrid } from "@/components/ra-wrappers/PremiumDatagrid";
 import { TextInput } from "@/components/ra-wrappers/text-input";
 import { SelectInput } from "@/components/ra-wrappers/select-input";
@@ -49,12 +49,9 @@ export const ProductDistributorList = () => (
     perPage={25}
   >
     <PremiumDatagrid rowClick="edit" bulkActionButtons={false}>
-      <ReferenceField source="product_id" reference="products" label="Product">
-        <TextField source="name" />
-      </ReferenceField>
-      <ReferenceField source="distributor_id" reference="organizations" label="Distributor">
-        <TextField source="name" />
-      </ReferenceField>
+      {/* Use denormalized fields from summary view to eliminate N+1 queries */}
+      <TextField source="product_name" label="Product" />
+      <TextField source="distributor_name" label="Distributor" />
       <TextField source="vendor_item_number" label="DOT Number" />
       <SelectField source="status" choices={PRODUCT_DISTRIBUTOR_STATUS_CHOICES} />
       <DateField source="valid_from" label="Valid From" />

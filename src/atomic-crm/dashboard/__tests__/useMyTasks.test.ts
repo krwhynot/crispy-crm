@@ -18,6 +18,8 @@ import type { ReactNode } from "react";
 import type { GetListParams, UpdateParams, DeleteParams, RaRecord } from "ra-core";
 import { useMyTasks } from "../useMyTasks";
 import { startOfDay, addDays } from "date-fns";
+import { dashboardKeys } from "@/atomic-crm/queryKeys";
+import { SHORT_STALE_TIME_MS } from "@/atomic-crm/constants/appConstants";
 
 // Create a fresh QueryClient for each test to avoid test pollution
 const createTestQueryClient = () =>
@@ -64,6 +66,9 @@ let baseTasksData: TaskData[] = [];
 
 // Version counter to trigger re-fetch after mutations
 let mutationVersion = 0;
+
+// Track staleTime options passed to useGetList for verification
+let lastUseGetListOptions: { enabled?: boolean; staleTime?: number } | undefined;
 
 // Create stable mock functions OUTSIDE the factory to prevent new references
 const mockGetList = vi.fn().mockImplementation((resource: string, _params: GetListParams) => {
@@ -149,6 +154,9 @@ vi.mock("react-admin", async (importOriginal) => {
       params: GetListParams,
       options?: { enabled?: boolean; staleTime?: number }
     ) => {
+      // Capture options for staleTime verification
+      lastUseGetListOptions = options;
+
       // Support enabled option - if false, don't fetch
       const enabled = options?.enabled !== false;
 
@@ -271,6 +279,7 @@ describe("useMyTasks", () => {
     deletedTaskIds.clear();
     baseTasksData = [];
     mutationVersion = 0;
+    lastUseGetListOptions = undefined;
   });
 
   describe("Task Fetching", () => {
@@ -796,6 +805,184 @@ describe("useMyTasks", () => {
         name: "Acme Corp",
         id: 300,
       });
+    });
+  });
+
+  describe("Cache Invalidation Strategy", () => {
+    /**
+     * These tests verify that dashboardKeys.all is invalidated when tasks change.
+     * Per STALE_STATE_STRATEGY.md, cross-resource dependencies must be invalidated:
+     * "Task complete -> dashboardKeys.all (Task counts change)"
+     *
+     * Current implementation (lines 200-202, 291-293, 349-351, 433-435) invalidates:
+     * - taskKeys.all
+     * - opportunityKeys.all
+     * - activityKeys.all
+     *
+     * MISSING: dashboardKeys.all - dashboard task counts will show stale data
+     */
+
+    it("should invalidate dashboardKeys when task is completed", async () => {
+      const mockTask = createMockTask({ id: 1 });
+      baseTasksData = [mockTask];
+      mockUpdate.mockResolvedValueOnce({ data: { ...mockTask, completed: true } });
+
+      // Spy on invalidateQueries to track what keys are invalidated
+      const invalidateSpy = vi.spyOn(queryClient, "invalidateQueries");
+
+      const { result } = renderHook(() => useMyTasks(), { wrapper });
+
+      await waitFor(() => {
+        expect(result.current.tasks).toHaveLength(1);
+      });
+
+      await act(async () => {
+        await result.current.completeTask(1);
+      });
+
+      // Wait for onSettled to fire
+      await waitFor(() => {
+        expect(invalidateSpy).toHaveBeenCalled();
+      });
+
+      // FAILING ASSERTION: dashboardKeys.all should be invalidated but is NOT
+      // This test will FAIL (RED phase) until dashboardKeys is added to onSettled
+      expect(invalidateSpy).toHaveBeenCalledWith({
+        queryKey: dashboardKeys.all,
+      });
+
+      invalidateSpy.mockRestore();
+    });
+
+    it("should invalidate dashboardKeys when task is snoozed", async () => {
+      const dates = createTestDates();
+      const mockTask = createMockTask({ id: 1, due_date: dates.today.toISOString() });
+      baseTasksData = [mockTask];
+      mockUpdate.mockResolvedValueOnce({
+        data: { ...mockTask, snooze_until: addDays(dates.today, 1).toISOString() },
+      });
+
+      // Spy on invalidateQueries to track what keys are invalidated
+      const invalidateSpy = vi.spyOn(queryClient, "invalidateQueries");
+
+      const { result } = renderHook(() => useMyTasks(), { wrapper });
+
+      await waitFor(() => {
+        expect(result.current.tasks).toHaveLength(1);
+      });
+
+      // Small delay to ensure React effects have flushed and tasksRef is updated
+      await act(async () => {
+        await new Promise((resolve) => setTimeout(resolve, 0));
+      });
+
+      await act(async () => {
+        await result.current.snoozeTask(1);
+      });
+
+      // Wait for onSettled to fire
+      await waitFor(() => {
+        expect(invalidateSpy).toHaveBeenCalled();
+      });
+
+      // FAILING ASSERTION: dashboardKeys.all should be invalidated but is NOT
+      // This test will FAIL (RED phase) until dashboardKeys is added to onSettled
+      expect(invalidateSpy).toHaveBeenCalledWith({
+        queryKey: dashboardKeys.all,
+      });
+
+      invalidateSpy.mockRestore();
+    });
+
+    it("should invalidate dashboardKeys when task is deleted", async () => {
+      const mockTask = createMockTask({ id: 1 });
+      baseTasksData = [mockTask];
+      mockDelete.mockResolvedValueOnce({ data: mockTask });
+
+      // Spy on invalidateQueries to track what keys are invalidated
+      const invalidateSpy = vi.spyOn(queryClient, "invalidateQueries");
+
+      const { result } = renderHook(() => useMyTasks(), { wrapper });
+
+      await waitFor(() => {
+        expect(result.current.tasks).toHaveLength(1);
+      });
+
+      await act(async () => {
+        await result.current.deleteTask(1);
+      });
+
+      // Wait for onSettled to fire
+      await waitFor(() => {
+        expect(invalidateSpy).toHaveBeenCalled();
+      });
+
+      // FAILING ASSERTION: dashboardKeys.all should be invalidated but is NOT
+      // This test will FAIL (RED phase) until dashboardKeys is added to onSettled
+      expect(invalidateSpy).toHaveBeenCalledWith({
+        queryKey: dashboardKeys.all,
+      });
+
+      invalidateSpy.mockRestore();
+    });
+
+    it("should invalidate dashboardKeys when task due date is updated", async () => {
+      const dates = createTestDates();
+      const mockTask = createMockTask({ id: 1, due_date: dates.today.toISOString() });
+      baseTasksData = [mockTask];
+      const newDueDate = dates.fiveDaysOut;
+      mockUpdate.mockResolvedValueOnce({
+        data: { ...mockTask, due_date: newDueDate.toISOString() },
+      });
+
+      // Spy on invalidateQueries to track what keys are invalidated
+      const invalidateSpy = vi.spyOn(queryClient, "invalidateQueries");
+
+      const { result } = renderHook(() => useMyTasks(), { wrapper });
+
+      await waitFor(() => {
+        expect(result.current.tasks).toHaveLength(1);
+      });
+
+      await act(async () => {
+        await result.current.updateTaskDueDate(1, newDueDate);
+      });
+
+      // Wait for onSettled to fire
+      await waitFor(() => {
+        expect(invalidateSpy).toHaveBeenCalled();
+      });
+
+      // FAILING ASSERTION: dashboardKeys.all should be invalidated but is NOT
+      // This test will FAIL (RED phase) until dashboardKeys is added to onSettled
+      expect(invalidateSpy).toHaveBeenCalledWith({
+        queryKey: dashboardKeys.all,
+      });
+
+      invalidateSpy.mockRestore();
+    });
+  });
+
+  describe("Stale Time Configuration", () => {
+    /**
+     * STALE_STATE_STRATEGY.md requires dashboard widget data to use SHORT_STALE_TIME_MS (30s)
+     * because task counts change frequently.
+     *
+     * Current implementation uses 5 * 60 * 1000 (5 minutes) - this test should FAIL.
+     */
+    it("should use SHORT_STALE_TIME_MS for task list data", async () => {
+      const dates = createTestDates();
+      baseTasksData = [createMockTask({ id: 1, due_date: dates.today.toISOString() })];
+
+      const { result } = renderHook(() => useMyTasks(), { wrapper });
+
+      await waitFor(() => {
+        expect(result.current.loading).toBe(false);
+      });
+
+      // Per STALE_STATE_STRATEGY.md: Task counts and next task info should use SHORT_STALE_TIME_MS (30s)
+      // This test will FAIL because the hook currently uses 5 * 60 * 1000 (5 minutes)
+      expect(lastUseGetListOptions?.staleTime).toBe(SHORT_STALE_TIME_MS);
     });
   });
 });

@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Archive, ArchiveRestore } from "lucide-react";
 import { useDataProvider, useNotify, useRedirect } from "react-admin";
 
-import { opportunityKeys } from "../queryKeys";
+import { dashboardKeys, opportunityKeys } from "../queryKeys";
 import { notificationMessages } from "@/atomic-crm/constants/notificationMessages";
 
 import { AdminButton } from "@/components/admin/AdminButton";
@@ -32,7 +32,8 @@ export const ArchiveButton = ({ record }: ArchiveActionsProps) => {
     onSuccess: () => {
       redirect("list", "opportunities");
       notify(notificationMessages.archived("Opportunity"), { type: "info", undoable: false });
-      queryClient.invalidateQueries({ queryKey: opportunityKeys.all });
+      queryClient.invalidateQueries({ queryKey: opportunityKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: dashboardKeys.all });
     },
     onError: () => {
       notify("Error: opportunity not archived", { type: "error" });
@@ -79,7 +80,8 @@ export const UnarchiveButton = ({ record }: ArchiveActionsProps) => {
         type: "info",
         undoable: false,
       });
-      queryClient.invalidateQueries({ queryKey: opportunityKeys.all });
+      queryClient.invalidateQueries({ queryKey: opportunityKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: dashboardKeys.all });
     },
     onError: () => {
       notify("Error: opportunity not unarchived", { type: "error" });

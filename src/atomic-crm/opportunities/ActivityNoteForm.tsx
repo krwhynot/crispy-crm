@@ -98,8 +98,8 @@ export const ActivityNoteForm = ({ opportunity, onSuccess }: ActivityNoteFormPro
       });
 
       setValue("stage", newStage);
-      queryClient.invalidateQueries({ queryKey: opportunityKeys.all });
-      queryClient.invalidateQueries({ queryKey: activityKeys.all });
+      queryClient.invalidateQueries({ queryKey: opportunityKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: activityKeys.lists() });
       success(notificationMessages.updated("Stage"));
     } catch (error: unknown) {
       logger.error("Stage update failed", error, { feature: "ActivityNoteForm" });
@@ -127,8 +127,8 @@ export const ActivityNoteForm = ({ opportunity, onSuccess }: ActivityNoteFormPro
         },
       });
 
-      queryClient.invalidateQueries({ queryKey: activityKeys.all });
-      queryClient.invalidateQueries({ queryKey: opportunityKeys.all });
+      queryClient.invalidateQueries({ queryKey: activityKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: opportunityKeys.lists() });
       success(notificationMessages.created("Activity"));
       reset();
       onSuccess?.();

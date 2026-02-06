@@ -4,11 +4,12 @@ import { logger } from "@/lib/logger";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
 import { isSameDay, isBefore, startOfDay, addDays, endOfDay } from "date-fns";
 
-import { taskKeys, opportunityKeys, activityKeys } from "@/atomic-crm/queryKeys";
+import { taskKeys, opportunityKeys, activityKeys, dashboardKeys } from "@/atomic-crm/queryKeys";
 import { useCurrentSale } from "./useCurrentSale";
 import type { TaskItem, TaskStatus, TaskApiResponse } from "./types";
 import { parseDateSafely } from "@/lib/date-utils";
 import { MAX_PAGE_SIZE } from "@/atomic-crm/constants";
+import { SHORT_STALE_TIME_MS } from "@/atomic-crm/constants/appConstants";
 
 /**
  * useMyTasks - Hook for managing current user's tasks
@@ -45,7 +46,7 @@ export function useMyTasks() {
     },
     {
       enabled: !salesLoading && !!salesId,
-      staleTime: 5 * 60 * 1000,
+      staleTime: SHORT_STALE_TIME_MS,
       refetchOnWindowFocus: true, // Refresh when user tabs back
     }
   );
@@ -200,6 +201,7 @@ export function useMyTasks() {
       queryClient.invalidateQueries({ queryKey: taskKeys.all });
       queryClient.invalidateQueries({ queryKey: opportunityKeys.all });
       queryClient.invalidateQueries({ queryKey: activityKeys.all });
+      queryClient.invalidateQueries({ queryKey: dashboardKeys.all });
     },
   });
 
@@ -291,6 +293,7 @@ export function useMyTasks() {
       queryClient.invalidateQueries({ queryKey: taskKeys.all });
       queryClient.invalidateQueries({ queryKey: opportunityKeys.all });
       queryClient.invalidateQueries({ queryKey: activityKeys.all });
+      queryClient.invalidateQueries({ queryKey: dashboardKeys.all });
     },
   });
 
@@ -349,6 +352,7 @@ export function useMyTasks() {
       queryClient.invalidateQueries({ queryKey: taskKeys.all });
       queryClient.invalidateQueries({ queryKey: opportunityKeys.all });
       queryClient.invalidateQueries({ queryKey: activityKeys.all });
+      queryClient.invalidateQueries({ queryKey: dashboardKeys.all });
     },
   });
 
@@ -433,6 +437,7 @@ export function useMyTasks() {
       queryClient.invalidateQueries({ queryKey: taskKeys.all });
       queryClient.invalidateQueries({ queryKey: opportunityKeys.all });
       queryClient.invalidateQueries({ queryKey: activityKeys.all });
+      queryClient.invalidateQueries({ queryKey: dashboardKeys.all });
     },
   });
 

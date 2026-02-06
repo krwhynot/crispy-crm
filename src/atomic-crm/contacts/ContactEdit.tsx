@@ -26,9 +26,9 @@ export const ContactEdit = () => {
       mutationOptions={{
         onSuccess: () => {
           // Invalidate related caches to prevent stale data
-          queryClient.invalidateQueries({ queryKey: contactKeys.all });
-          queryClient.invalidateQueries({ queryKey: activityKeys.all });
-          queryClient.invalidateQueries({ queryKey: opportunityKeys.all });
+          queryClient.invalidateQueries({ queryKey: contactKeys.lists() });
+          queryClient.invalidateQueries({ queryKey: activityKeys.lists() });
+          queryClient.invalidateQueries({ queryKey: opportunityKeys.lists() });
           success(notificationMessages.updated("Contact"));
         },
         onError: (err: Error) => {

@@ -3,6 +3,7 @@ import { useGetList } from "react-admin";
 import { useCurrentSale } from "./useCurrentSale";
 import type { PrincipalPipelineRow, PipelineSummaryRow } from "./types";
 import { devLog } from "@/lib/devLogger";
+import { SHORT_STALE_TIME_MS } from "@/atomic-crm/constants/appConstants";
 
 // Stable empty array to avoid new reference creation on each render
 const EMPTY_PIPELINE: PrincipalPipelineRow[] = [];
@@ -43,7 +44,7 @@ export function usePrincipalPipeline(filters?: { myPrincipalsOnly?: boolean }) {
     },
     {
       enabled,
-      staleTime: 5 * 60 * 1000, // Cache for 5 minutes
+      staleTime: SHORT_STALE_TIME_MS, // 30 seconds for dashboard data
       refetchOnWindowFocus: true, // Refresh when user tabs back
     }
   );

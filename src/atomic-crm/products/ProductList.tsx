@@ -3,7 +3,6 @@ import { useGetIdentity, useListContext } from "ra-core";
 import { FunctionField } from "react-admin";
 import { List } from "@/components/ra-wrappers/list";
 import { TextField } from "@/components/ra-wrappers/text-field";
-import { ReferenceField } from "@/components/ra-wrappers/reference-field";
 import { FloatingCreateButton } from "@/components/ra-wrappers/FloatingCreateButton";
 import { BulkActionsToolbar } from "@/components/ra-wrappers/bulk-actions-toolbar";
 import { StandardListLayout } from "@/components/layouts/StandardListLayout";
@@ -155,17 +154,14 @@ const ProductListLayout = ({
             {...COLUMN_VISIBILITY.alwaysVisible}
           />
 
-          {/* Column 4: Principal - Organization reference (sortable) - hidden on tablet/mobile */}
-          <ReferenceField
-            source="principal_id"
-            reference="organizations"
+          {/* Column 4: Principal - From summary view (sortable) - hidden on tablet/mobile */}
+          <TextField
+            source="principal_name"
             label="Principal"
-            link={false}
             sortable
+            sortBy="principal_name"
             {...COLUMN_VISIBILITY.desktopOnly}
-          >
-            <TextField source="name" />
-          </ReferenceField>
+          />
 
           {/* Column 5: Certifications - Badges list (non-sortable) - hidden on tablet/mobile */}
           <FunctionField

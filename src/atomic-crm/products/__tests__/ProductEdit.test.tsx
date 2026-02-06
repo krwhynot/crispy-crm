@@ -12,6 +12,7 @@
 import { describe, it, expect, vi } from "vitest";
 import { productSchema, productUpdateSchema } from "@/atomic-crm/validation/products";
 import { createMockProduct } from "@/tests/utils";
+import { productKeys } from "../../queryKeys";
 
 /**
  * Helper to create a schema-compliant product record for testing.
@@ -168,13 +169,13 @@ describe("ProductEdit - Cache Invalidation", () => {
 
     // Simulate onSuccess callback from ProductEdit
     const onSuccess = () => {
-      mockQueryClient.invalidateQueries({ queryKey: ["products"] });
+      mockQueryClient.invalidateQueries({ queryKey: productKeys.all });
     };
 
     onSuccess();
 
     expect(mockQueryClient.invalidateQueries).toHaveBeenCalledWith({
-      queryKey: ["products"],
+      queryKey: productKeys.all,
     });
   });
 
@@ -184,14 +185,14 @@ describe("ProductEdit - Cache Invalidation", () => {
     };
 
     const onSuccess = () => {
-      mockQueryClient.invalidateQueries({ queryKey: ["products"] });
+      mockQueryClient.invalidateQueries({ queryKey: productKeys.all });
     };
 
     onSuccess();
 
     const call = mockQueryClient.invalidateQueries.mock.calls[0][0];
     expect(call).toHaveProperty("queryKey");
-    expect(call.queryKey).toEqual(["products"]);
+    expect(call.queryKey).toEqual(productKeys.all);
   });
 
   it("handles cache invalidation errors gracefully", async () => {
@@ -202,7 +203,7 @@ describe("ProductEdit - Cache Invalidation", () => {
     // onSuccess should not throw even if cache invalidation fails
     const onSuccess = async () => {
       try {
-        await mockQueryClient.invalidateQueries({ queryKey: ["products"] });
+        await mockQueryClient.invalidateQueries({ queryKey: productKeys.all });
       } catch {
         // Silently handle cache errors - the update was successful
         console.warn("Cache invalidation failed");
