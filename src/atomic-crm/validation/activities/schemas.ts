@@ -82,6 +82,7 @@ export const baseActivitiesSchema = z.strictObject({
 
   // System fields
   created_by: z.union([z.string(), z.number()]).optional().nullable(),
+  updated_by: z.union([z.string(), z.number()]).optional().nullable(),
   created_at: z.string().max(50).optional(),
   updated_at: z.string().max(50).optional(),
   deleted_at: z.string().max(50).optional().nullable(),

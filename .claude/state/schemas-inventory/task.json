@@ -1,6 +1,6 @@
 {
   "chunk_name": "task",
-  "generated_at": "2026-02-05T15:28:09.066Z",
+  "generated_at": "2026-02-06T02:32:12.780Z",
   "item_count": 3,
   "items": [
     {
@@ -176,6 +176,15 @@
         {
           "name": "snooze_until",
           "zodType": "coerce.date",
+          "constraints": [],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "related_task_id",
+          "zodType": "ref:idSchema",
           "constraints": [],
           "optional": true,
           "nullable": true,

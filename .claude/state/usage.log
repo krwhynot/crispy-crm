@@ -42,3 +42,5 @@
 [2026-02-02T03:33:05.604Z] ✓ search_code | query: "state filter 50 states checkbox color" | limit=15, type="all" | results: 0 | 56ms
 [2026-02-02T03:33:05.709Z] ✓ search_code | query: "tag color dynamic assignment many choices" | limit=15, type="all" | results: 0 | 21ms
 [2026-02-02T03:33:05.837Z] ✓ search_code | query: "badge color reference field operator segment" | limit=15, type="all" | results: 0 | 24ms
+[2026-02-05T17:58:44.270Z] ✓ go_to_definition | symbolName="TaskCompletionDialog", kind="function" | 118ms
+[2026-02-06T00:57:23.610Z] ✓ search_code | query: "related_task_id TaskCreate" | limit=20, type="all" | results: 0 | 228ms

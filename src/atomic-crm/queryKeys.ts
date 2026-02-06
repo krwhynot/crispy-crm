@@ -70,6 +70,9 @@ export const activityLogKeys = {
   byOrganization: (orgId?: number | string) => ["activityLog", orgId] as const,
 };
 
+// Entity Timeline Keys (unified activities + tasks view)
+export const entityTimelineKeys = createKeys("entity_timeline");
+
 // Notification Keys
 export const notificationKeys = {
   all: ["notifications"] as const,
@@ -112,6 +115,7 @@ export const queryKeys = {
   digest: digestKeys,
   dashboard: dashboardKeys,
   activityLog: activityLogKeys,
+  entityTimeline: entityTimelineKeys,
   notifications: notificationKeys,
   reports: reportKeys,
 } as const;

@@ -117,8 +117,9 @@ export function useMyTasks() {
   }, [rawTasks]);
 
   // Local optimistic state for immediate UI updates
+  // BUG-4 FIX: Added pendingCompletion flag to keep task in DOM during completion dialog workflow
   const [optimisticUpdates, setOptimisticUpdates] = useState<
-    Map<number, Partial<TaskItem> & { deleted?: boolean }>
+    Map<number, Partial<TaskItem> & { deleted?: boolean; pendingCompletion?: boolean }>
   >(new Map());
 
   // Merge server data with optimistic updates
@@ -149,12 +150,7 @@ export function useMyTasks() {
    * - Rolls back on error, refetches on settle
    */
   const completeTaskMutation = useMutation({
-    mutationFn: async (taskId: number) => {
-      const task = tasksRef.current.find((t) => t.id === taskId);
-      if (!task) {
-        throw new Error(`Task ${taskId} not found`);
-      }
-
+    mutationFn: async ({ taskId, task }: { taskId: number; task: TaskItem }) => {
       await dataProvider.update("tasks", {
         id: taskId,
         data: { completed: true, completed_at: new Date().toISOString() },
@@ -163,30 +159,40 @@ export function useMyTasks() {
 
       return taskId;
     },
-    onMutate: async (taskId: number) => {
+    onMutate: async ({ taskId }: { taskId: number; task: TaskItem }) => {
       // CRITICAL: Cancel outgoing refetches to prevent race conditions
       await queryClient.cancelQueries({ queryKey: taskKeys.all });
 
       // Snapshot previous optimistic updates for rollback
       const previousOptimisticState = new Map(optimisticUpdates);
 
-      // Optimistically mark task as deleted (completed tasks are hidden)
+      // BUG-4 FIX: Mark as pendingCompletion (not deleted) to keep task in DOM
+      // This allows QuickLogActivityDialog to stay mounted during completion workflow
+      // Task will be marked deleted in onSuccess after mutation completes
       setOptimisticUpdates((prev) => {
         const next = new Map(prev);
-        next.set(taskId, { deleted: true });
+        next.set(taskId, { pendingCompletion: true });
         return next;
       });
 
       // Return context for rollback
       return { previousOptimisticState };
     },
-    onError: (error: unknown, taskId: number, context) => {
+    onError: (error: unknown, { taskId }: { taskId: number; task: TaskItem }, context) => {
       logger.error("Failed to complete task", error, { feature: "useMyTasks", taskId });
 
       // Rollback optimistic update to snapshot
       if (context?.previousOptimisticState) {
         setOptimisticUpdates(context.previousOptimisticState);
       }
+    },
+    onSuccess: (taskId: number) => {
+      // BUG-4 FIX: NOW remove from list - mutation succeeded, dialog workflow complete
+      setOptimisticUpdates((prev) => {
+        const next = new Map(prev);
+        next.set(taskId, { deleted: true });
+        return next;
+      });
     },
     onSettled: () => {
       // Refetch to ensure consistency after mutation settles (success or error)
@@ -199,7 +205,14 @@ export function useMyTasks() {
 
   const completeTask = useCallback(
     async (taskId: number) => {
-      await completeTaskMutation.mutateAsync(taskId);
+      // Capture task reference BEFORE mutation starts to avoid race condition:
+      // onMutate optimistically removes task from list, which updates tasksRef
+      // before mutationFn runs, causing "Task not found" error
+      const task = tasksRef.current.find((t) => t.id === taskId);
+      if (!task) {
+        throw new Error(`Task ${taskId} not found`);
+      }
+      await completeTaskMutation.mutateAsync({ taskId, task });
     },
     [completeTaskMutation]
   );
@@ -235,12 +248,7 @@ export function useMyTasks() {
    * The task will be hidden from the active task list until snooze_until has passed.
    */
   const snoozeTaskMutation = useMutation({
-    mutationFn: async (taskId: number) => {
-      const task = tasksRef.current.find((t) => t.id === taskId);
-      if (!task) {
-        throw new Error(`Task ${taskId} not found`);
-      }
-
+    mutationFn: async ({ taskId, task }: { taskId: number; task: TaskItem }) => {
       // Calculate snooze date: end of the following day (timezone-aware)
       const snoozeUntil = endOfDay(addDays(new Date(), 1));
 
@@ -252,7 +260,7 @@ export function useMyTasks() {
 
       return taskId;
     },
-    onMutate: async (taskId: number) => {
+    onMutate: async ({ taskId }: { taskId: number; task: TaskItem }) => {
       // CRITICAL: Cancel outgoing refetches to prevent race conditions
       await queryClient.cancelQueries({ queryKey: taskKeys.all });
 
@@ -269,7 +277,7 @@ export function useMyTasks() {
       // Return context for rollback
       return { previousOptimisticState };
     },
-    onError: (error: unknown, taskId: number, context) => {
+    onError: (error: unknown, { taskId }: { taskId: number; task: TaskItem }, context) => {
       logger.error("Failed to snooze task", error, { feature: "useMyTasks", taskId });
 
       // Rollback optimistic update to snapshot
@@ -288,7 +296,11 @@ export function useMyTasks() {
 
   const snoozeTask = useCallback(
     async (taskId: number) => {
-      await snoozeTaskMutation.mutateAsync(taskId);
+      const task = tasksRef.current.find((t) => t.id === taskId);
+      if (!task) {
+        throw new Error(`Task ${taskId} not found`);
+      }
+      await snoozeTaskMutation.mutateAsync({ taskId, task });
     },
     [snoozeTaskMutation]
   );
@@ -298,12 +310,7 @@ export function useMyTasks() {
    * RACE CONDITION FIX: Uses React Query's optimistic update pattern
    */
   const deleteTaskMutation = useMutation({
-    mutationFn: async (taskId: number) => {
-      const task = tasksRef.current.find((t) => t.id === taskId);
-      if (!task) {
-        throw new Error(`Task ${taskId} not found`);
-      }
-
+    mutationFn: async ({ taskId, task }: { taskId: number; task: TaskItem }) => {
       await dataProvider.delete("tasks", {
         id: taskId,
         previousData: task,
@@ -311,7 +318,7 @@ export function useMyTasks() {
 
       return taskId;
     },
-    onMutate: async (taskId: number) => {
+    onMutate: async ({ taskId }: { taskId: number; task: TaskItem }) => {
       // CRITICAL: Cancel outgoing refetches to prevent race conditions
       await queryClient.cancelQueries({ queryKey: taskKeys.all });
 
@@ -328,7 +335,7 @@ export function useMyTasks() {
       // Return context for rollback
       return { previousOptimisticState };
     },
-    onError: (error: unknown, taskId: number, context) => {
+    onError: (error: unknown, { taskId }: { taskId: number; task: TaskItem }, context) => {
       logger.error("Failed to delete task", error, { feature: "useMyTasks", taskId });
 
       // Rollback optimistic update to snapshot
@@ -347,7 +354,11 @@ export function useMyTasks() {
 
   const deleteTask = useCallback(
     async (taskId: number) => {
-      await deleteTaskMutation.mutateAsync(taskId);
+      const task = tasksRef.current.find((t) => t.id === taskId);
+      if (!task) {
+        throw new Error(`Task ${taskId} not found`);
+      }
+      await deleteTaskMutation.mutateAsync({ taskId, task });
     },
     [deleteTaskMutation]
   );
@@ -371,12 +382,15 @@ export function useMyTasks() {
    * @returns Promise that resolves when update completes
    */
   const updateTaskDueDateMutation = useMutation({
-    mutationFn: async ({ taskId, newDueDate }: { taskId: number; newDueDate: Date }) => {
-      const task = tasksRef.current.find((t) => t.id === taskId);
-      if (!task) {
-        throw new Error(`Task ${taskId} not found`);
-      }
-
+    mutationFn: async ({
+      taskId,
+      newDueDate,
+      task,
+    }: {
+      taskId: number;
+      newDueDate: Date;
+      task: TaskItem;
+    }) => {
       await dataProvider.update("tasks", {
         id: taskId,
         data: { due_date: newDueDate.toISOString() },
@@ -424,7 +438,11 @@ export function useMyTasks() {
 
   const updateTaskDueDate = useCallback(
     async (taskId: number, newDueDate: Date) => {
-      await updateTaskDueDateMutation.mutateAsync({ taskId, newDueDate });
+      const task = tasksRef.current.find((t) => t.id === taskId);
+      if (!task) {
+        throw new Error(`Task ${taskId} not found`);
+      }
+      await updateTaskDueDateMutation.mutateAsync({ taskId, newDueDate, task });
     },
     [updateTaskDueDateMutation]
   );

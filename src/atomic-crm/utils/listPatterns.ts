@@ -19,20 +19,23 @@
  * @property alwaysVisible - Always visible on all screen sizes (use for critical columns)
  */
 export const COLUMN_VISIBILITY = {
-  /** Only visible on large desktop (1280px+). Use for tertiary information like relationships. */
+  /** Only visible on large desktop (1280px+). Use for tertiary information like relationships.
+   * Uses !important to override MUI's MuiTableCell-root display: table-cell specificity. */
   largeDesktopOnly: {
-    cellClassName: "hidden xl:table-cell",
-    headerClassName: "hidden xl:table-cell",
+    cellClassName: "!hidden xl:!table-cell",
+    headerClassName: "!hidden xl:!table-cell",
   },
-  /** Only visible on desktop (1280px+). Use for secondary information. */
+  /** Only visible on desktop (1280px+). Use for secondary information.
+   * Uses !important to override MUI's MuiTableCell-root display: table-cell specificity. */
   desktopOnly: {
-    cellClassName: "hidden xl:table-cell",
-    headerClassName: "hidden xl:table-cell",
+    cellClassName: "!hidden xl:!table-cell",
+    headerClassName: "!hidden xl:!table-cell",
   },
-  /** Visible on tablet and desktop (768px+). Use for important but not critical columns. */
+  /** Visible on tablet and desktop (768px+). Use for important but not critical columns.
+   * Uses !important to override MUI's MuiTableCell-root display: table-cell specificity. */
   tabletUp: {
-    cellClassName: "hidden md:table-cell",
-    headerClassName: "hidden md:table-cell",
+    cellClassName: "!hidden md:!table-cell",
+    headerClassName: "!hidden md:!table-cell",
   },
   /** Always visible on all screen sizes. Use for primary identifying columns (name, status). */
   alwaysVisible: {

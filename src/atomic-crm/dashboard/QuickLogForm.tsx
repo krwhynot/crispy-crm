@@ -5,7 +5,12 @@ import { logger } from "@/lib/logger";
 import type { ExtendedDataProvider } from "@/atomic-crm/providers/supabase/extensions/types";
 import { useQueryClient } from "@tanstack/react-query";
 import { useMemo, useEffect, useCallback } from "react";
-import { activityKeys, opportunityKeys, taskKeys } from "@/atomic-crm/queryKeys";
+import {
+  activityKeys,
+  opportunityKeys,
+  taskKeys,
+  entityTimelineKeys,
+} from "@/atomic-crm/queryKeys";
 import { Form } from "@/components/ui/form";
 import { Loader2 } from "lucide-react";
 import {
@@ -237,6 +242,10 @@ export function QuickLogForm({
         if (taskPayload) {
           queryClient.invalidateQueries({ queryKey: taskKeys.all });
         }
+
+        // Invalidate entity timeline so Activities tab refreshes immediately
+        // Use .all to match React Admin's "getList" query key pattern
+        queryClient.invalidateQueries({ queryKey: entityTimelineKeys.all });
 
         const taskCreated = rpcResult?.task_id != null;
         notify(

@@ -49,8 +49,22 @@ export const TaskCompletionDialog = ({
   const activityType = mapTaskTypeToActivityType(task.taskType);
 
   const handleLogActivity = () => {
-    onComplete();
+    // Just open the dialog - onComplete will be called via onSuccess after activity is saved
+    // This prevents the component from unmounting before the dialog can be used
     setShowActivityDialog(true);
+  };
+
+  const handleActivitySuccess = () => {
+    // Called after activity is successfully logged
+    // Now safe to complete the task since the activity is saved
+    setShowActivityDialog(false);
+    onComplete();
+  };
+
+  const handleActivityCancel = () => {
+    // User closed dialog without saving - don't complete the task
+    setShowActivityDialog(false);
+    onClose();
   };
 
   const handleCreateFollowUp = () => {
@@ -64,6 +78,8 @@ export const TaskCompletionDialog = ({
     } else if (task.relatedTo.type === "opportunity") {
       params.append("opportunity_id", String(task.relatedTo.id));
     }
+
+    params.append("related_task_id", String(task.id));
 
     onComplete();
     navigate(`/tasks/create?${params.toString()}`);
@@ -142,7 +158,12 @@ export const TaskCompletionDialog = ({
 
       <QuickLogActivityDialog
         open={showActivityDialog}
-        onOpenChange={setShowActivityDialog}
+        onOpenChange={(open) => {
+          if (!open) {
+            // Dialog closed without saving - cancel the workflow
+            handleActivityCancel();
+          }
+        }}
         entityContext={entityContext}
         config={{
           activityType: activityType as
@@ -157,6 +178,8 @@ export const TaskCompletionDialog = ({
           enableDraftPersistence: false,
           relatedTaskId: task.id,
         }}
+        onSuccess={handleActivitySuccess}
+        onCancel={handleActivityCancel}
       />
     </>
   );

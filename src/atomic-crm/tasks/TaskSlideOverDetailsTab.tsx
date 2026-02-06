@@ -78,13 +78,12 @@ export function TaskSlideOverDetailsTab({
         return;
       }
 
-      // Use result.data for the update
       await update("tasks", {
         id: record.id,
         data: result.data,
         previousData: record,
       });
-      queryClient.invalidateQueries({ queryKey: taskKeys.all });
+      await queryClient.invalidateQueries({ queryKey: taskKeys.all });
       notify(notificationMessages.updated("Task"), { type: "success" });
       onModeToggle?.(); // Return to view mode after successful save
     } catch (error: unknown) {

@@ -1,6 +1,6 @@
 {
   "status": "complete",
-  "generated_at": "2026-02-05T15:28:09.473Z",
+  "generated_at": "2026-02-06T02:32:13.229Z",
   "generator": "scripts/discover/extractors/forms.ts",
   "source_globs": [
     "src/atomic-crm/**/*Create*.tsx",
@@ -8,7 +8,7 @@
     "src/atomic-crm/**/*Form*.tsx",
     "src/atomic-crm/**/*Inputs*.tsx"
   ],
-  "checksum": "sha256:77b3d63a22e6ed60",
+  "checksum": "sha256:4a8a9b5cd49135ca",
   "source_hashes": {
     "src\\atomic-crm\\activities\\ActivityEdit.tsx": "ba97db9f3ada",
     "src\\atomic-crm\\activities\\ActivityInputs.tsx": "85431cf76810",
@@ -27,7 +27,7 @@
     "src\\atomic-crm\\contacts\\QuickCreateContactPopover.tsx": "f6b3b7a2e1d7",
     "src\\atomic-crm\\contacts\\TagsListEdit.tsx": "1061b1fc5162",
     "src\\atomic-crm\\contexts\\FormOptionsContext.tsx": "164b5fa6c2d5",
-    "src\\atomic-crm\\dashboard\\QuickLogForm.tsx": "b66a041f0ba0",
+    "src\\atomic-crm\\dashboard\\QuickLogForm.tsx": "8dcb4fd32f3f",
     "src\\atomic-crm\\layout\\FormToolbar.tsx": "044f9a3b944a",
     "src\\atomic-crm\\notes\\NoteCreate.tsx": "d60f77ade7e6",
     "src\\atomic-crm\\notes\\NoteInputs.tsx": "530ab4f5e475",
@@ -65,7 +65,7 @@
     "src\\atomic-crm\\tags\\TagInputs.tsx": "f5adeb1846e5",
     "src\\atomic-crm\\tags\\TagSelectWithCreate.tsx": "2e550c799bca",
     "src\\atomic-crm\\tasks\\TaskCompactForm.tsx": "39309698a061",
-    "src\\atomic-crm\\tasks\\TaskCreate.tsx": "b2417e453176",
+    "src\\atomic-crm\\tasks\\TaskCreate.tsx": "bd81579b278f",
     "src\\atomic-crm\\tasks\\TaskEdit.tsx": "ea0dd4f0d3ca",
     "src\\atomic-crm\\tasks\\TaskInputs.tsx": "f4d7201dd42f",
     "src\\atomic-crm\\tutorial\\OpportunityCreateFormTutorial.tsx": "2cd05674ea84"
@@ -313,7 +313,7 @@
     {
       "componentName": "QuickLogForm",
       "file": "src\\atomic-crm\\dashboard\\QuickLogForm.tsx",
-      "line": 67,
+      "line": 72,
       "formType": "react-admin-simple",
       "formPatterns": {
         "primary": "Form",
@@ -1202,7 +1202,7 @@
     {
       "componentName": "TaskCreate",
       "file": "src\\atomic-crm\\tasks\\TaskCreate.tsx",
-      "line": 35,
+      "line": 42,
       "formType": "react-admin-simple",
       "formPatterns": {
         "primary": "Form",

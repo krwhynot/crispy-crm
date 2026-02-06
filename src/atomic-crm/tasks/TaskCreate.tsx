@@ -7,7 +7,14 @@ import { FormProgressProvider, FormProgressBar } from "@/components/ra-wrappers/
 import { CreateFormFooter } from "@/atomic-crm/components";
 import { TaskInputs } from "./TaskInputs";
 import { getTaskDefaultValues, taskCreateSchema } from "../validation/task";
-import { taskKeys, opportunityKeys, contactKeys, dashboardKeys } from "../queryKeys";
+import {
+  taskKeys,
+  opportunityKeys,
+  contactKeys,
+  organizationKeys,
+  dashboardKeys,
+  entityTimelineKeys,
+} from "../queryKeys";
 
 // Map URL param values to task type enum values
 const URL_TYPE_MAP: Record<string, string> = {
@@ -46,6 +53,7 @@ export default function TaskCreate() {
   const urlContactId = searchParams.get("contact_id");
   const urlOpportunityId = searchParams.get("opportunity_id");
   const urlOrganizationId = searchParams.get("organization_id");
+  const urlRelatedTaskId = searchParams.get("related_task_id");
 
   const defaultValues = {
     ...getTaskDefaultValues(),
@@ -56,6 +64,7 @@ export default function TaskCreate() {
     ...(urlContactId && { contact_id: Number(urlContactId) }),
     ...(urlOpportunityId && { opportunity_id: Number(urlOpportunityId) }),
     ...(urlOrganizationId && { organization_id: Number(urlOrganizationId) }),
+    ...(urlRelatedTaskId && { related_task_id: Number(urlRelatedTaskId) }),
   };
 
   return (
@@ -67,6 +76,26 @@ export default function TaskCreate() {
           queryClient.invalidateQueries({ queryKey: opportunityKeys.all });
           queryClient.invalidateQueries({ queryKey: contactKeys.lists() });
           queryClient.invalidateQueries({ queryKey: dashboardKeys.all });
+
+          // Invalidate contact detail cache if task linked to contact
+          const contactId = searchParams.get("contact_id");
+          if (contactId) {
+            queryClient.invalidateQueries({
+              queryKey: contactKeys.detail(Number(contactId)),
+            });
+          }
+
+          // Invalidate organization detail cache if task linked to organization
+          const orgId = searchParams.get("organization_id");
+          if (orgId) {
+            queryClient.invalidateQueries({
+              queryKey: organizationKeys.detail(Number(orgId)),
+            });
+          }
+
+          // Invalidate entity timeline so Activities tab refreshes immediately
+          // Use .all to match React Admin's "getList" query key pattern
+          queryClient.invalidateQueries({ queryKey: entityTimelineKeys.all });
         },
       }}
     >

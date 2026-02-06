@@ -1,6 +1,6 @@
 {
   "chunk_name": "schemas",
-  "generated_at": "2026-02-05T15:28:08.980Z",
+  "generated_at": "2026-02-06T02:32:12.696Z",
   "item_count": 3,
   "items": [
     {
@@ -243,6 +243,15 @@
           "hasDefault": false
         },
         {
+          "name": "updated_by",
+          "zodType": "union",
+          "constraints": [],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
           "name": "created_at",
           "zodType": "string",
           "constraints": [
@@ -373,7 +382,7 @@
     {
       "name": "updateActivitiesSchema",
       "file": "src\\atomic-crm\\validation\\activities\\schemas.ts",
-      "line": 185,
+      "line": 186,
       "schemaType": "union",
       "fields": [],
       "relatedSchemas": [
@@ -386,7 +395,7 @@
     {
       "name": "activityNoteFormSchema",
       "file": "src\\atomic-crm\\validation\\activities\\schemas.ts",
-      "line": 193,
+      "line": 194,
       "schemaType": "strictObject",
       "fields": [
         {

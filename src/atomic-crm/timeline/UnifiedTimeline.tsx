@@ -47,10 +47,22 @@ export const UnifiedTimeline = ({
 }: UnifiedTimelineProps) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-  const filter: Record<string, number> = {};
-  if (contactId) filter.contact_id = contactId;
-  if (organizationId) filter.organization_id = organizationId;
-  if (opportunityId) filter.opportunity_id = opportunityId;
+  // Build OR conditions for entity filtering
+  // Timeline entries should match ANY of: contact, organization, or opportunity
+  // FIX: BUG-5 - Previously used AND logic which excluded records with null organization_id
+  const orConditions: Array<Record<string, number>> = [];
+  if (contactId) orConditions.push({ contact_id: contactId });
+  if (organizationId) orConditions.push({ organization_id: organizationId });
+  if (opportunityId) orConditions.push({ opportunity_id: opportunityId });
+
+  // Use $or for multiple conditions, single condition for one, empty for none
+  // $or is transformed by dataProviderUtils.transformOrFilter() to @or format
+  const filter: Record<string, unknown> =
+    orConditions.length > 1
+      ? { $or: orConditions }
+      : orConditions.length === 1
+        ? orConditions[0]
+        : {};
 
   const { data, isPending, error, refetch } = useGetList<TimelineEntryData>(
     "entity_timeline",

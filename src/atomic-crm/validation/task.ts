@@ -58,6 +58,9 @@ export const taskSchema = z.strictObject({
     z.coerce.date().nullable().optional()
   ), // NULL = active, future timestamp = snoozed
 
+  // Related task reference (links follow-up tasks to original completed task)
+  related_task_id: idSchema.nullable().optional(),
+
   // Audit fields (per migration 20251127054700_fix_critical_rls_security_tasks.sql)
   created_by: z
     .union([z.string().max(50, "Created by ID too long"), z.number()])

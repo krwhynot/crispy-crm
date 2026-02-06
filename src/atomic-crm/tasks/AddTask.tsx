@@ -33,7 +33,7 @@ import { contactOptionText } from "../contacts/ContactOption";
 import { useFormOptions } from "../root/ConfigurationContext";
 import { getTaskDefaultValues } from "../validation/task";
 import { getQSearchAutocompleteProps } from "@/atomic-crm/utils/autocompleteDefaults";
-import { taskKeys, dashboardKeys } from "../queryKeys";
+import { taskKeys, dashboardKeys, contactKeys, entityTimelineKeys } from "../queryKeys";
 import { useQueryClient } from "@tanstack/react-query";
 
 export const AddTask = ({
@@ -84,6 +84,17 @@ export const AddTask = ({
     // Invalidate task caches so new task appears immediately
     queryClient.invalidateQueries({ queryKey: taskKeys.all });
     queryClient.invalidateQueries({ queryKey: dashboardKeys.all });
+
+    // Invalidate contact detail cache so badge updates immediately
+    if (contact?.id) {
+      queryClient.invalidateQueries({
+        queryKey: contactKeys.detail(contact.id),
+      });
+    }
+
+    // Invalidate entity timeline so Activities tab refreshes immediately
+    // Use .all to match React Admin's "getList" query key pattern
+    queryClient.invalidateQueries({ queryKey: entityTimelineKeys.all });
   };
 
   if (isIdentityPending || !identity) return null;
