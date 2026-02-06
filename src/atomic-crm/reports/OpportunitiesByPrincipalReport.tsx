@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo, useEffect, useRef } from "react";
 import { useGetList, useNotify } from "ra-core";
 import { useNavigate } from "react-router-dom";
 import { format } from "date-fns";
@@ -48,6 +48,7 @@ export default function OpportunitiesByPrincipalReport() {
 
   // Track expanded principals
   const [expandedPrincipals, setExpandedPrincipals] = useState<Set<string>>(new Set());
+  const hasInitializedRef = useRef(false);
 
   // Build filter object for API
   // CRITICAL: Use primitive dependencies to prevent render loops
@@ -153,17 +154,17 @@ export default function OpportunitiesByPrincipalReport() {
     return Array.from(grouped.values()).toSorted((a, b) => b.totalCount - a.totalCount);
   }, [opportunities]);
 
-  // Auto-expand first 3 principals on initial load
-  // CRITICAL: Moved from useMemo to useEffect - NEVER call setState inside useMemo!
-  // useMemo is for pure computation, useEffect is for side effects
+  // Auto-expand first 3 principals on initial load (run once)
+  // Uses ref to track initialization and prevent re-running after user collapses all
   useEffect(() => {
-    if (expandedPrincipals.size === 0 && principalGroups.length > 0) {
+    if (!hasInitializedRef.current && principalGroups.length > 0) {
+      hasInitializedRef.current = true;
       const initialExpanded = new Set(
         principalGroups.slice(0, 3).map((g) => g.principalId || "null")
       );
       setExpandedPrincipals(initialExpanded);
     }
-  }, [principalGroups, expandedPrincipals.size]);
+  }, [principalGroups]);
 
   // Toggle principal expansion
   const togglePrincipalExpansion = (principalId: string | null) => {

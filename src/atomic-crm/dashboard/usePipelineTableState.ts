@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo } from "react";
+import { useState, useCallback, useMemo, useTransition } from "react";
 import type { PrincipalPipelineRow, Momentum } from "./types";
 
 export type SortField = "name" | "totalPipeline" | "activeThisWeek" | "activeLastWeek" | "momentum";
@@ -22,31 +22,36 @@ export function usePipelineTableState({ data }: UsePipelineTableStateOptions) {
   const [sortDirection, setSortDirection] = useState<SortDirection>("ascending");
   const [searchQuery, setSearchQuery] = useState("");
   const [momentumFilters, setMomentumFilters] = useState<Set<Momentum>>(new Set());
+  const [isPending, startTransition] = useTransition();
 
   // Handle momentum filter toggle
   const toggleMomentumFilter = useCallback((momentum: Momentum) => {
-    setMomentumFilters((prev) => {
-      const next = new Set(prev);
-      if (next.has(momentum)) {
-        next.delete(momentum);
-      } else {
-        next.add(momentum);
-      }
-      return next;
+    startTransition(() => {
+      setMomentumFilters((prev) => {
+        const next = new Set(prev);
+        if (next.has(momentum)) {
+          next.delete(momentum);
+        } else {
+          next.add(momentum);
+        }
+        return next;
+      });
     });
   }, []);
 
   // Handle column header click for sorting
   const handleSort = useCallback(
     (field: SortField) => {
-      if (sortField === field) {
-        // Toggle direction: ascending -> descending -> ascending
-        setSortDirection((prev) => (prev === "ascending" ? "descending" : "ascending"));
-      } else {
-        // New field: start with ascending for name, descending for numeric fields
-        setSortField(field);
-        setSortDirection(field === "name" ? "ascending" : "descending");
-      }
+      startTransition(() => {
+        if (sortField === field) {
+          // Toggle direction: ascending -> descending -> ascending
+          setSortDirection((prev) => (prev === "ascending" ? "descending" : "ascending"));
+        } else {
+          // New field: start with ascending for name, descending for numeric fields
+          setSortField(field);
+          setSortDirection(field === "name" ? "ascending" : "descending");
+        }
+      });
     },
     [sortField]
   );
@@ -117,6 +122,7 @@ export function usePipelineTableState({ data }: UsePipelineTableStateOptions) {
     sortDirection,
     searchQuery,
     momentumFilters,
+    isPending,
 
     // Setters
     setSearchQuery,

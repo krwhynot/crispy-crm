@@ -73,26 +73,27 @@ export function OpportunityCardActions({ opportunityId, onDelete }: OpportunityC
     async (data: CloseOpportunityInput) => {
       setIsClosing(true);
       try {
-        await update("opportunities", {
-          id: opportunityId,
-          data: {
-            stage: closeTargetStage,
-            win_reason: data.win_reason,
-            loss_reason: data.loss_reason,
-            close_reason_notes: data.close_reason_notes,
-          },
-          previousData: record || {},
-        });
-
-        await dataProvider.create("activities", {
-          data: {
-            activity_type: "activity",
-            type: "note",
-            subject: `Opportunity ${closeTargetStage === STAGE.CLOSED_WON ? "won" : "lost"}`,
-            opportunity_id: opportunityId,
-            organization_id: record?.customer_organization_id,
-          },
-        });
+        await Promise.all([
+          update("opportunities", {
+            id: opportunityId,
+            data: {
+              stage: closeTargetStage,
+              win_reason: data.win_reason,
+              loss_reason: data.loss_reason,
+              close_reason_notes: data.close_reason_notes,
+            },
+            previousData: record || {},
+          }),
+          dataProvider.create("activities", {
+            data: {
+              activity_type: "activity",
+              type: "note",
+              subject: `Opportunity ${closeTargetStage === STAGE.CLOSED_WON ? "won" : "lost"}`,
+              opportunity_id: opportunityId,
+              organization_id: record?.customer_organization_id,
+            },
+          }),
+        ]);
 
         // Invalidate granular opportunity caches
         // 1. Specific opportunity detail (this card's data)

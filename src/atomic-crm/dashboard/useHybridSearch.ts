@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, useCallback } from "react";
+import { useState, useEffect, useMemo, useCallback, useTransition } from "react";
 import { useGetList } from "react-admin";
 
 import {
@@ -39,6 +39,8 @@ interface HybridSearchResult<T> {
   isInitialLoading: boolean;
   /** Loading state for search query */
   isSearching: boolean;
+  /** Whether a low-priority state update is pending (useTransition) */
+  isPending: boolean;
   /** Any error from data fetching */
   error: Error | null;
   /** Current search term */
@@ -78,11 +80,14 @@ export function useHybridSearch<T extends { id: number | string }>({
   // Track user's search input
   const [searchTerm, setSearchTerm] = useState("");
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
+  const [isPending, startTransition] = useTransition();
 
   // Debounce search term updates using useEffect (proper pattern)
   useEffect(() => {
     const handler = setTimeout(() => {
-      setDebouncedSearchTerm(searchTerm);
+      startTransition(() => {
+        setDebouncedSearchTerm(searchTerm);
+      });
     }, debounceMs);
 
     return () => clearTimeout(handler);
@@ -159,6 +164,7 @@ export function useHybridSearch<T extends { id: number | string }>({
     data,
     isInitialLoading,
     isSearching: isSearchLoading,
+    isPending,
     error: (initialError || searchError) as Error | null,
     searchTerm,
     setSearchTerm,

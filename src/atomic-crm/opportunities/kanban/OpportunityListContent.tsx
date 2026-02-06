@@ -1,8 +1,6 @@
-// es-toolkit: Deep object equality comparison
-import { isEqual } from "es-toolkit";
 import { useListContext, useUpdate, useNotify, useRefresh, useDataProvider } from "ra-core";
 import { logger } from "@/lib/logger";
-import { useEffect, useState, useCallback } from "react";
+import { useMemo, useState, useCallback } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import {
   DndContext,
@@ -160,9 +158,23 @@ export const OpportunityListContent = ({
         )
       : allOpportunityStages.filter((stage) => userVisibleStages.includes(stage.value));
 
-  const [opportunitiesByStage, setOpportunitiesByStage] = useState<OpportunitiesByStage>(
-    getOpportunitiesByStage([], allOpportunityStages)
-  );
+  // Derive opportunities by stage from unordered data (pure computation)
+  const derivedOpportunitiesByStage = useMemo(() => {
+    if (!unorderedOpportunities) {
+      return getOpportunitiesByStage([], allOpportunityStages);
+    }
+    return getOpportunitiesByStage(unorderedOpportunities, allOpportunityStages);
+  }, [unorderedOpportunities, allOpportunityStages]);
+
+  // Local state for optimistic updates during drag operations
+  const [localOpportunitiesByStage, setLocalOpportunitiesByStage] =
+    useState<OpportunitiesByStage | null>(null);
+
+  // Use local state if set (during drag), otherwise use derived state
+  const opportunitiesByStage = localOpportunitiesByStage ?? derivedOpportunitiesByStage;
+
+  // Wrapper to set local state (replaces setOpportunitiesByStage calls)
+  const setOpportunitiesByStage = setLocalOpportunitiesByStage;
 
   // Find active opportunity for DragOverlay (must be after opportunitiesByStage declaration)
   const activeOpportunity = activeId
@@ -170,19 +182,6 @@ export const OpportunityListContent = ({
         .flat()
         .find((o) => String(o.id) === activeId)
     : null;
-
-  useEffect(() => {
-    if (unorderedOpportunities) {
-      const newOpportunitiesByStage = getOpportunitiesByStage(
-        unorderedOpportunities,
-        allOpportunityStages
-      );
-      if (!isEqual(newOpportunitiesByStage, opportunitiesByStage)) {
-        setOpportunitiesByStage(newOpportunitiesByStage);
-      }
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [unorderedOpportunities]);
 
   /**
    * Perform the actual stage update after modal confirmation (or for non-close stages)

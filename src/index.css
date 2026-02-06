@@ -380,6 +380,18 @@
   .data-cell-currency {
     @apply tabular-nums lining-nums slashed-zero text-right;
   }
+
+  /* Performance: Skip rendering off-screen list rows */
+  .list-row-virtualized {
+    content-visibility: auto;
+    contain-intrinsic-size: 0 48px; /* Approximate row height */
+  }
+
+  /* For taller rows with more content */
+  .list-row-virtualized-lg {
+    content-visibility: auto;
+    contain-intrinsic-size: 0 64px;
+  }
 }
 
 @layer components {
@@ -406,8 +418,11 @@
 
   /* Consistent row height for all datagrid tables - 56px (matches shadcn TableRow) */
   /* Note: height on tr is more reliable than min-height on td for enforcing row height */
+  /* Performance: content-visibility skips rendering off-screen rows in long lists */
   .table-row-premium {
     height: 56px;
+    content-visibility: auto;
+    contain-intrinsic-size: 0 56px;
   }
 
   .table-row-premium td {

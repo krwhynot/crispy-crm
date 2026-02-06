@@ -1,4 +1,5 @@
-import { useState, useCallback, lazy, Suspense } from "react";
+import { useState, useCallback, lazy, Suspense, useTransition } from "react";
+import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { AdminButton } from "@/components/admin/AdminButton";
 import { Table, TableBody, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -44,6 +45,7 @@ export function PrincipalPipelineTable() {
   const [selectedPrincipal, setSelectedPrincipal] = useState<{ id: number; name: string } | null>(
     null
   );
+  const [isFilterPending, startTransition] = useTransition();
 
   const { data, loading, error } = usePrincipalPipeline({ myPrincipalsOnly });
 
@@ -58,7 +60,11 @@ export function PrincipalPipelineTable() {
     sortField,
     sortDirection,
     getAriaSortValue,
+    isPending: isTablePending,
   } = usePipelineTableState({ data });
+
+  // Combined pending state for visual feedback
+  const isPending = isFilterPending || isTablePending;
 
   // Render sort indicator for column headers
   const renderSortIcon = useCallback(
@@ -164,7 +170,11 @@ export function PrincipalPipelineTable() {
               <Switch
                 id="my-principals"
                 checked={myPrincipalsOnly}
-                onCheckedChange={setMyPrincipalsOnly}
+                onCheckedChange={(checked) => {
+                  startTransition(() => {
+                    setMyPrincipalsOnly(checked);
+                  });
+                }}
               />
               <label htmlFor="my-principals" className="text-sm">
                 My Principals Only
@@ -179,7 +189,12 @@ export function PrincipalPipelineTable() {
       </div>
 
       {/* Table - scroll container for sticky headers */}
-      <div className="flex-1 min-h-0 overflow-y-auto pt-2">
+      <div
+        className={cn(
+          "flex-1 min-h-0 overflow-y-auto pt-2 transition-opacity",
+          isPending && "opacity-50"
+        )}
+      >
         {sortedData?.length === 0 ? (
           <EmptyState searchQuery={searchQuery} />
         ) : (

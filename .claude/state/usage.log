@@ -50,3 +50,4 @@
 [2026-02-06T02:50:37.538Z] ✓ search_code | query: "task checkbox click completed_at update mutation" | limit=20, type="all" | results: 0 | 31ms
 [2026-02-06T02:50:56.991Z] ✓ find_references | symbolName="TaskKanbanCard", includeDefinition=false | results: 5 | 4ms
 [2026-02-06T03:25:18.894Z] ✓ find_references | symbolName="useEntitySelection", includeDefinition=true | 2ms
+[2026-02-06T15:37:41.308Z] ✓ find_references | symbolName="useDebouncedSearch", includeDefinition=false | results: 5 | 21ms
