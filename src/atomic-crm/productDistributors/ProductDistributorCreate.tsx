@@ -10,6 +10,10 @@ import { FormToolbar } from "@/components/ra-wrappers/simple-form";
 import { FormErrorSummary } from "@/components/ra-wrappers/FormErrorSummary";
 import { productDistributorSchema } from "../validation/productDistributors";
 import { ProductDistributorInputs } from "./ProductDistributorInputs";
+import {
+  getAutocompleteProps,
+  getQSearchAutocompleteProps,
+} from "@/atomic-crm/utils/autocompleteDefaults";
 
 // Human-readable field labels for error messages
 const FIELD_LABELS: Record<string, string> = {
@@ -55,21 +59,23 @@ const ProductDistributorFormContent = () => {
 
       <ReferenceInput source="product_id" reference="products" isRequired>
         <AutocompleteInput
+          {...getAutocompleteProps("name")}
           optionText="name"
           label="Product *"
-          filterToQuery={(q: string) => ({ "name@ilike": `%${q}%` })}
           helperText="Select the product"
         />
       </ReferenceInput>
 
-      <ReferenceInput source="distributor_id" reference="organizations" isRequired>
+      <ReferenceInput
+        source="distributor_id"
+        reference="organizations"
+        filter={{ organization_type: "distributor" }}
+        isRequired
+      >
         <AutocompleteInput
+          {...getQSearchAutocompleteProps()}
           optionText="name"
           label="Distributor *"
-          filterToQuery={(q: string) => ({
-            "name@ilike": `%${q}%`,
-            organization_type: "distributor",
-          })}
           helperText="Select the distributor"
         />
       </ReferenceInput>

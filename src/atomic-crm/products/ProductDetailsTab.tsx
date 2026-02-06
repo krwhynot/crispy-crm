@@ -21,6 +21,7 @@ import {
 } from "@/components/layouts/sidepane";
 import { PRODUCT_STATUSES, PRODUCT_CATEGORIES } from "../validation/products";
 import { formatFieldLabel } from "@/atomic-crm/utils";
+import { getQSearchAutocompleteProps } from "@/atomic-crm/utils/autocompleteDefaults";
 
 const DISTRIBUTOR_CODE_LABELS: Record<string, string> = {
   usf_code: "US Foods",
@@ -176,7 +177,7 @@ export function ProductDetailsTab({
                 label="Principal/Supplier"
                 filter={{ organization_type: "principal" }}
               >
-                <AutocompleteInput optionText="name" />
+                <AutocompleteInput {...getQSearchAutocompleteProps()} optionText="name" />
               </ReferenceInput>
             </div>
           </div>

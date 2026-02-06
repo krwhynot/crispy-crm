@@ -1,7 +1,7 @@
 import { useCreate, useNotify, useDataProvider, Form, ReferenceInput } from "react-admin";
 import { useQueryClient } from "@tanstack/react-query";
 import { AutocompleteInput } from "@/components/ra-wrappers/autocomplete-input";
-import { getAutocompleteProps } from "@/atomic-crm/utils/autocompleteDefaults";
+import { getQSearchAutocompleteProps } from "@/atomic-crm/utils/autocompleteDefaults";
 import {
   activityKeys,
   opportunityKeys,
@@ -134,7 +134,7 @@ export function LinkOpportunityModal({
         <Form onSubmit={handleLink} className="space-y-4">
           <ReferenceInput source="opportunity_id" reference="opportunities">
             <AutocompleteInput
-              {...getAutocompleteProps("name")}
+              {...getQSearchAutocompleteProps()}
               optionText={(opp: Opportunity) =>
                 opp ? `${opp.name} - ${opp.customer_organization_name || ""} (${opp.stage})` : ""
               }

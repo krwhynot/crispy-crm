@@ -51,3 +51,5 @@
 [2026-02-06T02:50:56.991Z] ✓ find_references | symbolName="TaskKanbanCard", includeDefinition=false | results: 5 | 4ms
 [2026-02-06T03:25:18.894Z] ✓ find_references | symbolName="useEntitySelection", includeDefinition=true | 2ms
 [2026-02-06T15:37:41.308Z] ✓ find_references | symbolName="useDebouncedSearch", includeDefinition=false | results: 5 | 21ms
+[2026-02-06T18:02:54.810Z] ✓ search_code | query: "ReferenceInput contact in task form" | limit=10, type="all" | results: 0 | 97ms
+[2026-02-06T18:03:20.997Z] ✓ search_code | query: "contacts_summary handler getList filter" | limit=15, type="all" | results: 0 | 32ms

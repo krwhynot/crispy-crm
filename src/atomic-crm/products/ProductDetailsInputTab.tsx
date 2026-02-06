@@ -4,7 +4,7 @@ import { AutocompleteInput } from "@/components/ra-wrappers/autocomplete-input";
 import { SelectInput } from "@/components/ra-wrappers/select-input";
 import { FormFieldWrapper } from "@/components/ra-wrappers/form";
 import { PRODUCT_STATUSES, PRODUCT_CATEGORIES } from "../validation/products";
-import { enableGetChoices } from "../utils/autocompleteDefaults";
+import { enableGetChoices, getQSearchAutocompleteProps } from "../utils/autocompleteDefaults";
 import { formatFieldLabel } from "@/atomic-crm/utils";
 
 /**
@@ -57,6 +57,7 @@ export const ProductDetailsInputTab = () => {
             enableGetChoices={enableGetChoices}
           >
             <AutocompleteInput
+              {...getQSearchAutocompleteProps()}
               optionText="name"
               helperText="Required - Select the manufacturing principal"
             />

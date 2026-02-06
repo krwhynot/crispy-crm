@@ -8,7 +8,7 @@ import { BooleanInput } from "@/components/ra-wrappers/boolean-input";
 import { FormGrid, FormSectionWithProgress, FormFieldWrapper } from "@/components/ra-wrappers/form";
 import { contactOptionText } from "../contacts/ContactOption";
 import { INTERACTION_TYPE_OPTIONS, SAMPLE_STATUS_OPTIONS } from "../validation/activities";
-import { getAutocompleteProps, getQSearchAutocompleteProps } from "../utils/autocompleteDefaults";
+import { getQSearchAutocompleteProps } from "../utils/autocompleteDefaults";
 
 // Convert to React Admin choice format
 const SAMPLE_STATUS_CHOICES = SAMPLE_STATUS_OPTIONS.map((option) => ({
@@ -104,7 +104,7 @@ export default function ActivitySinglePage() {
           <FormFieldWrapper name="opportunity_id">
             <ReferenceInput source="opportunity_id" reference="opportunities">
               <AutocompleteInput
-                {...getAutocompleteProps("name")}
+                {...getQSearchAutocompleteProps()}
                 label="Opportunity"
                 optionText="name"
                 helperText="Optionally link to an opportunity"
@@ -116,7 +116,7 @@ export default function ActivitySinglePage() {
 
         <FormGrid>
           <FormFieldWrapper name="contact_id">
-            <ReferenceInput source="contact_id" reference="contacts_summary">
+            <ReferenceInput source="contact_id" reference="contacts">
               <AutocompleteInput
                 {...getQSearchAutocompleteProps()}
                 label="Contact"
@@ -129,7 +129,7 @@ export default function ActivitySinglePage() {
           <FormFieldWrapper name="organization_id">
             <ReferenceInput source="organization_id" reference="organizations">
               <AutocompleteInput
-                {...getAutocompleteProps("name")}
+                {...getQSearchAutocompleteProps()}
                 label="Organization"
                 optionText="name"
                 helperText="At least one contact or organization is required"

@@ -26,6 +26,7 @@ import {
 } from "../../validation/activities";
 import type { ActivityRecord } from "../../types";
 import { ucFirst } from "@/atomic-crm/utils";
+import { getQSearchAutocompleteProps } from "@/atomic-crm/utils/autocompleteDefaults";
 
 const SENTIMENT_CHOICES = [
   { id: "positive", name: "Positive" },
@@ -122,15 +123,27 @@ export function ActivityDetailsTab({
               )}
 
               <ReferenceInput source="opportunity_id" reference="opportunities">
-                <AutocompleteInput label="Opportunity" optionText="name" />
+                <AutocompleteInput
+                  {...getQSearchAutocompleteProps()}
+                  label="Opportunity"
+                  optionText="name"
+                />
               </ReferenceInput>
 
-              <ReferenceInput source="contact_id" reference="contacts_summary">
-                <AutocompleteInput label="Contact" optionText={contactOptionText} />
+              <ReferenceInput source="contact_id" reference="contacts">
+                <AutocompleteInput
+                  {...getQSearchAutocompleteProps()}
+                  label="Contact"
+                  optionText={contactOptionText}
+                />
               </ReferenceInput>
 
               <ReferenceInput source="organization_id" reference="organizations">
-                <AutocompleteInput label="Organization" optionText="name" />
+                <AutocompleteInput
+                  {...getQSearchAutocompleteProps()}
+                  label="Organization"
+                  optionText="name"
+                />
               </ReferenceInput>
             </div>
           </div>

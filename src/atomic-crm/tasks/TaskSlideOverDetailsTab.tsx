@@ -25,6 +25,7 @@ import {
 import { SaleName } from "../sales/SaleName";
 import { useFormOptions } from "../root/ConfigurationContext";
 import { contactOptionText } from "../contacts/ContactOption";
+import { getQSearchAutocompleteProps } from "@/atomic-crm/utils/autocompleteDefaults";
 import type { Task } from "./types";
 
 interface TaskSlideOverDetailsTabProps {
@@ -161,11 +162,15 @@ export function TaskSlideOverDetailsTab({
               <BooleanInput source="completed" label="Completed" disabled={isLoading} />
 
               <ReferenceInput source="sales_id" reference="sales" disabled={isLoading}>
-                <AutocompleteInput label="Assigned To" />
+                <AutocompleteInput {...getQSearchAutocompleteProps()} label="Assigned To" />
               </ReferenceInput>
 
-              <ReferenceInput source="contact_id" reference="contacts_summary" disabled={isLoading}>
-                <AutocompleteInput label="Contact" optionText={contactOptionText} />
+              <ReferenceInput source="contact_id" reference="contacts" disabled={isLoading}>
+                <AutocompleteInput
+                  {...getQSearchAutocompleteProps()}
+                  label="Contact"
+                  optionText={contactOptionText}
+                />
               </ReferenceInput>
 
               <ReferenceInput
@@ -173,7 +178,11 @@ export function TaskSlideOverDetailsTab({
                 reference="organizations"
                 disabled={isLoading}
               >
-                <AutocompleteInput label="Organization" optionText="name" />
+                <AutocompleteInput
+                  {...getQSearchAutocompleteProps()}
+                  label="Organization"
+                  optionText="name"
+                />
               </ReferenceInput>
 
               <ReferenceInput
@@ -181,7 +190,11 @@ export function TaskSlideOverDetailsTab({
                 reference="opportunities"
                 disabled={isLoading}
               >
-                <AutocompleteInput label="Opportunity" optionText="name" />
+                <AutocompleteInput
+                  {...getQSearchAutocompleteProps()}
+                  label="Opportunity"
+                  optionText="name"
+                />
               </ReferenceInput>
             </div>
           </div>

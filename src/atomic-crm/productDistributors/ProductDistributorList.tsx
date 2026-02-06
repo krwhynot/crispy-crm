@@ -5,7 +5,7 @@ import { SelectInput } from "@/components/ra-wrappers/select-input";
 import { ReferenceInput } from "@/components/ra-wrappers/reference-input";
 import { AutocompleteInput } from "@/components/ra-wrappers/autocomplete-input";
 import { PRODUCT_DISTRIBUTOR_STATUS_CHOICES } from "./constants";
-import { AUTOCOMPLETE_DEBOUNCE_MS, shouldRenderSuggestions } from "../utils/autocompleteDefaults";
+import { getAutocompleteProps, getQSearchAutocompleteProps } from "../utils/autocompleteDefaults";
 
 const productDistributorFilters = [
   <TextInput
@@ -23,22 +23,15 @@ const productDistributorFilters = [
     emptyText="All statuses"
   />,
   <ReferenceInput key="product_id" source="product_id" reference="products">
-    <AutocompleteInput
-      debounce={AUTOCOMPLETE_DEBOUNCE_MS}
-      shouldRenderSuggestions={shouldRenderSuggestions}
-      optionText="name"
-      label="Product"
-      filterToQuery={(q) => ({ "name@ilike": `%${q}%` })}
-    />
+    <AutocompleteInput {...getAutocompleteProps("name")} optionText="name" label="Product" />
   </ReferenceInput>,
-  <ReferenceInput key="distributor_id" source="distributor_id" reference="organizations">
-    <AutocompleteInput
-      debounce={AUTOCOMPLETE_DEBOUNCE_MS}
-      shouldRenderSuggestions={shouldRenderSuggestions}
-      optionText="name"
-      label="Distributor"
-      filterToQuery={(q) => ({ "name@ilike": `%${q}%`, organization_type: "distributor" })}
-    />
+  <ReferenceInput
+    key="distributor_id"
+    source="distributor_id"
+    reference="organizations"
+    filter={{ organization_type: "distributor" }}
+  >
+    <AutocompleteInput {...getQSearchAutocompleteProps()} optionText="name" label="Distributor" />
   </ReferenceInput>,
 ];
 

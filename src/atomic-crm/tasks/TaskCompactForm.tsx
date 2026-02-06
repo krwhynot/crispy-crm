@@ -11,7 +11,6 @@ import {
 import { useFormOptions } from "../root/ConfigurationContext";
 import { contactOptionText } from "../contacts/ContactOption";
 import {
-  getAutocompleteProps,
   getQSearchAutocompleteProps,
   enableGetChoices,
 } from "@/atomic-crm/utils/autocompleteDefaults";
@@ -115,7 +114,7 @@ export const TaskCompactForm = () => {
               enableGetChoices={enableGetChoices}
             >
               <AutocompleteInput
-                {...getAutocompleteProps("name")}
+                {...getQSearchAutocompleteProps()}
                 label="Organization"
                 optionText="name"
                 helperText="Link to organization"
@@ -129,7 +128,7 @@ export const TaskCompactForm = () => {
               enableGetChoices={enableGetChoices}
             >
               <AutocompleteInput
-                {...getAutocompleteProps("name")}
+                {...getQSearchAutocompleteProps()}
                 label="Opportunity"
                 optionText="name"
                 helperText="Link to opportunity"
@@ -141,7 +140,7 @@ export const TaskCompactForm = () => {
         <FormFieldWrapper name="contact_id">
           <ReferenceInput
             source="contact_id"
-            reference="contacts_summary"
+            reference="contacts"
             enableGetChoices={enableGetChoices}
           >
             <AutocompleteInput
