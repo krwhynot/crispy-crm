@@ -2,8 +2,6 @@ import { useState, useCallback } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { dashboardKeys } from "../queryKeys";
 import { DashboardTabPanel } from "./DashboardTabPanel";
-import { LogActivityFAB } from "./LogActivityFAB";
-import { MobileQuickActionBar } from "./MobileQuickActionBar";
 import { TaskCompleteSheet } from "./TaskCompleteSheet";
 import { KPISummaryRow } from "./KPISummaryRow";
 import { DashboardTutorial } from "./DashboardTutorial";
@@ -25,18 +23,13 @@ import { DashboardTutorial } from "./DashboardTutorial";
  */
 export function PrincipalDashboardV3() {
   const queryClient = useQueryClient();
-  // Task completion sheet state (for mobile quick action bar)
+  // Task completion sheet state
   const [isTaskSheetOpen, setIsTaskSheetOpen] = useState(false);
 
   // Invalidate dashboard queries to trigger refetch without remounting components
   const handleRefresh = useCallback(() => {
     queryClient.invalidateQueries({ queryKey: dashboardKeys.all });
   }, [queryClient]);
-
-  // Open task completion sheet (from mobile quick action bar)
-  const handleCompleteTask = useCallback(() => {
-    setIsTaskSheetOpen(true);
-  }, []);
 
   // iPad-optimized height calculation:
   // - Layout header: ~56px (py-3 + h-8 logo)
@@ -55,13 +48,7 @@ export function PrincipalDashboardV3() {
         {/* Tabbed interface - fills ALL remaining height */}
         <DashboardTabPanel />
 
-        {/* FAB - Fixed position, opens Log Activity Sheet (desktop only) */}
-        <LogActivityFAB onRefresh={handleRefresh} />
-
-        {/* Mobile Quick Action Bar - Bottom-positioned (mobile/tablet only) */}
-        <MobileQuickActionBar onRefresh={handleRefresh} onCompleteTask={handleCompleteTask} />
-
-        {/* Task Completion Sheet - Opens from mobile quick action bar */}
+        {/* Task Completion Sheet */}
         <TaskCompleteSheet
           open={isTaskSheetOpen}
           onOpenChange={setIsTaskSheetOpen}

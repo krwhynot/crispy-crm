@@ -1,5 +1,13 @@
-import React, { useState } from "react";
-import { useGetIdentity, useListContext, downloadCSV, type Exporter } from "ra-core";
+import React from "react";
+import {
+  useGetIdentity,
+  useListContext,
+  useUpdate,
+  useNotify,
+  downloadCSV,
+  type Exporter,
+} from "ra-core";
+import { useQueryClient } from "@tanstack/react-query";
 import jsonExport from "jsonexport/dist";
 
 import { FunctionField } from "react-admin";
@@ -19,7 +27,6 @@ import { FilterableBadge } from "@/components/ra-wrappers/FilterableBadge";
 import { TaskListSkeleton } from "@/components/ui/list-skeleton";
 import { useSlideOverState } from "@/hooks/useSlideOverState";
 import { useFilterCleanup } from "../hooks/useFilterCleanup";
-import { useTaskCompletion } from "./hooks";
 import { useListKeyboardNavigation } from "@/hooks/useListKeyboardNavigation";
 import { FloatingCreateButton } from "@/components/ra-wrappers/FloatingCreateButton";
 import { COLUMN_VISIBILITY } from "../utils/listPatterns";
@@ -35,7 +42,7 @@ import { ListSearchBar } from "@/components/ra-wrappers/ListSearchBar";
 import { TaskActionMenu } from "./TaskActionMenu";
 import { SortButton } from "@/components/ra-wrappers/sort-button";
 import { ExportButton } from "@/components/ra-wrappers/export-button";
-import { TaskCompletionDialog } from "./TaskCompletionDialog";
+import { taskKeys } from "@/atomic-crm/queryKeys";
 import type { Task } from "./types";
 import type { Opportunity, Organization } from "../types";
 
@@ -178,41 +185,36 @@ const TaskListLayout = ({
   isSlideOverOpen: boolean;
 }) => {
   const { data, isPending, filterValues } = useListContext();
+  const [update] = useUpdate();
+  const notify = useNotify();
+  const queryClient = useQueryClient();
 
-  // State for completion dialog
-  const [showCompletionDialog, setShowCompletionDialog] = useState(false);
-  const [pendingTask, setPendingTask] = useState<Task | null>(null);
-
-  // Task completion hook - extracted business logic
-  const { completeTask, reopenTask } = useTaskCompletion({
-    onSuccess: () => {
-      setShowCompletionDialog(false);
-      setPendingTask(null);
-    },
-  });
-
-  // Handler for when user clicks completion checkbox
-  const handleCompletionRequest = (task: Task, checked: boolean) => {
-    if (checked) {
-      // Show dialog for completion
-      setPendingTask(task);
-      setShowCompletionDialog(true);
-    } else {
-      // Unchecking - reopen task directly without dialog
-      reopenTask(task);
+  // Handler for when user clicks completion checkbox - direct completion without dialog
+  const handleCompletionRequest = async (task: Task, checked: boolean) => {
+    try {
+      if (checked) {
+        // Complete task directly
+        await update("tasks", {
+          id: task.id,
+          data: { completed: true, completed_at: new Date().toISOString() },
+          previousData: task,
+        });
+        notify("Task completed", { type: "success" });
+      } else {
+        // Reopen task
+        await update("tasks", {
+          id: task.id,
+          data: { completed: false, completed_at: null },
+          previousData: task,
+        });
+        notify("Task reopened", { type: "success" });
+      }
+      queryClient.invalidateQueries({ queryKey: taskKeys.all });
+    } catch {
+      notify(checked ? "Failed to complete task" : "Failed to reopen task", {
+        type: "error",
+      });
     }
-  };
-
-  // Handler for dialog completion - delegates to hook
-  const handleDialogComplete = () => {
-    if (!pendingTask) return;
-    completeTask(pendingTask);
-  };
-
-  // Handler for dialog close without completing
-  const handleDialogClose = () => {
-    setShowCompletionDialog(false);
-    setPendingTask(null);
   };
 
   // Keyboard navigation for list rows
@@ -340,25 +342,6 @@ const TaskListLayout = ({
         </PremiumDatagrid>
       </StandardListLayout>
       <BulkActionsToolbar />
-
-      {/* Task Completion Dialog */}
-      {pendingTask && (
-        <TaskCompletionDialog
-          task={{
-            id: Number(pendingTask.id),
-            subject: pendingTask.title,
-            taskType: pendingTask.type || "Other",
-            relatedTo: {
-              id: Number(pendingTask.contact_id || pendingTask.opportunity_id || 0),
-              type: pendingTask.contact_id ? "contact" : "opportunity",
-              name: "",
-            },
-          }}
-          open={showCompletionDialog}
-          onClose={handleDialogClose}
-          onComplete={handleDialogComplete}
-        />
-      )}
     </>
   );
 };

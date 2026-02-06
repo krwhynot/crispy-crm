@@ -13,10 +13,7 @@
  * - UI-specific types (TaskItem, PrincipalPipelineRow) remain here
  */
 
-import type {
-  ActivityLogInput as ActivityLog,
-  QuickLogFormInput,
-} from "@/atomic-crm/validation/activities";
+import type { ActivityLogInput as ActivityLog } from "@/atomic-crm/validation/activities";
 import type {
   activityDisplayTypeSchema,
   activityOutcomeSchema,
@@ -25,7 +22,6 @@ import type { z } from "zod";
 
 // Re-export canonical activity types for backward compatibility
 export type { ActivityLog };
-export type ActivityLogInput = QuickLogFormInput;
 
 // Activity types derived from Zod schema (Title Case for UI)
 export type ActivityType = z.infer<typeof activityDisplayTypeSchema>;

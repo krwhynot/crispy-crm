@@ -22,7 +22,6 @@ import {
   GripVertical,
 } from "lucide-react";
 import type { TaskItem } from "./types";
-import { TaskCompletionDialog } from "@/atomic-crm/tasks/TaskCompletionDialog";
 
 interface TaskKanbanCardProps {
   task: TaskItem;
@@ -119,8 +118,7 @@ export const TaskKanbanCard = memo(function TaskKanbanCard({
   onView,
 }: TaskKanbanCardProps) {
   const [isSnoozing, setIsSnoozing] = useState(false);
-  const [showCompletionDialog, setShowCompletionDialog] = useState(false);
-  const [pendingComplete, setPendingComplete] = useState(false);
+  const [isCompleting, setIsCompleting] = useState(false);
   const notify = useNotify();
 
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
@@ -136,10 +134,6 @@ export const TaskKanbanCard = memo(function TaskKanbanCard({
       };
 
   const handleCardClick = (e: React.MouseEvent | React.KeyboardEvent) => {
-    // Don't open slide-over when completion dialog is open (prevents focus race condition)
-    if (showCompletionDialog) {
-      return;
-    }
     // Don't open slide-over when clicking on action buttons or checkbox
     if ((e.target as HTMLElement).closest("[data-action-button]")) {
       return;
@@ -147,6 +141,18 @@ export const TaskKanbanCard = memo(function TaskKanbanCard({
     e.preventDefault();
     e.stopPropagation();
     onView(task.id);
+  };
+
+  const handleComplete = async () => {
+    setIsCompleting(true);
+    try {
+      await onComplete(task.id);
+      notify("Task completed", { type: "success" });
+    } catch {
+      notify("Failed to complete task", { type: "error" });
+    } finally {
+      setIsCompleting(false);
+    }
   };
 
   const handleSnooze = async (e: React.MouseEvent) => {
@@ -209,12 +215,11 @@ export const TaskKanbanCard = memo(function TaskKanbanCard({
         >
           <Checkbox
             className="h-5 w-5"
-            checked={pendingComplete}
+            checked={isCompleting}
+            disabled={isCompleting}
             onCheckedChange={(checked) => {
               if (checked) {
-                // Set pending state and open dialog (checkbox is now controlled)
-                setPendingComplete(true);
-                setShowCompletionDialog(true);
+                void handleComplete();
               }
             }}
             aria-label={`Complete task: ${task.subject}`}
@@ -267,28 +272,6 @@ export const TaskKanbanCard = memo(function TaskKanbanCard({
         </div>
         <span className="text-xs text-muted-foreground">{format(task.dueDate, "MMM d")}</span>
       </div>
-
-      {/* Task Completion Dialog - Industry standard (HubSpot/Salesforce pattern) */}
-      <TaskCompletionDialog
-        task={task}
-        open={showCompletionDialog}
-        onClose={() => {
-          // User closed without action - REVERT completion
-          setPendingComplete(false);
-          setShowCompletionDialog(false);
-        }}
-        onComplete={async () => {
-          try {
-            await onComplete(task.id);
-            setPendingComplete(false); // Reset pending (task is now actually complete)
-            setShowCompletionDialog(false);
-            notify("Task completed", { type: "success" });
-          } catch {
-            setPendingComplete(false); // Revert on error too
-            notify("Failed to complete task", { type: "error" });
-          }
-        }}
-      />
     </div>
   );
 }, arePropsEqual);

@@ -28,7 +28,6 @@ import { useEffect, useState } from "react";
 import type { Task as TData } from "./types";
 import type { Contact } from "../types";
 import TaskEdit from "./TaskEdit";
-import { TaskCompletionDialog } from "./TaskCompletionDialog";
 import { cn } from "@/lib/utils";
 import { parseDateSafely } from "@/lib/date-utils";
 
@@ -54,8 +53,6 @@ export const Task = ({ task, showContact }: { task: TData; showContact?: boolean
   const nextMondayFormatted = format(nextMonday, "EEE, MMM d");
 
   const [openEdit, setOpenEdit] = useState(false);
-  const [showCompletionDialog, setShowCompletionDialog] = useState(false);
-  const [pendingTask, setPendingTask] = useState<TData | null>(null);
 
   const handleCloseEdit = () => {
     setOpenEdit(false);
@@ -77,35 +74,15 @@ export const Task = ({ task, showContact }: { task: TData; showContact?: boolean
   };
 
   const handleCheck = (checked: boolean) => {
-    if (checked) {
-      setPendingTask(task);
-      setShowCompletionDialog(true);
-    } else {
-      update("tasks", {
-        id: task.id,
-        data: {
-          id: task.id,
-          completed: false,
-          completed_at: null,
-        },
-        previousData: task,
-      });
-    }
-  };
-
-  const handleDialogComplete = async () => {
-    if (!pendingTask) return;
-    await update("tasks", {
-      id: pendingTask.id,
+    update("tasks", {
+      id: task.id,
       data: {
-        id: pendingTask.id,
-        completed: true,
-        completed_at: new Date().toISOString(),
+        id: task.id,
+        completed: checked,
+        completed_at: checked ? new Date().toISOString() : null,
       },
-      previousData: pendingTask,
+      previousData: task,
     });
-    setShowCompletionDialog(false);
-    setPendingTask(null);
   };
 
   useEffect(() => {
@@ -222,28 +199,6 @@ export const Task = ({ task, showContact }: { task: TData; showContact?: boolean
 
       {/* This part is for editing the Task directly via a Dialog */}
       {openEdit && <TaskEdit taskId={task.id} open={openEdit} close={handleCloseEdit} />}
-
-      {/* Task completion dialog with options: Log Activity, Create Follow-up, Just Complete */}
-      {pendingTask && (
-        <TaskCompletionDialog
-          task={{
-            id: pendingTask.id as number,
-            subject: pendingTask.title,
-            taskType: pendingTask.type,
-            relatedTo: {
-              id: (pendingTask.contact_id || pendingTask.opportunity_id || 0) as number,
-              type: pendingTask.contact_id ? "contact" : "opportunity",
-              name: "",
-            },
-          }}
-          open={showCompletionDialog}
-          onClose={() => {
-            setShowCompletionDialog(false);
-            setPendingTask(null);
-          }}
-          onComplete={handleDialogComplete}
-        />
-      )}
     </>
   );
 };

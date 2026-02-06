@@ -44,3 +44,9 @@
 [2026-02-02T03:33:05.837Z] ✓ search_code | query: "badge color reference field operator segment" | limit=15, type="all" | results: 0 | 24ms
 [2026-02-05T17:58:44.270Z] ✓ go_to_definition | symbolName="TaskCompletionDialog", kind="function" | 118ms
 [2026-02-06T00:57:23.610Z] ✓ search_code | query: "related_task_id TaskCreate" | limit=20, type="all" | results: 0 | 228ms
+[2026-02-06T02:50:15.582Z] ✓ find_references | symbolName="QuickLogForm", includeDefinition=false | results: 9 | 9ms
+[2026-02-06T02:50:19.125Z] ✓ search_code | query: "TaskCompletionDialog trigger checkbox click" | limit=15, type="all" | results: 0 | 86ms
+[2026-02-06T02:50:27.607Z] ✓ find_references | symbolName="TaskCompletionDialog", includeDefinition=false | results: 3 | 2ms
+[2026-02-06T02:50:37.538Z] ✓ search_code | query: "task checkbox click completed_at update mutation" | limit=20, type="all" | results: 0 | 31ms
+[2026-02-06T02:50:56.991Z] ✓ find_references | symbolName="TaskKanbanCard", includeDefinition=false | results: 5 | 4ms
+[2026-02-06T03:25:18.894Z] ✓ find_references | symbolName="useEntitySelection", includeDefinition=true | 2ms

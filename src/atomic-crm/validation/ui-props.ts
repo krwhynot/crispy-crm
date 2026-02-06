@@ -30,14 +30,6 @@ const booleanCallbackSchema = z.custom<(isDirty: boolean) => void>(
 );
 
 /**
- * Validator for record callback functions (receives record arg)
- */
-const recordCallbackSchema = z.custom<(draft: Record<string, unknown>) => void>(
-  (val) => typeof val === "function",
-  { message: "Expected a function receiving record" }
-);
-
-/**
  * Validator for number callback functions (receives number arg)
  */
 const numberCallbackSchema = z.custom<(id: number) => void>((val) => typeof val === "function", {
@@ -86,24 +78,6 @@ export const tabComponentPropsSchema = z.strictObject({
 });
 
 // ============================================================================
-// Dashboard Form Schemas
-// ============================================================================
-
-/**
- * Props schema for QuickLogForm component on dashboard
- * Supports draft persistence and pre-population from context
- */
-export const quickLogFormPropsSchema = z.strictObject({
-  onComplete: voidCallbackSchema,
-  onRefresh: voidCallbackSchema.optional(),
-  initialDraft: z.record(z.string().max(50), z.unknown()).optional().nullable(),
-  onDraftChange: recordCallbackSchema.optional(),
-  initialContactId: z.number().int().positive().optional(),
-  initialOrganizationId: z.number().int().positive().optional(),
-  initialOpportunityId: z.number().int().positive().optional(),
-});
-
-// ============================================================================
 // List Layout Schemas
 // ============================================================================
 
@@ -121,4 +95,3 @@ export const contactListLayoutPropsSchema = z.strictObject({
 // ============================================================================
 
 export type TabComponentProps = z.infer<typeof tabComponentPropsSchema>;
-export type QuickLogFormProps = z.infer<typeof quickLogFormPropsSchema>;

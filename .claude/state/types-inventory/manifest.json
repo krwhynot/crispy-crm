@@ -1,15 +1,15 @@
 {
   "status": "complete",
-  "generated_at": "2026-02-06T02:32:12.976Z",
+  "generated_at": "2026-02-06T04:19:20.905Z",
   "generator": "scripts/discover/extractors/types.ts",
   "source_globs": [
     "src/atomic-crm/types.ts",
     "src/atomic-crm/**/types.ts",
     "src/types/**/*.ts"
   ],
-  "checksum": "sha256:ace33c40b3833216",
+  "checksum": "sha256:6f53f4e9b12ff90f",
   "source_hashes": {
-    "src\\atomic-crm\\dashboard\\types.ts": "a7616a1f8934",
+    "src\\atomic-crm\\dashboard\\types.ts": "f600204b541d",
     "src\\atomic-crm\\filters\\types.ts": "3879550007ba",
     "src\\atomic-crm\\organizations\\types.ts": "eee2c2b4841c",
     "src\\atomic-crm\\providers\\supabase\\extensions\\types.ts": "213088748d2b",
@@ -25,20 +25,20 @@
     "src\\types\\database.types.ts": "b446283726cf"
   },
   "summary": {
-    "total_items": 101,
+    "total_items": 100,
     "total_chunks": 1,
     "interfaces": 52,
-    "type_aliases": 49,
+    "type_aliases": 48,
     "zod_derived": 9,
-    "exported": 99,
+    "exported": 98,
     "complex": 53
   },
   "chunks": [
     {
       "name": "_other",
       "file": "_other.json",
-      "item_count": 101,
-      "checksum": "sha256:8e099b2301970117",
+      "item_count": 100,
+      "checksum": "sha256:45eb5acbc40c8693",
       "source_files": [
         "src\\atomic-crm\\dashboard\\types.ts",
         "src\\atomic-crm\\filters\\types.ts",
@@ -56,7 +56,7 @@
         "src\\types\\database.types.ts"
       ],
       "source_hashes": {
-        "src\\atomic-crm\\dashboard\\types.ts": "a7616a1f8934",
+        "src\\atomic-crm\\dashboard\\types.ts": "f600204b541d",
         "src\\atomic-crm\\filters\\types.ts": "3879550007ba",
         "src\\atomic-crm\\organizations\\types.ts": "eee2c2b4841c",
         "src\\atomic-crm\\providers\\supabase\\extensions\\types.ts": "213088748d2b",

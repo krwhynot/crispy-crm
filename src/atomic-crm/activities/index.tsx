@@ -17,18 +17,6 @@ export { default as ActivityShow } from "./ActivityShow";
 // Export shared form inputs
 export { ActivityInputs } from "./ActivityInputs";
 
-// Export the reusable dialog component and its types
-export {
-  QuickLogActivityDialog,
-  type QuickLogActivityDialogProps,
-  type QuickLogActivityDialogConfig,
-  type ActivityEntityContext,
-  type ActivityTypePreset,
-} from "./QuickLogActivityDialog";
-
-// Export the task-completion specific dialog
-export { QuickLogActivity } from "./QuickLogActivity";
-
 // Export shared components
 export { ActivityTimelineEntry } from "./ActivityTimelineEntry";
 

@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useUpdate, useNotify, RecordContextProvider } from "ra-core";
 import { useQueryClient } from "@tanstack/react-query";
 import { Form } from "react-admin";
@@ -6,7 +5,6 @@ import { logger } from "@/lib/logger";
 import { taskUpdateSchema } from "@/atomic-crm/validation/task";
 import { notificationMessages } from "@/atomic-crm/constants/notificationMessages";
 import { taskKeys } from "../queryKeys";
-import { TaskCompletionDialog } from "./TaskCompletionDialog";
 import { SnoozeIndicator } from "@/components/ui/snooze-badge";
 import { ReferenceField } from "@/components/ra-wrappers/reference-field";
 import { DateField } from "@/components/ra-wrappers/date-field";
@@ -60,7 +58,6 @@ export function TaskSlideOverDetailsTab({
   const notify = useNotify();
   const queryClient = useQueryClient();
   const { taskTypes } = useFormOptions();
-  const [showCompletionDialog, setShowCompletionDialog] = useState(false);
 
   // Handle save in edit mode
   const handleSave = async (data: Partial<Task>) => {
@@ -97,10 +94,16 @@ export function TaskSlideOverDetailsTab({
 
   // Handle inline completion toggle in view mode
   const handleCompletionToggle = async (checked: boolean) => {
-    if (checked) {
-      setShowCompletionDialog(true);
-    } else {
-      try {
+    try {
+      if (checked) {
+        await update("tasks", {
+          id: record.id,
+          data: { completed: true, completed_at: new Date().toISOString() },
+          previousData: record,
+        });
+        queryClient.invalidateQueries({ queryKey: taskKeys.all });
+        notify("Task marked complete", { type: "success" });
+      } else {
         await update("tasks", {
           id: record.id,
           data: { completed: false, completed_at: null },
@@ -108,33 +111,13 @@ export function TaskSlideOverDetailsTab({
         });
         queryClient.invalidateQueries({ queryKey: taskKeys.all });
         notify("Task marked incomplete", { type: "success" });
-      } catch (error: unknown) {
-        notify("Error updating task", { type: "error" });
-        logger.error("Completion toggle error", error, {
-          feature: "TaskSlideOverDetailsTab",
-          taskId: record.id,
-        });
       }
-    }
-  };
-
-  const handleDialogComplete = async () => {
-    try {
-      await update("tasks", {
-        id: record.id,
-        data: { completed: true, completed_at: new Date().toISOString() },
-        previousData: record,
-      });
-      queryClient.invalidateQueries({ queryKey: taskKeys.all });
-      notify("Task marked complete", { type: "success" });
-      setShowCompletionDialog(false);
     } catch (error: unknown) {
       notify("Error updating task", { type: "error" });
       logger.error("Completion toggle error", error, {
         feature: "TaskSlideOverDetailsTab",
         taskId: record.id,
       });
-      setShowCompletionDialog(false);
     }
   };
 
@@ -305,22 +288,6 @@ export function TaskSlideOverDetailsTab({
           <SidepaneMetadata createdAt={record.created_at} updatedAt={record.updated_at} />
         </div>
       </ScrollArea>
-
-      <TaskCompletionDialog
-        task={{
-          id: Number(record.id),
-          subject: record.title,
-          taskType: record.type || "",
-          relatedTo: {
-            id: Number(record.contact_id || record.opportunity_id || 0),
-            type: record.contact_id ? "contact" : "opportunity",
-            name: "",
-          },
-        }}
-        open={showCompletionDialog}
-        onClose={() => setShowCompletionDialog(false)}
-        onComplete={handleDialogComplete}
-      />
     </RecordContextProvider>
   );
 }

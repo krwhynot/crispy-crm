@@ -74,7 +74,7 @@ export { PrincipalDashboardV3WithProvider as PrincipalDashboardV3 };
 export { DashboardErrorBoundary } from "./DashboardErrorBoundary";
 export { CurrentSaleProvider } from "./CurrentSaleContext";
 
-// Note: Child components (PrincipalPipelineTable, TasksKanbanPanel, LogActivityFAB, QuickLogForm)
+// Note: Child components (PrincipalPipelineTable, TasksKanbanPanel)
 // are internal implementation details and not exported from the public API.
 // They are imported directly within dashboard/ via relative paths.
 
@@ -86,8 +86,6 @@ export type {
   Priority,
   TaskType,
   Momentum,
-  ActivityType,
-  ActivityOutcome,
 } from "./types";
 
 // Export KPI-related types for external use

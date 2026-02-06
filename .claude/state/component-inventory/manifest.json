@@ -1,11 +1,11 @@
 {
   "status": "complete",
-  "generated_at": "2026-02-06T02:32:04.016Z",
+  "generated_at": "2026-02-06T04:19:10.647Z",
   "generator": "scripts/discover/extractors/components.ts",
   "source_globs": [
     "src/atomic-crm/**/*.tsx"
   ],
-  "checksum": "sha256:1a965813ae7f45a4",
+  "checksum": "sha256:939c4ec1c20831a4",
   "source_hashes": {
     "src\\atomic-crm\\activities\\ActivityEdit.tsx": "ba97db9f3ada",
     "src\\atomic-crm\\activities\\ActivityInputs.tsx": "85431cf76810",
@@ -16,10 +16,7 @@
     "src\\atomic-crm\\activities\\ActivitySlideOver.tsx": "00c26556eb41",
     "src\\atomic-crm\\activities\\ActivityTimelineEntry.tsx": "4bb4390c6b7f",
     "src\\atomic-crm\\activities\\components\\LockedEntityDisplay.tsx": "1b1f72ac7cf6",
-    "src\\atomic-crm\\activities\\components\\QuickLogFormSkeleton.tsx": "1917fbe1b3fc",
-    "src\\atomic-crm\\activities\\index.tsx": "4936cdc69917",
-    "src\\atomic-crm\\activities\\QuickLogActivity.tsx": "93b2ea6af890",
-    "src\\atomic-crm\\activities\\QuickLogActivityDialog.tsx": "f560a4140b3c",
+    "src\\atomic-crm\\activities\\index.tsx": "04ee86096cd5",
     "src\\atomic-crm\\activities\\resource.tsx": "ccebb5623d96",
     "src\\atomic-crm\\activities\\slideOverTabs\\ActivityDetailsTab.tsx": "07b57e47f3b9",
     "src\\atomic-crm\\activities\\slideOverTabs\\ActivityRelatedTab.tsx": "1d7dc4ceca8a",
@@ -28,8 +25,6 @@
     "src\\atomic-crm\\activities\\__tests__\\ActivityShow.test.tsx": "92f4b0001eec",
     "src\\atomic-crm\\activities\\__tests__\\ActivitySinglePage.test.tsx": "5a2f9f30e0df",
     "src\\atomic-crm\\activities\\__tests__\\ActivitySlideOver.test.tsx": "e7fca19f48b9",
-    "src\\atomic-crm\\activities\\__tests__\\QuickLogActivity.test.tsx": "2b27612145f7",
-    "src\\atomic-crm\\activities\\__tests__\\QuickLogActivityDialog.test.tsx": "d46a0762c00c",
     "src\\atomic-crm\\activity-log\\ActivityLog.tsx": "5b87f7deb5a0",
     "src\\atomic-crm\\activity-log\\ActivityLogContactCreated.tsx": "0b89a4919f4d",
     "src\\atomic-crm\\activity-log\\ActivityLogContactNoteCreated.tsx": "917dd2aeb20d",
@@ -115,39 +110,30 @@
     "src\\atomic-crm\\dashboard\\DashboardTabPanel.tsx": "b86f8d6a5ad9",
     "src\\atomic-crm\\dashboard\\DashboardTutorial.tsx": "3fb58e3a48d1",
     "src\\atomic-crm\\dashboard\\EntityCombobox.tsx": "1a2abd1a254b",
-    "src\\atomic-crm\\dashboard\\EntitySelectionSection.tsx": "22b6047b460d",
     "src\\atomic-crm\\dashboard\\FollowUpSection.tsx": "7aa6294c7452",
-    "src\\atomic-crm\\dashboard\\index.tsx": "da2f15b463a6",
+    "src\\atomic-crm\\dashboard\\index.tsx": "eb0bf24052a3",
     "src\\atomic-crm\\dashboard\\KPISummaryRow.tsx": "ccdb789bc823",
-    "src\\atomic-crm\\dashboard\\LogActivityFAB.tsx": "ce5c694df6fb",
-    "src\\atomic-crm\\dashboard\\MobileQuickActionBar.tsx": "82caeff358c3",
     "src\\atomic-crm\\dashboard\\MyPerformanceWidget.tsx": "8eead0867b25",
     "src\\atomic-crm\\dashboard\\NotesSection.tsx": "01f400196c84",
     "src\\atomic-crm\\dashboard\\PipelineDrillDownSheet.tsx": "9d497225c0e8",
     "src\\atomic-crm\\dashboard\\PipelineTableRow.tsx": "a2cf3b50acbc",
-    "src\\atomic-crm\\dashboard\\PrincipalDashboardV3.tsx": "b05f532038ff",
+    "src\\atomic-crm\\dashboard\\PrincipalDashboardV3.tsx": "9c1742482027",
     "src\\atomic-crm\\dashboard\\PrincipalPipelineTable.tsx": "5db4402dfa6a",
-    "src\\atomic-crm\\dashboard\\QuickLogForm.tsx": "8dcb4fd32f3f",
     "src\\atomic-crm\\dashboard\\RecentItemsWidget.tsx": "1b81746951ee",
     "src\\atomic-crm\\dashboard\\SnoozePopover.tsx": "f67a5ffe81c0",
     "src\\atomic-crm\\dashboard\\TaskCompleteSheet.tsx": "f36caf23acbe",
-    "src\\atomic-crm\\dashboard\\TaskKanbanCard.tsx": "4b9c8aeb3c87",
+    "src\\atomic-crm\\dashboard\\TaskKanbanCard.tsx": "ab503bee07a0",
     "src\\atomic-crm\\dashboard\\TaskKanbanColumn.tsx": "0c8ec87927e5",
     "src\\atomic-crm\\dashboard\\TasksKanbanPanel.tsx": "461c288ba62c",
     "src\\atomic-crm\\dashboard\\__tests__\\ActionButtons.test.tsx": "8ad0f99234e6",
     "src\\atomic-crm\\dashboard\\__tests__\\ActivityDateSection.test.tsx": "d168ddf360ee",
     "src\\atomic-crm\\dashboard\\__tests__\\DashboardErrorBoundary.test.tsx": "3c241951342f",
     "src\\atomic-crm\\dashboard\\__tests__\\DashboardTabPanel.test.tsx": "1517308259ca",
-    "src\\atomic-crm\\dashboard\\__tests__\\EntitySelectionSection.test.tsx": "5c05316b635a",
-    "src\\atomic-crm\\dashboard\\__tests__\\MobileQuickActionBar.test.tsx": "62bf117ff743",
     "src\\atomic-crm\\dashboard\\__tests__\\NotesSection.test.tsx": "2bf099e3df1f",
     "src\\atomic-crm\\dashboard\\__tests__\\PipelineDrillDown.test.tsx": "9664f0425c0b",
     "src\\atomic-crm\\dashboard\\__tests__\\PrincipalDashboardV3.test.tsx": "72ff2a312466",
     "src\\atomic-crm\\dashboard\\__tests__\\PrincipalPipelineFiltering.test.tsx": "aaf4b8e6cdde",
     "src\\atomic-crm\\dashboard\\__tests__\\PrincipalPipelineTable.test.tsx": "749a03374122",
-    "src\\atomic-crm\\dashboard\\__tests__\\QuickLogForm.cascading.test.tsx": "72e07bd68913",
-    "src\\atomic-crm\\dashboard\\__tests__\\QuickLogForm.provider.test.tsx": "c95c38c9150e",
-    "src\\atomic-crm\\dashboard\\__tests__\\QuickLogForm.simple.test.tsx": "2d1f2028179b",
     "src\\atomic-crm\\dashboard\\__tests__\\TaskCompleteSheet.test.tsx": "0cd3b10ca8d9",
     "src\\atomic-crm\\filters\\DateRangeFilterButton.tsx": "305b817e65cc",
     "src\\atomic-crm\\filters\\FilterCategory.tsx": "4124dc907360",
@@ -468,27 +454,26 @@
     "src\\atomic-crm\\tasks\\AddTask.tsx": "37405c9be630",
     "src\\atomic-crm\\tasks\\index.tsx": "31fefd3b33d0",
     "src\\atomic-crm\\tasks\\resource.tsx": "9c13105ea337",
-    "src\\atomic-crm\\tasks\\Task.tsx": "0c1530508e4f",
+    "src\\atomic-crm\\tasks\\Task.tsx": "9bc9e4f745df",
     "src\\atomic-crm\\tasks\\TaskActionMenu.tsx": "1417657233da",
     "src\\atomic-crm\\tasks\\TaskCompactForm.tsx": "39309698a061",
-    "src\\atomic-crm\\tasks\\TaskCompletionDialog.tsx": "45d97f56167c",
     "src\\atomic-crm\\tasks\\TaskCreate.tsx": "bd81579b278f",
     "src\\atomic-crm\\tasks\\TaskEdit.tsx": "ea0dd4f0d3ca",
     "src\\atomic-crm\\tasks\\TaskEmpty.tsx": "88b1188f090e",
     "src\\atomic-crm\\tasks\\TaskHierarchyBreadcrumb.tsx": "d2419e7f3e88",
     "src\\atomic-crm\\tasks\\TaskInputs.tsx": "f4d7201dd42f",
-    "src\\atomic-crm\\tasks\\TaskList.tsx": "cd92837652df",
+    "src\\atomic-crm\\tasks\\TaskList.tsx": "4b5116b8a828",
     "src\\atomic-crm\\tasks\\TaskListFilter.tsx": "c5e36a0f380a",
     "src\\atomic-crm\\tasks\\TasksDatagridHeader.tsx": "99bacfcd889e",
     "src\\atomic-crm\\tasks\\TaskShow.tsx": "2448d696f2e4",
     "src\\atomic-crm\\tasks\\TasksIterator.tsx": "31c4b87768af",
     "src\\atomic-crm\\tasks\\TaskSlideOver.tsx": "78c84fdf8549",
-    "src\\atomic-crm\\tasks\\TaskSlideOverDetailsTab.tsx": "d2da5a8ed806",
+    "src\\atomic-crm\\tasks\\TaskSlideOverDetailsTab.tsx": "5f1aed1eae9c",
     "src\\atomic-crm\\tasks\\__tests__\\TaskCreate.integration.test.tsx": "03476ffed030",
     "src\\atomic-crm\\tasks\\__tests__\\TaskCreate.test.tsx": "8758973d57c8",
     "src\\atomic-crm\\tasks\\__tests__\\TaskSlideOver.test.tsx": "fb5340580e00",
     "src\\atomic-crm\\timeline\\TimelineEntry.tsx": "5451604982e4",
-    "src\\atomic-crm\\timeline\\UnifiedTimeline.tsx": "9c227501cbb9",
+    "src\\atomic-crm\\timeline\\UnifiedTimeline.tsx": "03998bc28319",
     "src\\atomic-crm\\tutorial\\index.tsx": "9cc5217682dd",
     "src\\atomic-crm\\tutorial\\OpportunityCreateFormTutorial.tsx": "2cd05674ea84",
     "src\\atomic-crm\\tutorial\\PageTutorialTrigger.tsx": "eade528edcfe",
@@ -501,17 +486,17 @@
     "src\\atomic-crm\\utils\\__tests__\\getActivityIcon.test.tsx": "59d788ebef0e"
   },
   "summary": {
-    "total_items": 545,
+    "total_items": 534,
     "total_chunks": 1,
     "form_controllers": 0,
-    "presentational": 545
+    "presentational": 534
   },
   "chunks": [
     {
       "name": "_root",
       "file": "_root.json",
-      "item_count": 545,
-      "checksum": "sha256:fa372318a74f82ac",
+      "item_count": 534,
+      "checksum": "sha256:ea09b6dee6fc46fb",
       "source_files": [
         "src\\atomic-crm\\activities\\ActivityEdit.tsx",
         "src\\atomic-crm\\activities\\ActivityInputs.tsx",
@@ -521,15 +506,10 @@
         "src\\atomic-crm\\activities\\ActivitySinglePage.tsx",
         "src\\atomic-crm\\activities\\ActivitySlideOver.tsx",
         "src\\atomic-crm\\activities\\ActivityTimelineEntry.tsx",
-        "src\\atomic-crm\\activities\\QuickLogActivity.tsx",
-        "src\\atomic-crm\\activities\\QuickLogActivityDialog.tsx",
         "src\\atomic-crm\\activities\\__tests__\\ActivityShow.test.tsx",
         "src\\atomic-crm\\activities\\__tests__\\ActivitySinglePage.test.tsx",
         "src\\atomic-crm\\activities\\__tests__\\ActivitySlideOver.test.tsx",
-        "src\\atomic-crm\\activities\\__tests__\\QuickLogActivity.test.tsx",
-        "src\\atomic-crm\\activities\\__tests__\\QuickLogActivityDialog.test.tsx",
         "src\\atomic-crm\\activities\\components\\LockedEntityDisplay.tsx",
-        "src\\atomic-crm\\activities\\components\\QuickLogFormSkeleton.tsx",
         "src\\atomic-crm\\activities\\index.tsx",
         "src\\atomic-crm\\activities\\resource.tsx",
         "src\\atomic-crm\\activities\\slideOverTabs\\ActivityDetailsTab.tsx",
@@ -621,18 +601,14 @@
         "src\\atomic-crm\\dashboard\\DashboardTabPanel.tsx",
         "src\\atomic-crm\\dashboard\\DashboardTutorial.tsx",
         "src\\atomic-crm\\dashboard\\EntityCombobox.tsx",
-        "src\\atomic-crm\\dashboard\\EntitySelectionSection.tsx",
         "src\\atomic-crm\\dashboard\\FollowUpSection.tsx",
         "src\\atomic-crm\\dashboard\\KPISummaryRow.tsx",
-        "src\\atomic-crm\\dashboard\\LogActivityFAB.tsx",
-        "src\\atomic-crm\\dashboard\\MobileQuickActionBar.tsx",
         "src\\atomic-crm\\dashboard\\MyPerformanceWidget.tsx",
         "src\\atomic-crm\\dashboard\\NotesSection.tsx",
         "src\\atomic-crm\\dashboard\\PipelineDrillDownSheet.tsx",
         "src\\atomic-crm\\dashboard\\PipelineTableRow.tsx",
         "src\\atomic-crm\\dashboard\\PrincipalDashboardV3.tsx",
         "src\\atomic-crm\\dashboard\\PrincipalPipelineTable.tsx",
-        "src\\atomic-crm\\dashboard\\QuickLogForm.tsx",
         "src\\atomic-crm\\dashboard\\RecentItemsWidget.tsx",
         "src\\atomic-crm\\dashboard\\SnoozePopover.tsx",
         "src\\atomic-crm\\dashboard\\TaskCompleteSheet.tsx",
@@ -643,16 +619,11 @@
         "src\\atomic-crm\\dashboard\\__tests__\\ActivityDateSection.test.tsx",
         "src\\atomic-crm\\dashboard\\__tests__\\DashboardErrorBoundary.test.tsx",
         "src\\atomic-crm\\dashboard\\__tests__\\DashboardTabPanel.test.tsx",
-        "src\\atomic-crm\\dashboard\\__tests__\\EntitySelectionSection.test.tsx",
-        "src\\atomic-crm\\dashboard\\__tests__\\MobileQuickActionBar.test.tsx",
         "src\\atomic-crm\\dashboard\\__tests__\\NotesSection.test.tsx",
         "src\\atomic-crm\\dashboard\\__tests__\\PipelineDrillDown.test.tsx",
         "src\\atomic-crm\\dashboard\\__tests__\\PrincipalDashboardV3.test.tsx",
         "src\\atomic-crm\\dashboard\\__tests__\\PrincipalPipelineFiltering.test.tsx",
         "src\\atomic-crm\\dashboard\\__tests__\\PrincipalPipelineTable.test.tsx",
-        "src\\atomic-crm\\dashboard\\__tests__\\QuickLogForm.cascading.test.tsx",
-        "src\\atomic-crm\\dashboard\\__tests__\\QuickLogForm.provider.test.tsx",
-        "src\\atomic-crm\\dashboard\\__tests__\\QuickLogForm.simple.test.tsx",
         "src\\atomic-crm\\dashboard\\__tests__\\TaskCompleteSheet.test.tsx",
         "src\\atomic-crm\\dashboard\\index.tsx",
         "src\\atomic-crm\\filters\\DateRangeFilterButton.tsx",
@@ -975,7 +946,6 @@
         "src\\atomic-crm\\tasks\\Task.tsx",
         "src\\atomic-crm\\tasks\\TaskActionMenu.tsx",
         "src\\atomic-crm\\tasks\\TaskCompactForm.tsx",
-        "src\\atomic-crm\\tasks\\TaskCompletionDialog.tsx",
         "src\\atomic-crm\\tasks\\TaskCreate.tsx",
         "src\\atomic-crm\\tasks\\TaskEdit.tsx",
         "src\\atomic-crm\\tasks\\TaskEmpty.tsx",
@@ -1016,10 +986,7 @@
         "src\\atomic-crm\\activities\\ActivitySlideOver.tsx": "00c26556eb41",
         "src\\atomic-crm\\activities\\ActivityTimelineEntry.tsx": "4bb4390c6b7f",
         "src\\atomic-crm\\activities\\components\\LockedEntityDisplay.tsx": "1b1f72ac7cf6",
-        "src\\atomic-crm\\activities\\components\\QuickLogFormSkeleton.tsx": "1917fbe1b3fc",
-        "src\\atomic-crm\\activities\\index.tsx": "4936cdc69917",
-        "src\\atomic-crm\\activities\\QuickLogActivity.tsx": "93b2ea6af890",
-        "src\\atomic-crm\\activities\\QuickLogActivityDialog.tsx": "f560a4140b3c",
+        "src\\atomic-crm\\activities\\index.tsx": "04ee86096cd5",
         "src\\atomic-crm\\activities\\resource.tsx": "ccebb5623d96",
         "src\\atomic-crm\\activities\\slideOverTabs\\ActivityDetailsTab.tsx": "07b57e47f3b9",
         "src\\atomic-crm\\activities\\slideOverTabs\\ActivityRelatedTab.tsx": "1d7dc4ceca8a",
@@ -1028,8 +995,6 @@
         "src\\atomic-crm\\activities\\__tests__\\ActivityShow.test.tsx": "92f4b0001eec",
         "src\\atomic-crm\\activities\\__tests__\\ActivitySinglePage.test.tsx": "5a2f9f30e0df",
         "src\\atomic-crm\\activities\\__tests__\\ActivitySlideOver.test.tsx": "e7fca19f48b9",
-        "src\\atomic-crm\\activities\\__tests__\\QuickLogActivity.test.tsx": "2b27612145f7",
-        "src\\atomic-crm\\activities\\__tests__\\QuickLogActivityDialog.test.tsx": "d46a0762c00c",
         "src\\atomic-crm\\activity-log\\ActivityLog.tsx": "5b87f7deb5a0",
         "src\\atomic-crm\\activity-log\\ActivityLogContactCreated.tsx": "0b89a4919f4d",
         "src\\atomic-crm\\activity-log\\ActivityLogContactNoteCreated.tsx": "917dd2aeb20d",
@@ -1115,39 +1080,30 @@
         "src\\atomic-crm\\dashboard\\DashboardTabPanel.tsx": "b86f8d6a5ad9",
         "src\\atomic-crm\\dashboard\\DashboardTutorial.tsx": "3fb58e3a48d1",
         "src\\atomic-crm\\dashboard\\EntityCombobox.tsx": "1a2abd1a254b",
-        "src\\atomic-crm\\dashboard\\EntitySelectionSection.tsx": "22b6047b460d",
         "src\\atomic-crm\\dashboard\\FollowUpSection.tsx": "7aa6294c7452",
-        "src\\atomic-crm\\dashboard\\index.tsx": "da2f15b463a6",
+        "src\\atomic-crm\\dashboard\\index.tsx": "eb0bf24052a3",
         "src\\atomic-crm\\dashboard\\KPISummaryRow.tsx": "ccdb789bc823",
-        "src\\atomic-crm\\dashboard\\LogActivityFAB.tsx": "ce5c694df6fb",
-        "src\\atomic-crm\\dashboard\\MobileQuickActionBar.tsx": "82caeff358c3",
         "src\\atomic-crm\\dashboard\\MyPerformanceWidget.tsx": "8eead0867b25",
         "src\\atomic-crm\\dashboard\\NotesSection.tsx": "01f400196c84",
         "src\\atomic-crm\\dashboard\\PipelineDrillDownSheet.tsx": "9d497225c0e8",
         "src\\atomic-crm\\dashboard\\PipelineTableRow.tsx": "a2cf3b50acbc",
-        "src\\atomic-crm\\dashboard\\PrincipalDashboardV3.tsx": "b05f532038ff",
+        "src\\atomic-crm\\dashboard\\PrincipalDashboardV3.tsx": "9c1742482027",
         "src\\atomic-crm\\dashboard\\PrincipalPipelineTable.tsx": "5db4402dfa6a",
-        "src\\atomic-crm\\dashboard\\QuickLogForm.tsx": "8dcb4fd32f3f",
         "src\\atomic-crm\\dashboard\\RecentItemsWidget.tsx": "1b81746951ee",
         "src\\atomic-crm\\dashboard\\SnoozePopover.tsx": "f67a5ffe81c0",
         "src\\atomic-crm\\dashboard\\TaskCompleteSheet.tsx": "f36caf23acbe",
-        "src\\atomic-crm\\dashboard\\TaskKanbanCard.tsx": "4b9c8aeb3c87",
+        "src\\atomic-crm\\dashboard\\TaskKanbanCard.tsx": "ab503bee07a0",
         "src\\atomic-crm\\dashboard\\TaskKanbanColumn.tsx": "0c8ec87927e5",
         "src\\atomic-crm\\dashboard\\TasksKanbanPanel.tsx": "461c288ba62c",
         "src\\atomic-crm\\dashboard\\__tests__\\ActionButtons.test.tsx": "8ad0f99234e6",
         "src\\atomic-crm\\dashboard\\__tests__\\ActivityDateSection.test.tsx": "d168ddf360ee",
         "src\\atomic-crm\\dashboard\\__tests__\\DashboardErrorBoundary.test.tsx": "3c241951342f",
         "src\\atomic-crm\\dashboard\\__tests__\\DashboardTabPanel.test.tsx": "1517308259ca",
-        "src\\atomic-crm\\dashboard\\__tests__\\EntitySelectionSection.test.tsx": "5c05316b635a",
-        "src\\atomic-crm\\dashboard\\__tests__\\MobileQuickActionBar.test.tsx": "62bf117ff743",
         "src\\atomic-crm\\dashboard\\__tests__\\NotesSection.test.tsx": "2bf099e3df1f",
         "src\\atomic-crm\\dashboard\\__tests__\\PipelineDrillDown.test.tsx": "9664f0425c0b",
         "src\\atomic-crm\\dashboard\\__tests__\\PrincipalDashboardV3.test.tsx": "72ff2a312466",
         "src\\atomic-crm\\dashboard\\__tests__\\PrincipalPipelineFiltering.test.tsx": "aaf4b8e6cdde",
         "src\\atomic-crm\\dashboard\\__tests__\\PrincipalPipelineTable.test.tsx": "749a03374122",
-        "src\\atomic-crm\\dashboard\\__tests__\\QuickLogForm.cascading.test.tsx": "72e07bd68913",
-        "src\\atomic-crm\\dashboard\\__tests__\\QuickLogForm.provider.test.tsx": "c95c38c9150e",
-        "src\\atomic-crm\\dashboard\\__tests__\\QuickLogForm.simple.test.tsx": "2d1f2028179b",
         "src\\atomic-crm\\dashboard\\__tests__\\TaskCompleteSheet.test.tsx": "0cd3b10ca8d9",
         "src\\atomic-crm\\filters\\DateRangeFilterButton.tsx": "305b817e65cc",
         "src\\atomic-crm\\filters\\FilterCategory.tsx": "4124dc907360",
@@ -1468,27 +1424,26 @@
         "src\\atomic-crm\\tasks\\AddTask.tsx": "37405c9be630",
         "src\\atomic-crm\\tasks\\index.tsx": "31fefd3b33d0",
         "src\\atomic-crm\\tasks\\resource.tsx": "9c13105ea337",
-        "src\\atomic-crm\\tasks\\Task.tsx": "0c1530508e4f",
+        "src\\atomic-crm\\tasks\\Task.tsx": "9bc9e4f745df",
         "src\\atomic-crm\\tasks\\TaskActionMenu.tsx": "1417657233da",
         "src\\atomic-crm\\tasks\\TaskCompactForm.tsx": "39309698a061",
-        "src\\atomic-crm\\tasks\\TaskCompletionDialog.tsx": "45d97f56167c",
         "src\\atomic-crm\\tasks\\TaskCreate.tsx": "bd81579b278f",
         "src\\atomic-crm\\tasks\\TaskEdit.tsx": "ea0dd4f0d3ca",
         "src\\atomic-crm\\tasks\\TaskEmpty.tsx": "88b1188f090e",
         "src\\atomic-crm\\tasks\\TaskHierarchyBreadcrumb.tsx": "d2419e7f3e88",
         "src\\atomic-crm\\tasks\\TaskInputs.tsx": "f4d7201dd42f",
-        "src\\atomic-crm\\tasks\\TaskList.tsx": "cd92837652df",
+        "src\\atomic-crm\\tasks\\TaskList.tsx": "4b5116b8a828",
         "src\\atomic-crm\\tasks\\TaskListFilter.tsx": "c5e36a0f380a",
         "src\\atomic-crm\\tasks\\TasksDatagridHeader.tsx": "99bacfcd889e",
         "src\\atomic-crm\\tasks\\TaskShow.tsx": "2448d696f2e4",
         "src\\atomic-crm\\tasks\\TasksIterator.tsx": "31c4b87768af",
         "src\\atomic-crm\\tasks\\TaskSlideOver.tsx": "78c84fdf8549",
-        "src\\atomic-crm\\tasks\\TaskSlideOverDetailsTab.tsx": "d2da5a8ed806",
+        "src\\atomic-crm\\tasks\\TaskSlideOverDetailsTab.tsx": "5f1aed1eae9c",
         "src\\atomic-crm\\tasks\\__tests__\\TaskCreate.integration.test.tsx": "03476ffed030",
         "src\\atomic-crm\\tasks\\__tests__\\TaskCreate.test.tsx": "8758973d57c8",
         "src\\atomic-crm\\tasks\\__tests__\\TaskSlideOver.test.tsx": "fb5340580e00",
         "src\\atomic-crm\\timeline\\TimelineEntry.tsx": "5451604982e4",
-        "src\\atomic-crm\\timeline\\UnifiedTimeline.tsx": "9c227501cbb9",
+        "src\\atomic-crm\\timeline\\UnifiedTimeline.tsx": "03998bc28319",
         "src\\atomic-crm\\tutorial\\index.tsx": "9cc5217682dd",
         "src\\atomic-crm\\tutorial\\OpportunityCreateFormTutorial.tsx": "2cd05674ea84",
         "src\\atomic-crm\\tutorial\\PageTutorialTrigger.tsx": "eade528edcfe",
@@ -1530,16 +1485,7 @@
     "src\\atomic-crm\\activities\\components\\LockedEntityDisplay.tsx": [
       "_root"
     ],
-    "src\\atomic-crm\\activities\\components\\QuickLogFormSkeleton.tsx": [
-      "_root"
-    ],
     "src\\atomic-crm\\activities\\index.tsx": [
-      "_root"
-    ],
-    "src\\atomic-crm\\activities\\QuickLogActivity.tsx": [
-      "_root"
-    ],
-    "src\\atomic-crm\\activities\\QuickLogActivityDialog.tsx": [
       "_root"
     ],
     "src\\atomic-crm\\activities\\resource.tsx": [
@@ -1564,12 +1510,6 @@
       "_root"
     ],
     "src\\atomic-crm\\activities\\__tests__\\ActivitySlideOver.test.tsx": [
-      "_root"
-    ],
-    "src\\atomic-crm\\activities\\__tests__\\QuickLogActivity.test.tsx": [
-      "_root"
-    ],
-    "src\\atomic-crm\\activities\\__tests__\\QuickLogActivityDialog.test.tsx": [
       "_root"
     ],
     "src\\atomic-crm\\activity-log\\ActivityLog.tsx": [
@@ -1827,9 +1767,6 @@
     "src\\atomic-crm\\dashboard\\EntityCombobox.tsx": [
       "_root"
     ],
-    "src\\atomic-crm\\dashboard\\EntitySelectionSection.tsx": [
-      "_root"
-    ],
     "src\\atomic-crm\\dashboard\\FollowUpSection.tsx": [
       "_root"
     ],
@@ -1837,12 +1774,6 @@
       "_root"
     ],
     "src\\atomic-crm\\dashboard\\KPISummaryRow.tsx": [
-      "_root"
-    ],
-    "src\\atomic-crm\\dashboard\\LogActivityFAB.tsx": [
-      "_root"
-    ],
-    "src\\atomic-crm\\dashboard\\MobileQuickActionBar.tsx": [
       "_root"
     ],
     "src\\atomic-crm\\dashboard\\MyPerformanceWidget.tsx": [
@@ -1861,9 +1792,6 @@
       "_root"
     ],
     "src\\atomic-crm\\dashboard\\PrincipalPipelineTable.tsx": [
-      "_root"
-    ],
-    "src\\atomic-crm\\dashboard\\QuickLogForm.tsx": [
       "_root"
     ],
     "src\\atomic-crm\\dashboard\\RecentItemsWidget.tsx": [
@@ -1896,12 +1824,6 @@
     "src\\atomic-crm\\dashboard\\__tests__\\DashboardTabPanel.test.tsx": [
       "_root"
     ],
-    "src\\atomic-crm\\dashboard\\__tests__\\EntitySelectionSection.test.tsx": [
-      "_root"
-    ],
-    "src\\atomic-crm\\dashboard\\__tests__\\MobileQuickActionBar.test.tsx": [
-      "_root"
-    ],
     "src\\atomic-crm\\dashboard\\__tests__\\NotesSection.test.tsx": [
       "_root"
     ],
@@ -1915,15 +1837,6 @@
       "_root"
     ],
     "src\\atomic-crm\\dashboard\\__tests__\\PrincipalPipelineTable.test.tsx": [
-      "_root"
-    ],
-    "src\\atomic-crm\\dashboard\\__tests__\\QuickLogForm.cascading.test.tsx": [
-      "_root"
-    ],
-    "src\\atomic-crm\\dashboard\\__tests__\\QuickLogForm.provider.test.tsx": [
-      "_root"
-    ],
-    "src\\atomic-crm\\dashboard\\__tests__\\QuickLogForm.simple.test.tsx": [
       "_root"
     ],
     "src\\atomic-crm\\dashboard\\__tests__\\TaskCompleteSheet.test.tsx": [
@@ -2893,9 +2806,6 @@
       "_root"
     ],
     "src\\atomic-crm\\tasks\\TaskCompactForm.tsx": [
-      "_root"
-    ],
-    "src\\atomic-crm\\tasks\\TaskCompletionDialog.tsx": [
       "_root"
     ],
     "src\\atomic-crm\\tasks\\TaskCreate.tsx": [
