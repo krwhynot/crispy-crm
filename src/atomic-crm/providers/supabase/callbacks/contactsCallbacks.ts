@@ -10,7 +10,9 @@
  * 3. Name field computation - Combines first_name + last_name → name (required by DB NOT NULL constraint)
  * 4. Filter cleaning - Adds soft delete filter by default
  * 5. Data transformation - Strips computed fields before save
- * 6. Search transformation - Transforms q filter into ILIKE search on name fields
+ *
+ * Note: q-search is handled centrally by applySearchParams (SEARCHABLE_RESOURCES)
+ * in the data provider layer, not in callbacks.
  *
  * WHY CASCADE DELETE VIA RPC:
  * --------------------------
@@ -29,7 +31,7 @@
 
 import type { RaRecord, GetListParams, DataProvider, DeleteParams } from "ra-core";
 import { createResourceCallbacks, type ResourceCallbacks } from "./createResourceCallbacks";
-import { normalizeJsonbArrays, createQToIlikeTransformer } from "./commonTransforms";
+import { normalizeJsonbArrays } from "./commonTransforms";
 import { supabase } from "../supabase";
 import { collectContactFilePaths, deleteStorageFiles } from "../utils/storageCleanup";
 import { logger } from "@/lib/logger";
@@ -59,27 +61,10 @@ export const COMPUTED_FIELDS = [
 export const JSONB_ARRAY_FIELDS = ["email", "phone", "tags"] as const;
 
 /**
- * Fields to search when q filter is provided
- * These fields will be searched with ILIKE for partial matching
- * Only text fields are included - JSONB fields (email, phone) require different operators
- */
-export const CONTACTS_SEARCH_FIELDS = ["name", "first_name", "last_name"] as const;
-
-/**
  * Re-export normalizeJsonbArrays from commonTransforms for backward compatibility
  * @deprecated Import from commonTransforms instead
  */
 export { normalizeJsonbArrays } from "./commonTransforms";
-
-/**
- * Transform q filter into ILIKE search on contact name fields
- * Uses shared factory from commonTransforms for DRY compliance
- *
- * @see createQToIlikeTransformer in commonTransforms.ts
- */
-export const transformQToIlikeSearch = createQToIlikeTransformer({
-  searchFields: CONTACTS_SEARCH_FIELDS,
-});
 
 /**
  * Compute name field from first_name and last_name
@@ -229,26 +214,22 @@ const baseCallbacks = createResourceCallbacks({
 });
 
 /**
- * Custom beforeGetList that chains:
- * 1. q filter → ILIKE search transformation
- * 2. Soft delete filter (manual since we disabled factory soft delete)
+ * Custom beforeGetList that applies soft delete filter
+ * (manual since we disabled factory soft delete for custom RPC cascade delete)
  *
- * This matches the unified data provider's search behavior while applying
- * soft-delete filtering.
+ * Note: q-search is handled centrally by applySearchParams in SEARCHABLE_RESOURCES
+ * before callbacks run, so no q transformation is needed here.
  */
 async function contactsBeforeGetList(
   params: GetListParams,
   _dataProvider: DataProvider
 ): Promise<GetListParams> {
-  // Step 1: Transform q filter to ILIKE search (removes q from filter)
-  const searchTransformedParams = transformQToIlikeSearch(params);
-
-  // Step 2: Apply soft delete filter manually (since factory soft delete is disabled)
-  const { includeDeleted, ...otherFilters } = searchTransformedParams.filter || {};
+  // Apply soft delete filter manually (since factory soft delete is disabled)
+  const { includeDeleted, ...otherFilters } = params.filter || {};
   const softDeleteFilter = includeDeleted ? {} : { "deleted_at@is": null };
 
   return {
-    ...searchTransformedParams,
+    ...params,
     filter: {
       ...otherFilters,
       ...softDeleteFilter,

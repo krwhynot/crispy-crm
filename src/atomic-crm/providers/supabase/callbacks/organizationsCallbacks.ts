@@ -9,7 +9,8 @@
  * 2. Filter cleaning - Adds soft delete filter by default
  * 3. Data transformation - Strips computed fields before save
  * 4. Logo handling - Preserved by storage service
- * 5. Search transformation - Transforms q filter into ILIKE search on name, city, state, sector
+ *
+ * Note: q-search is handled centrally by applySearchParams via SEARCHABLE_RESOURCES
  *
  * WHY CASCADE DELETE VIA RPC:
  * --------------------------
@@ -35,7 +36,6 @@ import type {
   DeleteManyParams,
 } from "ra-core";
 import { createResourceCallbacks, type ResourceCallbacks } from "./createResourceCallbacks";
-import { createQToIlikeTransformer } from "./commonTransforms";
 import { supabase } from "../supabase";
 import { collectOrganizationFilePaths, deleteStorageFiles } from "../utils/storageCleanup";
 import { logger } from "@/lib/logger";
@@ -63,27 +63,6 @@ export const COMPUTED_FIELDS = [
   // PostgreSQL tsvector - auto-generated, cannot be updated
   "search_tsv",
 ] as const;
-
-/**
- * Fields to search when q filter is provided
- * These fields will be searched with ILIKE for partial matching
- */
-export const ORGANIZATIONS_SEARCH_FIELDS = ["name", "city", "state", "sector"] as const;
-
-/**
- * Transform q filter into ILIKE search on organization fields
- * Uses raw PostgREST mode to handle multi-word searches correctly
- *
- * WORKAROUND for ra-data-postgrest library bug:
- * The library splits multi-word ILIKE values on whitespace and has a bug
- * handling 3+ words. Uses "or@" key with escaping to bypass this issue.
- *
- * @see createQToIlikeTransformer in commonTransforms.ts (useRawPostgrest mode)
- */
-export const transformQToIlikeSearch = createQToIlikeTransformer({
-  searchFields: ORGANIZATIONS_SEARCH_FIELDS,
-  useRawPostgrest: true,
-});
 
 // ============================================================================
 // CUSTOM CALLBACKS (Override factory defaults)
@@ -226,26 +205,21 @@ const baseCallbacks = createResourceCallbacks({
 });
 
 /**
- * Custom beforeGetList that chains:
- * 1. q filter → ILIKE search transformation
- * 2. Soft delete filter (manual since we disabled factory soft delete)
+ * Custom beforeGetList that applies soft delete filter
+ * (manual since we disabled factory soft delete for custom RPC cascade)
  *
- * This matches the unified data provider's search behavior while applying
- * soft-delete filtering.
+ * Note: q-search is handled centrally by applySearchParams via SEARCHABLE_RESOURCES
  */
 async function organizationsBeforeGetList(
   params: GetListParams,
   _dataProvider: DataProvider
 ): Promise<GetListParams> {
-  // Step 1: Transform q filter to ILIKE search (removes q from filter)
-  const searchTransformedParams = transformQToIlikeSearch(params);
-
-  // Step 2: Apply soft delete filter manually (since factory soft delete is disabled)
-  const { includeDeleted, ...otherFilters } = searchTransformedParams.filter || {};
+  // Apply soft delete filter manually (since factory soft delete is disabled)
+  const { includeDeleted, ...otherFilters } = params.filter || {};
   const softDeleteFilter = includeDeleted ? {} : { "deleted_at@is": null };
 
   return {
-    ...searchTransformedParams,
+    ...params,
     filter: {
       ...otherFilters,
       ...softDeleteFilter,

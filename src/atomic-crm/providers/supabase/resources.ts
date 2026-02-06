@@ -81,6 +81,7 @@ export const SEARCHABLE_RESOURCES = {
   ],
   contacts_summary: ["first_name", "last_name"],
   products: ["name", "category", "description", "manufacturer_part_number"],
+  sales: ["first_name", "last_name", "email"],
   // deals: REMOVED - use opportunities
 } as const;
 

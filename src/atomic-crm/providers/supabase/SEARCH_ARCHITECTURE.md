@@ -45,6 +45,7 @@ Use for simple, explicit field search.
 
 ### Central `applySearchParams()` (`SEARCHABLE_RESOURCES`)
 
+All `q` search transformations are handled centrally in `applySearchParams()` before callbacks run.
 Configured in `resources.ts`:
 
 | Resource | Fields |
@@ -56,15 +57,15 @@ Configured in `resources.ts`:
 | opportunities | name, description, next_action, lead_source, customer_organization_name |
 | opportunities_summary | name, description, next_action, lead_source, principal_organization_name, customer_organization_name |
 | products | name, category, description, manufacturer_part_number |
+| sales | first_name, last_name, email |
 
-### Callback-level `q` transforms (resource-specific)
+### Callback-level `q` transforms
 
-| Resource | Callback behavior |
-|----------|-------------------|
-| contacts | `q` -> `@or` ILIKE on `name`, `first_name`, `last_name` |
-| organizations | Central search handles `q`; callback q-transform is no-op |
-| sales | `q` -> raw `or@` ILIKE on `first_name`, `last_name`, `email` |
-| opportunities | `beforeGetList` does soft-delete only; search handled centrally |
+**None.** All `q` search logic has been consolidated to the central `SEARCHABLE_RESOURCES` layer.
+Callbacks only handle:
+- Soft-delete filtering
+- Computed field stripping
+- Resource-specific data transforms
 
 ## Resource Name Guidance
 
@@ -78,9 +79,9 @@ Using a summary resource directly (for example `contacts_summary`) may still sea
 
 ## Common Mistakes
 
-### Assuming `q` is only transformed in callbacks
+### Assuming `q` is transformed in callbacks
 
-`q` is now processed centrally by `applySearchParams()` before handler callbacks run.
+`q` is processed **exclusively** by `applySearchParams()` in the central layer. Callbacks no longer handle `q` transformation. To add `q` search support for a resource, add it to `SEARCHABLE_RESOURCES` in `resources.ts`.
 
 ### Using summary resources in inputs expecting handler behavior
 

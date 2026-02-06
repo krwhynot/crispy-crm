@@ -1,6 +1,6 @@
 {
   "status": "complete",
-  "generated_at": "2026-02-06T20:21:18.422Z",
+  "generated_at": "2026-02-06T20:53:44.289Z",
   "generator": "scripts/discover/extractors/hooks.ts",
   "source_globs": [
     "src/**/use*.ts",
@@ -8,7 +8,7 @@
     "src/**/*.ts",
     "src/**/*.tsx"
   ],
-  "checksum": "sha256:eb5be024028c2de1",
+  "checksum": "sha256:131d21480ad0d576",
   "source_hashes": {
     "src\\App.tsx": "acaa54f99f2d",
     "src\\atomic-crm\\activities\\activityDraftSchema.ts": "fe17156bdf82",
@@ -419,15 +419,15 @@
     "src\\atomic-crm\\providers\\supabase\\authProvider.ts": "c5349874e76b",
     "src\\atomic-crm\\providers\\supabase\\callbacks\\activitiesCallbacks.ts": "d3e757f6e2ad",
     "src\\atomic-crm\\providers\\supabase\\callbacks\\commonTransforms.ts": "d18f74a08f0a",
-    "src\\atomic-crm\\providers\\supabase\\callbacks\\contactsCallbacks.ts": "f377a132721e",
+    "src\\atomic-crm\\providers\\supabase\\callbacks\\contactsCallbacks.ts": "95f659c81492",
     "src\\atomic-crm\\providers\\supabase\\callbacks\\createResourceCallbacks.ts": "0fd464230837",
     "src\\atomic-crm\\providers\\supabase\\callbacks\\index.ts": "77e63c17d7f0",
     "src\\atomic-crm\\providers\\supabase\\callbacks\\notesCallbacks.ts": "378359e16bdb",
     "src\\atomic-crm\\providers\\supabase\\callbacks\\notificationsCallbacks.ts": "433681f4be7b",
     "src\\atomic-crm\\providers\\supabase\\callbacks\\opportunitiesCallbacks.ts": "57eb29376a0c",
-    "src\\atomic-crm\\providers\\supabase\\callbacks\\organizationsCallbacks.ts": "a86c520b0283",
+    "src\\atomic-crm\\providers\\supabase\\callbacks\\organizationsCallbacks.ts": "d1294ab7b7bd",
     "src\\atomic-crm\\providers\\supabase\\callbacks\\productsCallbacks.ts": "b3a0b5e7b453",
-    "src\\atomic-crm\\providers\\supabase\\callbacks\\salesCallbacks.ts": "17956442956c",
+    "src\\atomic-crm\\providers\\supabase\\callbacks\\salesCallbacks.ts": "91ce10998904",
     "src\\atomic-crm\\providers\\supabase\\callbacks\\tagsCallbacks.ts": "e0ee86d41bfc",
     "src\\atomic-crm\\providers\\supabase\\callbacks\\tasksCallbacks.ts": "4f5bae7b3058",
     "src\\atomic-crm\\providers\\supabase\\composedDataProvider.ts": "9965daf84272",
@@ -473,7 +473,7 @@
     "src\\atomic-crm\\providers\\supabase\\handlers\\timelineHandler.ts": "37e9b0bc4def",
     "src\\atomic-crm\\providers\\supabase\\handlers\\__tests__\\fixtures\\opportunities.ts": "643bb2f72afe",
     "src\\atomic-crm\\providers\\supabase\\index.ts": "038f75657dcc",
-    "src\\atomic-crm\\providers\\supabase\\resources.ts": "2d861b8979bb",
+    "src\\atomic-crm\\providers\\supabase\\resources.ts": "b46d938151b2",
     "src\\atomic-crm\\providers\\supabase\\services\\index.ts": "898d46d3bd07",
     "src\\atomic-crm\\providers\\supabase\\services\\StorageService.ts": "dbbd2d24520f",
     "src\\atomic-crm\\providers\\supabase\\services\\TransformService.ts": "2f3b5fa5a584",
@@ -1024,7 +1024,7 @@
       "name": "_root",
       "file": "_root.json",
       "item_count": 99,
-      "checksum": "sha256:fb1a6b476984becb",
+      "checksum": "sha256:d76dc2783542d610",
       "source_files": [
         "src\\atomic-crm\\activity-log\\ActivityLogContext.tsx",
         "src\\atomic-crm\\contacts\\useColumnMapping.ts",
