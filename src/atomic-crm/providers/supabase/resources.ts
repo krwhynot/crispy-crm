@@ -50,6 +50,26 @@ export const RESOURCE_MAPPING = {
 } as const;
 
 /**
+ * Resources with FTS enabled (PostgreSQL full-text search)
+ *
+ * Staged rollout: Add resources here after verifying:
+ * 1. Summary view has search_tsv column exposed
+ * 2. GIN index exists on base table
+ * 3. Result drift is acceptable (<5% difference from ILIKE)
+ *
+ * @see __tests__/ftsOperatorSyntax.contract.test.ts for syntax
+ */
+export const FTS_ENABLED_RESOURCES: readonly string[] = [
+  // Phase 1: Start with contacts (most tested)
+  // "contacts",
+  // Phase 2: Add after contacts validation
+  // "organizations",
+  // "opportunities",
+  // Phase 3: Products
+  // "products",
+] as const;
+
+/**
  * Resources that support full-text search
  */
 export const SEARCHABLE_RESOURCES = {
@@ -170,4 +190,19 @@ export function supportsSoftDelete(resource: string): boolean {
  */
 export function getSearchableFields(resource: string): readonly string[] {
   return SEARCHABLE_RESOURCES[resource as keyof typeof SEARCHABLE_RESOURCES] || [];
+}
+
+/**
+ * Check if a resource has FTS (full-text search) enabled
+ *
+ * Resources must be explicitly added to FTS_ENABLED_RESOURCES after validation.
+ * Fallback is ILIKE-based search via SEARCHABLE_RESOURCES.
+ */
+export function isFtsEnabled(resource: string): boolean {
+  const actualResource = getResourceName(resource);
+  // Check both base resource and summary view variants
+  return (
+    FTS_ENABLED_RESOURCES.includes(actualResource) ||
+    FTS_ENABLED_RESOURCES.includes(actualResource.replace("_summary", ""))
+  );
 }

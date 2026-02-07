@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { TableCell, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { TrendingUp, TrendingDown, Minus, AlertCircle } from "lucide-react";
@@ -58,7 +59,10 @@ function getDecayIndicatorColor(momentum: Momentum): string {
  *
  * Accessibility: Fully keyboard navigable (Enter/Space to activate)
  */
-export function PipelineTableRow({ row, onRowClick }: PipelineTableRowProps) {
+export const PipelineTableRow = memo(function PipelineTableRow({
+  row,
+  onRowClick,
+}: PipelineTableRowProps) {
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Enter" || e.key === " ") {
       e.preventDefault();
@@ -127,4 +131,4 @@ export function PipelineTableRow({ row, onRowClick }: PipelineTableRowProps) {
       </TableCell>
     </TableRow>
   );
-}
+});

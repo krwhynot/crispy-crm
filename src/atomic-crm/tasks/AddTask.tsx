@@ -167,7 +167,7 @@ export const AddTask = ({
                   helperText="Optional details"
                 />
                 {selectContact && (
-                  <ReferenceInput source="contact_id" reference="contacts_summary">
+                  <ReferenceInput source="contact_id" reference="contacts">
                     <AutocompleteInput
                       {...getQSearchAutocompleteProps()}
                       label="Contact *"

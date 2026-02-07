@@ -10,6 +10,7 @@
  * - Activities can be edited by creator
  */
 
+import { memo } from "react";
 import { Check, Mail, Phone, Users, FileText, Target, Clock, CheckSquare } from "lucide-react";
 import { RecordContextProvider } from "ra-core";
 import { Link as RouterLink } from "react-router-dom";
@@ -38,7 +39,7 @@ interface TimelineEntryProps {
   entry: TimelineEntryData;
 }
 
-export const TimelineEntry = ({ entry }: TimelineEntryProps) => {
+export const TimelineEntry = memo(function TimelineEntry({ entry }: TimelineEntryProps) {
   const isTask = entry.entry_type === "task";
 
   const getIcon = (subtype: string) => {
@@ -137,6 +138,6 @@ export const TimelineEntry = ({ entry }: TimelineEntryProps) => {
       </div>
     </RecordContextProvider>
   );
-};
+});
 
 export default TimelineEntry;

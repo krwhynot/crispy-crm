@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { formatDistanceToNow } from "date-fns";
 import { Bell, Check, Eye, ExternalLink } from "lucide-react";
 import { useListContext, useUpdate, useNotify } from "ra-core";
@@ -120,7 +121,11 @@ const NotificationsListContent = () => {
   );
 };
 
-const NotificationRow = ({ notification }: { notification: Notification }) => {
+const NotificationRow = memo(function NotificationRow({
+  notification,
+}: {
+  notification: Notification;
+}) {
   const [update] = useUpdate();
   const notify = useNotify();
   const queryClient = useQueryClient();
@@ -204,7 +209,7 @@ const NotificationRow = ({ notification }: { notification: Notification }) => {
       )}
     </div>
   );
-};
+});
 
 const NotificationsBulkActions = () => {
   const [update] = useUpdate();

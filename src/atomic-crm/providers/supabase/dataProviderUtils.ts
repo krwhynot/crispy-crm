@@ -10,7 +10,12 @@
 
 import type { GetListParams } from "ra-core";
 import { subDays } from "date-fns";
-import { getSearchableFields, supportsSoftDelete, getResourceName } from "./resources";
+import {
+  getSearchableFields,
+  supportsSoftDelete,
+  getResourceName,
+  isFtsEnabled,
+} from "./resources";
 import { escapeCacheManager } from "./dataProviderCache";
 import { STAGE_STALE_THRESHOLDS, CLOSED_STAGES } from "../../utils/stalenessCalculation";
 
@@ -229,6 +234,66 @@ export function escapeForIlike(str: string): string {
   return str.replace(/\\/g, "\\\\").replace(/%/g, "\\%").replace(/_/g, "\\_");
 }
 
+// ============================================================================
+// PostgreSQL Full-Text Search (FTS) Functions
+// ============================================================================
+
+/**
+ * Build FTS filter for user-facing search (global search, q parameter)
+ *
+ * Uses wfts (websearch_to_tsquery) which:
+ * - Handles multi-word queries naturally (space-separated = AND)
+ * - Supports OR operator: "smith OR dean"
+ * - Supports negation: "-excluded"
+ * - More forgiving with user input
+ *
+ * @see __tests__/ftsOperatorSyntax.contract.test.ts for syntax contract
+ */
+export function buildWebSearchFilter(query: string): Record<string, string> {
+  // Sanitize query: remove characters that break PostgREST parsing
+  const sanitized = query
+    .replace(/['"()]/g, " ") // Remove quotes and parens
+    .replace(/\s+/g, " ") // Normalize whitespace
+    .trim();
+
+  if (!sanitized) {
+    return {};
+  }
+
+  // PostgREST wfts syntax: column.wfts(config).query
+  // In filter object: { "search_tsv": "wfts(english).query" }
+  return {
+    search_tsv: `wfts(english).${sanitized}`,
+  };
+}
+
+/**
+ * Build FTS filter for autocomplete/typeahead (prefix search)
+ *
+ * Uses fts (to_tsquery) with :* suffix which:
+ * - Matches words starting with the prefix
+ * - Required for typeahead UX where user types partial words
+ *
+ * Note: wfts does NOT support prefix :* - must use fts
+ *
+ * @see __tests__/ftsOperatorSyntax.contract.test.ts for syntax contract
+ */
+export function buildPrefixSearchFilter(prefix: string): Record<string, string> {
+  const sanitized = prefix
+    .replace(/['"():*]/g, "") // Remove special chars including :*
+    .replace(/\s+/g, " ")
+    .trim();
+
+  if (!sanitized) {
+    return {};
+  }
+
+  // fts with :* for prefix matching
+  return {
+    search_tsv: `fts(english).${sanitized}:*`,
+  };
+}
+
 /**
  * Apply full-text search to query parameters
  *
@@ -420,7 +485,24 @@ export function applySearchParams(
     };
   }
 
-  // Use the applyFullTextSearch helper for resources with search configuration
+  // FTS PATH: Use PostgreSQL full-text search when enabled for this resource
+  // Fallback to ILIKE if FTS is not enabled
+  if (isFtsEnabled(resource)) {
+    const qValue = String(transformedFilter.q).trim();
+    const ftsFilter = buildWebSearchFilter(qValue);
+    const softDeleteFilter = needsSoftDeleteFilter ? { "deleted_at@is": null } : {};
+
+    return {
+      ...params,
+      filter: {
+        ...filterWithoutQ,
+        ...ftsFilter,
+        ...softDeleteFilter,
+      },
+    };
+  }
+
+  // ILIKE PATH: Use the applyFullTextSearch helper for resources with search configuration
   // Pass the needsSoftDeleteFilter flag to avoid adding deleted_at filter for views
   return applyFullTextSearch(
     searchableFields,

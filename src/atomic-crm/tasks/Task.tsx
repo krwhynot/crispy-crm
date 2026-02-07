@@ -24,14 +24,20 @@ import {
 } from "date-fns";
 import { MoreVertical } from "lucide-react";
 import { useDeleteWithUndoController, useNotify, useUpdate } from "ra-core";
-import { useEffect, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import type { Task as TData } from "./types";
 import type { Contact } from "../types";
 import TaskEdit from "./TaskEdit";
 import { cn } from "@/lib/utils";
 import { parseDateSafely } from "@/lib/date-utils";
 
-export const Task = ({ task, showContact }: { task: TData; showContact?: boolean }) => {
+export const Task = memo(function Task({
+  task,
+  showContact,
+}: {
+  task: TData;
+  showContact?: boolean;
+}) {
   const notify = useNotify();
   const queryClient = useQueryClient();
 
@@ -201,4 +207,4 @@ export const Task = ({ task, showContact }: { task: TData; showContact?: boolean
       {openEdit && <TaskEdit taskId={task.id} open={openEdit} close={handleCloseEdit} />}
     </>
   );
-};
+});

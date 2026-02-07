@@ -1,5 +1,5 @@
 import { X } from "lucide-react";
-import { useState } from "react";
+import { memo, useState } from "react";
 import { cn } from "@/lib/utils";
 import type { Tag } from "../types";
 import { TagEditModal } from "./TagEditModal";
@@ -11,7 +11,7 @@ interface TagChipProps {
   onUnlink: () => Promise<void>;
 }
 
-export function TagChip({ tag, onUnlink }: TagChipProps) {
+export const TagChip = memo(function TagChip({ tag, onUnlink }: TagChipProps) {
   const [open, setOpen] = useState(false);
 
   const handleClose = () => {
@@ -58,4 +58,4 @@ export function TagChip({ tag, onUnlink }: TagChipProps) {
       <TagEditModal tag={tag} open={open} onClose={handleClose} />
     </>
   );
-}
+});

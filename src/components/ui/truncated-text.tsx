@@ -44,7 +44,7 @@ function TruncatedText({ children, className, maxLines = 1 }: TruncatedTextProps
   useEffect(() => {
     checkTruncation();
 
-    window.addEventListener("resize", checkTruncation);
+    window.addEventListener("resize", checkTruncation, { passive: true });
     return () => window.removeEventListener("resize", checkTruncation);
   }, [children, checkTruncation]);
 

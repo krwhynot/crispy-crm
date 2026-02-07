@@ -53,7 +53,7 @@ export interface UseFilterChipBarReturn {
  *
  * NOTE: 'q' (search) is NOT excluded - we show search chips for user clarity
  */
-const SYSTEM_FILTERS = ["deleted_at", "deleted_at@is"];
+const SYSTEM_FILTERS = new Set(["deleted_at", "deleted_at@is"]);
 
 /**
  * Transform React Admin filter state into displayable chips.
@@ -166,7 +166,7 @@ export function useFilterChipBar<TContext = unknown>(
 
     Object.entries(filterValues).forEach(([key, value]) => {
       // Skip system filters (but NOT 'q' - we want search chips)
-      if (SYSTEM_FILTERS.includes(key) || value === undefined || value === null) {
+      if (SYSTEM_FILTERS.has(key) || value === undefined || value === null) {
         return;
       }
 
@@ -378,7 +378,7 @@ export function useFilterChipBar<TContext = unknown>(
   const clearAllFilters = useCallback(() => {
     // Preserve system filters when clearing
     const preserved = Object.fromEntries(
-      Object.entries(filterValues).filter(([key]) => SYSTEM_FILTERS.includes(key))
+      Object.entries(filterValues).filter(([key]) => SYSTEM_FILTERS.has(key))
     );
     setFilters(preserved, displayedFilters);
   }, [filterValues, setFilters, displayedFilters]);

@@ -237,7 +237,7 @@ export const OpportunityCompactForm = ({ mode = "create" }: OpportunityCompactFo
                 <>
                   <ReferenceArrayInput
                     source="contact_ids"
-                    reference="contacts_summary"
+                    reference="contacts"
                     filter={contactFilter}
                     enableGetChoices={enableGetChoices}
                   >

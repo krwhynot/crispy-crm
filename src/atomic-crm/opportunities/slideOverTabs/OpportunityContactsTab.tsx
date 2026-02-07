@@ -58,7 +58,7 @@ function ContactEditFormContent({
       <DirtyStateTracker onDirtyChange={onDirtyChange} />
       <ReferenceArrayInput
         source="contact_ids"
-        reference="contacts_summary"
+        reference="contacts"
         filter={{ organization_id: record.customer_organization_id }}
       >
         <AutocompleteArrayInput
