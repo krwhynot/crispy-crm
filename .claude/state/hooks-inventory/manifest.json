@@ -1,6 +1,6 @@
 {
   "status": "complete",
-  "generated_at": "2026-02-06T20:53:44.289Z",
+  "generated_at": "2026-02-07T00:44:42.365Z",
   "generator": "scripts/discover/extractors/hooks.ts",
   "source_globs": [
     "src/**/use*.ts",
@@ -8,7 +8,7 @@
     "src/**/*.ts",
     "src/**/*.tsx"
   ],
-  "checksum": "sha256:131d21480ad0d576",
+  "checksum": "sha256:60580fe1f8dee428",
   "source_hashes": {
     "src\\App.tsx": "acaa54f99f2d",
     "src\\atomic-crm\\activities\\activityDraftSchema.ts": "fe17156bdf82",
@@ -432,7 +432,7 @@
     "src\\atomic-crm\\providers\\supabase\\callbacks\\tasksCallbacks.ts": "4f5bae7b3058",
     "src\\atomic-crm\\providers\\supabase\\composedDataProvider.ts": "9965daf84272",
     "src\\atomic-crm\\providers\\supabase\\dataProviderCache.ts": "3b933f2ae3b7",
-    "src\\atomic-crm\\providers\\supabase\\dataProviderUtils.ts": "06d0ab3afd2e",
+    "src\\atomic-crm\\providers\\supabase\\dataProviderUtils.ts": "70182029374e",
     "src\\atomic-crm\\providers\\supabase\\extensions\\activitiesExtension.ts": "0dadf0857265",
     "src\\atomic-crm\\providers\\supabase\\extensions\\customMethodsExtension.ts": "b1f1c114e680",
     "src\\atomic-crm\\providers\\supabase\\extensions\\edgeFunctionsExtension.ts": "d6329cf9496a",
@@ -473,7 +473,7 @@
     "src\\atomic-crm\\providers\\supabase\\handlers\\timelineHandler.ts": "37e9b0bc4def",
     "src\\atomic-crm\\providers\\supabase\\handlers\\__tests__\\fixtures\\opportunities.ts": "643bb2f72afe",
     "src\\atomic-crm\\providers\\supabase\\index.ts": "038f75657dcc",
-    "src\\atomic-crm\\providers\\supabase\\resources.ts": "b46d938151b2",
+    "src\\atomic-crm\\providers\\supabase\\resources.ts": "8f76695dc399",
     "src\\atomic-crm\\providers\\supabase\\services\\index.ts": "898d46d3bd07",
     "src\\atomic-crm\\providers\\supabase\\services\\StorageService.ts": "dbbd2d24520f",
     "src\\atomic-crm\\providers\\supabase\\services\\TransformService.ts": "2f3b5fa5a584",
@@ -1024,7 +1024,7 @@
       "name": "_root",
       "file": "_root.json",
       "item_count": 99,
-      "checksum": "sha256:d76dc2783542d610",
+      "checksum": "sha256:18c342a76514223c",
       "source_files": [
         "src\\atomic-crm\\activity-log\\ActivityLogContext.tsx",
         "src\\atomic-crm\\contacts\\useColumnMapping.ts",
