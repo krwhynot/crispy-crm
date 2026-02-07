@@ -13,7 +13,13 @@ export const personalInfoTypeSchema = z.enum(["work", "home", "other"]);
 // Uses z.preprocess() to coerce empty/null/undefined type to "work" default
 // This handles React Admin's SimpleFormIterator which may send { value: "", type: "" }
 export const emailAndTypeSchema = z.strictObject({
-  value: z.string().email("Invalid email address").max(254, "Email too long"),
+  // Allow empty string (filtered out before save), validate non-empty as email
+  value: z
+    .string()
+    .max(254, "Email too long")
+    .refine((val) => !val || z.string().email().safeParse(val).success, {
+      message: "Please enter a valid email address",
+    }),
   type: z.preprocess(
     (val) => (val === "" || val === undefined || val === null ? "work" : val),
     personalInfoTypeSchema

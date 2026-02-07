@@ -1,6 +1,6 @@
 {
   "chunk_name": "contacts-communication",
-  "generated_at": "2026-02-07T02:23:09.083Z",
+  "generated_at": "2026-02-07T02:57:36.853Z",
   "item_count": 3,
   "items": [
     {
@@ -29,8 +29,8 @@
           "name": "value",
           "zodType": "string",
           "constraints": [
-            "email(\"Invalid email address\")",
-            "max(254, \"Email too long\")"
+            "max(254, \"Email too long\")",
+            "email()"
           ],
           "optional": false,
           "nullable": false,
@@ -55,7 +55,7 @@
     {
       "name": "phoneNumberAndTypeSchema",
       "file": "src\\atomic-crm\\validation\\contacts\\contacts-communication.ts",
-      "line": 25,
+      "line": 31,
       "schemaType": "strictObject",
       "fields": [
         {

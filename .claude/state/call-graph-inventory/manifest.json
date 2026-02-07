@@ -1,13 +1,13 @@
 {
   "status": "complete",
-  "generated_at": "2026-02-07T02:23:12.896Z",
+  "generated_at": "2026-02-07T02:57:40.533Z",
   "generator": "scripts/discover/extractors/call-graph.ts",
   "source_globs": [
     "src/atomic-crm/**/*.ts",
     "src/atomic-crm/**/*.tsx",
     "src/hooks/**/*.ts"
   ],
-  "checksum": "sha256:51d8c8909e5c3c35",
+  "checksum": "sha256:71d243a62fb6ee59",
   "source_hashes": {
     "src\\atomic-crm\\activities\\activityDraftSchema.ts": "fe17156bdf82",
     "src\\atomic-crm\\activities\\ActivityEdit.tsx": "16969e45d87a",
@@ -660,7 +660,7 @@
     "src\\atomic-crm\\validation\\activities.ts": "8f5bf3d6e9aa",
     "src\\atomic-crm\\validation\\categories.ts": "c386c1803aa0",
     "src\\atomic-crm\\validation\\constants.ts": "b8985c2c0618",
-    "src\\atomic-crm\\validation\\contacts\\contacts-communication.ts": "a367988e6270",
+    "src\\atomic-crm\\validation\\contacts\\contacts-communication.ts": "d3d554005caa",
     "src\\atomic-crm\\validation\\contacts\\contacts-core.ts": "6668e6fe40f5",
     "src\\atomic-crm\\validation\\contacts\\contacts-department.ts": "508c312fb8d2",
     "src\\atomic-crm\\validation\\contacts\\contacts-import.ts": "1af585eb5df7",
@@ -719,7 +719,7 @@
     {
       "name": "_root",
       "file": "_root.json",
-      "checksum": "sha256:3505847ae1231697",
+      "checksum": "sha256:28a27a2b390920fb",
       "source_files": [
         "src\\atomic-crm\\activities\\ActivityEdit.tsx",
         "src\\atomic-crm\\activities\\ActivityInputs.tsx",
@@ -2072,7 +2072,7 @@
         "src\\atomic-crm\\validation\\activities.ts": "8f5bf3d6e9aa",
         "src\\atomic-crm\\validation\\categories.ts": "c386c1803aa0",
         "src\\atomic-crm\\validation\\constants.ts": "b8985c2c0618",
-        "src\\atomic-crm\\validation\\contacts\\contacts-communication.ts": "a367988e6270",
+        "src\\atomic-crm\\validation\\contacts\\contacts-communication.ts": "d3d554005caa",
         "src\\atomic-crm\\validation\\contacts\\contacts-core.ts": "6668e6fe40f5",
         "src\\atomic-crm\\validation\\contacts\\contacts-department.ts": "508c312fb8d2",
         "src\\atomic-crm\\validation\\contacts\\contacts-import.ts": "1af585eb5df7",
