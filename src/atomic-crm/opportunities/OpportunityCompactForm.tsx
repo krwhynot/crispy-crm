@@ -16,7 +16,7 @@ import { AdminButton } from "@/components/admin/AdminButton";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { RefreshCw } from "lucide-react";
 import { useWatch, useFormContext } from "react-hook-form";
-import { useGetIdentity, useRefresh } from "ra-core";
+import { useGetIdentity, useRefresh, useRecordContext } from "ra-core";
 import { AutocompleteOrganizationInput } from "../organizations/AutocompleteOrganizationInput";
 import { QuickCreateContactPopover } from "../contacts/QuickCreateContactPopover";
 import { contactOptionText } from "../contacts/ContactOption";
@@ -28,6 +28,7 @@ import { OPPORTUNITY_STAGE_CHOICES } from "./constants";
 import { saleOptionRenderer } from "../utils/saleOptionRenderer";
 import { enableGetChoices } from "../utils/autocompleteDefaults";
 import { LeadSourceInput } from "./LeadSourceInput";
+import type { Opportunity } from "../validation/opportunities";
 
 const priorityChoices = [
   { id: "low", name: "Low" },
@@ -45,6 +46,7 @@ export const OpportunityCompactForm = ({ mode = "create" }: OpportunityCompactFo
   const { setValue, getValues } = useFormContext();
   const refresh = useRefresh();
   const { regenerate, isLoading, canGenerate } = useAutoGenerateName(mode);
+  const record = useRecordContext<Opportunity>();
 
   const customerOrganizationId = useWatch({ name: "customer_organization_id" });
   const principalOrganizationId = useWatch({ name: "principal_organization_id" });
@@ -57,6 +59,16 @@ export const OpportunityCompactForm = ({ mode = "create" }: OpportunityCompactFo
   const productFilter = useMemo(
     () => (principalOrganizationId ? { principal_id: principalOrganizationId } : {}),
     [principalOrganizationId]
+  );
+
+  const relatedOpportunityFilter = useMemo(
+    () => ({
+      ...(record?.id ? { "id@neq": record.id } : {}),
+      ...(record?.principal_organization_id
+        ? { principal_organization_id: record.principal_organization_id }
+        : {}),
+    }),
+    [record?.id, record?.principal_organization_id]
   );
 
   const [showContactCreate, setShowContactCreate] = useState(false);
@@ -373,7 +385,11 @@ export const OpportunityCompactForm = ({ mode = "create" }: OpportunityCompactFo
             placeholder="Key factors influencing the decision..."
           />
           {mode === "edit" && (
-            <ReferenceInput source="related_opportunity_id" reference="opportunities">
+            <ReferenceInput
+              source="related_opportunity_id"
+              reference="opportunities"
+              filter={relatedOpportunityFilter}
+            >
               <SelectInput optionText="name" label="Related Opportunity" helperText={false} />
             </ReferenceInput>
           )}

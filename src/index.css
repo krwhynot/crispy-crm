@@ -736,7 +736,7 @@
 
   /* Borders and focus */
   --border: var(--neutral-200); /* Borders */
-  --input: var(--neutral-200); /* Input borders */
+  --input: var(--neutral-300); /* Input borders - darker for better visibility */
   --ring: oklch(55% 0.095 142); /* #4D9900 - Brightened focus ring for visibility */
 
   /* Success states (emerald green) - hue 155° to differentiate from forest green brand */

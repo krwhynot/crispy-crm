@@ -22,6 +22,7 @@ export interface EmailArrayFieldProps {
   onEmailPaste?: React.ClipboardEventHandler<HTMLTextAreaElement | HTMLInputElement>;
   onEmailBlur?: React.FocusEventHandler<HTMLTextAreaElement | HTMLInputElement>;
   validate?: (value: string) => string | undefined;
+  disabled?: boolean;
 }
 
 export const EmailArrayField = ({
@@ -32,13 +33,19 @@ export const EmailArrayField = ({
   onEmailPaste,
   onEmailBlur,
   validate,
+  disabled,
 }: EmailArrayFieldProps) => {
   const displayLabel = isRequired ? `${label} *` : label;
   const displayHelperText =
     helperText === undefined && isRequired ? "At least one email required" : helperText;
 
   return (
-    <ArrayInput source={source} label={displayLabel} helperText={displayHelperText}>
+    <ArrayInput
+      source={source}
+      label={displayLabel}
+      helperText={displayHelperText}
+      disabled={disabled}
+    >
       <SimpleFormIterator
         inline
         disableReordering
@@ -55,6 +62,7 @@ export const EmailArrayField = ({
           onBlur={onEmailBlur}
           autoComplete="email"
           validate={validate}
+          disabled={disabled}
         />
         <SelectInput
           source="type"
@@ -64,6 +72,7 @@ export const EmailArrayField = ({
           className="w-24 min-w-24"
           defaultValue="work"
           translateChoice={false}
+          disabled={disabled}
         />
       </SimpleFormIterator>
     </ArrayInput>

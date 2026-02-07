@@ -12,6 +12,17 @@ NC='\033[0m' # No Color
 STAGED_FILES=$(git diff --cached --name-only --diff-filter=ACM)
 
 # ═══════════════════════════════════════════════════════════════
+# FAST MODE: Skip slow checks while keeping security checks
+# Usage: SKIP_SLOW_HOOKS=1 git commit -m "message"
+# ═══════════════════════════════════════════════════════════════
+if [ "$SKIP_SLOW_HOOKS" = "1" ]; then
+  echo -e "${YELLOW}⚡ Fast mode: skipping type-check, discovery, and drift checks${NC}"
+  SKIP_TYPECHECK=1
+  SKIP_DISCOVERY=1
+  SKIP_DRIFT=1
+fi
+
+# ═══════════════════════════════════════════════════════════════
 # 1. SECURITY: Block .env files (CRITICAL - always run)
 # ═══════════════════════════════════════════════════════════════
 env_files=$(echo "$STAGED_FILES" | grep -E '\.env$|\.env\.' || true)
@@ -30,14 +41,56 @@ if [ -n "$env_files" ]; then
 fi
 
 # ═══════════════════════════════════════════════════════════════
-# 2. QUICK CHECKS: TypeScript type-check (only if TS files staged)
+# 2. UI PATTERNS: Enforce component standards (P1 - UI_STANDARDS.md)
+# ═══════════════════════════════════════════════════════════════
+tsx_feature_files=$(echo "$STAGED_FILES" | grep -E '^src/atomic-crm/.*\.tsx$' | grep -v -E '\.test\.|\.spec\.|__tests__' || true)
+
+if [ -n "$tsx_feature_files" ]; then
+  echo "🎨 Checking UI patterns..."
+  ui_violations=0
+
+  # Check for native <select> elements (use SelectInput from ra-wrappers)
+  if echo "$tsx_feature_files" | xargs grep -l "<select" 2>/dev/null | grep -q .; then
+    echo -e "${RED}❌ Native <select> elements found in feature code${NC}"
+    echo -e "${YELLOW}Use SelectInput from @/components/ra-wrappers instead${NC}"
+    echo "$tsx_feature_files" | xargs grep -n "<select" 2>/dev/null | head -10
+    ui_violations=1
+  fi
+
+  # Check for hardcoded border colors (use semantic: border-muted, border-destructive)
+  if echo "$tsx_feature_files" | xargs grep -E 'border-(neutral|gray)-|border-\[#' 2>/dev/null | grep -q .; then
+    echo -e "${RED}❌ Hardcoded border colors found${NC}"
+    echo -e "${YELLOW}Use semantic colors: border-muted, border-border, border-destructive${NC}"
+    echo "$tsx_feature_files" | xargs grep -n -E 'border-(neutral|gray)-|border-\[#' 2>/dev/null | head -10
+    ui_violations=1
+  fi
+
+  # Check for hardcoded background colors (use semantic: bg-muted, bg-background)
+  if echo "$tsx_feature_files" | xargs grep -E 'bg-(neutral|gray)-' 2>/dev/null | grep -q .; then
+    echo -e "${RED}❌ Hardcoded background colors found${NC}"
+    echo -e "${YELLOW}Use semantic colors: bg-muted, bg-background, bg-card${NC}"
+    echo "$tsx_feature_files" | xargs grep -n -E 'bg-(neutral|gray)-' 2>/dev/null | head -10
+    ui_violations=1
+  fi
+
+  if [ $ui_violations -eq 1 ]; then
+    echo -e "${RED}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+    echo -e "${RED}❌ UI pattern violations detected. See UI_STANDARDS.md for guidance.${NC}"
+    echo -e "${RED}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+    exit 1
+  fi
+
+  echo -e "${GREEN}✓ UI patterns OK${NC}"
+fi
+
+# ═══════════════════════════════════════════════════════════════
+# 3. QUICK CHECKS: TypeScript type-check (only if TS files staged)
 # ═══════════════════════════════════════════════════════════════
 ts_files=$(echo "$STAGED_FILES" | grep -E '\.(ts|tsx)$' || true)
 
-if [ -n "$ts_files" ]; then
-  echo "⚡ Type-checking staged files..."
-  npx tsc --noEmit 2>/dev/null
-  if [ $? -ne 0 ]; then
+if [ -n "$ts_files" ] && [ "$SKIP_TYPECHECK" != "1" ]; then
+  echo "⚡ Type-checking (incremental)..."
+  if ! npx tsc --noEmit --incremental 2>/dev/null; then
     echo -e "${RED}❌ TypeScript errors found. Run 'npx tsc --noEmit' for details.${NC}"
     exit 1
   fi
@@ -45,25 +98,23 @@ if [ -n "$ts_files" ]; then
 fi
 
 # ═══════════════════════════════════════════════════════════════
-# 3. DISCOVERY: Auto-regenerate if stale (stage_fixed pattern)
+# 4. DISCOVERY: Fast hash-only staleness check (CI enforces full check)
 # ═══════════════════════════════════════════════════════════════
 # Only run if component/hook files are staged (performance optimization)
 discovery_files=$(echo "$STAGED_FILES" | grep -E '\.(ts|tsx)$' | grep -E 'src/atomic-crm/' || true)
 
-if [ -n "$discovery_files" ]; then
-  echo "🔍 Checking discovery freshness..."
-  if ! npx tsx scripts/discover/index.ts --check 2>/dev/null; then
-    echo -e "${YELLOW}🔄 Auto-regenerating discovery files...${NC}"
-    just discover
-    git add .claude/state/
-    echo -e "${GREEN}✓ Discovery auto-updated and staged${NC}"
+if [ -n "$discovery_files" ] && [ "$SKIP_DISCOVERY" != "1" ]; then
+  echo "🔍 Checking discovery freshness (hash-only)..."
+  if ! npx tsx scripts/discover/check-staleness.ts 2>/dev/null; then
+    echo -e "${YELLOW}⚠ Discovery index may be stale. Run 'just discover' after commit.${NC}"
+    # Don't auto-regenerate - let CI enforce freshness
   else
     echo -e "${GREEN}✓ Discovery files are fresh${NC}"
   fi
 fi
 
 # ═══════════════════════════════════════════════════════════════
-# 4. SEMANTIC COLORS: Prevent theme drift (P0 - 243 fix commits)
+# 5. SEMANTIC COLORS: Prevent theme drift (P0 - 243 fix commits)
 # ═══════════════════════════════════════════════════════════════
 # Only check staged TSX files for performance
 tsx_files=$(echo "$STAGED_FILES" | grep -E '\.tsx$' || true)
@@ -79,7 +130,7 @@ if [ -n "$tsx_files" ]; then
 fi
 
 # ═══════════════════════════════════════════════════════════════
-# 5. MIGRATIONS: Validate SQL migrations (P1 - 176 schema commits)
+# 6. MIGRATIONS: Validate SQL migrations (P1 - 176 schema commits)
 # ═══════════════════════════════════════════════════════════════
 # Only check staged SQL files in migrations directory
 migration_files=$(echo "$STAGED_FILES" | grep -E '^supabase/migrations/.*\.sql$' || true)
@@ -99,47 +150,50 @@ if [ -n "$migration_files" ]; then
 fi
 
 # ═══════════════════════════════════════════════════════════════
-# 6. MIGRATION DRIFT: Detect local vs cloud schema divergence
+# 7. MIGRATION DRIFT: Detect local vs cloud schema divergence
 # ═══════════════════════════════════════════════════════════════
 # Only run when migration files are staged to catch drift early
 # This prevents the scenario where local and cloud schemas diverge
 
-if [ -n "$migration_files" ]; then
+if [ -n "$migration_files" ] && [ "$SKIP_DRIFT" != "1" ]; then
   echo "🔄 Checking migration drift (local vs cloud)..."
 
   # Check if supabase is linked (has .supabase directory or config)
   if [ -f "supabase/.temp/project-ref" ] || npx supabase projects list &>/dev/null; then
 
-    # Run dry-run to detect drift - this is the authoritative check
-    drift_output=$(npx supabase db push --dry-run 2>&1 || true)
+    # Run dry-run with 10-second timeout to detect drift
+    # Skip gracefully if network is slow/unavailable
+    if drift_output=$(timeout 10 npx supabase db push --dry-run 2>&1); then
+      # Check for history mismatch (critical - cloud has migrations not in local)
+      if echo "$drift_output" | grep -q "migration history does not match"; then
+        echo -e "${RED}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+        echo -e "${RED}❌ MIGRATION DRIFT DETECTED${NC}"
+        echo -e "${RED}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+        echo
+        echo -e "${YELLOW}Local and cloud migration histories have diverged.${NC}"
+        echo -e "${YELLOW}This typically happens when migrations are applied directly to cloud.${NC}"
+        echo
+        echo "To investigate:"
+        echo "  npx supabase db pull    # See what cloud has"
+        echo "  npx supabase db push --dry-run  # See full diff"
+        echo
+        echo "To fix (after investigation):"
+        echo "  npx supabase migration repair --status reverted <version>  # For cloud-only"
+        echo "  npx supabase migration repair --status applied <version>   # For local-only"
+        echo
+        echo -e "${RED}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+        exit 1
+      fi
 
-    # Check for history mismatch (critical - cloud has migrations not in local)
-    if echo "$drift_output" | grep -q "migration history does not match"; then
-      echo -e "${RED}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
-      echo -e "${RED}❌ MIGRATION DRIFT DETECTED${NC}"
-      echo -e "${RED}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
-      echo
-      echo -e "${YELLOW}Local and cloud migration histories have diverged.${NC}"
-      echo -e "${YELLOW}This typically happens when migrations are applied directly to cloud.${NC}"
-      echo
-      echo "To investigate:"
-      echo "  npx supabase db pull    # See what cloud has"
-      echo "  npx supabase db push --dry-run  # See full diff"
-      echo
-      echo "To fix (after investigation):"
-      echo "  npx supabase migration repair --status reverted <version>  # For cloud-only"
-      echo "  npx supabase migration repair --status applied <version>   # For local-only"
-      echo
-      echo -e "${RED}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
-      exit 1
+      # Check for pending migrations (warning only - local migrations not yet in cloud)
+      if echo "$drift_output" | grep -qE "Would apply|migrations? to apply"; then
+        echo -e "${YELLOW}⚠ Pending migrations will be applied on next deploy${NC}"
+      fi
+
+      echo -e "${GREEN}✓ Migration sync OK${NC}"
+    else
+      echo -e "${YELLOW}⚠ Migration drift check skipped (Supabase unavailable or timeout)${NC}"
     fi
-
-    # Check for pending migrations (warning only - local migrations not yet in cloud)
-    if echo "$drift_output" | grep -qE "Would apply|migrations? to apply"; then
-      echo -e "${YELLOW}⚠ Pending migrations will be applied on next deploy${NC}"
-    fi
-
-    echo -e "${GREEN}✓ Migration sync OK${NC}"
   else
     echo -e "${YELLOW}⚠ Supabase not linked, skipping drift check${NC}"
   fi

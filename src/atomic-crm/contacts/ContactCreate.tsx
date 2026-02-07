@@ -46,7 +46,7 @@ const ContactCreate = () => {
         stateOrganizationId && { organization_id: Number(stateOrganizationId) }),
       // UX: Start with one empty row for email/phone arrays (schema defaults to [])
       email: [{ type: "work", value: "" }],
-      phone: [{ type: "mobile", value: "" }],
+      phone: [{ type: "work", value: "" }],
     }),
     [defaults.sales_id, urlOrganizationId, stateOrganizationId]
   );

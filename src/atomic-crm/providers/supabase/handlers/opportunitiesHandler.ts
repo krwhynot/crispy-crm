@@ -53,6 +53,41 @@ import {
   opportunityProductSyncHandlerSchema,
   type OpportunityProductSyncHandler,
 } from "../../../validation/opportunities";
+import { supabase } from "../supabase";
+
+/**
+ * Validates that a related_opportunity_id references a valid opportunity
+ * with the same principal_organization_id.
+ *
+ * @param relatedId - The ID of the related opportunity to validate
+ * @param principalId - The principal_organization_id that must match
+ * @param currentId - The current opportunity ID (null for creates)
+ * @throws Error if validation fails
+ */
+async function validateRelatedOpportunity(
+  relatedId: number,
+  principalId: number,
+  currentId: number | null
+): Promise<void> {
+  if (currentId !== null && relatedId === currentId) {
+    throw new Error("Cannot link opportunity to itself");
+  }
+
+  const { data: related, error } = await supabase
+    .from("opportunities")
+    .select("principal_organization_id")
+    .eq("id", relatedId)
+    .is("deleted_at", null)
+    .single();
+
+  if (error || !related) {
+    throw new Error("Related opportunity not found or deleted");
+  }
+
+  if (related.principal_organization_id !== principalId) {
+    throw new Error("Related opportunity must have same principal");
+  }
+}
 
 /**
  * Schema for validating handler input data with products_to_sync virtual field.
@@ -135,6 +170,16 @@ export function createOpportunitiesHandler(baseProvider: DataProvider): DataProv
     ) => {
       if (resource === "opportunities") {
         const validatedData = handlerInputSchema.parse(params.data);
+
+        // Validate related_opportunity_id references same principal
+        if (validatedData.related_opportunity_id) {
+          await validateRelatedOpportunity(
+            validatedData.related_opportunity_id as number,
+            validatedData.principal_organization_id as number,
+            null
+          );
+        }
+
         const productsToSync: OpportunityProductSyncHandler[] | undefined =
           validatedData.products_to_sync;
 
@@ -170,6 +215,16 @@ export function createOpportunitiesHandler(baseProvider: DataProvider): DataProv
     ) => {
       if (resource === "opportunities") {
         const validatedData = handlerInputSchema.parse(params.data);
+
+        // Validate related_opportunity_id references same principal
+        if (validatedData.related_opportunity_id) {
+          await validateRelatedOpportunity(
+            validatedData.related_opportunity_id as number,
+            validatedData.principal_organization_id as number,
+            params.id as number
+          );
+        }
+
         const productsToSync: OpportunityProductSyncHandler[] | undefined =
           validatedData.products_to_sync;
 

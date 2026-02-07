@@ -10,6 +10,7 @@ import {
 import type { Opportunity } from "@/atomic-crm/types";
 import { activityKeys } from "@/atomic-crm/queryKeys";
 import { STAGE } from "@/atomic-crm/opportunities/constants";
+import { FormProgressProvider } from "@/components/ra-wrappers/form";
 import { OpportunityDetailsFormSection } from "./OpportunityDetailsFormSection";
 import { OpportunityDetailsViewSection } from "./OpportunityDetailsViewSection";
 
@@ -184,16 +185,20 @@ export function OpportunitySlideOverDetailsTab({
         onSubmit={handleSave}
         className="space-y-2"
       >
-        <OpportunityDetailsFormSection
-          record={record}
-          onDirtyChange={onDirtyChange}
-          serverError={serverError}
-          showCloseModal={showCloseModal}
-          closeTargetStage={closeTargetStage}
-          handleCloseModalOpenChange={handleCloseModalOpenChange}
-          handleCloseConfirm={handleCloseConfirm}
-          isSaving={isSaving}
-        />
+        <FormProgressProvider>
+          <div className="space-y-6">
+            <OpportunityDetailsFormSection
+              record={record}
+              onDirtyChange={onDirtyChange}
+              serverError={serverError}
+              showCloseModal={showCloseModal}
+              closeTargetStage={closeTargetStage}
+              handleCloseModalOpenChange={handleCloseModalOpenChange}
+              handleCloseConfirm={handleCloseConfirm}
+              isSaving={isSaving}
+            />
+          </div>
+        </FormProgressProvider>
       </Form>
     );
   }

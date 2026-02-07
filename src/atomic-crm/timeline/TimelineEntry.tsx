@@ -37,10 +37,20 @@ interface TimelineEntryData {
 
 interface TimelineEntryProps {
   entry: TimelineEntryData;
+  /** When set, activities not tied to this contact are shown as org-level */
+  currentContactId?: number;
 }
 
-export const TimelineEntry = memo(function TimelineEntry({ entry }: TimelineEntryProps) {
+export const TimelineEntry = memo(function TimelineEntry({
+  entry,
+  currentContactId,
+}: TimelineEntryProps) {
   const isTask = entry.entry_type === "task";
+
+  // Detect org-level activities: has org but not tied to current contact
+  const isOrganizationLevel = Boolean(
+    currentContactId && entry.organization_id && entry.contact_id !== currentContactId
+  );
 
   const getIcon = (subtype: string) => {
     switch (subtype) {
@@ -61,7 +71,13 @@ export const TimelineEntry = memo(function TimelineEntry({ entry }: TimelineEntr
 
   return (
     <RecordContextProvider value={entry}>
-      <div className="flex gap-4 p-4 border border-border rounded-lg hover:bg-muted/50 transition-colors">
+      <div
+        className={`flex gap-4 p-4 border rounded-lg hover:bg-muted/50 transition-colors ${
+          isOrganizationLevel
+            ? "border-dashed border-muted-foreground/30 bg-muted/20"
+            : "border-border"
+        }`}
+      >
         {/* Icon */}
         <div className="flex-shrink-0 mt-1">
           <div
@@ -81,6 +97,12 @@ export const TimelineEntry = memo(function TimelineEntry({ entry }: TimelineEntr
               {isTask && (
                 <Badge variant="secondary" className="text-xs">
                   Task
+                </Badge>
+              )}
+              {/* Org-level indicator when viewing a contact */}
+              {isOrganizationLevel && (
+                <Badge variant="outline" className="text-xs text-muted-foreground">
+                  Organization
                 </Badge>
               )}
               <span className="font-medium text-sm">

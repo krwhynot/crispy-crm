@@ -2,6 +2,7 @@ import { TextInput } from "@/components/ra-wrappers/text-input";
 import { ReferenceInput } from "@/components/ra-wrappers/reference-input";
 import { SelectInput } from "@/components/ra-wrappers/select-input";
 import {
+  CollapsibleSection,
   CompactFormRow,
   FormFieldWrapper,
   FormSectionWithProgress,
@@ -49,7 +50,7 @@ export const ContactCompactForm = ({ disabled = false }: ContactCompactFormProps
     <div className="space-y-6">
       <FormSectionWithProgress
         id="name-section"
-        title="Name"
+        title="Contact Profile"
         requiredFields={["first_name", "last_name"]}
       >
         <CompactFormRow columns="md:grid-cols-[1fr_1fr_auto]" alignItems="start">
@@ -83,7 +84,7 @@ export const ContactCompactForm = ({ disabled = false }: ContactCompactFormProps
 
       <FormSectionWithProgress
         id="organization-section"
-        title="Organization"
+        title="Account Details"
         requiredFields={["organization_id", "sales_id"]}
       >
         {/* Organization - full width row */}
@@ -120,7 +121,7 @@ export const ContactCompactForm = ({ disabled = false }: ContactCompactFormProps
         </div>
       </FormSectionWithProgress>
 
-      <FormSectionWithProgress id="contact-info-section" title="Contact Info" requiredFields={[]}>
+      <CollapsibleSection title="Contact Methods">
         {/* Email - full width row (optional) */}
         <div data-tutorial="contact-email">
           <FormFieldWrapper name="email">
@@ -138,7 +139,7 @@ export const ContactCompactForm = ({ disabled = false }: ContactCompactFormProps
             <PhoneArrayField disabled={disabled} />
           </FormFieldWrapper>
         </div>
-      </FormSectionWithProgress>
+      </CollapsibleSection>
 
       <ContactAdditionalDetails disabled={disabled} />
     </div>

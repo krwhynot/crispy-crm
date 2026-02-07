@@ -59,34 +59,38 @@ describe("ContactCreate with Progress Tracking", () => {
   });
 
   describe("Progress Bar Initialization", () => {
-    test("renders progress bar at ~10% initially", async () => {
+    test("renders progress indicator (Dot Mode) initially", async () => {
       renderContactCreate();
 
-      const progressBar = await screen.findByRole("progressbar");
-      expect(progressBar).toBeInTheDocument();
+      // FormProgressBar renders in Dot Mode with role="group" when schema prop is passed
+      const progressGroup = await screen.findByRole("group", { name: /required fields/i });
+      expect(progressGroup).toBeInTheDocument();
 
-      // Progress may be higher than 10% due to schema defaults
-      const progress = parseInt(progressBar.getAttribute("aria-valuenow") || "0", 10);
-      expect(progress).toBeGreaterThanOrEqual(10);
-      expect(progress).toBeLessThan(100);
+      // Dot Mode shows individual dots - verify dots exist
+      const dots = progressGroup.querySelectorAll("svg");
+      expect(dots.length).toBeGreaterThan(0);
     }, 30000);
 
-    test("progress bar has correct accessibility attributes", async () => {
+    test("progress indicator has correct accessibility attributes (Dot Mode)", async () => {
       renderContactCreate();
 
-      const progressBar = await screen.findByRole("progressbar");
-      expect(progressBar).toHaveAttribute("aria-valuemin", "0");
-      expect(progressBar).toHaveAttribute("aria-valuemax", "100");
-      expect(progressBar).toHaveAttribute("aria-label");
+      // Dot Mode uses role="group" with aria-label describing completion status
+      const progressGroup = await screen.findByRole("group", { name: /required fields/i });
+      expect(progressGroup).toHaveAttribute("aria-label");
+
+      // Verify aria-label contains completion info (e.g., "0 of 3 required fields complete")
+      const ariaLabel = progressGroup.getAttribute("aria-label") || "";
+      expect(ariaLabel).toMatch(/\d+ of \d+ required fields complete/);
     }, 30000);
 
-    test("progress bar is visible before form content", async () => {
+    test("progress indicator is visible before form content", async () => {
       renderContactCreate();
 
-      const progressBar = await screen.findByRole("progressbar");
+      // Dot Mode renders with role="group"
+      const progressGroup = await screen.findByRole("group", { name: /required fields/i });
       const firstNameInput = await screen.findByLabelText(/First Name/i);
 
-      expect(progressBar).toBeInTheDocument();
+      expect(progressGroup).toBeInTheDocument();
       expect(firstNameInput).toBeInTheDocument();
     });
   });
@@ -96,46 +100,49 @@ describe("ContactCreate with Progress Tracking", () => {
       renderContactCreate();
 
       await waitFor(() => {
-        const nameHeadings = screen.getAllByText("Name");
+        const nameHeadings = screen.getAllByText("Contact Profile");
         expect(nameHeadings.some((el) => el.tagName === "H3")).toBe(true);
 
-        const orgHeadings = screen.getAllByText("Organization");
+        const orgHeadings = screen.getAllByText("Account Details");
         expect(orgHeadings.some((el) => el.tagName === "H3")).toBe(true);
 
-        expect(screen.getByText("Contact Info")).toBeInTheDocument();
+        expect(screen.getByRole("button", { name: /Contact Methods/i })).toBeInTheDocument();
       });
     });
 
-    test("Name section shows incomplete indicator initially", async () => {
+    test("Contact Profile section shows no complete indicator initially", async () => {
       renderContactCreate();
 
-      await screen.findByText("Name");
-      const incompleteIcons = screen.getAllByTestId("section-incomplete-icon");
-      expect(incompleteIcons.length).toBeGreaterThan(0);
+      await screen.findByText("Contact Profile");
+      // Initially incomplete - no complete icon shown (component only shows icon when complete)
+      const completeIcons = screen.queryAllByTestId("section-complete-icon");
+      expect(completeIcons.length).toBe(0);
     });
 
-    test("Organization section shows incomplete indicator initially", async () => {
+    test("Account Details section shows no complete indicator initially", async () => {
       renderContactCreate();
 
       await waitFor(() => {
-        const orgHeadings = screen.getAllByText("Organization");
+        const orgHeadings = screen.getAllByText("Account Details");
         expect(orgHeadings.some((el) => el.tagName === "H3")).toBe(true);
 
-        const incompleteIcons = screen.getAllByTestId("section-incomplete-icon");
-        expect(incompleteIcons.length).toBeGreaterThan(0);
+        // Initially incomplete - no complete icon shown (component only shows icon when complete)
+        const completeIcons = screen.queryAllByTestId("section-complete-icon");
+        expect(completeIcons.length).toBe(0);
       });
     });
 
-    test("Contact Info section has no indicator (no required fields)", async () => {
+    test("CollapsibleSections have no progress indicators", async () => {
       renderContactCreate();
 
-      await screen.findByText("Contact Info");
-      const completeIcons = screen.queryAllByTestId("section-complete-icon");
-      const incompleteIcons = screen.queryAllByTestId("section-incomplete-icon");
+      // Contact Methods is now a CollapsibleSection (button), not FormSectionWithProgress
+      const contactMethodsButton = await screen.findByRole("button", { name: /Contact Methods/i });
+      expect(contactMethodsButton).toBeInTheDocument();
 
-      // Only Name and Organization sections have required fields and show indicators
-      // Contact Info has requiredFields={[]} so it shows no indicator
-      expect(completeIcons.length + incompleteIcons.length).toBe(2);
+      // FormSectionWithProgress only shows complete icon when all required fields are valid
+      // Initially no section is complete, so 0 icons are shown
+      const completeIcons = screen.queryAllByTestId("section-complete-icon");
+      expect(completeIcons.length).toBe(0);
     });
   });
 
@@ -205,16 +212,22 @@ describe("ContactCreate with Progress Tracking", () => {
       const user = userEvent.setup();
       renderContactCreate();
 
-      const progressBar = await screen.findByRole("progressbar");
-      const initialProgress = parseInt(progressBar.getAttribute("aria-valuenow") || "0", 10);
+      const progressGroup = await screen.findByRole("group", {
+        name: /required fields/i,
+      });
+      const initialLabel = progressGroup.getAttribute("aria-label") || "";
+      const initialMatch = initialLabel.match(/^(\d+) of (\d+)/);
+      const initialComplete = initialMatch ? parseInt(initialMatch[1], 10) : 0;
 
       const firstNameInput = await screen.findByLabelText(/First Name/i);
       await user.type(firstNameInput, "John");
       await user.tab();
 
       await waitFor(() => {
-        const currentProgress = parseInt(progressBar.getAttribute("aria-valuenow") || "0", 10);
-        expect(currentProgress).toBeGreaterThan(initialProgress);
+        const currentLabel = progressGroup.getAttribute("aria-label") || "";
+        const currentMatch = currentLabel.match(/^(\d+) of (\d+)/);
+        const currentComplete = currentMatch ? parseInt(currentMatch[1], 10) : 0;
+        expect(currentComplete).toBeGreaterThan(initialComplete);
       });
     });
 
@@ -222,7 +235,9 @@ describe("ContactCreate with Progress Tracking", () => {
       const user = userEvent.setup();
       renderContactCreate();
 
-      const progressBar = await screen.findByRole("progressbar");
+      const progressGroup = await screen.findByRole("group", {
+        name: /required fields/i,
+      });
 
       // Fill Name section
       const firstNameInput = await screen.findByLabelText(/First Name/i);
@@ -233,18 +248,23 @@ describe("ContactCreate with Progress Tracking", () => {
       await user.type(lastNameInput, "Doe");
       await user.tab();
 
-      const afterNameProgress = parseInt(progressBar.getAttribute("aria-valuenow") || "0", 10);
-
-      // Fill Organization (would require interaction with autocomplete)
-      // For now, just verify progress bar is still responsive
-      expect(afterNameProgress).toBeGreaterThan(10);
+      await waitFor(() => {
+        const afterNameLabel = progressGroup.getAttribute("aria-label") || "";
+        const afterNameMatch = afterNameLabel.match(/^(\d+) of (\d+)/);
+        const afterNameComplete = afterNameMatch ? parseInt(afterNameMatch[1], 10) : 0;
+        // Fill Organization (would require interaction with autocomplete)
+        // For now, just verify progress indicator is still responsive
+        expect(afterNameComplete).toBeGreaterThan(0);
+      });
     });
 
     test("progress reaches high percentage when all required fields filled", async () => {
       const user = userEvent.setup();
       renderContactCreate();
 
-      const progressBar = await screen.findByRole("progressbar");
+      const progressGroup = await screen.findByRole("group", {
+        name: /required fields/i,
+      });
 
       // Fill all Name fields
       const firstNameInput = await screen.findByLabelText(/First Name/i);
@@ -256,9 +276,11 @@ describe("ContactCreate with Progress Tracking", () => {
       await user.tab();
 
       await waitFor(() => {
-        const currentProgress = parseInt(progressBar.getAttribute("aria-valuenow") || "0", 10);
-        // Should be significantly higher than initial 10%
-        expect(currentProgress).toBeGreaterThan(25);
+        const currentLabel = progressGroup.getAttribute("aria-label") || "";
+        const currentMatch = currentLabel.match(/^(\d+) of (\d+)/);
+        const currentComplete = currentMatch ? parseInt(currentMatch[1], 10) : 0;
+        // Should have completed at least 1 required field
+        expect(currentComplete).toBeGreaterThan(0);
       });
     }, 30000);
   });
@@ -360,11 +382,11 @@ describe("ContactCreate with Progress Tracking", () => {
       renderContactCreate();
 
       await waitFor(() => {
-        const headings = screen.getAllByText("Name");
+        const headings = screen.getAllByText("Contact Profile");
         const nameHeading = headings.find((el) => el.tagName === "H3");
         expect(nameHeading).toBeInTheDocument();
 
-        const orgHeadings = screen.getAllByText("Organization");
+        const orgHeadings = screen.getAllByText("Account Details");
         const orgHeading = orgHeadings.find((el) => el.tagName === "H3");
         expect(orgHeading).toBeInTheDocument();
       });
@@ -374,18 +396,22 @@ describe("ContactCreate with Progress Tracking", () => {
       const user = userEvent.setup();
       renderContactCreate();
 
-      const progressBar = await screen.findByRole("progressbar");
+      const progressGroup = await screen.findByRole("group", {
+        name: /required fields/i,
+      });
 
       const firstNameInput = await screen.findByLabelText(/First Name/i);
       await user.type(firstNameInput, "John");
       await user.tab();
 
-      // Progress bar should remain in document (no unmount/remount)
-      expect(progressBar).toBeInTheDocument();
+      // Progress group should remain in document (no unmount/remount)
+      expect(progressGroup).toBeInTheDocument();
 
       await waitFor(() => {
-        const currentProgress = parseInt(progressBar.getAttribute("aria-valuenow") || "0", 10);
-        expect(currentProgress).toBeGreaterThan(10);
+        const label = progressGroup.getAttribute("aria-label") || "";
+        const match = label.match(/(\d+) of (\d+)/);
+        const filledCount = match ? parseInt(match[1], 10) : 0;
+        expect(filledCount).toBeGreaterThan(0);
       });
     });
   });
@@ -394,16 +420,40 @@ describe("ContactCreate with Progress Tracking", () => {
     test("optional fields in CollapsibleSection are wrapped with FormFieldWrapper", async () => {
       renderContactCreate();
 
-      // Additional Details section should exist (collapsible)
-      const additionalDetailsButton = await screen.findByText("Additional Details");
-      expect(additionalDetailsButton).toBeInTheDocument();
+      // Professional Details section should exist (collapsible)
+      const professionalDetailsButton = await screen.findByRole("button", {
+        name: /Professional Details/i,
+      });
+      expect(professionalDetailsButton).toBeInTheDocument();
+    });
+
+    test("CollapsibleSections are collapsed by default - fields hidden", async () => {
+      const user = userEvent.setup();
+      renderContactCreate();
+
+      // Wait for form to render
+      await screen.findByLabelText(/First Name/i);
+
+      // Fields in collapsible sections should not be visible initially
+      expect(screen.queryByLabelText(/Job Title/i)).not.toBeInTheDocument();
+
+      // Expand Professional Details
+      const professionalButton = await screen.findByRole("button", {
+        name: /Professional Details/i,
+      });
+      await user.click(professionalButton);
+
+      // Now fields are visible
+      expect(await screen.findByLabelText(/Job Title/i)).toBeInTheDocument();
     });
 
     test("optional fields do not affect required progress", async () => {
       const user = userEvent.setup();
       renderContactCreate();
 
-      const progressBar = await screen.findByRole("progressbar");
+      const progressGroup = await screen.findByRole("group", {
+        name: /required fields/i,
+      });
 
       // Fill only required Name fields
       const firstNameInput = await screen.findByLabelText(/First Name/i);
@@ -414,10 +464,13 @@ describe("ContactCreate with Progress Tracking", () => {
       await user.type(lastNameInput, "Doe");
       await user.tab();
 
-      const progressAfterRequired = parseInt(progressBar.getAttribute("aria-valuenow") || "0", 10);
-
-      // Progress should be based on required fields, not optional ones
-      expect(progressAfterRequired).toBeGreaterThan(10);
+      await waitFor(() => {
+        const label = progressGroup.getAttribute("aria-label") || "";
+        const match = label.match(/(\d+) of (\d+)/);
+        const filledCount = match ? parseInt(match[1], 10) : 0;
+        // Progress should be based on required fields, not optional ones
+        expect(filledCount).toBeGreaterThan(0);
+      });
     });
   });
 });

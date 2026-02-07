@@ -19,7 +19,14 @@ import { emailAndTypeSchema, phoneNumberAndTypeSchema } from "./contacts-communi
 export const quickCreateContactFormSchema = z.strictObject({
   first_name: z.string().min(1, "First name required").max(100),
   last_name: z.string().min(1, "Last name required").max(100),
-  email: z.string().email("Invalid email").max(255),
+  // Email is optional; validate format only when provided.
+  email: z
+    .string()
+    .trim()
+    .max(255)
+    .refine((val) => !val || z.string().email().safeParse(val).success, {
+      message: "Invalid email",
+    }),
 });
 
 export type QuickCreateContactFormInput = z.infer<typeof quickCreateContactFormSchema>;

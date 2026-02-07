@@ -132,7 +132,11 @@ export const UnifiedTimeline = ({
       ) : (
         <div className="space-y-3">
           {entries.map((entry) => (
-            <TimelineEntry key={`${entry.entry_type}-${entry.id}`} entry={entry} />
+            <TimelineEntry
+              key={`${entry.entry_type}-${entry.id}`}
+              entry={entry}
+              currentContactId={contactId}
+            />
           ))}
         </div>
       )}

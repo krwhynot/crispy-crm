@@ -10,13 +10,12 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  check:
-    name: Lint, Type Check & Build
+  # Fast parallel jobs - run simultaneously
+  lint:
+    name: Lint
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0  # Full history for git log --since
 
       - uses: actions/setup-node@v4
         with:
@@ -28,17 +27,24 @@ jobs:
       - name: Lint
         run: npm run lint
 
+  typecheck:
+    name: Type Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - run: npm ci
+
       - name: Type Check
         run: npx tsc --noEmit
 
       - name: Discovery Freshness Check
         run: npx tsx scripts/discover/index.ts --check
-
-      - name: Build
-        run: npm run build
-        env:
-          VITE_SUPABASE_URL: https://placeholder.supabase.co
-          VITE_SUPABASE_ANON_KEY: placeholder-key
 
   health-check:
     name: Code Health Check
@@ -48,14 +54,58 @@ jobs:
         with:
           fetch-depth: 0  # Required for git log
 
+      - uses: extractions/setup-just@v2
+        with:
+          just-version: '1.16.0'
+
       - name: Health Check
+        run: just health-check
+
+  ui-patterns:
+    name: UI Pattern Compliance
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check for native select elements
         run: |
-          # Install just if not available
-          command -v just >/dev/null 2>&1 || {
-            wget -qO- https://github.com/casey/just/releases/download/1.16.0/just-1.16.0-x86_64-unknown-linux-musl.tar.gz | tar xz
-            sudo mv just /usr/local/bin/
-          }
-          just health-check
+          echo "Checking for native <select> elements in src/atomic-crm/..."
+          if grep -rn '<select' src/atomic-crm/ --include="*.tsx" --include="*.ts" | grep -v '\.test\.' | grep -v '__tests__'; then
+            echo ""
+            echo "ERROR: Native <select> elements found in src/atomic-crm/"
+            echo "Use React Admin's SelectInput or shadcn Select component instead."
+            exit 1
+          fi
+          echo "No native <select> violations found."
+
+      - name: Check for hardcoded colors
+        run: |
+          echo "Checking for hardcoded color classes in src/atomic-crm/..."
+          VIOLATIONS=$(grep -rn -E '(border-neutral-|bg-gray-|text-gray-|border-gray-|bg-neutral-|text-neutral-)' src/atomic-crm/ --include="*.tsx" --include="*.ts" | grep -v '\.test\.' | grep -v '__tests__' || true)
+          if [ -n "$VIOLATIONS" ]; then
+            echo "$VIOLATIONS"
+            echo ""
+            echo "ERROR: Hardcoded color classes found in src/atomic-crm/"
+            echo "Use semantic Tailwind classes instead:"
+            echo "  - text-muted-foreground instead of text-gray-*"
+            echo "  - bg-muted instead of bg-gray-*"
+            echo "  - border-border instead of border-gray-*"
+            exit 1
+          fi
+          echo "No hardcoded color violations found."
+
+      - name: Check for direct react-admin input imports
+        run: |
+          echo "Checking for direct react-admin input imports in src/atomic-crm/..."
+          VIOLATIONS=$(grep -rn "import.*\(TextInput\|SelectInput\|NumberInput\|DateInput\|BooleanInput\|AutocompleteInput\).*from 'react-admin'" src/atomic-crm/ --include="*.tsx" --include="*.ts" | grep -v '\.test\.' | grep -v '__tests__' || true)
+          if [ -n "$VIOLATIONS" ]; then
+            echo "$VIOLATIONS"
+            echo ""
+            echo "ERROR: Direct react-admin input imports found in src/atomic-crm/"
+            echo "Import inputs from @/components/admin/ wrappers instead."
+            exit 1
+          fi
+          echo "No direct react-admin input import violations found."
 
   test:
     name: Tests
@@ -63,8 +113,6 @@ jobs:
     continue-on-error: true
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0  # Full history for git log --since
 
       - uses: actions/setup-node@v4
         with:
@@ -75,3 +123,24 @@ jobs:
 
       - name: Run Tests
         run: npm run test:ci
+
+  # Build runs after typecheck and ui-patterns pass (lint can fail independently)
+  build:
+    name: Build
+    needs: [typecheck, ui-patterns]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - run: npm ci
+
+      - name: Build
+        run: npm run build
+        env:
+          VITE_SUPABASE_URL: https://placeholder.supabase.co
+          VITE_SUPABASE_ANON_KEY: placeholder-key

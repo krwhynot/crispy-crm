@@ -1,5 +1,5 @@
 import { useFormContext, useWatch } from "react-hook-form";
-import { TextInput } from "react-admin";
+import { TextInput } from "@/components/ra-wrappers/text-input";
 import { Label } from "@/components/ui/label";
 import { colors } from "./colors";
 import { RoundButton } from "./RoundButton";

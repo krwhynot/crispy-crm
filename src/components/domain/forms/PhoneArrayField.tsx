@@ -17,6 +17,7 @@ interface PhoneArrayFieldProps {
   source?: string;
   label?: string;
   helperText?: string | false;
+  disabled?: boolean;
 }
 
 /**
@@ -33,8 +34,9 @@ export const PhoneArrayField = ({
   source = "phone",
   label = "Phone numbers",
   helperText = false,
+  disabled,
 }: PhoneArrayFieldProps) => (
-  <ArrayInput source={source} label={label} helperText={helperText}>
+  <ArrayInput source={source} label={label} helperText={helperText} disabled={disabled}>
     <SimpleFormIterator
       inline
       disableReordering
@@ -48,6 +50,7 @@ export const PhoneArrayField = ({
         label={false}
         placeholder="Phone number"
         autoComplete="tel"
+        disabled={disabled}
       />
       <SelectInput
         source="type"
@@ -57,6 +60,7 @@ export const PhoneArrayField = ({
         className="w-24 min-w-24"
         defaultValue="work"
         translateChoice={false}
+        disabled={disabled}
       />
     </SimpleFormIterator>
   </ArrayInput>

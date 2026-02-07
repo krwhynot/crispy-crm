@@ -1,4 +1,11 @@
 import type { Organization } from "@/atomic-crm/types";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 interface QuickAddOrganizationFieldsProps {
   principalId: string;
@@ -41,30 +48,33 @@ export function QuickAddOrganizationFields({
         <label htmlFor="principal" className="block text-sm font-medium mb-1">
           Principal <span className="text-destructive">*</span>
         </label>
-        <select
-          id="principal"
-          value={principalId}
-          onChange={(e) => {
-            onPrincipalChange(e.target.value);
+        <Select
+          value={principalId || undefined}
+          onValueChange={(value) => {
+            onPrincipalChange(value);
             // Clear error when user selects
             if (principalError) onPrincipalErrorClear();
           }}
-          className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary transition-colors bg-background ${
-            principalError ? "border-destructive" : "border-border"
-          }`}
           disabled={disabled || principalsLoading}
-          aria-invalid={principalError ? "true" : undefined}
-          aria-describedby={principalError ? "principal-error" : undefined}
         >
-          <option value="">
-            {principalsLoading ? "Loading principals..." : "Select a principal"}
-          </option>
-          {principals?.map((principal) => (
-            <option key={principal.id} value={principal.id}>
-              {principal.name}
-            </option>
-          ))}
-        </select>
+          <SelectTrigger
+            id="principal"
+            className={`w-full h-11 ${principalError ? "border-destructive" : ""}`}
+            aria-invalid={principalError ? "true" : undefined}
+            aria-describedby={principalError ? "principal-error" : undefined}
+          >
+            <SelectValue
+              placeholder={principalsLoading ? "Loading principals..." : "Select a principal"}
+            />
+          </SelectTrigger>
+          <SelectContent>
+            {principals?.map((principal) => (
+              <SelectItem key={principal.id} value={String(principal.id)}>
+                {principal.name}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
         {principalError && (
           <p id="principal-error" role="alert" className="mt-1 text-sm text-destructive">
             {principalError}
@@ -76,30 +86,33 @@ export function QuickAddOrganizationFields({
         <label htmlFor="customer" className="block text-sm font-medium mb-1">
           Customer <span className="text-destructive">*</span>
         </label>
-        <select
-          id="customer"
-          value={customerId}
-          onChange={(e) => {
-            onCustomerChange(e.target.value);
+        <Select
+          value={customerId || undefined}
+          onValueChange={(value) => {
+            onCustomerChange(value);
             // Clear error when user selects
             if (customerError) onCustomerErrorClear();
           }}
-          className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary transition-colors bg-background ${
-            customerError ? "border-destructive" : "border-border"
-          }`}
           disabled={disabled || customersLoading}
-          aria-invalid={customerError ? "true" : undefined}
-          aria-describedby={customerError ? "customer-error" : undefined}
         >
-          <option value="">
-            {customersLoading ? "Loading customers..." : "Select a customer"}
-          </option>
-          {customers?.map((customer) => (
-            <option key={customer.id} value={customer.id}>
-              {customer.name}
-            </option>
-          ))}
-        </select>
+          <SelectTrigger
+            id="customer"
+            className={`w-full h-11 ${customerError ? "border-destructive" : ""}`}
+            aria-invalid={customerError ? "true" : undefined}
+            aria-describedby={customerError ? "customer-error" : undefined}
+          >
+            <SelectValue
+              placeholder={customersLoading ? "Loading customers..." : "Select a customer"}
+            />
+          </SelectTrigger>
+          <SelectContent>
+            {customers?.map((customer) => (
+              <SelectItem key={customer.id} value={String(customer.id)}>
+                {customer.name}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
         {customerError && (
           <p id="customer-error" role="alert" className="mt-1 text-sm text-destructive">
             {customerError}

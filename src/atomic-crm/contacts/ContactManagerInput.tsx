@@ -12,12 +12,16 @@ interface Contact {
   last_name?: string;
 }
 
+interface ContactManagerInputProps {
+  disabled?: boolean;
+}
+
 /**
  * Manager input for contact forms
  * Self-referential FK - allows selecting another contact as manager
  * Excludes the current contact from the list to prevent self-reference
  */
-export const ContactManagerInput = () => {
+export const ContactManagerInput = ({ disabled }: ContactManagerInputProps) => {
   const record = useRecordContext<Contact>();
 
   return (
@@ -32,6 +36,7 @@ export const ContactManagerInput = () => {
         label="Reports To"
         emptyText="No manager"
         helperText="Direct manager / supervisor"
+        disabled={disabled}
         optionText={(contact: Contact) =>
           contact
             ? `${contact.first_name || ""} ${contact.last_name || ""}`.trim() || "Unknown"

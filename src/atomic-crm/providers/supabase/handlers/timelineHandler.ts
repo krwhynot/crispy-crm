@@ -99,15 +99,37 @@ export function createTimelineHandler(_baseProvider: DataProvider): DataProvider
 
       let query = supabase.from("entity_timeline").select("*", { count: "exact" });
 
-      if (filter?.contact_id) {
-        query = query.eq("contact_id", filter.contact_id);
+      // Extract entity filters from @or filter or direct filter properties
+      const orFilter = filter?.["@or"] as Record<string, number> | undefined;
+      const entityFilters: string[] = [];
+
+      // Build OR conditions from @or filter or direct properties
+      const contactId = orFilter?.contact_id ?? filter?.contact_id;
+      const orgId = orFilter?.organization_id ?? filter?.organization_id;
+      const oppId = orFilter?.opportunity_id ?? filter?.opportunity_id;
+
+      if (contactId) entityFilters.push(`contact_id.eq.${contactId}`);
+      if (orgId) entityFilters.push(`organization_id.eq.${orgId}`);
+      if (oppId) entityFilters.push(`opportunity_id.eq.${oppId}`);
+
+      // Fail-closed: require at least one entity filter
+      if (entityFilters.length === 0) {
+        throw new HttpError(
+          "Timeline requires contact_id, organization_id, or opportunity_id filter",
+          400
+        );
       }
-      if (filter?.organization_id) {
-        query = query.eq("organization_id", filter.organization_id);
+
+      // Apply OR filter if multiple conditions, else single eq for better query plan
+      if (entityFilters.length > 1) {
+        query = query.or(entityFilters.join(","));
+      } else {
+        if (contactId) query = query.eq("contact_id", contactId);
+        else if (orgId) query = query.eq("organization_id", orgId);
+        else if (oppId) query = query.eq("opportunity_id", oppId);
       }
-      if (filter?.opportunity_id) {
-        query = query.eq("opportunity_id", filter.opportunity_id);
-      }
+
+      // Secondary filter: entry_type (not an entity filter)
       if (filter?.entry_type) {
         query = query.eq("entry_type", filter.entry_type);
       }

@@ -275,6 +275,72 @@ export default tseslint.config(
       ],
     },
   },
+  // Feature code restrictions: Enforce Tier 2 wrapper usage (UI_STANDARDS.md)
+  // Blocks direct react-admin input imports in atomic-crm features
+  {
+    files: ["src/atomic-crm/**/*.{ts,tsx}"],
+    ignores: ["src/atomic-crm/**/__tests__/**", "src/atomic-crm/**/*.test.{ts,tsx}"],
+    rules: {
+      "no-restricted-imports": [
+        "error",
+        {
+          paths: [
+            // Inherit existing restrictions from main config
+            {
+              name: "ra-core",
+              importNames: [
+                "required",
+                "email",
+                "minLength",
+                "maxLength",
+                "minValue",
+                "maxValue",
+                "number",
+                "regex",
+                "choices",
+              ],
+              message:
+                "[VALIDATION] React Admin validators are forbidden. Use Zod schemas at the API boundary instead.",
+            },
+            {
+              name: "../providers/supabase/supabase",
+              message:
+                "[SINGLE SOURCE OF TRUTH] Direct Supabase imports are forbidden. All database operations must go through unifiedDataProvider.",
+            },
+            {
+              name: "../../providers/supabase/supabase",
+              message:
+                "[SINGLE SOURCE OF TRUTH] Direct Supabase imports are forbidden. All database operations must go through unifiedDataProvider.",
+            },
+            {
+              name: "../../../providers/supabase/supabase",
+              message:
+                "[SINGLE SOURCE OF TRUTH] Direct Supabase imports are forbidden. All database operations must go through unifiedDataProvider.",
+            },
+            // Feature code restriction: Use wrapped inputs from Tier 2 (UI_STANDARDS.md)
+            // Only blocks visual INPUT components, not data containers (ReferenceInput, ArrayInput, etc.)
+            {
+              name: "react-admin",
+              importNames: [
+                "TextInput",
+                "SelectInput",
+                "AutocompleteInput",
+                "NumberInput",
+                "BooleanInput",
+                "DateInput",
+                "AutocompleteArrayInput",
+                "RadioButtonGroupInput",
+                "FileInput",
+                "ImageInput",
+              ],
+              message:
+                "[THREE-TIER ARCHITECTURE] Use wrapped inputs from @/components/ra-wrappers/ instead of direct react-admin imports. See UI_STANDARDS.md for Tier 2 component requirements.",
+            },
+          ],
+        },
+      ],
+    },
+  },
   // JavaScript/MJS configuration (for scripts)
   {
     extends: [js.configs.recommended],
