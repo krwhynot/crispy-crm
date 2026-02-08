@@ -1,4 +1,4 @@
-import { Card, CardContent } from "@/components/ui/card";
+import { SectionCard } from "@/components/ra-wrappers/SectionCard";
 import { ShowBase, useShowContext } from "ra-core";
 import { AvatarFallback, AvatarImage, Avatar as ShadcnAvatar } from "@/components/ui/avatar";
 import type { Sale } from "../types";
@@ -18,25 +18,23 @@ const SalesShowContent = () => {
   return (
     <div className="mt-2 mb-2">
       <main role="main" aria-label="Sales user details">
-        <Card>
-          <CardContent className="p-6">
-            <div className="flex items-start gap-4">
-              <SalesAvatar />
-              <div className="flex-1">
-                <h2 className="text-xl font-semibold">
-                  {formatName(record.first_name, record.last_name)}
-                </h2>
-                <div className="text-sm text-muted-foreground mt-1">
-                  {record.email && <div>{record.email}</div>}
-                  {record.role && <div className="mt-1 capitalize">Role: {record.role}</div>}
-                  {record.disabled !== undefined && (
-                    <div className="mt-1">Status: {record.disabled ? "Inactive" : "Active"}</div>
-                  )}
-                </div>
+        <SectionCard contentClassName="p-6">
+          <div className="flex items-start gap-4">
+            <SalesAvatar />
+            <div className="flex-1">
+              <h2 className="text-xl font-semibold">
+                {formatName(record.first_name, record.last_name)}
+              </h2>
+              <div className="text-sm text-muted-foreground mt-1">
+                {record.email && <div>{record.email}</div>}
+                {record.role && <div className="mt-1 capitalize">Role: {record.role}</div>}
+                {record.disabled !== undefined && (
+                  <div className="mt-1">Status: {record.disabled ? "Inactive" : "Active"}</div>
+                )}
               </div>
             </div>
-          </CardContent>
-        </Card>
+          </div>
+        </SectionCard>
       </main>
     </div>
   );

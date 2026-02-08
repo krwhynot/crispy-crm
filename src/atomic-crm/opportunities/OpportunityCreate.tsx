@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
 import { CreateBase, Form, Loading, useGetIdentity } from "ra-core";
 import { getContextAwareRedirect } from "@/atomic-crm/utils/getContextAwareRedirect";
-import { Card, CardContent } from "@/components/ui/card";
+import { SectionCard } from "@/components/ra-wrappers/SectionCard";
 import { FormErrorSummary } from "@/components/ra-wrappers/FormErrorSummary";
 import { FormProgressProvider, FormProgressBar } from "@/components/ra-wrappers/form";
 import { OpportunityInputs } from "./OpportunityInputs";
@@ -74,15 +74,13 @@ const OpportunityCreate = () => {
               mode="onBlur"
               resolver={createFormResolver(opportunitySchema)}
             >
-              <Card>
-                <CardContent>
-                  <OpportunityFormContent
-                    checkForSimilar={checkForSimilar}
-                    hasConfirmed={hasConfirmed}
-                    resetConfirmation={resetConfirmation}
-                  />
-                </CardContent>
-              </Card>
+              <SectionCard>
+                <OpportunityFormContent
+                  checkForSimilar={checkForSimilar}
+                  hasConfirmed={hasConfirmed}
+                  resetConfirmation={resetConfirmation}
+                />
+              </SectionCard>
             </Form>
           </FormProgressProvider>
         </div>

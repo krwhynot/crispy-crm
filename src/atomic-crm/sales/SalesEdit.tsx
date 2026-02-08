@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import { SimpleForm } from "@/components/ra-wrappers/simple-form";
 import { CancelButton } from "@/components/ra-wrappers/cancel-button";
 import { SaveButton } from "@/components/ra-wrappers/form";
-import { Card, CardContent } from "@/components/ui/card";
+import { SectionCard } from "@/components/ra-wrappers/SectionCard";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { saleKeys } from "@/atomic-crm/queryKeys";
 import {
@@ -70,18 +70,16 @@ export default function SalesEdit() {
 
   return (
     <div className="max-w-lg w-full mx-auto mt-8">
-      <Card>
-        <CardContent>
-          <SimpleForm<SalesFormData>
-            toolbar={<EditToolbar />}
-            onSubmit={onSubmit}
-            defaultValues={defaultValues}
-            key={record?.id}
-          >
-            <SalesFormContent />
-          </SimpleForm>
-        </CardContent>
-      </Card>
+      <SectionCard>
+        <SimpleForm<SalesFormData>
+          toolbar={<EditToolbar />}
+          onSubmit={onSubmit}
+          defaultValues={defaultValues}
+          key={record?.id}
+        >
+          <SalesFormContent />
+        </SimpleForm>
+      </SectionCard>
     </div>
   );
 }

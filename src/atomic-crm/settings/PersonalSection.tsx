@@ -1,7 +1,7 @@
 import { RecordField } from "@/components/ra-wrappers/record-field";
 import { TextInput } from "@/components/ra-wrappers/text-input";
 import { AdminButton } from "@/components/admin/AdminButton";
-import { Card, CardContent } from "@/components/ui/card";
+import { SectionCard } from "@/components/ra-wrappers/SectionCard";
 import { CircleX, Loader2, Pencil, Save } from "lucide-react";
 import { useGetIdentity, useRecordContext } from "ra-core";
 import { useState } from "react";
@@ -32,55 +32,53 @@ export function PersonalSection() {
   };
 
   return (
-    <Card>
-      <CardContent>
-        <div className="mb-4 flex flex-row justify-between">
-          <h2 className="text-xl font-semibold text-muted-foreground">My info</h2>
-        </div>
+    <SectionCard>
+      <div className="mb-4 flex flex-row justify-between">
+        <h2 className="text-xl font-semibold text-muted-foreground">My info</h2>
+      </div>
 
-        <div className="space-y-4 mb-4">
-          <ImageEditorField
-            source="avatar"
-            type="avatar"
-            onSave={handleAvatarUpdate}
-            linkPosition="right"
-          />
-          <TextRender source="first_name" isEditMode={isEditMode} />
-          <TextRender source="last_name" isEditMode={isEditMode} />
-          <TextRender source="email" isEditMode={isEditMode} />
-          <TimeZoneSelect
-            value={record?.timezone || "America/Chicago"}
-            onChange={(value) => mutateSale({ ...record, timezone: value })}
-            disabled={!isEditMode || isPending}
-          />
-        </div>
+      <div className="space-y-4 mb-4">
+        <ImageEditorField
+          source="avatar"
+          type="avatar"
+          onSave={handleAvatarUpdate}
+          linkPosition="right"
+        />
+        <TextRender source="first_name" isEditMode={isEditMode} />
+        <TextRender source="last_name" isEditMode={isEditMode} />
+        <TextRender source="email" isEditMode={isEditMode} />
+        <TimeZoneSelect
+          value={record?.timezone || "America/Chicago"}
+          onChange={(value) => mutateSale({ ...record, timezone: value })}
+          disabled={!isEditMode || isPending}
+        />
+      </div>
 
-        <div className="flex flex-row justify-end gap-2">
+      <div className="flex flex-row justify-end gap-2">
+        <AdminButton
+          type="button"
+          variant={isEditMode ? "ghost" : "outline"}
+          onClick={() => setEditMode(!isEditMode)}
+          disabled={isPending}
+          className="flex items-center min-h-[44px]"
+        >
+          {isEditMode ? <CircleX /> : <Pencil />}
+          {isEditMode ? "Cancel" : "Edit"}
+        </AdminButton>
+
+        {isEditMode && (
           <AdminButton
-            type="button"
-            variant={isEditMode ? "ghost" : "outline"}
-            onClick={() => setEditMode(!isEditMode)}
-            disabled={isPending}
-            className="flex items-center min-h-[44px]"
+            type="submit"
+            disabled={!isDirty || isPending}
+            variant="outline"
+            className="min-h-[44px]"
           >
-            {isEditMode ? <CircleX /> : <Pencil />}
-            {isEditMode ? "Cancel" : "Edit"}
+            {isPending ? <Loader2 className="animate-spin" /> : <Save />}
+            {isPending ? "Saving..." : "Save"}
           </AdminButton>
-
-          {isEditMode && (
-            <AdminButton
-              type="submit"
-              disabled={!isDirty || isPending}
-              variant="outline"
-              className="min-h-[44px]"
-            >
-              {isPending ? <Loader2 className="animate-spin" /> : <Save />}
-              {isPending ? "Saving..." : "Save"}
-            </AdminButton>
-          )}
-        </div>
-      </CardContent>
-    </Card>
+        )}
+      </div>
+    </SectionCard>
   );
 }
 

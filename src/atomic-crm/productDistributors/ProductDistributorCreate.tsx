@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { CreateBase, Form } from "ra-core";
 import { useFormState } from "react-hook-form";
-import { Card, CardContent } from "@/components/ui/card";
+import { SectionCard } from "@/components/ra-wrappers/SectionCard";
 import { ReferenceInput } from "@/components/ra-wrappers/reference-input";
 import { AutocompleteInput } from "@/components/ra-wrappers/autocomplete-input";
 import { CancelButton } from "@/components/ra-wrappers/cancel-button";
@@ -33,13 +33,11 @@ export const ProductDistributorCreate = () => {
   return (
     <CreateBase redirect="list">
       <div className="bg-muted mt-2 px-6 py-6">
-        <Card>
-          <CardContent>
-            <Form defaultValues={defaultValues} warnWhenUnsavedChanges>
-              <ProductDistributorFormContent />
-            </Form>
-          </CardContent>
-        </Card>
+        <SectionCard>
+          <Form defaultValues={defaultValues} warnWhenUnsavedChanges>
+            <ProductDistributorFormContent />
+          </Form>
+        </SectionCard>
       </div>
     </CreateBase>
   );

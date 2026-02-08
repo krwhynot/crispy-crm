@@ -6,7 +6,7 @@ import { updateOrganizationSchema } from "../validation/organizations";
 import { organizationKeys, contactKeys, opportunityKeys } from "../queryKeys";
 import { OrganizationInputs } from "./OrganizationInputs";
 
-import { Card, CardContent } from "@/components/ui/card";
+import { SectionCard } from "@/components/ra-wrappers/SectionCard";
 import { ResponsiveGrid } from "@/components/design-system";
 import { OrganizationAside } from "./OrganizationAside";
 import { FormToolbar } from "../layout/FormToolbar";
@@ -58,12 +58,10 @@ const OrganizationEditContent = () => {
           resolver={createFormResolver(updateOrganizationSchema)}
           className="flex flex-col gap-4"
         >
-          <Card>
-            <CardContent>
-              <OrganizationInputs />
-              <FormToolbar />
-            </CardContent>
-          </Card>
+          <SectionCard>
+            <OrganizationInputs />
+            <FormToolbar />
+          </SectionCard>
         </Form>
       </main>
 

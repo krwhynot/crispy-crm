@@ -4,7 +4,7 @@ import { useMemo } from "react";
 
 import { createFormResolver } from "@/lib/zodErrorFormatting";
 import { productKeys, organizationKeys } from "../queryKeys";
-import { Card, CardContent } from "@/components/ui/card";
+import { SectionCard } from "@/components/ra-wrappers/SectionCard";
 import { DeleteButton } from "@/components/ra-wrappers/delete-button";
 import { SaveButton } from "@/components/ra-wrappers/form";
 import { CancelButton } from "@/components/ra-wrappers/cancel-button";
@@ -65,26 +65,24 @@ const ProductEditForm = () => {
       resolver={createFormResolver(productUpdateSchema)}
       key={record.id}
     >
-      <Card>
-        <CardContent>
-          <div className="mb-6">
-            <h2 className="text-2xl font-semibold">Edit {record.name}</h2>
-            <p className="text-sm text-muted-foreground mt-1">Update product information</p>
-          </div>
+      <SectionCard>
+        <div className="mb-6">
+          <h2 className="text-2xl font-semibold">Edit {record.name}</h2>
+          <p className="text-sm text-muted-foreground mt-1">Update product information</p>
+        </div>
 
-          <ProductInputs />
+        <ProductInputs />
 
-          <FormToolbar>
-            <div className="flex flex-row gap-2 justify-between w-full">
-              <DeleteButton />
-              <div className="flex gap-2">
-                <CancelButton />
-                <SaveButton label="Save Changes" />
-              </div>
+        <FormToolbar>
+          <div className="flex flex-row gap-2 justify-between w-full">
+            <DeleteButton />
+            <div className="flex gap-2">
+              <CancelButton />
+              <SaveButton label="Save Changes" />
             </div>
-          </FormToolbar>
-        </CardContent>
-      </Card>
+          </div>
+        </FormToolbar>
+      </SectionCard>
     </Form>
   );
 };

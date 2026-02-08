@@ -144,7 +144,9 @@ export const contactBaseSchema = z.strictObject({
   twitter_handle: z.string().trim().max(100).optional().nullable(),
 
   // Classification fields - exist in DB
-  tags: z.array(z.string().trim().max(100)).max(50, "Maximum 50 tags").default([]),
+  // FIX [EDIT-001]: tags are BIGINT[] foreign keys to tags table (not strings)
+  // TagsListEdit.tsx confirms: record.tags.includes(tag.id) where tag.id is number
+  tags: z.array(z.coerce.number()).max(50, "Maximum 50 tags").default([]),
   status: z.string().trim().max(50).optional().nullable(),
 
   // System fields (readonly, set by triggers)
@@ -153,6 +155,11 @@ export const contactBaseSchema = z.strictObject({
   // Computed fields from views/joins (readonly, not written to DB)
   nb_notes: z.number().optional(),
   nb_activities: z.number().optional(),
+
+  // PostgreSQL tsvector - auto-generated, not user-editable
+  // Required to pass strictObject validation when getOne returns base table record
+  // FIX [EDIT-001]: Matches pattern from opportunities-core.ts (opportunityBaseSchema)
+  search_tsv: z.unknown().optional(),
 });
 
 // Helper function to transform data

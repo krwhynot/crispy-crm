@@ -51,6 +51,9 @@ export const COMPUTED_FIELDS = [
   "nb_tasks",
   "nb_activities",
   "company_name", // Alias for organization_name in view
+  // PostgreSQL tsvector - auto-generated, cannot be updated
+  // FIX [EDIT-001]: Matches pattern from organizationsCallbacks.ts line 64
+  "search_tsv",
 ] as const;
 
 /**

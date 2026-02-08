@@ -20,7 +20,6 @@ import {
 } from "ra-core";
 import { Link as RouterLink, useLocation, useMatch, useNavigate } from "react-router-dom";
 import { AdminButton } from "@/components/admin/AdminButton";
-import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { ReferenceManyField } from "@/components/ra-wrappers/reference-many-field";
 import { SortButton } from "@/components/ra-wrappers/sort-button";

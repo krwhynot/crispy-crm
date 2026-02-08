@@ -4,7 +4,7 @@ import { useSafeNotify } from "../hooks/useSafeNotify";
 import { useQueryClient } from "@tanstack/react-query";
 
 import { opportunityKeys, dashboardKeys } from "../queryKeys";
-import { Card, CardContent } from "@/components/ui/card";
+import { SectionCard } from "@/components/ra-wrappers/SectionCard";
 import { Separator } from "@/components/ui/separator";
 import { DeleteButton } from "@/components/ra-wrappers/delete-button";
 import { SaveButton, FormProgressProvider } from "@/components/ra-wrappers/form";
@@ -100,27 +100,25 @@ const OpportunityEditForm = () => {
           return data;
         }}
       >
-        <Card>
-          <CardContent className="pt-6">
-            <EditHeader />
+        <SectionCard contentClassName="pt-6">
+          <EditHeader />
 
-            <div className="mt-6">
-              <OpportunityCompactForm mode="edit" />
-              <Separator className="my-6" />
-              <OpportunityActivitySection />
-            </div>
+          <div className="mt-6">
+            <OpportunityCompactForm mode="edit" />
+            <Separator className="my-6" />
+            <OpportunityActivitySection />
+          </div>
 
-            <FormToolbar>
-              <div className="flex flex-row gap-2 justify-between w-full">
-                <DeleteButton />
-                <div className="flex gap-2">
-                  <CancelButton />
-                  <SaveButton type="button" />
-                </div>
+          <FormToolbar>
+            <div className="flex flex-row gap-2 justify-between w-full">
+              <DeleteButton />
+              <div className="flex gap-2">
+                <CancelButton />
+                <SaveButton type="button" />
               </div>
-            </FormToolbar>
-          </CardContent>
-        </Card>
+            </div>
+          </FormToolbar>
+        </SectionCard>
       </Form>
     </FormProgressProvider>
   );

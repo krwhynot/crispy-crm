@@ -1,6 +1,6 @@
 import { SimpleForm } from "@/components/ra-wrappers/simple-form";
 import { FormErrorSummary } from "@/components/ra-wrappers/FormErrorSummary";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { SectionCard } from "@/components/ra-wrappers/SectionCard";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { saleKeys } from "@/atomic-crm/queryKeys";
 import { useCanAccess, useDataProvider, useNotify, useRedirect } from "ra-core";
@@ -132,20 +132,15 @@ export default function SalesCreate() {
 
   return (
     <div className="bg-muted max-w-lg w-full mx-auto mt-8 px-6 py-6">
-      <Card>
-        <CardHeader>
-          <CardTitle>Create a new user</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <SimpleForm<SalesFormData>
-            onSubmit={onSubmit}
-            defaultValues={formDefaults}
-            disabled={isCreating}
-          >
-            <SalesFormContent serverError={serverError} />
-          </SimpleForm>
-        </CardContent>
-      </Card>
+      <SectionCard title="Create a new user">
+        <SimpleForm<SalesFormData>
+          onSubmit={onSubmit}
+          defaultValues={formDefaults}
+          disabled={isCreating}
+        >
+          <SalesFormContent serverError={serverError} />
+        </SimpleForm>
+      </SectionCard>
     </div>
   );
 }

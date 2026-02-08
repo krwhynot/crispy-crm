@@ -1,4 +1,4 @@
-import { Card, CardContent } from "@/components/ui/card";
+import { SectionCard } from "@/components/ra-wrappers/SectionCard";
 import { EditBase, Form, useRecordContext } from "ra-core";
 import { useQueryClient } from "@tanstack/react-query";
 import { useMemo } from "react";
@@ -51,13 +51,11 @@ const TaskEditForm = () => {
         mode="onBlur"
         resolver={createFormResolver(taskSchema)}
       >
-        <Card>
-          <CardContent className="pt-6">
-            <h2 className="text-2xl font-semibold mb-4">Edit Task</h2>
-            <TaskInputs />
-            <FormToolbar />
-          </CardContent>
-        </Card>
+        <SectionCard contentClassName="pt-6">
+          <h2 className="text-2xl font-semibold mb-4">Edit Task</h2>
+          <TaskInputs />
+          <FormToolbar />
+        </SectionCard>
       </Form>
     </div>
   );

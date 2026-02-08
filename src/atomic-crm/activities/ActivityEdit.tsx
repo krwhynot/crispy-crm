@@ -7,7 +7,7 @@ import { EditBase, Form, useRecordContext } from "ra-core";
 import { useQueryClient } from "@tanstack/react-query";
 
 import { activityKeys } from "../queryKeys";
-import { Card, CardContent } from "@/components/ui/card";
+import { SectionCard } from "@/components/ra-wrappers/SectionCard";
 import { FormToolbar } from "@/atomic-crm/layout/FormToolbar";
 import type { ActivityRecord } from "../types";
 import { ActivityInputs } from "./ActivityInputs";
@@ -44,19 +44,17 @@ const ActivityEditForm = () => {
 
   return (
     <Form defaultValues={record} mode="onBlur" shouldUnregister>
-      <Card>
-        <CardContent className="space-y-6 p-6">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-semibold text-foreground">Edit Activity</h2>
-            <span className="text-sm text-muted-foreground">
-              {record.type && `${ucFirst(record.type)}`}
-              {record.activity_date && ` - ${new Date(record.activity_date).toLocaleDateString()}`}
-            </span>
-          </div>
-          <ActivityInputs />
-          <FormToolbar dataTutorial="activity-save-btn" />
-        </CardContent>
-      </Card>
+      <SectionCard contentClassName="space-y-6 p-6">
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-lg font-semibold text-foreground">Edit Activity</h2>
+          <span className="text-sm text-muted-foreground">
+            {record.type && `${ucFirst(record.type)}`}
+            {record.activity_date && ` - ${new Date(record.activity_date).toLocaleDateString()}`}
+          </span>
+        </div>
+        <ActivityInputs />
+        <FormToolbar dataTutorial="activity-save-btn" />
+      </SectionCard>
     </Form>
   );
 };

@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { CreateBase, Form } from "ra-core";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { SectionCard } from "@/components/ra-wrappers/SectionCard";
 import { CreateFormFooter } from "@/atomic-crm/components";
 import { TagInputs } from "./TagInputs";
 import { createTagSchema } from "../validation/tags";
@@ -18,21 +18,16 @@ export const TagCreate = () => {
     <CreateBase redirect="list">
       <div className="bg-muted px-6 py-6">
         <div className="max-w-2xl mx-auto">
-          <Card>
-            <CardHeader>
-              <CardTitle>Create Tag</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <Form
-                defaultValues={defaultValues}
-                mode="onBlur"
-                resolver={createFormResolver(createTagSchema)}
-              >
-                <TagInputs />
-                <CreateFormFooter resourceName="tag" redirectPath="/tags" />
-              </Form>
-            </CardContent>
-          </Card>
+          <SectionCard title="Create Tag">
+            <Form
+              defaultValues={defaultValues}
+              mode="onBlur"
+              resolver={createFormResolver(createTagSchema)}
+            >
+              <TagInputs />
+              <CreateFormFooter resourceName="tag" redirectPath="/tags" />
+            </Form>
+          </SectionCard>
         </div>
       </div>
     </CreateBase>

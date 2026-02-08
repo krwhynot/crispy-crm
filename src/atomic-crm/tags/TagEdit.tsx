@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { EditBase, Form, useEditContext } from "ra-core";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { SectionCard } from "@/components/ra-wrappers/SectionCard";
 import { FormToolbar } from "../layout/FormToolbar";
 import { TagInputs } from "./TagInputs";
 import { tagSchema } from "../validation/tags";
@@ -32,21 +32,16 @@ const TagEditContent = () => {
   return (
     <div className="bg-muted px-6 py-6">
       <div className="max-w-2xl mx-auto">
-        <Card>
-          <CardHeader>
-            <CardTitle>Edit Tag</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <Form
-              defaultValues={defaultValues}
-              mode="onBlur"
-              resolver={createFormResolver(tagSchema)}
-            >
-              <TagInputs />
-              <FormToolbar />
-            </Form>
-          </CardContent>
-        </Card>
+        <SectionCard title="Edit Tag">
+          <Form
+            defaultValues={defaultValues}
+            mode="onBlur"
+            resolver={createFormResolver(tagSchema)}
+          >
+            <TagInputs />
+            <FormToolbar />
+          </Form>
+        </SectionCard>
       </div>
     </div>
   );

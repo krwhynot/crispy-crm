@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { Card, CardContent } from "@/components/ui/card";
+import { SectionCard } from "@/components/ra-wrappers/SectionCard";
 import { ResponsiveGrid } from "@/components/design-system";
 import { EditBase, Form, useEditContext, useRefresh } from "ra-core";
 import { createFormResolver } from "@/lib/zodErrorFormatting";
@@ -24,8 +24,13 @@ export const ContactEdit = () => {
       redirect="show"
       mutationMode="pessimistic"
       mutationOptions={{
-        onSuccess: () => {
-          // Invalidate related caches to prevent stale data
+        onSuccess: (data) => {
+          // FIX [EDIT-001]: Invalidate specific contact detail + related caches
+          // Prevents stale data when navigating back to show page
+          const contactId = typeof data?.id === "number" ? data.id : Number(data?.id);
+          if (contactId) {
+            queryClient.invalidateQueries({ queryKey: contactKeys.detail(contactId) });
+          }
           queryClient.invalidateQueries({ queryKey: contactKeys.lists() });
           queryClient.invalidateQueries({ queryKey: activityKeys.lists() });
           queryClient.invalidateQueries({ queryKey: opportunityKeys.lists() });
@@ -60,12 +65,10 @@ const ContactEditContent = () => {
           mode="onBlur"
           resolver={createFormResolver(contactBaseSchema)}
         >
-          <Card>
-            <CardContent>
-              <ContactInputs />
-              <FormToolbar />
-            </CardContent>
-          </Card>
+          <SectionCard>
+            <ContactInputs />
+            <FormToolbar />
+          </SectionCard>
         </Form>
       </main>
 

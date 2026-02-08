@@ -14,7 +14,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { CreateBase, Form, useCreate, useRedirect, useNotify, useCanAccess } from "ra-core";
 import { createFormResolver } from "@/lib/zodErrorFormatting";
-import { Card, CardContent } from "@/components/ui/card";
+import { SectionCard } from "@/components/ra-wrappers/SectionCard";
 import {
   FormLoadingSkeleton,
   FormProgressProvider,
@@ -187,13 +187,11 @@ const OrganizationCreate = () => {
     return (
       <div className="bg-muted px-6 py-6">
         <div className="max-w-4xl mx-auto">
-          <Card>
-            <CardContent className="py-8 text-center">
-              <p className="text-destructive">
-                Unable to load user account. Please refresh the page.
-              </p>
-            </CardContent>
-          </Card>
+          <SectionCard contentClassName="py-8 text-center">
+            <p className="text-destructive">
+              Unable to load user account. Please refresh the page.
+            </p>
+          </SectionCard>
         </div>
       </div>
     );
@@ -214,18 +212,16 @@ const OrganizationCreate = () => {
                 resolver={createFormResolver(createOrganizationSchema)}
               >
                 <FormProgressBar schema={createOrganizationSchema} className="mb-6" />
-                <Card>
-                  <CardContent>
-                    <OrganizationFormContent
-                      onDuplicateFound={handleDuplicateFound}
-                      checkForDuplicate={checkForDuplicate}
-                      isChecking={isChecking}
-                      transformValues={transformValues}
-                      bypassDuplicate={bypassDuplicate}
-                      isRep={isRep}
-                    />
-                  </CardContent>
-                </Card>
+                <SectionCard>
+                  <OrganizationFormContent
+                    onDuplicateFound={handleDuplicateFound}
+                    checkForDuplicate={checkForDuplicate}
+                    isChecking={isChecking}
+                    transformValues={transformValues}
+                    bypassDuplicate={bypassDuplicate}
+                    isRep={isRep}
+                  />
+                </SectionCard>
               </Form>
             </FormProgressProvider>
           </div>

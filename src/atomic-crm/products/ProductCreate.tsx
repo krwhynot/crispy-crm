@@ -1,5 +1,5 @@
 import { CreateBase, Form, useGetIdentity } from "ra-core";
-import { Card, CardContent } from "@/components/ui/card";
+import { SectionCard } from "@/components/ra-wrappers/SectionCard";
 import { FormProgressProvider, FormProgressBar } from "@/components/ra-wrappers/form";
 import { CreateFormFooter } from "../components/CreateFormFooter";
 import { createFormResolver } from "@/lib/zodErrorFormatting";
@@ -28,11 +28,9 @@ const ProductCreate = () => {
               mode="onBlur"
               resolver={createFormResolver(productSchema)}
             >
-              <Card>
-                <CardContent>
-                  <ProductFormContent />
-                </CardContent>
-              </Card>
+              <SectionCard>
+                <ProductFormContent />
+              </SectionCard>
             </Form>
           </FormProgressProvider>
         </div>
