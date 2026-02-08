@@ -18,7 +18,8 @@ DON'T:
 
 DO:
 - `useDataProvider()`, `useGetList()`, `useGetOne()` - React Admin hooks only
-- Read from `_summary` views for computed stats
+- Read list/getMany data from `_summary` views for computed stats
+- Follow provider resource mapping for `getOne` detail reads
 - Write to base tables (resource name routes correctly)
 
 DON'T:
@@ -39,6 +40,7 @@ DON'T:
 
 DO:
 - Import Tier 2 Admin wrappers (`SaveButton`, `TextInput`)
+- Use `PremiumDatagrid` from `@/components/ra-wrappers/PremiumDatagrid` for list tables
 - Use standard React Admin inputs (`DateInput`, `ReferenceInput`)
 - Move business logic to custom hooks (e.g., `useOpportunityDecay`)
 
@@ -87,15 +89,16 @@ export const ContactList = () => {
 
 RIGHT:
 ```tsx
-import { List, Datagrid, TextField, DeleteButton } from 'react-admin';
+import { List, TextField, DeleteButton } from 'react-admin';
+import { PremiumDatagrid } from "@/components/ra-wrappers/PremiumDatagrid";
 
 export const ContactList = () => (
   <List>
-    <Datagrid rowClick="show">
+    <PremiumDatagrid rowClick="show">
       <TextField source="first_name" />
       <TextField source="last_name" />
       <DeleteButton />  {/* Soft delete handled by provider */}
-    </Datagrid>
+    </PremiumDatagrid>
   </List>
 );
 ```
@@ -104,13 +107,14 @@ export const ContactList = () => (
 
 - [ ] Standard file structure (`index.tsx`, `[Entity]List.tsx`, etc.)
 - [ ] No direct Supabase imports
-- [ ] Read from `_summary` views
+- [ ] List/getMany reads follow `_summary` view mapping
 - [ ] Form `mode="onSubmit"` or `onBlur`
 - [ ] No inline `validate` functions
 - [ ] Inputs in `[Entity]Inputs.tsx`
 - [ ] Using Tier 2 Admin components
 - [ ] Business logic in hooks/utils
 - [ ] Semantic colors (no hex codes)
-- [ ] Touch targets ≥ `h-11`
+- [ ] Touch targets >= `h-11`
 - [ ] Standard `DeleteButton`
 - [ ] Unused imports removed
+

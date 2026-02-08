@@ -18,7 +18,8 @@ DON'T:
 ## View/Table Duality
 
 DO:
-- **Reads:** Query `contacts_summary`, `opportunities_summary` views
+- **Reads (list/getMany/getManyReference):** Query `contacts_summary`, `opportunities_summary` views
+- **Reads (getOne):** Use the configured detail mapping (base table or summary view) per resource
 - **Writes:** Target base tables directly
 - Define `COMPUTED_FIELDS` in `callbacks/[resource]Callbacks.ts`
 - `withLifecycleCallbacks` strips computed fields before save
@@ -32,17 +33,33 @@ DON'T:
 
 DO:
 - Schemas in `src/atomic-crm/validation/`
-- Register in `services/ValidationService.ts`
+- Register in `src/atomic-crm/providers/supabase/services/ValidationService.ts`
 - `withValidation` wrapper enforces and throws 400 errors
+- Treat edit as a round-trip contract:
+  - `getOne -> defaultValues -> resolver -> provider update`
+  - If any stage rejects fields, save can no-op before API calls
 
 DON'T:
 - Rely solely on React Admin form validation
 - Skip provider-layer validation
+- Parse raw DB/view records with strict write schemas in form defaults
+
+## Edit Round-Trip Contract
+
+DO:
+- Keep one canonical `COMPUTED_FIELDS` list per resource in callbacks/transform layer
+- Strip or sanitize view-only/computed fields before strict validation on save
+- Add one guard test per resource: edit one field, click save, assert `dataProvider.update` called
+- Add schema-drift tests so computed field stripping stays aligned with SQL view columns
+
+DON'T:
+- Assume save reached provider if no network call is visible
+- Debug provider first when resolver validation can block submit earlier
 
 ## Storage Operations
 
 DO:
-- **Service Isolation:** Encapsulate storage logic in `src/services/StorageService.ts`. Don't call `supabase.storage` inside handlers directly.
+- **Service Isolation:** Encapsulate storage logic in `src/atomic-crm/providers/supabase/services/StorageService.ts`. Don't call `supabase.storage` inside handlers directly.
 - **MIME Validation:** Validate `file.type` against an allowed list (e.g., `['image/png', 'application/pdf']`) before upload.
 - **Cleanup on Fail:** If a database transaction fails after a file upload, catch the error and delete the orphaned file immediately.
 - **Signed URLs:** Use `createSignedUrl` for private assets; do not expose permanent paths.
@@ -50,17 +67,17 @@ DO:
 DON'T:
 - **Blocking Uploads:** Don't block the main UI thread. Use background uploads where possible.
 - **Raw File Inputs:** Don't pass raw `File` objects deeper than the handler layer.
-- 
+
 ## Service Layer
 
 DO:
 - Handlers = plumbing (map React Admin params to Supabase params)
-- Services = logic (business operations in `src/services/`)
+- Services = logic (business operations in `src/atomic-crm/providers/supabase/services/`)
 - `OpportunitiesService.archive()` for complex operations
 
 DON'T:
 - Put business logic in handlers
-- Call `supabase.rpc()` directly in handlers
+- Scatter `supabase.rpc()` calls across generic handlers; keep them in resource callbacks or service-layer methods
 
 ## Soft Deletes
 
@@ -216,24 +233,25 @@ return withValidation(
 RIGHT:
 ```typescript
 export function createMyHandler(baseProvider: DataProvider): DataProvider {
-  return withErrorLogging(              // 4. Outermost - catches all errors
-    withLifecycleCallbacks(             // 3. Strips computed fields
-      withValidation(baseProvider),     // 2. Validates first
+  return withErrorLogging(              // 3. Outermost - catches all errors
+    withLifecycleCallbacks(             // 2. Runs before/after callbacks (strip/sanitize in before*)
+      withValidation(baseProvider),     // 1. Validates sanitized payload before base write
       [myResourceCallbacks]
     )
   );
 }
 ```
 
-Order matters: Validate → Strip → Log (inside to outside).
+Execution order matters: Strip/Sanitize -> Validate -> Log.
 
 ## Code Review Checklist
 
 - [ ] File in `handlers/` (not `unifiedDataProvider`)
 - [ ] Registered in `composedDataProvider.ts`
-- [ ] Reads from `_summary` view, writes to base table
+- [ ] List/getMany reads use `_summary` view mapping; writes target base table
 - [ ] `COMPUTED_FIELDS` defined in callbacks
 - [ ] Zod schema registered in `ValidationService`
+- [ ] Edit round-trip verified (`getOne -> defaultValues -> resolver -> update`)
 - [ ] `supportsSoftDelete: true` enabled
 - [ ] `withErrorLogging` is outermost wrapper
 - [ ] External side-effects wrapped in try/catch with logging

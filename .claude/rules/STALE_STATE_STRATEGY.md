@@ -99,8 +99,8 @@ useGetList("opportunities", filters, {
 **How it works:**
 1. User tabs back to app
 2. React Query checks: Is data older than `staleTime`?
-3. **NO** → Skip refetch (no API call, data still fresh)
-4. **YES** → Refetch (data was stale anyway)
+3. **NO** -> Skip refetch (no API call, data still fresh)
+4. **YES** -> Refetch (data was stale anyway)
 
 **Result:** No API storms. Dashboard refreshes intelligently only when needed.
 
@@ -206,6 +206,7 @@ useQuery({
 - [ ] Cross-resource dependencies invalidated (see table above)
 - [ ] Using `queryKeys` factory, not hardcoded strings
 - [ ] Dashboard/volatile data uses `SHORT_STALE_TIME_MS`
-- [ ] No `refetchOnWindowFocus: true` on frequently changing data
+- [ ] No `refetchOnWindowFocus: true` without explicit `staleTime`
 - [ ] No `queryClient.setQueryData()` (except optimistic updates with rollback)
 - [ ] Junction table changes invalidate both related resources
+

@@ -307,6 +307,23 @@ export const opportunitySchema = z.strictObject({ ... });
 - Document which fields are stripped in `TransformService.ts` constants
 - See also: PROVIDER_RULES.md Rule 2 (View vs Table Duality)
 
+### Rule of Thumb: Edit Round-Trip Contract
+
+For every editable resource, treat edit as a strict round-trip contract:
+
+`getOne record -> form defaultValues -> form resolver -> provider update`
+
+If any stage rejects fields unexpectedly, save will fail or silently no-op.
+
+**Required checklist:**
+1. Do not run raw DB/view records through a strict write schema for form defaults.
+2. Strip or sanitize view-only/computed fields before strict validation on save.
+3. Keep one canonical `COMPUTED_FIELDS` list per resource (callbacks/transform layer).
+4. Add one schema-drift test to keep `COMPUTED_FIELDS` aligned with SQL view columns.
+5. Add one TDD guard test per resource: "edit one field -> Save -> `dataProvider.update` called".
+
+**Debug heuristic:** if Save does nothing and no PATCH is sent, inspect resolver validation errors first.
+
 ---
 
 ## Pattern C: Enum Schemas with UI Choices

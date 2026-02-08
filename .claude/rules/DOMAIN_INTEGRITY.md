@@ -16,30 +16,42 @@ DON'T:
 - Orphan schemas in `utils/` or component files
 - Skip `.strict()` on create schemas - allows invalid data through
 
-### Strict vs Passthrough: When to Use Each
+### Strict vs Passthrough: Choose Explicitly for Updates
 
-**`.strict()` (Default):** Use at API boundaries for **creates** and provider-level validation. Rejects unknown fields, preventing mass-assignment attacks.
+**`.strict()` (default):** Use for creates and many update boundaries. Unknown keys are rejected, which prevents mass-assignment.
 
-**`.passthrough()` for Updates:** When handling **manual updates** (e.g., SlideOvers, edit forms) where the data object may contain mixed UI state, metadata fields (`id`, `created_at`, `updated_at`), or computed view fields, use `.passthrough()` to prevent Zod from silently stripping required metadata.
+**`.passthrough()` (opt-in):** Use for update flows that intentionally carry extra keys through parsing, but only if you later strip/whitelist before DB write.
 
 WRONG:
 ```typescript
-// .strict() strips `id` and `updated_at` from update payload — save silently fails
-const updateSchema = contactSchema.strict();
-const cleaned = updateSchema.parse(formData); // { name: "John" } — id is GONE
+// Edit form loads summary-view defaults, but strict update schema omits those fields
+// parse() fails and submit can no-op before any API call
+const contactUpdateSchema = z.strictObject({
+  first_name: z.string().optional(),
+  last_name: z.string().optional(),
+});
 ```
 
-RIGHT:
+RIGHT (Option A - Strict + coverage):
 ```typescript
-// Create schema: strict (reject unknown fields)
-export const contactCreateSchema = contactSchema.strict();
-
-// Update schema: passthrough (preserve metadata, strip only via COMPUTED_FIELDS)
-export const contactUpdateSchema = contactSchema.passthrough();
-// Computed fields (from views) stripped separately in lifecycle callbacks
+// Include known view-only keys so strict validation passes
+const contactUpdateSchema = z.strictObject({
+  first_name: z.string().optional(),
+  last_name: z.string().optional(),
+  full_name: z.string().optional().nullable(), // view-only
+});
+// Strip view-only/computed keys in resolver or lifecycle before DB write
 ```
 
-**Rule of thumb:** `.strict()` for creates (security), `.passthrough()` for updates (preserve metadata). Computed view fields are stripped by `withLifecycleCallbacks` in the provider layer, NOT by Zod.
+RIGHT (Option B - Passthrough + explicit sanitize):
+```typescript
+const contactUpdateSchema = contactBaseSchema.passthrough();
+// Then explicitly strip/whitelist before DB write
+```
+
+**Rule of thumb:** For updates, pick one strategy and document it:
+1. strict schema with full round-trip field coverage, or
+2. passthrough schema with explicit sanitize/whitelist before write.
 
 ## Constants
 
@@ -161,7 +173,8 @@ Generic typed factories eliminate `as any` while maintaining type safety for any
 - [ ] Every table in `supabase/migrations/` has matching `z.object` in `validation/`
 - [ ] Exporting `z.infer<...>` types (not manual interfaces)
 - [ ] Create schemas use `.strict()` to block illegal fields
-- [ ] Update schemas use `.passthrough()` to preserve metadata (`id`, `created_at`)
+- [ ] Update schemas pick one strategy explicitly: strict+round-trip coverage OR passthrough+explicit sanitize before write
 - [ ] Form inputs use `z.coerce` for type conversion
 - [ ] No `as any` or `as unknown as` casts (use type guards or typed test data)
 - [ ] React Admin hook mocks use generic factories from `src/tests/utils/typed-mocks.ts`
+
