@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { CreateBase, Form, useGetIdentity } from "ra-core";
 import { useSearchParams } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
@@ -40,7 +41,7 @@ const URL_TYPE_MAP: Record<string, string> = {
  * Pre-fills: today's due date, current user, medium priority
  */
 export default function TaskCreate() {
-  const { data: identity } = useGetIdentity();
+  const { data: identity, isLoading: isIdentityLoading } = useGetIdentity();
   const [searchParams] = useSearchParams();
   const queryClient = useQueryClient();
 
@@ -55,17 +56,46 @@ export default function TaskCreate() {
   const urlOrganizationId = searchParams.get("organization_id");
   const urlRelatedTaskId = searchParams.get("related_task_id");
 
-  const defaultValues = {
-    ...getTaskDefaultValues(),
-    sales_id: identity?.id,
-    // URL params override defaults
-    ...(urlTitle && { title: urlTitle }),
-    ...(urlType && { type: URL_TYPE_MAP[urlType.toLowerCase()] || urlType }),
-    ...(urlContactId && { contact_id: Number(urlContactId) }),
-    ...(urlOpportunityId && { opportunity_id: Number(urlOpportunityId) }),
-    ...(urlOrganizationId && { organization_id: Number(urlOrganizationId) }),
-    ...(urlRelatedTaskId && { related_task_id: Number(urlRelatedTaskId) }),
-  };
+  // Memoize defaultValues with stable identity.id to prevent form reset
+  // when identity loads asynchronously (ra-core Form resets on defaultValues change)
+  const defaultValues = useMemo(
+    () => ({
+      ...getTaskDefaultValues(),
+      sales_id: identity?.id,
+      // URL params override defaults
+      ...(urlTitle && { title: urlTitle }),
+      ...(urlType && { type: URL_TYPE_MAP[urlType.toLowerCase()] || urlType }),
+      ...(urlContactId && { contact_id: Number(urlContactId) }),
+      ...(urlOpportunityId && { opportunity_id: Number(urlOpportunityId) }),
+      ...(urlOrganizationId && { organization_id: Number(urlOrganizationId) }),
+      ...(urlRelatedTaskId && { related_task_id: Number(urlRelatedTaskId) }),
+    }),
+    [
+      identity?.id,
+      urlTitle,
+      urlType,
+      urlContactId,
+      urlOpportunityId,
+      urlOrganizationId,
+      urlRelatedTaskId,
+    ]
+  );
+
+  // Guard: Wait for identity to load before rendering form
+  // Prevents form reset when identity loads after user starts typing
+  if (isIdentityLoading || !identity?.id) {
+    return (
+      <div className="bg-muted px-6 py-6">
+        <div className="max-w-4xl mx-auto create-form-card p-8">
+          <div className="animate-pulse space-y-4">
+            <div className="h-6 bg-muted-foreground/10 rounded w-1/4" />
+            <div className="h-10 bg-muted-foreground/10 rounded" />
+            <div className="h-24 bg-muted-foreground/10 rounded" />
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <CreateBase

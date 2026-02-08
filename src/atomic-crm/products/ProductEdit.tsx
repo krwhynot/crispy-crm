@@ -45,8 +45,10 @@ const ProductEdit = () => {
 
 const ProductEditForm = () => {
   const record = useRecordContext<Product>();
-  const { data: identity } = useGetIdentity();
+  const { data: identity, isLoading: isIdentityLoading } = useGetIdentity();
 
+  // Memoize defaultValues with stable identity.id to prevent form reset
+  // when identity loads asynchronously (ra-core Form resets on defaultValues change)
   const defaultValues = useMemo(
     () => ({
       ...productUpdateSchema.partial().parse(record ?? {}),
@@ -55,8 +57,9 @@ const ProductEditForm = () => {
     [record, identity?.id]
   );
 
-  // Wait for record to load before rendering form
-  if (!record) return null;
+  // Wait for record and identity to load before rendering form
+  // Prevents form reset when identity loads after user starts typing
+  if (!record || isIdentityLoading || !identity?.id) return null;
 
   return (
     <Form

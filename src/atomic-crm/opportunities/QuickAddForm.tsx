@@ -64,6 +64,21 @@ export const QuickAddForm = ({ onSuccess }: QuickAddFormProps) => {
     [identity?.id, schemaDefaults]
   );
 
+  // Guard: Wait for identity to load before rendering form
+  // Prevents form reset when identity loads after user starts typing
+  if (identityLoading || !identity?.id) {
+    return (
+      <div className="flex flex-col gap-6">
+        <div className="animate-pulse space-y-4">
+          <div className="h-6 bg-muted-foreground/10 rounded w-1/3" />
+          <div className="h-10 bg-muted-foreground/10 rounded" />
+          <div className="h-10 bg-muted-foreground/10 rounded" />
+          <div className="h-24 bg-muted-foreground/10 rounded" />
+        </div>
+      </div>
+    );
+  }
+
   // React Admin Form component provides FormProvider context
   // mode="onBlur" per Engineering Constitution - no onChange validation
   return (
