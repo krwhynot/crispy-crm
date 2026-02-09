@@ -55,7 +55,20 @@ export const unarchiveOpportunityWithRelationsParamsSchema = z.strictObject({
  * Atomically synchronize opportunity and its product associations.
  */
 const opportunityProductItemSchema = z.strictObject({
-  product_id: z.number().int().positive("Product ID must be a positive integer"),
+  product_id_reference: z
+    .union([z.string(), z.number()])
+    .refine(
+      (val) => {
+        const num = typeof val === "string" ? parseInt(val, 10) : val;
+        return Number.isInteger(num) && num > 0;
+      },
+      {
+        message: "Product ID must be a positive integer",
+      }
+    )
+    .transform((val) => {
+      return typeof val === "string" ? parseInt(val, 10) : val;
+    }),
   notes: z.string().max(2000, "Notes too long").optional().nullable(),
 });
 
@@ -73,6 +86,7 @@ export const syncOpportunityWithProductsParamsSchema = z.strictObject({
     .array(z.number().int().positive())
     .max(100, "Maximum 100 products to delete")
     .default([]),
+  expected_version: z.number().int().optional(),
 });
 
 /**

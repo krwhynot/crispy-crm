@@ -307,6 +307,13 @@ export const OpportunityListContent = ({
       }
 
       setOpportunitiesByStage((prevState) => {
+        if (!prevState) {
+          logger.warn("Delete skipped - state not initialized", {
+            feature: "OpportunityListContent",
+            opportunityId,
+          });
+          return prevState; // Return null, fallback uses derived state
+        }
         const newState = { ...prevState };
         // Find and remove the opportunity from whichever stage it's in
         for (const stage of Object.keys(newState)) {
@@ -335,6 +342,13 @@ export const OpportunityListContent = ({
    */
   const handleOpportunityCreated = useCallback((opportunity: Opportunity) => {
     setOpportunitiesByStage((prevState) => {
+      if (!prevState) {
+        logger.warn("Create skipped - state not initialized, will sync on refresh", {
+          feature: "OpportunityListContent",
+          opportunityId: opportunity.id,
+        });
+        return prevState;
+      }
       const stage = opportunity.stage;
       if (!stage || !prevState[stage]) {
         // If stage is invalid or not in our stages, don't add
@@ -372,6 +386,14 @@ export const OpportunityListContent = ({
 
       // Dropped outside a valid droppable
       if (!over) {
+        return;
+      }
+
+      if (!opportunitiesByStage || Object.keys(opportunitiesByStage).length === 0) {
+        logger.warn("Drag aborted - state not initialized", {
+          feature: "OpportunityListContent",
+          draggedId: active.id,
+        });
         return;
       }
 
