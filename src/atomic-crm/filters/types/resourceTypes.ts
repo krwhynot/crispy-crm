@@ -12,6 +12,7 @@
 import type { Sales } from "../../validation/sales";
 import type { Organization } from "../../validation/organizations";
 import type { Tag } from "../../validation/tags";
+import type { Task } from "../../validation/task";
 
 /**
  * Base constraint for any resource that can be looked up by ID
@@ -76,6 +77,12 @@ export const resourceExtractors = {
    * Extract display name from Tag resource
    */
   tags: ((t) => t.name) satisfies DisplayNameExtractor<Tag>,
+
+  /**
+   * Extract display name from Task resource
+   * Uses title field for display
+   */
+  tasks: ((t) => t.title) satisfies DisplayNameExtractor<Task>,
 } as const;
 
 /**
@@ -86,6 +93,7 @@ export interface ResourceConfig {
   sales: { type: Sales; extractor: typeof resourceExtractors.sales };
   organizations: { type: Organization; extractor: typeof resourceExtractors.organizations };
   tags: { type: Tag; extractor: typeof resourceExtractors.tags };
+  tasks: { type: Task; extractor: typeof resourceExtractors.tasks };
 }
 
 /**

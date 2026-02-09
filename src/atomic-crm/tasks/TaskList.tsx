@@ -42,7 +42,7 @@ import { ListSearchBar } from "@/components/ra-wrappers/ListSearchBar";
 import { TaskActionMenu } from "./TaskActionMenu";
 import { SortButton } from "@/components/ra-wrappers/sort-button";
 import { ExportButton } from "@/components/ra-wrappers/export-button";
-import { taskKeys } from "@/atomic-crm/queryKeys";
+import { taskKeys, entityTimelineKeys } from "@/atomic-crm/queryKeys";
 import type { Task } from "./types";
 import type { Opportunity, Organization } from "../types";
 
@@ -209,7 +209,8 @@ const TaskListLayout = ({
         });
         notify("Task reopened", { type: "success" });
       }
-      queryClient.invalidateQueries({ queryKey: taskKeys.all });
+      queryClient.invalidateQueries({ queryKey: taskKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: entityTimelineKeys.lists() });
     } catch {
       notify(checked ? "Failed to complete task" : "Failed to reopen task", {
         type: "error",

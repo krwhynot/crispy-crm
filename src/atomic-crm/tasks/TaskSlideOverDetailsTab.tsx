@@ -4,7 +4,7 @@ import { Form } from "react-admin";
 import { logger } from "@/lib/logger";
 import { taskUpdateSchema } from "@/atomic-crm/validation/task";
 import { notificationMessages } from "@/atomic-crm/constants/notificationMessages";
-import { taskKeys } from "../queryKeys";
+import { taskKeys, entityTimelineKeys } from "../queryKeys";
 import { SnoozeIndicator } from "@/components/ui/snooze-badge";
 import { ReferenceField } from "@/components/ra-wrappers/reference-field";
 import { DateField } from "@/components/ra-wrappers/date-field";
@@ -81,7 +81,8 @@ export function TaskSlideOverDetailsTab({
         data: result.data,
         previousData: record,
       });
-      await queryClient.invalidateQueries({ queryKey: taskKeys.all });
+      await queryClient.invalidateQueries({ queryKey: taskKeys.lists() });
+      await queryClient.invalidateQueries({ queryKey: entityTimelineKeys.lists() });
       notify(notificationMessages.updated("Task"), { type: "success" });
       onModeToggle?.(); // Return to view mode after successful save
     } catch (error: unknown) {
@@ -102,7 +103,8 @@ export function TaskSlideOverDetailsTab({
           data: { completed: true, completed_at: new Date().toISOString() },
           previousData: record,
         });
-        queryClient.invalidateQueries({ queryKey: taskKeys.all });
+        queryClient.invalidateQueries({ queryKey: taskKeys.lists() });
+        queryClient.invalidateQueries({ queryKey: entityTimelineKeys.lists() });
         notify("Task marked complete", { type: "success" });
       } else {
         await update("tasks", {
@@ -110,7 +112,8 @@ export function TaskSlideOverDetailsTab({
           data: { completed: false, completed_at: null },
           previousData: record,
         });
-        queryClient.invalidateQueries({ queryKey: taskKeys.all });
+        queryClient.invalidateQueries({ queryKey: taskKeys.lists() });
+        queryClient.invalidateQueries({ queryKey: entityTimelineKeys.lists() });
         notify("Task marked incomplete", { type: "success" });
       }
     } catch (error: unknown) {

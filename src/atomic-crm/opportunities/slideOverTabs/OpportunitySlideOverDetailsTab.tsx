@@ -8,7 +8,7 @@ import {
   type CloseOpportunityInput,
 } from "@/atomic-crm/validation/opportunities";
 import type { Opportunity } from "@/atomic-crm/types";
-import { activityKeys } from "@/atomic-crm/queryKeys";
+import { activityKeys, entityTimelineKeys } from "@/atomic-crm/queryKeys";
 import { STAGE } from "@/atomic-crm/opportunities/constants";
 import { FormProgressProvider } from "@/components/ra-wrappers/form";
 import { OpportunityDetailsFormSection } from "./OpportunityDetailsFormSection";
@@ -98,6 +98,7 @@ export function OpportunitySlideOverDetailsTab({
                 });
 
                 queryClient.invalidateQueries({ queryKey: activityKeys.all });
+                queryClient.invalidateQueries({ queryKey: entityTimelineKeys.lists() });
               } catch (error: unknown) {
                 logger.error("Failed to create update activity", error, {
                   feature: "OpportunitySlideOverDetailsTab",

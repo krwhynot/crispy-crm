@@ -1,11 +1,13 @@
 import { useState } from "react";
 import { useCreate, useRefresh, useGetIdentity, useNotify, useDataProvider } from "react-admin";
+import { useQueryClient } from "@tanstack/react-query";
 import { logger } from "@/lib/logger";
 import { devLog } from "@/lib/devLogger";
 import { quickCreateOpportunitySchema } from "@/atomic-crm/validation/opportunities";
 import { ZodError } from "@/atomic-crm/validation";
 import type { OpportunityStageValue, Organization, Opportunity } from "@/atomic-crm/types";
 import { formatFieldLabel } from "@/atomic-crm/utils/formatters";
+import { entityTimelineKeys } from "@/atomic-crm/queryKeys";
 
 interface UseQuickAddOpportunityFormProps {
   stage: OpportunityStageValue;
@@ -40,6 +42,7 @@ export function useQuickAddOpportunityForm({
   const dataProvider = useDataProvider();
   const notify = useNotify();
   const refresh = useRefresh();
+  const queryClient = useQueryClient();
   const { identity } = useGetIdentity();
 
   // Format stage for display
@@ -194,6 +197,7 @@ export function useQuickAddOpportunityForm({
 
       resetForm();
       refresh(); // Still refresh to sync with server (gets full computed fields)
+      queryClient.invalidateQueries({ queryKey: entityTimelineKeys.lists() });
       return true; // Signal success to dialog
     } catch (error: unknown) {
       // FIX [WF-E2E-001]: Handle both Error instances and React Admin validation errors

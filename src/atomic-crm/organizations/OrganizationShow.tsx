@@ -20,12 +20,13 @@ import {
 } from "ra-core";
 import { Link as RouterLink, useLocation, useMatch, useNavigate } from "react-router-dom";
 import { AdminButton } from "@/components/admin/AdminButton";
+import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { ReferenceManyField } from "@/components/ra-wrappers/reference-many-field";
 import { SortButton } from "@/components/ra-wrappers/sort-button";
 import { ResponsiveGrid } from "@/components/design-system";
 
-import { ActivityLog } from "../activity-log/ActivityLog";
+import { UnifiedTimeline } from "../timeline/UnifiedTimeline";
 import { Avatar } from "../contacts/Avatar";
 import { TagsList } from "../contacts/TagsList";
 import { findOpportunityLabel } from "../opportunities/opportunity";
@@ -103,7 +104,7 @@ const OrganizationShowContent = () => {
                   )}
                 </TabsList>
                 <TabsContent value="activity" className="pt-2">
-                  <ActivityLog organizationId={record.id} context="organization" />
+                  <UnifiedTimeline organizationId={record.id} />
                 </TabsContent>
                 <TabsContent value="activities" className="pt-2">
                   <ActivitiesTab organizationId={record.id} />

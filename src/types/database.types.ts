@@ -5691,6 +5691,7 @@ export type Database = {
         | "note"
         | "sample"
         | "administrative"
+        | "stage_change"
         | "other";
       loss_reason:
         | "price_too_high"
@@ -6071,6 +6072,7 @@ export const Constants = {
         "note",
         "sample",
         "administrative",
+        "stage_change",
         "other",
       ],
       loss_reason: [

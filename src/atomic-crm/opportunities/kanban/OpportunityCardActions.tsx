@@ -22,7 +22,7 @@ import { DeleteConfirmDialog } from "@/components/ra-wrappers/delete-confirm-dia
 import type { CloseOpportunityInput } from "@/atomic-crm/validation/opportunities";
 import type { Opportunity } from "../../types";
 import { STAGE } from "@/atomic-crm/opportunities/constants";
-import { opportunityKeys } from "@/atomic-crm/queryKeys";
+import { entityTimelineKeys, opportunityKeys } from "@/atomic-crm/queryKeys";
 import { notificationMessages } from "@/atomic-crm/constants/notificationMessages";
 
 interface OpportunityCardActionsProps {
@@ -100,6 +100,8 @@ export function OpportunityCardActions({ opportunityId, onDelete }: OpportunityC
         queryClient.invalidateQueries({ queryKey: opportunityKeys.detail(opportunityId) });
         // 2. All opportunity lists (kanban columns, stage counts, filters)
         queryClient.invalidateQueries({ queryKey: opportunityKeys.lists() });
+        // 3. Entity timeline (activity was created above)
+        queryClient.invalidateQueries({ queryKey: entityTimelineKeys.lists() });
 
         notify(
           closeTargetStage === STAGE.CLOSED_WON

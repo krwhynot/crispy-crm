@@ -21,7 +21,6 @@ import type { DataProvider } from "ra-core";
 import {
   SalesService,
   OpportunitiesService,
-  ActivitiesService,
   JunctionsService,
   SegmentsService,
 } from "../../../services";
@@ -33,14 +32,12 @@ import {
  * Services handle complex business logic that goes beyond simple CRUD:
  * - SalesService: Account manager creation via Edge Functions
  * - OpportunitiesService: Product sync, archive/unarchive workflows
- * - ActivitiesService: Activity log aggregation via RPC
  * - JunctionsService: Many-to-many relationship management
  * - SegmentsService: Get-or-create pattern for segment tagging
  */
 export interface ServiceContainer {
   sales: SalesService;
   opportunities: OpportunitiesService;
-  activities: ActivitiesService;
   junctions: JunctionsService;
   segments: SegmentsService;
 }
@@ -53,7 +50,7 @@ export interface ServiceContainer {
  * Custom methods (rpc, storage, invoke) are added later via extension layer.
  *
  * @param baseProvider - Raw Supabase DataProvider (no handlers, no custom methods)
- * @returns Container with all 5 service instances ready for delegation
+ * @returns Container with all 4 service instances ready for delegation
  *
  * @example
  * ```typescript
@@ -91,10 +88,6 @@ export function createServiceContainer(baseProvider: DataProvider): ServiceConta
     // Opportunities service - Product sync, archive/unarchive workflows
     // Used by: archiveOpportunity, unarchiveOpportunity custom methods
     opportunities: new OpportunitiesService(baseProvider),
-
-    // Activities service - Activity log aggregation via RPC
-    // Used by: getActivityLog custom method
-    activities: new ActivitiesService(baseProvider),
 
     // Junctions service - Many-to-many relationship management
     // Used by: 13 junction custom methods (contacts-orgs, opportunity participants/contacts)

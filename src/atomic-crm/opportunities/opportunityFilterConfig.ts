@@ -96,4 +96,27 @@ export const OPPORTUNITY_FILTER_CONFIG = validateFilterConfig([
     label: "Updated after",
     type: "date-range",
   },
+  // Tags filter (used by WorkflowManagementSection)
+  // NOTE: Opportunity tags are stored as text[] (tag names), NOT IDs.
+  // Use multiselect with no choices - values are already display-ready.
+  {
+    key: "tags",
+    label: "Tags",
+    type: "multiselect",
+    // No choices needed - tag values ARE the display names
+  },
+  // Stage exclusion filter (used by KPISummaryRow for "Open Opportunities")
+  {
+    key: "stage@not_in",
+    label: "Excluding stages",
+    type: "multiselect",
+    choices: [...stageChoices],
+  },
+  // Stale deals filter (used by KPISummaryRow)
+  {
+    key: "stale",
+    label: "Status",
+    type: "boolean",
+    formatLabel: (value: unknown) => (value === true ? "Stale deals" : "Active deals"),
+  },
 ]);

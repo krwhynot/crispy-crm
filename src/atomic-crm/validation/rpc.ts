@@ -196,6 +196,9 @@ const logActivityWithTaskActivitySchema = z.strictObject({
   follow_up_required: z.boolean(),
   follow_up_date: z.string().max(50, "Follow-up date too long").nullable(),
   related_task_id: z.number().int().positive().nullable().optional(),
+  sentiment: z.enum(["positive", "neutral", "negative"]).optional().nullable(),
+  location: z.string().max(255, "Location too long").optional().nullable(),
+  follow_up_notes: z.string().max(10000, "Follow-up notes too long").optional().nullable(),
 });
 
 const logActivityWithTaskTaskSchema = z.strictObject({
@@ -204,6 +207,9 @@ const logActivityWithTaskTaskSchema = z.strictObject({
   priority: z.enum(["low", "medium", "high"]),
   contact_id: z.number().int().positive().nullable(),
   opportunity_id: z.number().int().positive().nullable(),
+  description: z.string().max(2000, "Description too long").optional().nullable(),
+  reminder_date: z.string().max(50, "Reminder date too long").optional().nullable(),
+  type: z.enum(["Call", "Email", "Meeting", "Follow-up", "Demo", "Proposal", "Other"]).optional(),
 });
 
 export const logActivityWithTaskParamsSchema = z.strictObject({

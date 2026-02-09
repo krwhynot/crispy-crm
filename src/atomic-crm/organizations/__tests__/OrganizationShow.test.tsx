@@ -62,11 +62,6 @@ vi.mock("../OrganizationAside", () => ({
   OrganizationAside: () => <div data-testid="org-aside">Organization Aside</div>,
 }));
 
-// Mock ActivityLog
-vi.mock("../activity/ActivityLog", () => ({
-  ActivityLog: () => <div data-testid="activity-log">Activity Log</div>,
-}));
-
 // Mock TagsList
 vi.mock("../contacts/TagsList", () => ({
   TagsList: () => <div data-testid="tags-list">Tags</div>,
@@ -294,8 +289,8 @@ describe("OrganizationShow", () => {
     );
 
     await waitFor(() => {
-      // Activity tab should be selected by default
-      expect(screen.getByTestId("activity-log")).toBeInTheDocument();
+      // Activity tab should be selected by default - shows UnifiedTimeline
+      expect(screen.getByTestId("unified-timeline")).toBeInTheDocument();
     });
   });
 

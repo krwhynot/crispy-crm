@@ -7,7 +7,6 @@
  * Custom Methods Breakdown:
  * - Sales: 3 methods (salesCreate, salesUpdate, updatePassword)
  * - Opportunities: 2 methods (archive, unarchive)
- * - Activities: 1 method (getActivityLog)
  * - Opportunity Participant Junction: 3 methods
  * - Opportunity Contact Junction: 6 methods
  * - RPC: 1 method
@@ -15,7 +14,7 @@
  * - Edge Functions: 1 method (invoke)
  * - Specialized: 1 method (createBoothVisitor)
  *
- * Total: 26 custom methods beyond base DataProvider (9 CRUD methods)
+ * Total: 25 custom methods beyond base DataProvider (9 CRUD methods)
  *
  * Engineering Constitution:
  * - Single composable entry point (unified interface)
@@ -33,7 +32,6 @@ import type {
   Opportunity,
   OpportunityParticipant,
   OpportunityContact,
-  Activity,
 } from "../../../types";
 import type { QuickAddInput } from "../../../validation/quickAdd";
 import type {
@@ -178,33 +176,6 @@ export interface ExtendedDataProvider extends DataProvider {
    * ```
    */
   unarchiveOpportunity(opportunity: Opportunity): Promise<Opportunity[]>;
-
-  // ==================== Activities Methods ====================
-  // Delegate to ActivitiesService
-
-  /**
-   * Get activity log via RPC
-   *
-   * Fetches activity history with optional filtering by company or sales rep.
-   *
-   * @param companyId - Optional company ID to filter activities
-   * @param salesId - Optional sales rep ID to filter activities
-   * @returns Array of activity records
-   * @throws Error if RPC fails
-   *
-   * @example
-   * ```typescript
-   * // Get all activities for a company
-   * const activities = await dataProvider.getActivityLog(123);
-   *
-   * // Get all activities for a sales rep
-   * const activities = await dataProvider.getActivityLog(undefined, 456);
-   *
-   * // Get activities for a sales rep at a specific company
-   * const activities = await dataProvider.getActivityLog(123, 456);
-   * ```
-   */
-  getActivityLog(companyId?: Identifier, salesId?: Identifier): Promise<Activity[]>;
 
   // ==================== Opportunity Participant Junction ====================
   // Delegate to JunctionsService

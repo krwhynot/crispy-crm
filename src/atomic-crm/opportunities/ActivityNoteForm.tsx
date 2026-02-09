@@ -6,12 +6,11 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useSafeNotify } from "@/atomic-crm/hooks/useSafeNotify";
 import { notificationMessages } from "@/atomic-crm/constants/notificationMessages";
 
-import { opportunityKeys, activityKeys } from "@/atomic-crm/queryKeys";
+import { opportunityKeys, activityKeys, entityTimelineKeys } from "@/atomic-crm/queryKeys";
 
 import { AdminButton } from "@/components/admin/AdminButton";
 import { Textarea } from "@/components/ui/textarea";
 import { ControlledDatePicker } from "@/components/ra-wrappers/controlled-date-picker";
-import { getOpportunityStageLabel } from "./constants";
 import {
   Select,
   SelectContent,
@@ -77,8 +76,6 @@ export const ActivityNoteForm = ({ opportunity, onSuccess }: ActivityNoteFormPro
   });
 
   const handleStageChange = async (newStage: string) => {
-    const oldStage = opportunity.stage;
-
     try {
       await dataProvider.update("opportunities", {
         id: opportunity.id,
@@ -86,20 +83,12 @@ export const ActivityNoteForm = ({ opportunity, onSuccess }: ActivityNoteFormPro
         previousData: opportunity,
       });
 
-      await dataProvider.create("activities", {
-        data: {
-          activity_type: "activity",
-          type: "note",
-          subject: `Stage changed from ${getOpportunityStageLabel(oldStage)} to ${getOpportunityStageLabel(newStage)}`,
-          activity_date: new Date().toISOString(),
-          opportunity_id: opportunity.id,
-          organization_id: opportunity.customer_organization_id,
-        },
-      });
+      // NOTE: Activity logging removed - DB trigger handles stage change logging
 
       setValue("stage", newStage);
       queryClient.invalidateQueries({ queryKey: opportunityKeys.lists() });
       queryClient.invalidateQueries({ queryKey: activityKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: entityTimelineKeys.lists() });
       success(notificationMessages.updated("Stage"));
     } catch (error: unknown) {
       logger.error("Stage update failed", error, { feature: "ActivityNoteForm" });
@@ -129,6 +118,7 @@ export const ActivityNoteForm = ({ opportunity, onSuccess }: ActivityNoteFormPro
 
       queryClient.invalidateQueries({ queryKey: activityKeys.lists() });
       queryClient.invalidateQueries({ queryKey: opportunityKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: entityTimelineKeys.lists() });
       success(notificationMessages.created("Activity"));
       reset();
       onSuccess?.();

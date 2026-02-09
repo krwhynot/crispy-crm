@@ -134,9 +134,37 @@ export function createTimelineHandler(_baseProvider: DataProvider): DataProvider
         query = query.eq("entry_type", filter.entry_type);
       }
 
+      // Type filter (interaction_type array for activity filtering)
+      if (filter?.type) {
+        const types = Array.isArray(filter.type) ? filter.type : [filter.type];
+        query = query.in("subtype", types);
+      }
+
+      // Date range filters
+      if (filter?.activity_date_gte) {
+        query = query.gte("entry_date", filter.activity_date_gte);
+      }
+      if (filter?.activity_date_lte) {
+        query = query.lte("entry_date", filter.activity_date_lte);
+      }
+
+      // Created by (user filter)
+      if (filter?.created_by) {
+        const userIds = Array.isArray(filter.created_by) ? filter.created_by : [filter.created_by];
+        query = query.in("created_by", userIds);
+      }
+
+      // Subtype filter (for stage_change filter specifically)
+      if (filter?.subtype) {
+        query = query.eq("subtype", filter.subtype);
+      }
+
       const sortField = sort?.field || "entry_date";
       const sortAscending = sort?.order === "ASC";
       query = query.order(sortField, { ascending: sortAscending });
+
+      // Secondary ordering for pagination stability (tie-breaker)
+      query = query.order("id", { ascending: false });
 
       const { page = 1, perPage = 25 } = pagination || {};
       const from = (page - 1) * perPage;

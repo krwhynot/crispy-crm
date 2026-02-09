@@ -11,7 +11,18 @@
  */
 
 import { memo } from "react";
-import { Check, Mail, Phone, Users, FileText, Target, Clock, CheckSquare } from "lucide-react";
+import {
+  Check,
+  Mail,
+  Phone,
+  Users,
+  FileText,
+  Target,
+  Clock,
+  CheckSquare,
+  ArrowRightLeft,
+  FileQuestion,
+} from "lucide-react";
 import { RecordContextProvider } from "ra-core";
 import { Link as RouterLink } from "react-router-dom";
 import { format } from "date-fns";
@@ -19,6 +30,7 @@ import { Badge } from "@/components/ui/badge";
 import { ReferenceField } from "@/components/ra-wrappers/reference-field";
 import { parseDateSafely } from "@/lib/date-utils";
 import { ucFirst } from "@/atomic-crm/utils";
+import { logger } from "@/lib/logger";
 
 interface TimelineEntryData {
   id: number;
@@ -64,8 +76,15 @@ export const TimelineEntry = memo(function TimelineEntry({
         return <FileText className="h-4 w-4" />;
       case "follow_up":
         return <Clock className="h-4 w-4" />;
+      case "stage_change":
+        return <ArrowRightLeft className="h-4 w-4 text-primary" />;
       default:
-        return isTask ? <CheckSquare className="h-4 w-4" /> : <Target className="h-4 w-4" />;
+        logger.warn("Unknown timeline subtype", {
+          subtype,
+          entryId: entry.id,
+          metric: "timeline.unknown_subtype",
+        });
+        return <FileQuestion className="h-4 w-4 text-muted-foreground" />;
     }
   };
 
@@ -148,7 +167,7 @@ export const TimelineEntry = memo(function TimelineEntry({
             )}
             {isTask && (
               <RouterLink
-                to={`/tasks?filter=${encodeURIComponent(JSON.stringify({ id: entry.id }))}`}
+                to={`/tasks?view=${entry.id}`}
                 className="inline-flex items-center gap-1.5 min-h-11 px-2 text-xs text-primary hover:underline hover:bg-muted/50 rounded-md transition-colors"
               >
                 <Check className="h-4 w-4" />

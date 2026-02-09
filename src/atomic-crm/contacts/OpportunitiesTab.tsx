@@ -10,7 +10,7 @@ import {
 } from "ra-core";
 import type { Identifier } from "ra-core";
 import { useQueryClient } from "@tanstack/react-query";
-import { activityKeys } from "../queryKeys";
+import { activityKeys, entityTimelineKeys } from "../queryKeys";
 import { logger } from "@/lib/logger";
 import {
   FunctionField,
@@ -132,7 +132,8 @@ export function OpportunitiesTab() {
                   organization_id: opportunity.customer_organization_id,
                 },
               });
-              queryClient.invalidateQueries({ queryKey: activityKeys.all });
+              queryClient.invalidateQueries({ queryKey: activityKeys.lists() });
+              queryClient.invalidateQueries({ queryKey: entityTimelineKeys.lists() });
             } catch (activityError) {
               logger.error("Failed to log contact link activity", activityError, {
                 feature: "OpportunitiesTab",

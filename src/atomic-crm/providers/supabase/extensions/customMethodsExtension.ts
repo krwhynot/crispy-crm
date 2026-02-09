@@ -14,7 +14,6 @@
  * Category Extensions:
  * - Sales (3 methods): salesCreate, salesUpdate, updatePassword
  * - Opportunities (2 methods): archiveOpportunity, unarchiveOpportunity
- * - Activities (1 method): getActivityLog
  * - Junctions (13 methods): contact-orgs, opp-participants, opp-contacts
  * - RPC (1 method): rpc (generic RPC execution)
  * - Storage (4 methods): upload, getPublicUrl, remove, list
@@ -37,7 +36,6 @@ import type { ExtendedDataProvider } from "./types";
 // Import category extension creators
 import { createSalesExtension } from "./salesExtension";
 import { createOpportunitiesExtension } from "./opportunitiesExtension";
-import { createActivitiesExtension } from "./activitiesExtension";
 import { createJunctionsExtension } from "./junctionsExtension";
 import { createRPCExtension } from "./rpcExtension";
 import { createStorageExtension } from "./storageExtension";
@@ -96,10 +94,9 @@ export interface ExtensionConfig {
  *
  * @remarks
  * **Method Delegation Strategy:**
- * - **Service Methods (19 total):**
+ * - **Service Methods (18 total):**
  *   - Sales: 3 methods → SalesService
  *   - Opportunities: 2 methods → OpportunitiesService
- *   - Activities: 1 method → ActivitiesService
  *   - Junctions: 13 methods → JunctionsService
  *
  * - **Infrastructure Methods (11 total):**
@@ -124,7 +121,6 @@ export function extendWithCustomMethods(config: ExtensionConfig): ExtendedDataPr
   // Create category extensions
   const salesExt = createSalesExtension(services);
   const opportunitiesExt = createOpportunitiesExtension(services);
-  const activitiesExt = createActivitiesExtension(services);
   const junctionsExt = createJunctionsExtension(services);
   const rpcExt = createRPCExtension(supabaseClient);
   const storageExt = createStorageExtension(supabaseClient);
@@ -138,7 +134,6 @@ export function extendWithCustomMethods(config: ExtensionConfig): ExtendedDataPr
     baseProvider,
     salesExt,
     opportunitiesExt,
-    activitiesExt,
     junctionsExt,
     rpcExt,
     storageExt,
@@ -152,7 +147,6 @@ export function extendWithCustomMethods(config: ExtensionConfig): ExtendedDataPr
     composedProvider,
     salesExt,
     opportunitiesExt,
-    activitiesExt,
     junctionsExt,
     rpcExt,
     storageExt,

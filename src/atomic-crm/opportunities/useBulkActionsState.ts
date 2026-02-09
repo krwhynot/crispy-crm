@@ -3,8 +3,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useNotify, useRefresh, useDataProvider } from "ra-core";
 import { logger } from "@/lib/logger";
 import type { Opportunity, OpportunityStageValue } from "../types";
-import { opportunityKeys } from "@/atomic-crm/queryKeys";
-import { getOpportunityStageLabel } from "./constants";
+import { opportunityKeys, entityTimelineKeys } from "@/atomic-crm/queryKeys";
 
 export type BulkAction = "change_stage" | "change_status" | "assign_owner" | "archive" | null;
 
@@ -107,37 +106,7 @@ export function useBulkActionsState({
         }
       });
 
-      // Create activity records for successful stage changes
-      if (activeAction === "change_stage" && selectedStage && successCount > 0) {
-        const activityPromises = selectedIds.map(async (id) => {
-          const opportunity = opportunities.find((opp) => opp.id === id);
-          if (!opportunity) return;
-
-          try {
-            await dataProvider.create("activities", {
-              data: {
-                activity_type: "activity",
-                type: "note",
-                subject: `Stage changed to ${getOpportunityStageLabel(selectedStage)} (bulk update)`,
-                activity_date: new Date().toISOString(),
-                opportunity_id: id,
-                organization_id: opportunity.customer_organization_id,
-              },
-            });
-          } catch (error: unknown) {
-            logger.warn("Activity logging failed for bulk stage transition", {
-              feature: "useBulkActionsState",
-              opportunityId: id,
-              newStage: selectedStage,
-              error: error instanceof Error ? error.message : String(error),
-            });
-            // Don't block the stage change if activity logging fails
-          }
-        });
-
-        // Fire-and-forget activity creation (don't block UI)
-        void Promise.allSettled(activityPromises);
-      }
+      // NOTE: Activity logging removed - DB trigger handles stage change logging
 
       if (successCount > 0) {
         notify(
@@ -153,7 +122,8 @@ export function useBulkActionsState({
         });
       }
 
-      queryClient.invalidateQueries({ queryKey: opportunityKeys.all });
+      queryClient.invalidateQueries({ queryKey: opportunityKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: entityTimelineKeys.lists() });
       refresh();
       onUnselectItems();
       handleCloseDialog();
@@ -221,7 +191,8 @@ export function useBulkActionsState({
         { type: "success" }
       );
 
-      queryClient.invalidateQueries({ queryKey: opportunityKeys.all });
+      queryClient.invalidateQueries({ queryKey: opportunityKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: entityTimelineKeys.lists() });
       refresh();
       onUnselectItems();
       handleCloseDialog();

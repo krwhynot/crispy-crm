@@ -57,6 +57,20 @@ export const TASK_FILTER_CONFIG = validateFilterConfig([
     type: "date-range",
     removalGroup: "due_date_range",
   },
+  // Overdue filter (used by KPISummaryRow and TaskListFilter "Overdue" preset)
+  {
+    key: "due_date@lt",
+    label: "Overdue",
+    type: "boolean",
+    formatLabel: () => "Overdue tasks",
+  },
+  // Task ID filter (used by TimelineEntry to link to specific task)
+  {
+    key: "id",
+    label: "Task",
+    type: "reference",
+    reference: "tasks",
+  },
   {
     key: "completed",
     label: "Status",

@@ -63,4 +63,18 @@ export const ORGANIZATION_FILTER_CONFIG = validateFilterConfig([
     type: "reference",
     reference: "sales",
   },
+  // Created date filter (used by OrganizationSavedQueries "Recent Prospects" preset)
+  {
+    key: "created_at_gte",
+    label: "Created after",
+    type: "date-range",
+    removalGroup: "created_at_range",
+  },
+  // Parent organization filter (used by OrganizationHierarchyChips)
+  {
+    key: "parent_organization_id",
+    label: "Parent",
+    type: "reference",
+    reference: "organizations",
+  },
 ]);

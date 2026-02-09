@@ -26,7 +26,6 @@ import type {
   Opportunity,
   OpportunityParticipant,
   OpportunityContact,
-  Activity,
 } from "../../../../types";
 import type { QuickAddInput } from "../../../../validation/quickAdd";
 import {
@@ -83,9 +82,6 @@ describe("extendWithCustomMethods", () => {
       opportunities: {
         archiveOpportunity: vi.fn(),
         unarchiveOpportunity: vi.fn(),
-      },
-      activities: {
-        getActivityLog: vi.fn(),
       },
       junctions: {
         getOpportunityParticipants: vi.fn(),
@@ -158,9 +154,6 @@ describe("extendWithCustomMethods", () => {
       // Opportunities methods (2)
       expect(extendedProvider.archiveOpportunity).toBeTypeOf("function");
       expect(extendedProvider.unarchiveOpportunity).toBeTypeOf("function");
-
-      // Activities methods (1)
-      expect(extendedProvider.getActivityLog).toBeTypeOf("function");
 
       // Junction methods (9)
       // Opportunity junction methods are tested below
@@ -267,39 +260,6 @@ describe("extendWithCustomMethods", () => {
 
       expect(mockServices.opportunities.unarchiveOpportunity).toHaveBeenCalledWith(opportunity);
       expect(result).toEqual(expectedResult);
-    });
-  });
-
-  describe("Activities Methods (ActivitiesService Delegation)", () => {
-    it("should delegate getActivityLog to ActivitiesService", async () => {
-      const extendedProvider = extendWithCustomMethods(config);
-      const expectedActivities: Activity[] = [
-        {
-          id: 1,
-          type: "call",
-          notes: "Test activity",
-          organization_id: 1,
-          sales_id: 1,
-        } as Activity,
-      ];
-
-      vi.mocked(mockServices.activities.getActivityLog).mockResolvedValue(expectedActivities);
-
-      const result = await extendedProvider.getActivityLog(1, 1);
-
-      expect(mockServices.activities.getActivityLog).toHaveBeenCalledWith(1, 1);
-      expect(result).toEqual(expectedActivities);
-    });
-
-    it("should handle getActivityLog with optional parameters", async () => {
-      const extendedProvider = extendWithCustomMethods(config);
-      const expectedActivities: Activity[] = [];
-
-      vi.mocked(mockServices.activities.getActivityLog).mockResolvedValue(expectedActivities);
-
-      await extendedProvider.getActivityLog();
-
-      expect(mockServices.activities.getActivityLog).toHaveBeenCalledWith(undefined, undefined);
     });
   });
 

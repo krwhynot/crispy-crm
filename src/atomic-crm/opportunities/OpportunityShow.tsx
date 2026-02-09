@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState } from "react";
 import { format, formatDistanceToNow, isPast } from "date-fns";
 import { ShowBase, useShowContext } from "ra-core";
 import { useMatch, useNavigate } from "react-router-dom";
@@ -23,8 +23,8 @@ import { findOpportunityLabel } from "./opportunity";
 import { OpportunityHeader } from "./OpportunityHeader";
 import { OpportunityAside } from "./OpportunityAside";
 import { ActivityNoteForm } from "./ActivityNoteForm";
-import { ActivitiesList } from "./ActivitiesList";
 import { ChangeLogTab } from "./ChangeLogTab";
+import { UnifiedTimeline } from "../timeline/UnifiedTimeline";
 import { ProductsTable } from "./ProductsTable";
 import { OrganizationInfoCard } from "./OrganizationInfoCard";
 import { SaleAvatar } from "../sales/SaleAvatar";
@@ -42,14 +42,7 @@ const OpportunityShow = () => (
 const OpportunityShowContent = () => {
   const { record, isPending } = useShowContext<Opportunity>();
   const navigate = useNavigate();
-  const [activityFilters, setActivityFilters] = useState<Record<string, any>>({});
-
-  // Memoize the activities filter to prevent infinite re-renders
-  // This ensures the filter object reference stays stable unless activityFilters changes
-  const activitiesListFilter = useMemo(
-    () => ({ activity_type: "activity", ...activityFilters }),
-    [activityFilters]
-  );
+  const [activityFilters, setActivityFilters] = useState<Record<string, unknown>>({});
 
   // Get tab from URL or default to "details"
   const tabMatch = useMatch("/opportunities/:id/show/:tab");
@@ -318,15 +311,8 @@ const OpportunityShowContent = () => {
                     {/* Activity Filters */}
                     <ActivityTimelineFilters onFiltersChange={setActivityFilters} />
 
-                    {/* Activities List */}
-                    <ReferenceManyField
-                      target="opportunity_id"
-                      reference="activities"
-                      filter={activitiesListFilter}
-                      sort={{ field: "activity_date", order: "DESC" }}
-                    >
-                      <ActivitiesList />
-                    </ReferenceManyField>
+                    {/* Activities Timeline */}
+                    <UnifiedTimeline opportunityId={record.id} filters={activityFilters} />
                   </div>
 
                   {/* Notes Section */}

@@ -4,7 +4,13 @@ import { logger } from "@/lib/logger";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
 import { isSameDay, isBefore, startOfDay, addDays, endOfDay } from "date-fns";
 
-import { taskKeys, opportunityKeys, activityKeys, dashboardKeys } from "@/atomic-crm/queryKeys";
+import {
+  taskKeys,
+  opportunityKeys,
+  activityKeys,
+  dashboardKeys,
+  entityTimelineKeys,
+} from "@/atomic-crm/queryKeys";
 import { useCurrentSale } from "./useCurrentSale";
 import type { TaskItem, TaskStatus, TaskApiResponse } from "./types";
 import { parseDateSafely } from "@/lib/date-utils";
@@ -198,10 +204,11 @@ export function useMyTasks() {
     onSettled: () => {
       // Refetch to ensure consistency after mutation settles (success or error)
       // No race condition because we cancelled all previous refetches in onMutate
-      queryClient.invalidateQueries({ queryKey: taskKeys.all });
-      queryClient.invalidateQueries({ queryKey: opportunityKeys.all });
-      queryClient.invalidateQueries({ queryKey: activityKeys.all });
+      queryClient.invalidateQueries({ queryKey: taskKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: opportunityKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: activityKeys.lists() });
       queryClient.invalidateQueries({ queryKey: dashboardKeys.all });
+      queryClient.invalidateQueries({ queryKey: entityTimelineKeys.lists() });
     },
   });
 
@@ -290,10 +297,11 @@ export function useMyTasks() {
     onSettled: () => {
       // Refetch to ensure consistency after mutation settles (success or error)
       // No race condition because we cancelled all previous refetches in onMutate
-      queryClient.invalidateQueries({ queryKey: taskKeys.all });
-      queryClient.invalidateQueries({ queryKey: opportunityKeys.all });
-      queryClient.invalidateQueries({ queryKey: activityKeys.all });
+      queryClient.invalidateQueries({ queryKey: taskKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: opportunityKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: activityKeys.lists() });
       queryClient.invalidateQueries({ queryKey: dashboardKeys.all });
+      queryClient.invalidateQueries({ queryKey: entityTimelineKeys.lists() });
     },
   });
 
@@ -349,10 +357,11 @@ export function useMyTasks() {
     onSettled: () => {
       // Refetch to ensure consistency after mutation settles (success or error)
       // No race condition because we cancelled all previous refetches in onMutate
-      queryClient.invalidateQueries({ queryKey: taskKeys.all });
-      queryClient.invalidateQueries({ queryKey: opportunityKeys.all });
-      queryClient.invalidateQueries({ queryKey: activityKeys.all });
+      queryClient.invalidateQueries({ queryKey: taskKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: opportunityKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: activityKeys.lists() });
       queryClient.invalidateQueries({ queryKey: dashboardKeys.all });
+      queryClient.invalidateQueries({ queryKey: entityTimelineKeys.lists() });
     },
   });
 
@@ -434,10 +443,11 @@ export function useMyTasks() {
     onSettled: () => {
       // Refetch to ensure consistency after mutation settles (success or error)
       // No race condition because we cancelled all previous refetches in onMutate
-      queryClient.invalidateQueries({ queryKey: taskKeys.all });
-      queryClient.invalidateQueries({ queryKey: opportunityKeys.all });
-      queryClient.invalidateQueries({ queryKey: activityKeys.all });
+      queryClient.invalidateQueries({ queryKey: taskKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: opportunityKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: activityKeys.lists() });
       queryClient.invalidateQueries({ queryKey: dashboardKeys.all });
+      queryClient.invalidateQueries({ queryKey: entityTimelineKeys.lists() });
     },
   });
 

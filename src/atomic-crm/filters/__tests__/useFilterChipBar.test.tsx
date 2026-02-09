@@ -65,6 +65,12 @@ vi.mock("../useCategoryNames", () => ({
   }),
 }));
 
+vi.mock("../useTaskNames", () => ({
+  useTaskNames: () => ({
+    getTaskName: (id: string) => `Task ${id}`,
+  }),
+}));
+
 // Test configurations
 const BASIC_CONFIG: ChipFilterConfig[] = [
   {

@@ -6,7 +6,12 @@ import { notificationMessages } from "@/atomic-crm/constants/notificationMessage
 import type { Identifier } from "react-admin";
 import { useQueryClient } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
-import { activityKeys, opportunityKeys, opportunityProductKeys } from "@/atomic-crm/queryKeys";
+import {
+  activityKeys,
+  entityTimelineKeys,
+  opportunityKeys,
+  opportunityProductKeys,
+} from "@/atomic-crm/queryKeys";
 import { AutocompleteArrayInput } from "@/components/ra-wrappers/autocomplete-array-input";
 import { AdminButton } from "@/components/admin/AdminButton";
 import { Badge } from "@/components/ui/badge";
@@ -126,6 +131,7 @@ export function OpportunityProductsTab({
               });
 
               queryClient.invalidateQueries({ queryKey: activityKeys.all });
+              queryClient.invalidateQueries({ queryKey: entityTimelineKeys.lists() });
               // SS-06 FIX: Invalidate opportunity and product caches to refresh lists
               queryClient.invalidateQueries({ queryKey: opportunityKeys.detail(record.id) });
               queryClient.invalidateQueries({ queryKey: opportunityKeys.all });

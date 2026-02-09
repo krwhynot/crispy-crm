@@ -303,18 +303,18 @@ function validateStageTransition(toStage: string, data: Partial<RaRecord>): void
 }
 
 /**
- * Custom beforeUpdate: Log stage transitions as activities
+ * Custom beforeUpdate: Validate stage transitions
  *
- * WHY CUSTOM: When opportunity stage changes, create an audit trail activity
- * to track the transition. This provides visibility into opportunity progression.
+ * WHY CUSTOM: When opportunity stage changes, validate prerequisites before
+ * allowing the transition. Activity logging is handled by DB trigger.
  *
  * @param params - Update parameters with data and previousData
- * @param dataProvider - React Admin data provider for creating activity
- * @returns Unchanged params (activity creation is side effect)
+ * @param _dataProvider - React Admin data provider (unused - activity logging removed)
+ * @returns Unchanged params after validation
  */
 async function opportunitiesBeforeUpdate(
   params: UpdateParams,
-  dataProvider: DataProvider
+  _dataProvider: DataProvider
 ): Promise<UpdateParams> {
   const { data, previousData } = params;
 
@@ -322,36 +322,7 @@ async function opportunitiesBeforeUpdate(
   if (previousData?.stage && data.stage && previousData.stage !== data.stage) {
     // Validate stage transition prerequisites (fail-fast)
     validateStageTransition(data.stage, data);
-
-    try {
-      // Log stage transition activity
-      await dataProvider.create("activities", {
-        data: {
-          activity_type: "activity",
-          type: "note",
-          subject: `Stage changed: ${previousData.stage} → ${data.stage}`,
-          description: `Opportunity stage transitioned from ${previousData.stage} to ${data.stage}`,
-          opportunity_id: params.id,
-          contact_id: previousData.contact_ids?.[0] || null,
-          organization_id:
-            previousData.principal_organization_id || previousData.customer_organization_id || null,
-          activity_date: new Date().toISOString(),
-        },
-      });
-    } catch (error) {
-      // Log but don't block update if activity creation fails
-      // Stage update is the primary action, activity is side effect
-      logger.warn(
-        "Failed to create stage transition activity",
-        error instanceof Error ? error : new Error(String(error)),
-        {
-          feature: "opportunities",
-          opportunityId: params.id,
-          fromStage: previousData.stage,
-          toStage: data.stage,
-        }
-      );
-    }
+    // NOTE: Activity logging removed - DB trigger handles stage change logging
   }
 
   return params;

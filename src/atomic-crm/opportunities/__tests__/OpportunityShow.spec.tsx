@@ -118,7 +118,6 @@ const mockDataProvider = {
   salesUpdate: vi.fn(),
   updatePassword: vi.fn(),
   unarchiveOpportunity: vi.fn(),
-  getActivityLog: vi.fn(),
   getContactOrganizations: vi.fn(),
   addContactToOrganization: vi.fn(),
   removeContactFromOrganization: vi.fn(),

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNotify, useUpdate, useDelete } from "react-admin";
 import { useQueryClient } from "@tanstack/react-query";
-import { taskKeys } from "@/atomic-crm/queryKeys";
+import { taskKeys, entityTimelineKeys } from "@/atomic-crm/queryKeys";
 import { notificationMessages } from "@/atomic-crm/constants/notificationMessages";
 import { AdminButton } from "@/components/admin/AdminButton";
 import {
@@ -85,7 +85,8 @@ export function TaskActionMenu({
         previousData: task,
       });
 
-      queryClient.invalidateQueries({ queryKey: taskKeys.all });
+      queryClient.invalidateQueries({ queryKey: taskKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: entityTimelineKeys.lists() });
 
       notify(`Task snoozed until ${days === 1 ? "tomorrow" : "next week"}`, {
         type: "success",
@@ -104,7 +105,8 @@ export function TaskActionMenu({
     setIsDeleting(true);
     try {
       await deleteOne("tasks", { id: taskId, previousData: task });
-      queryClient.invalidateQueries({ queryKey: taskKeys.all });
+      queryClient.invalidateQueries({ queryKey: taskKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: entityTimelineKeys.lists() });
       notify(notificationMessages.deleted("Task"), { type: "success" });
     } catch {
       notify("Failed to delete task", { type: "error" });

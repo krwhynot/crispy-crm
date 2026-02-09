@@ -3,7 +3,7 @@ import { EditBase, Form, useRecordContext } from "ra-core";
 import { useQueryClient } from "@tanstack/react-query";
 import { useMemo } from "react";
 
-import { taskKeys, opportunityKeys } from "../queryKeys";
+import { taskKeys, opportunityKeys, entityTimelineKeys } from "../queryKeys";
 import { TaskInputs } from "./TaskInputs";
 import { FormToolbar } from "../layout/FormToolbar";
 import { taskSchema } from "@/atomic-crm/validation/task";
@@ -26,8 +26,9 @@ export const TaskEdit = () => {
       mutationOptions={{
         onSuccess: () => {
           // Invalidate related caches to prevent stale data
-          queryClient.invalidateQueries({ queryKey: taskKeys.all });
-          queryClient.invalidateQueries({ queryKey: opportunityKeys.all });
+          queryClient.invalidateQueries({ queryKey: taskKeys.lists() });
+          queryClient.invalidateQueries({ queryKey: opportunityKeys.lists() });
+          queryClient.invalidateQueries({ queryKey: entityTimelineKeys.lists() });
         },
       }}
     >

@@ -3,7 +3,6 @@
 
 export { SalesService } from "./sales.service";
 export { OpportunitiesService } from "./opportunities.service";
-export { ActivitiesService } from "./activities.service";
 export { JunctionsService } from "./junctions.service";
 export { SegmentsService } from "./segments.service";
 export { DigestService, createDigestService } from "./digest.service";

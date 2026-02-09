@@ -90,8 +90,11 @@ describe("opportunitiesCallbacks", () => {
     });
   });
 
-  describe("beforeUpdate - stage transition logging", () => {
-    it("should create activity when stage changes", async () => {
+  describe("beforeUpdate - stage transition handling", () => {
+    // Stage change activity logging is handled by DB trigger, not client-side.
+    // These tests verify that beforeUpdate does NOT create activities on the client.
+
+    it("should NOT create activity when stage changes (handled by DB trigger)", async () => {
       const params = {
         id: 1,
         data: { stage: "demo_scheduled" },
@@ -105,16 +108,8 @@ describe("opportunitiesCallbacks", () => {
 
       await opportunitiesCallbacks.beforeUpdate!(params, mockDataProvider);
 
-      expect(mockDataProvider.create).toHaveBeenCalledWith("activities", {
-        data: expect.objectContaining({
-          activity_type: "activity",
-          type: "note",
-          subject: "Stage changed: sample_visit_offered → demo_scheduled",
-          opportunity_id: 1,
-          contact_id: 101,
-          organization_id: 5,
-        }),
-      });
+      // Stage change activity logging is handled by DB trigger, not client-side
+      expect(mockDataProvider.create).not.toHaveBeenCalled();
     });
 
     it("should not create activity when stage is unchanged", async () => {
@@ -133,82 +128,21 @@ describe("opportunitiesCallbacks", () => {
       expect(mockDataProvider.create).not.toHaveBeenCalled();
     });
 
-    it("should handle missing previousData stage gracefully", async () => {
+    it("should pass through update params unchanged", async () => {
       const params = {
         id: 1,
         data: { stage: "demo_scheduled" },
         previousData: {
           id: 1,
+          stage: "sample_visit_offered",
           name: "Big Deal",
         } as RaRecord,
       };
 
-      await opportunitiesCallbacks.beforeUpdate!(params, mockDataProvider);
-
-      expect(mockDataProvider.create).not.toHaveBeenCalled();
-    });
-
-    it("should not block update if activity creation fails", async () => {
-      mockDataProvider.create = vi.fn().mockRejectedValue(new Error("Activity creation failed"));
-
-      const params = {
-        id: 1,
-        data: { stage: "closed_won", actual_close_date: "2026-01-27" },
-        previousData: {
-          id: 1,
-          stage: "demo_scheduled",
-          contact_ids: [101],
-        } as RaRecord,
-      };
-
-      // Should not throw - returns params unchanged
       const result = await opportunitiesCallbacks.beforeUpdate!(params, mockDataProvider);
 
+      // beforeUpdate should return params unchanged (no client-side activity creation)
       expect(result).toEqual(params);
-    });
-
-    it("should use first contact_id if multiple contacts exist", async () => {
-      const params = {
-        id: 1,
-        data: { stage: "closed_won", actual_close_date: "2026-01-27" },
-        previousData: {
-          id: 1,
-          stage: "demo_scheduled",
-          contact_ids: [101, 102, 103],
-          customer_organization_id: 7,
-        } as RaRecord,
-      };
-
-      await opportunitiesCallbacks.beforeUpdate!(params, mockDataProvider);
-
-      expect(mockDataProvider.create).toHaveBeenCalledWith("activities", {
-        data: expect.objectContaining({
-          contact_id: 101,
-          organization_id: 7,
-        }),
-      });
-    });
-
-    it("should handle null contact_ids gracefully", async () => {
-      const params = {
-        id: 1,
-        data: { stage: "closed_lost", actual_close_date: "2026-01-27" },
-        previousData: {
-          id: 1,
-          stage: "proposal",
-          contact_ids: null,
-          principal_organization_id: 5,
-        } as RaRecord,
-      };
-
-      await opportunitiesCallbacks.beforeUpdate!(params, mockDataProvider);
-
-      expect(mockDataProvider.create).toHaveBeenCalledWith("activities", {
-        data: expect.objectContaining({
-          contact_id: null,
-          organization_id: 5,
-        }),
-      });
     });
   });
 

@@ -16,6 +16,7 @@ import { useSalesNames } from "./useSalesNames";
 import { useTagNames } from "./useTagNames";
 import { useSegmentNames } from "./useSegmentNames";
 import { useCategoryNames } from "./useCategoryNames";
+import { useTaskNames } from "./useTaskNames";
 
 /**
  * Data structure for a single filter chip
@@ -96,12 +97,14 @@ export function useFilterChipBar<TContext = unknown>(
       tags: string[];
       segments: string[];
       categories: string[];
+      tasks: string[];
     } = {
       organizations: [],
       sales: [],
       tags: [],
       segments: [],
       categories: [],
+      tasks: [],
     };
 
     filterConfig.forEach((config) => {
@@ -120,6 +123,8 @@ export function useFilterChipBar<TContext = unknown>(
         ids.segments.push(...values.map(String));
       } else if (config.reference === "categories" || config.key === "category") {
         ids.categories.push(...values.map(String));
+      } else if (config.reference === "tasks" || config.key === "task_id") {
+        ids.tasks.push(...values.map(String));
       }
     });
 
@@ -132,6 +137,7 @@ export function useFilterChipBar<TContext = unknown>(
   const { getTagName } = useTagNames(referenceIds.tags);
   const { getSegmentName } = useSegmentNames(referenceIds.segments);
   const { getCategoryName } = useCategoryNames(referenceIds.categories);
+  const { getTaskName } = useTaskNames(referenceIds.tasks);
 
   // Build removal groups map from config
   const removalGroups = useMemo(() => {
@@ -168,6 +174,24 @@ export function useFilterChipBar<TContext = unknown>(
       // Skip system filters (but NOT 'q' - we want search chips)
       if (SYSTEM_FILTERS.has(key) || value === undefined || value === null) {
         return;
+      }
+
+      // DYNAMIC @ilike HANDLING: TextColumnFilter generates ${source}@ilike keys
+      // Handle these dynamically without requiring explicit config entries
+      if (key.endsWith("@ilike")) {
+        const source = key.replace("@ilike", "");
+        // Humanize: first_name -> "First name", name -> "Name"
+        const humanizedSource = source.charAt(0).toUpperCase() + source.slice(1).replace(/_/g, " ");
+        // Strip wildcards from value: %John% -> John
+        const displayValue = String(value).replace(/^%|%$/g, "");
+
+        result.push({
+          key,
+          value: value as string,
+          label: displayValue,
+          category: `${humanizedSource} contains`,
+        });
+        return; // Skip normal processing
       }
 
       const config = filterConfig.find((c) => c.key === key);
@@ -266,7 +290,9 @@ export function useFilterChipBar<TContext = unknown>(
           label = String(v);
           needsNameResolution = true;
           referenceType = "sales";
-        } else if (config?.reference === "tags" || key === "tags") {
+        } else if (config?.reference === "tags") {
+          // Only resolve tags when explicitly configured as reference
+          // (Opportunity tags are text[], not IDs - use multiselect config instead)
           label = String(v);
           needsNameResolution = true;
           referenceType = "tags";
@@ -278,6 +304,10 @@ export function useFilterChipBar<TContext = unknown>(
           label = String(v);
           needsNameResolution = true;
           referenceType = "categories";
+        } else if (config?.reference === "tasks" || key === "task_id") {
+          label = String(v);
+          needsNameResolution = true;
+          referenceType = "tasks";
         } else {
           label = String(v);
         }
@@ -325,6 +355,9 @@ export function useFilterChipBar<TContext = unknown>(
         case "categories":
           resolvedLabel = getCategoryName(chip.label);
           break;
+        case "tasks":
+          resolvedLabel = getTaskName(chip.label);
+          break;
         default:
           resolvedLabel = chip.label;
       }
@@ -333,7 +366,15 @@ export function useFilterChipBar<TContext = unknown>(
       const { referenceType: _, ...cleanChip } = chip as ChipData & { referenceType?: string };
       return { ...cleanChip, label: resolvedLabel };
     });
-  }, [baseChips, getOrganizationName, getSalesName, getTagName, getSegmentName, getCategoryName]);
+  }, [
+    baseChips,
+    getOrganizationName,
+    getSalesName,
+    getTagName,
+    getSegmentName,
+    getCategoryName,
+    getTaskName,
+  ]);
 
   const removeFilter = useCallback(
     (key: string, value?: string | number) => {

@@ -28,7 +28,7 @@ import type { Sale } from "../types";
 import { DEFAULT_PAGE_SIZE } from "@/atomic-crm/constants/appConstants";
 
 interface ActivityTimelineFiltersProps {
-  onFiltersChange: (filters: Record<string, any>) => void;
+  onFiltersChange: (filters: Record<string, unknown>) => void;
 }
 
 export const ActivityTimelineFilters: React.FC<ActivityTimelineFiltersProps> = ({
@@ -51,12 +51,12 @@ export const ActivityTimelineFilters: React.FC<ActivityTimelineFiltersProps> = (
   const { data: users } = useGetList<Sale>("sales", paginationOptions);
 
   // Track previous filters to avoid infinite loops from object reference changes
-  const previousFiltersRef = useRef<Record<string, any>>({});
+  const previousFiltersRef = useRef<Record<string, unknown>>({});
 
   // Build filter object whenever state changes
   // Only call onFiltersChange when filters actually change (deep comparison)
   React.useEffect(() => {
-    const filters: Record<string, any> = {};
+    const filters: Record<string, unknown> = {};
 
     // Activity type filter
     if (selectedTypes.length > 0) {
@@ -76,13 +76,9 @@ export const ActivityTimelineFilters: React.FC<ActivityTimelineFiltersProps> = (
       filters.created_by = selectedUsers.map(Number);
     }
 
-    // Stage changes only toggle
-    // Note: This would require a specific activity type or flag in the database
-    // For now, we'll document this as a limitation
+    // Stage changes only toggle - filters for stage_change subtype
     if (showStageChangesOnly) {
-      // This would need backend support to filter for stage change events
-      // Leaving as placeholder for future implementation
-      filters.is_stage_change = true;
+      filters.subtype = "stage_change";
     }
 
     // Only update parent if filters actually changed (prevents infinite loop)

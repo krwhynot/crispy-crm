@@ -1,7 +1,7 @@
 import { useUpdate, useNotify, RecordContextProvider } from "ra-core";
 import { useQueryClient } from "@tanstack/react-query";
 import { Form, ReferenceField } from "react-admin";
-import { activityKeys } from "../../queryKeys";
+import { activityKeys, entityTimelineKeys } from "../../queryKeys";
 import { logger } from "@/lib/logger";
 import { notificationMessages } from "@/atomic-crm/constants/notificationMessages";
 import { TextInput } from "@/components/ra-wrappers/text-input";
@@ -69,7 +69,8 @@ export function ActivityDetailsTab({
         data,
         previousData: record,
       });
-      queryClient.invalidateQueries({ queryKey: activityKeys.all });
+      queryClient.invalidateQueries({ queryKey: activityKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: entityTimelineKeys.lists() });
       notify(notificationMessages.updated("Activity"), { type: "success" });
       onModeToggle?.();
     } catch (error: unknown) {

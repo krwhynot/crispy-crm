@@ -71,6 +71,7 @@ export type Database = {
           tags: string[] | null
           type: Database["public"]["Enums"]["interaction_type"]
           updated_at: string | null
+          updated_by: number | null
         }
         Insert: {
           activity_date?: string | null
@@ -106,6 +107,7 @@ export type Database = {
           tags?: string[] | null
           type: Database["public"]["Enums"]["interaction_type"]
           updated_at?: string | null
+          updated_by?: number | null
         }
         Update: {
           activity_date?: string | null
@@ -141,6 +143,7 @@ export type Database = {
           tags?: string[] | null
           type?: Database["public"]["Enums"]["interaction_type"]
           updated_at?: string | null
+          updated_by?: number | null
         }
         Relationships: [
           {
@@ -245,12 +248,61 @@ export type Database = {
             foreignKeyName: "activities_related_task_id_fkey"
             columns: ["related_task_id"]
             isOneToOne: false
-            referencedRelation: "tasks_deprecated"
+            referencedRelation: "activities"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "activities_related_task_id_fkey"
+            columns: ["related_task_id"]
+            isOneToOne: false
+            referencedRelation: "activities_summary"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "activities_related_task_id_fkey"
+            columns: ["related_task_id"]
+            isOneToOne: false
+            referencedRelation: "activities_with_task_details"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "activities_related_task_id_fkey"
+            columns: ["related_task_id"]
+            isOneToOne: false
+            referencedRelation: "entity_timeline"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "activities_related_task_id_fkey"
+            columns: ["related_task_id"]
+            isOneToOne: false
+            referencedRelation: "priority_tasks"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "activities_related_task_id_fkey"
+            columns: ["related_task_id"]
+            isOneToOne: false
+            referencedRelation: "tasks_summary"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "activities_related_task_id_fkey"
+            columns: ["related_task_id"]
+            isOneToOne: false
+            referencedRelation: "tasks_v"
             referencedColumns: ["id"]
           },
           {
             foreignKeyName: "activities_sales_id_fkey"
             columns: ["sales_id"]
+            isOneToOne: false
+            referencedRelation: "sales"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "activities_updated_by_fkey"
+            columns: ["updated_by"]
             isOneToOne: false
             referencedRelation: "sales"
             referencedColumns: ["id"]
@@ -836,6 +888,13 @@ export type Database = {
             foreignKeyName: "interaction_participants_activity_id_fkey"
             columns: ["activity_id"]
             isOneToOne: false
+            referencedRelation: "activities_summary"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "interaction_participants_activity_id_fkey"
+            columns: ["activity_id"]
+            isOneToOne: false
             referencedRelation: "activities_with_task_details"
             referencedColumns: ["id"]
           },
@@ -1266,6 +1325,13 @@ export type Database = {
             columns: ["founding_interaction_id"]
             isOneToOne: false
             referencedRelation: "activities"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "opportunities_founding_interaction_id_fkey"
+            columns: ["founding_interaction_id"]
+            isOneToOne: false
+            referencedRelation: "activities_summary"
             referencedColumns: ["id"]
           },
           {
@@ -1959,7 +2025,7 @@ export type Database = {
           priority: string | null
           sales_id: number | null
           search_tsv: unknown
-          segment_id: string | null
+          segment_id: string
           shipping_city: string | null
           shipping_country: string | null
           shipping_postal_code: string | null
@@ -2012,7 +2078,7 @@ export type Database = {
           priority?: string | null
           sales_id?: number | null
           search_tsv?: unknown
-          segment_id?: string | null
+          segment_id: string
           shipping_city?: string | null
           shipping_country?: string | null
           shipping_postal_code?: string | null
@@ -2065,7 +2131,7 @@ export type Database = {
           priority?: string | null
           sales_id?: number | null
           search_tsv?: unknown
-          segment_id?: string | null
+          segment_id?: string
           shipping_city?: string | null
           shipping_country?: string | null
           shipping_postal_code?: string | null
@@ -2899,6 +2965,13 @@ export type Database = {
             foreignKeyName: "tutorial_progress_created_activity_id_fkey"
             columns: ["created_activity_id"]
             isOneToOne: false
+            referencedRelation: "activities_summary"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "tutorial_progress_created_activity_id_fkey"
+            columns: ["created_activity_id"]
+            isOneToOne: false
             referencedRelation: "activities_with_task_details"
             referencedColumns: ["id"]
           },
@@ -3075,6 +3148,207 @@ export type Database = {
       }
     }
     Views: {
+      activities_summary: {
+        Row: {
+          activity_date: string | null
+          activity_type: Database["public"]["Enums"]["activity_type"] | null
+          completed: boolean | null
+          completed_at: string | null
+          contact_id: number | null
+          contact_name: string | null
+          created_at: string | null
+          created_by: number | null
+          creator_avatar_url: string | null
+          creator_email: string | null
+          creator_first_name: string | null
+          creator_last_name: string | null
+          deleted_at: string | null
+          description: string | null
+          due_date: string | null
+          duration_minutes: number | null
+          follow_up_date: string | null
+          follow_up_required: boolean | null
+          id: number | null
+          opportunity_id: number | null
+          opportunity_name: string | null
+          organization_id: number | null
+          organization_name: string | null
+          outcome: string | null
+          overdue_notified_at: string | null
+          priority: Database["public"]["Enums"]["priority_level"] | null
+          related_task_id: number | null
+          reminder_date: string | null
+          sales_id: number | null
+          snooze_until: string | null
+          subject: string | null
+          type: Database["public"]["Enums"]["interaction_type"] | null
+          updated_at: string | null
+          updated_by: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "activities_contact_id_fkey"
+            columns: ["contact_id"]
+            isOneToOne: false
+            referencedRelation: "contacts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "activities_contact_id_fkey"
+            columns: ["contact_id"]
+            isOneToOne: false
+            referencedRelation: "contacts_summary"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "activities_contact_id_fkey"
+            columns: ["contact_id"]
+            isOneToOne: false
+            referencedRelation: "contacts_with_account_manager"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "activities_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "sales"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "activities_opportunity_id_fkey"
+            columns: ["opportunity_id"]
+            isOneToOne: false
+            referencedRelation: "opportunities"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "activities_opportunity_id_fkey"
+            columns: ["opportunity_id"]
+            isOneToOne: false
+            referencedRelation: "opportunities_summary"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "activities_opportunity_id_fkey"
+            columns: ["opportunity_id"]
+            isOneToOne: false
+            referencedRelation: "principal_opportunities"
+            referencedColumns: ["opportunity_id"]
+          },
+          {
+            foreignKeyName: "activities_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "dashboard_principal_summary"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "activities_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "activities_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations_summary"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "activities_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations_with_account_manager"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "activities_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "principal_opportunities"
+            referencedColumns: ["principal_id"]
+          },
+          {
+            foreignKeyName: "activities_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "principal_pipeline_summary"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "activities_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "principal_pipeline_summary"
+            referencedColumns: ["principal_id"]
+          },
+          {
+            foreignKeyName: "activities_related_task_id_fkey"
+            columns: ["related_task_id"]
+            isOneToOne: false
+            referencedRelation: "activities"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "activities_related_task_id_fkey"
+            columns: ["related_task_id"]
+            isOneToOne: false
+            referencedRelation: "activities_summary"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "activities_related_task_id_fkey"
+            columns: ["related_task_id"]
+            isOneToOne: false
+            referencedRelation: "activities_with_task_details"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "activities_related_task_id_fkey"
+            columns: ["related_task_id"]
+            isOneToOne: false
+            referencedRelation: "entity_timeline"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "activities_related_task_id_fkey"
+            columns: ["related_task_id"]
+            isOneToOne: false
+            referencedRelation: "priority_tasks"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "activities_related_task_id_fkey"
+            columns: ["related_task_id"]
+            isOneToOne: false
+            referencedRelation: "tasks_summary"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "activities_related_task_id_fkey"
+            columns: ["related_task_id"]
+            isOneToOne: false
+            referencedRelation: "tasks_v"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "activities_sales_id_fkey"
+            columns: ["sales_id"]
+            isOneToOne: false
+            referencedRelation: "sales"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "activities_updated_by_fkey"
+            columns: ["updated_by"]
+            isOneToOne: false
+            referencedRelation: "sales"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       activities_with_task_details: {
         Row: {
           activity_date: string | null
@@ -3290,7 +3564,49 @@ export type Database = {
             foreignKeyName: "activities_related_task_id_fkey"
             columns: ["related_task_id"]
             isOneToOne: false
-            referencedRelation: "tasks_deprecated"
+            referencedRelation: "activities"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "activities_related_task_id_fkey"
+            columns: ["related_task_id"]
+            isOneToOne: false
+            referencedRelation: "activities_summary"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "activities_related_task_id_fkey"
+            columns: ["related_task_id"]
+            isOneToOne: false
+            referencedRelation: "activities_with_task_details"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "activities_related_task_id_fkey"
+            columns: ["related_task_id"]
+            isOneToOne: false
+            referencedRelation: "entity_timeline"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "activities_related_task_id_fkey"
+            columns: ["related_task_id"]
+            isOneToOne: false
+            referencedRelation: "priority_tasks"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "activities_related_task_id_fkey"
+            columns: ["related_task_id"]
+            isOneToOne: false
+            referencedRelation: "tasks_summary"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "activities_related_task_id_fkey"
+            columns: ["related_task_id"]
+            isOneToOne: false
+            referencedRelation: "tasks_v"
             referencedColumns: ["id"]
           },
           {
@@ -4152,6 +4468,13 @@ export type Database = {
             foreignKeyName: "opportunities_founding_interaction_id_fkey"
             columns: ["founding_interaction_id"]
             isOneToOne: false
+            referencedRelation: "activities_summary"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "opportunities_founding_interaction_id_fkey"
+            columns: ["founding_interaction_id"]
+            isOneToOne: false
             referencedRelation: "activities_with_task_details"
             referencedColumns: ["id"]
           },
@@ -4576,6 +4899,7 @@ export type Database = {
           nb_contacts: number | null
           nb_notes: number | null
           nb_opportunities: number | null
+          org_scope: string | null
           organization_type:
             | Database["public"]["Enums"]["organization_type"]
             | null
@@ -4585,7 +4909,9 @@ export type Database = {
           postal_code: string | null
           priority: string | null
           sales_id: number | null
+          search_tsv: unknown
           segment_id: string | null
+          segment_name: string | null
           state: string | null
           total_contacts_across_branches: number | null
           total_opportunities_across_branches: number | null
@@ -4971,6 +5297,87 @@ export type Database = {
             columns: ["sales_id"]
             isOneToOne: false
             referencedRelation: "sales"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      product_distributors_summary: {
+        Row: {
+          created_at: string | null
+          deleted_at: string | null
+          distributor_id: number | null
+          distributor_name: string | null
+          notes: string | null
+          product_id: number | null
+          product_name: string | null
+          status: string | null
+          updated_at: string | null
+          valid_from: string | null
+          valid_to: string | null
+          vendor_item_number: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_product_distributors_distributor"
+            columns: ["distributor_id"]
+            isOneToOne: false
+            referencedRelation: "dashboard_principal_summary"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_product_distributors_distributor"
+            columns: ["distributor_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_product_distributors_distributor"
+            columns: ["distributor_id"]
+            isOneToOne: false
+            referencedRelation: "organizations_summary"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_product_distributors_distributor"
+            columns: ["distributor_id"]
+            isOneToOne: false
+            referencedRelation: "organizations_with_account_manager"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_product_distributors_distributor"
+            columns: ["distributor_id"]
+            isOneToOne: false
+            referencedRelation: "principal_opportunities"
+            referencedColumns: ["principal_id"]
+          },
+          {
+            foreignKeyName: "fk_product_distributors_distributor"
+            columns: ["distributor_id"]
+            isOneToOne: false
+            referencedRelation: "principal_pipeline_summary"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_product_distributors_distributor"
+            columns: ["distributor_id"]
+            isOneToOne: false
+            referencedRelation: "principal_pipeline_summary"
+            referencedColumns: ["principal_id"]
+          },
+          {
+            foreignKeyName: "fk_product_distributors_product"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_product_distributors_product"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products_summary"
             referencedColumns: ["id"]
           },
         ]
@@ -5455,6 +5862,16 @@ export type Database = {
           task_count: number
         }[]
       }
+      get_opportunities_by_principal_report: {
+        Args: {
+          p_end_date?: string
+          p_opportunity_owner_id?: number
+          p_principal_organization_id?: number
+          p_stage?: string[]
+          p_start_date?: string
+        }
+        Returns: Json
+      }
       get_organization_contacts: {
         Args: { p_organization_id: number }
         Returns: {
@@ -5543,6 +5960,21 @@ export type Database = {
         SetofOptions: {
           from: "*"
           to: "stale_deal_record"
+          isOneToOne: false
+          isSetofReturn: true
+        }
+      }
+      get_stale_opportunities: {
+        Args: {
+          p_campaign: string
+          p_end_date?: string
+          p_sales_rep_id?: number
+          p_start_date?: string
+        }
+        Returns: Database["public"]["CompositeTypes"]["stale_opportunity_record"][]
+        SetofOptions: {
+          from: "*"
+          to: "stale_opportunity_record"
           isOneToOne: false
           isSetofReturn: true
         }
@@ -5686,7 +6118,7 @@ export type Database = {
       }
     }
     Enums: {
-      activity_type: "activity" | "engagement" | "interaction" | "task"
+      activity_type: "engagement" | "interaction" | "task" | "activity"
       contact_role:
         | "decision_maker"
         | "influencer"
@@ -5711,6 +6143,7 @@ export type Database = {
         | "note"
         | "sample"
         | "administrative"
+        | "stage_change"
         | "other"
       loss_reason:
         | "price_too_high"
@@ -5811,6 +6244,16 @@ export type Database = {
         principal_name: string | null
         priority: string | null
         estimated_close_date: string | null
+      }
+      stale_opportunity_record: {
+        id: number | null
+        name: string | null
+        stage: string | null
+        customer_organization_name: string | null
+        last_activity_date: string | null
+        days_inactive: number | null
+        stage_threshold: number | null
+        is_stale: boolean | null
       }
       today_task_record: {
         id: number | null
@@ -6088,7 +6531,7 @@ export const Constants = {
   },
   public: {
     Enums: {
-      activity_type: ["activity", "engagement", "interaction", "task"],
+      activity_type: ["engagement", "interaction", "task", "activity"],
       contact_role: [
         "decision_maker",
         "influencer",
@@ -6113,6 +6556,7 @@ export const Constants = {
         "social",
         "note",
         "sample",
+        "stage_change",
         "administrative",
         "other",
       ],
@@ -6201,3 +6645,5 @@ export const Constants = {
   },
 } as const
 
+A new version of Supabase CLI is available: v2.75.0 (currently installed v2.72.7)
+We recommend updating regularly for new features and bug fixes: https://supabase.com/docs/guides/cli/getting-started#updating-the-supabase-cli

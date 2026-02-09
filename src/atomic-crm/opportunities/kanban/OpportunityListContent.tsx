@@ -1,4 +1,4 @@
-import { useListContext, useUpdate, useNotify, useRefresh, useDataProvider } from "ra-core";
+import { useListContext, useUpdate, useNotify, useRefresh } from "ra-core";
 import { logger } from "@/lib/logger";
 import { useMemo, useState, useCallback } from "react";
 import { useQueryClient } from "@tanstack/react-query";
@@ -27,7 +27,7 @@ import {
   getOpportunityStageLabel,
   type OpportunitiesByStage,
 } from "../constants";
-import { activityKeys, opportunityKeys } from "@/atomic-crm/queryKeys";
+import { activityKeys, opportunityKeys, entityTimelineKeys } from "@/atomic-crm/queryKeys";
 import { getOpportunitiesByStage } from "../constants";
 import { useColumnPreferences } from "../useColumnPreferences";
 import { ColumnCustomizationMenu } from "./ColumnCustomizationMenu";
@@ -123,7 +123,6 @@ export const OpportunityListContent = ({
   const [update] = useUpdate();
   const notify = useNotify();
   const refresh = useRefresh();
-  const dataProvider = useDataProvider();
   const queryClient = useQueryClient();
 
   // State for CloseOpportunityModal
@@ -194,8 +193,6 @@ export const OpportunityListContent = ({
       draggedItem: Opportunity,
       additionalData?: Partial<CloseOpportunityInput>
     ) => {
-      const oldStage = draggedItem.stage;
-
       // WG-002: Validate close opportunity data before update
       // This enforces win/loss reason requirements and prevents bypass
       if (newStage === STAGE.CLOSED_WON || newStage === STAGE.CLOSED_LOST) {
@@ -225,37 +222,16 @@ export const OpportunityListContent = ({
           previousData: draggedItem,
         },
         {
-          onSuccess: async () => {
+          onSuccess: () => {
             notify(`Moved to ${getOpportunityStageLabel(newStage)}`, {
               type: "success",
             });
 
-            try {
-              // FIX [WF-E2E-002]: Use "activity" for all activity logging
-              // Per activitiesSchema: activity is the unified type for all activity logging
-              await dataProvider.create("activities", {
-                data: {
-                  activity_type: "activity", // Unified activity type
-                  type: "note",
-                  subject: `Stage changed from ${getOpportunityStageLabel(oldStage)} to ${getOpportunityStageLabel(newStage)}`,
-                  activity_date: new Date().toISOString(),
-                  opportunity_id: opportunityId,
-                  organization_id: draggedItem.customer_organization_id,
-                },
-              });
-
-              queryClient.invalidateQueries({ queryKey: activityKeys.lists() });
-              queryClient.invalidateQueries({ queryKey: opportunityKeys.lists() });
-            } catch (error: unknown) {
-              // WG-002 FIX: Notify user that activity log failed (audit trail incomplete)
-              logger.error("Failed to create stage change activity", error, {
-                feature: "OpportunityListContent",
-              });
-              notify("Failed to log activity. Please manually add a note for this stage change.", {
-                type: "error",
-                autoHideDuration: 10000, // 10 seconds - longer for action items
-              });
-            }
+            // NOTE: Activity logging removed - DB trigger handles stage change logging
+            // This prevents duplicate activity entries (was one of 5 client-side logging points)
+            queryClient.invalidateQueries({ queryKey: activityKeys.lists() });
+            queryClient.invalidateQueries({ queryKey: opportunityKeys.lists() });
+            queryClient.invalidateQueries({ queryKey: entityTimelineKeys.lists() });
           },
           onError: () => {
             notify("Error: Could not move opportunity. Reverting.", {
@@ -266,7 +242,7 @@ export const OpportunityListContent = ({
         }
       );
     },
-    [update, notify, dataProvider, queryClient]
+    [update, notify, queryClient]
   );
 
   /**

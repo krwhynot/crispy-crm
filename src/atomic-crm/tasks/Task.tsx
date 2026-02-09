@@ -11,7 +11,7 @@ import {
 import { useQueryClient } from "@tanstack/react-query";
 import { notificationMessages } from "@/atomic-crm/constants/notificationMessages";
 
-import { taskKeys } from "../queryKeys";
+import { taskKeys, entityTimelineKeys } from "../queryKeys";
 import {
   addDays,
   addWeeks,
@@ -98,6 +98,7 @@ export const Task = memo(function Task({
     }
 
     queryClient.invalidateQueries({ queryKey: taskKeys.lists() });
+    queryClient.invalidateQueries({ queryKey: entityTimelineKeys.lists() });
   }, [queryClient, isUpdatePending, isSuccess, variables]);
 
   const labelId = `checkbox-list-label-${task.id}`;

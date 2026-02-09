@@ -64,7 +64,10 @@ export const dashboardKeys = {
   stats: (period?: string) => ["dashboard", "stats", period] as const,
 };
 
-// Activity Log Keys (polymorphic by organization)
+/**
+ * @deprecated Use entityTimelineKeys instead. Activity log RPC replaced by entity_timeline view.
+ * This will be removed in a future version.
+ */
 export const activityLogKeys = {
   all: ["activityLog"] as const,
   byOrganization: (orgId?: number | string) => ["activityLog", orgId] as const,

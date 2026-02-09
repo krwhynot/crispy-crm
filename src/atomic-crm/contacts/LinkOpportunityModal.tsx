@@ -7,6 +7,7 @@ import {
   opportunityKeys,
   contactKeys,
   opportunityContactKeys,
+  entityTimelineKeys,
 } from "@/atomic-crm/queryKeys";
 import { logger } from "@/lib/logger";
 import {
@@ -100,7 +101,8 @@ export function LinkOpportunityModal({
                   organization_id: opportunity.customer_organization_id,
                 },
               });
-              queryClient.invalidateQueries({ queryKey: activityKeys.all });
+              queryClient.invalidateQueries({ queryKey: activityKeys.lists() });
+              queryClient.invalidateQueries({ queryKey: entityTimelineKeys.lists() });
             } catch (activityError) {
               logger.error("Failed to log contact link activity", activityError, {
                 feature: "LinkOpportunityModal",

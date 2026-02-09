@@ -20,6 +20,9 @@ const { mockFrom, mockQueryBuilder } = vi.hoisted(() => {
     select: vi.fn(),
     eq: vi.fn(),
     or: vi.fn(),
+    in: vi.fn(),
+    gte: vi.fn(),
+    lte: vi.fn(),
     order: vi.fn(),
     range: vi.fn(),
   };
@@ -28,6 +31,9 @@ const { mockFrom, mockQueryBuilder } = vi.hoisted(() => {
   mockBuilder.select.mockReturnValue(mockBuilder);
   mockBuilder.eq.mockReturnValue(mockBuilder);
   mockBuilder.or.mockReturnValue(mockBuilder);
+  mockBuilder.in.mockReturnValue(mockBuilder);
+  mockBuilder.gte.mockReturnValue(mockBuilder);
+  mockBuilder.lte.mockReturnValue(mockBuilder);
   mockBuilder.order.mockReturnValue(mockBuilder);
   mockBuilder.range.mockResolvedValue({ data: [], error: null, count: 0 });
 
@@ -61,6 +67,9 @@ describe("createTimelineHandler", () => {
     mockQueryBuilder.select.mockReturnValue(mockQueryBuilder);
     mockQueryBuilder.eq.mockReturnValue(mockQueryBuilder);
     mockQueryBuilder.or.mockReturnValue(mockQueryBuilder);
+    mockQueryBuilder.in.mockReturnValue(mockQueryBuilder);
+    mockQueryBuilder.gte.mockReturnValue(mockQueryBuilder);
+    mockQueryBuilder.lte.mockReturnValue(mockQueryBuilder);
     mockQueryBuilder.order.mockReturnValue(mockQueryBuilder);
     mockQueryBuilder.range.mockResolvedValue({ data: [], error: null, count: 0 });
 
@@ -179,6 +188,115 @@ describe("createTimelineHandler", () => {
     });
   });
 
+  describe("getList() - type (interaction_type) filtering", () => {
+    it("should filter by type array using .in() on subtype column", async () => {
+      const params: GetListParams = {
+        pagination: { page: 1, perPage: 25 },
+        sort: { field: "entry_date", order: "DESC" },
+        filter: { contact_id: 123, type: ["call", "email"] },
+      };
+
+      await handler.getList("entity_timeline", params);
+
+      expect(mockQueryBuilder.in).toHaveBeenCalledWith("subtype", ["call", "email"]);
+    });
+
+    it("should handle single type value by wrapping in array", async () => {
+      const params: GetListParams = {
+        pagination: { page: 1, perPage: 25 },
+        sort: { field: "entry_date", order: "DESC" },
+        filter: { contact_id: 123, type: "call" },
+      };
+
+      await handler.getList("entity_timeline", params);
+
+      expect(mockQueryBuilder.in).toHaveBeenCalledWith("subtype", ["call"]);
+    });
+  });
+
+  describe("getList() - date range filtering", () => {
+    it("should filter by activity_date_gte using .gte() on entry_date", async () => {
+      const params: GetListParams = {
+        pagination: { page: 1, perPage: 25 },
+        sort: { field: "entry_date", order: "DESC" },
+        filter: { contact_id: 123, activity_date_gte: "2025-01-01" },
+      };
+
+      await handler.getList("entity_timeline", params);
+
+      expect(mockQueryBuilder.gte).toHaveBeenCalledWith("entry_date", "2025-01-01");
+    });
+
+    it("should filter by activity_date_lte using .lte() on entry_date", async () => {
+      const params: GetListParams = {
+        pagination: { page: 1, perPage: 25 },
+        sort: { field: "entry_date", order: "DESC" },
+        filter: { contact_id: 123, activity_date_lte: "2025-12-31" },
+      };
+
+      await handler.getList("entity_timeline", params);
+
+      expect(mockQueryBuilder.lte).toHaveBeenCalledWith("entry_date", "2025-12-31");
+    });
+
+    it("should apply both date range filters when provided", async () => {
+      const params: GetListParams = {
+        pagination: { page: 1, perPage: 25 },
+        sort: { field: "entry_date", order: "DESC" },
+        filter: {
+          contact_id: 123,
+          activity_date_gte: "2025-01-01",
+          activity_date_lte: "2025-12-31",
+        },
+      };
+
+      await handler.getList("entity_timeline", params);
+
+      expect(mockQueryBuilder.gte).toHaveBeenCalledWith("entry_date", "2025-01-01");
+      expect(mockQueryBuilder.lte).toHaveBeenCalledWith("entry_date", "2025-12-31");
+    });
+  });
+
+  describe("getList() - created_by filtering", () => {
+    it("should filter by created_by array using .in()", async () => {
+      const params: GetListParams = {
+        pagination: { page: 1, perPage: 25 },
+        sort: { field: "entry_date", order: "DESC" },
+        filter: { contact_id: 123, created_by: [1, 2, 3] },
+      };
+
+      await handler.getList("entity_timeline", params);
+
+      expect(mockQueryBuilder.in).toHaveBeenCalledWith("created_by", [1, 2, 3]);
+    });
+
+    it("should handle single created_by value by wrapping in array", async () => {
+      const params: GetListParams = {
+        pagination: { page: 1, perPage: 25 },
+        sort: { field: "entry_date", order: "DESC" },
+        filter: { contact_id: 123, created_by: 42 },
+      };
+
+      await handler.getList("entity_timeline", params);
+
+      expect(mockQueryBuilder.in).toHaveBeenCalledWith("created_by", [42]);
+    });
+  });
+
+  describe("getList() - subtype filtering (stage_change)", () => {
+    it("should filter by subtype using .eq()", async () => {
+      const params: GetListParams = {
+        pagination: { page: 1, perPage: 25 },
+        sort: { field: "entry_date", order: "DESC" },
+        filter: { contact_id: 123, subtype: "stage_change" },
+      };
+
+      await handler.getList("entity_timeline", params);
+
+      expect(mockQueryBuilder.eq).toHaveBeenCalledWith("subtype", "stage_change");
+    });
+  });
+
   describe("getList() - sorting", () => {
     it("should sort by entry_date DESC by default", async () => {
       const params: GetListParams = {
@@ -227,6 +345,21 @@ describe("createTimelineHandler", () => {
 
       // Empty string is falsy, so defaults to "entry_date"
       expect(mockQueryBuilder.order).toHaveBeenCalledWith("entry_date", { ascending: false });
+    });
+
+    it("should apply secondary sort by id for pagination stability", async () => {
+      const params: GetListParams = {
+        pagination: { page: 1, perPage: 25 },
+        sort: { field: "entry_date", order: "DESC" },
+        filter: { contact_id: 123 },
+      };
+
+      await handler.getList("entity_timeline", params);
+
+      // Primary sort: entry_date DESC
+      expect(mockQueryBuilder.order).toHaveBeenCalledWith("entry_date", { ascending: false });
+      // Secondary sort: id DESC (tie-breaker for stable pagination)
+      expect(mockQueryBuilder.order).toHaveBeenCalledWith("id", { ascending: false });
     });
   });
 
