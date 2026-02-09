@@ -195,8 +195,17 @@ export function createOpportunitiesHandler(baseProvider: DataProvider): DataProv
         }
       }
 
-      // Fallback: delegate to baseProvider (lifecycle callbacks will handle field stripping)
-      return baseProvider.create<RecordType>(resource, params);
+      // Fallback: delegate to baseProvider
+      // FIX [E2E-F2]: Strip products_to_sync (virtual field) before delegating
+      // The lifecycle callbacks intentionally don't strip it so handler can process it first
+      const { products_to_sync: _createStripped, ...cleanedCreateData } = params.data as Record<
+        string,
+        unknown
+      >;
+      return baseProvider.create<RecordType>(resource, {
+        ...params,
+        data: cleanedCreateData as RecordType,
+      });
     },
 
     /**
@@ -251,8 +260,17 @@ export function createOpportunitiesHandler(baseProvider: DataProvider): DataProv
         }
       }
 
-      // Fallback: delegate to baseProvider (lifecycle callbacks will handle field stripping)
-      return baseProvider.update<RecordType>(resource, params);
+      // Fallback: delegate to baseProvider
+      // FIX [E2E-F2]: Strip products_to_sync (virtual field) before delegating
+      // The lifecycle callbacks intentionally don't strip it so handler can process it first
+      const { products_to_sync: _updateStripped, ...cleanedUpdateData } = params.data as Record<
+        string,
+        unknown
+      >;
+      return baseProvider.update<RecordType>(resource, {
+        ...params,
+        data: cleanedUpdateData as RecordType,
+      });
     },
 
     /**
