@@ -29,6 +29,16 @@ export const INTERACTION_TYPE_OPTIONS = [
 ] as const;
 
 /**
+ * Interaction types suitable for Quick Add form
+ * Excludes types requiring additional fields:
+ * - "sample" requires sample_status, follow_up_required, follow_up_date (WG-001)
+ * - "administrative", "other" are task types, not quick activities
+ */
+export const QUICK_ADD_INTERACTION_TYPES = INTERACTION_TYPE_OPTIONS.filter(
+  (opt) => !["sample", "administrative", "other"].includes(opt.value)
+) as typeof INTERACTION_TYPE_OPTIONS;
+
+/**
  * Sample status options for UI components
  */
 export const SAMPLE_STATUS_OPTIONS = [

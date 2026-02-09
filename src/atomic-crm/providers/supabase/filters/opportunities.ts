@@ -79,7 +79,7 @@ export const opportunitiesFilters = {
     "stale", // Virtual filter: transformed to last_activity_date + stage filters (see dataProviderUtils.ts)
   ],
 
-  // Opportunity Notes resource
+  // Opportunity Notes resource (camelCase React Admin alias)
   opportunityNotes: [
     "id",
     "opportunity_id",
@@ -89,6 +89,19 @@ export const opportunitiesFilters = {
     "sales_id",
     "created_at",
     "updated_at",
+  ],
+
+  // Opportunity Notes resource (snake_case database name)
+  opportunity_notes: [
+    "id",
+    "opportunity_id",
+    "text",
+    "date",
+    "attachments", // Array field
+    "sales_id",
+    "created_at",
+    "updated_at",
+    "deleted_at",
   ],
 
   // Opportunity Contacts Junction Table
@@ -101,5 +114,37 @@ export const opportunitiesFilters = {
     "is_primary",
     "notes",
     "created_at",
+    "deleted_at",
+  ],
+
+  // Opportunity Participants Junction Table
+  // Links opportunities to organizations with role and commission info
+  opportunity_participants: [
+    "id",
+    "opportunity_id",
+    "organization_id",
+    "role",
+    "is_primary",
+    "commission_rate",
+    "territory",
+    "notes",
+    "created_at",
+    "updated_at",
+    "created_by",
+    "deleted_at",
+  ],
+
+  // Opportunity Products Junction Table
+  // Links opportunities to products with product details
+  opportunity_products: [
+    "id",
+    "opportunity_id",
+    "product_id_reference",
+    "product_name",
+    "product_category",
+    "notes",
+    "created_at",
+    "updated_at",
+    "deleted_at",
   ],
 } as const satisfies Partial<FilterRegistry>;

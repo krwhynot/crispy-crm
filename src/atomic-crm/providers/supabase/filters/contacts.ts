@@ -68,7 +68,7 @@ export const contactsFilters = {
     "q", // Special: full-text search parameter
   ],
 
-  // Contact Notes resource
+  // Contact Notes resource (camelCase React Admin alias)
   contactNotes: [
     "id",
     "contact_id",
@@ -78,5 +78,33 @@ export const contactsFilters = {
     "sales_id",
     "created_at",
     "updated_at",
+  ],
+
+  // Contact Notes resource (snake_case database name)
+  contact_notes: [
+    "id",
+    "contact_id",
+    "text",
+    "date",
+    "attachments", // Array field
+    "sales_id",
+    "created_at",
+    "updated_at",
+    "deleted_at",
+  ],
+
+  // Contact Preferred Principals Junction Table
+  // Links contacts to principal organizations with advocacy strength
+  contact_preferred_principals: [
+    "id",
+    "contact_id",
+    "principal_organization_id",
+    "advocacy_strength",
+    "last_interaction_date",
+    "notes",
+    "created_at",
+    "updated_at",
+    "created_by",
+    "deleted_at",
   ],
 } as const satisfies Partial<FilterRegistry>;
