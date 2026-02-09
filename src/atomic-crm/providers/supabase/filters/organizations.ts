@@ -79,5 +79,33 @@ export const organizationsFilters = {
     "display_order", // For ordering
     "created_at",
     "created_by",
+    "deleted_at",
+  ],
+
+  // Organization Notes resource (snake_case database name)
+  organization_notes: [
+    "id",
+    "organization_id",
+    "text",
+    "date",
+    "attachments", // Array field
+    "sales_id",
+    "created_at",
+    "updated_at",
+    "deleted_at",
+  ],
+
+  // Organization Distributors Junction Table
+  // Links organizations to distributors with primary designation
+  organization_distributors: [
+    "id",
+    "organization_id",
+    "distributor_id",
+    "is_primary",
+    "notes",
+    "created_at",
+    "updated_at",
+    "created_by",
+    "deleted_at",
   ],
 } as const satisfies Partial<FilterRegistry>;

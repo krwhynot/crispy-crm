@@ -23,7 +23,7 @@ import { usePipelineConfig } from "../root/ConfigurationContext";
 import {
   activityNoteFormSchema,
   baseActivitiesSchema,
-  INTERACTION_TYPE_OPTIONS,
+  QUICK_ADD_INTERACTION_TYPES,
   type ActivityNoteFormData,
 } from "../validation/activities";
 import type { Opportunity, Contact } from "../types";
@@ -172,7 +172,7 @@ export const ActivityNoteForm = ({ opportunity, onSuccess }: ActivityNoteFormPro
                   <SelectValue placeholder="Select type" />
                 </SelectTrigger>
                 <SelectContent>
-                  {INTERACTION_TYPE_OPTIONS.map((option) => (
+                  {QUICK_ADD_INTERACTION_TYPES.map((option) => (
                     <SelectItem key={option.value} value={option.value}>
                       {option.label}
                     </SelectItem>
