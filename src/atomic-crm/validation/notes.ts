@@ -52,6 +52,24 @@ export const baseNoteSchema = z.strictObject({
 });
 
 /**
+ * Form-level schema for note input (used by form resolver)
+ * - sales_id is optional (transform adds it from identity)
+ * - date defaults to current datetime
+ */
+export const noteFormSchema = z.object({
+  text: z
+    .string()
+    .trim()
+    .min(1, "Note text is required")
+    .max(10000, "Note text too long")
+    .transform((val) => sanitizeHtml(val)),
+  date: z.coerce.date({ message: "Please select a valid date." }).default(() => new Date()),
+  sales_id: z.union([z.string(), z.number()]).optional(),
+  attachments: z.array(attachmentSchema).max(20, "Maximum 20 attachments").optional(),
+  id: z.union([z.string(), z.number()]).optional(),
+});
+
+/**
  * Contact note specific schema
  */
 export const contactNoteSchema = baseNoteSchema.extend({
@@ -118,6 +136,7 @@ export const updateOrganizationNoteSchema = organizationNoteSchema.partial().req
  * Inferred types from schemas
  */
 export type Attachment = z.infer<typeof attachmentSchema>;
+export type NoteFormData = z.infer<typeof noteFormSchema>;
 export type ContactNote = z.infer<typeof contactNoteSchema>;
 export type OpportunityNote = z.infer<typeof opportunityNoteSchema>;
 export type OrganizationNote = z.infer<typeof organizationNoteSchema>;

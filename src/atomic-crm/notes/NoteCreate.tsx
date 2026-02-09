@@ -18,7 +18,7 @@ import { SaveButton } from "@/components/ra-wrappers/form";
 import { FormErrorSummary } from "@/components/ra-wrappers/FormErrorSummary";
 import { createFormResolver } from "@/lib/zodErrorFormatting";
 import { NoteInputs } from "./NoteInputs";
-import { baseNoteSchema, getCurrentDate } from "../validation/notes";
+import { noteFormSchema, getCurrentDate } from "../validation/notes";
 
 const foreignKeyMapping = {
   contacts: "contact_id",
@@ -40,7 +40,8 @@ export const NoteCreate = ({
   if (!record || !identity) return null;
 
   const formDefaults = {
-    ...baseNoteSchema.partial().parse({}),
+    ...noteFormSchema.partial().parse({}),
+    date: getCurrentDate(),
   };
 
   return (
@@ -48,7 +49,7 @@ export const NoteCreate = ({
       <Form
         defaultValues={formDefaults}
         mode="onBlur"
-        resolver={createFormResolver(baseNoteSchema)}
+        resolver={createFormResolver(noteFormSchema)}
       >
         <div className="space-y-3">
           <NoteFormContent reference={reference} record={record} />
@@ -92,7 +93,7 @@ const NoteCreateButton = ({
   if (!record || !identity) return null;
 
   const handleSuccess = async () => {
-    reset(baseNoteSchema.partial().parse({}), { keepValues: false });
+    reset(noteFormSchema.partial().parse({}), { keepValues: false });
 
     // Only update last_seen for contacts (opportunities don't have last_seen)
     if (reference === "contacts") {
