@@ -325,12 +325,32 @@
 
 | Finding | Code Fix | Verification | Status |
 |---------|----------|--------------|--------|
-| #1 Kanban null crash | ✅ PR #4 | ✅ PASSED (localhost) | Ready |
-| #2 Product RPC + Handler | ✅ PR #4 + NEW FIX | ✅ PASSED (localhost) | Needs commit |
-| #3 Contact search | ✅ PR #5 | ✅ PASSED | ✅ Working |
-| #4 Sample in Quick Add | ✅ PR #5 | ✅ PASSED | ✅ Working |
+| #1 Kanban null crash | ✅ PR #4 | ✅ PASSED (localhost) | ✅ Complete |
+| #2 Product RPC + Handler | ✅ PR #4 + `a53c1bc85` | ✅ PASSED (localhost) | ✅ Complete |
+| #3 Contact search | ✅ PR #5 | ✅ PASSED | ✅ Complete |
+| #4 Sample in Quick Add | ✅ PR #5 | ✅ PASSED | ✅ Complete |
+
+### CI Guards Implemented
+
+To prevent regression of these bug patterns, CI tests were added:
+
+1. **Filter Registry Completeness** (`filterRegistryCompleteness.test.ts`)
+   - Ensures all soft-delete resources have `deleted_at` in filter registry
+   - Ensures all junction tables have filter registries with common fields
+
+2. **RPC Contract Parity** (`rpc.test.ts`)
+   - Tests `syncOpportunityWithProductsParamsSchema` validates `product_id_reference` field
+   - Tests rejection of old `product_id` field name
+   - Tests `expected_version` parameter acceptance
+
+### Completion Status
+
+**All findings resolved and committed to main:**
+- PR #4: Kanban null guards + RPC schema alignment
+- PR #5: Filter registry fix + Sample type exclusion
+- Commit `a53c1bc85`: Handler fallback path fix for `products_to_sync` stripping
 
 ### Next Steps
-1. **Commit the new handler fix** (Finding #2 - products_to_sync stripping)
-2. Deploy to production
+1. Deploy to production
+2. Monitor Sentry for 48 hours post-deployment
 3. Re-verify all findings on production after deployment
