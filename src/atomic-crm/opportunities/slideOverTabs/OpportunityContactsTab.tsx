@@ -15,7 +15,6 @@ import { Link } from "react-router-dom";
 import { contactKeys, opportunityKeys, opportunityContactKeys } from "@/atomic-crm/queryKeys";
 import { notificationMessages } from "@/atomic-crm/constants/notificationMessages";
 import { AutocompleteArrayInput } from "@/components/ra-wrappers/autocomplete-array-input";
-import { AdminButton } from "@/components/admin/AdminButton";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { UserIcon, Star } from "lucide-react";
@@ -40,17 +39,10 @@ import { DEFAULT_PAGE_SIZE } from "@/atomic-crm/constants/appConstants";
  */
 interface ContactEditFormContentProps {
   record: Opportunity;
-  isSaving: boolean;
-  onCancel: () => void;
   onDirtyChange?: (isDirty: boolean) => void;
 }
 
-function ContactEditFormContent({
-  record,
-  isSaving,
-  onCancel,
-  onDirtyChange,
-}: ContactEditFormContentProps) {
+function ContactEditFormContent({ record, onDirtyChange }: ContactEditFormContentProps) {
   const { data: identity } = useGetIdentity();
 
   return (
@@ -79,15 +71,6 @@ function ContactEditFormContent({
           createItemLabel="Create %{item}"
         />
       </ReferenceArrayInput>
-
-      <div className="flex gap-2 pt-4">
-        <AdminButton type="submit" disabled={isSaving} className="flex-1">
-          {isSaving ? "Saving..." : "Save Changes"}
-        </AdminButton>
-        <AdminButton type="button" variant="outline" onClick={onCancel} disabled={isSaving}>
-          Cancel
-        </AdminButton>
-      </div>
     </>
   );
 }
@@ -170,25 +153,15 @@ export function OpportunityContactsTab({
     }
   };
 
-  const handleCancel = () => {
-    if (onModeToggle) {
-      onModeToggle();
-    }
-  };
-
   if (mode === "edit") {
     return (
       <Form
+        id="slide-over-edit-form"
         defaultValues={{ contact_ids: record.contact_ids || [] }}
         onSubmit={handleSave}
         className="space-y-4"
       >
-        <ContactEditFormContent
-          record={record}
-          isSaving={isSaving}
-          onCancel={handleCancel}
-          onDirtyChange={onDirtyChange}
-        />
+        <ContactEditFormContent record={record} onDirtyChange={onDirtyChange} />
       </Form>
     );
   }
