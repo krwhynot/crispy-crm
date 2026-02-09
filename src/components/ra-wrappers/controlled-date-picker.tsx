@@ -167,7 +167,7 @@ export const ControlledDatePicker = React.forwardRef<HTMLButtonElement, Controll
               aria-invalid={ariaInvalid}
               aria-describedby={ariaDescribedBy}
               className={cn(
-                "h-11 w-full justify-start text-left font-normal",
+                "h-11 w-full justify-start text-left font-normal overflow-hidden",
                 !selectedDate && "text-muted-foreground",
                 showClearButton && "pr-10",
                 disabled && "opacity-50 cursor-not-allowed",
@@ -176,8 +176,10 @@ export const ControlledDatePicker = React.forwardRef<HTMLButtonElement, Controll
               )}
               onBlur={onBlur}
             >
-              <CalendarIcon className="mr-2 h-4 w-4" />
-              {selectedDate ? format(selectedDate, dateFormat) : placeholder}
+              <CalendarIcon className="mr-2 h-4 w-4 shrink-0" />
+              <span className="truncate">
+                {selectedDate ? format(selectedDate, dateFormat) : placeholder}
+              </span>
             </Button>
           </PopoverTrigger>
           {showClearButton && (
