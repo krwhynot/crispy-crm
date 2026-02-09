@@ -148,17 +148,60 @@ describe("RPC Validation Schemas", () => {
   });
 
   describe("syncOpportunityWithProductsParamsSchema", () => {
-    it("should accept valid sync params with all arrays", () => {
+    it("should accept product_id_reference as number", () => {
       const result = syncOpportunityWithProductsParamsSchema.safeParse({
         opportunity_data: { name: "Test Opportunity", stage: "new_lead" },
         products_to_create: [
-          { product_id: 1, notes: "First product" },
-          { product_id: 2, notes: null },
+          { product_id_reference: 1, notes: "First product" },
+          { product_id_reference: 2, notes: null },
         ],
-        products_to_update: [{ product_id: 3, notes: "Updated product" }],
+        products_to_update: [{ product_id_reference: 3, notes: "Updated product" }],
         product_ids_to_delete: [4, 5],
       });
       expect(result.success).toBe(true);
+      if (result.success) {
+        expect(result.data.products_to_create[0].product_id_reference).toBe(1);
+        expect(result.data.products_to_update[0].product_id_reference).toBe(3);
+      }
+    });
+
+    it("should coerce product_id_reference from string", () => {
+      const result = syncOpportunityWithProductsParamsSchema.safeParse({
+        opportunity_data: { name: "Test Opportunity" },
+        products_to_create: [{ product_id_reference: "42", notes: "String product ID" }],
+      });
+      expect(result.success).toBe(true);
+      if (result.success) {
+        expect(result.data.products_to_create[0].product_id_reference).toBe(42);
+        expect(typeof result.data.products_to_create[0].product_id_reference).toBe("number");
+      }
+    });
+
+    it("should accept expected_version parameter", () => {
+      const result = syncOpportunityWithProductsParamsSchema.safeParse({
+        opportunity_data: { name: "Test Opportunity" },
+        expected_version: 5,
+      });
+      expect(result.success).toBe(true);
+      if (result.success) {
+        expect(result.data.expected_version).toBe(5);
+      }
+    });
+
+    it("should reject old product_id field name", () => {
+      const result = syncOpportunityWithProductsParamsSchema.safeParse({
+        opportunity_data: { name: "Test Opportunity" },
+        products_to_create: [{ product_id: 1, notes: "Old field name" }],
+      });
+      expect(result.success).toBe(false);
+    });
+
+    it("should reject invalid product_id_reference", () => {
+      const result = syncOpportunityWithProductsParamsSchema.safeParse({
+        opportunity_data: { name: "Test Opportunity" },
+        products_to_create: [{ product_id_reference: -1, notes: "Invalid product" }],
+      });
+      expect(result.success).toBe(false);
     });
 
     it("should apply default empty arrays when optional params are missing", () => {
@@ -173,22 +216,6 @@ describe("RPC Validation Schemas", () => {
       }
     });
 
-    it("should reject invalid product_id in products_to_create", () => {
-      const result = syncOpportunityWithProductsParamsSchema.safeParse({
-        opportunity_data: { name: "Test Opportunity" },
-        products_to_create: [{ product_id: -1, notes: "Invalid product" }],
-      });
-      expect(result.success).toBe(false);
-    });
-
-    it("should reject non-integer product_id in products_to_update", () => {
-      const result = syncOpportunityWithProductsParamsSchema.safeParse({
-        opportunity_data: { name: "Test Opportunity" },
-        products_to_update: [{ product_id: 3.14, notes: "Invalid product" }],
-      });
-      expect(result.success).toBe(false);
-    });
-
     it("should reject negative product IDs in product_ids_to_delete", () => {
       const result = syncOpportunityWithProductsParamsSchema.safeParse({
         opportunity_data: { name: "Test Opportunity" },
@@ -200,7 +227,7 @@ describe("RPC Validation Schemas", () => {
     it("should accept products with optional notes field", () => {
       const result = syncOpportunityWithProductsParamsSchema.safeParse({
         opportunity_data: { name: "Test Opportunity" },
-        products_to_create: [{ product_id: 1 }],
+        products_to_create: [{ product_id_reference: 1 }],
       });
       expect(result.success).toBe(true);
     });
@@ -210,6 +237,22 @@ describe("RPC Validation Schemas", () => {
         opportunity_data: {},
       });
       expect(result.success).toBe(true);
+    });
+
+    it("should reject non-integer string product_id_reference", () => {
+      const result = syncOpportunityWithProductsParamsSchema.safeParse({
+        opportunity_data: { name: "Test Opportunity" },
+        products_to_create: [{ product_id_reference: "abc", notes: "Invalid string" }],
+      });
+      expect(result.success).toBe(false);
+    });
+
+    it("should reject decimal product_id_reference", () => {
+      const result = syncOpportunityWithProductsParamsSchema.safeParse({
+        opportunity_data: { name: "Test Opportunity" },
+        products_to_update: [{ product_id_reference: 3.14, notes: "Decimal product" }],
+      });
+      expect(result.success).toBe(false);
     });
   });
 
