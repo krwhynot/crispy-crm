@@ -11,10 +11,7 @@ import { TextInput } from "@/components/ra-wrappers/text-input";
 import { SelectInput } from "@/components/ra-wrappers/select-input";
 import { BooleanInput } from "@/components/ra-wrappers/boolean-input";
 import { ReferenceInput } from "@/components/ra-wrappers/reference-input";
-import { ReferenceArrayInput } from "@/components/ra-wrappers/reference-array-input";
-import { AutocompleteArrayInput } from "@/components/ra-wrappers/autocomplete-array-input";
 import { ReferenceManyField } from "@/components/ra-wrappers/reference-many-field";
-import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { ArrayInput, SimpleFormIterator } from "react-admin";
@@ -37,6 +34,8 @@ import { saleOptionRenderer } from "../../utils/saleOptionRenderer";
 import { OrganizationTypeBadge, PriorityBadge } from "../OrganizationBadges";
 import { ParentOrganizationInput } from "../ParentOrganizationInput";
 import { BranchLocationsSection } from "../BranchLocationsSection";
+import { OrganizationTagsList } from "../OrganizationTagsList";
+import { OrganizationTagsListEdit } from "../OrganizationTagsListEdit";
 
 /**
  * Helper component that must be rendered INSIDE a Form to access form context.
@@ -220,14 +219,10 @@ export function OrganizationRightPanel({
                     disabled={isLoading}
                   />
 
-                  <ReferenceArrayInput
-                    source="tags"
-                    reference="tags"
-                    label="Tags"
-                    disabled={isLoading}
-                  >
-                    <AutocompleteArrayInput optionText="name" />
-                  </ReferenceArrayInput>
+                  <div className="space-y-2">
+                    <span className="text-sm font-medium">Tags</span>
+                    <OrganizationTagsListEdit />
+                  </div>
 
                   <ArrayInput source="context_links" label="Context Links" disabled={isLoading}>
                     <SimpleFormIterator inline>
@@ -339,17 +334,7 @@ export function OrganizationRightPanel({
 
               {/* Tags */}
               <SidepaneSection label="Tags" showSeparator>
-                {record.tags && record.tags.length > 0 ? (
-                  <div className="flex flex-wrap gap-2">
-                    {record.tags.map((tagId) => (
-                      <Badge key={tagId} variant="outline" className="text-xs">
-                        Tag #{tagId}
-                      </Badge>
-                    ))}
-                  </div>
-                ) : (
-                  <span className="text-sm text-muted-foreground">—</span>
-                )}
+                <OrganizationTagsList />
               </SidepaneSection>
 
               {/* Context Links */}

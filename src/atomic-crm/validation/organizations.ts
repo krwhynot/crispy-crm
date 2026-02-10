@@ -153,7 +153,9 @@ export const organizationSchema = z.strictObject({
     .nullable()
     .transform((val) => (val ? sanitizeHtml(val) : val)),
   context_links: z.array(isValidUrl).max(20, "Maximum 20 context links").nullish(),
-  tags: z.string().trim().max(1000, "Tags too long").optional(), // Comma-separated tag names for CSV import
+  // FIX [TAGS-001]: tags are BIGINT[] foreign keys to tags table (matches contacts pattern)
+  // TagsListEdit.tsx confirms: record.tags.includes(tag.id) where tag.id is number
+  tags: z.array(z.coerce.number()).max(50, "Maximum 50 tags").default([]),
 
   // Business fields (DB columns added for completeness)
   email: z.string().email().max(254, "Email too long").nullish(), // Organization contact email

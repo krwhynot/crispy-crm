@@ -23,7 +23,15 @@ const TagEditContent = () => {
   const { isPending, record } = useEditContext<Tag>();
 
   // P2: Schema-derived defaults with existing record data
-  const defaultValues = useMemo(() => tagSchema.partial().parse(record ?? {}), [record]);
+  // Use passthrough() to allow extra DB fields (description, usage_count, created_at)
+  const defaultValues = useMemo(
+    () =>
+      tagSchema
+        .partial()
+        .passthrough()
+        .parse(record ?? {}),
+    [record]
+  );
 
   if (isPending || !record) {
     return null;

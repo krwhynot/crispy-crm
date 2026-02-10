@@ -17,6 +17,7 @@ import productDistributors from "../productDistributors/productDistributorsConfi
 import tasks from "../tasks/resource";
 import notifications from "../notifications/resource";
 import activities from "../activities/resource";
+import tags from "../tags/resource";
 import { Layout } from "../layout/Layout";
 import {
   authProvider as supabaseAuthProvider,
@@ -262,7 +263,7 @@ export const CRM = ({
         <Resource name={RESOURCES.OPPORTUNITY_NOTES} />
         <Resource name={RESOURCES.ORGANIZATION_NOTES} />
         <Resource name={RESOURCES.SALES} {...sales} />
-        <Resource name={RESOURCES.TAGS} />
+        <Resource name={RESOURCES.TAGS} {...tags} />
         <Resource name={RESOURCES.SEGMENTS} />
         <Resource name={RESOURCES.NOTIFICATIONS} {...notifications} />
       </Admin>

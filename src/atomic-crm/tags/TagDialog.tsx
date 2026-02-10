@@ -38,10 +38,11 @@ interface TagDialogProps {
 export function TagDialog({ open, tag, title, onClose, onSubmit }: TagDialogProps) {
   // P2: Schema-derived defaults - NOT local useState
   // This ensures Zod type coercion is applied
+  // FIX: Use undefined (not "") for empty name - .partial() allows undefined but "" still fails min(1)
   const defaultValues = useMemo(
     () =>
       createTagSchema.partial().parse({
-        name: tag?.name ?? "",
+        name: tag?.name || undefined,
         color: tag?.color ?? "warm",
       }),
     [tag]
