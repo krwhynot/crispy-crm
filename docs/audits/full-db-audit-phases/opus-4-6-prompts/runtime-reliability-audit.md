@@ -13,13 +13,19 @@ This audit evaluates the runtime health of Crispy-CRM's cloud infrastructure fol
 
 | Area | Status | Severity |
 |---|---|---|
-| Edge Functions | 1 of 2 operational, 1 timing-resolved | WARN |
-| Cron Jobs | SQL invocations healthy, EF outcomes unverifiable | WARN |
-| View Security | 2 views bypass RLS (SECURITY DEFINER) | **ERROR** |
-| Index Health | 3 duplicate + 56 unused indexes | LOW |
+| Edge Functions | 1 of 2 operational (`daily-digest` deferred non-MVP) | **RESOLVED** |
+| Cron Jobs | `capture-dashboard-snapshots` verified E2E, `daily-digest` deferred | **RESOLVED** |
+| View Security | ~~2 views bypass RLS~~ Fixed via `security_invoker = true` | **RESOLVED** |
+| Index Health | ~~3 duplicate~~ Dropped + 56 unused indexes (expected for dev) | LOW |
 | RLS Performance | 4 policies with per-row auth re-evaluation | WARN |
 
-**Top Priority:** Fix `entity_timeline` and `activities_summary` SECURITY DEFINER — these views bypass RLS, meaning any authenticated user can read all rows regardless of row-level policies on underlying tables.
+**Remediation applied this session:**
+- S1+S2: Fixed SECURITY DEFINER on `entity_timeline` and `activities_summary` (migration `20260210141757`)
+- R1: `capture-dashboard-snapshots` verified — 8 rows in `dashboard_snapshots` (Feb 10 15:17 UTC)
+- R2: Dropped 3 duplicate notes timeline indexes (migration `20260210141757`)
+- R3: Dropped 2 redundant tags policies (migration `20260210141757`)
+- Vault `service_role_key` updated to correct JWT
+- Service_role grants added for EF-accessed tables + sequence (migration `20260210150802`)
 
 ---
 
@@ -29,7 +35,7 @@ This audit evaluates the runtime health of Crispy-CRM's cloud infrastructure fol
 
 | Function | Status | Last Call | Result | Cron-Driven |
 |---|---|---|---|---|
-| `capture-dashboard-snapshots` | ACTIVE | Feb 9 23:00 UTC | 404 | Yes (23:00 daily) |
+| `capture-dashboard-snapshots` | **OPERATIONAL** | Feb 10 15:17 UTC | **200** (8 rows) | Yes (23:00 daily) |
 | `daily-digest` | ACTIVE | Feb 10 07:00 UTC | 401 | Yes (07:00 daily) |
 | `check-overdue-tasks` | ACTIVE | — | — | No |
 | `digest-opt-out` | ACTIVE | — | — | No |
@@ -38,28 +44,20 @@ This audit evaluates the runtime health of Crispy-CRM's cloud infrastructure fol
 | `users` | ACTIVE | — | — | No |
 | `admin-reset-password` | ACTIVE | — | — | No |
 
-### F1: `capture-dashboard-snapshots` — 404 (TIMING, NOT REGRESSION) [Confidence: 95%]
+### F1: `capture-dashboard-snapshots` — RESOLVED [Confidence: 99%]
 
-**Causal chain:**
-1. Cron job 3 fired at **Feb 9, 23:00 UTC** (runid 129)
-2. `invoke_snapshot_capture_function()` retrieved Vault secrets, constructed URL, fired `pg_net` POST
-3. Hit `/functions/v1/capture-dashboard-snapshots` → **404** because EF was not yet deployed
-4. EF was deployed at **Feb 10, ~07:22 UTC** (8+ hours AFTER the cron run)
-5. Next cron run: **Feb 10, 23:00 UTC** — should succeed
+**Original issue:** 404 at Feb 9 23:00 UTC (EF not yet deployed).
 
-**Evidence:**
-- EF `created_at` timestamp: `1770708357451` ms = Feb 10 ~07:22 UTC
-- 404 log timestamp: `1770678000959` us = Feb 9 23:00 UTC
-- `function_id: null` in 404 log confirms no matching EF existed at call time
-- `dashboard_snapshots` table: **0 rows** — confirms EF has never executed successfully
+**Resolution chain (5 issues found and fixed):**
+1. **404** — EF not deployed at cron time. Self-resolved after deployment at Feb 10 ~07:22 UTC.
+2. **401** — Vault `service_role_key` contained stale/wrong key (publishable key format `sb_*`, 41 chars). Fixed by updating Vault with correct JWT (`eyJ*`, 219 chars) via `vault.update_secret()`.
+3. **500** — `permission denied for table sales`. Service_role lacked table-level GRANT. Fixed with `GRANT SELECT ON sales/activities/opportunities TO service_role` + `GRANT ALL ON dashboard_snapshots TO service_role`.
+4. **200 + 0 rows** — `permission denied for sequence dashboard_snapshots_id_seq`. PostgreSQL `GRANT ALL ON TABLE` does NOT cascade to sequences. Fixed with `GRANT USAGE, SELECT ON SEQUENCE dashboard_snapshots_id_seq TO service_role`.
+5. **200 + 8 rows** — Fully operational after `NOTIFY pgrst, 'reload schema'`.
 
-**Vault secrets:** Both `project_url` and `service_role_key` exist (created Nov 29, 2025).
+**Verification:** Manual trigger at Feb 10 15:17 UTC produced 8 rows in `dashboard_snapshots` (one per active sales user). Dale Ramsy: 18 activities, 2 tasks completed. Data is correct.
 
-**Auth flow:** EF uses `verify_jwt: true` + manual service key check in code. The `invoke_snapshot_capture_function()` SQL passes `Bearer <service_role_key>` via `pg_net`. This should authenticate correctly IF the Vault `service_role_key` matches the project's actual service role key.
-
-**Risk:** LOW — self-resolving on next cron run (Feb 10 23:00 UTC). Monitor `dashboard_snapshots` row count after.
-
-**Action:** Verify Feb 10 23:00 run succeeds. If 0 rows after, check Vault key freshness.
+**Migration:** `20260210150802_grant_service_role_access_for_edge_functions.sql`
 
 ### F2: `daily-digest` — 401 (KNOWN, DEFERRED) [Confidence: 98%]
 
@@ -82,7 +80,7 @@ This is an RPC function, not an Edge Function. The 404 from an OPTIONS preflight
 | Job ID | Schedule | Function | Active | Status |
 |---|---|---|---|---|
 | 2 | `0 7 * * *` (7 AM UTC) | `invoke_daily_digest_function()` | Yes | SQL succeeds, EF returns 401 |
-| 3 | `0 23 * * *` (11 PM UTC) | `invoke_snapshot_capture_function()` | Yes | SQL succeeds, EF returned 404 (timing) |
+| 3 | `0 23 * * *` (11 PM UTC) | `invoke_snapshot_capture_function()` | Yes | **Verified E2E** — 8 rows captured |
 
 ### Silent Failure Pattern [Confidence: 92%]
 
@@ -246,44 +244,44 @@ Auth DB pool connections are set to an absolute number (10) rather than a percen
 
 ### Tier 1 — Security (Fix immediately)
 
-| # | Finding | Migration | Effort |
+| # | Finding | Migration | Status |
 |---|---|---|---|
-| S1 | `entity_timeline` SECURITY DEFINER | `ALTER VIEW ... SET (security_invoker = true)` | Trivial |
-| S2 | `activities_summary` SECURITY DEFINER | `ALTER VIEW ... SET (security_invoker = true)` | Trivial |
-| S3 | Enable leaked password protection | Dashboard toggle | Trivial |
+| S1 | `entity_timeline` SECURITY DEFINER | `20260210141757` | **DONE** |
+| S2 | `activities_summary` SECURITY DEFINER | `20260210141757` | **DONE** |
+| S3 | Enable leaked password protection | Dashboard toggle | PENDING (owner action) |
 
 ### Tier 2 — Reliability (Fix this week)
 
-| # | Finding | Action | Effort |
+| # | Finding | Action | Status |
 |---|---|---|---|
-| R1 | Verify `capture-dashboard-snapshots` works | Check after Feb 10 23:00 UTC cron run | Monitor |
-| R2 | Drop 3 duplicate notes timeline indexes | Migration | Trivial |
-| R3 | Drop 2 redundant tags policies | Migration | Trivial |
+| R1 | Verify `capture-dashboard-snapshots` works | Manual trigger + verify 8 rows | **DONE** |
+| R2 | Drop 3 duplicate notes timeline indexes | `20260210141757` | **DONE** |
+| R3 | Drop 2 redundant tags policies | `20260210141757` | **DONE** |
 
 ### Tier 3 — Performance (Fix when touching)
 
-| # | Finding | Action | Effort |
+| # | Finding | Action | Status |
 |---|---|---|---|
-| P1 | 4 RLS initplan warnings | Wrap `auth.*()` in `(SELECT ...)` | Low |
+| P1 | 4 RLS initplan warnings | Wrap `auth.*()` in `(SELECT ...)` | PENDING |
 | P2 | 56 unused indexes | Re-audit after 30 days production traffic | Deferred |
-| P3 | Cron observability gap | Add response logging or health check | Medium |
+| P3 | Cron observability gap | Add response logging or health check | Deferred |
 
 ### Tier 4 — Deferred
 
-| # | Finding | Action | Blocker |
+| # | Finding | Action | Status |
 |---|---|---|---|
 | D1 | `daily-digest` 401 auth failure | Fix auth flow | Non-MVP (GH #7) |
-| D2 | `capture-dashboard-snapshots` Vault key freshness | Verify after first success | Pending R1 |
+| ~~D2~~ | ~~Vault key freshness~~ | ~~Verify after first success~~ | **RESOLVED** (Vault key updated, EF verified) |
 | D3 | Connection pooling review | Profile under load | No load baseline |
 
 ---
 
 ## 10) Recommended Next Actions
 
-1. **Apply S1+S2 migration** (view security fix) — single migration, zero risk
-2. **Apply R2+R3 migration** (cleanup duplicates) — can combine with S1+S2
-3. **Monitor R1** — check `dashboard_snapshots` row count after Feb 10 23:00 UTC
-4. **Enable S3** (leaked password protection) — dashboard toggle
+1. ~~Apply S1+S2 migration~~ — **DONE** (`20260210141757`)
+2. ~~Apply R2+R3 migration~~ — **DONE** (`20260210141757`)
+3. ~~Verify R1~~ — **DONE** (8 rows captured Feb 10 15:17 UTC)
+4. **Enable S3** (leaked password protection) — dashboard toggle (owner action)
 5. **Establish baselines** — after 7 days of production traffic, re-run `pg_stat_statements` and unused index analysis
 
 ---
