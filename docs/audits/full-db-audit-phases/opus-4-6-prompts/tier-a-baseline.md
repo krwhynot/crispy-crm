@@ -170,10 +170,10 @@ Notable duplicate candidates flagged in Phase 2:
 
 | Metric | Value |
 |--------|-------|
-| Start date | 2026-02-10 |
+| Gate model | Condition-based (no hardcoded execution date) |
 | Scope | All Tier D removal candidates (views + tables) |
 | Success criteria | No confirmed business use for 10 consecutive days + owner signoff + dependency checks |
-| Earliest eligible date | 2026-02-20 |
+| Eligibility trigger | 10-day no-use window counted from baseline capture timestamp, plus owner signoff and dependency checks |
 
 ---
 

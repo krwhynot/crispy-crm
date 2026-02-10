@@ -132,8 +132,8 @@ Tier C execution is complete. All trigger, function, and policy work is deployed
 2. ~~Confirm Tier D execution timing once 10-day no-use criteria are met.~~ **DONE — Owner selected single 10-day rule for all Tier D objects.**
 3. Keep `daily-digest` deferred by default; only re-open if MVP scope changes.
 4. Approve duplicate index removal (Tier D).
-5. Approve `tasks_v` and `tasks_summary` view DROP (earliest eligible: 2026-02-20).
-6. Approve `migration_history` and `tutorial_progress` DROP when 10-day eligibility and dependency checks are satisfied (earliest eligible: 2026-02-20).
+5. Approve `tasks_v` and `tasks_summary` view DROP when Tier D gate conditions are satisfied.
+6. Approve `migration_history` and `tutorial_progress` DROP when Tier D gate conditions are satisfied.
 
 ---
 

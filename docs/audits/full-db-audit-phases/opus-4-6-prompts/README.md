@@ -48,5 +48,9 @@ Restructured from 7 phases to 4 phases for deeper analysis per phase.
 Business logic source of truth:
 - `business-logic-policy.md`
 
+Execution runbook:
+- `tier-d-execution-runbook.md`
+- `tier-d-execution_prompt.md`
+
 All prompt/report paths above are relative to this subfolder:
 `docs/audits/full-db-audit-phases/opus-4-6-prompts/`

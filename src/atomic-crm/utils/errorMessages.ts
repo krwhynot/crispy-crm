@@ -197,8 +197,6 @@ export const CONSTRAINT_MESSAGES: Record<string, string> = {
   // Sales/Users - prevent deletion when referenced
   dashboard_snapshots_sales_id_fkey:
     "Cannot delete - this account manager has dashboard snapshots.",
-  tutorial_progress_sales_id_fkey:
-    "Cannot delete - this account manager has tutorial progress records.",
 
   // ============================================
   // FOREIGN KEY INSERT/UPDATE (23503)

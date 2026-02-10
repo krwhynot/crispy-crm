@@ -123,10 +123,10 @@
 
 ## 10-Day Tier D Eligibility Window
 
-**Start:** 2026-02-10 (owner decision)
+**Gate model:** Condition-based (no hardcoded execution date)
 **Scope:** all Tier D removal candidates (views + tables)
 **Success criteria:** no confirmed business use for 10 consecutive days + explicit owner signoff + dependency checks
-**Earliest eligible date:** 2026-02-20
+**Eligibility trigger:** 10-day no-use window counted from baseline capture timestamp, plus owner signoff and dependency checks
 
 ---
 
