@@ -117,7 +117,7 @@ describe("TaskCreate - URL Params Logic", () => {
       const result = processUrlParams(params);
       expect(result.priority).toBe("medium");
       expect(result.completed).toBe(false);
-      expect(result.due_date).toBeInstanceOf(Date);
+      expect(result.due_date).toBeUndefined(); // No default — optional per Q8 policy
     });
   });
 });
@@ -140,15 +140,15 @@ describe("TaskCreate - Validation Schema", () => {
       }
     });
 
-    it("requires due_date field", () => {
+    it("accepts missing due_date field (optional per Q8 policy)", () => {
       const result = taskCreateSchema.safeParse({
         title: "Test Task",
         type: "Call",
         priority: "medium",
         sales_id: 1,
-        // due_date missing
+        // due_date missing — valid since Q8 policy makes it optional
       });
-      expect(result.success).toBe(false);
+      expect(result.success).toBe(true);
     });
 
     it("requires sales_id field", () => {
@@ -270,16 +270,13 @@ describe("TaskCreate - Default Values", () => {
     expect(defaults.completed).toBe(false);
     expect(defaults.priority).toBe("medium");
     expect(defaults.type).toBe("Call");
-    expect(defaults.due_date).toBeInstanceOf(Date);
+    expect(defaults.due_date).toBeUndefined(); // No default — optional per Q8 policy
     expect(defaults.title).toBeUndefined();
   });
 
-  it("due_date defaults to today", () => {
+  it("due_date has no default (optional per Q8 policy)", () => {
     const defaults = getTaskDefaultValues();
-    const today = new Date();
-
-    expect(defaults.due_date?.getFullYear()).toBe(today.getFullYear());
-    expect(defaults.due_date?.getMonth()).toBe(today.getMonth());
-    expect(defaults.due_date?.getDate()).toBe(today.getDate());
+    // due_date is optional — no default value assigned
+    expect(defaults.due_date).toBeUndefined();
   });
 });

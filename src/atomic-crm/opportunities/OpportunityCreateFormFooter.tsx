@@ -21,6 +21,7 @@ import { AdminButton } from "@/components/admin/AdminButton";
 import { UnsavedChangesDialog } from "@/components/ui/unsaved-changes-dialog";
 import { cn } from "@/lib/utils";
 import type { SimilarityCheckResult } from "../utils/levenshtein";
+import { useExactDuplicateCheck } from "./useExactDuplicateCheck";
 
 interface OpportunityCreateFormFooterProps {
   checkForSimilar: (name: string) => Promise<SimilarityCheckResult>;
@@ -47,6 +48,7 @@ export function OpportunityCreateFormFooter({
   const { isDirty, isSubmitting, isValidating, dirtyFields } = useFormState();
   const { reset, getValues } = useFormContext();
   const [showCancelDialog, setShowCancelDialog] = useState(false);
+  const { checkForDuplicate } = useExactDuplicateCheck();
 
   // Track previous name value to reset confirmation when name changes
   const previousNameRef = useRef<string | null>(null);
@@ -66,15 +68,18 @@ export function OpportunityCreateFormFooter({
   const hasDirtyFields = Object.keys(dirtyFields).length > 0;
   const disabled = !hasDirtyFields || isValidating || isSubmitting;
 
-  const handleCancel = useCallback((event?: React.MouseEvent<HTMLButtonElement>) => {
-    event?.preventDefault(); // Defense-in-depth: prevent any default behavior
+  const handleCancel = useCallback(
+    (event?: React.MouseEvent<HTMLButtonElement>) => {
+      event?.preventDefault(); // Defense-in-depth: prevent any default behavior
 
-    if (isDirty) {
-      setShowCancelDialog(true);
-      return;
-    }
-    redirectFn(redirectPath);
-  }, [isDirty, redirectFn, redirectPath]);
+      if (isDirty) {
+        setShowCancelDialog(true);
+        return;
+      }
+      redirectFn(redirectPath);
+    },
+    [isDirty, redirectFn, redirectPath]
+  );
 
   const handleError = useCallback(
     (err: Error) => {
@@ -139,6 +144,25 @@ export function OpportunityCreateFormFooter({
         return;
       }
 
+      // Fire-and-forget exact duplicate check — toast warning, doesn't block save (Q9 policy)
+      const values = form.getValues();
+      const productIds = (
+        (values.products_to_sync as Array<{ product_id_reference?: number }>) || []
+      )
+        .map((p) => p.product_id_reference)
+        .filter((id): id is number => id != null);
+      if (
+        values.principal_organization_id &&
+        values.customer_organization_id &&
+        productIds.length > 0
+      ) {
+        checkForDuplicate({
+          principal_id: values.principal_organization_id as number,
+          customer_id: values.customer_organization_id as number,
+          product_ids: productIds,
+        });
+      }
+
       // Proceed with save
       await form.handleSubmit(async (values) => {
         await handleSubmit(values, () => {
@@ -147,7 +171,7 @@ export function OpportunityCreateFormFooter({
         });
       })(event);
     },
-    [checkBeforeSubmit, form, handleSubmit, success, redirectFn, redirectPath]
+    [checkBeforeSubmit, form, handleSubmit, success, redirectFn, redirectPath, checkForDuplicate]
   );
 
   /**
@@ -161,6 +185,25 @@ export function OpportunityCreateFormFooter({
       // Check for similar opportunities first
       if (!(await checkBeforeSubmit())) {
         return;
+      }
+
+      // Fire-and-forget exact duplicate check — toast warning, doesn't block save (Q9 policy)
+      const addValues = form.getValues();
+      const addProductIds = (
+        (addValues.products_to_sync as Array<{ product_id_reference?: number }>) || []
+      )
+        .map((p) => p.product_id_reference)
+        .filter((id): id is number => id != null);
+      if (
+        addValues.principal_organization_id &&
+        addValues.customer_organization_id &&
+        addProductIds.length > 0
+      ) {
+        checkForDuplicate({
+          principal_id: addValues.principal_organization_id as number,
+          customer_id: addValues.customer_organization_id as number,
+          product_ids: addProductIds,
+        });
       }
 
       // Proceed with save
@@ -199,18 +242,14 @@ export function OpportunityCreateFormFooter({
       getValues,
       reset,
       resetConfirmation,
+      checkForDuplicate,
     ]
   );
 
   return (
     <>
       <div className="sticky bottom-12 bg-card border-t border-border p-4 flex justify-between mt-6">
-        <AdminButton
-          type="button"
-          variant="outline"
-          onClick={handleCancel}
-          className="h-11"
-        >
+        <AdminButton type="button" variant="outline" onClick={handleCancel} className="h-11">
           {translate("ra.action.cancel", { _: "Cancel" })}
         </AdminButton>
         <div className="flex gap-2">

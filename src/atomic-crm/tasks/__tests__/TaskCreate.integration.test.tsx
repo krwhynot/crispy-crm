@@ -11,16 +11,23 @@ import { getTaskDefaultValues } from "../../validation/task";
 
 describe("TaskCreate - Progress Tracking Integration", () => {
   test("has required fields for progress tracking", () => {
-    // TaskCreate wraps 2 required fields: title, due_date
-    const requiredFields = ["title", "due_date"];
-    expect(requiredFields.length).toBe(2);
+    // TaskCreate wraps 1 required field: title (due_date optional per Q8 policy)
+    const requiredFields = ["title"];
+    expect(requiredFields.length).toBe(1);
   });
 
   test("has optional fields for progress tracking", () => {
-    // TaskCreate wraps 5 optional fields:
-    // description, type, priority, opportunity_id, contact_id
-    const optionalFields = ["description", "type", "priority", "opportunity_id", "contact_id"];
-    expect(optionalFields.length).toBe(5);
+    // TaskCreate wraps 6 optional fields:
+    // description, due_date, type, priority, opportunity_id, contact_id
+    const optionalFields = [
+      "description",
+      "due_date",
+      "type",
+      "priority",
+      "opportunity_id",
+      "contact_id",
+    ];
+    expect(optionalFields.length).toBe(6);
   });
 
   test("default values pre-fill some fields", () => {
@@ -30,7 +37,7 @@ describe("TaskCreate - Progress Tracking Integration", () => {
     expect(defaults.completed).toBe(false);
     expect(defaults.priority).toBe("medium");
     expect(defaults.type).toBe("Call");
-    expect(defaults.due_date).toBeInstanceOf(Date);
+    expect(defaults.due_date).toBeUndefined(); // No default — optional per Q8 policy
 
     // Title does NOT have a default value (user must fill)
     expect(defaults.title).toBeUndefined();
@@ -41,7 +48,7 @@ describe("TaskCreate - Progress Tracking Integration", () => {
     // progress should be exactly 10%
     const initialProgress = 10;
     const completedRequired = 0;
-    const totalRequired = 2;
+    const totalRequired = 1;
 
     const rawPercentage = totalRequired === 0 ? 0 : (completedRequired / totalRequired) * 100;
     const percentage =
@@ -52,25 +59,12 @@ describe("TaskCreate - Progress Tracking Integration", () => {
     expect(percentage).toBe(10);
   });
 
-  test("progress reaches 55% when title filled", () => {
-    // With initialProgress=10, 1/2 required fields complete:
-    // rawPercentage = 50%, scaled: 10 + (50 * 90 / 100) = 55%
-    const initialProgress = 10;
-    const completedRequired = 1;
-    const totalRequired = 2;
-
-    const rawPercentage = (completedRequired / totalRequired) * 100;
-    const percentage = initialProgress + (rawPercentage * (100 - initialProgress)) / 100;
-
-    expect(percentage).toBe(55);
-  });
-
-  test("progress reaches 100% when both required fields filled", () => {
-    // With initialProgress=10, 2/2 required fields complete:
+  test("progress reaches 100% when title filled", () => {
+    // With initialProgress=10, 1/1 required fields complete (title only, due_date optional per Q8):
     // rawPercentage = 100%, scaled: 10 + (100 * 90 / 100) = 100%
     const initialProgress = 10;
-    const completedRequired = 2;
-    const totalRequired = 2;
+    const completedRequired = 1;
+    const totalRequired = 1;
 
     const rawPercentage = (completedRequired / totalRequired) * 100;
     const percentage = initialProgress + (rawPercentage * (100 - initialProgress)) / 100;
@@ -80,11 +74,11 @@ describe("TaskCreate - Progress Tracking Integration", () => {
 
   test("FormFieldWrapper wraps all 7 form fields", () => {
     // Verify that all fields are wrapped with FormFieldWrapper:
-    // 2 required: title, due_date
-    // 5 optional: description, type, priority, opportunity_id, contact_id
+    // 1 required: title (due_date optional per Q8 policy)
+    // 6 optional: description, due_date, type, priority, opportunity_id, contact_id
     const totalFields = 7;
-    const requiredFields = 2;
-    const optionalFields = 5;
+    const requiredFields = 1;
+    const optionalFields = 6;
 
     expect(requiredFields + optionalFields).toBe(totalFields);
   });

@@ -157,34 +157,31 @@ describe("Task Validation Schemas (task.ts)", () => {
       expect(result.success).toBe(true);
     });
 
-    it("should reject empty due_date", () => {
-      // Per Engineering Constitution: fail fast, no complex transforms
-      // z.coerce.date() rejects empty strings (creates invalid Date)
-      const invalidTask = { ...validTask, due_date: "" };
-      const result = taskSchema.safeParse(invalidTask);
-      expect(result.success).toBe(false);
-      if (!result.success) {
-        // Schema has custom message "Due date is required" for invalid dates
-        expect(result.error.issues[0].message).toContain("Due date is required");
+    it("should accept empty due_date (optional per Q8 policy)", () => {
+      // due_date is optional — empty string preprocesses to undefined, which is valid
+      const task = { ...validTask, due_date: "" };
+      const result = taskSchema.safeParse(task);
+      expect(result.success).toBe(true);
+      if (result.success) {
+        expect(result.data.due_date).toBeUndefined();
       }
     });
 
-    it("should reject null due_date", () => {
-      // ISSUE-3: DateInput "Clear date" sends null, which z.coerce.date()
-      // converted to Unix epoch (1970-01-01). Preprocess now maps null to undefined.
-      const invalidTask = { ...validTask, due_date: null };
-      const result = taskSchema.safeParse(invalidTask);
-      expect(result.success).toBe(false);
-      if (!result.success) {
-        expect(result.error.issues[0].message).toContain("Due date is required");
+    it("should accept null due_date (optional per Q8 policy)", () => {
+      // DateInput "Clear date" sends null — preprocess maps to undefined, valid
+      const task = { ...validTask, due_date: null };
+      const result = taskSchema.safeParse(task);
+      expect(result.success).toBe(true);
+      if (result.success) {
+        expect(result.data.due_date).toBeUndefined();
       }
     });
 
-    it("should reject undefined due_date", () => {
-      // Missing due_date should fail validation (required field)
-      const invalidTask = { ...validTask, due_date: undefined };
-      const result = taskSchema.safeParse(invalidTask);
-      expect(result.success).toBe(false);
+    it("should accept undefined due_date (optional per Q8 policy)", () => {
+      // Missing due_date is valid — field is optional
+      const task = { ...validTask, due_date: undefined };
+      const result = taskSchema.safeParse(task);
+      expect(result.success).toBe(true);
     });
 
     it("should accept valid ISO date formats", () => {
@@ -345,7 +342,7 @@ describe("Task Validation Schemas (task.ts)", () => {
   });
 
   describe("taskCreateSchema", () => {
-    it("should require title, due_date, type, contact_id, and sales_id for creation", () => {
+    it("should require title, type, and sales_id for creation (due_date optional per Q8)", () => {
       const validCreate = {
         title: "New task",
         due_date: "2025-01-20",
@@ -367,13 +364,15 @@ describe("Task Validation Schemas (task.ts)", () => {
       expect(result.success).toBe(false);
     });
 
-    it("should reject creation without due_date", () => {
-      const invalid = {
+    it("should accept creation without due_date (optional per Q8 policy)", () => {
+      const valid = {
         title: "New task",
+        type: "Call" as const,
+        sales_id: 1,
       };
 
-      const result = taskCreateSchema.safeParse(invalid);
-      expect(result.success).toBe(false);
+      const result = taskCreateSchema.safeParse(valid);
+      expect(result.success).toBe(true);
     });
 
     it("should reject id field on creation (z.strictObject security)", () => {
@@ -577,22 +576,10 @@ describe("Task Validation Schemas (task.ts)", () => {
       expect(defaults.type).toBe("Call");
     });
 
-    it("should set due_date to today", () => {
+    it("should not set due_date default (optional per Q8 policy)", () => {
       const defaults = getTaskDefaultValues();
-      const today = new Date();
-
-      // z.coerce.date() returns a Date object, not a string
-      expect(defaults.due_date).toBeInstanceOf(Date);
-      // Check it's today (same date, ignoring time)
-      expect(defaults.due_date?.toISOString().slice(0, 10)).toBe(today.toISOString().slice(0, 10));
-    });
-
-    it("should pass new Date() through preprocess unchanged", () => {
-      // ISSUE-3 regression guard: preprocess converts null/undefined/empty to undefined
-      // but must pass valid Date objects through to z.coerce.date() unchanged
-      const defaults = getTaskDefaultValues();
-      expect(defaults.due_date).toBeInstanceOf(Date);
-      expect(defaults.due_date?.getFullYear()).toBeGreaterThanOrEqual(2025);
+      // due_date no longer has a default — user chooses when to set it
+      expect(defaults.due_date).toBeUndefined();
     });
 
     it("should return object that passes partial schema validation", () => {

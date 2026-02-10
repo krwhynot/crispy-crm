@@ -19,7 +19,6 @@ import {
   FileText,
   Target,
   Clock,
-  CheckSquare,
   ArrowRightLeft,
   FileQuestion,
 } from "lucide-react";
@@ -34,7 +33,7 @@ import { logger } from "@/lib/logger";
 
 interface TimelineEntryData {
   id: number;
-  entry_type: "activity" | "task";
+  entry_type: "activity" | "task" | "note";
   subtype: string;
   title: string;
   description?: string;
@@ -58,6 +57,7 @@ export const TimelineEntry = memo(function TimelineEntry({
   currentContactId,
 }: TimelineEntryProps) {
   const isTask = entry.entry_type === "task";
+  const isNote = entry.entry_type === "note";
 
   // Detect org-level activities: has org but not tied to current contact
   const isOrganizationLevel = Boolean(
@@ -73,6 +73,9 @@ export const TimelineEntry = memo(function TimelineEntry({
       case "meeting":
         return <Users className="h-4 w-4" />;
       case "note":
+      case "contact_note":
+      case "opportunity_note":
+      case "organization_note":
         return <FileText className="h-4 w-4" />;
       case "follow_up":
         return <Clock className="h-4 w-4" />;
@@ -101,7 +104,7 @@ export const TimelineEntry = memo(function TimelineEntry({
         <div className="flex-shrink-0 mt-1">
           <div
             className={`w-11 h-11 rounded-full flex items-center justify-center ${
-              isTask ? "bg-secondary/20" : "bg-primary/10"
+              isTask ? "bg-secondary/20" : isNote ? "bg-accent/20" : "bg-primary/10"
             }`}
           >
             {getIcon(entry.subtype)}
@@ -116,6 +119,11 @@ export const TimelineEntry = memo(function TimelineEntry({
               {isTask && (
                 <Badge variant="secondary" className="text-xs">
                   Task
+                </Badge>
+              )}
+              {isNote && (
+                <Badge variant="outline" className="text-xs">
+                  Note
                 </Badge>
               )}
               {/* Org-level indicator when viewing a contact */}

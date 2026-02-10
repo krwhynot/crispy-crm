@@ -30,7 +30,7 @@ interface UnifiedTimelineProps {
 
 interface TimelineEntryData {
   id: number;
-  entry_type: "activity" | "task";
+  entry_type: "activity" | "task" | "note";
   subtype: string;
   title: string;
   description?: string;

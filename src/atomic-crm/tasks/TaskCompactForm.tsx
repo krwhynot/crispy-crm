@@ -32,11 +32,7 @@ export const TaskCompactForm = () => {
   return (
     <div className="space-y-6">
       {/* General Section: Core task information */}
-      <FormSectionWithProgress
-        id="general-section"
-        title="General"
-        requiredFields={["title", "due_date"]}
-      >
+      <FormSectionWithProgress id="general-section" title="General" requiredFields={["title"]}>
         <div data-tutorial="task-title">
           <FormFieldWrapper name="title" isRequired>
             <TextInput source="title" label="Task Title *" helperText="Required field" />
@@ -53,8 +49,8 @@ export const TaskCompactForm = () => {
         </FormFieldWrapper>
         <CompactFormRow>
           <div data-tutorial="task-due-date">
-            <FormFieldWrapper name="due_date" isRequired countDefaultAsFilled>
-              <DateInput source="due_date" label="Due Date *" helperText="When is this due?" />
+            <FormFieldWrapper name="due_date">
+              <DateInput source="due_date" label="Due Date" helperText="Optional" />
             </FormFieldWrapper>
           </div>
           <FormFieldWrapper name="reminder_date">

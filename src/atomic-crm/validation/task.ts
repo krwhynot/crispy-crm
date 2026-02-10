@@ -39,7 +39,7 @@ export const taskSchema = z.strictObject({
   description: z.string().max(2000, "Description too long").nullable().optional(),
   due_date: z.preprocess(
     (val) => (val === null || val === undefined || val === "" ? undefined : val),
-    z.coerce.date({ error: "Due date is required" })
+    z.coerce.date().optional()
   ),
   reminder_date: z.coerce.date().nullable().optional(),
   completed: z.coerce.boolean().default(false),
@@ -123,7 +123,6 @@ export const getTaskDefaultValues = () =>
     completed: false,
     priority: "medium" as const,
     type: "Call" as const, // Changed from "None" - meaningful default reduces cognitive load
-    due_date: new Date(),
   });
 
 // ============================================================================

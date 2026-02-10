@@ -164,3 +164,26 @@ Tier D destructive actions (duplicate index removal, deprecated view drops) rema
 ---
 
 *Updated to reflect Tier C completion and Gate 3 passage. Backfilled from latest execution state.*
+
+---
+
+## 11) Phase 5 Status: Business Logic Progress Validation
+
+**Date:** 2026-02-10
+**Verdict:** PASS [Confidence: 93%]
+
+Phase 5 validated all 22 owner-approved business logic rules from `business-logic-policy.md` against cloud DB state and codebase implementation. All 3 BUSINESS_LOGIC_CONFLICTs resolved on 2026-02-10 (owner approved Q1=A, Q2=A, Q3=A).
+
+**Results:**
+- 21 of 22 rules: VERIFIED
+- 0 BUSINESS_LOGIC_CONFLICTs (all 3 resolved):
+  - ~~Q5~~ → RESOLVED: `entity_timeline` view extended with UNION ALL from 3 notes tables + UI updated
+  - ~~Q8~~ → RESOLVED: Schema, form, defaults fixed to make due_date optional
+  - ~~Q9~~ → RESOLVED: `useExactDuplicateCheck` hook wired into `OpportunityCreateFormFooter` as fire-and-forget toast warning
+- 1 PARTIAL: **Q4** — Principal reporting lacks completed-task aggregation metrics (post-MVP enhancement)
+- Tier D deferral risk: SAFE (zero app code references to drop targets)
+- Drift-to-behavior impact: SAFE
+
+**Next:** Q4 completed-task metrics as post-MVP backlog item. Tier D execution remains independent and condition-gated.
+
+Full report: `phase-5-business-logic-progress-report.md`
