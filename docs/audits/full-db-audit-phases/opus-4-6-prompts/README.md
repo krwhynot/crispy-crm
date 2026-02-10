@@ -44,6 +44,7 @@ Restructured from 7 phases to 4 phases for deeper analysis per phase.
 | 2 | `phase-2-deep-analysis_prompt.md` | `phase-2-report.md` |
 | 3 | `phase-3-decisions_prompt.md` | `phase-3-report.md` |
 | 4 | `phase-4-signoff_prompt.md` | `phase-4-report.md` |
+| 5 (optional, post-Tier-C) | `phase-5-business-logic-progress_prompt.md` | `phase-5-business-logic-progress-report.md` |
 
 Business logic source of truth:
 - `business-logic-policy.md`

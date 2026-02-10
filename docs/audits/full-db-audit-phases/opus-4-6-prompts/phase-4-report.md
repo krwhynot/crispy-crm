@@ -95,9 +95,11 @@ Tier C execution is complete. All trigger, function, and policy work is deployed
 - Security fix: `search_path = 'public'` set on all 5 new/flagged functions (advisor warnings resolved).
 
 ### Tier D
-**Pending owner-controlled cleanup**
-- Remove duplicate indexes.
-- Drop deprecated views/tables per business policy and dependency checks.
+**DEFERRED — Low immediate risk, not required for current functionality**
+- Migration draft ready: `20260210000008_tier_d_drop_legacy_compat_and_unused_objects.sql` (unapplied).
+- Execution runbook ready: `tier-d-execution-runbook.md`.
+- Execute via: `tier-d-execution_prompt.md` when gate conditions are met.
+- Scope: duplicate index removal + deprecated view/table drops (cleanup only).
 
 ---
 
