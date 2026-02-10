@@ -1,0 +1,99 @@
+{
+  "generated_at": "2026-02-09T08:52:08.558Z",
+  "database_url": "postgresql://postgres:****@127.0.0.1:54322/postgres",
+  "summary": {
+    "total_tables": 28,
+    "total_foreign_keys": 78,
+    "orphaned_tables": 6,
+    "tables_with_orphaned_records": 2,
+    "empty_tables": 17,
+    "total_orphaned_records": 1195
+  },
+  "orphaned_tables": [
+    "migration_history",
+    "notifications",
+    "tags",
+    "task_id_mapping",
+    "test_user_metadata",
+    "user_favorites"
+  ],
+  "orphaned_records": [
+    {
+      "table_name": "activities",
+      "foreign_key_column": "opportunity_id",
+      "references_table": "opportunities",
+      "orphaned_count": 369,
+      "orphan_type": "soft_deleted_parent"
+    },
+    {
+      "table_name": "activities",
+      "foreign_key_column": "organization_id",
+      "references_table": "organizations",
+      "orphaned_count": 308,
+      "orphan_type": "soft_deleted_parent"
+    },
+    {
+      "table_name": "opportunity_contacts",
+      "foreign_key_column": "contact_id",
+      "references_table": "contacts",
+      "orphaned_count": 149,
+      "orphan_type": "soft_deleted_parent"
+    },
+    {
+      "table_name": "opportunity_contacts",
+      "foreign_key_column": "opportunity_id",
+      "references_table": "opportunities",
+      "orphaned_count": 369,
+      "orphan_type": "soft_deleted_parent"
+    }
+  ],
+  "empty_tables": [
+    "contact_notes",
+    "dashboard_snapshots",
+    "distributor_principal_authorizations",
+    "interaction_participants",
+    "migration_history",
+    "notifications",
+    "opportunity_notes",
+    "opportunity_participants",
+    "opportunity_products",
+    "organization_notes",
+    "product_distributor_authorizations",
+    "product_distributors",
+    "products",
+    "tags",
+    "test_user_metadata",
+    "tutorial_progress",
+    "user_favorites"
+  ],
+  "table_row_counts": {
+    "activities": 503,
+    "audit_trail": 75029,
+    "contact_notes": 0,
+    "contacts": 2007,
+    "dashboard_snapshots": 0,
+    "distributor_principal_authorizations": 0,
+    "interaction_participants": 0,
+    "migration_history": 0,
+    "notifications": 0,
+    "opportunities": 372,
+    "opportunity_contacts": 369,
+    "opportunity_notes": 0,
+    "opportunity_participants": 0,
+    "opportunity_products": 0,
+    "organization_distributors": 673,
+    "organization_notes": 0,
+    "organizations": 2369,
+    "product_distributor_authorizations": 0,
+    "product_distributors": 0,
+    "products": 0,
+    "sales": 4,
+    "segments": 40,
+    "tags": 0,
+    "task_id_mapping": 6,
+    "tasks_deprecated": 6,
+    "test_user_metadata": 0,
+    "tutorial_progress": 0,
+    "user_favorites": 0
+  }
+}

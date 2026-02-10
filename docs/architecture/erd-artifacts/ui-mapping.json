@@ -1,0 +1,1375 @@
+{
+  "generated_at": "2026-02-09T08:56:25.712Z",
+  "summary": {
+    "handled_resources": 21,
+    "resources_with_ui": 13,
+    "total_components": 75,
+    "unmapped_tables": 20,
+    "total_database_tables": 28
+  },
+  "resources": [
+    {
+      "resource_name": "contacts",
+      "database_table": "contacts",
+      "summary_view": "contacts_summary",
+      "feature_directory": "src/atomic-crm/contacts",
+      "components": [
+        {
+          "file": "ContactCreate.tsx",
+          "type": "create",
+          "exports": [],
+          "features": []
+        },
+        {
+          "file": "ContactEdit.tsx",
+          "type": "edit",
+          "exports": [
+            "ContactEdit"
+          ],
+          "features": []
+        },
+        {
+          "file": "ContactList.tsx",
+          "type": "list",
+          "exports": [
+            "ContactList"
+          ],
+          "features": [
+            "PremiumDatagrid",
+            "Filters",
+            "BulkActions",
+            "ExportButton"
+          ]
+        },
+        {
+          "file": "ContactListFilter.tsx",
+          "type": "list",
+          "exports": [
+            "ContactListFilter"
+          ],
+          "features": [
+            "Filters"
+          ]
+        },
+        {
+          "file": "ContactShow.tsx",
+          "type": "show",
+          "exports": [
+            "ContactShow"
+          ],
+          "features": [
+            "ReferenceManyField",
+            "ReferenceField"
+          ]
+        },
+        {
+          "file": "ContactSlideOver.tsx",
+          "type": "slideOver",
+          "exports": [
+            "ContactSlideOver"
+          ],
+          "features": []
+        },
+        {
+          "file": "QuickCreateContactPopover.tsx",
+          "type": "create",
+          "exports": [
+            "QuickCreateContactPopover",
+            "QuickCreateContactRA"
+          ],
+          "features": []
+        },
+        {
+          "file": "TagsList.tsx",
+          "type": "list",
+          "exports": [
+            "TagsList"
+          ],
+          "features": [
+            "Filters"
+          ]
+        },
+        {
+          "file": "TagsListEdit.tsx",
+          "type": "list",
+          "exports": [
+            "TagsListEdit"
+          ],
+          "features": []
+        }
+      ],
+      "relationships_rendered": [
+        {
+          "field": "tasks",
+          "component": "ReferenceManyField",
+          "target_resource": "tasks",
+          "file": "ContactAside.tsx"
+        },
+        {
+          "field": "organizations",
+          "component": "ReferenceField",
+          "target_resource": "organizations",
+          "file": "ContactAside.tsx"
+        },
+        {
+          "field": "sales",
+          "component": "ReferenceField",
+          "target_resource": "sales",
+          "file": "ContactAside.tsx"
+        },
+        {
+          "field": "contact_notes",
+          "component": "ReferenceManyField",
+          "target_resource": "contact_notes",
+          "file": "ContactRightPanel.tsx"
+        },
+        {
+          "field": "tasks",
+          "component": "ReferenceManyField",
+          "target_resource": "tasks",
+          "file": "ContactRightPanel.tsx"
+        },
+        {
+          "field": "organizations",
+          "component": "ReferenceField",
+          "target_resource": "organizations",
+          "file": "ContactRightPanel.tsx"
+        },
+        {
+          "field": "sales",
+          "component": "ReferenceField",
+          "target_resource": "sales",
+          "file": "ContactRightPanel.tsx"
+        },
+        {
+          "field": "tags",
+          "component": "ReferenceField",
+          "target_resource": "tags",
+          "file": "ContactRightPanel.tsx"
+        },
+        {
+          "field": "contacts",
+          "component": "ReferenceManyField",
+          "target_resource": "contacts",
+          "file": "ContactShow.tsx"
+        },
+        {
+          "field": "organizations",
+          "component": "ReferenceField",
+          "target_resource": "organizations",
+          "file": "ContactShow.tsx"
+        },
+        {
+          "field": "organizations",
+          "component": "ReferenceField",
+          "target_resource": "organizations",
+          "file": "ContactShow.tsx"
+        },
+        {
+          "field": "organizations",
+          "component": "ReferenceField",
+          "target_resource": "organizations",
+          "file": "ContactShow.tsx"
+        },
+        {
+          "field": "organizations",
+          "component": "ReferenceField",
+          "target_resource": "organizations",
+          "file": "OpportunitiesTab.tsx"
+        }
+      ],
+      "resource_config": {
+        "recordRepresentation": "contactRecordRepresentation"
+      }
+    },
+    {
+      "resource_name": "organizations",
+      "database_table": "organizations",
+      "summary_view": "organizations_summary",
+      "feature_directory": "src/atomic-crm/organizations",
+      "components": [
+        {
+          "file": "ContactListCells.tsx",
+          "type": "list",
+          "exports": [],
+          "features": []
+        },
+        {
+          "file": "OrganizationCreate.tsx",
+          "type": "create",
+          "exports": [],
+          "features": []
+        },
+        {
+          "file": "OrganizationCreateFormFooter.tsx",
+          "type": "create",
+          "exports": [
+            "OrganizationCreateFormFooter"
+          ],
+          "features": []
+        },
+        {
+          "file": "OrganizationEdit.tsx",
+          "type": "edit",
+          "exports": [],
+          "features": []
+        },
+        {
+          "file": "OrganizationList.tsx",
+          "type": "list",
+          "exports": [
+            "OrganizationList"
+          ],
+          "features": [
+            "PremiumDatagrid",
+            "Filters",
+            "BulkActions",
+            "ExportButton"
+          ]
+        },
+        {
+          "file": "OrganizationListFilter.tsx",
+          "type": "list",
+          "exports": [
+            "OrganizationListFilter"
+          ],
+          "features": [
+            "Filters"
+          ]
+        },
+        {
+          "file": "OrganizationShow.tsx",
+          "type": "show",
+          "exports": [],
+          "features": [
+            "ReferenceManyField"
+          ]
+        },
+        {
+          "file": "OrganizationSlideOver.tsx",
+          "type": "slideOver",
+          "exports": [
+            "OrganizationSlideOver"
+          ],
+          "features": []
+        },
+        {
+          "file": "QuickCreatePopover.tsx",
+          "type": "create",
+          "exports": [
+            "QuickCreatePopover",
+            "QuickCreateOrganizationRA"
+          ],
+          "features": []
+        }
+      ],
+      "relationships_rendered": [
+        {
+          "field": "segments",
+          "component": "ReferenceField",
+          "target_resource": "segments",
+          "file": "OrganizationAside.tsx"
+        },
+        {
+          "field": "sales",
+          "component": "ReferenceField",
+          "target_resource": "sales",
+          "file": "OrganizationAside.tsx"
+        },
+        {
+          "field": "contacts_summary",
+          "component": "ReferenceManyField",
+          "target_resource": "contacts_summary",
+          "file": "OrganizationShow.tsx"
+        },
+        {
+          "field": "opportunities",
+          "component": "ReferenceManyField",
+          "target_resource": "opportunities",
+          "file": "OrganizationShow.tsx"
+        }
+      ],
+      "resource_config": {
+        "recordRepresentation": "organizationRecordRepresentation"
+      }
+    },
+    {
+      "resource_name": "opportunities",
+      "database_table": "opportunities",
+      "summary_view": "opportunities_summary",
+      "feature_directory": "src/atomic-crm/opportunities",
+      "components": [
+        {
+          "file": "ActivitiesList.tsx",
+          "type": "list",
+          "exports": [
+            "ActivitiesList"
+          ],
+          "features": []
+        },
+        {
+          "file": "CampaignGroupedList.tsx",
+          "type": "list",
+          "exports": [
+            "CampaignGroupedList"
+          ],
+          "features": []
+        },
+        {
+          "file": "ContactList.tsx",
+          "type": "list",
+          "exports": [
+            "ContactList"
+          ],
+          "features": []
+        },
+        {
+          "file": "OpportunityArchivedList.tsx",
+          "type": "list",
+          "exports": [
+            "OpportunityArchivedList",
+            "getRelativeTimeString"
+          ],
+          "features": []
+        },
+        {
+          "file": "OpportunityCreate.tsx",
+          "type": "create",
+          "exports": [],
+          "features": []
+        },
+        {
+          "file": "OpportunityCreateFormFooter.tsx",
+          "type": "create",
+          "exports": [
+            "OpportunityCreateFormFooter"
+          ],
+          "features": []
+        },
+        {
+          "file": "OpportunityCreateSaveButton.tsx",
+          "type": "create",
+          "exports": [
+            "OpportunityCreateSaveButton"
+          ],
+          "features": []
+        },
+        {
+          "file": "OpportunityEdit.tsx",
+          "type": "edit",
+          "exports": [],
+          "features": [
+            "DeleteButton",
+            "ReferenceField"
+          ]
+        },
+        {
+          "file": "OpportunityList.tsx",
+          "type": "list",
+          "exports": [],
+          "features": [
+            "Filters",
+            "ExportButton"
+          ]
+        },
+        {
+          "file": "OpportunityListFilter.tsx",
+          "type": "list",
+          "exports": [
+            "OpportunityListFilter"
+          ],
+          "features": [
+            "Filters"
+          ]
+        },
+        {
+          "file": "OpportunityListTutorial.tsx",
+          "type": "list",
+          "exports": [
+            "OpportunityListTutorial"
+          ],
+          "features": [
+            "Filters"
+          ]
+        },
+        {
+          "file": "OpportunityRowListView.tsx",
+          "type": "list",
+          "exports": [
+            "OpportunityRowListView"
+          ],
+          "features": [
+            "BulkActions",
+            "EditButton",
+            "ReferenceField"
+          ]
+        },
+        {
+          "file": "OpportunityShow.tsx",
+          "type": "show",
+          "exports": [],
+          "features": [
+            "Filters",
+            "ReferenceManyField",
+            "ReferenceField"
+          ]
+        },
+        {
+          "file": "OpportunitySlideOver.tsx",
+          "type": "slideOver",
+          "exports": [
+            "OpportunitySlideOver"
+          ],
+          "features": []
+        },
+        {
+          "file": "PrincipalGroupedList.tsx",
+          "type": "list",
+          "exports": [
+            "PrincipalGroupedList"
+          ],
+          "features": []
+        }
+      ],
+      "relationships_rendered": [
+        {
+          "field": "opportunity_notes",
+          "component": "ReferenceManyField",
+          "target_resource": "opportunity_notes",
+          "file": "OpportunityActivitySection.tsx"
+        },
+        {
+          "field": "opportunity_notes",
+          "component": "ReferenceManyField",
+          "target_resource": "opportunity_notes",
+          "file": "OpportunityActivityTab.tsx"
+        },
+        {
+          "field": "tasks",
+          "component": "ReferenceManyField",
+          "target_resource": "tasks",
+          "file": "OpportunityAside.tsx"
+        },
+        {
+          "field": "sales",
+          "component": "ReferenceField",
+          "target_resource": "sales",
+          "file": "OpportunityAside.tsx"
+        },
+        {
+          "field": "sales",
+          "component": "ReferenceField",
+          "target_resource": "sales",
+          "file": "OpportunityAside.tsx"
+        },
+        {
+          "field": "sales",
+          "component": "ReferenceField",
+          "target_resource": "sales",
+          "file": "OpportunityAside.tsx"
+        },
+        {
+          "field": "sales",
+          "component": "ReferenceField",
+          "target_resource": "sales",
+          "file": "OpportunityAside.tsx"
+        },
+        {
+          "field": "sales",
+          "component": "ReferenceField",
+          "target_resource": "sales",
+          "file": "OpportunityAside.tsx"
+        },
+        {
+          "field": "sales",
+          "component": "ReferenceField",
+          "target_resource": "sales",
+          "file": "OpportunityAside.tsx"
+        },
+        {
+          "field": "organizations",
+          "component": "ReferenceField",
+          "target_resource": "organizations",
+          "file": "OpportunityEdit.tsx"
+        },
+        {
+          "field": "organizations",
+          "component": "ReferenceField",
+          "target_resource": "organizations",
+          "file": "OpportunityHeader.tsx"
+        },
+        {
+          "field": "organizations",
+          "component": "ReferenceField",
+          "target_resource": "organizations",
+          "file": "OpportunityRowListView.tsx"
+        },
+        {
+          "field": "organizations",
+          "component": "ReferenceField",
+          "target_resource": "organizations",
+          "file": "OpportunityRowListView.tsx"
+        },
+        {
+          "field": "sales",
+          "component": "ReferenceField",
+          "target_resource": "sales",
+          "file": "OpportunityRowListView.tsx"
+        },
+        {
+          "field": "opportunity_notes",
+          "component": "ReferenceManyField",
+          "target_resource": "opportunity_notes",
+          "file": "OpportunityShow.tsx"
+        },
+        {
+          "field": "sales",
+          "component": "ReferenceField",
+          "target_resource": "sales",
+          "file": "OpportunityShow.tsx"
+        },
+        {
+          "field": "sales",
+          "component": "ReferenceField",
+          "target_resource": "sales",
+          "file": "OpportunityShow.tsx"
+        },
+        {
+          "field": "sales",
+          "component": "ReferenceField",
+          "target_resource": "sales",
+          "file": "OpportunityShow.tsx"
+        },
+        {
+          "field": "sales",
+          "component": "ReferenceField",
+          "target_resource": "sales",
+          "file": "OpportunityShow.tsx"
+        },
+        {
+          "field": "sales",
+          "component": "ReferenceField",
+          "target_resource": "sales",
+          "file": "OpportunityShow.tsx"
+        },
+        {
+          "field": "organizations",
+          "component": "ReferenceField",
+          "target_resource": "organizations",
+          "file": "OrganizationInfoCard.tsx"
+        },
+        {
+          "field": "organizations",
+          "component": "ReferenceField",
+          "target_resource": "organizations",
+          "file": "OrganizationInfoCard.tsx"
+        },
+        {
+          "field": "organizations",
+          "component": "ReferenceField",
+          "target_resource": "organizations",
+          "file": "OrganizationInfoCard.tsx"
+        }
+      ],
+      "resource_config": {
+        "recordRepresentation": "opportunityRecordRepresentation"
+      }
+    },
+    {
+      "resource_name": "activities",
+      "database_table": "activities",
+      "summary_view": "activities_summary",
+      "feature_directory": "src/atomic-crm/activities",
+      "components": [
+        {
+          "file": "ActivityEdit.tsx",
+          "type": "edit",
+          "exports": [],
+          "features": []
+        },
+        {
+          "file": "ActivityList.tsx",
+          "type": "list",
+          "exports": [],
+          "features": [
+            "PremiumDatagrid",
+            "Filters",
+            "BulkActions",
+            "ExportButton",
+            "ReferenceField"
+          ]
+        },
+        {
+          "file": "ActivityListFilter.tsx",
+          "type": "list",
+          "exports": [
+            "ActivityListFilter"
+          ],
+          "features": [
+            "Filters"
+          ]
+        },
+        {
+          "file": "ActivityShow.tsx",
+          "type": "show",
+          "exports": [],
+          "features": [
+            "ReferenceField"
+          ]
+        },
+        {
+          "file": "ActivitySlideOver.tsx",
+          "type": "slideOver",
+          "exports": [
+            "ActivitySlideOver"
+          ],
+          "features": []
+        }
+      ],
+      "relationships_rendered": [
+        {
+          "field": "organizations",
+          "component": "ReferenceField",
+          "target_resource": "organizations",
+          "file": "ActivityList.tsx"
+        },
+        {
+          "field": "opportunities",
+          "component": "ReferenceField",
+          "target_resource": "opportunities",
+          "file": "ActivityList.tsx"
+        },
+        {
+          "field": "sales",
+          "component": "ReferenceField",
+          "target_resource": "sales",
+          "file": "ActivityList.tsx"
+        },
+        {
+          "field": "opportunities",
+          "component": "ReferenceField",
+          "target_resource": "opportunities",
+          "file": "ActivityShow.tsx"
+        },
+        {
+          "field": "contacts_summary",
+          "component": "ReferenceField",
+          "target_resource": "contacts_summary",
+          "file": "ActivityShow.tsx"
+        },
+        {
+          "field": "organizations",
+          "component": "ReferenceField",
+          "target_resource": "organizations",
+          "file": "ActivityShow.tsx"
+        },
+        {
+          "field": "sales",
+          "component": "ReferenceField",
+          "target_resource": "sales",
+          "file": "ActivityTimelineEntry.tsx"
+        }
+      ],
+      "resource_config": {
+        "recordRepresentation": "activityRecordRepresentation"
+      }
+    },
+    {
+      "resource_name": "products",
+      "database_table": "products",
+      "summary_view": "products_summary",
+      "feature_directory": "src/atomic-crm/products",
+      "components": [
+        {
+          "file": "ProductCreate.tsx",
+          "type": "create",
+          "exports": [],
+          "features": []
+        },
+        {
+          "file": "ProductEdit.tsx",
+          "type": "edit",
+          "exports": [],
+          "features": [
+            "DeleteButton"
+          ]
+        },
+        {
+          "file": "ProductList.tsx",
+          "type": "list",
+          "exports": [
+            "ProductList"
+          ],
+          "features": [
+            "PremiumDatagrid",
+            "Filters",
+            "BulkActions",
+            "ExportButton"
+          ]
+        },
+        {
+          "file": "ProductListContent.tsx",
+          "type": "list",
+          "exports": [
+            "ProductListContent"
+          ],
+          "features": []
+        },
+        {
+          "file": "ProductListFilter.tsx",
+          "type": "list",
+          "exports": [
+            "ProductListFilter"
+          ],
+          "features": [
+            "Filters"
+          ]
+        },
+        {
+          "file": "ProductShow.tsx",
+          "type": "show",
+          "exports": [],
+          "features": [
+            "ReferenceField"
+          ]
+        },
+        {
+          "file": "ProductSlideOver.tsx",
+          "type": "slideOver",
+          "exports": [
+            "ProductSlideOver"
+          ],
+          "features": []
+        }
+      ],
+      "relationships_rendered": [
+        {
+          "field": "organizations",
+          "component": "ReferenceField",
+          "target_resource": "organizations",
+          "file": "ProductDetailsTab.tsx"
+        },
+        {
+          "field": "organizations",
+          "component": "ReferenceField",
+          "target_resource": "organizations",
+          "file": "ProductRelationshipsTab.tsx"
+        },
+        {
+          "field": "opportunities",
+          "component": "ReferenceField",
+          "target_resource": "opportunities",
+          "file": "ProductRelationshipsTab.tsx"
+        },
+        {
+          "field": "organizations",
+          "component": "ReferenceField",
+          "target_resource": "organizations",
+          "file": "ProductShow.tsx"
+        }
+      ],
+      "resource_config": {
+        "recordRepresentation": "productRecordRepresentation"
+      }
+    },
+    {
+      "resource_name": "tasks",
+      "database_table": "tasks_deprecated",
+      "summary_view": "tasks_summary",
+      "feature_directory": "src/atomic-crm/tasks",
+      "components": [
+        {
+          "file": "TaskCreate.tsx",
+          "type": "create",
+          "exports": [],
+          "features": []
+        },
+        {
+          "file": "TaskEdit.tsx",
+          "type": "edit",
+          "exports": [
+            "TaskEdit"
+          ],
+          "features": []
+        },
+        {
+          "file": "TaskList.tsx",
+          "type": "list",
+          "exports": [],
+          "features": [
+            "PremiumDatagrid",
+            "Filters",
+            "BulkActions",
+            "ExportButton",
+            "ReferenceField"
+          ]
+        },
+        {
+          "file": "TaskListFilter.tsx",
+          "type": "list",
+          "exports": [
+            "TaskListFilter"
+          ],
+          "features": [
+            "Filters"
+          ]
+        },
+        {
+          "file": "TaskShow.tsx",
+          "type": "show",
+          "exports": [],
+          "features": [
+            "ReferenceField"
+          ]
+        },
+        {
+          "file": "TaskSlideOver.tsx",
+          "type": "slideOver",
+          "exports": [
+            "TaskSlideOver"
+          ],
+          "features": []
+        },
+        {
+          "file": "TaskSlideOverDetailsTab.tsx",
+          "type": "slideOver",
+          "exports": [
+            "TaskSlideOverDetailsTab"
+          ],
+          "features": [
+            "ReferenceField"
+          ]
+        }
+      ],
+      "relationships_rendered": [
+        {
+          "field": "sales",
+          "component": "ReferenceField",
+          "target_resource": "sales",
+          "file": "TaskList.tsx"
+        },
+        {
+          "field": "contacts_summary",
+          "component": "ReferenceField",
+          "target_resource": "contacts_summary",
+          "file": "TaskList.tsx"
+        },
+        {
+          "field": "opportunities",
+          "component": "ReferenceField",
+          "target_resource": "opportunities",
+          "file": "TaskList.tsx"
+        },
+        {
+          "field": "opportunities",
+          "component": "ReferenceField",
+          "target_resource": "opportunities",
+          "file": "TaskShow.tsx"
+        },
+        {
+          "field": "contacts",
+          "component": "ReferenceField",
+          "target_resource": "contacts",
+          "file": "TaskShow.tsx"
+        },
+        {
+          "field": "sales",
+          "component": "ReferenceField",
+          "target_resource": "sales",
+          "file": "TaskSlideOverDetailsTab.tsx"
+        }
+      ],
+      "resource_config": {
+        "recordRepresentation": "taskRecordRepresentation"
+      },
+      "base_table_note": "Resource 'tasks' uses 'tasks_deprecated' base table"
+    },
+    {
+      "resource_name": "contact_notes",
+      "database_table": "contact_notes",
+      "summary_view": null,
+      "feature_directory": "src/atomic-crm/notes",
+      "components": [
+        {
+          "file": "NoteCreate.tsx",
+          "type": "create",
+          "exports": [
+            "NoteCreate"
+          ],
+          "features": []
+        },
+        {
+          "file": "NotesList.tsx",
+          "type": "list",
+          "exports": [
+            "NotesList"
+          ],
+          "features": [
+            "ReferenceManyField"
+          ]
+        }
+      ],
+      "relationships_rendered": [
+        {
+          "field": "opportunities",
+          "component": "ReferenceField",
+          "target_resource": "opportunities",
+          "file": "Note.tsx"
+        },
+        {
+          "field": "organizations",
+          "component": "ReferenceField",
+          "target_resource": "organizations",
+          "file": "Note.tsx"
+        },
+        {
+          "field": "organizations",
+          "component": "ReferenceField",
+          "target_resource": "organizations",
+          "file": "Note.tsx"
+        },
+        {
+          "field": "sales",
+          "component": "ReferenceField",
+          "target_resource": "sales",
+          "file": "Note.tsx"
+        }
+      ],
+      "resource_config": null
+    },
+    {
+      "resource_name": "opportunity_notes",
+      "database_table": "opportunity_notes",
+      "summary_view": null,
+      "feature_directory": "src/atomic-crm/notes",
+      "components": [
+        {
+          "file": "NoteCreate.tsx",
+          "type": "create",
+          "exports": [
+            "NoteCreate"
+          ],
+          "features": []
+        },
+        {
+          "file": "NotesList.tsx",
+          "type": "list",
+          "exports": [
+            "NotesList"
+          ],
+          "features": [
+            "ReferenceManyField"
+          ]
+        }
+      ],
+      "relationships_rendered": [
+        {
+          "field": "opportunities",
+          "component": "ReferenceField",
+          "target_resource": "opportunities",
+          "file": "Note.tsx"
+        },
+        {
+          "field": "organizations",
+          "component": "ReferenceField",
+          "target_resource": "organizations",
+          "file": "Note.tsx"
+        },
+        {
+          "field": "organizations",
+          "component": "ReferenceField",
+          "target_resource": "organizations",
+          "file": "Note.tsx"
+        },
+        {
+          "field": "sales",
+          "component": "ReferenceField",
+          "target_resource": "sales",
+          "file": "Note.tsx"
+        }
+      ],
+      "resource_config": null
+    },
+    {
+      "resource_name": "organization_notes",
+      "database_table": "organization_notes",
+      "summary_view": null,
+      "feature_directory": "src/atomic-crm/notes",
+      "components": [
+        {
+          "file": "NoteCreate.tsx",
+          "type": "create",
+          "exports": [
+            "NoteCreate"
+          ],
+          "features": []
+        },
+        {
+          "file": "NotesList.tsx",
+          "type": "list",
+          "exports": [
+            "NotesList"
+          ],
+          "features": [
+            "ReferenceManyField"
+          ]
+        }
+      ],
+      "relationships_rendered": [
+        {
+          "field": "opportunities",
+          "component": "ReferenceField",
+          "target_resource": "opportunities",
+          "file": "Note.tsx"
+        },
+        {
+          "field": "organizations",
+          "component": "ReferenceField",
+          "target_resource": "organizations",
+          "file": "Note.tsx"
+        },
+        {
+          "field": "organizations",
+          "component": "ReferenceField",
+          "target_resource": "organizations",
+          "file": "Note.tsx"
+        },
+        {
+          "field": "sales",
+          "component": "ReferenceField",
+          "target_resource": "sales",
+          "file": "Note.tsx"
+        }
+      ],
+      "resource_config": null
+    },
+    {
+      "resource_name": "tags",
+      "database_table": "tags",
+      "summary_view": null,
+      "feature_directory": "src/atomic-crm/tags",
+      "components": [
+        {
+          "file": "TagCreate.tsx",
+          "type": "create",
+          "exports": [
+            "TagCreate"
+          ],
+          "features": []
+        },
+        {
+          "file": "TagCreateModal.tsx",
+          "type": "create",
+          "exports": [
+            "TagCreateModal"
+          ],
+          "features": []
+        },
+        {
+          "file": "TagEdit.tsx",
+          "type": "edit",
+          "exports": [
+            "TagEdit"
+          ],
+          "features": []
+        },
+        {
+          "file": "TagEditModal.tsx",
+          "type": "edit",
+          "exports": [
+            "TagEditModal"
+          ],
+          "features": []
+        },
+        {
+          "file": "TagList.tsx",
+          "type": "list",
+          "exports": [
+            "TagList"
+          ],
+          "features": [
+            "PremiumDatagrid"
+          ]
+        },
+        {
+          "file": "TagSelectWithCreate.tsx",
+          "type": "create",
+          "exports": [
+            "TagSelectWithCreate"
+          ],
+          "features": []
+        }
+      ],
+      "relationships_rendered": [],
+      "resource_config": null
+    },
+    {
+      "resource_name": "sales",
+      "database_table": "sales",
+      "summary_view": null,
+      "feature_directory": "src/atomic-crm/sales",
+      "components": [
+        {
+          "file": "SalesCreate.tsx",
+          "type": "create",
+          "exports": [],
+          "features": [
+            "SimpleForm"
+          ]
+        },
+        {
+          "file": "SalesEdit.tsx",
+          "type": "edit",
+          "exports": [],
+          "features": [
+            "SimpleForm"
+          ]
+        },
+        {
+          "file": "SalesList.tsx",
+          "type": "list",
+          "exports": [],
+          "features": [
+            "PremiumDatagrid",
+            "Filters"
+          ]
+        },
+        {
+          "file": "SalesListFilter.tsx",
+          "type": "list",
+          "exports": [
+            "SalesListFilter"
+          ],
+          "features": [
+            "Filters"
+          ]
+        },
+        {
+          "file": "SalesShow.tsx",
+          "type": "show",
+          "exports": [
+            "SalesShow"
+          ],
+          "features": []
+        },
+        {
+          "file": "SalesSlideOver.tsx",
+          "type": "slideOver",
+          "exports": [
+            "SalesSlideOver"
+          ],
+          "features": []
+        }
+      ],
+      "relationships_rendered": [],
+      "resource_config": {
+        "recordRepresentation": "record"
+      }
+    },
+    {
+      "resource_name": "product_distributors",
+      "database_table": "product_distributors",
+      "summary_view": "product_distributors_summary",
+      "feature_directory": "src/atomic-crm/productDistributors",
+      "components": [
+        {
+          "file": "ProductDistributorCreate.tsx",
+          "type": "create",
+          "exports": [
+            "ProductDistributorCreate"
+          ],
+          "features": []
+        },
+        {
+          "file": "ProductDistributorEdit.tsx",
+          "type": "edit",
+          "exports": [
+            "ProductDistributorEdit"
+          ],
+          "features": [
+            "SimpleForm",
+            "ReferenceField"
+          ]
+        },
+        {
+          "file": "ProductDistributorList.tsx",
+          "type": "list",
+          "exports": [
+            "ProductDistributorList"
+          ],
+          "features": [
+            "PremiumDatagrid",
+            "Filters"
+          ]
+        },
+        {
+          "file": "ProductDistributorShow.tsx",
+          "type": "show",
+          "exports": [],
+          "features": [
+            "ReferenceField"
+          ]
+        }
+      ],
+      "relationships_rendered": [
+        {
+          "field": "products",
+          "component": "ReferenceField",
+          "target_resource": "products",
+          "file": "ProductDistributorEdit.tsx"
+        },
+        {
+          "field": "organizations",
+          "component": "ReferenceField",
+          "target_resource": "organizations",
+          "file": "ProductDistributorEdit.tsx"
+        },
+        {
+          "field": "products",
+          "component": "ReferenceField",
+          "target_resource": "products",
+          "file": "ProductDistributorShow.tsx"
+        },
+        {
+          "field": "organizations",
+          "component": "ReferenceField",
+          "target_resource": "organizations",
+          "file": "ProductDistributorShow.tsx"
+        }
+      ],
+      "resource_config": {}
+    },
+    {
+      "resource_name": "notifications",
+      "database_table": "notifications",
+      "summary_view": null,
+      "feature_directory": "src/atomic-crm/notifications",
+      "components": [
+        {
+          "file": "NotificationsList.tsx",
+          "type": "list",
+          "exports": [],
+          "features": [
+            "Filters",
+            "BulkActions"
+          ]
+        }
+      ],
+      "relationships_rendered": [],
+      "resource_config": {
+        "recordRepresentation": "record"
+      }
+    },
+    {
+      "resource_name": "entity_timeline",
+      "database_table": null,
+      "summary_view": null,
+      "feature_directory": "src/atomic-crm/timeline",
+      "components": [],
+      "relationships_rendered": [
+        {
+          "field": "sales",
+          "component": "ReferenceField",
+          "target_resource": "sales",
+          "file": "TimelineEntry.tsx"
+        },
+        {
+          "field": "sales",
+          "component": "ReferenceField",
+          "target_resource": "sales",
+          "file": "TimelineEntry.tsx"
+        },
+        {
+          "field": "organizations",
+          "component": "ReferenceField",
+          "target_resource": "organizations",
+          "file": "UnifiedTimeline.tsx"
+        }
+      ],
+      "resource_config": null,
+      "base_table_note": "Resource 'entity_timeline' is a VIEW, not a base table"
+    }
+  ],
+  "unmapped_tables": [
+    {
+      "resource_name": "segments",
+      "reason": "Configuration resource - managed via settings"
+    },
+    {
+      "resource_name": "opportunity_participants",
+      "reason": "Junction table - no dedicated UI"
+    },
+    {
+      "resource_name": "opportunity_contacts",
+      "reason": "Junction table - no dedicated UI"
+    },
+    {
+      "resource_name": "interaction_participants",
+      "reason": "Junction table - no dedicated UI"
+    },
+    {
+      "resource_name": "distributor_principal_authorizations",
+      "reason": "Junction table - no dedicated UI"
+    },
+    {
+      "resource_name": "organization_distributors",
+      "reason": "Junction table - no dedicated UI"
+    },
+    {
+      "resource_name": "user_favorites",
+      "reason": "System resource - no dedicated UI"
+    },
+    {
+      "resource_name": "audit_trail",
+      "reason": "System table - logging/audit trail"
+    },
+    {
+      "resource_name": "contact_organizations",
+      "reason": "Junction table - managed via contact_organizations resource"
+    },
+    {
+      "resource_name": "contact_preferred_principals",
+      "reason": "Junction table - no dedicated UI"
+    },
+    {
+      "resource_name": "dashboard_snapshots",
+      "reason": "System table - computed dashboard data"
+    },
+    {
+      "resource_name": "migration_history",
+      "reason": "System table - database migrations tracking"
+    },
+    {
+      "resource_name": "opportunity_products",
+      "reason": "Junction table - no dedicated UI"
+    },
+    {
+      "resource_name": "product_category_hierarchy",
+      "reason": "System table - product hierarchy structure"
+    },
+    {
+      "resource_name": "product_features",
+      "reason": "Supporting table - product metadata"
+    },
+    {
+      "resource_name": "product_pricing_models",
+      "reason": "Supporting table - pricing structure"
+    },
+    {
+      "resource_name": "product_pricing_tiers",
+      "reason": "Supporting table - pricing tiers"
+    },
+    {
+      "resource_name": "task_id_mapping",
+      "reason": "System table - migration tracking"
+    },
+    {
+      "resource_name": "tutorial_progress",
+      "reason": "System table - user tutorial state"
+    },
+    {
+      "resource_name": "test_user_metadata",
+      "reason": "Test data - not production table"
+    }
+  ]
+}
