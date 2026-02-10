@@ -35,6 +35,9 @@ PRE-STEP: Load business-logic-policy.md
 - Apply the current owner-approved rules while auditing
 - If any finding conflicts policy, flag it as BUSINESS_LOGIC_CONFLICT
 - If policy is unclear, STOP and ask for immediate clarification
+- Enforce the approved Q1-Q12 confirmation set from policy (timeline completeness,
+  task owner required, due date optional, duplicate warn-only, MVP excludes
+  digest/notifications)
 
 STEP 1: Environment Access
 - Confirm Supabase MCP access to cloud project
@@ -74,6 +77,11 @@ Answer these specific questions with evidence:
 - What is the role of exec_sql? (who calls it, what permissions does it have,
   and whether there are active code/script references)
 - Are there orphaned junction tables with 0 rows?
+- Does timeline coverage include owner-connected actions (tasks, notes,
+  opportunity updates, activities)?
+- Is task ownership enforced (no ownerless tasks)?
+- Are tasks without due_date allowed?
+- Is duplicate detection warning-only (not hard-blocking save)?
 
 STEP 5: Edge Function & Cron Reconnaissance
 - List all deployed Edge Functions with health status

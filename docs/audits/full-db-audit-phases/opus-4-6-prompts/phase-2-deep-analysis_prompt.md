@@ -34,9 +34,14 @@ CRITICAL ASSERTIONS (must verify against live databases):
 - [ ] Tasks are stored in `activities` table using STI (activity_type = 'task')
 - [ ] `tasks_deprecated` table has been dropped in cloud
 - [ ] `entity_timeline` is a VIEW fed only by the `activities` table
+- [ ] Timeline includes owner-connected actions (tasks, notes, opportunity updates, activities)
+- [ ] Task owner requirement is enforced; ownerless tasks are blocked
+- [ ] Tasks without due date are allowed (due date optional)
+- [ ] Duplicate detection is warning-only (non-blocking)
 - [ ] Migration parity/drift status between local and cloud is verified (do not assume a gap)
 - [ ] `capture-dashboard-snapshots` Edge Function deployment and runtime health are verified
 - [ ] `daily-digest` status is verified against business logic scope (deferred for MVP unless owner changes scope)
+- [ ] In-app notifications are validated against business logic scope (deferred for MVP unless owner changes scope)
 - [ ] RLS soft-delete gap claims are validated; mark N/A where target tables do not have `deleted_at`
 - [ ] Cron jobs are verified end-to-end with current scope labels (healthy / failing / deferred)
 - [ ] Data preservation risks are identified for any legacy object candidates

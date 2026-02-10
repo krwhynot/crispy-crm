@@ -31,6 +31,7 @@ Restructured from 7 phases to 4 phases for deeper analysis per phase.
 - Every claim requires evidence and confidence level
 - Multiple-choice questions for ambiguous decisions
 - Include a true/false business-logic confirmation set before Tier D removals
+- Enforce the owner-approved Q1-Q12 business-logic confirmation set from `business-logic-policy.md`
 - Treat full business-logic review as equal priority to database/schema changes
 - Hybrid context: read prior reports + verify critical assertions
 - Beta-data safety first: no destructive recommendation without backup, rollback, and reconciliation evidence

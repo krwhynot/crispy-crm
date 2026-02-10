@@ -51,7 +51,7 @@ Tier C execution is complete. All trigger, function, and policy work is deployed
 | Cross-phase narrative consistency | PASS | Phase 1 findings, Phase 2 analysis, and Phase 3 decisions are now aligned to current execution outcomes. |
 | Dependency-aware sequencing | PASS | Trigger and view dependencies remain correctly ordered. |
 | Rollback coverage | PASS | Backup/rollback strategy remains in place for higher-risk work. |
-| Business-logic alignment | PASS | Aligned to `business-logic-policy.md`, including unified 10-day Tier D eligibility rule. |
+| Business-logic alignment | PASS | Aligned to `business-logic-policy.md`, including unified 10-day Tier D eligibility rule and approved owner Q1-Q12 confirmation set. |
 
 ---
 

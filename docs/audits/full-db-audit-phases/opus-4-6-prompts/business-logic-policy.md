@@ -2,7 +2,7 @@
 
 ## Status
 - Owner: Crispy-CRM product owner
-- Last owner review: 2026-02-10
+- Last owner review: 2026-02-10 (Q1-Q12 confirmation set approved)
 - Priority rule: full business-logic review is equal priority to database/schema changes
 - Freshness rule: this policy must be owner-reviewed in the current calendar month
 - Ambiguity rule: if logic is unclear, STOP and request immediate owner clarification
@@ -38,6 +38,23 @@
 - Timeline scope directive: timeline must include tasks plus any owner-connected action (opportunity changes, notes, and other relevant lifecycle events).
 - Reporting directive: principal reporting should focus on tasks, especially completed tasks.
 
+## Owner Confirmation Set (Q1-Q12, Approved)
+
+| Q | Statement | Approved | Notes |
+|---|---|---|---|
+| Q1 | Timeline should include every owner-connected action (tasks, notes, opportunity updates, activities) | TRUE | Extends timeline scope directive |
+| Q2 | Completed tasks should remain visible in timeline/history indefinitely | TRUE | Reinforces ID 6 |
+| Q3 | Closing opportunity should NOT auto-close follow-up tasks | TRUE | Keep follow-up open; include closed-opportunity context note |
+| Q4 | Principal reporting should prioritize completed tasks | TRUE | Reinforces reporting directive |
+| Q5 | Notes should appear on timeline immediately after save | TRUE | User trust and activity completeness |
+| Q6 | Soft-deleted records should stay hidden across lists/timeline/reports | TRUE | Reinforces ID 13 |
+| Q7 | Tasks without an assigned owner should be blocked | TRUE | Prevent orphaned work |
+| Q8 | Tasks without due date are allowed | TRUE | Due date is optional |
+| Q9 | Duplicate detection should warn, not hard-block save | TRUE | Beta-safe workflow |
+| Q10 | Email digest behavior is excluded from MVP success criteria | TRUE | Matches ID 11 = FALSE |
+| Q11 | In-app notifications are excluded from MVP success criteria | TRUE | Matches ID 12 = FALSE |
+| Q12 | Unresolved business-logic ambiguity blocks implementation until owner decision | TRUE | Reinforces ambiguity rule |
+
 ## How Audit Must Use This Policy
 1. Every phase prompt must read this file before analysis or decisions.
 2. Any conflict between observed behavior and this policy must be flagged as `BUSINESS_LOGIC_CONFLICT`.
@@ -50,3 +67,4 @@
 | 2026-02-10 | Created policy and recorded current owner-confirmed truth table | Audit session |
 | 2026-02-10 | Added owner decision: ID 24 = FALSE; follow-up tasks stay open and must note closed opportunity linkage | Owner Q&A |
 | 2026-02-10 | Owner selected Option 1: use a single 10-day Tier D eligibility window for all objects (views + tables) | Owner decision |
+| 2026-02-10 | Added approved Q1-Q12 confirmation set (timeline completeness, task ownership, due-date optionality, duplicate warn-only, MVP exclusions, ambiguity stop rule) | Owner approval |

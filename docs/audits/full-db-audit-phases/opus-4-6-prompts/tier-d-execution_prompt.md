@@ -27,6 +27,7 @@ Owner policy constraints:
 - No hardcoded date gate. Tier D is condition-based.
 - Gate conditions: 10-day no-use window + explicit owner signoff + dependency checks.
 - If business logic is unclear or conflicts policy: STOP and ask immediately.
+- Enforce owner-approved Q1-Q12 confirmation set in business-logic-policy.md.
 </context>
 
 <objective>

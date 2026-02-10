@@ -39,6 +39,7 @@ CRITICAL ASSERTIONS (verify ALL of these):
 - [ ] Data reconciliation evidence exists for any Tier D removal candidate
 - [ ] Full business-logic review is completed and owner-confirmed this month
 - [ ] business-logic-policy.md is up to date with latest owner answers and timestamped this month
+- [ ] Approved owner Q1-Q12 confirmation set is fully reflected in findings and final queue
 
 Mark each Confirmed or Failed. If any fail, document the gap.
 </pre_work>

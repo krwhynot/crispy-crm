@@ -32,6 +32,7 @@ PRE-STEP: Load prior artifacts
   - phase-4-report.md
   - business-logic-policy.md
 - If prior artifacts conflict, flag BUSINESS_LOGIC_CONFLICT and explain.
+- Apply the owner-approved Q1-Q12 confirmation set in business-logic-policy.md.
 
 STEP 1: Build a Business Logic Progress Matrix
 For each owner-approved logic rule in business-logic-policy.md, assign:
@@ -54,12 +55,16 @@ For each workflow:
 - Gap (if any)
 - User-facing impact
 
-STEP 3: Validate “Progress” Features and Metrics
+STEP 3: Validate "Progress" Features and Metrics
 Specifically assess anything involving progress tracking:
 - tutorial_progress behavior and true business relevance
 - pipeline/stage progress representations
 - completed-task progress in principal reporting
 - dashboard progress indicators still in MVP scope vs deferred scope
+- immediate timeline visibility for notes
+- task owner enforcement and due-date optionality
+- duplicate detection behavior (warn-only vs hard-block)
+- deferred MVP behavior for digest/notifications
 
 If an item is out of MVP scope, mark as DEFERRED (not broken).
 
@@ -106,7 +111,7 @@ Structure:
 8) Multiple-Choice Questions
 9) Recommended Next Step
 
-Also append a short “Phase 5 status” section to:
+Also append a short "Phase 5 status" section to:
 docs/audits/full-db-audit-phases/opus-4-6-prompts/phase-4-report.md
 </output_format>
 

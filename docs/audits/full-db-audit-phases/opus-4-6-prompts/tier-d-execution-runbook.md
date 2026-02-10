@@ -22,6 +22,7 @@ Related app cleanup already done:
 1. 10-day no-use window is satisfied.
 2. Explicit owner signoff is recorded for Tier D targets.
 3. Dependency checks pass (no active business-logic conflict).
+4. Current business logic policy (including approved Q1-Q12 set) is still valid for this month.
 
 If any condition fails, stop.
 

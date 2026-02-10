@@ -35,6 +35,9 @@ CRITICAL ASSERTIONS (verify against Phase 2 findings):
 - [ ] Risk register items from Phase 1+2 are still current
 - [ ] Data reconciliation baselines exist for legacy-to-canonical transitions
 - [ ] No unresolved BUSINESS_LOGIC_CONFLICT items remain
+- [ ] Owner confirmation set (Q1-Q12) is reflected in all decisions:
+      timeline completeness, task owner required, due date optional,
+      duplicate warn-only, MVP excludes digest/notifications
 
 If any assertion is superseded, document with original claim, new evidence,
 and impact on this phase's decisions.
@@ -149,6 +152,7 @@ Think carefully about ordering:
 - No REMOVE decision without explicit reconciliation evidence for beta data
 - No REMOVE decision without explicit business-logic owner confirmation
 - If business-logic-policy.md is unclear for a decision, STOP and request immediate clarification
+- Do not propose decisions that conflict with approved Q1-Q12 policy confirmations
 </constraints>
 
 <output_format>
