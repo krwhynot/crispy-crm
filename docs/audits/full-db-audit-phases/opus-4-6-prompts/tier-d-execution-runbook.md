@@ -17,12 +17,11 @@ Migration file:
 Related app cleanup already done:
 - Removed dead error map key in `src/atomic-crm/utils/errorMessages.ts`
 
-## Gate Conditions (must all be true)
+## Execution Conditions (must all be true)
 
-1. 10-day no-use window is satisfied.
-2. Explicit owner signoff is recorded for Tier D targets.
-3. Dependency checks pass (no active business-logic conflict).
-4. Current business logic policy (including approved Q1-Q12 set) is still valid for this month.
+1. Explicit owner approval is recorded for Tier D targets.
+2. Dependency and row-count preflight checks pass (no active business-logic conflict).
+3. Current business logic policy (including approved Q1-Q12 set) is still valid for this month.
 
 If any condition fails, stop.
 
@@ -158,7 +157,7 @@ Only use manual object recreation if PITR is unavailable or explicitly rejected.
 
 ## Completion Checklist
 
-- [ ] Gate conditions satisfied (10-day no-use + signoff + dependency checks)
+- [ ] Execution conditions satisfied (owner approval + dependency checks)
 - [ ] Preflight SQL checks pass
 - [ ] Dry-run pass
 - [ ] Migration applied

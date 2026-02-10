@@ -6,8 +6,8 @@
 - Priority rule: full business-logic review is equal priority to database/schema changes
 - Freshness rule: this policy must be owner-reviewed in the current calendar month
 - Ambiguity rule: if logic is unclear, STOP and request immediate owner clarification
-- Removal eligibility rule: object is removal-eligible after 10 days with no confirmed business use, plus explicit owner signoff and dependency checks
-- Tier D timing scope: the 10-day eligibility rule applies to both view drops and table drops unless an explicit owner exception is recorded
+- Tier D execution rule: removal can run immediately when owner approval is explicit and preflight dependency/data checks pass
+- Tier D timing scope: no waiting window is required; execution timing is owner-driven
 - Defaulting rule: if an item is not explicitly answered by owner, use the current recommended answer and mark it provisional
 
 ## Current Business Logic Decisions (Owner Approved)
@@ -30,7 +30,7 @@
 | 14 | Soft-delete on parent should also hide related notes | TRUE | Consistency rule |
 | 15 | updated_at should auto-update on edits | TRUE | Data integrity rule |
 | 16 | Admin-only actions must stay restricted | TRUE | Security rule |
-| 17 | Legacy object with no confirmed use is removal-eligible | TRUE | 10-day window applies to both views and tables |
+| 17 | Legacy object with no confirmed use is removal-eligible | TRUE | Immediate removal allowed with explicit owner approval + preflight safety checks |
 | 18 | If logic is unclear, keep for now | FALSE | Replaced by immediate-clarification rule |
 | 24 | Closing an opportunity as "won" should automatically close all open tasks tied to it | FALSE | Keep follow-up tasks open; add note that attached opportunity is closed |
 
@@ -66,5 +66,6 @@
 |---|---|---|
 | 2026-02-10 | Created policy and recorded current owner-confirmed truth table | Audit session |
 | 2026-02-10 | Added owner decision: ID 24 = FALSE; follow-up tasks stay open and must note closed opportunity linkage | Owner Q&A |
-| 2026-02-10 | Owner selected Option 1: use a single 10-day Tier D eligibility window for all objects (views + tables) | Owner decision |
+| 2026-02-10 | Owner selected a temporary waiting-window model for Tier D removals (later superseded same day) | Owner decision |
 | 2026-02-10 | Added approved Q1-Q12 confirmation set (timeline completeness, task ownership, due-date optionality, duplicate warn-only, MVP exclusions, ambiguity stop rule) | Owner approval |
+| 2026-02-10 | Tier D gate removed: no waiting window; owner-approved immediate execution with preflight safety checks | Owner override |

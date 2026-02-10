@@ -121,13 +121,14 @@
 | enforce_sales_column_restrictions_trigger | sales | enforce_sales_column_restrictions |
 | keep_is_admin_synced | sales | sync_is_admin_from_role |
 
-## 10-Day Tier D Eligibility Window
+## Tier D Execution Policy
 
-**Gate model:** Condition-based (no hardcoded execution date)
+**Execution model:** Owner-timed (no waiting window)
 **Scope:** all Tier D removal candidates (views + tables)
-**Success criteria:** no confirmed business use for 10 consecutive days + explicit owner signoff + dependency checks
-**Eligibility trigger:** 10-day no-use window counted from baseline capture timestamp, plus owner signoff and dependency checks
+**Success criteria:** explicit owner approval + dependency checks + migration preflight checks
+**Execution trigger:** owner approval is recorded and preflight checks pass
 
 ---
 
 *Full trigger, RLS policy, index, function, and view snapshots captured via Supabase MCP queries. Raw data retained in Phase 4 session context.*
+

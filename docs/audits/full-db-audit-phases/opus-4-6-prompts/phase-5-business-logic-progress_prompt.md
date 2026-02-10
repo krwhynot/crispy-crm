@@ -17,7 +17,7 @@ Business logic source of truth:
 
 Current state:
 - Tier A/B/C are complete
-- Tier D is intentionally deferred
+- Tier D is owner-controlled and executable immediately after approval + safety checks
 - Goal now is to verify business logic behavior and progress coverage end-to-end
 </context>
 
@@ -73,11 +73,11 @@ Re-check whether local/cloud drift creates business-logic mismatch for users.
 - Focus on behavior differences, not only schema counts.
 - Flag DANGEROUS drift only if user outcomes differ.
 
-STEP 5: Tier D Deferral Risk Review
-Given Tier D is deferred, evaluate:
-- What risk remains by keeping legacy objects temporarily
-- Whether any deferred object can cause wrong business behavior now
-- Whether deferral blocks upcoming feature work
+STEP 5: Tier D Execution Readiness Review
+Evaluate:
+- What risk remains if legacy objects are kept temporarily
+- Whether any pending Tier D object can cause wrong business behavior now
+- Whether Tier D can proceed now with owner approval + safety checks
 
 STEP 6: Decision Questions (Multiple Choice)
 Ask 3 multiple-choice questions that unblock next decisions.
@@ -106,7 +106,7 @@ Structure:
 3) Core Workflow Validation Results
 4) Progress Feature Assessment
 5) Drift-to-Behavior Impact
-6) Tier D Deferral Risk Assessment
+6) Tier D Execution Readiness Assessment
 7) Open Unknowns
 8) Multiple-Choice Questions
 9) Recommended Next Step

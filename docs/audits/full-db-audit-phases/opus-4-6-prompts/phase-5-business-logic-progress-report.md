@@ -21,7 +21,7 @@ Phase 5 validates all owner-approved business logic rules from `business-logic-p
   - ~~Q9: Duplicate detection dead code~~ → RESOLVED: `useExactDuplicateCheck` hook wired into `OpportunityCreateFormFooter` as fire-and-forget toast warning
 - **1 PARTIAL:**
   - **Q4:** Principal reporting lacks completed-task aggregation metrics (post-MVP enhancement)
-- **Tier D deferral risk:** SAFE (zero app code references to drop targets)
+- **Tier D execution readiness:** READY (zero app code references to drop targets)
 - **Drift-to-behavior impact:** SAFE (schema drift does not cause user-visible behavior differences)
 
 All Tier C deployments verified active on cloud (8 RPCs, 32 business-logic triggers, hardened DELETE policies).
@@ -50,7 +50,7 @@ All Tier C deployments verified active on cloud (8 RPCs, 32 business-logic trigg
 | 14 | Soft-delete cascades to notes | VERIFIED | [Confidence: 95%] | Cloud trigger: `cascade_soft_delete_to_notes` fires on organization/contact soft-delete. Cloud function `check_organization_delete_allowed` blocks delete if active opportunities exist |
 | 15 | `updated_at` auto-update | VERIFIED | [Confidence: 95%] | Cloud: 32 business-logic triggers include `set_updated_at_*` triggers on all core tables |
 | 16 | Admin-only actions restricted | VERIFIED | [Confidence: 90%] | Notes DELETE policies require `is_manager_or_admin()` (Tier C3 fix). RLS policies enforce role-based access |
-| 17 | Legacy no-use = removal-eligible | VERIFIED | [Confidence: 90%] | Policy documented: 10-day no-use window + owner signoff + dependency checks. Tier D runbook and migration ready |
+| 17 | Legacy removal requires explicit owner approval + safety checks | VERIFIED | [Confidence: 90%] | Policy documented: owner signoff + dependency checks + preflight checks. Tier D runbook and migration ready |
 | 18 | Unclear = immediate clarification | VERIFIED | [Confidence: 90%] | BLP #18 = FALSE (replaced by Q12: ambiguity blocks implementation). Audit process follows this rule |
 | 24 | Opp close does NOT auto-close tasks | VERIFIED | [Confidence: 95%] | Cloud SQL: 15 triggers on `opportunities` table, none modify tasks. `validate_opportunity_closure` only checks `actual_close_date`. `log_opportunity_stage_change` only logs. No auto-close code in `opportunitiesCallbacks.ts` |
 
@@ -216,7 +216,7 @@ All Tier C deployments verified active on cloud (8 RPCs, 32 business-logic trigg
 
 ---
 
-## 6) Tier D Deferral Risk Assessment
+## 6) Tier D Execution Readiness Assessment
 
 ### Objects Still on Cloud
 
@@ -243,7 +243,7 @@ All Tier C deployments verified active on cloud (8 RPCs, 32 business-logic trigg
    - Duplicate indexes add negligible write overhead.
    - Generated TypeScript types include unused interfaces (cosmetic, auto-regenerated on next `gen:types`).
 
-**Verdict:** Tier D deferral is SAFE. No urgency to execute. Gate conditions (10-day no-use + owner signoff + dependency checks) should still be met before execution.
+**Verdict:** Tier D execution is READY when owner signoff and safety checks pass.
 
 ---
 
@@ -277,7 +277,7 @@ All 3 questions resolved by owner (Q1=A, Q2=A, Q3=A). Implementations complete.
 
 2. **Add Q4 completed-task metrics** to principal views as a post-MVP enhancement (backlog item, not blocking).
 
-3. **Execute Tier D** when gate conditions are met (10-day no-use window + owner signoff + dependency checks). This is independent of the resolved conflicts.
+3. **Execute Tier D** when owner signoff and safety checks pass (dependency + preflight checks). This is independent of the resolved conflicts.
 
 4. **Phase 5 validation is now PASS.** No re-run needed unless new policy changes occur.
 

@@ -25,13 +25,13 @@ Audit lens: supabase-postgres-best-practices
 
 Owner policy constraints:
 - No hardcoded date gate. Tier D is condition-based.
-- Gate conditions: 10-day no-use window + explicit owner signoff + dependency checks.
+- Execution conditions: explicit owner approval + dependency checks.
 - If business logic is unclear or conflicts policy: STOP and ask immediately.
 - Enforce owner-approved Q1-Q12 confirmation set in business-logic-policy.md.
 </context>
 
 <objective>
-Execute Tier D safely end-to-end only if all gate conditions pass.
+Execute Tier D safely end-to-end only if all execution conditions pass.
 If any condition fails, do not apply migration; produce HOLD report with blockers.
 </objective>
 
@@ -43,11 +43,10 @@ STEP 0: Load policy + runbook
 - Read tier-d-execution-runbook.md and follow it as operational source.
 - If anything conflicts between docs, treat business-logic-policy.md as authoritative and flag BUSINESS_LOGIC_CONFLICT.
 
-STEP 1: Gate evaluation
-- Validate all three Tier D gate conditions:
-  1) 10-day no-use window satisfied
-  2) explicit owner signoff present
-  3) dependency checks pass
+STEP 1: Execution condition evaluation
+- Validate all Tier D execution conditions:
+  1) explicit owner approval present
+  2) dependency checks pass
 - Provide evidence for each condition with [Confidence: XX%].
 - If any condition is not met, STOP and produce HOLD outcome.
 
@@ -107,7 +106,7 @@ STEP 8: Finalize audit artifacts
 Create/update: docs/audits/full-db-audit-phases/opus-4-6-prompts/tier-d-execution-report.md
 
 Use this structure:
-1) Gate Condition Evaluation
+1) Execution Condition Evaluation
 2) Preflight SQL Results
 3) Dry-Run Results
 4) Owner Approval Checkpoint

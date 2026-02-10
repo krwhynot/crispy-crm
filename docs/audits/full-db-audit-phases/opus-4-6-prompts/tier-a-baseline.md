@@ -166,18 +166,18 @@ Notable duplicate candidates flagged in Phase 2:
 - `idx_product_distributor_auth_deleted_at` + `idx_product_distributor_authorizations_deleted_at` (same table, same definition)
 - `idx_opportunities_customer_org` + `idx_opportunities_customer_organization_id` (same column, different WHERE clauses)
 
-## 10-Day Tier D Eligibility Window
+## Tier D Execution Policy
 
 | Metric | Value |
 |--------|-------|
-| Gate model | Condition-based (no hardcoded execution date) |
+| Execution model | Owner-timed (no waiting window) |
 | Scope | All Tier D removal candidates (views + tables) |
-| Success criteria | No confirmed business use for 10 consecutive days + owner signoff + dependency checks |
-| Eligibility trigger | 10-day no-use window counted from baseline capture timestamp, plus owner signoff and dependency checks |
+| Success criteria | Explicit owner approval + dependency checks + migration preflight checks |
+| Execution trigger | Owner approval is recorded and preflight checks pass |
 
 ---
 
-## Gate 1 Checklist
+## Tier A Checklist
 
 - [x] Cloud trigger baseline captured (52 triggers)
 - [x] Cloud RLS policy baseline captured (100 policies)
@@ -191,8 +191,9 @@ Notable duplicate candidates flagged in Phase 2:
 - [x] PITR availability verified — Pro plan confirmed (daily backups + 7-day PITR window)
 - [x] DEPRECATED comments added to `tasks_v` and `tasks_summary` views (migration `20260210000007`)
 
-**Gate 1 status: PASSED (11/11)** — All items complete as of 2026-02-10. Proceeding to Tier B.
+**Tier A status: PASSED (11/11)** - All items complete as of 2026-02-10. Proceeding to Tier B.
 
 ---
 
 *Captured by Claude Code (Opus 4.6) via Supabase MCP queries. This baseline is the execution reference for all subsequent tiers.*
+

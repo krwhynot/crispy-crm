@@ -35,7 +35,7 @@ Restructured from 7 phases to 4 phases for deeper analysis per phase.
 - Treat full business-logic review as equal priority to database/schema changes
 - Hybrid context: read prior reports + verify critical assertions
 - Beta-data safety first: no destructive recommendation without backup, rollback, and reconciliation evidence
-- Tier D removals require a 10-day no-use window + explicit owner signoff + dependency checks
+- Tier D removals are owner-timed and may run immediately with explicit owner approval + dependency checks
 
 ## File Map
 

@@ -18,7 +18,7 @@ Superseded assumptions from earlier drafts were corrected:
 
 - `daily-digest` is **deferred** (not MVP scope), not an active Tier B fix.
 - The "4 SELECT policies missing soft-delete filter" item is **closed as N/A by design** because those tables do not have a `deleted_at` column.
-- Tier D table-removal timing now follows the business-logic policy: **10-day no-use window** + owner signoff (not 30 days).
+- Tier D removals now follow the business-logic policy: **owner-approved immediate execution** with dependency/data preflight checks.
 - `contact_duplicates` and `duplicate_stats` are treated as **cloud drift candidates for DROP**, pending explicit owner confirmation.
 
 ---
@@ -86,9 +86,9 @@ Completed:
 3. Evaluate `migration_history` and `tutorial_progress` for drop.
 4. Evaluate cloud drift views `contact_duplicates` and `duplicate_stats` for drop.
 
-**Tier D timing rule:**
-- No automatic 30-day hold.
-- Use business policy: **10-day no-use window + explicit owner signoff + dependency checks**.
+**Tier D execution rule:**
+- No calendar wait requirement.
+- Use business policy: **explicit owner signoff + dependency checks + preflight data checks**.
 
 ---
 
@@ -110,7 +110,7 @@ Completed:
 ## 6) Owner Decisions Still Needed
 
 1. Should `contact_duplicates` and `duplicate_stats` be dropped from cloud now?
-2. Should Tier D table drops execute as soon as the 10-day no-use window is satisfied?
+2. Should Tier D table drops execute immediately once owner signoff and safety checks pass?
 3. Should `daily-digest` remain deferred until MVP scope changes?
 
 ---
