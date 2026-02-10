@@ -18,7 +18,7 @@
 |-----------|--------|-------|
 | Tasks stored in `activities` via STI | **CONFIRMED** | All 6 views use `activity_type = 'task'`, zero references to old `tasks` table [100%] |
 | `tasks_deprecated` dropped in cloud | **CONFIRMED** | Table does not exist in either environment. Migration 20260210000004 applied [100%] |
-| `entity_timeline` is a VIEW from `activities` | **CONFIRMED** | Single-source VIEW on `activities` with STI branching [100%] |
+| `entity_timeline` is a VIEW from `activities` + notes | **CONFIRMED (UPDATED)** | Originally single-source on `activities`. Now UNION ALL with `contact_notes`, `organization_notes`, `opportunity_notes` (migration `20260210043844`). STI branching preserved for activities/tasks [100%] |
 | 67-migration gap exists | **SUPERSEDED** | Phase 1 migration counts were 354 in both environments. The "gap" was the 4 untracked migration files, now committed. No migration gap exists. [95%] |
 | `capture-dashboard-snapshots` NOT deployed | **CONFIRMED** | Edge Function logs show `POST | 404` daily. Not in deployed function list. Source code exists locally and is ready for deployment. [100%] |
 | `daily-digest` returns 401 | **CONFIRMED** | Edge Function logs show `POST | 401`. Root cause analyzed below (Section 4). [100%] |

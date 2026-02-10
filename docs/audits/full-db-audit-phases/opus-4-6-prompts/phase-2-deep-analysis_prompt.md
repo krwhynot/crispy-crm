@@ -33,7 +33,7 @@ Before starting analysis:
 CRITICAL ASSERTIONS (must verify against live databases):
 - [ ] Tasks are stored in `activities` table using STI (activity_type = 'task')
 - [ ] `tasks_deprecated` table has been dropped in cloud
-- [ ] `entity_timeline` is a VIEW fed only by the `activities` table
+- [ ] `entity_timeline` is a VIEW fed by `activities` UNION ALL `contact_notes`, `organization_notes`, `opportunity_notes`
 - [ ] Timeline includes owner-connected actions (tasks, notes, opportunity updates, activities)
 - [ ] Task owner requirement is enforced; ownerless tasks are blocked
 - [ ] Tasks without due date are allowed (due date optional)
