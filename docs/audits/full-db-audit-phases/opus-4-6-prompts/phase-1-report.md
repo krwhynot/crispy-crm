@@ -5,6 +5,9 @@
 **Mode:** PLAN MODE (Read-Only - no migrations applied, no data modified)
 **Overall Confidence:** [Confidence: 92%] - Both environments fully accessible, all SQL queries returned results
 
+> Historical snapshot note: this report captures Phase 1 state on 2026-02-09.
+> Current business-logic decisions and execution status are in `phase-3-report.md`, `phase-4-report.md`, and `business-logic-policy.md`.
+
 ---
 
 ## 1) Environment Coverage

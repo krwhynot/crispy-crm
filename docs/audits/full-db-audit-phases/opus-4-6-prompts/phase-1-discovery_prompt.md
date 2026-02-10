@@ -13,6 +13,8 @@ Required tools:
 - Local DB: Docker (inspect local Supabase/Postgres containers and query local DB)
 - Cloud DB: Supabase MCP
 Audit lens: supabase-postgres-best-practices skill
+Business logic source of truth:
+- docs/audits/full-db-audit-phases/opus-4-6-prompts/business-logic-policy.md
 
 This audit exists because:
 - The codebase recently migrated tasks into an STI model (activities table)
@@ -22,11 +24,17 @@ This audit exists because:
 - The owner needs a clear, evidence-based picture before any cleanup
 - The product is in beta with real data, so preservation and reconciliation
   evidence are required before any destructive recommendation
+- Revisiting FULL business logic is equal priority to database changes in this audit
 </context>
 
 <instructions>
 Work through these steps in order. For each step, show your reasoning
 about what you find and why it matters, not just raw data.
+
+PRE-STEP: Load business-logic-policy.md
+- Apply the current owner-approved rules while auditing
+- If any finding conflicts policy, flag it as BUSINESS_LOGIC_CONFLICT
+- If policy is unclear, STOP and ask for immediate clarification
 
 STEP 1: Environment Access
 - Confirm Supabase MCP access to cloud project
@@ -80,6 +88,7 @@ For each risk:
 - State the impact in user-facing terms (what breaks for the end user?)
 - State the technical mechanism (what exactly fails and why?)
 - Suggest severity with reasoning
+- Include business-logic impact (what rule/process the business expects that could break)
 </instructions>
 
 <constraints>
@@ -91,6 +100,8 @@ For each risk:
 - If you cannot verify something, say so explicitly and add it to Unknowns
 - Treat beta data as production-like: highlight any data-loss risk candidates
   even if they are not fixed in this phase
+- Do not treat business-logic review as secondary; verify it alongside schema findings
+- If logic is unclear or stale, do not infer intent; ask for owner clarification
 </constraints>
 
 <output_format>
@@ -120,6 +131,7 @@ You are Opus 4.6. Use your reasoning depth to:
 - Think about temporal ordering: which migrations came first, what depends on what
 - Consider blast radius: if object X is removed, what chain of failures results
 - Flag contradictions: if Phase 1 data conflicts with repo code, call it out
+- Validate that current business rules still match database behavior
 </reasoning_guidance>
 
 <question_rules>

@@ -110,10 +110,11 @@ async function calculateUserMetrics(
       .lte("activity_date", thisWeekEnd.toISOString())
       .is("deleted_at", null),
 
-    // 2. Tasks completed this week
+    // 2. Tasks completed this week (activities with activity_type='task')
     supabaseAdmin
-      .from("tasks")
+      .from("activities")
       .select("id", { count: "exact", head: true })
+      .eq("activity_type", "task")
       .eq("sales_id", salesId)
       .eq("completed", true)
       .gte("completed_at", thisWeekStart.toISOString())
@@ -145,10 +146,11 @@ async function calculateUserMetrics(
       .not("stage", "in", "(closed_won,closed_lost)")
       .is("deleted_at", null),
 
-    // 6. Overdue tasks
+    // 6. Overdue tasks (activities with activity_type='task')
     supabaseAdmin
-      .from("tasks")
+      .from("activities")
       .select("id", { count: "exact", head: true })
+      .eq("activity_type", "task")
       .eq("sales_id", salesId)
       .eq("completed", false)
       .lt("due_date", today.toISOString())

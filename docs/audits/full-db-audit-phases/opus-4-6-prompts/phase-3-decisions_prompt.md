@@ -16,6 +16,7 @@ Audit lens: supabase-postgres-best-practices skill
 Phase 3 combines decision-making with implementation planning because
 decisions without a plan are incomplete, and plans without clear decisions
 are directionless. The output is a single, actionable cleanup roadmap.
+Business-logic review is equal priority to schema cleanup decisions.
 </context>
 
 <pre_work>
@@ -24,6 +25,7 @@ Before starting:
    - docs/audits/full-db-audit-phases/opus-4-6-prompts/phase-1-report.md
    - docs/audits/full-db-audit-phases/opus-4-6-prompts/phase-2-report.md
 2. Read docs/audits/full-db-audit-phases/opus-4-6-prompts/README.md
+3. Read docs/audits/full-db-audit-phases/opus-4-6-prompts/business-logic-policy.md
 
 CRITICAL ASSERTIONS (verify against Phase 2 findings):
 - [ ] Drift classification (expected/suspicious/dangerous) is still accurate
@@ -32,6 +34,7 @@ CRITICAL ASSERTIONS (verify against Phase 2 findings):
 - [ ] No new migrations have been applied since Phase 2 ran
 - [ ] Risk register items from Phase 1+2 are still current
 - [ ] Data reconciliation baselines exist for legacy-to-canonical transitions
+- [ ] No unresolved BUSINESS_LOGIC_CONFLICT items remain
 
 If any assertion is superseded, document with original claim, new evidence,
 and impact on this phase's decisions.
@@ -70,6 +73,7 @@ For each decision, document:
 - Business impact if decision is wrong
 - Technical risk (what could break)
 - Data preservation risk (what data could be lost or made inaccessible)
+- Business-logic alignment status (matches current rule / needs owner update)
 - Rollback complexity (trivial / moderate / difficult / irreversible)
 - Confidence level [XX%]
 - Blocking dependencies (what must happen first)
@@ -94,6 +98,7 @@ TIER A: Safety & Observability (zero risk)
 - Add feature flags or kill switches
 - Validate current state matches Phase 2 findings
 - Capture reconciliation baselines for legacy vs canonical data paths
+- Run owner true/false business-logic confirmation before Tier B
 
 TIER B: Low-Risk Fixes (easily reversible)
 - Fix RLS policy gaps (add missing deleted_at filters)
@@ -142,6 +147,8 @@ Think carefully about ordering:
 - Irreversible actions must have a backup step in Tier A
 - No decision at less than 70% confidence without flagging it for human review
 - No REMOVE decision without explicit reconciliation evidence for beta data
+- No REMOVE decision without explicit business-logic owner confirmation
+- If business-logic-policy.md is unclear for a decision, STOP and request immediate clarification
 </constraints>
 
 <output_format>

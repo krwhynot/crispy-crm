@@ -30,8 +30,11 @@ Restructured from 7 phases to 4 phases for deeper analysis per phase.
 - Use `supabase-postgres-best-practices` as the audit lens
 - Every claim requires evidence and confidence level
 - Multiple-choice questions for ambiguous decisions
+- Include a true/false business-logic confirmation set before Tier D removals
+- Treat full business-logic review as equal priority to database/schema changes
 - Hybrid context: read prior reports + verify critical assertions
 - Beta-data safety first: no destructive recommendation without backup, rollback, and reconciliation evidence
+- Tier D removals require a 10-day no-use window + explicit owner signoff + dependency checks
 
 ## File Map
 
@@ -41,6 +44,9 @@ Restructured from 7 phases to 4 phases for deeper analysis per phase.
 | 2 | `phase-2-deep-analysis_prompt.md` | `phase-2-report.md` |
 | 3 | `phase-3-decisions_prompt.md` | `phase-3-report.md` |
 | 4 | `phase-4-signoff_prompt.md` | `phase-4-report.md` |
+
+Business logic source of truth:
+- `business-logic-policy.md`
 
 All prompt/report paths above are relative to this subfolder:
 `docs/audits/full-db-audit-phases/opus-4-6-prompts/`

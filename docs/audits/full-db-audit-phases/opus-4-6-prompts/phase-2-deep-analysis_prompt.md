@@ -20,24 +20,27 @@ Track C: Operations health (cron jobs, Edge Functions, runtime paths)
 
 These tracks are combined because drift causes dependency breaks which
 cause operational failures. Analyzing them separately misses the causal chains.
+Business-logic verification is equal priority to database drift analysis.
 </context>
 
 <pre_work>
 Before starting analysis:
 1. Read docs/audits/full-db-audit-phases/opus-4-6-prompts/phase-1-report.md completely
 2. Read docs/audits/full-db-audit-phases/opus-4-6-prompts/README.md
-3. Verify these critical assertions from Phase 1 (mark Confirmed or Superseded):
+3. Read docs/audits/full-db-audit-phases/opus-4-6-prompts/business-logic-policy.md
+4. Verify these critical assertions from Phase 1 (mark Confirmed or Superseded):
 
 CRITICAL ASSERTIONS (must verify against live databases):
 - [ ] Tasks are stored in `activities` table using STI (activity_type = 'task')
 - [ ] `tasks_deprecated` table has been dropped in cloud
 - [ ] `entity_timeline` is a VIEW fed only by the `activities` table
-- [ ] 67-migration gap exists between local and cloud
-- [ ] `capture-dashboard-snapshots` Edge Function is NOT deployed
-- [ ] `daily-digest` Edge Function returns 401
-- [ ] 11 RLS policies missing `deleted_at IS NULL` filter
-- [ ] 2 cron jobs running but calling failing endpoints
+- [ ] Migration parity/drift status between local and cloud is verified (do not assume a gap)
+- [ ] `capture-dashboard-snapshots` Edge Function deployment and runtime health are verified
+- [ ] `daily-digest` status is verified against business logic scope (deferred for MVP unless owner changes scope)
+- [ ] RLS soft-delete gap claims are validated; mark N/A where target tables do not have `deleted_at`
+- [ ] Cron jobs are verified end-to-end with current scope labels (healthy / failing / deferred)
 - [ ] Data preservation risks are identified for any legacy object candidates
+- [ ] Business-logic-policy.md is current and owner-reviewed this month
 
 If any assertion is superseded by new evidence, document the change with:
 - Original claim (Phase 1, date)
@@ -76,11 +79,12 @@ For each drift finding:
 - Assess deployment risk (what happens if local is pushed to cloud as-is?)
 - Assess rollback risk (what happens if we need to revert?)
 - Assess data preservation risk (what data could be lost, hidden, or orphaned?)
+- Assess business-logic risk (what expected workflow/rule may behave differently)
 
-Think about the 67-migration gap specifically:
-- What do those 67 migrations contain?
+Think about migration drift specifically (if any):
+- What migrations or runtime-only changes are out of sync?
 - Are they safe to apply to cloud in sequence?
-- Are there any migrations that conflict or depend on manual steps?
+- Are there migrations that conflict or depend on manual steps?
 - Is there a "point of no return" migration in the sequence?
 
 TRACK B: DEPENDENCY MAPPING
@@ -122,6 +126,7 @@ After completing all three tracks, synthesize:
 - What is the correct ORDER of fixes? (dependency-aware sequencing)
 - Are there circular dependencies that require a coordinated migration?
 - Which findings are blockers for safe beta-data cleanup?
+- Which findings contradict expected business logic and require owner confirmation?
 </instructions>
 
 <constraints>
@@ -131,6 +136,8 @@ After completing all three tracks, synthesize:
 - If you find a new risk not in Phase 1, add it to the risk register
   with a note: "NEW - discovered in Phase 2"
 - If a Phase 1 finding was wrong, mark it SUPERSEDED with explanation
+- Keep business-logic validation at parity with technical validation
+- If a finding conflicts business-logic-policy.md, label it BUSINESS_LOGIC_CONFLICT and request owner confirmation
 </constraints>
 
 <output_format>
@@ -184,8 +191,8 @@ BLAST RADIUS: For every removal candidate, think 3 levels deep:
   Level 3: Application code that queries any of the above
 
 PATTERN RECOGNITION: Look for systemic issues, not just individual bugs.
-If 11 RLS policies all have the same gap, that is a pattern suggesting
-the soft-delete filter was never part of the policy template.
+If multiple RLS policies share the same gap, treat that as a template-level
+pattern and explain why it happened.
 </reasoning_guidance>
 
 <question_rules>

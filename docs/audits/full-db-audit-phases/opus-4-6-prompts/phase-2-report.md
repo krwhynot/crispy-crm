@@ -7,6 +7,9 @@
 **Status:** COMPLETE
 **Overall Confidence:** [Confidence: 91%]
 
+> Historical snapshot note: this report reflects Phase 2 findings at the time it was produced.
+> Current owner-approved business logic and latest execution outcomes are in `business-logic-policy.md`, `phase-3-report.md`, and `phase-4-report.md`.
+
 ---
 
 ## 1) Phase 1 Assertion Verification

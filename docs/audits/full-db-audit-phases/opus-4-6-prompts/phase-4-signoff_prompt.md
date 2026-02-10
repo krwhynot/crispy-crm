@@ -16,6 +16,7 @@ Audit lens: supabase-postgres-best-practices skill
 Phase 4 is a verification and signoff phase. You are not discovering new
 findings. You are validating that the full picture is coherent, complete,
 and actionable. Think of this as a code review of the audit itself.
+Business-logic signoff is equal priority to database signoff.
 </context>
 
 <pre_work>
@@ -23,6 +24,7 @@ Read ALL prior reports in order:
 1. docs/audits/full-db-audit-phases/opus-4-6-prompts/phase-1-report.md
 2. docs/audits/full-db-audit-phases/opus-4-6-prompts/phase-2-report.md
 3. docs/audits/full-db-audit-phases/opus-4-6-prompts/phase-3-report.md
+4. docs/audits/full-db-audit-phases/opus-4-6-prompts/business-logic-policy.md
 
 CRITICAL ASSERTIONS (verify ALL of these):
 - [ ] Phase 1 environment access is still working
@@ -35,6 +37,8 @@ CRITICAL ASSERTIONS (verify ALL of these):
 - [ ] Risk register is cumulative (no items dropped between phases)
 - [ ] All SUPERSEDED findings are documented with reasoning
 - [ ] Data reconciliation evidence exists for any Tier D removal candidate
+- [ ] Full business-logic review is completed and owner-confirmed this month
+- [ ] business-logic-policy.md is up to date with latest owner answers and timestamped this month
 
 Mark each Confirmed or Failed. If any fail, document the gap.
 </pre_work>
@@ -86,6 +90,7 @@ Go Conditions (all must be true):
 - Dependency graph is complete (no known gaps)
 - All decisions are at >= 70% confidence
 - Tier D candidates have explicit data reconciliation signoff
+- Business-logic true/false checklist is completed and signed off this month
 
 No-Go Conditions (any one blocks):
 - Any P0 risk without a mitigation plan
@@ -118,6 +123,8 @@ For each item:
   Recommend re-running the relevant phase.
 - The final report should be self-contained enough that someone who
   has not read Phase 1-3 can understand the recommendations
+- Do not issue GO if business-logic signoff is missing or stale
+- If policy conflicts remain unresolved, issue NO-GO
 </constraints>
 
 <output_format>
