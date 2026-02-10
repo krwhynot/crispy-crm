@@ -248,6 +248,17 @@ export function PrincipalPipelineTable() {
                   getAriaSortValue={getAriaSortValue}
                   renderSortIcon={renderSortIcon}
                 />
+                <SortableTableHead
+                  field="completedTasks30d"
+                  label="Completed"
+                  tooltip="Tasks completed in last 30 days"
+                  currentSortField={sortField}
+                  onSort={handleSort}
+                  getAriaSortValue={getAriaSortValue}
+                  renderSortIcon={renderSortIcon}
+                  align="center"
+                  className="hidden lg:table-cell"
+                />
                 <TableHead className="max-w-[200px] lg:max-w-[280px]">Next Action</TableHead>
               </TableRow>
             </TableHeader>

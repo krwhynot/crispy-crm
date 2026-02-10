@@ -119,6 +119,22 @@ export const PipelineTableRow = memo(function PipelineTableRow({
         </div>
       </TableCell>
 
+      {/* Completed tasks (last 30 days) - hidden on mobile */}
+      <TableCell className="text-center hidden lg:table-cell">
+        {row.completedTasks30d > 0 ? (
+          <div className="flex flex-col items-center">
+            <span className="font-semibold">{row.completedTasks30d}</span>
+            {row.totalTasks30d > 0 && (
+              <span className="text-xs text-muted-foreground">
+                {Math.round((row.completedTasks30d / row.totalTasks30d) * 100)}%
+              </span>
+            )}
+          </div>
+        ) : (
+          <span className="text-muted-foreground">-</span>
+        )}
+      </TableCell>
+
       {/* Next action - truncate with tooltip for long text */}
       <TableCell className="max-w-[200px] lg:max-w-[280px]">
         {row.nextAction ? (

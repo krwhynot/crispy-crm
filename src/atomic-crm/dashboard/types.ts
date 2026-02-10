@@ -38,6 +38,8 @@ export interface PrincipalPipelineRow {
   activeLastWeek: number;
   momentum: Momentum;
   nextAction: string | null;
+  completedTasks30d: number;
+  totalTasks30d: number;
 }
 
 // Task Types
@@ -82,6 +84,8 @@ export interface PipelineSummaryRow {
   momentum: Momentum;
   next_action_summary: string | null;
   sales_id?: number;
+  completed_tasks_30d: number;
+  total_tasks_30d: number;
 }
 
 /**

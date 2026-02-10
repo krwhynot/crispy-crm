@@ -1,7 +1,13 @@
 import { useState, useCallback, useMemo, useTransition } from "react";
 import type { PrincipalPipelineRow, Momentum } from "./types";
 
-export type SortField = "name" | "totalPipeline" | "activeThisWeek" | "activeLastWeek" | "momentum";
+export type SortField =
+  | "name"
+  | "totalPipeline"
+  | "activeThisWeek"
+  | "activeLastWeek"
+  | "momentum"
+  | "completedTasks30d";
 export type SortDirection = "ascending" | "descending" | "none";
 
 interface UsePipelineTableStateOptions {
@@ -101,6 +107,9 @@ export function usePipelineTableState({ data }: UsePipelineTableStateOptions) {
           comparison = momentumOrder[a.momentum] - momentumOrder[b.momentum];
           break;
         }
+        case "completedTasks30d":
+          comparison = a.completedTasks30d - b.completedTasks30d;
+          break;
       }
 
       return sortDirection === "descending" ? -comparison : comparison;

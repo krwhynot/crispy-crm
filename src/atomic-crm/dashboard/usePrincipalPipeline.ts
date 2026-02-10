@@ -73,6 +73,8 @@ export function usePrincipalPipeline(filters?: { myPrincipalsOnly?: boolean }) {
       activeLastWeek: row.active_last_week,
       momentum: row.momentum as PrincipalPipelineRow["momentum"],
       nextAction: row.next_action_summary,
+      completedTasks30d: row.completed_tasks_30d,
+      totalTasks30d: row.total_tasks_30d,
     }));
   }, [rawSummary, salesId, filters?.myPrincipalsOnly]);
 
