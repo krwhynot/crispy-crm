@@ -6,12 +6,13 @@
 
 import React from "react";
 import { describe, test, expect } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { screen } from "@testing-library/react";
+import { renderWithAdminContext } from "@/tests/utils/render-admin";
 import { FormGrid } from "../FormGrid";
 
 describe("FormGrid", () => {
   test("renders children correctly", () => {
-    render(
+    renderWithAdminContext(
       <FormGrid>
         <div data-testid="child-1">Child 1</div>
         <div data-testid="child-2">Child 2</div>
@@ -23,7 +24,7 @@ describe("FormGrid", () => {
   });
 
   test("applies 2-column grid by default", () => {
-    render(
+    renderWithAdminContext(
       <FormGrid>
         <div>Child 1</div>
       </FormGrid>
@@ -38,7 +39,7 @@ describe("FormGrid", () => {
   });
 
   test("applies 4-column grid when columns={4}", () => {
-    render(
+    renderWithAdminContext(
       <FormGrid columns={4}>
         <div>Child 1</div>
       </FormGrid>
@@ -53,7 +54,7 @@ describe("FormGrid", () => {
   });
 
   test("applies gap utilities consistently", () => {
-    render(
+    renderWithAdminContext(
       <FormGrid>
         <div>Child</div>
       </FormGrid>
@@ -65,7 +66,7 @@ describe("FormGrid", () => {
   });
 
   test("supports custom className", () => {
-    render(
+    renderWithAdminContext(
       <FormGrid className="custom-class another-class">
         <div>Child</div>
       </FormGrid>
@@ -78,7 +79,7 @@ describe("FormGrid", () => {
   });
 
   test("merges custom className with default classes", () => {
-    render(
+    renderWithAdminContext(
       <FormGrid columns={4} className="border p-4">
         <div>Child</div>
       </FormGrid>

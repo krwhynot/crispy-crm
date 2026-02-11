@@ -34,7 +34,11 @@ export const OrganizationHierarchySection = (): JSX.Element => {
   );
 
   // Task 5: Query sibling organizations (other children of the same parent)
-  const { data: siblings, isLoading: siblingsLoading, error: siblingsError } = useGetList(
+  const {
+    data: siblings,
+    isLoading: siblingsLoading,
+    error: siblingsError,
+  } = useGetList(
     "organizations",
     {
       filter: {
@@ -51,11 +55,11 @@ export const OrganizationHierarchySection = (): JSX.Element => {
   // Task 5: Log sibling query errors (degrade gracefully)
   useEffect(() => {
     if (siblingsError) {
-      logger.warn('Failed to fetch sibling count for parent confirmation alert', {
+      logger.warn("Failed to fetch sibling count for parent confirmation alert", {
         parentOrgId,
         error: siblingsError instanceof Error ? siblingsError.message : String(siblingsError),
-        context: 'OrganizationHierarchySection',
-        note: 'Alert will show without sibling count - user experience not blocked',
+        context: "OrganizationHierarchySection",
+        note: "Alert will show without sibling count - user experience not blocked",
       });
     }
   }, [siblingsError, parentOrgId]);
@@ -121,7 +125,9 @@ export const OrganizationHierarchySection = (): JSX.Element => {
             {siblingsLoading ? (
               <span className="text-muted-foreground">Loading branch count...</span>
             ) : siblingsError ? null : siblingCount > 0 ? (
-              <span>Currently has {siblingCount} other branch{siblingCount !== 1 ? 'es' : ''}. </span>
+              <span>
+                Currently has {siblingCount} other branch{siblingCount !== 1 ? "es" : ""}.{" "}
+              </span>
             ) : (
               <span>This will be the first branch. </span>
             )}
@@ -145,38 +151,39 @@ export const OrganizationHierarchySection = (): JSX.Element => {
         </Alert>
       )}
       <CollapsibleSection title="Organization Hierarchy">
-      <div className="space-y-4">
-        <FormFieldWrapper name="parent_organization_id">
-          <ParentOrganizationInput />
-        </FormFieldWrapper>
-        <CompactFormRow>
-          <FormFieldWrapper name="org_scope">
-            <SelectInput
-              source="org_scope"
-              label="Organization Level"
-              choices={ORG_SCOPE_CHOICES}
-              helperText="National = brand/HQ, Regional = operating company"
-              emptyText="Select level"
-              parse={(v) => v || null}
-            />
+        <div className="space-y-4">
+          <FormFieldWrapper name="parent_organization_id">
+            <ParentOrganizationInput />
           </FormFieldWrapper>
-        <div className="space-y-1">
-          <FormFieldWrapper name="is_operating_entity">
-            <BooleanInput
-              source="is_operating_entity"
-              label="This location processes orders"
-              helperText={false}
-            />
-          </FormFieldWrapper>
-          <p className="text-sm text-muted-foreground ml-11">
-            <strong>ON:</strong> Orders and invoices happen here (e.g., Sysco Chicago)
-            <br />
-            <strong>OFF:</strong> Corporate brand or holding company only (e.g., Sysco Corporation)
-          </p>
+          <CompactFormRow>
+            <FormFieldWrapper name="org_scope">
+              <SelectInput
+                source="org_scope"
+                label="Organization Level"
+                choices={ORG_SCOPE_CHOICES}
+                helperText="National = brand/HQ, Regional = operating company"
+                emptyText="Select level"
+                parse={(v) => v || null}
+              />
+            </FormFieldWrapper>
+            <div className="space-y-1">
+              <FormFieldWrapper name="is_operating_entity">
+                <BooleanInput
+                  source="is_operating_entity"
+                  label="This location processes orders"
+                  helperText={false}
+                />
+              </FormFieldWrapper>
+              <p className="text-sm text-muted-foreground ml-11">
+                <strong>ON:</strong> Orders and invoices happen here (e.g., Sysco Chicago)
+                <br />
+                <strong>OFF:</strong> Corporate brand or holding company only (e.g., Sysco
+                Corporation)
+              </p>
+            </div>
+          </CompactFormRow>
         </div>
-        </CompactFormRow>
-      </div>
-    </CollapsibleSection>
+      </CollapsibleSection>
     </>
   );
 };

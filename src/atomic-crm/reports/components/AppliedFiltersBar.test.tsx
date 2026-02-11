@@ -1,5 +1,6 @@
 // src/atomic-crm/reports/components/AppliedFiltersBar.test.tsx
-import { render, screen } from "@testing-library/react";
+import { screen } from "@testing-library/react";
+import { renderWithAdminContext } from "@/tests/utils/render-admin";
 import userEvent from "@testing-library/user-event";
 import { AppliedFiltersBar } from "./AppliedFiltersBar";
 
@@ -10,7 +11,7 @@ describe("AppliedFiltersBar", () => {
   ];
 
   it("renders nothing when hasActiveFilters is false", () => {
-    const { container } = render(
+    const { container } = renderWithAdminContext(
       <AppliedFiltersBar filters={createFilters()} onResetAll={vi.fn()} hasActiveFilters={false} />
     );
 
@@ -18,7 +19,7 @@ describe("AppliedFiltersBar", () => {
   });
 
   it("renders nothing when filters array is empty", () => {
-    const { container } = render(
+    const { container } = renderWithAdminContext(
       <AppliedFiltersBar filters={[]} onResetAll={vi.fn()} hasActiveFilters={true} />
     );
 
@@ -26,7 +27,7 @@ describe("AppliedFiltersBar", () => {
   });
 
   it("renders all filter chips when hasActiveFilters is true", () => {
-    render(
+    renderWithAdminContext(
       <AppliedFiltersBar filters={createFilters()} onResetAll={vi.fn()} hasActiveFilters={true} />
     );
 
@@ -37,7 +38,7 @@ describe("AppliedFiltersBar", () => {
   });
 
   it("renders Reset All button", () => {
-    render(
+    renderWithAdminContext(
       <AppliedFiltersBar filters={createFilters()} onResetAll={vi.fn()} hasActiveFilters={true} />
     );
 
@@ -48,7 +49,7 @@ describe("AppliedFiltersBar", () => {
     const onResetAll = vi.fn();
     const user = userEvent.setup();
 
-    render(
+    renderWithAdminContext(
       <AppliedFiltersBar
         filters={createFilters()}
         onResetAll={onResetAll}
@@ -70,7 +71,7 @@ describe("AppliedFiltersBar", () => {
     ];
     const user = userEvent.setup();
 
-    render(<AppliedFiltersBar filters={filters} onResetAll={vi.fn()} hasActiveFilters={true} />);
+    renderWithAdminContext(<AppliedFiltersBar filters={filters} onResetAll={vi.fn()} hasActiveFilters={true} />);
 
     // Click remove on first filter
     const removeButtons = screen.getAllByRole("button", {
@@ -83,7 +84,7 @@ describe("AppliedFiltersBar", () => {
   });
 
   it("has role=list on filters container", () => {
-    render(
+    renderWithAdminContext(
       <AppliedFiltersBar filters={createFilters()} onResetAll={vi.fn()} hasActiveFilters={true} />
     );
 

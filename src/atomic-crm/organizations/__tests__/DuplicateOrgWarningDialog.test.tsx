@@ -9,7 +9,8 @@
  * - Calls onProceed when "Create Anyway" clicked
  * - Shows loading state when isLoading is true
  */
-import { render, screen } from "@testing-library/react";
+import { screen } from "@testing-library/react";
+import { renderWithAdminContext } from "@/tests/utils/render-admin";
 import userEvent from "@testing-library/user-event";
 import { vi, describe, it, expect } from "vitest";
 import { DuplicateOrgWarningDialog } from "../DuplicateOrgWarningDialog";
@@ -26,20 +27,20 @@ describe("DuplicateOrgWarningDialog", () => {
   };
 
   it("renders when open is true", () => {
-    render(<DuplicateOrgWarningDialog {...defaultProps} />);
+    renderWithAdminContext(<DuplicateOrgWarningDialog {...defaultProps} />);
 
     expect(screen.getByText(/Potential Duplicate Organization/i)).toBeInTheDocument();
     expect(screen.getByText(/Acme Corp/)).toBeInTheDocument();
   });
 
   it("does not render when open is false", () => {
-    render(<DuplicateOrgWarningDialog {...defaultProps} open={false} />);
+    renderWithAdminContext(<DuplicateOrgWarningDialog {...defaultProps} open={false} />);
 
     expect(screen.queryByText(/Potential Duplicate Organization/i)).not.toBeInTheDocument();
   });
 
   it("displays the duplicate organization name", () => {
-    render(<DuplicateOrgWarningDialog {...defaultProps} duplicateName="Test Company" />);
+    renderWithAdminContext(<DuplicateOrgWarningDialog {...defaultProps} duplicateName="Test Company" />);
 
     expect(screen.getByText(/Test Company/)).toBeInTheDocument();
     expect(screen.getByText(/already exists in the system/i)).toBeInTheDocument();
@@ -49,7 +50,7 @@ describe("DuplicateOrgWarningDialog", () => {
     const user = userEvent.setup();
     const onCancel = vi.fn();
 
-    render(<DuplicateOrgWarningDialog {...defaultProps} onCancel={onCancel} />);
+    renderWithAdminContext(<DuplicateOrgWarningDialog {...defaultProps} onCancel={onCancel} />);
 
     await user.click(screen.getByRole("button", { name: /Change Name/i }));
 
@@ -61,7 +62,7 @@ describe("DuplicateOrgWarningDialog", () => {
     const user = userEvent.setup();
     const onProceed = vi.fn();
 
-    render(<DuplicateOrgWarningDialog {...defaultProps} onProceed={onProceed} />);
+    renderWithAdminContext(<DuplicateOrgWarningDialog {...defaultProps} onProceed={onProceed} />);
 
     await user.click(screen.getByRole("button", { name: /Create Anyway/i }));
 
@@ -69,21 +70,21 @@ describe("DuplicateOrgWarningDialog", () => {
   });
 
   it("shows 'Creating...' when isLoading is true", () => {
-    render(<DuplicateOrgWarningDialog {...defaultProps} isLoading={true} />);
+    renderWithAdminContext(<DuplicateOrgWarningDialog {...defaultProps} isLoading={true} />);
 
     expect(screen.getByRole("button", { name: /Creating.../i })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /Creating.../i })).toBeDisabled();
   });
 
   it("disables 'Create Anyway' button when loading", () => {
-    render(<DuplicateOrgWarningDialog {...defaultProps} isLoading={true} />);
+    renderWithAdminContext(<DuplicateOrgWarningDialog {...defaultProps} isLoading={true} />);
 
     const proceedButton = screen.getByRole("button", { name: /Creating.../i });
     expect(proceedButton).toBeDisabled();
   });
 
   it("shows the explanation text about options", () => {
-    render(<DuplicateOrgWarningDialog {...defaultProps} />);
+    renderWithAdminContext(<DuplicateOrgWarningDialog {...defaultProps} />);
 
     expect(
       screen.getByText(
@@ -93,7 +94,7 @@ describe("DuplicateOrgWarningDialog", () => {
   });
 
   it("renders 'View Existing' button when onViewExisting and duplicateOrgId are provided", () => {
-    render(<DuplicateOrgWarningDialog {...defaultProps} />);
+    renderWithAdminContext(<DuplicateOrgWarningDialog {...defaultProps} />);
 
     expect(screen.getByRole("button", { name: /View Existing/i })).toBeInTheDocument();
   });
@@ -102,7 +103,7 @@ describe("DuplicateOrgWarningDialog", () => {
     const user = userEvent.setup();
     const onViewExisting = vi.fn();
 
-    render(<DuplicateOrgWarningDialog {...defaultProps} onViewExisting={onViewExisting} />);
+    renderWithAdminContext(<DuplicateOrgWarningDialog {...defaultProps} onViewExisting={onViewExisting} />);
 
     await user.click(screen.getByRole("button", { name: /View Existing/i }));
 
@@ -110,13 +111,13 @@ describe("DuplicateOrgWarningDialog", () => {
   });
 
   it("does not render 'View Existing' button when onViewExisting is not provided", () => {
-    render(<DuplicateOrgWarningDialog {...defaultProps} onViewExisting={undefined} />);
+    renderWithAdminContext(<DuplicateOrgWarningDialog {...defaultProps} onViewExisting={undefined} />);
 
     expect(screen.queryByRole("button", { name: /View Existing/i })).not.toBeInTheDocument();
   });
 
   it("does not render 'View Existing' button when duplicateOrgId is not provided", () => {
-    render(<DuplicateOrgWarningDialog {...defaultProps} duplicateOrgId={undefined} />);
+    renderWithAdminContext(<DuplicateOrgWarningDialog {...defaultProps} duplicateOrgId={undefined} />);
 
     expect(screen.queryByRole("button", { name: /View Existing/i })).not.toBeInTheDocument();
   });

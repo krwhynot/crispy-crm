@@ -11,7 +11,7 @@ import { productSchema, PRODUCT_STATUSES, PRODUCT_CATEGORIES } from "../../valid
 
 describe("ProductCreate", () => {
   beforeEach(() => {
-    vi.clearAllMocks();
+    vi.resetAllMocks();
   });
 
   describe("Transform Logic and Default Values", () => {

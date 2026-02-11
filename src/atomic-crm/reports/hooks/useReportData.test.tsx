@@ -25,7 +25,7 @@ vi.mock("react-admin", async () => {
 
 describe("useReportData", () => {
   beforeEach(() => {
-    vi.clearAllMocks();
+    vi.resetAllMocks();
     mockGetList.mockResolvedValue({ data: [], total: 0 });
   });
 

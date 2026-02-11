@@ -56,7 +56,9 @@ function buildTree(
     const node: TreeNode = {
       id,
       name: item.name,
-      parent_organization_id: item.parent_organization_id ? String(item.parent_organization_id) : null,
+      parent_organization_id: item.parent_organization_id
+        ? String(item.parent_organization_id)
+        : null,
       children: [],
       level: 0,
       isOrphaned: false,
@@ -129,24 +131,30 @@ export function HierarchicalSelectInput({
     ...(isSearching && { q: debouncedSearch }),
   };
 
-  interface OrgRecord { id: number; name: string; parent_organization_id: number | null }
+  interface OrgRecord {
+    id: number;
+    name: string;
+    parent_organization_id: number | null;
+  }
 
   const {
     data = [],
     isLoading,
     isFetching,
     error,
-  } = useGetList<OrgRecord>(resource, {
-    pagination: { page: 1, perPage: isSearching ? 50 : 10 },
-    sort: isSearching
-      ? { field: "name", order: "ASC" }
-      : { field: "updated_at", order: "DESC" },
-    filter: effectiveFilter,
-  }, {
-    enabled: open || !!field.value,
-    staleTime: DEFAULT_STALE_TIME_MS,
-    placeholderData: (prev) => prev,
-  });
+  } = useGetList<OrgRecord>(
+    resource,
+    {
+      pagination: { page: 1, perPage: isSearching ? 50 : 10 },
+      sort: isSearching ? { field: "name", order: "ASC" } : { field: "updated_at", order: "DESC" },
+      filter: effectiveFilter,
+    },
+    {
+      enabled: open || !!field.value,
+      staleTime: DEFAULT_STALE_TIME_MS,
+      placeholderData: (prev) => prev,
+    }
+  );
 
   const clearSearch = () => {
     setSearchTerm("");
@@ -170,32 +178,28 @@ export function HierarchicalSelectInput({
   // All nodes visible: tree nodes (indented) + orphaned nodes (parent not in current page).
   // With partial data (10 recents or 50 search results), most nodes' parents won't be
   // in the dataset. These appear as flat (level 0) items — not hidden.
-  const filteredNodes = useMemo(
-    () => [...flatNodes, ...orphanedNodes],
-    [flatNodes, orphanedNodes]
-  );
+  const filteredNodes = useMemo(() => [...flatNodes, ...orphanedNodes], [flatNodes, orphanedNodes]);
 
   // Selected value hydration: when the selected parent isn't in the current page
   // (e.g., "Zebra Corp" when sorted A-Z and only first 50 loaded), fetch it separately.
   const selectedId = field.value ? Number(field.value) : undefined;
-  const isSelectedInData = selectedId != null
-    ? data.some((item) => item.id === selectedId)
-    : true;
+  const isSelectedInData = selectedId != null ? data.some((item) => item.id === selectedId) : true;
 
-  const { data: selectedRecord } = useGetOne<{ id: number; name: string; parent_organization_id: number | null }>(
-    resource,
-    { id: selectedId! },
-    { enabled: !!selectedId && !isSelectedInData }
-  );
+  const { data: selectedRecord } = useGetOne<{
+    id: number;
+    name: string;
+    parent_organization_id: number | null;
+  }>(resource, { id: selectedId! }, { enabled: !!selectedId && !isSelectedInData });
 
   // Resolve display name: check tree nodes, then raw data, then useGetOne fallback
   const selectedNode = flatNodes
     .concat(orphanedNodes)
     .find((node) => String(node.id) === String(field.value));
 
-  const selectedName = selectedNode?.name
-    ?? data.find((item) => String(item.id) === String(field.value))?.name
-    ?? selectedRecord?.name;
+  const selectedName =
+    selectedNode?.name ??
+    data.find((item) => String(item.id) === String(field.value))?.name ??
+    selectedRecord?.name;
 
   const displayValue = field.value
     ? selectedName || `Organization #${field.value} (restricted)`
@@ -226,10 +230,13 @@ export function HierarchicalSelectInput({
     <div className="space-y-2">
       {label && <span className="text-sm font-medium text-foreground">{label}</span>}
 
-      <Popover open={open} onOpenChange={(isOpen) => {
-        setOpen(isOpen);
-        if (!isOpen) clearSearch();
-      }}>
+      <Popover
+        open={open}
+        onOpenChange={(isOpen) => {
+          setOpen(isOpen);
+          if (!isOpen) clearSearch();
+        }}
+      >
         <PopoverTrigger asChild>
           <Button
             variant="outline"
@@ -256,17 +263,17 @@ export function HierarchicalSelectInput({
             />
             <CommandList>
               {/* Search status — shown inline above results */}
-              {searchTerm.trim().length > 0 && searchTerm.trim().length < AUTOCOMPLETE_MIN_CHARS && (
-                <div className="py-2 px-3 text-xs text-muted-foreground">
-                  Type {AUTOCOMPLETE_MIN_CHARS - searchTerm.trim().length} more character(s) to search
-                </div>
-              )}
+              {searchTerm.trim().length > 0 &&
+                searchTerm.trim().length < AUTOCOMPLETE_MIN_CHARS && (
+                  <div className="py-2 px-3 text-xs text-muted-foreground">
+                    Type {AUTOCOMPLETE_MIN_CHARS - searchTerm.trim().length} more character(s) to
+                    search
+                  </div>
+                )}
 
               {/* "Searching..." when debounce pending OR fetch in flight */}
               {isSearching && (searchTerm !== debouncedSearch || isFetching) && (
-                <div className="py-2 px-3 text-xs text-muted-foreground">
-                  Searching...
-                </div>
+                <div className="py-2 px-3 text-xs text-muted-foreground">Searching...</div>
               )}
 
               {/* Empty state — only when list is truly empty after search completes */}
@@ -307,7 +314,6 @@ export function HierarchicalSelectInput({
                   ))}
                 </CommandGroup>
               )}
-
             </CommandList>
           </Command>
         </PopoverContent>

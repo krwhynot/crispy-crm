@@ -1,4 +1,5 @@
-import { render, screen, waitFor, fireEvent } from "@testing-library/react";
+import { screen, waitFor, fireEvent } from "@testing-library/react";
+import { renderWithAdminContext } from "@/tests/utils/render-admin";
 import userEvent from "@testing-library/user-event";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { MemoryRouter } from "react-router-dom";
@@ -88,7 +89,7 @@ describe("PrincipalPipelineTable", () => {
   });
 
   it("should render table headers correctly", () => {
-    render(
+    renderWithAdminContext(
       <MemoryRouter>
         <PrincipalPipelineTable />
       </MemoryRouter>
@@ -104,7 +105,7 @@ describe("PrincipalPipelineTable", () => {
   });
 
   it("should apply premium hover effects class", () => {
-    const { container } = render(
+    const { container } = renderWithAdminContext(
       <MemoryRouter>
         <PrincipalPipelineTable />
       </MemoryRouter>
@@ -121,7 +122,7 @@ describe("PrincipalPipelineTable", () => {
       error: null,
     });
 
-    render(
+    renderWithAdminContext(
       <MemoryRouter>
         <PrincipalPipelineTable />
       </MemoryRouter>
@@ -141,7 +142,7 @@ describe("PrincipalPipelineTable", () => {
         error: null,
       });
 
-      render(
+      renderWithAdminContext(
         <MemoryRouter>
           <PrincipalPipelineTable />
         </MemoryRouter>
@@ -163,7 +164,7 @@ describe("PrincipalPipelineTable", () => {
         error: null,
       });
 
-      render(
+      renderWithAdminContext(
         <MemoryRouter>
           <PrincipalPipelineTable />
         </MemoryRouter>
@@ -187,7 +188,7 @@ describe("PrincipalPipelineTable", () => {
         error: null,
       });
 
-      render(
+      renderWithAdminContext(
         <MemoryRouter>
           <PrincipalPipelineTable />
         </MemoryRouter>
@@ -220,7 +221,7 @@ describe("PrincipalPipelineTable", () => {
         error: null,
       });
 
-      render(
+      renderWithAdminContext(
         <MemoryRouter>
           <PrincipalPipelineTable />
         </MemoryRouter>
@@ -236,7 +237,7 @@ describe("PrincipalPipelineTable", () => {
         error: null,
       });
 
-      render(
+      renderWithAdminContext(
         <MemoryRouter>
           <PrincipalPipelineTable />
         </MemoryRouter>
@@ -266,7 +267,7 @@ describe("PrincipalPipelineTable", () => {
         error: null,
       });
 
-      render(
+      renderWithAdminContext(
         <MemoryRouter>
           <PrincipalPipelineTable />
         </MemoryRouter>
@@ -291,7 +292,7 @@ describe("PrincipalPipelineTable", () => {
         error: null,
       });
 
-      render(
+      renderWithAdminContext(
         <MemoryRouter>
           <PrincipalPipelineTable />
         </MemoryRouter>
@@ -319,7 +320,7 @@ describe("PrincipalPipelineTable", () => {
         error: null,
       });
 
-      render(
+      renderWithAdminContext(
         <MemoryRouter>
           <PrincipalPipelineTable />
         </MemoryRouter>

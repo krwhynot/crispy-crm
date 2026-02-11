@@ -1,5 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { screen, fireEvent, waitFor } from "@testing-library/react";
+import { renderWithAdminContext } from "@/tests/utils/render-admin";
 import type { TaskItem } from "../types";
 import type * as ReactAdmin from "react-admin";
 
@@ -95,7 +96,7 @@ describe("TaskCompleteSheet", () => {
   const mockOnRefresh = vi.fn();
 
   beforeEach(() => {
-    vi.clearAllMocks();
+    vi.resetAllMocks();
     mockCompleteTask.mockResolvedValue(undefined);
     mockNotify.mockClear();
 
@@ -117,7 +118,7 @@ describe("TaskCompleteSheet", () => {
 
   describe("Rendering", () => {
     it("renders nothing when closed", () => {
-      render(
+      renderWithAdminContext(
         <TaskCompleteSheet open={false} onOpenChange={mockOnOpenChange} onRefresh={mockOnRefresh} />
       );
 
@@ -125,7 +126,7 @@ describe("TaskCompleteSheet", () => {
     });
 
     it("renders task list when open", () => {
-      render(
+      renderWithAdminContext(
         <TaskCompleteSheet open={true} onOpenChange={mockOnOpenChange} onRefresh={mockOnRefresh} />
       );
 
@@ -136,7 +137,7 @@ describe("TaskCompleteSheet", () => {
     });
 
     it("shows overdue badge when there are overdue tasks", () => {
-      render(
+      renderWithAdminContext(
         <TaskCompleteSheet open={true} onOpenChange={mockOnOpenChange} onRefresh={mockOnRefresh} />
       );
 
@@ -144,7 +145,7 @@ describe("TaskCompleteSheet", () => {
     });
 
     it("shows remaining task count", () => {
-      render(
+      renderWithAdminContext(
         <TaskCompleteSheet open={true} onOpenChange={mockOnOpenChange} onRefresh={mockOnRefresh} />
       );
 
@@ -154,7 +155,7 @@ describe("TaskCompleteSheet", () => {
 
   describe("Accessibility", () => {
     it("has proper aria attributes on sheet", () => {
-      render(
+      renderWithAdminContext(
         <TaskCompleteSheet open={true} onOpenChange={mockOnOpenChange} onRefresh={mockOnRefresh} />
       );
 
@@ -166,7 +167,7 @@ describe("TaskCompleteSheet", () => {
     });
 
     it("complete buttons have descriptive aria-labels", () => {
-      render(
+      renderWithAdminContext(
         <TaskCompleteSheet open={true} onOpenChange={mockOnOpenChange} onRefresh={mockOnRefresh} />
       );
 
@@ -179,7 +180,7 @@ describe("TaskCompleteSheet", () => {
     });
 
     it("complete buttons meet minimum touch target size (44px)", () => {
-      render(
+      renderWithAdminContext(
         <TaskCompleteSheet open={true} onOpenChange={mockOnOpenChange} onRefresh={mockOnRefresh} />
       );
 
@@ -200,7 +201,7 @@ describe("TaskCompleteSheet", () => {
 
   describe("Interactions", () => {
     it("calls completeTask when complete button is clicked", async () => {
-      render(
+      renderWithAdminContext(
         <TaskCompleteSheet open={true} onOpenChange={mockOnOpenChange} onRefresh={mockOnRefresh} />
       );
 
@@ -213,7 +214,7 @@ describe("TaskCompleteSheet", () => {
     });
 
     it("calls onRefresh after successful completion", async () => {
-      render(
+      renderWithAdminContext(
         <TaskCompleteSheet open={true} onOpenChange={mockOnOpenChange} onRefresh={mockOnRefresh} />
       );
 
@@ -228,7 +229,7 @@ describe("TaskCompleteSheet", () => {
 
   describe("Task Sorting", () => {
     it("shows overdue tasks first", () => {
-      render(
+      renderWithAdminContext(
         <TaskCompleteSheet open={true} onOpenChange={mockOnOpenChange} onRefresh={mockOnRefresh} />
       );
 
@@ -246,7 +247,7 @@ describe("TaskCompleteSheet", () => {
 
   describe("Priority Display", () => {
     it("shows priority badges for all tasks", () => {
-      render(
+      renderWithAdminContext(
         <TaskCompleteSheet open={true} onOpenChange={mockOnOpenChange} onRefresh={mockOnRefresh} />
       );
 
@@ -258,7 +259,7 @@ describe("TaskCompleteSheet", () => {
 
   describe("Visual Styling", () => {
     it("uses semantic color classes (no hex codes)", () => {
-      const { container } = render(
+      const { container } = renderWithAdminContext(
         <TaskCompleteSheet open={true} onOpenChange={mockOnOpenChange} onRefresh={mockOnRefresh} />
       );
 
@@ -293,7 +294,7 @@ describe("TaskCompleteSheet", () => {
         calculateStatus: vi.fn(),
       });
 
-      render(
+      renderWithAdminContext(
         <TaskCompleteSheet open={true} onOpenChange={mockOnOpenChange} onRefresh={mockOnRefresh} />
       );
 
@@ -318,7 +319,7 @@ describe("TaskCompleteSheet", () => {
         calculateStatus: vi.fn(),
       });
 
-      render(
+      renderWithAdminContext(
         <TaskCompleteSheet open={true} onOpenChange={mockOnOpenChange} onRefresh={mockOnRefresh} />
       );
 
@@ -342,7 +343,7 @@ describe("TaskCompleteSheet", () => {
         calculateStatus: vi.fn(),
       });
 
-      render(
+      renderWithAdminContext(
         <TaskCompleteSheet open={true} onOpenChange={mockOnOpenChange} onRefresh={mockOnRefresh} />
       );
 

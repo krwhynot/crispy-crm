@@ -184,69 +184,79 @@ describe("CacheManager", () => {
   });
 
   describe("TTL expiration", () => {
-    it("should expire entries after TTL", async () => {
-      // Use short TTL for testing
+    let mockNow: ReturnType<typeof vi.spyOn>;
+    let currentTime: number;
+
+    function advanceTime(ms: number) {
+      currentTime += ms;
+      mockNow.mockReturnValue(currentTime);
+      // Flush lru-cache's internal ttlResolution setTimeout that clears cachedNow
+      vi.advanceTimersByTime(2);
+    }
+
+    beforeEach(() => {
+      // Only fake setTimeout/clearTimeout; leave performance.now on the real
+      // object so vi.spyOn controls what lru-cache sees via its captured ref.
+      vi.useFakeTimers({ toFake: ["setTimeout", "clearTimeout"] });
+      currentTime = 1000;
+      mockNow = vi.spyOn(performance, "now").mockReturnValue(currentTime);
+    });
+
+    afterEach(() => {
+      mockNow.mockRestore();
+      vi.useRealTimers();
+    });
+
+    it("should expire entries after TTL", () => {
       const shortCache = new CacheManager({ max: 5, ttl: 50 });
       shortCache.set("key", "value");
       expect(shortCache.has("key")).toBe(true);
 
-      // Wait for TTL to expire
-      await new Promise((resolve) => setTimeout(resolve, 60));
+      advanceTime(60);
 
-      // Entry should be expired
       expect(shortCache.has("key")).toBe(false);
       expect(shortCache.get("key")).toBeUndefined();
       shortCache.clear();
     });
 
-    it("should keep entries within TTL", async () => {
-      // Use short TTL for testing
+    it("should keep entries within TTL", () => {
       const shortCache = new CacheManager({ max: 5, ttl: 100 });
       shortCache.set("key", "value");
       expect(shortCache.has("key")).toBe(true);
 
-      // Wait less than TTL
-      await new Promise((resolve) => setTimeout(resolve, 30));
+      advanceTime(30);
 
-      // Entry should still exist
       expect(shortCache.has("key")).toBe(true);
       expect(shortCache.get("key")).toBe("value");
       shortCache.clear();
     });
 
-    it("should support custom TTL per entry", async () => {
-      // Use short TTLs for testing
+    it("should support custom TTL per entry", () => {
       const shortCache = new CacheManager({ max: 5, ttl: 50 });
 
-      // Set with custom TTL of 100ms
       shortCache.set("key1", "value1", { ttl: 100 });
       shortCache.set("key2", "value2"); // Uses default 50ms
 
       expect(shortCache.has("key1")).toBe(true);
       expect(shortCache.has("key2")).toBe(true);
 
-      // Wait past default TTL but before custom TTL
-      await new Promise((resolve) => setTimeout(resolve, 70));
+      advanceTime(70);
 
-      // key2 should be expired, key1 should still exist
       expect(shortCache.has("key1")).toBe(true);
       expect(shortCache.has("key2")).toBe(false);
       shortCache.clear();
     });
 
-    it("should reset TTL on get (updateAgeOnGet)", async () => {
-      // Use short TTL for testing
+    it("should reset TTL on get (updateAgeOnGet)", () => {
       const shortCache = new CacheManager({ max: 5, ttl: 80 });
       shortCache.set("key", "value");
 
-      // Wait close to TTL
-      await new Promise((resolve) => setTimeout(resolve, 60));
+      advanceTime(60);
 
-      // Access the entry (should reset TTL)
+      // Access the entry (should reset TTL via updateAgeOnGet)
       shortCache.get("key");
 
-      // Wait past original TTL
-      await new Promise((resolve) => setTimeout(resolve, 40));
+      advanceTime(40);
 
       // Entry should still exist (TTL was reset on get)
       expect(shortCache.has("key")).toBe(true);
@@ -282,15 +292,19 @@ describe("CacheManager", () => {
       smallCache.clear();
     });
 
-    it("should allow custom ttl configuration", async () => {
+    it("should allow custom ttl configuration", () => {
+      vi.useFakeTimers({ toFake: ["setTimeout", "clearTimeout"] });
+      const mockNow = vi.spyOn(performance, "now").mockReturnValue(1000);
       const shortTtlCache = new CacheManager({ ttl: 50 });
       shortTtlCache.set("key", "value");
 
-      // Wait for TTL to expire
-      await new Promise((resolve) => setTimeout(resolve, 60));
+      mockNow.mockReturnValue(1060);
+      vi.advanceTimersByTime(2);
 
       expect(shortTtlCache.has("key")).toBe(false);
       shortTtlCache.clear();
+      mockNow.mockRestore();
+      vi.useRealTimers();
     });
   });
 

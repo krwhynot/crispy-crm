@@ -1,5 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { render, screen, waitFor } from "@testing-library/react";
+import { screen, waitFor } from "@testing-library/react";
+import { renderWithAdminContext } from "@/tests/utils/render-admin";
 import userEvent from "@testing-library/user-event";
 import { Combobox, MultiSelectCombobox, type ComboboxOption } from "../combobox";
 
@@ -18,24 +19,24 @@ describe("Combobox", () => {
 
   describe("Basic Functionality", () => {
     it("renders with placeholder when no value selected", () => {
-      render(<Combobox options={defaultOptions} placeholder="Select city..." />);
+      renderWithAdminContext(<Combobox options={defaultOptions} placeholder="Select city..." />);
       expect(screen.getByRole("combobox")).toHaveTextContent("Select city...");
     });
 
     it("displays selected option label", () => {
-      render(<Combobox options={defaultOptions} value="chicago" placeholder="Select city..." />);
+      renderWithAdminContext(<Combobox options={defaultOptions} value="chicago" placeholder="Select city..." />);
       expect(screen.getByRole("combobox")).toHaveTextContent("Chicago");
     });
 
     it("opens popover on click", async () => {
-      render(<Combobox options={defaultOptions} />);
+      renderWithAdminContext(<Combobox options={defaultOptions} />);
       await user.click(screen.getByRole("combobox"));
       expect(screen.getByPlaceholderText("Search...")).toBeInTheDocument();
     });
 
     it("calls onValueChange when option is selected", async () => {
       const mockOnChange = vi.fn();
-      render(<Combobox options={defaultOptions} onValueChange={mockOnChange} />);
+      renderWithAdminContext(<Combobox options={defaultOptions} onValueChange={mockOnChange} />);
 
       await user.click(screen.getByRole("combobox"));
       await user.click(screen.getByText("Chicago"));
@@ -44,7 +45,7 @@ describe("Combobox", () => {
     });
 
     it("filters options based on search input", async () => {
-      render(<Combobox options={defaultOptions} />);
+      renderWithAdminContext(<Combobox options={defaultOptions} />);
 
       await user.click(screen.getByRole("combobox"));
       await user.type(screen.getByPlaceholderText("Search..."), "chi");
@@ -54,7 +55,7 @@ describe("Combobox", () => {
     });
 
     it("shows empty state when no matches found", async () => {
-      render(<Combobox options={defaultOptions} emptyText="No cities found." />);
+      renderWithAdminContext(<Combobox options={defaultOptions} emptyText="No cities found." />);
 
       await user.click(screen.getByRole("combobox"));
       await user.type(screen.getByPlaceholderText("Search..."), "xyz");
@@ -63,13 +64,13 @@ describe("Combobox", () => {
     });
 
     it("is disabled when disabled prop is true", async () => {
-      render(<Combobox options={defaultOptions} disabled />);
+      renderWithAdminContext(<Combobox options={defaultOptions} disabled />);
       expect(screen.getByRole("combobox")).toBeDisabled();
     });
 
     it("deselects option when same option is selected again", async () => {
       const mockOnChange = vi.fn();
-      render(<Combobox options={defaultOptions} value="chicago" onValueChange={mockOnChange} />);
+      renderWithAdminContext(<Combobox options={defaultOptions} value="chicago" onValueChange={mockOnChange} />);
 
       await user.click(screen.getByRole("combobox"));
       // Use role="option" to specifically target the dropdown item, not the trigger button
@@ -81,7 +82,7 @@ describe("Combobox", () => {
 
   describe("Creatable Functionality", () => {
     it("shows 'Create' option when creatable=true and search value doesn't match any option", async () => {
-      render(<Combobox options={defaultOptions} creatable />);
+      renderWithAdminContext(<Combobox options={defaultOptions} creatable />);
 
       await user.click(screen.getByRole("combobox"));
       await user.type(screen.getByPlaceholderText("Search..."), "Boston");
@@ -90,7 +91,7 @@ describe("Combobox", () => {
     });
 
     it("does NOT show 'Create' option when creatable=false", async () => {
-      render(<Combobox options={defaultOptions} creatable={false} />);
+      renderWithAdminContext(<Combobox options={defaultOptions} creatable={false} />);
 
       await user.click(screen.getByRole("combobox"));
       await user.type(screen.getByPlaceholderText("Search..."), "Boston");
@@ -99,7 +100,7 @@ describe("Combobox", () => {
     });
 
     it("does NOT show 'Create' option when search matches existing option (case-insensitive)", async () => {
-      render(<Combobox options={defaultOptions} creatable />);
+      renderWithAdminContext(<Combobox options={defaultOptions} creatable />);
 
       await user.click(screen.getByRole("combobox"));
       await user.type(screen.getByPlaceholderText("Search..."), "CHICAGO");
@@ -111,7 +112,7 @@ describe("Combobox", () => {
     });
 
     it("does NOT show 'Create' option when search is empty", async () => {
-      render(<Combobox options={defaultOptions} creatable />);
+      renderWithAdminContext(<Combobox options={defaultOptions} creatable />);
 
       await user.click(screen.getByRole("combobox"));
       // Don't type anything - just open the popover
@@ -120,7 +121,7 @@ describe("Combobox", () => {
     });
 
     it("does NOT show 'Create' option when search is only whitespace", async () => {
-      render(<Combobox options={defaultOptions} creatable />);
+      renderWithAdminContext(<Combobox options={defaultOptions} creatable />);
 
       await user.click(screen.getByRole("combobox"));
       await user.type(screen.getByPlaceholderText("Search..."), "   ");
@@ -130,7 +131,7 @@ describe("Combobox", () => {
 
     it("calls onValueChange with the typed value when 'Create' option is selected", async () => {
       const mockOnChange = vi.fn();
-      render(<Combobox options={defaultOptions} creatable onValueChange={mockOnChange} />);
+      renderWithAdminContext(<Combobox options={defaultOptions} creatable onValueChange={mockOnChange} />);
 
       await user.click(screen.getByRole("combobox"));
       await user.type(screen.getByPlaceholderText("Search..."), "Boston");
@@ -141,7 +142,7 @@ describe("Combobox", () => {
 
     it("closes popover and clears search after selecting 'Create' option", async () => {
       const mockOnChange = vi.fn();
-      render(<Combobox options={defaultOptions} creatable onValueChange={mockOnChange} />);
+      renderWithAdminContext(<Combobox options={defaultOptions} creatable onValueChange={mockOnChange} />);
 
       await user.click(screen.getByRole("combobox"));
       await user.type(screen.getByPlaceholderText("Search..."), "Boston");
@@ -154,7 +155,7 @@ describe("Combobox", () => {
     });
 
     it("shows 'Create' option for partial match that isn't exact", async () => {
-      render(<Combobox options={defaultOptions} creatable />);
+      renderWithAdminContext(<Combobox options={defaultOptions} creatable />);
 
       await user.click(screen.getByRole("combobox"));
       await user.type(screen.getByPlaceholderText("Search..."), "Chi");
@@ -167,7 +168,7 @@ describe("Combobox", () => {
 
     it("works with empty options array", async () => {
       const mockOnChange = vi.fn();
-      render(<Combobox options={[]} creatable onValueChange={mockOnChange} />);
+      renderWithAdminContext(<Combobox options={[]} creatable onValueChange={mockOnChange} />);
 
       await user.click(screen.getByRole("combobox"));
       await user.type(screen.getByPlaceholderText("Search..."), "NewCity");
@@ -179,14 +180,14 @@ describe("Combobox", () => {
 
   describe("Accessibility", () => {
     it("has correct ARIA attributes", () => {
-      render(<Combobox options={defaultOptions} id="city-select" />);
+      renderWithAdminContext(<Combobox options={defaultOptions} id="city-select" />);
       const combobox = screen.getByRole("combobox");
       expect(combobox).toHaveAttribute("id", "city-select");
       expect(combobox).toHaveAttribute("aria-expanded", "false");
     });
 
     it("updates aria-expanded when opened", async () => {
-      render(<Combobox options={defaultOptions} />);
+      renderWithAdminContext(<Combobox options={defaultOptions} />);
       const combobox = screen.getByRole("combobox");
 
       await user.click(combobox);
@@ -204,12 +205,12 @@ describe("MultiSelectCombobox", () => {
 
   describe("Basic Functionality", () => {
     it("renders with placeholder when no value selected", () => {
-      render(<MultiSelectCombobox options={defaultOptions} placeholder="Select cities..." />);
+      renderWithAdminContext(<MultiSelectCombobox options={defaultOptions} placeholder="Select cities..." />);
       expect(screen.getByRole("combobox")).toHaveTextContent("Select cities...");
     });
 
     it("displays single selected option label", () => {
-      render(
+      renderWithAdminContext(
         <MultiSelectCombobox
           options={defaultOptions}
           value={["chicago"]}
@@ -220,7 +221,7 @@ describe("MultiSelectCombobox", () => {
     });
 
     it("displays count when multiple options selected", () => {
-      render(
+      renderWithAdminContext(
         <MultiSelectCombobox
           options={defaultOptions}
           value={["chicago", "new-york"]}
@@ -232,7 +233,7 @@ describe("MultiSelectCombobox", () => {
 
     it("toggles option selection", async () => {
       const mockOnChange = vi.fn();
-      render(
+      renderWithAdminContext(
         <MultiSelectCombobox
           options={defaultOptions}
           value={["chicago"]}
@@ -249,7 +250,7 @@ describe("MultiSelectCombobox", () => {
 
     it("removes option when clicked again", async () => {
       const mockOnChange = vi.fn();
-      render(
+      renderWithAdminContext(
         <MultiSelectCombobox
           options={defaultOptions}
           value={["chicago", "new-york"]}

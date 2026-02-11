@@ -1,5 +1,6 @@
 import { describe, test, expect, vi } from "vitest";
-import { render, screen, waitFor } from "@testing-library/react";
+import { screen, waitFor } from "@testing-library/react";
+import { renderWithAdminContext } from "@/tests/utils/render-admin";
 import userEvent from "@testing-library/user-event";
 import { FormProvider, useForm } from "react-hook-form";
 import { SaveButtonGroup } from "../SaveButtonGroup";
@@ -30,7 +31,7 @@ describe("SaveButtonGroup", () => {
     const onSave = vi.fn();
     const onSaveAndNew = vi.fn();
 
-    render(
+    renderWithAdminContext(
       <FormWrapper onSubmit={onSave}>
         <SaveButtonGroup onSave={onSave} onSaveAndNew={onSaveAndNew} />
       </FormWrapper>
@@ -46,7 +47,7 @@ describe("SaveButtonGroup", () => {
     const onSave = vi.fn();
     const onSaveAndNew = vi.fn();
 
-    render(
+    renderWithAdminContext(
       <FormWrapper onSubmit={onSave} defaultValues={{ name: "John Doe" }}>
         <SaveButtonGroup onSave={onSave} onSaveAndNew={onSaveAndNew} />
       </FormWrapper>
@@ -67,7 +68,7 @@ describe("SaveButtonGroup", () => {
     const onSave = vi.fn();
     const onSaveAndNew = vi.fn();
 
-    render(
+    renderWithAdminContext(
       <FormWrapper onSubmit={onSave} defaultValues={{ name: "Jane Smith" }}>
         <SaveButtonGroup onSave={onSave} onSaveAndNew={onSaveAndNew} />
       </FormWrapper>
@@ -93,7 +94,7 @@ describe("SaveButtonGroup", () => {
     const onSave = vi.fn();
     const onSaveAndNew = vi.fn();
 
-    render(
+    renderWithAdminContext(
       <FormWrapper onSubmit={onSave} defaultValues={{ name: "Test User" }}>
         <SaveButtonGroup onSave={onSave} onSaveAndNew={onSaveAndNew} />
       </FormWrapper>
@@ -117,7 +118,7 @@ describe("SaveButtonGroup", () => {
     const onSave = vi.fn(() => new Promise((resolve) => setTimeout(resolve, 1000)));
     const onSaveAndNew = vi.fn();
 
-    render(
+    renderWithAdminContext(
       <FormWrapper onSubmit={onSave}>
         <SaveButtonGroup onSave={onSave} onSaveAndNew={onSaveAndNew} />
       </FormWrapper>
@@ -160,7 +161,7 @@ describe("SaveButtonGroup", () => {
       );
     };
 
-    render(
+    renderWithAdminContext(
       <FormWrapperWithValidation>
         <SaveButtonGroup onSave={onSave} onSaveAndNew={onSaveAndNew} />
       </FormWrapperWithValidation>

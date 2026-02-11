@@ -1,10 +1,11 @@
-import { render, screen } from "@testing-library/react";
+import { screen } from "@testing-library/react";
+import { renderWithAdminContext } from "@/tests/utils/render-admin";
 import { describe, it, expect } from "vitest";
 import { CompactFormFieldWithButton } from "../CompactFormFieldWithButton";
 
 describe("CompactFormFieldWithButton", () => {
   it("renders field and button in grid layout", () => {
-    render(
+    renderWithAdminContext(
       <CompactFormFieldWithButton button={<button data-testid="btn">Create</button>}>
         <input data-testid="field" />
       </CompactFormFieldWithButton>
@@ -15,7 +16,7 @@ describe("CompactFormFieldWithButton", () => {
   });
 
   it("renders placeholder when no button provided", () => {
-    const { container } = render(
+    const { container } = renderWithAdminContext(
       <CompactFormFieldWithButton>
         <input data-testid="field" />
       </CompactFormFieldWithButton>
@@ -28,7 +29,7 @@ describe("CompactFormFieldWithButton", () => {
   });
 
   it("renders footer content below the grid", () => {
-    render(
+    renderWithAdminContext(
       <CompactFormFieldWithButton footer={<span data-testid="footer">Warning</span>}>
         <input />
       </CompactFormFieldWithButton>
@@ -38,7 +39,7 @@ describe("CompactFormFieldWithButton", () => {
   });
 
   it("uses items-end for vertical alignment", () => {
-    const { container } = render(
+    const { container } = renderWithAdminContext(
       <CompactFormFieldWithButton>
         <input />
       </CompactFormFieldWithButton>
@@ -49,7 +50,7 @@ describe("CompactFormFieldWithButton", () => {
   });
 
   it("uses grid-cols-[1fr_auto] for field/button layout", () => {
-    const { container } = render(
+    const { container } = renderWithAdminContext(
       <CompactFormFieldWithButton>
         <input />
       </CompactFormFieldWithButton>
@@ -60,7 +61,7 @@ describe("CompactFormFieldWithButton", () => {
   });
 
   it("wraps field in min-w-0 container to prevent overflow", () => {
-    const { container: _container } = render(
+    const { container: _container } = renderWithAdminContext(
       <CompactFormFieldWithButton>
         <input data-testid="field" />
       </CompactFormFieldWithButton>
@@ -71,7 +72,7 @@ describe("CompactFormFieldWithButton", () => {
   });
 
   it("accepts custom className", () => {
-    const { container } = render(
+    const { container } = renderWithAdminContext(
       <CompactFormFieldWithButton className="custom-class">
         <input />
       </CompactFormFieldWithButton>

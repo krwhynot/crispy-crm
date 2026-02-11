@@ -1,18 +1,19 @@
-import { render, screen } from "@testing-library/react";
+import { screen } from "@testing-library/react";
+import { renderWithAdminContext } from "@/tests/utils/render-admin";
 import userEvent from "@testing-library/user-event";
 import { TrendingUp } from "lucide-react";
 import { EmptyState } from "./empty-state";
 
 describe("EmptyState", () => {
   it("renders title and description", () => {
-    render(<EmptyState title="No Data Found" description="Try adjusting your filters." />);
+    renderWithAdminContext(<EmptyState title="No Data Found" description="Try adjusting your filters." />);
 
     expect(screen.getByRole("heading", { name: "No Data Found" })).toBeInTheDocument();
     expect(screen.getByText("Try adjusting your filters.")).toBeInTheDocument();
   });
 
   it("renders icon when provided", () => {
-    render(
+    renderWithAdminContext(
       <EmptyState
         title="No Data Found"
         description="Try adjusting your filters."
@@ -26,14 +27,14 @@ describe("EmptyState", () => {
   });
 
   it("does not render icon when not provided", () => {
-    render(<EmptyState title="No Data Found" description="Try adjusting your filters." />);
+    renderWithAdminContext(<EmptyState title="No Data Found" description="Try adjusting your filters." />);
 
     const svg = document.querySelector("svg");
     expect(svg).not.toBeInTheDocument();
   });
 
   it("renders action button when provided (single action prop)", () => {
-    render(
+    renderWithAdminContext(
       <EmptyState
         title="No Data Found"
         description="Try adjusting your filters."
@@ -48,7 +49,7 @@ describe("EmptyState", () => {
   });
 
   it("renders action buttons when provided (actions array)", () => {
-    render(
+    renderWithAdminContext(
       <EmptyState
         title="No Data Found"
         description="Try adjusting your filters."
@@ -64,7 +65,7 @@ describe("EmptyState", () => {
   });
 
   it("does not render action button when not provided", () => {
-    render(<EmptyState title="No Data Found" description="Try adjusting your filters." />);
+    renderWithAdminContext(<EmptyState title="No Data Found" description="Try adjusting your filters." />);
 
     expect(screen.queryByRole("button")).not.toBeInTheDocument();
   });
@@ -73,7 +74,7 @@ describe("EmptyState", () => {
     const onClick = vi.fn();
     const user = userEvent.setup();
 
-    render(
+    renderWithAdminContext(
       <EmptyState
         title="No Data Found"
         description="Try adjusting your filters."
@@ -90,7 +91,7 @@ describe("EmptyState", () => {
   });
 
   it("renders image when provided", () => {
-    render(
+    renderWithAdminContext(
       <EmptyState
         title="No Data Found"
         description="Try adjusting your filters."
@@ -104,7 +105,7 @@ describe("EmptyState", () => {
   });
 
   it("renders children when provided", () => {
-    render(
+    renderWithAdminContext(
       <EmptyState title="No Data Found" description="Try adjusting your filters.">
         <div data-testid="custom-child">Custom Content</div>
       </EmptyState>
@@ -114,7 +115,7 @@ describe("EmptyState", () => {
   });
 
   it("renders card variant correctly", () => {
-    const { container } = render(
+    const { container } = renderWithAdminContext(
       <EmptyState
         variant="card"
         title="No Data Found"
@@ -127,7 +128,7 @@ describe("EmptyState", () => {
   });
 
   it("renders fullscreen variant correctly", () => {
-    const { container } = render(
+    const { container } = renderWithAdminContext(
       <EmptyState
         variant="fullscreen"
         title="No Data Found"
@@ -140,7 +141,7 @@ describe("EmptyState", () => {
   });
 
   it("applies custom className", () => {
-    const { container } = render(
+    const { container } = renderWithAdminContext(
       <EmptyState
         title="No Data Found"
         description="Try adjusting your filters."
@@ -153,7 +154,7 @@ describe("EmptyState", () => {
   });
 
   it("applies data-tutorial attribute", () => {
-    const { container } = render(
+    const { container } = renderWithAdminContext(
       <EmptyState
         title="No Data Found"
         description="Try adjusting your filters."

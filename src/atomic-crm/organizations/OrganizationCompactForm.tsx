@@ -12,7 +12,6 @@ import { StateComboboxInput } from "@/components/ra-wrappers/state-combobox-inpu
 import { PRIORITY_CHOICES } from "./constants";
 import { saleOptionRenderer } from "../utils/saleOptionRenderer";
 import { OrganizationHierarchySection } from "./OrganizationHierarchySection";
-import { ParentOrganizationInput } from "./ParentOrganizationInput";
 import { useCityStateMapping } from "@/hooks";
 import { useRecordContext } from "ra-core";
 import { PrincipalAwareTypeInput } from "./PrincipalAwareTypeInput";
@@ -28,7 +27,7 @@ export const OrganizationCompactForm = ({ isRep }: OrganizationCompactFormProps)
   // Detect edit mode - allow Unknown segment for existing orgs
   // useRecordContext returns undefined in create mode (no throw), populated record in edit mode
   const record = useRecordContext();
-  const isEditMode = !!record;
+  const _isEditMode = !!record;
 
   const { isRequired, variant } = useOrganizationVariant();
 

@@ -2,7 +2,7 @@
  * Tests for TaskSlideOver component
  *
  * Unit tests focused on:
- * - Tab configuration (2 tabs: details, related)
+ * - Tab configuration (1 tab: details)
  * - Record representation (task title formatting)
  * - Header actions (mode toggle)
  *
@@ -158,21 +158,12 @@ vi.mock("../TaskSlideOverDetailsTab", () => ({
   ),
 }));
 
-vi.mock("../TaskRelatedItemsTab", () => ({
-  TaskRelatedItemsTab: ({ record, mode }: MockTabComponentProps) => (
-    <div data-testid="task-related-tab">
-      <p>Related items for task {String(record.id)}</p>
-      <p>Mode: {mode}</p>
-    </div>
-  ),
-}));
-
 describe("TaskSlideOver", () => {
   const mockOnClose = vi.fn();
   const mockOnModeToggle = vi.fn();
 
   beforeEach(() => {
-    vi.clearAllMocks();
+    vi.resetAllMocks();
   });
 
   afterEach(() => {
@@ -180,7 +171,7 @@ describe("TaskSlideOver", () => {
   });
 
   describe("Tab Configuration", () => {
-    it("has exactly 2 tabs", async () => {
+    it("has exactly 1 tab", async () => {
       renderWithAdminContext(
         <TaskSlideOver
           recordId={1}
@@ -193,11 +184,11 @@ describe("TaskSlideOver", () => {
 
       await waitFor(() => {
         const tabCount = screen.getByTestId("tab-count");
-        expect(tabCount).toHaveTextContent("2");
+        expect(tabCount).toHaveTextContent("1");
       });
     });
 
-    it("has correct tab keys: 'details' and 'related'", async () => {
+    it("has correct tab key: 'details'", async () => {
       renderWithAdminContext(
         <TaskSlideOver
           recordId={1}
@@ -210,7 +201,7 @@ describe("TaskSlideOver", () => {
 
       await waitFor(() => {
         expect(screen.getByTestId("tab-details")).toBeInTheDocument();
-        expect(screen.getByTestId("tab-related")).toBeInTheDocument();
+        expect(screen.queryByTestId("tab-related")).not.toBeInTheDocument();
       });
     });
 
@@ -233,26 +224,7 @@ describe("TaskSlideOver", () => {
       });
     });
 
-    it("related tab has key 'related' and label 'Related Items'", async () => {
-      renderWithAdminContext(
-        <TaskSlideOver
-          recordId={1}
-          isOpen={true}
-          mode="view"
-          onClose={mockOnClose}
-          onModeToggle={mockOnModeToggle}
-        />
-      );
-
-      await waitFor(() => {
-        const relatedTab = screen.getByTestId("tab-related");
-        expect(relatedTab).toHaveAttribute("data-tab-key", "related");
-        expect(relatedTab).toHaveAttribute("data-tab-label", "Related Items");
-        expect(relatedTab).toHaveTextContent("Related Items");
-      });
-    });
-
-    it("each tab has an icon configured", async () => {
+    it("details tab has an icon configured", async () => {
       renderWithAdminContext(
         <TaskSlideOver
           recordId={1}
@@ -265,10 +237,7 @@ describe("TaskSlideOver", () => {
 
       await waitFor(() => {
         const detailsTab = screen.getByTestId("tab-details");
-        const relatedTab = screen.getByTestId("tab-related");
-
         expect(detailsTab).toHaveAttribute("data-has-icon", "true");
-        expect(relatedTab).toHaveAttribute("data-has-icon", "true");
       });
     });
 
@@ -289,24 +258,7 @@ describe("TaskSlideOver", () => {
       });
     });
 
-    it("related tab uses LinkIcon", async () => {
-      renderWithAdminContext(
-        <TaskSlideOver
-          recordId={1}
-          isOpen={true}
-          mode="view"
-          onClose={mockOnClose}
-          onModeToggle={mockOnModeToggle}
-        />
-      );
-
-      await waitFor(() => {
-        // Icon is rendered inside the tab
-        expect(screen.getByTestId("icon-related")).toBeInTheDocument();
-      });
-    });
-
-    it("renders tab panels for each configured tab", async () => {
+    it("renders tab panel for details tab", async () => {
       renderWithAdminContext(
         <TaskSlideOver
           recordId={1}
@@ -319,7 +271,7 @@ describe("TaskSlideOver", () => {
 
       await waitFor(() => {
         expect(screen.getByTestId("tab-panel-details")).toBeInTheDocument();
-        expect(screen.getByTestId("tab-panel-related")).toBeInTheDocument();
+        expect(screen.queryByTestId("tab-panel-related")).not.toBeInTheDocument();
       });
     });
   });
@@ -561,10 +513,6 @@ describe("TaskSlideOver", () => {
         // Details tab should show edit mode
         const detailsTab = screen.getByTestId("task-details-tab");
         expect(within(detailsTab).getByText("Mode: edit")).toBeInTheDocument();
-
-        // Related tab should show edit mode
-        const relatedTab = screen.getByTestId("task-related-tab");
-        expect(within(relatedTab).getByText("Mode: edit")).toBeInTheDocument();
       });
     });
 
@@ -582,9 +530,6 @@ describe("TaskSlideOver", () => {
       await waitFor(() => {
         // Details tab receives record
         expect(screen.getByText("Details for task: Test Task Title")).toBeInTheDocument();
-
-        // Related tab receives record
-        expect(screen.getByText("Related items for task 1")).toBeInTheDocument();
       });
     });
   });

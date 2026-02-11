@@ -1,10 +1,11 @@
-import { render, screen, fireEvent } from "@testing-library/react";
+import { screen, fireEvent } from "@testing-library/react";
+import { renderWithAdminContext } from "@/tests/utils/render-admin";
 import userEvent from "@testing-library/user-event";
 import { CollapsibleSection } from "../CollapsibleSection";
 
 describe("CollapsibleSection", () => {
   it("renders collapsed by default", () => {
-    render(
+    renderWithAdminContext(
       <CollapsibleSection title="Additional Details">
         <input data-testid="hidden-input" />
       </CollapsibleSection>
@@ -16,7 +17,7 @@ describe("CollapsibleSection", () => {
   });
 
   it("expands when trigger clicked", () => {
-    render(
+    renderWithAdminContext(
       <CollapsibleSection title="Additional Details">
         <input data-testid="hidden-input" />
       </CollapsibleSection>
@@ -27,7 +28,7 @@ describe("CollapsibleSection", () => {
   });
 
   it("supports defaultOpen prop", () => {
-    render(
+    renderWithAdminContext(
       <CollapsibleSection title="Details" defaultOpen>
         <input data-testid="visible-input" />
       </CollapsibleSection>
@@ -37,7 +38,7 @@ describe("CollapsibleSection", () => {
   });
 
   it("has 44px minimum touch target", () => {
-    render(
+    renderWithAdminContext(
       <CollapsibleSection title="Test">
         <div />
       </CollapsibleSection>
@@ -48,7 +49,7 @@ describe("CollapsibleSection", () => {
   });
 
   it("rotates chevron when expanded", () => {
-    render(
+    renderWithAdminContext(
       <CollapsibleSection title="Test">
         <div />
       </CollapsibleSection>
@@ -63,7 +64,7 @@ describe("CollapsibleSection", () => {
 
   it("toggles on Enter key", async () => {
     const user = userEvent.setup();
-    render(
+    renderWithAdminContext(
       <CollapsibleSection title="Details">
         <p>Content</p>
       </CollapsibleSection>
@@ -76,7 +77,7 @@ describe("CollapsibleSection", () => {
 
   it("toggles on Space key", async () => {
     const user = userEvent.setup();
-    render(
+    renderWithAdminContext(
       <CollapsibleSection title="Details">
         <p>Content</p>
       </CollapsibleSection>
@@ -88,7 +89,7 @@ describe("CollapsibleSection", () => {
   });
 
   it("has correct aria-expanded state", () => {
-    render(
+    renderWithAdminContext(
       <CollapsibleSection title="Details">
         <p>Content</p>
       </CollapsibleSection>
@@ -100,7 +101,7 @@ describe("CollapsibleSection", () => {
   });
 
   it("has aria-controls linked to content id", () => {
-    render(
+    renderWithAdminContext(
       <CollapsibleSection title="Details">
         <p>Content</p>
       </CollapsibleSection>

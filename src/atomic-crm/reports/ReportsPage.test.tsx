@@ -1,5 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { screen } from "@testing-library/react";
+import { renderWithAdminContext } from "@/tests/utils/render-admin";
 import { MemoryRouter } from "react-router-dom";
 import ReportsPage from "./ReportsPage";
 
@@ -17,12 +18,12 @@ const mockSalesReps = [
 
 describe("ReportsPage", () => {
   beforeEach(() => {
-    vi.clearAllMocks();
+    vi.resetAllMocks();
     vi.mocked(useGetList).mockReturnValue({ data: mockSalesReps, isPending: false });
   });
 
   it("renders page title", () => {
-    render(
+    renderWithAdminContext(
       <MemoryRouter>
         <ReportsPage />
       </MemoryRouter>
@@ -32,7 +33,7 @@ describe("ReportsPage", () => {
   });
 
   it("renders all tabs", () => {
-    render(
+    renderWithAdminContext(
       <MemoryRouter>
         <ReportsPage />
       </MemoryRouter>
@@ -45,7 +46,7 @@ describe("ReportsPage", () => {
   });
 
   it("defaults to overview tab", () => {
-    render(
+    renderWithAdminContext(
       <MemoryRouter>
         <ReportsPage />
       </MemoryRouter>
@@ -56,7 +57,7 @@ describe("ReportsPage", () => {
   });
 
   it("uses desktop-first responsive tabs", () => {
-    render(
+    renderWithAdminContext(
       <MemoryRouter>
         <ReportsPage />
       </MemoryRouter>
@@ -68,7 +69,7 @@ describe("ReportsPage", () => {
   });
 
   it("does not render GlobalFilterBar (filters moved to tabs)", () => {
-    render(
+    renderWithAdminContext(
       <MemoryRouter>
         <ReportsPage />
       </MemoryRouter>
@@ -80,7 +81,7 @@ describe("ReportsPage", () => {
   });
 
   it("uses Skeleton for tab loading states", () => {
-    render(
+    renderWithAdminContext(
       <MemoryRouter>
         <ReportsPage />
       </MemoryRouter>

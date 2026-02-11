@@ -1,4 +1,5 @@
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { screen, fireEvent, waitFor } from "@testing-library/react";
+import { renderWithAdminContext } from "@/tests/utils/render-admin";
 import { LinkOpportunityModal } from "./LinkOpportunityModal";
 import { vi } from "vitest";
 import type * as ReactAdmin from "react-admin";
@@ -64,11 +65,11 @@ vi.mock("@/components/ra-wrappers/autocomplete-input", () => ({
 
 describe("LinkOpportunityModal", () => {
   beforeEach(() => {
-    vi.clearAllMocks();
+    vi.resetAllMocks();
   });
 
   it("renders when open", () => {
-    render(
+    renderWithAdminContext(
       <LinkOpportunityModal
         open={true}
         contactName="Jane Doe"
@@ -83,7 +84,7 @@ describe("LinkOpportunityModal", () => {
   });
 
   it("does not render when closed", () => {
-    render(
+    renderWithAdminContext(
       <LinkOpportunityModal
         open={false}
         contactName="Jane Doe"
@@ -101,7 +102,7 @@ describe("LinkOpportunityModal", () => {
     const onClose = vi.fn();
     const onSuccess = vi.fn();
 
-    render(
+    renderWithAdminContext(
       <LinkOpportunityModal
         open={true}
         contactName="Jane Doe"
@@ -153,7 +154,7 @@ describe("LinkOpportunityModal", () => {
       }
     );
 
-    render(
+    renderWithAdminContext(
       <LinkOpportunityModal
         open={true}
         contactName="Jane Doe"

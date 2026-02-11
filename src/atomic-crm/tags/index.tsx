@@ -1,5 +1,3 @@
-/* eslint-disable react-refresh/only-export-components -- React Admin resource config requires mixed exports */
-
 /**
  * Tags Module - Simple lookup entity for categorizing contacts, opportunities, and organizations.
  *

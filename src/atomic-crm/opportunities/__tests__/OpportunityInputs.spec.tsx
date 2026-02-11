@@ -2,7 +2,8 @@
  * @vitest-environment jsdom
  */
 
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { screen, fireEvent, waitFor } from "@testing-library/react";
+import { renderWithAdminContext } from "@/tests/utils/render-admin";
 import { AdminContext } from "ra-core";
 import { MemoryRouter } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -60,7 +61,7 @@ const TestWrapper = ({ children }: { children: React.ReactNode }) => {
 
 describe("OpportunityInputs", () => {
   beforeEach(() => {
-    vi.clearAllMocks();
+    vi.resetAllMocks();
     mockDataProvider.getList.mockResolvedValue({
       data: [],
       total: 0,
@@ -71,7 +72,7 @@ describe("OpportunityInputs", () => {
   });
 
   it("should render opportunity name input with required validation", async () => {
-    render(
+    renderWithAdminContext(
       <TestWrapper>
         <OpportunityInputs />
       </TestWrapper>
@@ -82,7 +83,7 @@ describe("OpportunityInputs", () => {
   });
 
   it("should render description input", async () => {
-    render(
+    renderWithAdminContext(
       <TestWrapper>
         <OpportunityInputs />
       </TestWrapper>
@@ -92,7 +93,7 @@ describe("OpportunityInputs", () => {
   });
 
   it("should render lifecycle stage selector with required validation", async () => {
-    render(
+    renderWithAdminContext(
       <TestWrapper>
         <OpportunityInputs />
       </TestWrapper>
@@ -104,7 +105,7 @@ describe("OpportunityInputs", () => {
   });
 
   it("should render priority selector with default medium value", async () => {
-    render(
+    renderWithAdminContext(
       <TestWrapper>
         <OpportunityInputs />
       </TestWrapper>
@@ -115,7 +116,7 @@ describe("OpportunityInputs", () => {
   });
 
   it("should render probability input with validation (0-100)", async () => {
-    render(
+    renderWithAdminContext(
       <TestWrapper>
         <OpportunityInputs />
       </TestWrapper>
@@ -128,7 +129,7 @@ describe("OpportunityInputs", () => {
   });
 
   it("should render customer organization input with required validation", async () => {
-    render(
+    renderWithAdminContext(
       <TestWrapper>
         <OpportunityInputs />
       </TestWrapper>
@@ -138,7 +139,7 @@ describe("OpportunityInputs", () => {
   });
 
   it("should render optional principal and distributor organization inputs", async () => {
-    render(
+    renderWithAdminContext(
       <TestWrapper>
         <OpportunityInputs />
       </TestWrapper>
@@ -149,7 +150,7 @@ describe("OpportunityInputs", () => {
   });
 
   it("should render contacts input with required validation", async () => {
-    render(
+    renderWithAdminContext(
       <TestWrapper>
         <OpportunityInputs />
       </TestWrapper>
@@ -159,7 +160,7 @@ describe("OpportunityInputs", () => {
   });
 
   it("should render amount input with required validation", async () => {
-    render(
+    renderWithAdminContext(
       <TestWrapper>
         <OpportunityInputs />
       </TestWrapper>
@@ -171,7 +172,7 @@ describe("OpportunityInputs", () => {
   });
 
   it("should render expected closing date with default current date", async () => {
-    render(
+    renderWithAdminContext(
       <TestWrapper>
         <OpportunityInputs />
       </TestWrapper>
@@ -183,7 +184,7 @@ describe("OpportunityInputs", () => {
   });
 
   it("should render opportunity context choices from configuration", async () => {
-    render(
+    renderWithAdminContext(
       <TestWrapper>
         <OpportunityInputs />
       </TestWrapper>
@@ -194,7 +195,7 @@ describe("OpportunityInputs", () => {
   });
 
   it("should validate required fields show error messages", async () => {
-    render(
+    renderWithAdminContext(
       <TestWrapper>
         <OpportunityInputs />
       </TestWrapper>
@@ -212,7 +213,7 @@ describe("OpportunityInputs", () => {
   });
 
   it("should validate probability within 0-100 range", async () => {
-    render(
+    renderWithAdminContext(
       <TestWrapper>
         <OpportunityInputs />
       </TestWrapper>
@@ -230,7 +231,7 @@ describe("OpportunityInputs", () => {
   });
 
   it("should have proper section organization", async () => {
-    render(
+    renderWithAdminContext(
       <TestWrapper>
         <OpportunityInputs />
       </TestWrapper>
@@ -242,7 +243,7 @@ describe("OpportunityInputs", () => {
   });
 
   it("should render all lifecycle stage options", async () => {
-    render(
+    renderWithAdminContext(
       <TestWrapper>
         <OpportunityInputs />
       </TestWrapper>
@@ -264,7 +265,7 @@ describe("OpportunityInputs", () => {
   });
 
   it("should render all priority options", async () => {
-    render(
+    renderWithAdminContext(
       <TestWrapper>
         <OpportunityInputs />
       </TestWrapper>

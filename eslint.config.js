@@ -248,10 +248,18 @@ export default tseslint.config(
     //   },
     // },
   },
+  // Logger infrastructure - console is the output mechanism
+  {
+    files: ["src/lib/logger.ts", "src/lib/devLogger.ts"],
+    rules: {
+      "no-console": "off",
+    },
+  },
   // Test file configuration - enforces test isolation patterns (P0 - addresses 189 testing commits)
   {
-    files: ["**/*.test.{ts,tsx}", "**/__tests__/**/*.{ts,tsx}"],
+    files: ["**/*.test.{ts,tsx}", "**/__tests__/**/*.{ts,tsx}", "**/tests/**/*.{ts,tsx}"],
     rules: {
+      "no-console": "off",
       "no-restricted-syntax": [
         "error",
         // Inherit the form validation rule from main config

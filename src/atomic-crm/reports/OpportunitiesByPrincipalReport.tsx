@@ -53,6 +53,7 @@ export default function OpportunitiesByPrincipalReport() {
   // Build filter object for API
   // CRITICAL: Use primitive dependencies to prevent render loops
   // Depending on entire `filters` object causes recalculation when object reference changes
+  const stageJson = JSON.stringify(filters.stage);
   const apiFilter = useMemo(() => {
     const filter: Record<string, unknown> = {
       "deleted_at@is": null,
@@ -80,9 +81,10 @@ export default function OpportunitiesByPrincipalReport() {
     }
 
     return filter;
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- stageJson serializes filters.stage for stable array comparison
   }, [
     filters.principal_organization_id,
-    JSON.stringify(filters.stage), // Array needs serialization for stable comparison
+    stageJson,
     filters.opportunity_owner_id,
     filters.startDate,
     filters.endDate,

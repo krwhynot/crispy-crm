@@ -1,5 +1,6 @@
 import { describe, it, expect, vi } from "vitest";
-import { render, screen, waitFor } from "@testing-library/react";
+import { screen, waitFor } from "@testing-library/react";
+import { renderWithAdminContext } from "@/tests/utils/render-admin";
 import userEvent from "@testing-library/user-event";
 import { DashboardTabPanel } from "../DashboardTabPanel";
 
@@ -27,7 +28,7 @@ vi.mock("../ActivityFeedPanel", () => ({
 
 describe("DashboardTabPanel", () => {
   it("renders all three tabs", () => {
-    render(<DashboardTabPanel />);
+    renderWithAdminContext(<DashboardTabPanel />);
 
     expect(screen.getByRole("tab", { name: /my tasks/i })).toBeInTheDocument();
     expect(screen.getByRole("tab", { name: /performance/i })).toBeInTheDocument();
@@ -35,13 +36,13 @@ describe("DashboardTabPanel", () => {
   });
 
   it("shows task count badge", () => {
-    render(<DashboardTabPanel />);
+    renderWithAdminContext(<DashboardTabPanel />);
 
     expect(screen.getByText("3")).toBeInTheDocument();
   });
 
   it("defaults to pipeline tab and loads content", async () => {
-    render(<DashboardTabPanel />);
+    renderWithAdminContext(<DashboardTabPanel />);
 
     // Pipeline is the default tab (defaultValue="pipeline")
     const pipelineTab = screen.getByRole("tab", { name: /pipeline/i });
@@ -55,7 +56,7 @@ describe("DashboardTabPanel", () => {
 
   it("switches to performance tab on click", async () => {
     const user = userEvent.setup();
-    render(<DashboardTabPanel />);
+    renderWithAdminContext(<DashboardTabPanel />);
 
     // Wait for initial content (pipeline is the default tab)
     await screen.findByTestId("pipeline-table");
@@ -75,7 +76,7 @@ describe("DashboardTabPanel", () => {
   });
 
   it("has accessible touch targets (44px)", () => {
-    render(<DashboardTabPanel />);
+    renderWithAdminContext(<DashboardTabPanel />);
 
     const tabs = screen.getAllByRole("tab");
     tabs.forEach((tab) => {
@@ -86,7 +87,7 @@ describe("DashboardTabPanel", () => {
 
   it("supports keyboard navigation", async () => {
     const user = userEvent.setup();
-    render(<DashboardTabPanel />);
+    renderWithAdminContext(<DashboardTabPanel />);
 
     // Focus first tab
     const tasksTab = screen.getByRole("tab", { name: /my tasks/i });

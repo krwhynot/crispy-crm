@@ -1,5 +1,6 @@
 import { describe, it, expect, vi } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { screen } from "@testing-library/react";
+import { renderWithAdminContext } from "@/tests/utils/render-admin";
 import { ActivityTypeCard } from "../ActivityTypeCard";
 
 describe("ActivityTypeCard", () => {
@@ -26,7 +27,7 @@ describe("ActivityTypeCard", () => {
   const mockSalesMap = new Map([[1, "John Smith"]]);
 
   it("should render collapsed card with activity type summary", () => {
-    render(
+    renderWithAdminContext(
       <ActivityTypeCard
         group={mockActivityGroup}
         isExpanded={false}
@@ -46,7 +47,7 @@ describe("ActivityTypeCard", () => {
   });
 
   it("should render expanded card with activity table", () => {
-    render(
+    renderWithAdminContext(
       <ActivityTypeCard
         group={mockActivityGroup}
         isExpanded={true}

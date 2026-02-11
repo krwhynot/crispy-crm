@@ -103,7 +103,7 @@ export function createDefaultListContext() {
 
 // Reset all mock function states
 export function resetMocks(): void {
-  vi.clearAllMocks();
+  vi.resetAllMocks();
   mockOpenSlideOver.mockClear();
   mockCloseSlideOver.mockClear();
   mockToggleMode.mockClear();

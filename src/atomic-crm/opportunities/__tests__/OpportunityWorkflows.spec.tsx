@@ -2,7 +2,8 @@
  * @vitest-environment jsdom
  */
 
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { screen, fireEvent, waitFor } from "@testing-library/react";
+import { renderWithAdminContext } from "@/tests/utils/render-admin";
 import { AdminContext } from "ra-core";
 import { MemoryRouter } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -84,7 +85,7 @@ const TestWrapper = ({ children }: { children: React.ReactNode }) => {
 
 describe("Opportunity Lifecycle Workflows", () => {
   beforeEach(() => {
-    vi.clearAllMocks();
+    vi.resetAllMocks();
 
     mockDataProvider.getList.mockImplementation((resource) => {
       if (resource === "organizations") {
@@ -127,7 +128,7 @@ describe("Opportunity Lifecycle Workflows", () => {
 
   describe("Create New Opportunity Workflow", () => {
     it("should create opportunity with lifecycle stages", async () => {
-      render(
+      renderWithAdminContext(
         <TestWrapper>
           <OpportunityCreate />
         </TestWrapper>
@@ -186,7 +187,7 @@ describe("Opportunity Lifecycle Workflows", () => {
     });
 
     it("should validate required fields during creation", async () => {
-      render(
+      renderWithAdminContext(
         <TestWrapper>
           <OpportunityCreate />
         </TestWrapper>
@@ -206,7 +207,7 @@ describe("Opportunity Lifecycle Workflows", () => {
     });
 
     it("should create opportunity participants automatically", async () => {
-      render(
+      renderWithAdminContext(
         <TestWrapper>
           <OpportunityCreate />
         </TestWrapper>
@@ -267,7 +268,7 @@ describe("Opportunity Lifecycle Workflows", () => {
     });
 
     it("should progress from new_lead to initial_outreach stage", async () => {
-      render(
+      renderWithAdminContext(
         <TestWrapper>
           <OpportunityEdit />
         </TestWrapper>
@@ -317,7 +318,7 @@ describe("Opportunity Lifecycle Workflows", () => {
           data: { ...mockOpportunity, stage, probability },
         });
 
-        render(
+        renderWithAdminContext(
           <TestWrapper>
             <OpportunityEdit />
           </TestWrapper>
@@ -331,7 +332,7 @@ describe("Opportunity Lifecycle Workflows", () => {
     });
 
     it("should handle closed lost stage", async () => {
-      render(
+      renderWithAdminContext(
         <TestWrapper>
           <OpportunityEdit />
         </TestWrapper>

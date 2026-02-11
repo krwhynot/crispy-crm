@@ -8,7 +8,8 @@
  */
 
 import { describe, test, expect, vi, beforeEach } from "vitest";
-import { screen, render, fireEvent } from "@testing-library/react";
+import { screen, fireEvent } from "@testing-library/react";
+import { renderWithAdminContext } from "@/tests/utils/render-admin";
 import { PremiumDatagrid } from "../PremiumDatagrid";
 
 // Mock useListContext from react-admin
@@ -92,14 +93,14 @@ vi.mock("@/lib/utils", () => ({
 
 describe("PremiumDatagrid", () => {
   beforeEach(() => {
-    vi.clearAllMocks();
+    vi.resetAllMocks();
   });
 
   describe("Row Click", () => {
     test("calls onClick with record ID when row clicked", () => {
       const handleRowClick = vi.fn();
 
-      render(
+      renderWithAdminContext(
         <PremiumDatagrid onRowClick={handleRowClick}>
           <span data-testid="column">Column</span>
         </PremiumDatagrid>
@@ -115,7 +116,7 @@ describe("PremiumDatagrid", () => {
     test("calls onClick with correct ID for different rows", () => {
       const handleRowClick = vi.fn();
 
-      render(
+      renderWithAdminContext(
         <PremiumDatagrid onRowClick={handleRowClick}>
           <span>Column</span>
         </PremiumDatagrid>
@@ -134,7 +135,7 @@ describe("PremiumDatagrid", () => {
     test("supports keyboard activation with Enter key", () => {
       const handleRowClick = vi.fn();
 
-      render(
+      renderWithAdminContext(
         <PremiumDatagrid onRowClick={handleRowClick}>
           <span>Column</span>
         </PremiumDatagrid>
@@ -149,7 +150,7 @@ describe("PremiumDatagrid", () => {
     test("supports keyboard activation with Space key", () => {
       const handleRowClick = vi.fn();
 
-      render(
+      renderWithAdminContext(
         <PremiumDatagrid onRowClick={handleRowClick}>
           <span>Column</span>
         </PremiumDatagrid>
@@ -162,7 +163,7 @@ describe("PremiumDatagrid", () => {
     });
 
     test("does not call onClick when onRowClick is not provided", () => {
-      render(
+      renderWithAdminContext(
         <PremiumDatagrid>
           <span>Column</span>
         </PremiumDatagrid>
@@ -175,7 +176,7 @@ describe("PremiumDatagrid", () => {
 
   describe("Focused Row", () => {
     test("highlights row matching focusedIndex", () => {
-      render(
+      renderWithAdminContext(
         <PremiumDatagrid focusedIndex={1}>
           <span>Column</span>
         </PremiumDatagrid>
@@ -188,7 +189,7 @@ describe("PremiumDatagrid", () => {
     });
 
     test("applies focus class only to correct row index", () => {
-      render(
+      renderWithAdminContext(
         <PremiumDatagrid focusedIndex={0}>
           <span>Column</span>
         </PremiumDatagrid>
@@ -204,7 +205,7 @@ describe("PremiumDatagrid", () => {
     });
 
     test("applies table-row-premium class to all rows", () => {
-      render(
+      renderWithAdminContext(
         <PremiumDatagrid>
           <span>Column</span>
         </PremiumDatagrid>
@@ -215,7 +216,7 @@ describe("PremiumDatagrid", () => {
     });
 
     test("does not apply focus styling when focusedIndex is undefined", () => {
-      render(
+      renderWithAdminContext(
         <PremiumDatagrid focusedIndex={undefined}>
           <span>Column</span>
         </PremiumDatagrid>
@@ -227,7 +228,7 @@ describe("PremiumDatagrid", () => {
     });
 
     test("does not apply focus styling when focusedIndex is -1", () => {
-      render(
+      renderWithAdminContext(
         <PremiumDatagrid focusedIndex={-1}>
           <span>Column</span>
         </PremiumDatagrid>
@@ -241,7 +242,7 @@ describe("PremiumDatagrid", () => {
       const customRowClassName = (record: unknown, index: number) =>
         index === 0 ? "custom-first-row" : "custom-row";
 
-      render(
+      renderWithAdminContext(
         <PremiumDatagrid rowClassName={customRowClassName}>
           <span>Column</span>
         </PremiumDatagrid>
@@ -258,7 +259,7 @@ describe("PremiumDatagrid", () => {
     });
 
     test("supports external rowClassName string", () => {
-      render(
+      renderWithAdminContext(
         <PremiumDatagrid rowClassName="custom-static-class">
           <span>Column</span>
         </PremiumDatagrid>
@@ -270,7 +271,7 @@ describe("PremiumDatagrid", () => {
     });
 
     test("merges focus styling with external rowClassName", () => {
-      render(
+      renderWithAdminContext(
         <PremiumDatagrid focusedIndex={0} rowClassName="custom-class">
           <span>Column</span>
         </PremiumDatagrid>
@@ -285,7 +286,7 @@ describe("PremiumDatagrid", () => {
 
   describe("Column Rendering", () => {
     test("passes children to Datagrid", () => {
-      render(
+      renderWithAdminContext(
         <PremiumDatagrid>
           <span data-testid="child-column-1">Column 1</span>
           <span data-testid="child-column-2">Column 2</span>
@@ -297,7 +298,7 @@ describe("PremiumDatagrid", () => {
     });
 
     test("renders within overflow container", () => {
-      const { container } = render(
+      const { container } = renderWithAdminContext(
         <PremiumDatagrid>
           <span>Column</span>
         </PremiumDatagrid>
@@ -312,7 +313,7 @@ describe("PremiumDatagrid", () => {
 
   describe("Empty State", () => {
     test("renders datagrid structure even with empty data array", () => {
-      render(
+      renderWithAdminContext(
         <PremiumDatagrid>
           <span data-testid="empty-column">Column</span>
         </PremiumDatagrid>
@@ -325,7 +326,7 @@ describe("PremiumDatagrid", () => {
 
   describe("Props Passthrough", () => {
     test("passes additional props to Datagrid", () => {
-      render(
+      renderWithAdminContext(
         <PremiumDatagrid bulkActionButtons={false}>
           <span>Column</span>
         </PremiumDatagrid>

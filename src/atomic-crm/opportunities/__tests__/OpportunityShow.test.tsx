@@ -497,7 +497,7 @@ describe("OpportunityShow", () => {
       });
 
       unmount();
-      vi.clearAllMocks();
+      vi.resetAllMocks();
     }
   });
 

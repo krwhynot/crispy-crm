@@ -1,11 +1,12 @@
-import { render, screen } from "@testing-library/react";
+import { screen } from "@testing-library/react";
+import { renderWithAdminContext } from "@/tests/utils/render-admin";
 import { MemoryRouter } from "react-router-dom";
 import { describe, it, expect } from "vitest";
 import { ReportPageShell } from "./ReportPageShell";
 
 describe("ReportPageShell", () => {
   it("renders breadcrumbs with Reports root link", () => {
-    render(
+    renderWithAdminContext(
       <MemoryRouter>
         <ReportPageShell
           title="Weekly Activity"
@@ -23,7 +24,7 @@ describe("ReportPageShell", () => {
   });
 
   it("renders title with semantic heading", () => {
-    render(
+    renderWithAdminContext(
       <MemoryRouter>
         <ReportPageShell title="Campaign Activity" breadcrumbs={[]}>
           <div>Content</div>
@@ -37,7 +38,7 @@ describe("ReportPageShell", () => {
   });
 
   it("renders actions slot when provided", () => {
-    render(
+    renderWithAdminContext(
       <MemoryRouter>
         <ReportPageShell title="Test" breadcrumbs={[]} actions={<button>Export</button>}>
           <div>Content</div>
@@ -49,7 +50,7 @@ describe("ReportPageShell", () => {
   });
 
   it("uses semantic spacing tokens", () => {
-    const { container } = render(
+    const { container } = renderWithAdminContext(
       <MemoryRouter>
         <ReportPageShell title="Test" breadcrumbs={[]}>
           <div>Content</div>

@@ -113,7 +113,7 @@ const createMockActivity = (overrides: Partial<TeamActivity> = {}): TeamActivity
 
 describe("useTeamActivities", () => {
   beforeEach(() => {
-    vi.clearAllMocks();
+    vi.resetAllMocks();
     mockGetList.mockReset();
   });
 

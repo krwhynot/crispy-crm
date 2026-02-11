@@ -1,31 +1,32 @@
 import { describe, it, expect, vi } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { screen } from "@testing-library/react";
+import { renderWithAdminContext } from "@/tests/utils/render-admin";
 import userEvent from "@testing-library/user-event";
 import { NextTaskBadge } from "../NextTaskBadge";
 
 describe("NextTaskBadge", () => {
   describe("empty states", () => {
     it("renders 'No tasks' when taskId is null", () => {
-      render(<NextTaskBadge taskId={null} title={null} dueDate={null} priority={null} />);
+      renderWithAdminContext(<NextTaskBadge taskId={null} title={null} dueDate={null} priority={null} />);
       expect(screen.getByText("No tasks")).toBeInTheDocument();
     });
 
     it("renders 'No tasks' when taskId is undefined", () => {
-      render(
+      renderWithAdminContext(
         <NextTaskBadge taskId={undefined} title="Some title" dueDate="2025-12-20" priority="high" />
       );
       expect(screen.getByText("No tasks")).toBeInTheDocument();
     });
 
     it("renders 'No tasks' when title is missing", () => {
-      render(<NextTaskBadge taskId={123} title={null} dueDate="2025-12-20" priority="high" />);
+      renderWithAdminContext(<NextTaskBadge taskId={123} title={null} dueDate="2025-12-20" priority="high" />);
       expect(screen.getByText("No tasks")).toBeInTheDocument();
     });
   });
 
   describe("task display", () => {
     it("renders task title when provided", () => {
-      render(
+      renderWithAdminContext(
         <NextTaskBadge
           taskId={123}
           title="Call buyer about pricing"
@@ -37,14 +38,14 @@ describe("NextTaskBadge", () => {
     });
 
     it("renders as a button element for accessibility", () => {
-      render(
+      renderWithAdminContext(
         <NextTaskBadge taskId={123} title="Follow up call" dueDate="2025-12-25" priority="medium" />
       );
       expect(screen.getByRole("button")).toBeInTheDocument();
     });
 
     it("includes task title in aria-label", () => {
-      render(<NextTaskBadge taskId={123} title="Send proposal" dueDate={null} priority="medium" />);
+      renderWithAdminContext(<NextTaskBadge taskId={123} title="Send proposal" dueDate={null} priority="medium" />);
       const button = screen.getByRole("button");
       expect(button).toHaveAttribute("aria-label", "Task: Send proposal");
     });
@@ -56,7 +57,7 @@ describe("NextTaskBadge", () => {
       twoDaysAgo.setDate(twoDaysAgo.getDate() - 2);
       const dateStr = twoDaysAgo.toISOString().split("T")[0];
 
-      render(
+      renderWithAdminContext(
         <NextTaskBadge taskId={123} title="Past due task" dueDate={dateStr} priority="medium" />
       );
       // Should show "Xd overdue" text - find by pattern
@@ -73,7 +74,7 @@ describe("NextTaskBadge", () => {
       // Append local time to ensure date-fns parses it in local timezone
       const todayWithTime = `${year}-${month}-${day}T12:00:00`;
 
-      render(
+      renderWithAdminContext(
         <NextTaskBadge
           taskId={123}
           title="Today's task"
@@ -89,7 +90,7 @@ describe("NextTaskBadge", () => {
       tomorrow.setDate(tomorrow.getDate() + 2);
       const dateStr = tomorrow.toISOString().split("T")[0];
 
-      render(<NextTaskBadge taskId={123} title="Soon task" dueDate={dateStr} priority="medium" />);
+      renderWithAdminContext(<NextTaskBadge taskId={123} title="Soon task" dueDate={dateStr} priority="medium" />);
       // Should show a day abbreviation like "Mon", "Tue", etc.
       const dayAbbreviations = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
       const hasDayAbbr = dayAbbreviations.some((day) => screen.queryByText(day));
@@ -101,7 +102,7 @@ describe("NextTaskBadge", () => {
       futureDate.setDate(futureDate.getDate() + 10);
       const dateStr = futureDate.toISOString().split("T")[0];
 
-      render(
+      renderWithAdminContext(
         <NextTaskBadge taskId={123} title="Future task" dueDate={dateStr} priority="medium" />
       );
       // Should show something like "Dec 26"
@@ -109,7 +110,7 @@ describe("NextTaskBadge", () => {
     });
 
     it("handles null due date gracefully", () => {
-      render(<NextTaskBadge taskId={123} title="No date task" dueDate={null} priority="high" />);
+      renderWithAdminContext(<NextTaskBadge taskId={123} title="No date task" dueDate={null} priority="high" />);
       expect(screen.getByText("No date task")).toBeInTheDocument();
       // Should not crash, just not show a date
     });
@@ -117,7 +118,7 @@ describe("NextTaskBadge", () => {
 
   describe("priority badge", () => {
     it("shows priority badge for high priority", () => {
-      render(
+      renderWithAdminContext(
         <NextTaskBadge taskId={123} title="Important task" dueDate="2025-12-25" priority="high" />
       );
       // Find the badge specifically (it has data-slot="badge")
@@ -127,7 +128,7 @@ describe("NextTaskBadge", () => {
     });
 
     it("shows priority badge for critical priority", () => {
-      render(
+      renderWithAdminContext(
         <NextTaskBadge taskId={123} title="Urgent task" dueDate="2025-12-25" priority="critical" />
       );
       // Find the badge specifically (it has data-slot="badge")
@@ -137,7 +138,7 @@ describe("NextTaskBadge", () => {
     });
 
     it("shows priority badge for medium priority", () => {
-      render(
+      renderWithAdminContext(
         <NextTaskBadge taskId={123} title="Regular task" dueDate="2025-12-25" priority="medium" />
       );
       // Medium priority shows a badge
@@ -147,7 +148,7 @@ describe("NextTaskBadge", () => {
     });
 
     it("does not show priority badge for low priority", () => {
-      render(
+      renderWithAdminContext(
         <NextTaskBadge
           taskId={123}
           title="Task without badge"
@@ -164,7 +165,7 @@ describe("NextTaskBadge", () => {
     });
 
     it("handles null priority gracefully", () => {
-      render(
+      renderWithAdminContext(
         <NextTaskBadge taskId={123} title="No priority task" dueDate="2025-12-25" priority={null} />
       );
       expect(screen.getByText("No priority task")).toBeInTheDocument();
@@ -176,7 +177,7 @@ describe("NextTaskBadge", () => {
       const handleClick = vi.fn();
       const user = userEvent.setup();
 
-      render(
+      renderWithAdminContext(
         <NextTaskBadge
           taskId={123}
           title="Clickable task"
@@ -193,7 +194,7 @@ describe("NextTaskBadge", () => {
     it("works without onClick handler", async () => {
       const user = userEvent.setup();
 
-      render(
+      renderWithAdminContext(
         <NextTaskBadge
           taskId={123}
           title="No click handler"
@@ -209,7 +210,7 @@ describe("NextTaskBadge", () => {
 
   describe("accessibility", () => {
     it("has minimum touch target height (44px via min-h-11)", () => {
-      render(
+      renderWithAdminContext(
         <NextTaskBadge
           taskId={123}
           title="Touch target test"
@@ -227,7 +228,7 @@ describe("NextTaskBadge", () => {
       futureDate.setDate(futureDate.getDate() + 7);
       const dateStr = futureDate.toISOString().split("T")[0];
 
-      render(<NextTaskBadge taskId={123} title="Future task" dueDate={dateStr} priority="high" />);
+      renderWithAdminContext(<NextTaskBadge taskId={123} title="Future task" dueDate={dateStr} priority="high" />);
       const button = screen.getByRole("button");
       // Should include date info in aria-label
       expect(button.getAttribute("aria-label")).toContain("Future task");
@@ -236,7 +237,7 @@ describe("NextTaskBadge", () => {
     });
 
     it("applies custom className", () => {
-      render(
+      renderWithAdminContext(
         <NextTaskBadge
           taskId={123}
           title="Custom class"

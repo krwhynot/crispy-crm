@@ -67,8 +67,6 @@ export function useReportData<T extends RaRecord>(
   // when parent component creates new object references on each render
   const dateStartStr = dateRange?.start?.toISOString() ?? null;
   const dateEndStr = dateRange?.end?.toISOString() ?? null;
-  const additionalFiltersStr = JSON.stringify(additionalFilters ?? {});
-
   // Memoize filter object using primitive dependencies only
   const filter = useMemo(() => {
     const baseFilter: Record<string, unknown> = additionalFilters ? { ...additionalFilters } : {};
@@ -84,7 +82,7 @@ export function useReportData<T extends RaRecord>(
     }
 
     return baseFilter;
-  }, [additionalFiltersStr, dateStartStr, dateEndStr, salesRepId, dateField, additionalFilters]);
+  }, [dateStartStr, dateEndStr, salesRepId, dateField, additionalFilters]);
 
   useEffect(() => {
     let cancelled = false;

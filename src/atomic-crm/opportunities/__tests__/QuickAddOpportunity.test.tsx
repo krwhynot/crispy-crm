@@ -1,4 +1,5 @@
-import { render, screen, fireEvent } from "@testing-library/react";
+import { screen, fireEvent } from "@testing-library/react";
+import { renderWithAdminContext } from "@/tests/utils/render-admin";
 import { QuickAddOpportunity } from "../kanban/QuickAddOpportunity";
 import { describe, it, expect, vi } from "vitest";
 import type * as ReactAdmin from "react-admin";
@@ -27,13 +28,13 @@ vi.mock("react-admin", async (importOriginal) => {
 
 describe("QuickAddOpportunity", () => {
   it("renders button to open modal", () => {
-    render(<QuickAddOpportunity stage="new_lead" />);
+    renderWithAdminContext(<QuickAddOpportunity stage="new_lead" />);
 
     expect(screen.getByText("+ New Opportunity")).toBeInTheDocument();
   });
 
   it("opens modal on button click", () => {
-    render(<QuickAddOpportunity stage="new_lead" />);
+    renderWithAdminContext(<QuickAddOpportunity stage="new_lead" />);
 
     fireEvent.click(screen.getByText("+ New Opportunity"));
 
@@ -43,7 +44,7 @@ describe("QuickAddOpportunity", () => {
   });
 
   it("pre-fills stage field with column stage", () => {
-    render(<QuickAddOpportunity stage="demo_scheduled" />);
+    renderWithAdminContext(<QuickAddOpportunity stage="demo_scheduled" />);
 
     fireEvent.click(screen.getByText("+ New Opportunity"));
 

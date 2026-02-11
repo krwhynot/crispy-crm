@@ -68,7 +68,7 @@ vi.mock("../csvProcessor", () => ({
 
 describe("useColumnMapping", () => {
   beforeEach(() => {
-    vi.clearAllMocks();
+    vi.resetAllMocks();
   });
 
   // ============================================================

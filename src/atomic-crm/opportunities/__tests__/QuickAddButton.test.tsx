@@ -1,5 +1,6 @@
 import { describe, it, expect, vi } from "vitest";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { screen, fireEvent } from "@testing-library/react";
+import { renderWithAdminContext } from "@/tests/utils/render-admin";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { QuickAddButton } from "../QuickAddButton";
 
@@ -27,7 +28,7 @@ const TestWrapper = ({ children }: { children: React.ReactNode }) => {
 
 describe("QuickAddButton", () => {
   it("renders button with correct text", () => {
-    render(<QuickAddButton />, { wrapper: TestWrapper });
+    renderWithAdminContext(<QuickAddButton />, { wrapper: TestWrapper });
     // Button contains both emoji and text
     const button = screen.getByRole("button");
     expect(button).toBeInTheDocument();
@@ -35,13 +36,13 @@ describe("QuickAddButton", () => {
   });
 
   it("has correct variant and size", () => {
-    render(<QuickAddButton />, { wrapper: TestWrapper });
+    renderWithAdminContext(<QuickAddButton />, { wrapper: TestWrapper });
     const button = screen.getByRole("button");
     expect(button).toHaveClass("bg-background"); // outline variant includes bg-background
   });
 
   it("opens dialog when clicked", () => {
-    render(<QuickAddButton />, { wrapper: TestWrapper });
+    renderWithAdminContext(<QuickAddButton />, { wrapper: TestWrapper });
     const button = screen.getByRole("button");
 
     // Dialog should not be visible initially
@@ -56,7 +57,7 @@ describe("QuickAddButton", () => {
   });
 
   it("ensures minimum touch target size", () => {
-    render(<QuickAddButton />, { wrapper: TestWrapper });
+    renderWithAdminContext(<QuickAddButton />, { wrapper: TestWrapper });
     const button = screen.getByRole("button");
     expect(button).toHaveClass("min-h-[44px]");
     expect(button).toHaveClass("min-w-[44px]");

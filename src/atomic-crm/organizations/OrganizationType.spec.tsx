@@ -125,7 +125,7 @@ const TestWrapper = ({ children }: { children: React.ReactNode }) => {
 
 describe("Organization Type Support", () => {
   beforeEach(() => {
-    vi.clearAllMocks();
+    vi.resetAllMocks();
 
     // Mock getList for organizations
     mockDataProvider.getList.mockImplementation((resource, params) => {

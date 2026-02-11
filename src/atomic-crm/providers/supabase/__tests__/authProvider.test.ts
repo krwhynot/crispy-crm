@@ -124,7 +124,7 @@ describe("authProvider", () => {
       const publicPaths = ["/login", "/forgot-password", "/set-password", "/reset-password"];
 
       for (const path of publicPaths) {
-        vi.clearAllMocks();
+        vi.resetAllMocks();
 
         // Mock no session for each test
         vi.mocked(supabase.auth.getSession).mockResolvedValue({

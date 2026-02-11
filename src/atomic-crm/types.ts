@@ -10,7 +10,7 @@ import type {
 import type { Organization } from "./validation/organizations";
 // Note: OpportunityStageValue, LeadSource, SampleStatus are re-exported below
 // Database enum import removed - InteractionType now comes from re-exported ActivityRecord
-import { z } from "zod";
+import type { z } from "zod";
 
 // ============================================================================
 // P2 TYPE CONSOLIDATION: Zod-inferred types as Single Source of Truth
@@ -61,7 +61,7 @@ import type {
 // SignUpData type removed - all users created through Sales management
 
 // SalesFormData type - Single Source of Truth via Zod schema inference
-import { createSalesSchema } from "./validation/sales";
+import type { createSalesSchema } from "./validation/sales";
 export type SalesFormData = z.infer<typeof createSalesSchema>;
 
 // Sale type is now exported from validation/sales.ts (P2 consolidation)
@@ -85,7 +85,7 @@ export interface OrganizationWithHierarchy extends Organization {
 }
 
 // EmailAndType and PhoneNumberAndType types - Single Source of Truth via Zod schema inference
-import {
+import type {
   emailAndTypeSchema,
   phoneNumberAndTypeSchema,
 } from "./validation/contacts/contacts-communication";

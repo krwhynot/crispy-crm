@@ -261,7 +261,6 @@ const DateInputControl = React.forwardRef<HTMLButtonElement, DateInputControlPro
             selected={selectedDate}
             onSelect={onSelect}
             disabled={isDateDisabled}
-            autoFocus
           />
         </PopoverContent>
       </Popover>

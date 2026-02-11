@@ -18,7 +18,7 @@ const mockUseGetIdentity = useGetIdentity as ReturnType<typeof vi.fn>;
 
 describe("useCurrentSale", () => {
   beforeEach(() => {
-    vi.clearAllMocks();
+    vi.resetAllMocks();
   });
 
   it("should return sales ID from identity", async () => {

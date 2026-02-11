@@ -11,7 +11,8 @@
  */
 
 import { describe, it, expect, vi } from "vitest";
-import { render, screen, waitFor } from "@testing-library/react";
+import { screen, waitFor } from "@testing-library/react";
+import { renderWithAdminContext } from "@/tests/utils/render-admin";
 import userEvent from "@testing-library/user-event";
 import { FormProvider, useForm } from "react-hook-form";
 import { createFormResolver } from "@/lib/zodErrorFormatting";
@@ -73,7 +74,7 @@ describe("Form Primitives Accessibility", () => {
     it("error messages have role='alert' and aria-live='polite'", async () => {
       const user = userEvent.setup();
 
-      render(
+      renderWithAdminContext(
         <TestForm>
           <TestField name="title" label="Title" />
         </TestForm>
@@ -84,11 +85,11 @@ describe("Form Primitives Accessibility", () => {
 
       // Wait for error to appear
       await waitFor(() => {
-        const errorElement = screen.getByText(/title is required/i);
+        const errorElement = screen.getByText(/this field is required/i);
         expect(errorElement).toBeInTheDocument();
       });
 
-      const errorElement = screen.getByText(/title is required/i);
+      const errorElement = screen.getByText(/this field is required/i);
 
       // Verify ARIA attributes for screen readers
       expect(errorElement).toHaveAttribute("role", "alert");
@@ -98,7 +99,7 @@ describe("Form Primitives Accessibility", () => {
     it("invalid inputs have aria-invalid='true'", async () => {
       const user = userEvent.setup();
 
-      render(
+      renderWithAdminContext(
         <TestForm>
           <TestField name="title" label="Title" />
         </TestForm>
@@ -118,7 +119,7 @@ describe("Form Primitives Accessibility", () => {
     it("valid inputs do not have aria-invalid='true'", async () => {
       const user = userEvent.setup();
 
-      render(
+      renderWithAdminContext(
         <TestForm defaultValues={{ title: "Valid Title", email: "test@example.com" }}>
           <TestField name="title" label="Title" />
         </TestForm>
@@ -136,7 +137,7 @@ describe("Form Primitives Accessibility", () => {
     it("inputs reference errors via aria-describedby", async () => {
       const user = userEvent.setup();
 
-      render(
+      renderWithAdminContext(
         <TestForm>
           <TestField name="title" label="Title" />
         </TestForm>
@@ -163,14 +164,14 @@ describe("Form Primitives Accessibility", () => {
       if (messageId) {
         const errorElement = document.getElementById(messageId);
         expect(errorElement).toBeInTheDocument();
-        expect(errorElement).toHaveTextContent(/title is required/i);
+        expect(errorElement).toHaveTextContent(/this field is required/i);
       }
     });
   });
 
   describe("Label Accessibility", () => {
     it("labels are properly associated with inputs via htmlFor", () => {
-      render(
+      renderWithAdminContext(
         <TestForm>
           <TestField name="title" label="Title" />
         </TestForm>
@@ -186,7 +187,7 @@ describe("Form Primitives Accessibility", () => {
     it("labels show error state with data-error attribute", async () => {
       const user = userEvent.setup();
 
-      render(
+      renderWithAdminContext(
         <TestForm>
           <TestField name="title" label="Title" />
         </TestForm>
@@ -209,7 +210,7 @@ describe("Form Primitives Accessibility", () => {
 
   describe("Form Field Structure", () => {
     it("form fields have role='group' for screen readers", () => {
-      render(
+      renderWithAdminContext(
         <TestForm>
           <TestField name="title" label="Title" />
         </TestForm>
@@ -225,7 +226,7 @@ describe("Form Primitives Accessibility", () => {
     it("inputs are focusable via tab", async () => {
       const user = userEvent.setup();
 
-      render(
+      renderWithAdminContext(
         <TestForm>
           <TestField name="title" label="Title" />
           <TestField name="email" label="Email" />
@@ -243,7 +244,7 @@ describe("Form Primitives Accessibility", () => {
     it("submit button is focusable via tab", async () => {
       const user = userEvent.setup();
 
-      render(
+      renderWithAdminContext(
         <TestForm>
           <TestField name="title" label="Title" />
         </TestForm>
@@ -260,7 +261,7 @@ describe("Form Primitives Accessibility", () => {
     it("error messages are announced via aria-live region", async () => {
       const user = userEvent.setup();
 
-      render(
+      renderWithAdminContext(
         <TestForm>
           <TestField name="title" label="Title" />
         </TestForm>
@@ -270,7 +271,7 @@ describe("Form Primitives Accessibility", () => {
       await user.click(screen.getByRole("button", { name: /save/i }));
 
       await waitFor(() => {
-        const errorElement = screen.getByText(/title is required/i);
+        const errorElement = screen.getByText(/this field is required/i);
 
         // aria-live="polite" means it will be announced after current speech
         expect(errorElement).toHaveAttribute("aria-live", "polite");
@@ -280,7 +281,7 @@ describe("Form Primitives Accessibility", () => {
     it("multiple validation errors are each announced", async () => {
       const user = userEvent.setup();
 
-      render(
+      renderWithAdminContext(
         <TestForm defaultValues={{ email: "invalid" }}>
           <TestField name="title" label="Title" />
           <TestField name="email" label="Email" />
@@ -308,7 +309,7 @@ describe("Form Primitives Accessibility", () => {
     it("invalid inputs have destructive styling via aria-invalid", async () => {
       const user = userEvent.setup();
 
-      render(
+      renderWithAdminContext(
         <TestForm>
           <TestField name="title" label="Title" />
         </TestForm>
@@ -329,7 +330,7 @@ describe("Form Primitives Accessibility", () => {
 
 describe("Input Component Accessibility", () => {
   it("Input component supports aria-invalid styling", () => {
-    render(<Input aria-invalid={true} data-testid="invalid-input" />);
+    renderWithAdminContext(<Input aria-invalid={true} data-testid="invalid-input" />);
 
     const input = screen.getByTestId("invalid-input");
     expect(input).toHaveAttribute("aria-invalid", "true");

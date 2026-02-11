@@ -67,7 +67,7 @@ describe("useFavorites", () => {
   let mockNotify: Mock;
 
   beforeEach(() => {
-    vi.clearAllMocks();
+    vi.resetAllMocks();
 
     // Setup queryClient mock with invalidateQueries spy
     mockInvalidateQueries = vi.fn();

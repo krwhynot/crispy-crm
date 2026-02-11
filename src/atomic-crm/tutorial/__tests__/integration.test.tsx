@@ -1,5 +1,6 @@
 import { describe, it, expect, vi } from "vitest";
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { screen, fireEvent, waitFor } from "@testing-library/react";
+import { renderWithAdminContext } from "@/tests/utils/render-admin";
 import { MemoryRouter } from "react-router-dom";
 import { TutorialProvider, useTutorial } from "../TutorialProvider";
 import { TutorialLauncher } from "../TutorialLauncher";
@@ -64,7 +65,7 @@ describe("Tutorial Integration", () => {
   it("should render tutorial launcher in dropdown without crashing", () => {
     // The TutorialLauncher renders inside a dropdown submenu
     // We just verify it doesn't crash when rendered in a parent menu
-    const { container } = render(
+    const { container } = renderWithAdminContext(
       <TestWrapper>
         <TutorialLauncherWrapper />
       </TestWrapper>
@@ -88,7 +89,7 @@ describe("Tutorial Integration", () => {
       );
     }
 
-    render(
+    renderWithAdminContext(
       <TestWrapper>
         <ContextChecker />
       </TestWrapper>
@@ -104,7 +105,7 @@ describe("Tutorial Integration", () => {
       return <button onClick={() => startTutorial("contacts")}>Start</button>;
     }
 
-    render(
+    renderWithAdminContext(
       <TestWrapper>
         <ContextChecker />
       </TestWrapper>

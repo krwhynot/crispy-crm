@@ -53,7 +53,7 @@ function createMockActivity(overrides: Partial<ActivityRecord> = {}): ActivityRe
 
 describe("ActivityShow", () => {
   beforeEach(() => {
-    vi.clearAllMocks();
+    vi.resetAllMocks();
   });
 
   describe("Loading State", () => {

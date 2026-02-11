@@ -12,7 +12,8 @@
 
 import React from "react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { screen } from "@testing-library/react";
+import { renderWithAdminContext } from "@/tests/utils/render-admin";
 import { ParentOrganizationInput } from "../ParentOrganizationInput";
 
 // Mock ra-core - useRecordContext returns the current record
@@ -56,7 +57,7 @@ vi.mock("@/atomic-crm/utils/autocompleteDefaults", () => ({
 
 describe("ParentOrganizationInput", () => {
   beforeEach(() => {
-    vi.clearAllMocks();
+    vi.resetAllMocks();
     mockReferenceInputProps.mockClear();
     mockAutocompleteInputProps.mockClear();
   });
@@ -71,7 +72,7 @@ describe("ParentOrganizationInput", () => {
         isFetched: false,
       });
 
-      render(<ParentOrganizationInput />);
+      renderWithAdminContext(<ParentOrganizationInput />);
 
       // Expect: Loading skeleton with "Loading hierarchy..." text
       expect(screen.getByText("Loading hierarchy...")).toBeInTheDocument();
@@ -88,7 +89,7 @@ describe("ParentOrganizationInput", () => {
         isFetched: true,
       });
 
-      render(<ParentOrganizationInput />);
+      renderWithAdminContext(<ParentOrganizationInput />);
 
       // Expect: ReferenceInput rendered, no loading state
       expect(screen.queryByText("Loading hierarchy...")).not.toBeInTheDocument();
@@ -106,7 +107,7 @@ describe("ParentOrganizationInput", () => {
         isFetched: true,
       });
 
-      render(<ParentOrganizationInput />);
+      renderWithAdminContext(<ParentOrganizationInput />);
 
       // Expect: ReferenceInput filter includes self exclusion
       expect(mockReferenceInputProps).toHaveBeenCalled();
@@ -125,7 +126,7 @@ describe("ParentOrganizationInput", () => {
         isFetched: true,
       });
 
-      render(<ParentOrganizationInput />);
+      renderWithAdminContext(<ParentOrganizationInput />);
 
       // Expect: filter excludes self + all descendants
       expect(mockReferenceInputProps).toHaveBeenCalled();
@@ -142,7 +143,7 @@ describe("ParentOrganizationInput", () => {
         isFetched: true,
       });
 
-      const { rerender } = render(<ParentOrganizationInput />);
+      const { rerender } = renderWithAdminContext(<ParentOrganizationInput />);
 
       // Initial render - verify filter
       expect(mockReferenceInputProps).toHaveBeenCalled();
@@ -177,7 +178,7 @@ describe("ParentOrganizationInput", () => {
         isFetched: true,
       });
 
-      render(<ParentOrganizationInput />);
+      renderWithAdminContext(<ParentOrganizationInput />);
 
       // Get the filterToQuery function from AutocompleteInput props
       expect(mockAutocompleteInputProps).toHaveBeenCalled();
@@ -197,7 +198,7 @@ describe("ParentOrganizationInput", () => {
         isFetched: true,
       });
 
-      render(<ParentOrganizationInput />);
+      renderWithAdminContext(<ParentOrganizationInput />);
 
       // Get the filterToQuery function from AutocompleteInput props
       expect(mockAutocompleteInputProps).toHaveBeenCalled();
@@ -220,7 +221,7 @@ describe("ParentOrganizationInput", () => {
         isFetched: false, // Not fetched because no ID was provided
       });
 
-      render(<ParentOrganizationInput />);
+      renderWithAdminContext(<ParentOrganizationInput />);
 
       // Expect: No loading state, ReferenceInput renders immediately
       expect(screen.queryByText("Loading hierarchy...")).not.toBeInTheDocument();
@@ -236,7 +237,7 @@ describe("ParentOrganizationInput", () => {
         isFetched: false,
       });
 
-      render(<ParentOrganizationInput />);
+      renderWithAdminContext(<ParentOrganizationInput />);
 
       // Expect: empty filter (no exclusions needed)
       expect(mockReferenceInputProps).toHaveBeenCalled();
@@ -253,7 +254,7 @@ describe("ParentOrganizationInput", () => {
         isFetched: false,
       });
 
-      render(<ParentOrganizationInput />);
+      renderWithAdminContext(<ParentOrganizationInput />);
 
       // Expect: hook called with undefined (which disables the query)
       expect(mockUseOrganizationDescendants).toHaveBeenCalledWith(undefined);
@@ -269,7 +270,7 @@ describe("ParentOrganizationInput", () => {
         isFetched: true,
       });
 
-      render(<ParentOrganizationInput />);
+      renderWithAdminContext(<ParentOrganizationInput />);
 
       expect(mockReferenceInputProps).toHaveBeenCalled();
       const props = mockReferenceInputProps.mock.calls[0]![0];
@@ -287,13 +288,15 @@ describe("ParentOrganizationInput", () => {
         isFetched: true,
       });
 
-      render(<ParentOrganizationInput />);
+      renderWithAdminContext(<ParentOrganizationInput />);
 
       expect(mockAutocompleteInputProps).toHaveBeenCalled();
       const props = mockAutocompleteInputProps.mock.calls[0]![0];
       expect(props.label).toBe("Parent Organization");
       expect(props.emptyText).toBe("No parent organization");
-      expect(props.helperText).toBe("Link this organization to its parent (e.g., Sysco Chicago → Sysco Corporation for regional branches)");
+      expect(props.helperText).toBe(
+        "Link this organization to its parent (e.g., Sysco Chicago → Sysco Corporation for regional branches)"
+      );
       expect(props.optionText).toBe("name");
     });
 
@@ -305,7 +308,7 @@ describe("ParentOrganizationInput", () => {
         isFetched: true,
       });
 
-      render(<ParentOrganizationInput />);
+      renderWithAdminContext(<ParentOrganizationInput />);
 
       expect(mockAutocompleteInputProps).toHaveBeenCalled();
       const props = mockAutocompleteInputProps.mock.calls[0]![0];
@@ -322,7 +325,7 @@ describe("ParentOrganizationInput", () => {
         isFetched: false,
       });
 
-      render(<ParentOrganizationInput />);
+      renderWithAdminContext(<ParentOrganizationInput />);
 
       expect(screen.getByText("Parent Organization")).toBeInTheDocument();
     });
@@ -335,10 +338,12 @@ describe("ParentOrganizationInput", () => {
         isFetched: false,
       });
 
-      render(<ParentOrganizationInput />);
+      renderWithAdminContext(<ParentOrganizationInput />);
 
       expect(
-        screen.getByText("Link this organization to its parent (e.g., Sysco Chicago → Sysco Corporation for regional branches)")
+        screen.getByText(
+          "Link this organization to its parent (e.g., Sysco Chicago → Sysco Corporation for regional branches)"
+        )
       ).toBeInTheDocument();
     });
   });
@@ -352,7 +357,7 @@ describe("ParentOrganizationInput", () => {
         isFetched: false,
       });
 
-      render(<ParentOrganizationInput />);
+      renderWithAdminContext(<ParentOrganizationInput />);
 
       // Should render without error, treat as new record
       expect(screen.getByTestId("reference-input")).toBeInTheDocument();
@@ -366,7 +371,7 @@ describe("ParentOrganizationInput", () => {
         isFetched: false,
       });
 
-      render(<ParentOrganizationInput />);
+      renderWithAdminContext(<ParentOrganizationInput />);
 
       // Should render without error, treat as new record
       expect(screen.getByTestId("reference-input")).toBeInTheDocument();
@@ -380,7 +385,7 @@ describe("ParentOrganizationInput", () => {
         isFetched: false,
       });
 
-      render(<ParentOrganizationInput />);
+      renderWithAdminContext(<ParentOrganizationInput />);
 
       // Should render without loading state since no ID means new record
       expect(screen.queryByText("Loading hierarchy...")).not.toBeInTheDocument();

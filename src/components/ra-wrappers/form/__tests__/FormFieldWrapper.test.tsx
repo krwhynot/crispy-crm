@@ -1,5 +1,6 @@
 import { describe, test, expect, vi, beforeEach } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { screen } from "@testing-library/react";
+import { renderWithAdminContext } from "@/tests/utils/render-admin";
 import { FormFieldWrapper } from "../FormFieldWrapper";
 
 // Mock react-hook-form
@@ -36,7 +37,7 @@ describe("FormFieldWrapper", () => {
   let mockMarkFieldValid: ReturnType<typeof vi.fn>;
 
   beforeEach(() => {
-    vi.clearAllMocks();
+    vi.resetAllMocks();
     mockRegisterField = vi.fn();
     mockMarkFieldValid = vi.fn();
 
@@ -53,7 +54,7 @@ describe("FormFieldWrapper", () => {
   });
 
   test("registers field with provider on mount", () => {
-    render(
+    renderWithAdminContext(
       <FormFieldWrapper name="email">
         <input data-testid="input" />
       </FormFieldWrapper>
@@ -63,7 +64,7 @@ describe("FormFieldWrapper", () => {
   });
 
   test("registers field as required when isRequired is true", () => {
-    render(
+    renderWithAdminContext(
       <FormFieldWrapper name="email" isRequired>
         <input data-testid="input" />
       </FormFieldWrapper>
@@ -76,7 +77,7 @@ describe("FormFieldWrapper", () => {
     mockUseWatch.mockReturnValue(undefined);
     mockUseFormState.mockReturnValue({ errors: {}, dirtyFields: {} });
 
-    const { container } = render(
+    const { container } = renderWithAdminContext(
       <FormFieldWrapper name="email">
         <input data-testid="input" />
       </FormFieldWrapper>
@@ -90,7 +91,7 @@ describe("FormFieldWrapper", () => {
     mockUseWatch.mockReturnValue("test@example.com");
     mockUseFormState.mockReturnValue({ errors: {}, dirtyFields: {} });
 
-    const { container } = render(
+    const { container } = renderWithAdminContext(
       <FormFieldWrapper name="email">
         <input data-testid="input" />
       </FormFieldWrapper>
@@ -111,7 +112,7 @@ describe("FormFieldWrapper", () => {
       dirtyFields: { email: true },
     });
 
-    const { container } = render(
+    const { container } = renderWithAdminContext(
       <FormFieldWrapper name="email">
         <input data-testid="input" />
       </FormFieldWrapper>
@@ -126,7 +127,7 @@ describe("FormFieldWrapper", () => {
     mockUseWatch.mockReturnValue("test@example.com");
     mockUseFormState.mockReturnValue({ errors: {}, dirtyFields: {} });
 
-    render(
+    renderWithAdminContext(
       <FormFieldWrapper name="email">
         <input data-testid="input" />
       </FormFieldWrapper>
@@ -140,7 +141,7 @@ describe("FormFieldWrapper", () => {
     mockUseWatch.mockReturnValue("test@example.com");
     mockUseFormState.mockReturnValue({ errors: {}, dirtyFields: { email: true } });
 
-    render(
+    renderWithAdminContext(
       <FormFieldWrapper name="email">
         <input data-testid="input" />
       </FormFieldWrapper>
@@ -155,7 +156,7 @@ describe("FormFieldWrapper", () => {
     mockUseWatch.mockReturnValue("new_lead");
     mockUseFormState.mockReturnValue({ errors: {}, dirtyFields: {} });
 
-    render(
+    renderWithAdminContext(
       <FormFieldWrapper name="stage" countDefaultAsFilled>
         <input data-testid="input" />
       </FormFieldWrapper>
@@ -166,7 +167,7 @@ describe("FormFieldWrapper", () => {
   });
 
   test("uses useWatch instead of watch for isolated re-renders", () => {
-    render(
+    renderWithAdminContext(
       <FormFieldWrapper name="email">
         <input data-testid="input" />
       </FormFieldWrapper>
@@ -176,7 +177,7 @@ describe("FormFieldWrapper", () => {
   });
 
   test("applies custom className correctly", () => {
-    const { container } = render(
+    const { container } = renderWithAdminContext(
       <FormFieldWrapper name="email" className="custom-wrapper">
         <input data-testid="input" />
       </FormFieldWrapper>
@@ -187,7 +188,7 @@ describe("FormFieldWrapper", () => {
   });
 
   test("renders children content", () => {
-    render(
+    renderWithAdminContext(
       <FormFieldWrapper name="email">
         <input data-testid="child-input" placeholder="Email" />
       </FormFieldWrapper>
@@ -201,7 +202,7 @@ describe("FormFieldWrapper", () => {
     mockUseWatch.mockReturnValue("value");
     mockUseFormState.mockReturnValue({ errors: {}, dirtyFields: {} });
 
-    const { container } = render(
+    const { container } = renderWithAdminContext(
       <FormFieldWrapper name="email">
         <input data-testid="input" />
       </FormFieldWrapper>
@@ -217,7 +218,7 @@ describe("FormFieldWrapper", () => {
     mockUseWatch.mockReturnValue("value");
     mockUseFormState.mockReturnValue({ errors: {}, dirtyFields: {} });
 
-    const { container } = render(
+    const { container } = renderWithAdminContext(
       <FormFieldWrapper name="email">
         <input data-testid="input" />
       </FormFieldWrapper>
@@ -233,7 +234,7 @@ describe("FormFieldWrapper", () => {
     mockUseWatch.mockReturnValue("value");
     mockUseFormState.mockReturnValue({ errors: {}, dirtyFields: {} });
 
-    const { container } = render(
+    const { container } = renderWithAdminContext(
       <FormFieldWrapper name="email">
         <input data-testid="input" />
       </FormFieldWrapper>
@@ -253,7 +254,7 @@ describe("FormFieldWrapper", () => {
       dirtyFields: { email: true },
     });
 
-    render(
+    renderWithAdminContext(
       <FormFieldWrapper name="email">
         <input data-testid="input" />
       </FormFieldWrapper>
@@ -266,7 +267,7 @@ describe("FormFieldWrapper", () => {
     mockUseWatch.mockReturnValue(null);
     mockUseFormState.mockReturnValue({ errors: {}, dirtyFields: { email: true } });
 
-    const { container } = render(
+    const { container } = renderWithAdminContext(
       <FormFieldWrapper name="email">
         <input data-testid="input" />
       </FormFieldWrapper>
@@ -281,7 +282,7 @@ describe("FormFieldWrapper", () => {
     mockUseWatch.mockReturnValue("");
     mockUseFormState.mockReturnValue({ errors: {}, dirtyFields: { email: true } });
 
-    const { container } = render(
+    const { container } = renderWithAdminContext(
       <FormFieldWrapper name="email">
         <input data-testid="input" />
       </FormFieldWrapper>
@@ -295,7 +296,7 @@ describe("FormFieldWrapper", () => {
   // WCAG 3.3.2 Accessibility Tests
   describe("aria-required propagation (WCAG 3.3.2)", () => {
     test("propagates aria-required='true' to child input when isRequired is true", () => {
-      render(
+      renderWithAdminContext(
         <FormFieldWrapper name="email" isRequired>
           <input data-testid="input" />
         </FormFieldWrapper>
@@ -305,7 +306,7 @@ describe("FormFieldWrapper", () => {
     });
 
     test("does not add aria-required when isRequired is false", () => {
-      render(
+      renderWithAdminContext(
         <FormFieldWrapper name="email">
           <input data-testid="input" />
         </FormFieldWrapper>
@@ -315,7 +316,7 @@ describe("FormFieldWrapper", () => {
     });
 
     test("handles multiple children, applying aria-required to each", () => {
-      render(
+      renderWithAdminContext(
         <FormFieldWrapper name="email" isRequired>
           <input data-testid="input1" />
           <input data-testid="input2" />
@@ -329,7 +330,7 @@ describe("FormFieldWrapper", () => {
     test("gracefully handles non-element children (text nodes)", () => {
       // Should not throw when children include text nodes
       expect(() => {
-        render(
+        renderWithAdminContext(
           <FormFieldWrapper name="email" isRequired>
             Some text
             <input data-testid="input" />

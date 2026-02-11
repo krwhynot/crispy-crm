@@ -447,7 +447,7 @@ describe("ProductList", () => {
   };
 
   beforeEach(() => {
-    vi.clearAllMocks();
+    vi.resetAllMocks();
     mockOpenSlideOver.mockClear();
     mockCloseSlideOver.mockClear();
     mockToggleMode.mockClear();
@@ -555,7 +555,7 @@ describe("ProductList 5-column structure", () => {
    */
 
   beforeEach(() => {
-    vi.clearAllMocks();
+    vi.resetAllMocks();
     sortableColumns.length = 0;
 
     vi.mocked(useGetList).mockReturnValue({
@@ -631,7 +631,7 @@ describe("ProductList column sorting configuration", () => {
    */
 
   beforeEach(() => {
-    vi.clearAllMocks();
+    vi.resetAllMocks();
     sortableColumns.length = 0;
 
     vi.mocked(useGetList).mockReturnValue({
@@ -735,7 +735,7 @@ describe("ProductList badge components", () => {
    */
 
   beforeEach(() => {
-    vi.clearAllMocks();
+    vi.resetAllMocks();
     sortableColumns.length = 0;
 
     vi.mocked(useGetList).mockReturnValue({

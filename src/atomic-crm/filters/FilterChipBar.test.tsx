@@ -3,30 +3,25 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import { renderWithAdminContext } from "@/tests/utils/render-admin";
 import { FilterChipBar } from "./FilterChipBar";
 import type { ChipFilterConfig } from "./filterConfigSchema";
+import type { UseFilterChipBarReturn } from "./useFilterChipBar";
 
-// Mock React Admin hooks
-const mockSetFilters = vi.fn();
-const mockFilterValues = { status: "active", organization_id: "123" };
+const mockRemoveFilter = vi.fn();
+const mockClearAllFilters = vi.fn();
 
-vi.mock("ra-core", async (importOriginal) => {
-  const actual = await importOriginal<typeof import("ra-core")>();
-  return {
-    ...actual,
-    useListContext: () => ({
-      filterValues: mockFilterValues,
-      setFilters: mockSetFilters,
-      displayedFilters: {},
-    }),
-  };
-});
+const defaultChips = [
+  { key: "status", value: "active" as string | number, label: "Active", category: "Status" },
+  {
+    key: "organization_id",
+    value: "123" as string | number,
+    label: "Organization #123",
+    category: "Organization",
+  },
+];
 
-// Mock name hooks
-vi.mock("@/atomic-crm/hooks/useResourceNames", () => ({
-  useOrganizationName: () => (id: string) => `Organization ${id}`,
-  useSalesName: () => (id: string) => `Sales ${id}`,
-  useTagName: () => (id: string) => `Tag ${id}`,
-  useSegmentName: () => (id: string) => `Segment ${id}`,
-  useCategoryName: () => (id: string) => `Category ${id}`,
+let mockHookReturn: UseFilterChipBarReturn;
+
+vi.mock("./useFilterChipBar", () => ({
+  useFilterChipBar: () => mockHookReturn,
 }));
 
 describe("FilterChipBar", () => {
@@ -49,7 +44,14 @@ describe("FilterChipBar", () => {
   ];
 
   beforeEach(() => {
-    vi.clearAllMocks();
+    vi.resetAllMocks();
+    mockHookReturn = {
+      chips: [...defaultChips],
+      removeFilter: mockRemoveFilter,
+      clearAllFilters: mockClearAllFilters,
+      hasActiveFilters: true,
+      activeCount: 2,
+    };
   });
 
   describe("rendering", () => {
@@ -64,19 +66,17 @@ describe("FilterChipBar", () => {
 
       expect(screen.getByText("Active filters:")).toBeInTheDocument();
       expect(screen.getByText("Active")).toBeInTheDocument();
-      expect(screen.getByText("Organization 123")).toBeInTheDocument();
+      expect(screen.getByText("Organization #123")).toBeInTheDocument();
     });
 
     it("should not render when no active filters", () => {
-      vi.mocked(
-        vi.importActual<typeof import("ra-core")>("ra-core") as unknown as {
-          useListContext: () => unknown;
-        }
-      ).useListContext = () => ({
-        filterValues: {},
-        setFilters: mockSetFilters,
-        displayedFilters: {},
-      });
+      mockHookReturn = {
+        chips: [],
+        removeFilter: mockRemoveFilter,
+        clearAllFilters: mockClearAllFilters,
+        hasActiveFilters: false,
+        activeCount: 0,
+      };
 
       const { container } = renderWithAdminContext(
         <FilterChipBar filterConfig={mockFilterConfig} />
@@ -159,15 +159,13 @@ describe("FilterChipBar", () => {
     });
 
     it("should not crash on keyboard events with no buttons", () => {
-      vi.mocked(
-        vi.importActual<typeof import("ra-core")>("ra-core") as unknown as {
-          useListContext: () => unknown;
-        }
-      ).useListContext = () => ({
-        filterValues: {},
-        setFilters: mockSetFilters,
-        displayedFilters: {},
-      });
+      mockHookReturn = {
+        chips: [],
+        removeFilter: mockRemoveFilter,
+        clearAllFilters: mockClearAllFilters,
+        hasActiveFilters: false,
+        activeCount: 0,
+      };
 
       const { container } = renderWithAdminContext(
         <FilterChipBar filterConfig={mockFilterConfig} />
@@ -185,10 +183,7 @@ describe("FilterChipBar", () => {
       const removeButton = screen.getByRole("button", { name: /Remove Active filter/i });
       fireEvent.click(removeButton);
 
-      expect(mockSetFilters).toHaveBeenCalledWith(
-        { organization_id: "123" }, // status removed
-        {}
-      );
+      expect(mockRemoveFilter).toHaveBeenCalledWith("status", "active");
     });
 
     it("should clear all filters on Clear all click", () => {
@@ -197,7 +192,7 @@ describe("FilterChipBar", () => {
       const clearButton = screen.getByRole("button", { name: /Clear all 2 filters/i });
       fireEvent.click(clearButton);
 
-      expect(mockSetFilters).toHaveBeenCalledWith({}, {});
+      expect(mockClearAllFilters).toHaveBeenCalled();
     });
   });
 

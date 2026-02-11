@@ -1,19 +1,9 @@
-/**
- * Tests for ProductShow component
- *
- * Tests the product details view including:
- * - Loading states
- * - Field display (name, SKU, description, status, principal, category)
- * - Status badge variants
- * - Conditional field rendering
- * - Missing record handling
- */
-
-import { describe, test, expect, vi, beforeEach } from "vitest";
+import { describe, it, expect, vi, beforeEach } from "vitest";
 import { screen, waitFor } from "@testing-library/react";
 import { renderWithAdminContext } from "@/tests/utils/render-admin";
-import { createMockProduct } from "@/tests/utils/mock-providers";
+import { mockUseShowContextReturn } from "@/tests/utils/typed-mocks";
 import ProductShow from "../ProductShow";
+import type { Product } from "../../types";
 
 vi.mock("ra-core", async () => {
   const actual = await vi.importActual("ra-core");
@@ -38,88 +28,68 @@ vi.mock("@/components/ra-wrappers/date-field", () => ({
 
 import { useShowContext } from "ra-core";
 
+const mockedUseShowContext = vi.mocked(useShowContext<Product>);
+
+function buildProduct(overrides: Partial<Product> = {}): Product {
+  return {
+    id: 1,
+    name: "Test Product",
+    principal_id: 10,
+    category: "beverages",
+    status: "active",
+    description: null,
+    manufacturer_part_number: null,
+    marketing_description: null,
+    list_price: null,
+    currency_code: null,
+    unit_of_measure: null,
+    created_at: "2024-01-15T10:00:00Z",
+    ...overrides,
+  };
+}
+
 describe("ProductShow", () => {
   beforeEach(() => {
-    vi.clearAllMocks();
+    vi.resetAllMocks();
   });
 
-  describe("Layout", () => {
-    test("uses Card component for layout structure", async () => {
-      const mockProduct = createMockProduct({
-        id: 1,
-        name: "Test Product",
-        status: "active",
-      });
+  describe("Loading and empty states", () => {
+    it("renders loading state when isPending is true", () => {
+      mockedUseShowContext.mockReturnValue(mockUseShowContextReturn<Product>({ isPending: true }));
 
-      (useShowContext as ReturnType<typeof vi.fn>).mockReturnValue({
-        record: mockProduct,
-        isPending: false,
-      });
+      renderWithAdminContext(<ProductShow />, { resource: "products" });
 
-      renderWithAdminContext(<ProductShow />, {
-        resource: "products",
-        record: mockProduct,
-      });
-
-      await waitFor(() => {
-        expect(screen.getByText("Test Product")).toBeInTheDocument();
-      });
+      expect(screen.getByText("Loading product...")).toBeInTheDocument();
     });
 
-    test("displays product name in card header", async () => {
-      const mockProduct = createMockProduct({
-        id: 1,
-        name: "Frozen Pizza Supreme",
-        status: "active",
-      });
+    it("renders loading state when record is null", () => {
+      mockedUseShowContext.mockReturnValue(
+        mockUseShowContextReturn<Product>({ isPending: false, record: undefined })
+      );
 
-      (useShowContext as ReturnType<typeof vi.fn>).mockReturnValue({
-        record: mockProduct,
-        isPending: false,
-      });
+      renderWithAdminContext(<ProductShow />, { resource: "products" });
 
-      renderWithAdminContext(<ProductShow />, {
-        resource: "products",
-        record: mockProduct,
-      });
+      expect(screen.getByText("Loading product...")).toBeInTheDocument();
+    });
+  });
+
+  describe("Field display", () => {
+    it("displays product name in the card header", async () => {
+      const product = buildProduct({ name: "Frozen Pizza Supreme" });
+      mockedUseShowContext.mockReturnValue(mockUseShowContextReturn<Product>({ record: product }));
+
+      renderWithAdminContext(<ProductShow />, { resource: "products" });
 
       await waitFor(() => {
         expect(screen.getByText("Frozen Pizza Supreme")).toBeInTheDocument();
       });
     });
 
-    test("renders loading state when isPending is true", () => {
-      (useShowContext as ReturnType<typeof vi.fn>).mockReturnValue({
-        record: undefined,
-        isPending: true,
-      });
+    it("displays SKU when manufacturer_part_number is present", async () => {
+      const product = buildProduct({ manufacturer_part_number: "SKU-12345" });
+      mockedUseShowContext.mockReturnValue(mockUseShowContextReturn<Product>({ record: product }));
 
-      renderWithAdminContext(<ProductShow />, {
-        resource: "products",
-      });
-
-      expect(screen.getByText("Loading product...")).toBeInTheDocument();
-    });
-  });
-
-  describe("Field Configuration", () => {
-    test("displays SKU when manufacturer_part_number is present", async () => {
-      const mockProduct = createMockProduct({
-        id: 1,
-        name: "Test Product",
-        manufacturer_part_number: "SKU-12345",
-        status: "active",
-      });
-
-      (useShowContext as ReturnType<typeof vi.fn>).mockReturnValue({
-        record: mockProduct,
-        isPending: false,
-      });
-
-      renderWithAdminContext(<ProductShow />, {
-        resource: "products",
-        record: mockProduct,
-      });
+      renderWithAdminContext(<ProductShow />, { resource: "products" });
 
       await waitFor(() => {
         expect(screen.getByText("SKU")).toBeInTheDocument();
@@ -127,49 +97,23 @@ describe("ProductShow", () => {
       });
     });
 
-    test("displays description when present", async () => {
-      const mockProduct = createMockProduct({
-        id: 1,
-        name: "Test Product",
-        description: "A delicious frozen pizza with premium toppings.",
-        status: "active",
-      });
+    it("displays description when present", async () => {
+      const product = buildProduct({ description: "A delicious frozen pizza." });
+      mockedUseShowContext.mockReturnValue(mockUseShowContextReturn<Product>({ record: product }));
 
-      (useShowContext as ReturnType<typeof vi.fn>).mockReturnValue({
-        record: mockProduct,
-        isPending: false,
-      });
-
-      renderWithAdminContext(<ProductShow />, {
-        resource: "products",
-        record: mockProduct,
-      });
+      renderWithAdminContext(<ProductShow />, { resource: "products" });
 
       await waitFor(() => {
         expect(screen.getByText("Description")).toBeInTheDocument();
-        expect(
-          screen.getByText("A delicious frozen pizza with premium toppings.")
-        ).toBeInTheDocument();
+        expect(screen.getByText("A delicious frozen pizza.")).toBeInTheDocument();
       });
     });
 
-    test("displays category when present", async () => {
-      const mockProduct = createMockProduct({
-        id: 1,
-        name: "Test Product",
-        category: "Frozen Foods",
-        status: "active",
-      });
+    it("displays category when present", async () => {
+      const product = buildProduct({ category: "Frozen Foods" });
+      mockedUseShowContext.mockReturnValue(mockUseShowContextReturn<Product>({ record: product }));
 
-      (useShowContext as ReturnType<typeof vi.fn>).mockReturnValue({
-        record: mockProduct,
-        isPending: false,
-      });
-
-      renderWithAdminContext(<ProductShow />, {
-        resource: "products",
-        record: mockProduct,
-      });
+      renderWithAdminContext(<ProductShow />, { resource: "products" });
 
       await waitFor(() => {
         expect(screen.getByText("Category")).toBeInTheDocument();
@@ -177,23 +121,11 @@ describe("ProductShow", () => {
       });
     });
 
-    test("displays principal reference field when principal_id is present", async () => {
-      const mockProduct = createMockProduct({
-        id: 1,
-        name: "Test Product",
-        principal_id: 10,
-        status: "active",
-      });
+    it("displays principal reference field when principal_id is present", async () => {
+      const product = buildProduct({ principal_id: 10 });
+      mockedUseShowContext.mockReturnValue(mockUseShowContextReturn<Product>({ record: product }));
 
-      (useShowContext as ReturnType<typeof vi.fn>).mockReturnValue({
-        record: mockProduct,
-        isPending: false,
-      });
-
-      renderWithAdminContext(<ProductShow />, {
-        resource: "products",
-        record: mockProduct,
-      });
+      renderWithAdminContext(<ProductShow />, { resource: "products" });
 
       await waitFor(() => {
         expect(screen.getByText("Principal")).toBeInTheDocument();
@@ -201,23 +133,13 @@ describe("ProductShow", () => {
       });
     });
 
-    test("displays marketing description when present", async () => {
-      const mockProduct = createMockProduct({
-        id: 1,
-        name: "Test Product",
+    it("displays marketing description when present", async () => {
+      const product = buildProduct({
         marketing_description: "The best pizza you will ever taste!",
-        status: "active",
       });
+      mockedUseShowContext.mockReturnValue(mockUseShowContextReturn<Product>({ record: product }));
 
-      (useShowContext as ReturnType<typeof vi.fn>).mockReturnValue({
-        record: mockProduct,
-        isPending: false,
-      });
-
-      renderWithAdminContext(<ProductShow />, {
-        resource: "products",
-        record: mockProduct,
-      });
+      renderWithAdminContext(<ProductShow />, { resource: "products" });
 
       await waitFor(() => {
         expect(screen.getByText("Marketing Description")).toBeInTheDocument();
@@ -225,25 +147,15 @@ describe("ProductShow", () => {
       });
     });
 
-    test("displays list price with currency and unit of measure", async () => {
-      const mockProduct = createMockProduct({
-        id: 1,
-        name: "Test Product",
+    it("displays list price with currency and unit of measure", async () => {
+      const product = buildProduct({
         list_price: 12.99,
         currency_code: "$",
         unit_of_measure: "case",
-        status: "active",
       });
+      mockedUseShowContext.mockReturnValue(mockUseShowContextReturn<Product>({ record: product }));
 
-      (useShowContext as ReturnType<typeof vi.fn>).mockReturnValue({
-        record: mockProduct,
-        isPending: false,
-      });
-
-      renderWithAdminContext(<ProductShow />, {
-        resource: "products",
-        record: mockProduct,
-      });
+      renderWithAdminContext(<ProductShow />, { resource: "products" });
 
       await waitFor(() => {
         expect(screen.getByText("List Price")).toBeInTheDocument();
@@ -251,23 +163,41 @@ describe("ProductShow", () => {
       });
     });
 
-    test("displays created_at date field", async () => {
-      const mockProduct = createMockProduct({
-        id: 1,
-        name: "Test Product",
-        created_at: "2024-01-15T10:00:00Z",
-        status: "active",
+    it("displays list price without unit when unit_of_measure is null", async () => {
+      const product = buildProduct({
+        list_price: 9.99,
+        currency_code: "$",
+        unit_of_measure: null,
       });
+      mockedUseShowContext.mockReturnValue(mockUseShowContextReturn<Product>({ record: product }));
 
-      (useShowContext as ReturnType<typeof vi.fn>).mockReturnValue({
-        record: mockProduct,
-        isPending: false,
-      });
+      renderWithAdminContext(<ProductShow />, { resource: "products" });
 
-      renderWithAdminContext(<ProductShow />, {
-        resource: "products",
-        record: mockProduct,
+      await waitFor(() => {
+        expect(screen.getByText("$9.99")).toBeInTheDocument();
       });
+    });
+
+    it("uses default currency symbol when currency_code is null", async () => {
+      const product = buildProduct({
+        list_price: 5.99,
+        currency_code: null,
+        unit_of_measure: "each",
+      });
+      mockedUseShowContext.mockReturnValue(mockUseShowContextReturn<Product>({ record: product }));
+
+      renderWithAdminContext(<ProductShow />, { resource: "products" });
+
+      await waitFor(() => {
+        expect(screen.getByText("$5.99 / each")).toBeInTheDocument();
+      });
+    });
+
+    it("displays created_at date field", async () => {
+      const product = buildProduct({ created_at: "2024-01-15T10:00:00Z" });
+      mockedUseShowContext.mockReturnValue(mockUseShowContextReturn<Product>({ record: product }));
+
+      renderWithAdminContext(<ProductShow />, { resource: "products" });
 
       await waitFor(() => {
         expect(screen.getByText(/Created:/)).toBeInTheDocument();
@@ -276,95 +206,47 @@ describe("ProductShow", () => {
     });
   });
 
-  describe("Status Badge", () => {
-    test("displays active status with default badge variant", async () => {
-      const mockProduct = createMockProduct({
-        id: 1,
-        name: "Active Product",
-        status: "active",
-      });
+  describe("Status badge", () => {
+    it("displays active status with default badge variant", async () => {
+      const product = buildProduct({ status: "active" });
+      mockedUseShowContext.mockReturnValue(mockUseShowContextReturn<Product>({ record: product }));
 
-      (useShowContext as ReturnType<typeof vi.fn>).mockReturnValue({
-        record: mockProduct,
-        isPending: false,
-      });
-
-      renderWithAdminContext(<ProductShow />, {
-        resource: "products",
-        record: mockProduct,
-      });
+      renderWithAdminContext(<ProductShow />, { resource: "products" });
 
       await waitFor(() => {
-        const badge = screen.getByText("active");
-        expect(badge).toBeInTheDocument();
+        expect(screen.getByText("active")).toBeInTheDocument();
       });
     });
 
-    test("displays discontinued status with secondary badge variant", async () => {
-      const mockProduct = createMockProduct({
-        id: 1,
-        name: "Discontinued Product",
-        status: "discontinued",
-      });
+    it("displays discontinued status with secondary badge variant", async () => {
+      const product = buildProduct({ status: "discontinued" });
+      mockedUseShowContext.mockReturnValue(mockUseShowContextReturn<Product>({ record: product }));
 
-      (useShowContext as ReturnType<typeof vi.fn>).mockReturnValue({
-        record: mockProduct,
-        isPending: false,
-      });
-
-      renderWithAdminContext(<ProductShow />, {
-        resource: "products",
-        record: mockProduct,
-      });
+      renderWithAdminContext(<ProductShow />, { resource: "products" });
 
       await waitFor(() => {
-        const badge = screen.getByText("discontinued");
-        expect(badge).toBeInTheDocument();
+        expect(screen.getByText("discontinued")).toBeInTheDocument();
       });
     });
 
-    test("displays seasonal status with secondary badge variant", async () => {
-      const mockProduct = createMockProduct({
-        id: 1,
-        name: "Seasonal Product",
-        status: "seasonal",
-      });
+    it("displays coming_soon status with secondary badge variant", async () => {
+      const product = buildProduct({ status: "coming_soon" });
+      mockedUseShowContext.mockReturnValue(mockUseShowContextReturn<Product>({ record: product }));
 
-      (useShowContext as ReturnType<typeof vi.fn>).mockReturnValue({
-        record: mockProduct,
-        isPending: false,
-      });
-
-      renderWithAdminContext(<ProductShow />, {
-        resource: "products",
-        record: mockProduct,
-      });
+      renderWithAdminContext(<ProductShow />, { resource: "products" });
 
       await waitFor(() => {
-        const badge = screen.getByText("seasonal");
-        expect(badge).toBeInTheDocument();
+        expect(screen.getByText("coming_soon")).toBeInTheDocument();
       });
     });
   });
 
-  describe("Conditional Field Rendering", () => {
-    test("hides SKU section when manufacturer_part_number is null", async () => {
-      const mockProduct = createMockProduct({
-        id: 1,
-        name: "Test Product",
-        manufacturer_part_number: null,
-        status: "active",
-      });
+  describe("Conditional field rendering", () => {
+    it("hides SKU section when manufacturer_part_number is null", async () => {
+      const product = buildProduct({ manufacturer_part_number: null });
+      mockedUseShowContext.mockReturnValue(mockUseShowContextReturn<Product>({ record: product }));
 
-      (useShowContext as ReturnType<typeof vi.fn>).mockReturnValue({
-        record: mockProduct,
-        isPending: false,
-      });
-
-      renderWithAdminContext(<ProductShow />, {
-        resource: "products",
-        record: mockProduct,
-      });
+      renderWithAdminContext(<ProductShow />, { resource: "products" });
 
       await waitFor(() => {
         expect(screen.getByText("Test Product")).toBeInTheDocument();
@@ -373,23 +255,11 @@ describe("ProductShow", () => {
       expect(screen.queryByText("SKU")).not.toBeInTheDocument();
     });
 
-    test("hides description section when description is null", async () => {
-      const mockProduct = createMockProduct({
-        id: 1,
-        name: "Test Product",
-        description: null,
-        status: "active",
-      });
+    it("hides description section when description is null", async () => {
+      const product = buildProduct({ description: null });
+      mockedUseShowContext.mockReturnValue(mockUseShowContextReturn<Product>({ record: product }));
 
-      (useShowContext as ReturnType<typeof vi.fn>).mockReturnValue({
-        record: mockProduct,
-        isPending: false,
-      });
-
-      renderWithAdminContext(<ProductShow />, {
-        resource: "products",
-        record: mockProduct,
-      });
+      renderWithAdminContext(<ProductShow />, { resource: "products" });
 
       await waitFor(() => {
         expect(screen.getByText("Test Product")).toBeInTheDocument();
@@ -398,23 +268,11 @@ describe("ProductShow", () => {
       expect(screen.queryByText("Description")).not.toBeInTheDocument();
     });
 
-    test("hides category section when category is null", async () => {
-      const mockProduct = createMockProduct({
-        id: 1,
-        name: "Test Product",
-        category: null,
-        status: "active",
-      });
+    it("hides category section when category is empty", async () => {
+      const product = buildProduct({ category: "" });
+      mockedUseShowContext.mockReturnValue(mockUseShowContextReturn<Product>({ record: product }));
 
-      (useShowContext as ReturnType<typeof vi.fn>).mockReturnValue({
-        record: mockProduct,
-        isPending: false,
-      });
-
-      renderWithAdminContext(<ProductShow />, {
-        resource: "products",
-        record: mockProduct,
-      });
+      renderWithAdminContext(<ProductShow />, { resource: "products" });
 
       await waitFor(() => {
         expect(screen.getByText("Test Product")).toBeInTheDocument();
@@ -423,23 +281,11 @@ describe("ProductShow", () => {
       expect(screen.queryByText("Category")).not.toBeInTheDocument();
     });
 
-    test("hides principal section when principal_id is null", async () => {
-      const mockProduct = createMockProduct({
-        id: 1,
-        name: "Test Product",
-        principal_id: null,
-        status: "active",
-      });
+    it("hides principal section when principal_id is null", async () => {
+      const product = buildProduct({ principal_id: undefined });
+      mockedUseShowContext.mockReturnValue(mockUseShowContextReturn<Product>({ record: product }));
 
-      (useShowContext as ReturnType<typeof vi.fn>).mockReturnValue({
-        record: mockProduct,
-        isPending: false,
-      });
-
-      renderWithAdminContext(<ProductShow />, {
-        resource: "products",
-        record: mockProduct,
-      });
+      renderWithAdminContext(<ProductShow />, { resource: "products" });
 
       await waitFor(() => {
         expect(screen.getByText("Test Product")).toBeInTheDocument();
@@ -448,23 +294,11 @@ describe("ProductShow", () => {
       expect(screen.queryByText("Principal")).not.toBeInTheDocument();
     });
 
-    test("hides marketing description section when marketing_description is null", async () => {
-      const mockProduct = createMockProduct({
-        id: 1,
-        name: "Test Product",
-        marketing_description: null,
-        status: "active",
-      });
+    it("hides marketing description section when marketing_description is null", async () => {
+      const product = buildProduct({ marketing_description: null });
+      mockedUseShowContext.mockReturnValue(mockUseShowContextReturn<Product>({ record: product }));
 
-      (useShowContext as ReturnType<typeof vi.fn>).mockReturnValue({
-        record: mockProduct,
-        isPending: false,
-      });
-
-      renderWithAdminContext(<ProductShow />, {
-        resource: "products",
-        record: mockProduct,
-      });
+      renderWithAdminContext(<ProductShow />, { resource: "products" });
 
       await waitFor(() => {
         expect(screen.getByText("Test Product")).toBeInTheDocument();
@@ -473,23 +307,11 @@ describe("ProductShow", () => {
       expect(screen.queryByText("Marketing Description")).not.toBeInTheDocument();
     });
 
-    test("hides list price section when list_price is null", async () => {
-      const mockProduct = createMockProduct({
-        id: 1,
-        name: "Test Product",
-        list_price: null,
-        status: "active",
-      });
+    it("hides list price section when list_price is null", async () => {
+      const product = buildProduct({ list_price: null });
+      mockedUseShowContext.mockReturnValue(mockUseShowContextReturn<Product>({ record: product }));
 
-      (useShowContext as ReturnType<typeof vi.fn>).mockReturnValue({
-        record: mockProduct,
-        isPending: false,
-      });
-
-      renderWithAdminContext(<ProductShow />, {
-        resource: "products",
-        record: mockProduct,
-      });
+      renderWithAdminContext(<ProductShow />, { resource: "products" });
 
       await waitFor(() => {
         expect(screen.getByText("Test Product")).toBeInTheDocument();
@@ -499,88 +321,9 @@ describe("ProductShow", () => {
     });
   });
 
-  describe("Record Display", () => {
-    test("handles missing record gracefully", () => {
-      (useShowContext as ReturnType<typeof vi.fn>).mockReturnValue({
-        record: null,
-        isPending: false,
-      });
-
-      renderWithAdminContext(<ProductShow />, {
-        resource: "products",
-      });
-
-      expect(screen.getByText("Loading product...")).toBeInTheDocument();
-    });
-
-    test("handles undefined record gracefully", () => {
-      (useShowContext as ReturnType<typeof vi.fn>).mockReturnValue({
-        record: undefined,
-        isPending: false,
-      });
-
-      renderWithAdminContext(<ProductShow />, {
-        resource: "products",
-      });
-
-      expect(screen.getByText("Loading product...")).toBeInTheDocument();
-    });
-
-    test("displays list price without unit when unit_of_measure is not set", async () => {
-      const mockProduct = createMockProduct({
-        id: 1,
-        name: "Test Product",
-        list_price: 9.99,
-        currency_code: "$",
-        unit_of_measure: null,
-        status: "active",
-      });
-
-      (useShowContext as ReturnType<typeof vi.fn>).mockReturnValue({
-        record: mockProduct,
-        isPending: false,
-      });
-
-      renderWithAdminContext(<ProductShow />, {
-        resource: "products",
-        record: mockProduct,
-      });
-
-      await waitFor(() => {
-        expect(screen.getByText("$9.99")).toBeInTheDocument();
-      });
-    });
-
-    test("uses default currency when currency_code is not set", async () => {
-      const mockProduct = createMockProduct({
-        id: 1,
-        name: "Test Product",
-        list_price: 5.99,
-        currency_code: null,
-        unit_of_measure: "each",
-        status: "active",
-      });
-
-      (useShowContext as ReturnType<typeof vi.fn>).mockReturnValue({
-        record: mockProduct,
-        isPending: false,
-      });
-
-      renderWithAdminContext(<ProductShow />, {
-        resource: "products",
-        record: mockProduct,
-      });
-
-      await waitFor(() => {
-        expect(screen.getByText("$5.99 / each")).toBeInTheDocument();
-      });
-    });
-  });
-
-  describe("All Fields Display", () => {
-    test("renders complete product with all fields", async () => {
-      const mockProduct = createMockProduct({
-        id: 1,
+  describe("Complete product display", () => {
+    it("renders all fields when fully populated", async () => {
+      const product = buildProduct({
         name: "Complete Product",
         manufacturer_part_number: "MPN-99999",
         description: "Full product description",
@@ -593,16 +336,9 @@ describe("ProductShow", () => {
         status: "active",
         created_at: "2024-01-15T10:00:00Z",
       });
+      mockedUseShowContext.mockReturnValue(mockUseShowContextReturn<Product>({ record: product }));
 
-      (useShowContext as ReturnType<typeof vi.fn>).mockReturnValue({
-        record: mockProduct,
-        isPending: false,
-      });
-
-      renderWithAdminContext(<ProductShow />, {
-        resource: "products",
-        record: mockProduct,
-      });
+      renderWithAdminContext(<ProductShow />, { resource: "products" });
 
       await waitFor(() => {
         expect(screen.getByText("Complete Product")).toBeInTheDocument();

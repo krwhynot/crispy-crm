@@ -2,7 +2,8 @@
  * @vitest-environment jsdom
  */
 
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { screen, fireEvent, waitFor } from "@testing-library/react";
+import { renderWithAdminContext } from "@/tests/utils/render-admin";
 import { AdminContext } from "ra-core";
 import { MemoryRouter } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -115,7 +116,7 @@ const TestWrapper = ({ children }: { children: React.ReactNode }) => {
 
 describe("OpportunityList", () => {
   beforeEach(() => {
-    vi.clearAllMocks();
+    vi.resetAllMocks();
 
     // Mock getList for opportunities
     mockDataProvider.getList.mockImplementation((resource) => {
@@ -156,7 +157,7 @@ describe("OpportunityList", () => {
   });
 
   it("should render opportunity list with data", async () => {
-    render(
+    renderWithAdminContext(
       <TestWrapper>
         <OpportunityList />
       </TestWrapper>
@@ -170,7 +171,7 @@ describe("OpportunityList", () => {
   });
 
   it("should display opportunity amounts correctly", async () => {
-    render(
+    renderWithAdminContext(
       <TestWrapper>
         <OpportunityList />
       </TestWrapper>
@@ -184,7 +185,7 @@ describe("OpportunityList", () => {
   });
 
   it("should display opportunity stages correctly", async () => {
-    render(
+    renderWithAdminContext(
       <TestWrapper>
         <OpportunityList />
       </TestWrapper>
@@ -198,7 +199,7 @@ describe("OpportunityList", () => {
   });
 
   it("should display priority levels correctly", async () => {
-    render(
+    renderWithAdminContext(
       <TestWrapper>
         <OpportunityList />
       </TestWrapper>
@@ -212,7 +213,7 @@ describe("OpportunityList", () => {
   });
 
   it("should display probability percentages", async () => {
-    render(
+    renderWithAdminContext(
       <TestWrapper>
         <OpportunityList />
       </TestWrapper>
@@ -226,7 +227,7 @@ describe("OpportunityList", () => {
   });
 
   it("should display expected closing dates", async () => {
-    render(
+    renderWithAdminContext(
       <TestWrapper>
         <OpportunityList />
       </TestWrapper>
@@ -240,7 +241,7 @@ describe("OpportunityList", () => {
   });
 
   it("should allow filtering by stage", async () => {
-    render(
+    renderWithAdminContext(
       <TestWrapper>
         <OpportunityList />
       </TestWrapper>
@@ -268,7 +269,7 @@ describe("OpportunityList", () => {
   });
 
   it("should allow filtering by priority", async () => {
-    render(
+    renderWithAdminContext(
       <TestWrapper>
         <OpportunityList />
       </TestWrapper>
@@ -296,7 +297,7 @@ describe("OpportunityList", () => {
   });
 
   it("should allow filtering by opportunity context", async () => {
-    render(
+    renderWithAdminContext(
       <TestWrapper>
         <OpportunityList />
       </TestWrapper>
@@ -322,7 +323,7 @@ describe("OpportunityList", () => {
   });
 
   it("should allow searching by opportunity name", async () => {
-    render(
+    renderWithAdminContext(
       <TestWrapper>
         <OpportunityList />
       </TestWrapper>
@@ -350,7 +351,7 @@ describe("OpportunityList", () => {
   });
 
   it("should handle sorting by amount", async () => {
-    render(
+    renderWithAdminContext(
       <TestWrapper>
         <OpportunityList />
       </TestWrapper>
@@ -376,7 +377,7 @@ describe("OpportunityList", () => {
   });
 
   it("should handle sorting by probability", async () => {
-    render(
+    renderWithAdminContext(
       <TestWrapper>
         <OpportunityList />
       </TestWrapper>
@@ -413,7 +414,7 @@ describe("OpportunityList", () => {
       total: 50,
     });
 
-    render(
+    renderWithAdminContext(
       <TestWrapper>
         <OpportunityList />
       </TestWrapper>

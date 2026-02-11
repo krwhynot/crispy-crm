@@ -1,4 +1,5 @@
-import { render, screen } from "@testing-library/react";
+import { screen } from "@testing-library/react";
+import { renderWithAdminContext } from "@/tests/utils/render-admin";
 import { describe, it, expect, vi } from "vitest";
 import { DashboardErrorBoundary } from "../DashboardErrorBoundary";
 
@@ -19,7 +20,7 @@ describe("DashboardErrorBoundary", () => {
   });
 
   it("should render children when there is no error", () => {
-    render(
+    renderWithAdminContext(
       <DashboardErrorBoundary>
         <WorkingComponent />
       </DashboardErrorBoundary>
@@ -29,7 +30,7 @@ describe("DashboardErrorBoundary", () => {
   });
 
   it("should render error UI when child throws error", () => {
-    render(
+    renderWithAdminContext(
       <DashboardErrorBoundary>
         <ThrowError />
       </DashboardErrorBoundary>
@@ -39,7 +40,7 @@ describe("DashboardErrorBoundary", () => {
   });
 
   it("should show reload button in error state", () => {
-    render(
+    renderWithAdminContext(
       <DashboardErrorBoundary>
         <ThrowError />
       </DashboardErrorBoundary>
@@ -49,7 +50,7 @@ describe("DashboardErrorBoundary", () => {
   });
 
   it("should show go home button in error state", () => {
-    render(
+    renderWithAdminContext(
       <DashboardErrorBoundary>
         <ThrowError />
       </DashboardErrorBoundary>

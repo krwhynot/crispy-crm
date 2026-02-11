@@ -46,7 +46,7 @@ describe("OrganizationImportDialog", () => {
   const mockOnClose = vi.fn();
 
   beforeEach(() => {
-    vi.clearAllMocks();
+    vi.resetAllMocks();
   });
 
   test("renders dialog when open prop is true", () => {

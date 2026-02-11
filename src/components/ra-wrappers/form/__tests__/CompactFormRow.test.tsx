@@ -1,9 +1,10 @@
-import { render, screen } from "@testing-library/react";
+import { screen } from "@testing-library/react";
+import { renderWithAdminContext } from "@/tests/utils/render-admin";
 import { CompactFormRow } from "../CompactFormRow";
 
 describe("CompactFormRow", () => {
   it("renders children in a grid", () => {
-    render(
+    renderWithAdminContext(
       <CompactFormRow>
         <input data-testid="input-1" />
         <input data-testid="input-2" />
@@ -15,7 +16,7 @@ describe("CompactFormRow", () => {
   });
 
   it("applies 2-column grid by default on md+", () => {
-    const { container } = render(
+    const { container } = renderWithAdminContext(
       <CompactFormRow>
         <div />
         <div />
@@ -26,7 +27,7 @@ describe("CompactFormRow", () => {
   });
 
   it("supports custom column configuration", () => {
-    const { container } = render(
+    const { container } = renderWithAdminContext(
       <CompactFormRow columns="grid-cols-[1fr_1fr_auto]">
         <div />
         <div />
@@ -38,7 +39,7 @@ describe("CompactFormRow", () => {
   });
 
   it("uses gap-3 for spacing", () => {
-    const { container } = render(
+    const { container } = renderWithAdminContext(
       <CompactFormRow>
         <div />
       </CompactFormRow>
@@ -48,7 +49,7 @@ describe("CompactFormRow", () => {
   });
 
   it("aligns items to end by default", () => {
-    const { container } = render(
+    const { container } = renderWithAdminContext(
       <CompactFormRow>
         <div />
       </CompactFormRow>
@@ -58,7 +59,7 @@ describe("CompactFormRow", () => {
   });
 
   it("supports custom alignment", () => {
-    const { container } = render(
+    const { container } = renderWithAdminContext(
       <CompactFormRow alignItems="center">
         <div />
       </CompactFormRow>

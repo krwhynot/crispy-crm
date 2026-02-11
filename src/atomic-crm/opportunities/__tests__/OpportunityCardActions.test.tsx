@@ -1,4 +1,5 @@
-import { render, screen } from "@testing-library/react";
+import { screen } from "@testing-library/react";
+import { renderWithAdminContext } from "@/tests/utils/render-admin";
 import userEvent from "@testing-library/user-event";
 import { OpportunityCardActions } from "../kanban/OpportunityCardActions";
 import { describe, it, expect, vi, beforeEach } from "vitest";
@@ -35,12 +36,12 @@ vi.mock("react-admin", async (importOriginal) => {
 });
 
 const renderWithRouter = (component: React.ReactElement) => {
-  return render(<BrowserRouter>{component}</BrowserRouter>);
+  return renderWithAdminContext(<BrowserRouter>{component}</BrowserRouter>);
 };
 
 describe("OpportunityCardActions", () => {
   beforeEach(() => {
-    vi.clearAllMocks();
+    vi.resetAllMocks();
   });
 
   it("renders trigger button with correct attributes", () => {

@@ -59,7 +59,7 @@ describe("withValidation", () => {
   });
 
   afterEach(() => {
-    vi.clearAllMocks();
+    vi.resetAllMocks();
   });
 
   describe("create validation", () => {

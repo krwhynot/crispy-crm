@@ -62,7 +62,7 @@ describe("OrganizationRightPanel - Cache Invalidation", () => {
 
   beforeEach(() => {
     // Reset all mocks
-    vi.clearAllMocks();
+    vi.resetAllMocks();
 
     // Setup custom mock for queryClient
     invalidateQueriesSpy = vi.fn();

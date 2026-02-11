@@ -1,4 +1,5 @@
-import { render, screen, fireEvent } from "@testing-library/react";
+import { screen, fireEvent } from "@testing-library/react";
+import { renderWithAdminContext } from "@/tests/utils/render-admin";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { TabFilterBar } from "./TabFilterBar";
 import { mockUseGetListReturn } from "@/tests/utils/typed-mocks";
@@ -23,14 +24,14 @@ const mockSalesReps: SalesRep[] = [
 
 describe("TabFilterBar", () => {
   beforeEach(() => {
-    vi.clearAllMocks();
+    vi.resetAllMocks();
     vi.mocked(useGetList<SalesRep>).mockReturnValue(
       mockUseGetListReturn<SalesRep>({ data: mockSalesReps, isPending: false })
     );
   });
   it("renders date range selector with presets", () => {
     const onChange = vi.fn();
-    render(
+    renderWithAdminContext(
       <TabFilterBar
         showDateRange
         dateRange={{ preset: "last30", start: null, end: null }}
@@ -43,14 +44,14 @@ describe("TabFilterBar", () => {
 
   it("renders sales rep selector when enabled", () => {
     const onChange = vi.fn();
-    render(<TabFilterBar showSalesRep salesRepId={null} onSalesRepChange={onChange} />);
+    renderWithAdminContext(<TabFilterBar showSalesRep salesRepId={null} onSalesRepChange={onChange} />);
 
     expect(screen.getByLabelText(/sales rep/i)).toBeInTheDocument();
   });
 
   it("shows reset button when filters are active", () => {
     const onReset = vi.fn();
-    render(
+    renderWithAdminContext(
       <TabFilterBar
         showDateRange
         dateRange={{ preset: "last7", start: null, end: null }}
@@ -68,7 +69,7 @@ describe("TabFilterBar", () => {
   });
 
   it("meets 44px touch target requirement", () => {
-    render(
+    renderWithAdminContext(
       <TabFilterBar
         showDateRange
         dateRange={{ preset: "last30", start: null, end: null }}

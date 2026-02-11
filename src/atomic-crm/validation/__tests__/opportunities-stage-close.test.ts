@@ -34,6 +34,7 @@ describe("WG-002: Stage Close Validation (opportunities-operations.ts)", () => {
         id: 123,
         stage: "closed_won",
         win_reason: "relationship",
+        actual_close_date: new Date().toISOString(),
         contact_ids: [1],
       };
 
@@ -64,6 +65,7 @@ describe("WG-002: Stage Close Validation (opportunities-operations.ts)", () => {
         id: 123,
         stage: "closed_lost",
         loss_reason: "price_too_high",
+        actual_close_date: new Date().toISOString(),
         contact_ids: [1],
       };
 
@@ -117,6 +119,7 @@ describe("WG-002: Stage Close Validation (opportunities-operations.ts)", () => {
         stage: "closed_won",
         win_reason: "other",
         close_reason_notes: "Custom reason explained here",
+        actual_close_date: new Date().toISOString(),
         contact_ids: [1],
       };
 

@@ -1,6 +1,8 @@
-import { render, screen, waitFor, fireEvent } from "@testing-library/react";
+import { screen, waitFor, fireEvent } from "@testing-library/react";
+import { renderWithAdminContext } from "@/tests/utils/render-admin";
 import { ShowContextProvider } from "ra-core";
 import type * as ReactAdmin from "react-admin";
+import type * as RaCore from "ra-core";
 import type { ReactNode } from "react";
 import type { Identifier } from "ra-core";
 import { OpportunitiesTab } from "./OpportunitiesTab";
@@ -144,7 +146,7 @@ const mockQueryClient = {
 };
 
 vi.mock("ra-core", async () => {
-  const actual = await vi.importActual<typeof import("ra-core")>("ra-core");
+  const actual = await vi.importActual<typeof RaCore>("ra-core");
   return {
     ...actual,
     useGetList: () => mockUseGetList(),
@@ -164,7 +166,7 @@ vi.mock("@tanstack/react-query", () => ({
 
 describe("OpportunitiesTab", () => {
   beforeEach(() => {
-    vi.clearAllMocks();
+    vi.resetAllMocks();
   });
 
   it("shows loading state while fetching", () => {
@@ -177,7 +179,7 @@ describe("OpportunitiesTab", () => {
       isLoading: false,
     });
 
-    render(
+    renderWithAdminContext(
       <ShowContextProvider value={mockUseShowContextReturn({ record: mockContactWithOrg })}>
         <OpportunitiesTab />
       </ShowContextProvider>
@@ -196,7 +198,7 @@ describe("OpportunitiesTab", () => {
       isLoading: false,
     });
 
-    render(
+    renderWithAdminContext(
       <ShowContextProvider value={mockUseShowContextReturn({ record: mockContactWithOrg })}>
         <OpportunitiesTab />
       </ShowContextProvider>
@@ -237,7 +239,7 @@ describe("OpportunitiesTab", () => {
       isLoading: false,
     });
 
-    render(
+    renderWithAdminContext(
       <ShowContextProvider value={mockUseShowContextReturn({ record: mockContactWithOrg })}>
         <OpportunitiesTab />
       </ShowContextProvider>
@@ -255,7 +257,7 @@ describe("OpportunitiesTab", () => {
       isLoading: false,
     });
 
-    render(
+    renderWithAdminContext(
       <ShowContextProvider value={mockUseShowContextReturn({ record: mockContactWithOrg })}>
         <OpportunitiesTab />
       </ShowContextProvider>
@@ -310,7 +312,7 @@ describe("OpportunitiesTab", () => {
       isLoading: false,
     });
 
-    render(
+    renderWithAdminContext(
       <ShowContextProvider value={mockUseShowContextReturn({ record: mockContactWithOrg })}>
         <OpportunitiesTab />
       </ShowContextProvider>
@@ -363,7 +365,7 @@ describe("OpportunitiesTab", () => {
       isLoading: false,
     });
 
-    render(
+    renderWithAdminContext(
       <ShowContextProvider value={mockUseShowContextReturn({ record: mockContactWithOrg })}>
         <OpportunitiesTab />
       </ShowContextProvider>
@@ -402,7 +404,7 @@ describe("OpportunitiesTab", () => {
       isLoading: false,
     });
 
-    render(
+    renderWithAdminContext(
       <ShowContextProvider value={mockUseShowContextReturn({ record: mockContactWithOrg })}>
         <OpportunitiesTab />
       </ShowContextProvider>

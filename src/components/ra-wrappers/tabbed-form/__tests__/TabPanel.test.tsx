@@ -1,11 +1,12 @@
-import { render, screen } from "@testing-library/react";
+import { screen } from "@testing-library/react";
+import { renderWithAdminContext } from "@/tests/utils/render-admin";
 import { Tabs } from "@/components/ui/tabs";
 import { TabPanel } from "../TabPanel";
 import { describe, it, expect } from "vitest";
 
 describe("TabPanel", () => {
   it("renders children correctly", () => {
-    render(
+    renderWithAdminContext(
       <Tabs defaultValue="test">
         <TabPanel value="test">
           <div>Test Content</div>
@@ -16,7 +17,7 @@ describe("TabPanel", () => {
   });
 
   it("applies consistent styling classes", () => {
-    const { container } = render(
+    const { container } = renderWithAdminContext(
       <Tabs defaultValue="test">
         <TabPanel value="test">
           <div>Test Content</div>
@@ -30,7 +31,7 @@ describe("TabPanel", () => {
   });
 
   it("applies semantic color variables", () => {
-    const { container } = render(
+    const { container } = renderWithAdminContext(
       <Tabs defaultValue="test">
         <TabPanel value="test">
           <div>Test Content</div>
@@ -43,7 +44,7 @@ describe("TabPanel", () => {
   });
 
   it("passes className prop through", () => {
-    const { container } = render(
+    const { container } = renderWithAdminContext(
       <Tabs defaultValue="test">
         <TabPanel value="test" className="custom-class">
           <div>Test Content</div>

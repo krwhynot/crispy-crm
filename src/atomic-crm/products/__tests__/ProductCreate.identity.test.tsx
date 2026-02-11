@@ -15,12 +15,13 @@ import { describe, it, expect, vi, beforeEach, type Mock } from "vitest";
 import { screen, waitFor, act } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { useGetIdentity } from "ra-core";
+import type * as RaCore from "ra-core";
 import ProductCreate from "../ProductCreate";
 import { renderWithAdminContext } from "@/tests/utils/render-admin";
 
 // Mock ra-core hooks to control identity loading state
 vi.mock("ra-core", async (importOriginal) => {
-  const actual = await importOriginal<typeof import("ra-core")>();
+  const actual = await importOriginal<typeof RaCore>();
   return {
     ...actual,
     useGetIdentity: vi.fn(),

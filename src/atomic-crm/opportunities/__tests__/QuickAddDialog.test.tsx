@@ -1,5 +1,6 @@
 import { describe, it, expect, vi } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { screen } from "@testing-library/react";
+import { renderWithAdminContext } from "@/tests/utils/render-admin";
 import { QuickAddDialog } from "../QuickAddDialog";
 
 // Mock QuickAddForm since it's created in Task 5
@@ -14,7 +15,7 @@ vi.mock("../QuickAddForm", () => ({
 describe("QuickAddDialog", () => {
   it("renders dialog when open is true", () => {
     const onOpenChange = vi.fn();
-    render(<QuickAddDialog open={true} onOpenChange={onOpenChange} />);
+    renderWithAdminContext(<QuickAddDialog open={true} onOpenChange={onOpenChange} />);
 
     // Dialog should be visible
     expect(screen.getByRole("dialog")).toBeInTheDocument();
@@ -22,7 +23,7 @@ describe("QuickAddDialog", () => {
 
   it("does not render dialog when open is false", () => {
     const onOpenChange = vi.fn();
-    render(<QuickAddDialog open={false} onOpenChange={onOpenChange} />);
+    renderWithAdminContext(<QuickAddDialog open={false} onOpenChange={onOpenChange} />);
 
     // Dialog should not be visible
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
@@ -30,7 +31,7 @@ describe("QuickAddDialog", () => {
 
   it("renders correct title and description", () => {
     const onOpenChange = vi.fn();
-    render(<QuickAddDialog open={true} onOpenChange={onOpenChange} />);
+    renderWithAdminContext(<QuickAddDialog open={true} onOpenChange={onOpenChange} />);
 
     // Check title and description (updated for opportunity-focused flow)
     expect(screen.getByText("Quick Add Opportunity")).toBeInTheDocument();
@@ -41,7 +42,7 @@ describe("QuickAddDialog", () => {
 
   it("passes onOpenChange to close the dialog", () => {
     const onOpenChange = vi.fn();
-    render(<QuickAddDialog open={true} onOpenChange={onOpenChange} />);
+    renderWithAdminContext(<QuickAddDialog open={true} onOpenChange={onOpenChange} />);
 
     // Find and click the form submit button
     const submitButton = screen.getByText("Submit Form");
@@ -53,7 +54,7 @@ describe("QuickAddDialog", () => {
 
   it("includes QuickAddForm component", () => {
     const onOpenChange = vi.fn();
-    render(<QuickAddDialog open={true} onOpenChange={onOpenChange} />);
+    renderWithAdminContext(<QuickAddDialog open={true} onOpenChange={onOpenChange} />);
 
     // Check that the form is rendered
     expect(screen.getByTestId("quick-add-form")).toBeInTheDocument();
@@ -61,7 +62,7 @@ describe("QuickAddDialog", () => {
 
   it("has responsive dialog content classes", () => {
     const onOpenChange = vi.fn();
-    render(<QuickAddDialog open={true} onOpenChange={onOpenChange} />);
+    renderWithAdminContext(<QuickAddDialog open={true} onOpenChange={onOpenChange} />);
 
     // Find the dialog content by its data-slot attribute
     const dialogContent = document.querySelector('[data-slot="dialog-content"]');
@@ -72,7 +73,7 @@ describe("QuickAddDialog", () => {
 
   it("has proper accessibility attributes", () => {
     const onOpenChange = vi.fn();
-    render(<QuickAddDialog open={true} onOpenChange={onOpenChange} />);
+    renderWithAdminContext(<QuickAddDialog open={true} onOpenChange={onOpenChange} />);
 
     // Check aria-describedby attribute
     const dialogContent = document.querySelector('[data-slot="dialog-content"]');

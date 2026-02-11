@@ -177,7 +177,7 @@ describe("ActivityDetailsTab", () => {
   const mockOnDirtyChange = vi.fn();
 
   beforeEach(() => {
-    vi.clearAllMocks();
+    vi.resetAllMocks();
   });
 
   afterEach(() => {

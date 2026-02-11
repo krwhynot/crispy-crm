@@ -56,7 +56,7 @@ const createMockResponse = (total: number) => ({
 
 describe("useMyPerformance", () => {
   beforeEach(() => {
-    vi.clearAllMocks();
+    vi.resetAllMocks();
     currentSaleState.salesId = 42;
     currentSaleState.loading = false;
     currentSaleState.error = null;

@@ -1,12 +1,13 @@
 // src/atomic-crm/reports/components/KPICard.test.tsx
-import { render, screen, fireEvent } from "@testing-library/react";
+import { screen, fireEvent } from "@testing-library/react";
+import { renderWithAdminContext } from "@/tests/utils/render-admin";
 import userEvent from "@testing-library/user-event";
 import { KPICard } from "@/components/ui/kpi-card";
 import { TrendingUp, TrendingDown } from "lucide-react";
 
 describe("KPICard", () => {
   it("renders title and value", () => {
-    render(
+    renderWithAdminContext(
       <KPICard
         title="Total Opportunities"
         value="42"
@@ -20,7 +21,7 @@ describe("KPICard", () => {
   });
 
   it("shows positive trend with green color", () => {
-    render(
+    renderWithAdminContext(
       <KPICard
         title="Revenue"
         value="$100k"
@@ -35,7 +36,7 @@ describe("KPICard", () => {
   });
 
   it("shows negative trend with red color", () => {
-    render(
+    renderWithAdminContext(
       <KPICard
         title="Leads"
         value="10"
@@ -52,7 +53,7 @@ describe("KPICard", () => {
   describe("onClick navigation (PRD Section 9.2.1)", () => {
     it("calls onClick when card is clicked", async () => {
       const handleClick = vi.fn();
-      render(<KPICard title="Clickable KPI" value="100" icon={TrendingUp} onClick={handleClick} />);
+      renderWithAdminContext(<KPICard title="Clickable KPI" value="100" icon={TrendingUp} onClick={handleClick} />);
 
       const card = screen.getByRole("button", { name: /Clickable KPI: 100/i });
       await userEvent.click(card);
@@ -62,7 +63,7 @@ describe("KPICard", () => {
 
     it("calls onClick on Enter key press", () => {
       const handleClick = vi.fn();
-      render(<KPICard title="Keyboard KPI" value="50" icon={TrendingUp} onClick={handleClick} />);
+      renderWithAdminContext(<KPICard title="Keyboard KPI" value="50" icon={TrendingUp} onClick={handleClick} />);
 
       const card = screen.getByRole("button", { name: /Keyboard KPI: 50/i });
       fireEvent.keyDown(card, { key: "Enter" });
@@ -72,7 +73,7 @@ describe("KPICard", () => {
 
     it("calls onClick on Space key press", () => {
       const handleClick = vi.fn();
-      render(<KPICard title="Spacebar KPI" value="25" icon={TrendingUp} onClick={handleClick} />);
+      renderWithAdminContext(<KPICard title="Spacebar KPI" value="25" icon={TrendingUp} onClick={handleClick} />);
 
       const card = screen.getByRole("button", { name: /Spacebar KPI: 25/i });
       fireEvent.keyDown(card, { key: " " });
@@ -82,14 +83,14 @@ describe("KPICard", () => {
 
     it("has cursor-pointer class when clickable", () => {
       const handleClick = vi.fn();
-      render(<KPICard title="Pointer KPI" value="75" icon={TrendingUp} onClick={handleClick} />);
+      renderWithAdminContext(<KPICard title="Pointer KPI" value="75" icon={TrendingUp} onClick={handleClick} />);
 
       const card = screen.getByRole("button", { name: /Pointer KPI: 75/i });
       expect(card).toHaveClass("cursor-pointer");
     });
 
     it("does not have button role when not clickable", () => {
-      render(<KPICard title="Static KPI" value="200" icon={TrendingUp} />);
+      renderWithAdminContext(<KPICard title="Static KPI" value="200" icon={TrendingUp} />);
 
       expect(screen.queryByRole("button")).not.toBeInTheDocument();
       expect(screen.getByText("Static KPI")).toBeInTheDocument();
@@ -97,7 +98,7 @@ describe("KPICard", () => {
 
     it("is keyboard focusable when clickable", () => {
       const handleClick = vi.fn();
-      render(<KPICard title="Focusable KPI" value="150" icon={TrendingUp} onClick={handleClick} />);
+      renderWithAdminContext(<KPICard title="Focusable KPI" value="150" icon={TrendingUp} onClick={handleClick} />);
 
       const card = screen.getByRole("button", { name: /Focusable KPI: 150/i });
       expect(card).toHaveAttribute("tabIndex", "0");
@@ -106,7 +107,7 @@ describe("KPICard", () => {
 
   describe("variant styling (PRD Section 9.2.1)", () => {
     it("applies warning styling for warning variant", () => {
-      render(<KPICard title="Stale Deals" value="5" icon={TrendingUp} variant="warning" />);
+      renderWithAdminContext(<KPICard title="Stale Deals" value="5" icon={TrendingUp} variant="warning" />);
 
       // Find the card element (not button since no onClick)
       const card = screen.getByText("Stale Deals").closest('[data-slot="card"]');
@@ -115,7 +116,7 @@ describe("KPICard", () => {
     });
 
     it("applies success styling for success variant", () => {
-      render(<KPICard title="Wins" value="10" icon={TrendingUp} variant="success" />);
+      renderWithAdminContext(<KPICard title="Wins" value="10" icon={TrendingUp} variant="success" />);
 
       const card = screen.getByText("Wins").closest('[data-slot="card"]');
       expect(card).toHaveClass("border-success/50");
@@ -123,7 +124,7 @@ describe("KPICard", () => {
     });
 
     it("applies destructive styling for destructive variant", () => {
-      render(<KPICard title="Overdue Tasks" value="3" icon={TrendingDown} variant="destructive" />);
+      renderWithAdminContext(<KPICard title="Overdue Tasks" value="3" icon={TrendingDown} variant="destructive" />);
 
       const card = screen.getByText("Overdue Tasks").closest('[data-slot="card"]');
       expect(card).toHaveClass("border-destructive/50");
@@ -131,7 +132,7 @@ describe("KPICard", () => {
     });
 
     it("applies default styling when no variant specified", () => {
-      render(<KPICard title="Default KPI" value="42" icon={TrendingUp} />);
+      renderWithAdminContext(<KPICard title="Default KPI" value="42" icon={TrendingUp} />);
 
       const card = screen.getByText("Default KPI").closest('[data-slot="card"]');
       // Default variant should NOT have warning/success/destructive classes
@@ -143,7 +144,7 @@ describe("KPICard", () => {
 
   describe("loading state", () => {
     it("shows loading skeleton when loading is true", () => {
-      render(<KPICard title="Loading KPI" value="0" loading={true} />);
+      renderWithAdminContext(<KPICard title="Loading KPI" value="0" loading={true} />);
 
       // Should show aria-busy attribute
       const card = screen.getByLabelText(/Loading Loading KPI/i);

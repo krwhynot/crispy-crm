@@ -21,7 +21,7 @@
  * ```
  */
 
-import { HttpError } from "react-admin";
+import type { HttpError } from "react-admin";
 
 /**
  * Type guard for React Admin HttpError

@@ -206,7 +206,6 @@ export const ControlledDatePicker = React.forwardRef<HTMLButtonElement, Controll
             selected={selectedDate}
             onSelect={handleSelect}
             disabled={isDateDisabled}
-            autoFocus
           />
         </PopoverContent>
       </Popover>

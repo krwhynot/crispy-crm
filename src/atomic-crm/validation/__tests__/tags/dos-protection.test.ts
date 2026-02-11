@@ -11,9 +11,9 @@ import { z } from "zod";
 
 describe("Tag DoS Protection", () => {
   describe("tagSchema - bounded string limits", () => {
-    it("should enforce 100 char limit on tag names", () => {
-      const maxName = "a".repeat(100);
-      const tooLongName = "a".repeat(101);
+    it("should enforce 50 char limit on tag names", () => {
+      const maxName = "a".repeat(50);
+      const tooLongName = "a".repeat(51);
 
       expect(() =>
         tagSchema.parse({
@@ -95,9 +95,9 @@ describe("Tag DoS Protection", () => {
   });
 
   describe("createTagSchema - bounded string limits", () => {
-    it("should enforce 100 char limit on tag names", () => {
-      const maxName = "a".repeat(100);
-      const tooLongName = "a".repeat(101);
+    it("should enforce 50 char limit on tag names", () => {
+      const maxName = "a".repeat(50);
+      const tooLongName = "a".repeat(51);
 
       expect(() =>
         createTagSchema.parse({
@@ -116,9 +116,9 @@ describe("Tag DoS Protection", () => {
   });
 
   describe("updateTagSchema - bounded string limits", () => {
-    it("should enforce 100 char limit on tag names", () => {
-      const maxName = "a".repeat(100);
-      const tooLongName = "a".repeat(101);
+    it("should enforce 50 char limit on tag names", () => {
+      const maxName = "a".repeat(50);
+      const tooLongName = "a".repeat(51);
 
       expect(() =>
         updateTagSchema.parse({

@@ -1,10 +1,11 @@
 import { describe, test, expect } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { screen } from "@testing-library/react";
+import { renderWithAdminContext } from "@/tests/utils/render-admin";
 import { FormSection } from "../FormSection";
 
 describe("FormSection", () => {
   test("renders title in uppercase", () => {
-    render(
+    renderWithAdminContext(
       <FormSection title="contact information">
         <div>Content</div>
       </FormSection>
@@ -15,7 +16,7 @@ describe("FormSection", () => {
   });
 
   test("applies correct header styling classes", () => {
-    render(
+    renderWithAdminContext(
       <FormSection title="Test Section">
         <div>Content</div>
       </FormSection>
@@ -30,7 +31,7 @@ describe("FormSection", () => {
   });
 
   test("renders horizontal divider with correct border styling", () => {
-    const { container } = render(
+    const { container } = renderWithAdminContext(
       <FormSection title="Test Section">
         <div>Content</div>
       </FormSection>
@@ -43,7 +44,7 @@ describe("FormSection", () => {
   });
 
   test("applies correct margin to content area", () => {
-    const { container } = render(
+    const { container } = renderWithAdminContext(
       <FormSection title="Test Section">
         <div data-testid="content">Content</div>
       </FormSection>
@@ -54,7 +55,7 @@ describe("FormSection", () => {
   });
 
   test("renders children content", () => {
-    render(
+    renderWithAdminContext(
       <FormSection title="Test Section">
         <div data-testid="child-content">Test Child Content</div>
       </FormSection>
@@ -65,7 +66,7 @@ describe("FormSection", () => {
   });
 
   test("renders optional description when provided", () => {
-    render(
+    renderWithAdminContext(
       <FormSection title="Test Section" description="This is a description">
         <div>Content</div>
       </FormSection>
@@ -75,7 +76,7 @@ describe("FormSection", () => {
   });
 
   test("does not render description when not provided", () => {
-    const { container } = render(
+    const { container } = renderWithAdminContext(
       <FormSection title="Test Section">
         <div>Content</div>
       </FormSection>
@@ -86,7 +87,7 @@ describe("FormSection", () => {
   });
 
   test("applies custom className to wrapper", () => {
-    const { container } = render(
+    const { container } = renderWithAdminContext(
       <FormSection title="Test Section" className="custom-test-class">
         <div>Content</div>
       </FormSection>
@@ -97,7 +98,7 @@ describe("FormSection", () => {
   });
 
   test("applies muted-foreground color to description", () => {
-    render(
+    renderWithAdminContext(
       <FormSection title="Test Section" description="Test description">
         <div>Content</div>
       </FormSection>
@@ -108,7 +109,7 @@ describe("FormSection", () => {
   });
 
   test("renders title as h3 heading for proper document hierarchy", () => {
-    render(
+    renderWithAdminContext(
       <FormSection title="Test Section">
         <div>Content</div>
       </FormSection>

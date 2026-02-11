@@ -1,5 +1,6 @@
 // src/atomic-crm/reports/components/FilterChip.test.tsx
-import { render, screen, fireEvent } from "@testing-library/react";
+import { screen, fireEvent } from "@testing-library/react";
+import { renderWithAdminContext } from "@/tests/utils/render-admin";
 import userEvent from "@testing-library/user-event";
 import { FilterChip } from "./FilterChip";
 
@@ -11,11 +12,11 @@ describe("FilterChip", () => {
   };
 
   beforeEach(() => {
-    vi.clearAllMocks();
+    vi.resetAllMocks();
   });
 
   it("renders label and value", () => {
-    render(<FilterChip {...defaultProps} />);
+    renderWithAdminContext(<FilterChip {...defaultProps} />);
 
     expect(screen.getByText("Date Range:")).toBeInTheDocument();
     expect(screen.getByText("Last 7 Days")).toBeInTheDocument();
@@ -25,7 +26,7 @@ describe("FilterChip", () => {
     const onRemove = vi.fn();
     const user = userEvent.setup();
 
-    render(<FilterChip {...defaultProps} onRemove={onRemove} />);
+    renderWithAdminContext(<FilterChip {...defaultProps} onRemove={onRemove} />);
 
     const removeButton = screen.getByRole("button", {
       name: /remove date range filter/i,
@@ -38,7 +39,7 @@ describe("FilterChip", () => {
   it("calls onRemove when Enter key is pressed on remove button", () => {
     const onRemove = vi.fn();
 
-    render(<FilterChip {...defaultProps} onRemove={onRemove} />);
+    renderWithAdminContext(<FilterChip {...defaultProps} onRemove={onRemove} />);
 
     const removeButton = screen.getByRole("button", {
       name: /remove date range filter/i,
@@ -51,7 +52,7 @@ describe("FilterChip", () => {
   it("calls onRemove when Space key is pressed on remove button", () => {
     const onRemove = vi.fn();
 
-    render(<FilterChip {...defaultProps} onRemove={onRemove} />);
+    renderWithAdminContext(<FilterChip {...defaultProps} onRemove={onRemove} />);
 
     const removeButton = screen.getByRole("button", {
       name: /remove date range filter/i,
@@ -62,7 +63,7 @@ describe("FilterChip", () => {
   });
 
   it("has correct ARIA attributes", () => {
-    render(<FilterChip {...defaultProps} />);
+    renderWithAdminContext(<FilterChip {...defaultProps} />);
 
     // Container has role="listitem"
     const listItem = screen.getByRole("listitem");

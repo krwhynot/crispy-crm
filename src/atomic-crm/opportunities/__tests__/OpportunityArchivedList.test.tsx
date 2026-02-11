@@ -1,5 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { screen, fireEvent, waitFor } from "@testing-library/react";
+import { renderWithAdminContext } from "@/tests/utils/render-admin";
 import { OpportunityArchivedList } from "../OpportunityArchivedList";
 import { useGetIdentity, useGetList } from "ra-core";
 import { mockUseGetIdentityReturn, mockUseGetListReturn } from "@/tests/utils/typed-mocks";
@@ -20,7 +21,7 @@ const mockOpportunities = Array.from({ length: 100 }, (_, i) => ({
 
 describe("OpportunityArchivedList", () => {
   beforeEach(() => {
-    vi.clearAllMocks();
+    vi.resetAllMocks();
   });
 
   it("should fetch initial page with 25 items per page", () => {
@@ -38,7 +39,7 @@ describe("OpportunityArchivedList", () => {
       })
     );
 
-    render(<OpportunityArchivedList />);
+    renderWithAdminContext(<OpportunityArchivedList />);
 
     // Verify useGetList was called with correct pagination
     expect(vi.mocked(useGetList)).toHaveBeenCalledWith(
@@ -64,7 +65,7 @@ describe("OpportunityArchivedList", () => {
       })
     );
 
-    render(<OpportunityArchivedList />);
+    renderWithAdminContext(<OpportunityArchivedList />);
 
     expect(screen.getByText("View archived opportunities")).toBeInTheDocument();
   });
@@ -84,7 +85,7 @@ describe("OpportunityArchivedList", () => {
       })
     );
 
-    render(<OpportunityArchivedList />);
+    renderWithAdminContext(<OpportunityArchivedList />);
 
     // Open dialog
     const button = screen.getByText("View archived opportunities");
@@ -111,7 +112,7 @@ describe("OpportunityArchivedList", () => {
       })
     );
 
-    render(<OpportunityArchivedList />);
+    renderWithAdminContext(<OpportunityArchivedList />);
 
     // Open dialog
     const button = screen.getByText("View archived opportunities");
@@ -139,7 +140,7 @@ describe("OpportunityArchivedList", () => {
       })
     );
 
-    render(<OpportunityArchivedList />);
+    renderWithAdminContext(<OpportunityArchivedList />);
 
     // Open dialog
     const button = screen.getByText("View archived opportunities");
@@ -168,7 +169,7 @@ describe("OpportunityArchivedList", () => {
       })
     );
 
-    const { rerender } = render(<OpportunityArchivedList />);
+    const { rerender } = renderWithAdminContext(<OpportunityArchivedList />);
 
     // Open and close dialog
     const button = screen.getByText("View archived opportunities");

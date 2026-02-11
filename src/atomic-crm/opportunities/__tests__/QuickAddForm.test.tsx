@@ -1,17 +1,19 @@
 import { describe, it, expect, vi, beforeEach, beforeAll, type Mock } from "vitest";
-import { render, screen, waitFor, fireEvent } from "@testing-library/react";
+import { screen, waitFor, fireEvent } from "@testing-library/react";
+import { renderWithAdminContext } from "@/tests/utils/render-admin";
 import userEvent from "@testing-library/user-event";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { MemoryRouter } from "react-router-dom";
 import { QuickAddForm } from "../QuickAddForm";
 import { useQuickAdd } from "../useQuickAdd";
 import { useGetList, useGetIdentity, useDataProvider, useNotify } from "ra-core";
+import type * as RaCore from "ra-core";
 import { selectCityAndVerifyState } from "@/tests/utils/combobox";
 
 // Mock the external dependencies
 vi.mock("../useQuickAdd");
 vi.mock("ra-core", async (importOriginal) => {
-  const actual = await importOriginal<typeof import("ra-core")>();
+  const actual = await importOriginal<typeof RaCore>();
   return {
     ...actual,
     useGetList: vi.fn(),
@@ -139,7 +141,7 @@ describe("QuickAddForm", () => {
     // Clear localStorage to prevent pre-selection
     mockLocalStorage.getItem.mockImplementation(() => null);
 
-    render(
+    renderWithAdminContext(
       <TestWrapper>
         <QuickAddForm onSuccess={mockOnSuccess} />
       </TestWrapper>
@@ -188,7 +190,7 @@ describe("QuickAddForm", () => {
   });
 
   it("pre-fills from localStorage", () => {
-    render(
+    renderWithAdminContext(
       <TestWrapper>
         <QuickAddForm onSuccess={mockOnSuccess} />
       </TestWrapper>
@@ -210,7 +212,7 @@ describe("QuickAddForm", () => {
       options.onSuccess();
     });
 
-    render(
+    renderWithAdminContext(
       <TestWrapper>
         <QuickAddForm onSuccess={mockOnSuccess} />
       </TestWrapper>
@@ -233,7 +235,7 @@ describe("QuickAddForm", () => {
     // Similar to Save & Add Another - test button behavior rather than full form flow
     const user = userEvent.setup({ delay: null });
 
-    render(
+    renderWithAdminContext(
       <TestWrapper>
         <QuickAddForm onSuccess={mockOnSuccess} />
       </TestWrapper>
@@ -262,7 +264,7 @@ describe("QuickAddForm", () => {
       return null;
     });
 
-    render(
+    renderWithAdminContext(
       <TestWrapper>
         <QuickAddForm onSuccess={mockOnSuccess} />
       </TestWrapper>
@@ -284,7 +286,7 @@ describe("QuickAddForm", () => {
       isLoading: false,
     });
 
-    render(
+    renderWithAdminContext(
       <TestWrapper>
         <QuickAddForm onSuccess={mockOnSuccess} />
       </TestWrapper>
@@ -305,7 +307,7 @@ describe("QuickAddForm", () => {
   it("handles Cancel button correctly", async () => {
     const user = userEvent.setup();
 
-    render(
+    renderWithAdminContext(
       <TestWrapper>
         <QuickAddForm onSuccess={mockOnSuccess} />
       </TestWrapper>
@@ -323,7 +325,7 @@ describe("QuickAddForm", () => {
       isPending: true,
     });
 
-    render(
+    renderWithAdminContext(
       <TestWrapper>
         <QuickAddForm onSuccess={mockOnSuccess} />
       </TestWrapper>
@@ -335,7 +337,7 @@ describe("QuickAddForm", () => {
   });
 
   it("shows opportunity name preview placeholder initially", () => {
-    render(
+    renderWithAdminContext(
       <TestWrapper>
         <QuickAddForm onSuccess={mockOnSuccess} />
       </TestWrapper>
@@ -349,7 +351,7 @@ describe("QuickAddForm", () => {
   });
 
   it("defaults account manager to current user", async () => {
-    render(
+    renderWithAdminContext(
       <TestWrapper>
         <QuickAddForm onSuccess={mockOnSuccess} />
       </TestWrapper>
@@ -504,7 +506,7 @@ describe("QuickAddForm - Principal Selection and Product Filtering", () => {
   };
 
   it("displays principal dropdown with all available principals", async () => {
-    render(
+    renderWithAdminContext(
       <TestWrapper>
         <QuickAddForm onSuccess={mockOnSuccess} />
       </TestWrapper>
@@ -523,7 +525,7 @@ describe("QuickAddForm - Principal Selection and Product Filtering", () => {
   });
 
   it("selects a principal and updates the form state", async () => {
-    render(
+    renderWithAdminContext(
       <TestWrapper>
         <QuickAddForm onSuccess={mockOnSuccess} />
       </TestWrapper>
@@ -551,7 +553,7 @@ describe("QuickAddForm - Principal Selection and Product Filtering", () => {
   });
 
   it("fetches products with correct filter after principal selection", async () => {
-    render(
+    renderWithAdminContext(
       <TestWrapper>
         <QuickAddForm onSuccess={mockOnSuccess} />
       </TestWrapper>
@@ -580,7 +582,7 @@ describe("QuickAddForm - Principal Selection and Product Filtering", () => {
   });
 
   it("shows correct products for selected principal", async () => {
-    render(
+    renderWithAdminContext(
       <TestWrapper>
         <QuickAddForm onSuccess={mockOnSuccess} />
       </TestWrapper>
@@ -609,7 +611,7 @@ describe("QuickAddForm - Principal Selection and Product Filtering", () => {
   });
 
   it("updates products when switching principals", async () => {
-    render(
+    renderWithAdminContext(
       <TestWrapper>
         <QuickAddForm onSuccess={mockOnSuccess} />
       </TestWrapper>
@@ -636,7 +638,7 @@ describe("QuickAddForm - Principal Selection and Product Filtering", () => {
     );
 
     // Clear mock call history to track new calls
-    vi.clearAllMocks();
+    vi.resetAllMocks();
     setupFilterAwareMock(); // Re-setup the mock
 
     // Second: Switch to "Beta Industries"
@@ -659,7 +661,7 @@ describe("QuickAddForm - Principal Selection and Product Filtering", () => {
   });
 
   it("handles principal with no products gracefully", async () => {
-    render(
+    renderWithAdminContext(
       <TestWrapper>
         <QuickAddForm onSuccess={mockOnSuccess} />
       </TestWrapper>
@@ -689,7 +691,7 @@ describe("QuickAddForm - Principal Selection and Product Filtering", () => {
   });
 
   it("persists principal selection after selecting it", async () => {
-    render(
+    renderWithAdminContext(
       <TestWrapper>
         <QuickAddForm onSuccess={mockOnSuccess} />
       </TestWrapper>

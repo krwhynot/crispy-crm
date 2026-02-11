@@ -242,7 +242,7 @@ export const OpportunityListContent = ({
         }
       );
     },
-    [update, notify, queryClient]
+    [update, notify, queryClient, setOpportunitiesByStage]
   );
 
   /**
@@ -288,7 +288,7 @@ export const OpportunityListContent = ({
         setPendingCloseData(null);
       }
     },
-    [pendingCloseData, notify]
+    [pendingCloseData, notify, setOpportunitiesByStage]
   );
 
   /**
@@ -329,7 +329,7 @@ export const OpportunityListContent = ({
       // Also trigger a refresh to ensure data consistency
       refresh();
     },
-    [refresh, slideOverId, closeSlideOver]
+    [refresh, slideOverId, closeSlideOver, setOpportunitiesByStage]
   );
 
   /**
@@ -340,33 +340,36 @@ export const OpportunityListContent = ({
    * The refresh() call in QuickAddOpportunity will eventually sync with
    * server data (including computed fields like principal_organization_name).
    */
-  const handleOpportunityCreated = useCallback((opportunity: Opportunity) => {
-    setOpportunitiesByStage((prevState) => {
-      if (!prevState) {
-        logger.warn("Create skipped - state not initialized, will sync on refresh", {
-          feature: "OpportunityListContent",
-          opportunityId: opportunity.id,
-        });
-        return prevState;
-      }
-      const stage = opportunity.stage;
-      if (!stage || !prevState[stage]) {
-        // If stage is invalid or not in our stages, don't add
-        // (will be picked up on refresh)
-        logger.warn("New opportunity has invalid stage", {
-          feature: "OpportunityListContent",
-          stage,
-        });
-        return prevState;
-      }
+  const handleOpportunityCreated = useCallback(
+    (opportunity: Opportunity) => {
+      setOpportunitiesByStage((prevState) => {
+        if (!prevState) {
+          logger.warn("Create skipped - state not initialized, will sync on refresh", {
+            feature: "OpportunityListContent",
+            opportunityId: opportunity.id,
+          });
+          return prevState;
+        }
+        const stage = opportunity.stage;
+        if (!stage || !prevState[stage]) {
+          // If stage is invalid or not in our stages, don't add
+          // (will be picked up on refresh)
+          logger.warn("New opportunity has invalid stage", {
+            feature: "OpportunityListContent",
+            stage,
+          });
+          return prevState;
+        }
 
-      const newState = { ...prevState };
-      // Add new opportunity at the START of the stage array (newest first)
-      // The refresh will later apply proper sorting
-      newState[stage] = [opportunity, ...prevState[stage]];
-      return newState;
-    });
-  }, []);
+        const newState = { ...prevState };
+        // Add new opportunity at the START of the stage array (newest first)
+        // The refresh will later apply proper sorting
+        newState[stage] = [opportunity, ...prevState[stage]];
+        return newState;
+      });
+    },
+    [setOpportunitiesByStage]
+  );
 
   const handleDragStart = useCallback((event: DragStartEvent) => {
     setActiveId(String(event.active.id));
@@ -489,7 +492,7 @@ export const OpportunityListContent = ({
       // --- API Call for non-close stages ---
       performStageUpdate(draggableId, destColId, previousState, draggedItem);
     },
-    [opportunitiesByStage, performStageUpdate]
+    [opportunitiesByStage, performStageUpdate, setOpportunitiesByStage]
   );
 
   const announcements = {

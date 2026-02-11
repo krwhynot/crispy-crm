@@ -5,12 +5,13 @@ import { renderWithAdminContext } from "@/tests/utils/render-admin";
 import { OpportunityListContent } from "../OpportunityListContent";
 import { logger } from "@/lib/logger";
 import type { Opportunity } from "@/atomic-crm/types";
+import type * as RaCore from "ra-core";
 import { STAGE } from "../../constants";
 
 // Mock dependencies
 vi.mock("@/lib/logger");
 vi.mock("ra-core", async () => {
-  const actual = await vi.importActual<typeof import("ra-core")>("ra-core");
+  const actual = await vi.importActual<typeof RaCore>("ra-core");
   return {
     ...actual,
     useUpdate: vi.fn(() => [vi.fn()]),
@@ -39,7 +40,7 @@ const mockOpportunity: Opportunity = {
 
 describe("OpportunityListContent - Null Safety Guards", () => {
   beforeEach(() => {
-    vi.clearAllMocks();
+    vi.resetAllMocks();
   });
 
   const renderWithContext = (data: Opportunity[] | undefined = undefined) => {

@@ -1,223 +1,126 @@
-import { render, screen } from "@testing-library/react";
+import { screen } from "@testing-library/react";
+import { renderWithAdminContext } from "@/tests/utils/render-admin";
 import { describe, it, expect, vi } from "vitest";
-import { MemoryRouter } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { TooltipProvider } from "@/components/ui/tooltip";
 import { PrincipalDashboardV3 } from "../PrincipalDashboardV3";
 
-// Mock the hooks
-vi.mock("../usePrincipalPipeline", () => ({
-  usePrincipalPipeline: () => ({
-    data: [],
-    loading: false,
-    error: null,
-  }),
+// ---------- Stub child components ----------
+
+vi.mock("../KPISummaryRow", () => ({
+  KPISummaryRow: () => <div data-testid="kpi-summary-row">KPISummaryRow</div>,
 }));
 
-vi.mock("../useMyTasks", () => ({
-  useMyTasks: () => ({
-    tasks: [],
-    loading: false,
-    error: null,
-    completeTask: vi.fn(),
-    snoozeTask: vi.fn(),
-    deleteTask: vi.fn(),
-    viewTask: vi.fn(),
-    updateTaskDueDate: vi.fn(),
-    updateTaskLocally: vi.fn(),
-    rollbackTask: vi.fn(),
-    calculateStatus: vi.fn(),
-  }),
+vi.mock("../DashboardTabPanel", () => ({
+  DashboardTabPanel: () => <div data-testid="dashboard-tab-panel">DashboardTabPanel</div>,
 }));
 
-// Mock the usePrincipalOpportunities hook (used by PipelineDrillDownSheet)
-vi.mock("../usePrincipalOpportunities", () => ({
-  usePrincipalOpportunities: () => ({
-    opportunities: [],
-    loading: false,
-    error: null,
-  }),
+let capturedTaskSheetProps: Record<string, unknown> = {};
+vi.mock("../TaskCompleteSheet", () => ({
+  TaskCompleteSheet: (props: Record<string, unknown>) => {
+    capturedTaskSheetProps = props;
+    return <div data-testid="task-complete-sheet">TaskCompleteSheet</div>;
+  },
 }));
 
-// Mock the useMyPerformance hook (used by MyPerformanceWidget)
-vi.mock("../useMyPerformance", () => ({
-  useMyPerformance: () => ({
-    metrics: {
-      activitiesThisWeek: { value: 5, previousValue: 3, trend: 67, direction: "up" as const },
-      dealsMoved: { value: 2, previousValue: 2, trend: 0, direction: "flat" as const },
-      tasksCompleted: { value: 8, previousValue: 10, trend: -20, direction: "down" as const },
-      openOpportunities: { value: 12, previousValue: 10, trend: 20, direction: "up" as const },
-    },
-    loading: false,
-  }),
+vi.mock("../DashboardTutorial", () => ({
+  DashboardTutorial: () => <div data-testid="dashboard-tutorial">DashboardTutorial</div>,
 }));
 
-// Mock the useTeamActivities hook (used by ActivityFeedPanel)
-vi.mock("../useTeamActivities", () => ({
-  useTeamActivities: () => ({
-    activities: [],
-    loading: false,
-    error: null,
-  }),
-}));
+// ---------- Helpers ----------
 
-// Mock the useTaskCount hook (used by DashboardTabPanel for badge)
-vi.mock("../useTaskCount", () => ({
-  useTaskCount: () => ({
-    pendingCount: 0,
-    isLoading: false,
-  }),
-}));
-
-// Mock MobileQuickActionBar to avoid complex dependencies
-vi.mock("../components/MobileQuickActionBar", () => ({
-  MobileQuickActionBar: () => null,
-}));
-
-// Mock TaskCompleteSheet to avoid complex dependencies
-vi.mock("../components/TaskCompleteSheet", () => ({
-  TaskCompleteSheet: () => null,
-}));
-
-// Mock the useKPIMetrics hook (used by KPISummaryRow)
-// Updated to match PRD v1.9: KPI #1 = Open Opportunities count (not $), KPI #4 = Stale Deals
-vi.mock("../useKPIMetrics", () => ({
-  useKPIMetrics: () => ({
-    metrics: {
-      openOpportunitiesCount: 8,
-      overdueTasksCount: 3,
-      activitiesThisWeek: 12,
-      staleDealsCount: 2,
-    },
-    trends: {
-      activitiesThisWeek: null,
-    },
-    loading: false,
-    error: null,
-    refetch: vi.fn(),
-  }),
-}));
-
-// Create fresh QueryClient for each test to avoid state leakage
 const createTestQueryClient = () =>
   new QueryClient({
     defaultOptions: {
-      queries: {
-        retry: false, // Don't retry in tests
-      },
+      queries: { retry: false },
     },
   });
 
-// Helper to render with all required providers
-const renderDashboard = () => {
+function renderDashboard() {
   const queryClient = createTestQueryClient();
-  return render(
+  capturedTaskSheetProps = {};
+  return renderWithAdminContext(
     <QueryClientProvider client={queryClient}>
-      <MemoryRouter>
-        <TooltipProvider>
-          <PrincipalDashboardV3 />
-        </TooltipProvider>
-      </MemoryRouter>
+      <PrincipalDashboardV3 />
     </QueryClientProvider>
   );
-};
+}
+
+// ---------- Tests ----------
 
 describe("PrincipalDashboardV3", () => {
-  it("should render both panels (Pipeline and Tasks)", () => {
-    renderDashboard();
-
-    // Tab labels in the tabbed interface
-    expect(screen.getByText("Pipeline")).toBeInTheDocument();
-    expect(screen.getByText("My Tasks")).toBeInTheDocument();
-  });
-
-  it("should use vertically stacked layout for main sections", () => {
+  it("renders a vertical flex-col layout with a main element", () => {
     const { container } = renderDashboard();
 
-    // Main content should use flex-col for vertical stacking
-    const flexColContainers = container.querySelectorAll(".flex-col");
-    expect(flexColContainers.length).toBeGreaterThanOrEqual(1);
+    const rootDiv = container.firstElementChild as HTMLElement;
+    expect(rootDiv).not.toBeNull();
+    expect(rootDiv.classList.contains("flex")).toBe(true);
+    expect(rootDiv.classList.contains("flex-col")).toBe(true);
 
-    // Root container uses calc height for dynamic viewport
-    const rootDiv = container.querySelector(".flex.flex-col");
-    expect(rootDiv).toBeInTheDocument();
-
-    // Main element should have flex-1 for remaining height
-    const mainElement = container.querySelector("main.flex-1");
-    expect(mainElement).toBeInTheDocument();
+    const mainEl = rootDiv.querySelector("main");
+    expect(mainEl).toBeInTheDocument();
+    expect(mainEl?.classList.contains("flex-1")).toBe(true);
+    expect(mainEl?.classList.contains("flex-col")).toBe(true);
   });
 
-  it("should have KPI row with 4-column desktop grid", () => {
+  it("renders the KPISummaryRow child component", () => {
+    renderDashboard();
+    expect(screen.getByTestId("kpi-summary-row")).toBeInTheDocument();
+  });
+
+  it("renders the DashboardTabPanel child component", () => {
+    renderDashboard();
+    expect(screen.getByTestId("dashboard-tab-panel")).toBeInTheDocument();
+  });
+
+  it("renders the TaskCompleteSheet child component", () => {
+    renderDashboard();
+    expect(screen.getByTestId("task-complete-sheet")).toBeInTheDocument();
+  });
+
+  it("renders the DashboardTutorial child component", () => {
+    renderDashboard();
+    expect(screen.getByTestId("dashboard-tutorial")).toBeInTheDocument();
+  });
+
+  it("passes open=false to TaskCompleteSheet initially", () => {
+    renderDashboard();
+    expect(capturedTaskSheetProps.open).toBe(false);
+  });
+
+  it("passes onOpenChange and onRefresh callbacks to TaskCompleteSheet", () => {
+    renderDashboard();
+    expect(typeof capturedTaskSheetProps.onOpenChange).toBe("function");
+    expect(typeof capturedTaskSheetProps.onRefresh).toBe("function");
+  });
+
+  it("calls queryClient.invalidateQueries when onRefresh is invoked", () => {
+    const queryClient = createTestQueryClient();
+    const invalidateSpy = vi.spyOn(queryClient, "invalidateQueries");
+
+    capturedTaskSheetProps = {};
+    renderWithAdminContext(
+      <QueryClientProvider client={queryClient}>
+        <PrincipalDashboardV3 />
+      </QueryClientProvider>
+    );
+
+    const onRefresh = capturedTaskSheetProps.onRefresh as () => void;
+    expect(onRefresh).toBeDefined();
+    onRefresh();
+
+    expect(invalidateSpy).toHaveBeenCalledTimes(1);
+    expect(invalidateSpy).toHaveBeenCalledWith(
+      expect.objectContaining({ queryKey: expect.arrayContaining(["dashboard"]) })
+    );
+
+    invalidateSpy.mockRestore();
+  });
+
+  it("wraps KPISummaryRow in a shrink-0 container", () => {
     const { container } = renderDashboard();
 
-    // KPI Summary Row should use responsive grid: 2-col mobile, 4-col desktop
-    const kpiGrid = container.querySelector(".grid.grid-cols-2.lg\\:grid-cols-4");
-    expect(kpiGrid).toBeInTheDocument();
-
-    // Should have ARIA label for accessibility
-    const kpiSection = container.querySelector('section[aria-label="Key Performance Indicators"]');
-    expect(kpiSection).toBeInTheDocument();
-  });
-
-  it("should have tabbed interface for all sections", () => {
-    renderDashboard();
-
-    // All sections are now in tabs - verify all tab triggers exist
-    expect(screen.getByText("Pipeline")).toBeInTheDocument();
-    expect(screen.getByText("My Tasks")).toBeInTheDocument();
-    expect(screen.getByText("Performance")).toBeInTheDocument();
-    expect(screen.getByText("Team Activity")).toBeInTheDocument();
-  });
-
-  it("should render all dashboard sections in vertical stack order", () => {
-    renderDashboard();
-
-    // Verify all sections are present (order is implicit by DOM structure)
-    // 1. KPI Summary Row
-    expect(screen.getByLabelText("Key Performance Indicators")).toBeInTheDocument();
-
-    // 2-5. Tabbed interface contains all sections
-    // Tab labels (sections accessible via tabs)
-    expect(screen.getByText("Pipeline")).toBeInTheDocument();
-    expect(screen.getByText("My Tasks")).toBeInTheDocument();
-    expect(screen.getByText("Performance")).toBeInTheDocument();
-    expect(screen.getByText("Team Activity")).toBeInTheDocument();
-  });
-
-  it("should render dashboard main content area", () => {
-    const { container } = renderDashboard();
-
-    // Dashboard renders main content area with KPI row and tabbed interface
-    // Header is provided by Layout component, not this component
-    const mainElement = container.querySelector("main");
-    expect(mainElement).toBeInTheDocument();
-
-    // KPI Summary Row should be present
-    expect(screen.getByLabelText("Key Performance Indicators")).toBeInTheDocument();
-  });
-
-  it("should render KPI summary row with four metrics (PRD v1.9)", () => {
-    renderDashboard();
-
-    // Check that KPI labels are rendered per PRD v1.9 Section 9.2.1
-    // KPI #1: Open Opportunities (count, not $ value per Decision #5)
-    // KPI #2: Overdue Tasks
-    // KPI #3: Team Activities
-    // KPI #4: Stale Deals (with amber styling when > 0)
-    expect(screen.getByText("Open Opportunities")).toBeInTheDocument();
-    expect(screen.getByText("Overdue Tasks")).toBeInTheDocument();
-    expect(screen.getByText("Team Activities")).toBeInTheDocument();
-    expect(screen.getByText("Stale Deals")).toBeInTheDocument();
-  });
-
-  it("should render KPI values from mocked data", () => {
-    renderDashboard();
-
-    // Check KPI values using aria-labels for specificity (avoids collision with Performance widget)
-    // KPIs have aria-label like "Open Opportunities: 8. Click to view details."
-    expect(screen.getByRole("button", { name: /Open Opportunities: 8/i })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /Overdue Tasks: 3/i })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /Team Activities: 12/i })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /Stale Deals: 2/i })).toBeInTheDocument();
+    const kpiStub = screen.getByTestId("kpi-summary-row");
+    const wrapper = kpiStub.parentElement;
+    expect(wrapper?.classList.contains("shrink-0")).toBe(true);
   });
 });

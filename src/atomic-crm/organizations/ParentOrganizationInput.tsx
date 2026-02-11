@@ -50,7 +50,8 @@ export const ParentOrganizationInput = () => {
           <span className="text-sm text-muted-foreground">Loading hierarchy...</span>
         </div>
         <p className="text-sm text-muted-foreground">
-          Link this organization to its parent (e.g., Sysco Chicago → Sysco Corporation for regional branches)
+          Link this organization to its parent (e.g., Sysco Chicago → Sysco Corporation for regional
+          branches)
         </p>
       </div>
     );

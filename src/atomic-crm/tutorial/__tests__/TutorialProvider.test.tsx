@@ -1,5 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { screen, fireEvent, waitFor } from "@testing-library/react";
+import { renderWithAdminContext } from "@/tests/utils/render-admin";
 import { TutorialProvider, useTutorial } from "../TutorialProvider";
 import { MemoryRouter } from "react-router-dom";
 import { driver as driverMock } from "driver.js";
@@ -52,7 +53,7 @@ function TestConsumer() {
 }
 
 function renderWithProvider() {
-  return render(
+  return renderWithAdminContext(
     <MemoryRouter>
       <TutorialProvider>
         <TestConsumer />
@@ -63,7 +64,7 @@ function renderWithProvider() {
 
 describe("TutorialProvider", () => {
   beforeEach(() => {
-    vi.clearAllMocks();
+    vi.resetAllMocks();
   });
 
   it("should provide tutorial context to children", () => {
@@ -99,7 +100,7 @@ describe("TutorialProvider", () => {
     const consoleSpy = vi.spyOn(console, "error").mockImplementation(() => {});
 
     expect(() => {
-      render(<TestConsumer />);
+      renderWithAdminContext(<TestConsumer />);
     }).toThrow("useTutorial must be used within TutorialProvider");
 
     consoleSpy.mockRestore();

@@ -24,7 +24,7 @@ Object.defineProperty(window, "localStorage", { value: localStorageMock });
 describe("useTutorialProgress", () => {
   beforeEach(() => {
     localStorageMock.clear();
-    vi.clearAllMocks();
+    vi.resetAllMocks();
   });
 
   it("should return default progress when localStorage is empty", () => {

@@ -16,7 +16,7 @@ import { useShowContext, useUpdate, useNotify } from "ra-core";
 import { useNavigate } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
 import { opportunityKeys } from "../queryKeys";
-import { format, isValid, isPast, parseISO } from "date-fns";
+import { isValid, isPast, parseISO } from "date-fns";
 import { Badge } from "@/components/ui/badge";
 import { AdminButton } from "@/components/admin/AdminButton";
 import { Input } from "@/components/ui/input";

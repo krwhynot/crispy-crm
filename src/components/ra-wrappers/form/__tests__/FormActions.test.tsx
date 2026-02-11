@@ -1,5 +1,6 @@
 import { describe, it, expect, vi } from "vitest";
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { screen, fireEvent, waitFor } from "@testing-library/react";
+import { renderWithAdminContext } from "@/tests/utils/render-admin";
 import { useForm, FormProvider } from "react-hook-form";
 import { FormActions } from "../FormActions";
 import React from "react";
@@ -32,7 +33,7 @@ describe("FormActions", () => {
     const onCancel = vi.fn();
     const onSubmit = vi.fn();
 
-    render(
+    renderWithAdminContext(
       <FormWrapper onSubmit={onSubmit}>
         <FormActions onCancel={onCancel} />
       </FormWrapper>
@@ -47,7 +48,7 @@ describe("FormActions", () => {
     const onSubmit = vi.fn();
     const validation = { required: "Name is required" };
 
-    render(
+    renderWithAdminContext(
       <FormWrapper onSubmit={onSubmit} validation={validation}>
         <FormActions onCancel={onCancel} />
       </FormWrapper>
@@ -66,7 +67,7 @@ describe("FormActions", () => {
     const onSubmit = vi.fn();
     const validation = { required: "Name is required" };
 
-    render(
+    renderWithAdminContext(
       <FormWrapper onSubmit={onSubmit} validation={validation}>
         <FormActions onCancel={onCancel} />
       </FormWrapper>
@@ -87,7 +88,7 @@ describe("FormActions", () => {
     const onCancel = vi.fn();
     const onSubmit = vi.fn();
 
-    render(
+    renderWithAdminContext(
       <FormWrapper onSubmit={onSubmit}>
         <FormActions onCancel={onCancel} />
       </FormWrapper>
@@ -104,7 +105,7 @@ describe("FormActions", () => {
     const onDelete = vi.fn();
     const onSubmit = vi.fn();
 
-    render(
+    renderWithAdminContext(
       <FormWrapper onSubmit={onSubmit}>
         <FormActions onCancel={onCancel} onDelete={onDelete} />
       </FormWrapper>
@@ -120,7 +121,7 @@ describe("FormActions", () => {
     const onCancel = vi.fn();
     const onSubmit = vi.fn();
 
-    render(
+    renderWithAdminContext(
       <FormWrapper onSubmit={onSubmit}>
         <FormActions onCancel={onCancel} />
       </FormWrapper>
@@ -135,7 +136,7 @@ describe("FormActions", () => {
     const onSaveAndNew = vi.fn();
     const onSubmit = vi.fn();
 
-    render(
+    renderWithAdminContext(
       <FormWrapper onSubmit={onSubmit}>
         <FormActions
           onCancel={onCancel}
@@ -157,7 +158,7 @@ describe("FormActions", () => {
     const onDelete = vi.fn();
     const onSubmit = vi.fn();
 
-    const { container } = render(
+    const { container } = renderWithAdminContext(
       <FormWrapper onSubmit={onSubmit}>
         <FormActions onCancel={onCancel} onDelete={onDelete} />
       </FormWrapper>

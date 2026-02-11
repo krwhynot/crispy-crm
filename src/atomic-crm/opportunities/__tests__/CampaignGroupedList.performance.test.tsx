@@ -1,5 +1,6 @@
+import { renderWithAdminContext } from "@/tests/utils/render-admin";
 import { describe, it, expect, vi } from "vitest";
-import { render } from "@testing-library/react";
+
 import { ListContextProvider } from "ra-core";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { createTestQueryClient } from "@/tests/setup";
@@ -94,7 +95,7 @@ describe("CampaignGroupedList - Performance", () => {
       </QueryClientProvider>
     );
 
-    const { rerender, getByText } = render(
+    const { rerender, getByText } = renderWithAdminContext(
       <TestWrapper data={mockOpportunities1}>
         <CampaignGroupedList openSlideOver={openSlideOver} />
       </TestWrapper>

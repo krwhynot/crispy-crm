@@ -64,7 +64,7 @@ function createQueryClientWrapper() {
 
 describe("useOrganizationDescendants", () => {
   beforeEach(() => {
-    vi.clearAllMocks();
+    vi.resetAllMocks();
     vi.mocked(logger.warn).mockClear();
     vi.mocked(logger.error).mockClear();
   });

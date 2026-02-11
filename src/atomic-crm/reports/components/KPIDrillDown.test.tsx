@@ -1,10 +1,11 @@
-import { render, screen, fireEvent } from "@testing-library/react";
+import { screen, fireEvent } from "@testing-library/react";
+import { renderWithAdminContext } from "@/tests/utils/render-admin";
 import { describe, it, expect, vi } from "vitest";
 import { KPIDrillDown } from "./KPIDrillDown";
 
 describe("KPIDrillDown", () => {
   it("renders as a slide-over dialog", () => {
-    render(
+    renderWithAdminContext(
       <KPIDrillDown
         open={true}
         onClose={vi.fn()}
@@ -17,7 +18,7 @@ describe("KPIDrillDown", () => {
   });
 
   it("has focus trap when open", () => {
-    render(
+    renderWithAdminContext(
       <KPIDrillDown open={true} onClose={vi.fn()} title="Test" children={<button>First</button>} />
     );
 
@@ -26,7 +27,7 @@ describe("KPIDrillDown", () => {
 
   it("closes on ESC key", () => {
     const onClose = vi.fn();
-    render(
+    renderWithAdminContext(
       <KPIDrillDown open={true} onClose={onClose} title="Test" children={<div>Content</div>} />
     );
 
@@ -35,7 +36,7 @@ describe("KPIDrillDown", () => {
   });
 
   it("renders close button with accessible label", () => {
-    render(
+    renderWithAdminContext(
       <KPIDrillDown open={true} onClose={vi.fn()} title="Test" children={<div>Content</div>} />
     );
 
@@ -44,7 +45,7 @@ describe("KPIDrillDown", () => {
   });
 
   it("renders title", () => {
-    render(
+    renderWithAdminContext(
       <KPIDrillDown
         open={true}
         onClose={vi.fn()}
@@ -57,7 +58,7 @@ describe("KPIDrillDown", () => {
   });
 
   it("renders description when provided", () => {
-    render(
+    renderWithAdminContext(
       <KPIDrillDown
         open={true}
         onClose={vi.fn()}
@@ -71,7 +72,7 @@ describe("KPIDrillDown", () => {
   });
 
   it("renders children content", () => {
-    render(
+    renderWithAdminContext(
       <KPIDrillDown
         open={true}
         onClose={vi.fn()}
@@ -84,7 +85,7 @@ describe("KPIDrillDown", () => {
   });
 
   it("does not render when closed", () => {
-    render(
+    renderWithAdminContext(
       <KPIDrillDown open={false} onClose={vi.fn()} title="Test" children={<div>Content</div>} />
     );
 

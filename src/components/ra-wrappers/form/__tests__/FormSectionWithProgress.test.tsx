@@ -1,11 +1,11 @@
-import { render, screen, waitFor } from "./test-utils";
+import { render as renderWithForm, screen, waitFor } from "./test-utils";
 import { FormSectionWithProgress } from "../FormSectionWithProgress";
 import { FormFieldWrapper } from "../FormFieldWrapper";
 
 describe("FormSectionWithProgress", () => {
   describe("rendering", () => {
     it("renders title correctly", () => {
-      render(
+      renderWithForm(
         <FormSectionWithProgress id="test" title="Contact Info">
           <div>content</div>
         </FormSectionWithProgress>
@@ -14,7 +14,7 @@ describe("FormSectionWithProgress", () => {
     });
 
     it("renders description when provided", () => {
-      render(
+      renderWithForm(
         <FormSectionWithProgress id="test" title="Test" description="Help text here">
           <div>content</div>
         </FormSectionWithProgress>
@@ -23,7 +23,7 @@ describe("FormSectionWithProgress", () => {
     });
 
     it("does not render description when not provided", () => {
-      render(
+      renderWithForm(
         <FormSectionWithProgress id="test" title="Test">
           <div>content</div>
         </FormSectionWithProgress>
@@ -32,7 +32,7 @@ describe("FormSectionWithProgress", () => {
     });
 
     it("renders children", () => {
-      render(
+      renderWithForm(
         <FormSectionWithProgress id="test" title="Test">
           <div data-testid="child">Child content</div>
         </FormSectionWithProgress>
@@ -41,7 +41,7 @@ describe("FormSectionWithProgress", () => {
     });
 
     it("sets data-section-id attribute", () => {
-      const { container } = render(
+      const { container } = renderWithForm(
         <FormSectionWithProgress id="contact-info" title="Test">
           <div>content</div>
         </FormSectionWithProgress>
@@ -52,7 +52,7 @@ describe("FormSectionWithProgress", () => {
 
   describe("completion indicator", () => {
     it("shows no indicator when requiredFields is empty", () => {
-      render(
+      renderWithForm(
         <FormSectionWithProgress id="test" title="Test" requiredFields={[]}>
           <div>content</div>
         </FormSectionWithProgress>
@@ -63,7 +63,7 @@ describe("FormSectionWithProgress", () => {
     });
 
     it("shows no indicator when requiredFields is undefined", () => {
-      render(
+      renderWithForm(
         <FormSectionWithProgress id="test" title="Test">
           <div>content</div>
         </FormSectionWithProgress>
@@ -74,7 +74,7 @@ describe("FormSectionWithProgress", () => {
     });
 
     it("does not show icon when required fields are not registered", () => {
-      render(
+      renderWithForm(
         <FormSectionWithProgress
           id="test"
           title="Test"
@@ -91,7 +91,7 @@ describe("FormSectionWithProgress", () => {
     });
 
     it("does not show icon when required fields are incomplete", async () => {
-      render(
+      renderWithForm(
         <FormSectionWithProgress id="test" title="Test" requiredFields={["first_name"]}>
           <FormFieldWrapper name="first_name" isRequired>
             <input data-testid="first-name-input" />
@@ -107,7 +107,7 @@ describe("FormSectionWithProgress", () => {
     });
 
     it("shows checkmark and Complete badge when all required fields valid", async () => {
-      render(
+      renderWithForm(
         <FormSectionWithProgress id="test" title="Test" requiredFields={["first_name"]}>
           <FormFieldWrapper name="first_name" isRequired countDefaultAsFilled>
             <input data-testid="first-name-input" />
@@ -124,7 +124,7 @@ describe("FormSectionWithProgress", () => {
     });
 
     it("requires ALL required fields to be valid for completion", async () => {
-      render(
+      renderWithForm(
         <FormSectionWithProgress
           id="test"
           title="Test"
@@ -150,7 +150,7 @@ describe("FormSectionWithProgress", () => {
 
     it("correctly computes completion from multiple fields", async () => {
       // Tests the useMemo completion calculation with all fields valid
-      render(
+      renderWithForm(
         <FormSectionWithProgress
           id="test"
           title="Test"
@@ -179,7 +179,7 @@ describe("FormSectionWithProgress", () => {
 
   describe("accessibility", () => {
     it("icons have aria-hidden for screen readers", () => {
-      render(
+      renderWithForm(
         <FormSectionWithProgress id="test" title="Test" requiredFields={["name"]}>
           <div>content</div>
         </FormSectionWithProgress>
@@ -193,7 +193,7 @@ describe("FormSectionWithProgress", () => {
     });
 
     it("title uses semantic heading element", () => {
-      render(
+      renderWithForm(
         <FormSectionWithProgress id="test" title="Section Title">
           <div>content</div>
         </FormSectionWithProgress>
@@ -203,7 +203,7 @@ describe("FormSectionWithProgress", () => {
     });
 
     it("heading is h3 level for proper hierarchy", () => {
-      render(
+      renderWithForm(
         <FormSectionWithProgress id="test" title="Test Section">
           <div>content</div>
         </FormSectionWithProgress>
@@ -216,7 +216,7 @@ describe("FormSectionWithProgress", () => {
 
   describe("styling", () => {
     it("applies custom className", () => {
-      const { container } = render(
+      const { container } = renderWithForm(
         <FormSectionWithProgress id="test" title="Test" className="custom-class">
           <div>content</div>
         </FormSectionWithProgress>
@@ -226,7 +226,7 @@ describe("FormSectionWithProgress", () => {
     });
 
     it("has base spacing class", () => {
-      const { container } = render(
+      const { container } = renderWithForm(
         <FormSectionWithProgress id="test" title="Test">
           <div>content</div>
         </FormSectionWithProgress>
@@ -236,7 +236,7 @@ describe("FormSectionWithProgress", () => {
     });
 
     it("uses semantic color token for complete badge", async () => {
-      render(
+      renderWithForm(
         <FormSectionWithProgress id="test" title="Test" requiredFields={["name"]}>
           <FormFieldWrapper name="name" isRequired countDefaultAsFilled>
             <input data-testid="name-input" />
@@ -252,7 +252,7 @@ describe("FormSectionWithProgress", () => {
     });
 
     it("does not show incomplete icon (design change: only show success)", () => {
-      render(
+      renderWithForm(
         <FormSectionWithProgress id="test" title="Test" requiredFields={["name"]}>
           <div>content</div>
         </FormSectionWithProgress>
@@ -263,7 +263,7 @@ describe("FormSectionWithProgress", () => {
     });
 
     it("uses semantic color token for complete icon", async () => {
-      render(
+      renderWithForm(
         <FormSectionWithProgress id="test" title="Test" requiredFields={["name"]}>
           <FormFieldWrapper name="name" isRequired countDefaultAsFilled>
             <input data-testid="name-input" />

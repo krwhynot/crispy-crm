@@ -29,15 +29,18 @@ export const CreateFormFooter = ({
   const { isDirty } = useFormState();
   const [showDialog, setShowDialog] = useState(false);
 
-  const handleCancel = useCallback((event?: React.MouseEvent<HTMLButtonElement>) => {
-    event?.preventDefault(); // Defense-in-depth: prevent any default behavior
+  const handleCancel = useCallback(
+    (event?: React.MouseEvent<HTMLButtonElement>) => {
+      event?.preventDefault(); // Defense-in-depth: prevent any default behavior
 
-    if (isDirty) {
-      setShowDialog(true);
-      return;
-    }
-    redirectFn(redirectPath);
-  }, [isDirty, redirectFn, redirectPath]);
+      if (isDirty) {
+        setShowDialog(true);
+        return;
+      }
+      redirectFn(redirectPath);
+    },
+    [isDirty, redirectFn, redirectPath]
+  );
 
   const handleError = useCallback(
     (error: Error) => {
@@ -48,12 +51,7 @@ export const CreateFormFooter = ({
 
   return (
     <div className="sticky bottom-12 bg-card border-t border-border p-4 flex justify-between mt-6">
-      <AdminButton
-        type="button"
-        variant="outline"
-        onClick={handleCancel}
-        className="h-11"
-      >
+      <AdminButton type="button" variant="outline" onClick={handleCancel} className="h-11">
         Cancel
       </AdminButton>
       <div className="flex gap-2">

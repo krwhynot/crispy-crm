@@ -47,7 +47,7 @@ vi.mock("@/lib/logger", () => ({
 
 describe("useRelatedRecordCounts", () => {
   beforeEach(() => {
-    vi.clearAllMocks();
+    vi.resetAllMocks();
     vi.mocked(logger.warn).mockClear();
     // Default mock implementation
     mockGetManyReference.mockResolvedValue({ data: [], total: 0 });

@@ -267,7 +267,7 @@ describe("useMyTasks", () => {
     React.createElement(QueryClientProvider, { client: queryClient }, children);
 
   beforeEach(() => {
-    vi.clearAllMocks();
+    vi.resetAllMocks();
     // Create fresh QueryClient for each test
     queryClient = createTestQueryClient();
     // Reset current sale state

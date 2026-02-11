@@ -61,6 +61,7 @@ export const EmailArrayField = ({
           onPaste={onEmailPaste}
           onBlur={onEmailBlur}
           autoComplete="email"
+          {/* eslint-disable-next-line no-restricted-syntax -- UX-critical email format validation */}
           validate={validate}
           disabled={disabled}
         />

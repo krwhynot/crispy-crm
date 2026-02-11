@@ -1,5 +1,6 @@
 import { describe, test, expect, vi, beforeEach } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { screen } from "@testing-library/react";
+import { renderWithAdminContext } from "@/tests/utils/render-admin";
 import { z } from "zod";
 import { FormProgressBar } from "../FormProgressBar";
 
@@ -18,11 +19,11 @@ vi.mock("@/atomic-crm/utils/getRequiredFields", () => ({
 
 describe("FormProgressBar", () => {
   beforeEach(() => {
-    vi.clearAllMocks();
+    vi.resetAllMocks();
   });
 
   test("renders with correct ARIA attributes", () => {
-    render(<FormProgressBar />);
+    renderWithAdminContext(<FormProgressBar />);
 
     const progressBar = screen.getByRole("progressbar");
     expect(progressBar).toHaveAttribute("role", "progressbar");
@@ -34,27 +35,27 @@ describe("FormProgressBar", () => {
   });
 
   test("shows field count in simple mode", () => {
-    render(<FormProgressBar />);
+    renderWithAdminContext(<FormProgressBar />);
 
     expect(screen.getByText("2 of 4 required fields")).toBeInTheDocument();
     expect(screen.getByText("50%")).toBeInTheDocument();
   });
 
   test("shows step info in wizard mode", () => {
-    render(<FormProgressBar currentStep={2} totalSteps={5} stepName="Contact Information" />);
+    renderWithAdminContext(<FormProgressBar currentStep={2} totalSteps={5} stepName="Contact Information" />);
 
     expect(screen.getByText("Step 2 of 5: Contact Information")).toBeInTheDocument();
     expect(screen.getByText("50%")).toBeInTheDocument();
   });
 
   test("wizard mode without step name", () => {
-    render(<FormProgressBar currentStep={3} totalSteps={5} />);
+    renderWithAdminContext(<FormProgressBar currentStep={3} totalSteps={5} />);
 
     expect(screen.getByText("Step 3 of 5")).toBeInTheDocument();
   });
 
   test("progress bar width matches percentage", () => {
-    render(<FormProgressBar />);
+    renderWithAdminContext(<FormProgressBar />);
 
     const progressBar = screen.getByRole("progressbar");
     const fillBar = progressBar.querySelector("div");
@@ -63,7 +64,7 @@ describe("FormProgressBar", () => {
   });
 
   test("uses semantic color classes", () => {
-    render(<FormProgressBar />);
+    renderWithAdminContext(<FormProgressBar />);
 
     const progressBar = screen.getByRole("progressbar");
     expect(progressBar).toHaveClass("bg-muted");
@@ -73,7 +74,7 @@ describe("FormProgressBar", () => {
   });
 
   test("applies custom className correctly", () => {
-    const { container } = render(<FormProgressBar className="custom-test-class" />);
+    const { container } = renderWithAdminContext(<FormProgressBar className="custom-test-class" />);
 
     const wrapper = container.firstChild;
     expect(wrapper).toHaveClass("custom-test-class");
@@ -81,7 +82,7 @@ describe("FormProgressBar", () => {
   });
 
   test("hides step info when showStepInfo is false", () => {
-    render(<FormProgressBar showStepInfo={false} />);
+    renderWithAdminContext(<FormProgressBar showStepInfo={false} />);
 
     expect(screen.queryByText("2 of 4 required fields")).not.toBeInTheDocument();
     expect(screen.queryByText("50%")).not.toBeInTheDocument();
@@ -91,14 +92,14 @@ describe("FormProgressBar", () => {
   });
 
   test("percentage text uses tabular-nums for stable width", () => {
-    render(<FormProgressBar />);
+    renderWithAdminContext(<FormProgressBar />);
 
     const percentageText = screen.getByText("50%");
     expect(percentageText).toHaveClass("tabular-nums");
   });
 
   test("progress bar has correct styling classes", () => {
-    render(<FormProgressBar />);
+    renderWithAdminContext(<FormProgressBar />);
 
     const progressBar = screen.getByRole("progressbar");
     expect(progressBar).toHaveClass("relative");
@@ -110,7 +111,7 @@ describe("FormProgressBar", () => {
   });
 
   test("fill bar has transition animation classes", () => {
-    render(<FormProgressBar />);
+    renderWithAdminContext(<FormProgressBar />);
 
     const progressBar = screen.getByRole("progressbar");
     const fillBar = progressBar.querySelector("div");
@@ -121,21 +122,21 @@ describe("FormProgressBar", () => {
   });
 
   test("aria-valuetext in wizard mode includes step name", () => {
-    render(<FormProgressBar currentStep={1} totalSteps={3} stepName="Account Details" />);
+    renderWithAdminContext(<FormProgressBar currentStep={1} totalSteps={3} stepName="Account Details" />);
 
     const progressBar = screen.getByRole("progressbar");
     expect(progressBar).toHaveAttribute("aria-valuetext", "Step 1 of 3: Account Details");
   });
 
   test("aria-valuetext in wizard mode without step name", () => {
-    render(<FormProgressBar currentStep={1} totalSteps={3} />);
+    renderWithAdminContext(<FormProgressBar currentStep={1} totalSteps={3} />);
 
     const progressBar = screen.getByRole("progressbar");
     expect(progressBar).toHaveAttribute("aria-valuetext", "Step 1 of 3");
   });
 
   test("semantic muted text color applied to step info", () => {
-    const { container } = render(<FormProgressBar />);
+    const { container } = renderWithAdminContext(<FormProgressBar />);
 
     const stepInfoContainer = container.querySelector('[class*="text-foreground"]');
     expect(stepInfoContainer).toBeInTheDocument();
@@ -150,7 +151,7 @@ describe("FormProgressBar", () => {
     });
 
     test("renders dots instead of progress bar when schema provided", () => {
-      render(<FormProgressBar schema={mockSchema} />);
+      renderWithAdminContext(<FormProgressBar schema={mockSchema} />);
 
       expect(screen.queryByRole("progressbar")).not.toBeInTheDocument();
 
@@ -158,7 +159,7 @@ describe("FormProgressBar", () => {
     });
 
     test("renders correct number of dots based on context totalRequired", () => {
-      render(<FormProgressBar schema={mockSchema} />);
+      renderWithAdminContext(<FormProgressBar schema={mockSchema} />);
 
       const dots = screen.getAllByRole("img");
       // Uses totalRequired from context (4), not schema introspection (3)
@@ -166,7 +167,7 @@ describe("FormProgressBar", () => {
     });
 
     test("filled dots match completedRequired count", () => {
-      render(<FormProgressBar schema={mockSchema} />);
+      renderWithAdminContext(<FormProgressBar schema={mockSchema} />);
 
       const dots = screen.getAllByRole("img");
 
@@ -178,7 +179,7 @@ describe("FormProgressBar", () => {
     });
 
     test("dots have correct accessibility labels", () => {
-      render(<FormProgressBar schema={mockSchema} />);
+      renderWithAdminContext(<FormProgressBar schema={mockSchema} />);
 
       const group = screen.getByRole("group");
       // Uses context totalRequired (4), not schema introspection (3)
@@ -186,20 +187,20 @@ describe("FormProgressBar", () => {
     });
 
     test("hides percentage in dot mode", () => {
-      render(<FormProgressBar schema={mockSchema} />);
+      renderWithAdminContext(<FormProgressBar schema={mockSchema} />);
 
       expect(screen.queryByText("50%")).not.toBeInTheDocument();
     });
 
     test("shows field count text in dot mode", () => {
-      render(<FormProgressBar schema={mockSchema} />);
+      renderWithAdminContext(<FormProgressBar schema={mockSchema} />);
 
       // Uses context totalRequired (4), not schema introspection (3)
       expect(screen.getByText("2 of 4 required fields")).toBeInTheDocument();
     });
 
     test("dot mode respects showStepInfo=false", () => {
-      render(<FormProgressBar schema={mockSchema} showStepInfo={false} />);
+      renderWithAdminContext(<FormProgressBar schema={mockSchema} showStepInfo={false} />);
 
       expect(screen.queryByText("2 of 3 required fields")).not.toBeInTheDocument();
       expect(screen.getByRole("group")).toBeInTheDocument();
@@ -208,7 +209,7 @@ describe("FormProgressBar", () => {
 
   describe("backward compatibility", () => {
     test("no schema renders percentage bar (existing behavior)", () => {
-      render(<FormProgressBar />);
+      renderWithAdminContext(<FormProgressBar />);
 
       expect(screen.getByRole("progressbar")).toBeInTheDocument();
       expect(screen.queryByRole("group")).not.toBeInTheDocument();
@@ -216,7 +217,7 @@ describe("FormProgressBar", () => {
 
     test("wizard mode ignores schema and shows percentage bar", () => {
       const mockSchema = z.strictObject({ name: z.string() });
-      render(<FormProgressBar schema={mockSchema} currentStep={1} totalSteps={3} />);
+      renderWithAdminContext(<FormProgressBar schema={mockSchema} currentStep={1} totalSteps={3} />);
 
       expect(screen.getByRole("progressbar")).toBeInTheDocument();
       expect(screen.queryByRole("group")).not.toBeInTheDocument();

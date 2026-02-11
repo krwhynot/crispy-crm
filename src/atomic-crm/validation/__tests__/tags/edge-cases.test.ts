@@ -73,8 +73,8 @@ describe("Tag Edge Cases and Business Rules", () => {
     });
 
     it("should enforce name length limits", () => {
-      const maxLengthName = "a".repeat(100);
-      const tooLongName = "a".repeat(101);
+      const maxLengthName = "a".repeat(50);
+      const tooLongName = "a".repeat(51);
 
       expect(() =>
         tagSchema.parse({
@@ -113,8 +113,8 @@ describe("Tag Edge Cases and Business Rules", () => {
           expectedError: "Tag name is required",
         },
         {
-          data: { name: "a".repeat(101), color: "blue" },
-          expectedError: "Tag name must be less than 100 characters",
+          data: { name: "a".repeat(51), color: "blue" },
+          expectedError: "Tag name must be less than 50 characters",
         },
         {
           data: { name: "Test", color: "invalid" },

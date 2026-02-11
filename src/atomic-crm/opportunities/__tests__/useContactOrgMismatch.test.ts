@@ -18,7 +18,7 @@ const mockUseGetMany = vi.mocked(useGetMany);
 
 describe("useContactOrgMismatch", () => {
   beforeEach(() => {
-    vi.clearAllMocks();
+    vi.resetAllMocks();
   });
 
   it("returns no mismatch when contacts match customer org", () => {

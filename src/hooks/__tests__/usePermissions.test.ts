@@ -34,7 +34,7 @@ interface MockIdentity {
 
 describe("usePermissions", () => {
   beforeEach(() => {
-    vi.clearAllMocks();
+    vi.resetAllMocks();
   });
 
   afterEach(() => {

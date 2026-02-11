@@ -71,7 +71,7 @@ const createMockGetList = () =>
 
 describe("OverviewTab", () => {
   beforeEach(() => {
-    vi.clearAllMocks();
+    vi.resetAllMocks();
   });
 
   it("renders KPI cards", async () => {

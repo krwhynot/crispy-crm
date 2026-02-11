@@ -1,5 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { screen, fireEvent, waitFor } from "@testing-library/react";
+import { renderWithAdminContext } from "@/tests/utils/render-admin";
 import { useForm, FormProvider } from "react-hook-form";
 import type { ActivityLogInput } from "@/atomic-crm/validation/activities";
 
@@ -125,18 +126,18 @@ function TestWrapperWithControl({
 
 describe("ActivityDateSection", () => {
   beforeEach(() => {
-    vi.clearAllMocks();
+    vi.resetAllMocks();
   });
 
   describe("Rendering", () => {
     it("renders FormLabel 'Activity Date'", () => {
-      render(<TestWrapperWithControl />);
+      renderWithAdminContext(<TestWrapperWithControl />);
 
       expect(screen.getByText("Activity Date")).toBeInTheDocument();
     });
 
     it("has h-11 class on button (44px touch target)", () => {
-      render(<TestWrapperWithControl />);
+      renderWithAdminContext(<TestWrapperWithControl />);
 
       // Get the trigger button (inside popover-trigger, not the calendar mock buttons)
       const triggerContainer = screen.getByTestId("popover-trigger");
@@ -145,7 +146,7 @@ describe("ActivityDateSection", () => {
     });
 
     it("uses text-muted-foreground when no date selected", () => {
-      render(<TestWrapperWithControl defaultValues={{ date: undefined }} />);
+      renderWithAdminContext(<TestWrapperWithControl defaultValues={{ date: undefined }} />);
 
       const triggerContainer = screen.getByTestId("popover-trigger");
       const button = triggerContainer.querySelector("button");
@@ -153,7 +154,7 @@ describe("ActivityDateSection", () => {
     });
 
     it("does not use text-muted-foreground when date is selected", () => {
-      render(<TestWrapperWithControl defaultValues={{ date: new Date("2025-01-10") }} />);
+      renderWithAdminContext(<TestWrapperWithControl defaultValues={{ date: new Date("2025-01-10") }} />);
 
       const triggerContainer = screen.getByTestId("popover-trigger");
       const button = triggerContainer.querySelector("button");
@@ -161,7 +162,7 @@ describe("ActivityDateSection", () => {
     });
 
     it("shows 'Select date' placeholder when no date selected", () => {
-      render(<TestWrapperWithControl defaultValues={{ date: undefined }} />);
+      renderWithAdminContext(<TestWrapperWithControl defaultValues={{ date: undefined }} />);
 
       expect(screen.getByText("Select date")).toBeInTheDocument();
     });
@@ -169,21 +170,21 @@ describe("ActivityDateSection", () => {
 
   describe("Calendar Configuration", () => {
     it("disables future dates", () => {
-      render(<TestWrapperWithControl />);
+      renderWithAdminContext(<TestWrapperWithControl />);
 
       const calendar = screen.getByTestId("calendar");
       expect(calendar).toHaveAttribute("data-has-disabled", "true");
     });
 
     it("uses single selection mode", () => {
-      render(<TestWrapperWithControl />);
+      renderWithAdminContext(<TestWrapperWithControl />);
 
       const calendar = screen.getByTestId("calendar");
       expect(calendar).toHaveAttribute("data-mode", "single");
     });
 
     it("has initialFocus set", () => {
-      render(<TestWrapperWithControl />);
+      renderWithAdminContext(<TestWrapperWithControl />);
 
       const calendar = screen.getByTestId("calendar");
       expect(calendar).toHaveAttribute("data-initial-focus", "true");
@@ -193,7 +194,7 @@ describe("ActivityDateSection", () => {
   describe("Date Selection", () => {
     it("calls field.onChange when date selected", async () => {
       const onDateChange = vi.fn();
-      render(<TestWrapperWithControl onDateChange={onDateChange} />);
+      renderWithAdminContext(<TestWrapperWithControl onDateChange={onDateChange} />);
 
       const selectButton = screen.getByTestId("calendar-select-date");
       fireEvent.click(selectButton);
@@ -209,14 +210,14 @@ describe("ActivityDateSection", () => {
     it("displays formatted date with date-fns PPP format", () => {
       // Use explicit date components to avoid timezone issues
       const testDate = new Date(2025, 0, 15); // January 15, 2025 in local timezone
-      render(<TestWrapperWithControl defaultValues={{ date: testDate }} />);
+      renderWithAdminContext(<TestWrapperWithControl defaultValues={{ date: testDate }} />);
 
       // PPP format is like "January 15th, 2025"
       expect(screen.getByText(/January 15/)).toBeInTheDocument();
     });
 
     it("displays calendar icon", () => {
-      render(<TestWrapperWithControl />);
+      renderWithAdminContext(<TestWrapperWithControl />);
 
       // The CalendarIcon should be present in the trigger button
       const triggerContainer = screen.getByTestId("popover-trigger");
@@ -228,7 +229,7 @@ describe("ActivityDateSection", () => {
 
   describe("Accessibility", () => {
     it("has FormMessage for error display", () => {
-      const { container } = render(<TestWrapperWithControl />);
+      const { container } = renderWithAdminContext(<TestWrapperWithControl />);
 
       // FormMessage component should be present (even if empty when no errors)
       // The FormMessage renders with a specific data attribute or className
@@ -237,7 +238,7 @@ describe("ActivityDateSection", () => {
     });
 
     it("button has proper width class for touch targets", () => {
-      render(<TestWrapperWithControl />);
+      renderWithAdminContext(<TestWrapperWithControl />);
 
       const triggerContainer = screen.getByTestId("popover-trigger");
       const button = triggerContainer.querySelector("button");
@@ -247,7 +248,7 @@ describe("ActivityDateSection", () => {
 
   describe("Styling", () => {
     it("uses semantic Tailwind colors (no hardcoded hex)", () => {
-      const { container } = render(<TestWrapperWithControl />);
+      const { container } = renderWithAdminContext(<TestWrapperWithControl />);
 
       // Check that no inline styles with hex colors exist
       const allElements = container.querySelectorAll("*");
@@ -258,7 +259,7 @@ describe("ActivityDateSection", () => {
     });
 
     it("button has justify-start and text-left classes", () => {
-      render(<TestWrapperWithControl />);
+      renderWithAdminContext(<TestWrapperWithControl />);
 
       const triggerContainer = screen.getByTestId("popover-trigger");
       const button = triggerContainer.querySelector("button");
@@ -267,7 +268,7 @@ describe("ActivityDateSection", () => {
     });
 
     it("button has font-normal class", () => {
-      render(<TestWrapperWithControl />);
+      renderWithAdminContext(<TestWrapperWithControl />);
 
       const triggerContainer = screen.getByTestId("popover-trigger");
       const button = triggerContainer.querySelector("button");

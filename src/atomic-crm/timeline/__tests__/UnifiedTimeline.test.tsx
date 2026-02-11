@@ -1,14 +1,16 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { screen, fireEvent, waitFor } from "@testing-library/react";
+import { renderWithAdminContext } from "@/tests/utils/render-admin";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { MemoryRouter } from "react-router-dom";
 import type { UseGetListHookValue } from "ra-core";
+import type * as RaCore from "ra-core";
 import { mockUseGetListReturn } from "@/tests/utils/typed-mocks";
 
 // Mock useGetList from ra-core
 const mockUseGetList = vi.fn();
 vi.mock("ra-core", async (importOriginal) => {
-  const actual = await importOriginal<typeof import("ra-core")>();
+  const actual = await importOriginal<typeof RaCore>();
   return {
     ...actual,
     useGetList: (...args: Parameters<typeof actual.useGetList>) => mockUseGetList(...args),
@@ -74,7 +76,7 @@ const createWrapper = () => {
 
 describe("UnifiedTimeline", () => {
   beforeEach(() => {
-    vi.clearAllMocks();
+    vi.resetAllMocks();
     mockUseGetList.mockReturnValue(
       mockUseGetListReturn<TimelineEntryData>({
         data: [],
@@ -88,7 +90,7 @@ describe("UnifiedTimeline", () => {
 
   describe("filter merging", () => {
     it("passes opportunityId as filter", () => {
-      render(<UnifiedTimeline opportunityId={123} />, { wrapper: createWrapper() });
+      renderWithAdminContext(<UnifiedTimeline opportunityId={123} />, { wrapper: createWrapper() });
 
       expect(mockUseGetList).toHaveBeenCalledWith(
         "entity_timeline",
@@ -102,7 +104,7 @@ describe("UnifiedTimeline", () => {
     });
 
     it("passes contactId as filter", () => {
-      render(<UnifiedTimeline contactId={456} />, { wrapper: createWrapper() });
+      renderWithAdminContext(<UnifiedTimeline contactId={456} />, { wrapper: createWrapper() });
 
       expect(mockUseGetList).toHaveBeenCalledWith(
         "entity_timeline",
@@ -116,7 +118,9 @@ describe("UnifiedTimeline", () => {
     });
 
     it("passes organizationId as filter", () => {
-      render(<UnifiedTimeline organizationId={789} />, { wrapper: createWrapper() });
+      renderWithAdminContext(<UnifiedTimeline organizationId={789} />, {
+        wrapper: createWrapper(),
+      });
 
       expect(mockUseGetList).toHaveBeenCalledWith(
         "entity_timeline",
@@ -130,7 +134,7 @@ describe("UnifiedTimeline", () => {
     });
 
     it("uses $or when multiple entity IDs are provided", () => {
-      render(<UnifiedTimeline contactId={100} organizationId={200} />, {
+      renderWithAdminContext(<UnifiedTimeline contactId={100} organizationId={200} />, {
         wrapper: createWrapper(),
       });
 
@@ -146,9 +150,12 @@ describe("UnifiedTimeline", () => {
     });
 
     it("merges external filters with entity filters", () => {
-      render(<UnifiedTimeline opportunityId={123} filters={{ subtype: "stage_change" }} />, {
-        wrapper: createWrapper(),
-      });
+      renderWithAdminContext(
+        <UnifiedTimeline opportunityId={123} filters={{ subtype: "stage_change" }} />,
+        {
+          wrapper: createWrapper(),
+        }
+      );
 
       expect(mockUseGetList).toHaveBeenCalledWith(
         "entity_timeline",
@@ -163,7 +170,7 @@ describe("UnifiedTimeline", () => {
     });
 
     it("external filters take precedence over entity filters", () => {
-      render(
+      renderWithAdminContext(
         <UnifiedTimeline
           opportunityId={123}
           filters={{ opportunity_id: 999, entry_type: "task" }}
@@ -200,7 +207,7 @@ describe("UnifiedTimeline", () => {
         })
       );
 
-      render(<UnifiedTimeline opportunityId={123} />, { wrapper: createWrapper() });
+      renderWithAdminContext(<UnifiedTimeline opportunityId={123} />, { wrapper: createWrapper() });
 
       expect(screen.getByText(/Page 1 of 2/)).toBeInTheDocument();
     });
@@ -218,7 +225,7 @@ describe("UnifiedTimeline", () => {
         })
       );
 
-      render(<UnifiedTimeline opportunityId={123} />, { wrapper: createWrapper() });
+      renderWithAdminContext(<UnifiedTimeline opportunityId={123} />, { wrapper: createWrapper() });
 
       expect(screen.queryByText(/Page/)).not.toBeInTheDocument();
     });
@@ -238,7 +245,7 @@ describe("UnifiedTimeline", () => {
         })
       );
 
-      render(<UnifiedTimeline opportunityId={123} />, { wrapper: createWrapper() });
+      renderWithAdminContext(<UnifiedTimeline opportunityId={123} />, { wrapper: createWrapper() });
 
       // Find and click Next button
       const nextButton = screen.getByRole("button", { name: /next/i });
@@ -270,7 +277,7 @@ describe("UnifiedTimeline", () => {
         })
       );
 
-      render(<UnifiedTimeline opportunityId={123} />, { wrapper: createWrapper() });
+      renderWithAdminContext(<UnifiedTimeline opportunityId={123} />, { wrapper: createWrapper() });
 
       // Go to page 2 first
       const nextButton = screen.getByRole("button", { name: /next/i });
@@ -310,7 +317,7 @@ describe("UnifiedTimeline", () => {
         })
       );
 
-      render(<UnifiedTimeline opportunityId={123} />, { wrapper: createWrapper() });
+      renderWithAdminContext(<UnifiedTimeline opportunityId={123} />, { wrapper: createWrapper() });
 
       const prevButton = screen.getByRole("button", { name: /previous/i });
       expect(prevButton).toBeDisabled();
@@ -331,7 +338,7 @@ describe("UnifiedTimeline", () => {
         })
       );
 
-      render(<UnifiedTimeline opportunityId={123} />, { wrapper: createWrapper() });
+      renderWithAdminContext(<UnifiedTimeline opportunityId={123} />, { wrapper: createWrapper() });
 
       // Go to page 2 (last page)
       const nextButton = screen.getByRole("button", { name: /next/i });
@@ -363,7 +370,7 @@ describe("UnifiedTimeline", () => {
       );
 
       const Wrapper = createWrapper();
-      const { rerender } = render(<TestWrapper filters={{}} />, {
+      const { rerender } = renderWithAdminContext(<TestWrapper filters={{}} />, {
         wrapper: Wrapper,
       });
 
@@ -403,7 +410,7 @@ describe("UnifiedTimeline", () => {
         })
       );
 
-      render(<UnifiedTimeline opportunityId={123} pageSize={25} />, {
+      renderWithAdminContext(<UnifiedTimeline opportunityId={123} pageSize={25} />, {
         wrapper: createWrapper(),
       });
 
@@ -429,7 +436,7 @@ describe("UnifiedTimeline", () => {
         })
       );
 
-      render(<UnifiedTimeline opportunityId={123} />, { wrapper: createWrapper() });
+      renderWithAdminContext(<UnifiedTimeline opportunityId={123} />, { wrapper: createWrapper() });
 
       expect(screen.getByText(/No activities yet/i)).toBeInTheDocument();
     });
@@ -445,7 +452,7 @@ describe("UnifiedTimeline", () => {
         })
       );
 
-      render(<UnifiedTimeline opportunityId={123} />, { wrapper: createWrapper() });
+      renderWithAdminContext(<UnifiedTimeline opportunityId={123} />, { wrapper: createWrapper() });
 
       expect(
         screen.getByText(/Log calls, emails, and meetings to track interactions/i)
@@ -465,7 +472,7 @@ describe("UnifiedTimeline", () => {
         }) as UseGetListHookValue<TimelineEntryData>
       );
 
-      const { container } = render(<UnifiedTimeline opportunityId={123} />, {
+      const { container } = renderWithAdminContext(<UnifiedTimeline opportunityId={123} />, {
         wrapper: createWrapper(),
       });
 
@@ -487,7 +494,7 @@ describe("UnifiedTimeline", () => {
         }) as UseGetListHookValue<TimelineEntryData>
       );
 
-      render(<UnifiedTimeline opportunityId={123} />, { wrapper: createWrapper() });
+      renderWithAdminContext(<UnifiedTimeline opportunityId={123} />, { wrapper: createWrapper() });
 
       expect(screen.getByText(/Failed to load timeline/i)).toBeInTheDocument();
     });
@@ -503,7 +510,7 @@ describe("UnifiedTimeline", () => {
         }) as UseGetListHookValue<TimelineEntryData>
       );
 
-      render(<UnifiedTimeline opportunityId={123} />, { wrapper: createWrapper() });
+      renderWithAdminContext(<UnifiedTimeline opportunityId={123} />, { wrapper: createWrapper() });
 
       expect(screen.getByRole("button", { name: /Try Again/i })).toBeInTheDocument();
     });
@@ -521,7 +528,7 @@ describe("UnifiedTimeline", () => {
         refetch: mockRefetch,
       } as UseGetListHookValue<TimelineEntryData>);
 
-      render(<UnifiedTimeline opportunityId={123} />, { wrapper: createWrapper() });
+      renderWithAdminContext(<UnifiedTimeline opportunityId={123} />, { wrapper: createWrapper() });
 
       const tryAgainButton = screen.getByRole("button", { name: /Try Again/i });
       fireEvent.click(tryAgainButton);
@@ -547,7 +554,7 @@ describe("UnifiedTimeline", () => {
         })
       );
 
-      render(<UnifiedTimeline opportunityId={123} />, { wrapper: createWrapper() });
+      renderWithAdminContext(<UnifiedTimeline opportunityId={123} />, { wrapper: createWrapper() });
 
       expect(screen.getByTestId("timeline-entry-1")).toBeInTheDocument();
       expect(screen.getByTestId("timeline-entry-2")).toBeInTheDocument();
@@ -558,7 +565,7 @@ describe("UnifiedTimeline", () => {
 
   describe("sort order", () => {
     it("sorts by entry_date descending", () => {
-      render(<UnifiedTimeline opportunityId={123} />, { wrapper: createWrapper() });
+      renderWithAdminContext(<UnifiedTimeline opportunityId={123} />, { wrapper: createWrapper() });
 
       expect(mockUseGetList).toHaveBeenCalledWith(
         "entity_timeline",
@@ -572,7 +579,7 @@ describe("UnifiedTimeline", () => {
 
   describe("stale time configuration", () => {
     it("configures staleTime for caching", () => {
-      render(<UnifiedTimeline opportunityId={123} />, { wrapper: createWrapper() });
+      renderWithAdminContext(<UnifiedTimeline opportunityId={123} />, { wrapper: createWrapper() });
 
       expect(mockUseGetList).toHaveBeenCalledWith(
         "entity_timeline",
@@ -584,7 +591,7 @@ describe("UnifiedTimeline", () => {
     });
 
     it("enables refetchOnWindowFocus", () => {
-      render(<UnifiedTimeline opportunityId={123} />, { wrapper: createWrapper() });
+      renderWithAdminContext(<UnifiedTimeline opportunityId={123} />, { wrapper: createWrapper() });
 
       expect(mockUseGetList).toHaveBeenCalledWith(
         "entity_timeline",
@@ -612,7 +619,7 @@ describe("UnifiedTimeline", () => {
         })
       );
 
-      render(<UnifiedTimeline opportunityId={123} />, { wrapper: createWrapper() });
+      renderWithAdminContext(<UnifiedTimeline opportunityId={123} />, { wrapper: createWrapper() });
 
       const nav = screen.getByRole("navigation", { name: /Timeline pagination/i });
       expect(nav).toBeInTheDocument();
@@ -633,7 +640,7 @@ describe("UnifiedTimeline", () => {
         })
       );
 
-      render(<UnifiedTimeline opportunityId={123} />, { wrapper: createWrapper() });
+      renderWithAdminContext(<UnifiedTimeline opportunityId={123} />, { wrapper: createWrapper() });
 
       expect(screen.getByRole("button", { name: /previous page/i })).toBeInTheDocument();
       expect(screen.getByRole("button", { name: /next page/i })).toBeInTheDocument();

@@ -1,10 +1,11 @@
+import { renderWithAdminContext } from "@/tests/utils/render-admin";
 import { describe, test, expect } from "vitest";
-import { render } from "@testing-library/react";
+
 import { FormLoadingSkeleton } from "../FormLoadingSkeleton";
 
 describe("FormLoadingSkeleton", () => {
   test("renders default 4 rows", () => {
-    render(<FormLoadingSkeleton />);
+    renderWithAdminContext(<FormLoadingSkeleton />);
 
     // Each row has 2 skeleton fields (for 2-column layout)
     const skeletons = document.querySelectorAll('[data-slot="skeleton"]');
@@ -13,7 +14,7 @@ describe("FormLoadingSkeleton", () => {
   });
 
   test("renders specified number of rows", () => {
-    render(<FormLoadingSkeleton rows={2} />);
+    renderWithAdminContext(<FormLoadingSkeleton rows={2} />);
 
     // 2 rows × 2 columns = 4 field groups minimum
     const fieldGroups = document.querySelectorAll(".space-y-2");
@@ -21,7 +22,7 @@ describe("FormLoadingSkeleton", () => {
   });
 
   test("renders single column when twoColumn is false", () => {
-    render(<FormLoadingSkeleton rows={2} twoColumn={false} />);
+    renderWithAdminContext(<FormLoadingSkeleton rows={2} twoColumn={false} />);
 
     // Should NOT have grid-cols-2
     const grids = document.querySelectorAll(".grid-cols-2");
@@ -29,14 +30,14 @@ describe("FormLoadingSkeleton", () => {
   });
 
   test("wraps in Card component", () => {
-    render(<FormLoadingSkeleton />);
+    renderWithAdminContext(<FormLoadingSkeleton />);
 
     // Card provides the container styling
     expect(document.querySelector("[data-slot='card']")).toBeInTheDocument();
   });
 
   test("applies semantic spacing classes", () => {
-    render(<FormLoadingSkeleton />);
+    renderWithAdminContext(<FormLoadingSkeleton />);
 
     // Uses design system spacing
     expect(document.querySelector(".space-y-6")).toBeInTheDocument();

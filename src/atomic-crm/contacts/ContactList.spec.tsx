@@ -121,7 +121,7 @@ const TestWrapper = ({ children }: { children: React.ReactNode }) => {
 
 describe("ContactList - Single Organization Model (Unified Provider)", () => {
   beforeEach(() => {
-    vi.clearAllMocks();
+    vi.resetAllMocks();
 
     // Mock getList for contacts - simplified single-org model
     mockDataProvider.getList.mockImplementation((resource, params) => {

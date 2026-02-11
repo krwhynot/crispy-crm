@@ -1,11 +1,12 @@
-import { render, screen } from "@testing-library/react";
+import { screen } from "@testing-library/react";
+import { renderWithAdminContext } from "@/tests/utils/render-admin";
 import userEvent from "@testing-library/user-event";
 import { describe, it, expect, vi } from "vitest";
 import { AdminButton } from "./AdminButton";
 
 describe("AdminButton", () => {
   it("renders children correctly", () => {
-    render(<AdminButton>Save</AdminButton>);
+    renderWithAdminContext(<AdminButton>Save</AdminButton>);
     expect(screen.getByRole("button", { name: "Save" })).toBeInTheDocument();
   });
 
@@ -13,14 +14,14 @@ describe("AdminButton", () => {
     const handleClick = vi.fn();
     const user = userEvent.setup();
 
-    render(<AdminButton onClick={handleClick}>Click me</AdminButton>);
+    renderWithAdminContext(<AdminButton onClick={handleClick}>Click me</AdminButton>);
     await user.click(screen.getByRole("button"));
 
     expect(handleClick).toHaveBeenCalledTimes(1);
   });
 
   it("shows loading spinner when isLoading is true", () => {
-    render(<AdminButton isLoading>Save</AdminButton>);
+    renderWithAdminContext(<AdminButton isLoading>Save</AdminButton>);
 
     const button = screen.getByRole("button");
     expect(button).toBeDisabled();
@@ -29,7 +30,7 @@ describe("AdminButton", () => {
   });
 
   it("shows custom loadingText when provided", () => {
-    render(
+    renderWithAdminContext(
       <AdminButton isLoading loadingText="Saving...">
         Save
       </AdminButton>
@@ -42,7 +43,7 @@ describe("AdminButton", () => {
     const handleClick = vi.fn();
     const user = userEvent.setup();
 
-    render(
+    renderWithAdminContext(
       <AdminButton isLoading onClick={handleClick}>
         Save
       </AdminButton>
@@ -53,24 +54,24 @@ describe("AdminButton", () => {
   });
 
   it("forwards variant prop to Button", () => {
-    render(<AdminButton variant="destructive">Delete</AdminButton>);
+    renderWithAdminContext(<AdminButton variant="destructive">Delete</AdminButton>);
 
     const button = screen.getByRole("button");
     expect(button).toHaveClass("bg-destructive");
   });
 
   it("forwards disabled prop correctly", () => {
-    render(<AdminButton disabled>Disabled</AdminButton>);
+    renderWithAdminContext(<AdminButton disabled>Disabled</AdminButton>);
     expect(screen.getByRole("button")).toBeDisabled();
   });
 
   it("merges className with base classes", () => {
-    render(<AdminButton className="custom-class">Styled</AdminButton>);
+    renderWithAdminContext(<AdminButton className="custom-class">Styled</AdminButton>);
     expect(screen.getByRole("button")).toHaveClass("custom-class");
   });
 
   it("maintains minimum touch target height (h-12 = 48px)", () => {
-    render(<AdminButton>Touch Target</AdminButton>);
+    renderWithAdminContext(<AdminButton>Touch Target</AdminButton>);
     const button = screen.getByRole("button");
     // Base Button uses h-12 by default
     expect(button).toHaveClass("h-12");

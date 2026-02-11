@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { sanitizeHtml } from "@/lib/sanitization";
-import { emailAndTypeSchema, phoneNumberAndTypeSchema, EmailEntry } from "./contacts-communication";
+import type { EmailEntry } from "./contacts-communication";
+import { emailAndTypeSchema, phoneNumberAndTypeSchema } from "./contacts-communication";
 import { contactDepartmentSchema } from "./contacts-department";
 import { quickCreateContactSchema } from "./contacts-quick-create";
 import { optionalRaFileSchema } from "../shared/ra-file";

@@ -1,5 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { render, screen, waitFor } from "@testing-library/react";
+import { screen, waitFor } from "@testing-library/react";
+import { renderWithAdminContext } from "@/tests/utils/render-admin";
 import userEvent from "@testing-library/user-event";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { MemoryRouter } from "react-router-dom";
@@ -9,11 +10,13 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useSafeNotify } from "@/atomic-crm/hooks/useSafeNotify";
 import { usePipelineConfig } from "../../root/ConfigurationContext";
 import { mockUseGetListReturn } from "@/tests/utils/typed-mocks";
+import type * as RaCore from "ra-core";
+import type * as ReactQuery from "@tanstack/react-query";
 import type { Opportunity, Contact } from "../../types";
 
 // Mock dependencies
 vi.mock("ra-core", async (importOriginal) => {
-  const actual = await importOriginal<typeof import("ra-core")>();
+  const actual = await importOriginal<typeof RaCore>();
   return {
     ...actual,
     useDataProvider: vi.fn(),
@@ -23,7 +26,7 @@ vi.mock("ra-core", async (importOriginal) => {
 });
 
 vi.mock("@tanstack/react-query", async (importOriginal) => {
-  const actual = await importOriginal<typeof import("@tanstack/react-query")>();
+  const actual = await importOriginal<typeof ReactQuery>();
   return {
     ...actual,
     useQueryClient: vi.fn(),
@@ -112,7 +115,7 @@ describe("ActivityNoteForm - Quick Add Type Filtering", () => {
   });
 
   it("should NOT show Sample type in Quick Add dropdown (WG-001)", async () => {
-    render(
+    renderWithAdminContext(
       <TestWrapper>
         <ActivityNoteForm opportunity={testOpportunity} />
       </TestWrapper>
@@ -129,7 +132,7 @@ describe("ActivityNoteForm - Quick Add Type Filtering", () => {
   });
 
   it("should NOT show Administrative type in Quick Add dropdown", async () => {
-    render(
+    renderWithAdminContext(
       <TestWrapper>
         <ActivityNoteForm opportunity={testOpportunity} />
       </TestWrapper>
@@ -144,7 +147,7 @@ describe("ActivityNoteForm - Quick Add Type Filtering", () => {
   });
 
   it("should NOT show Other type in Quick Add dropdown", async () => {
-    render(
+    renderWithAdminContext(
       <TestWrapper>
         <ActivityNoteForm opportunity={testOpportunity} />
       </TestWrapper>
@@ -159,7 +162,7 @@ describe("ActivityNoteForm - Quick Add Type Filtering", () => {
   });
 
   it("should show standard interaction types (Call, Email, Meeting, etc.)", async () => {
-    render(
+    renderWithAdminContext(
       <TestWrapper>
         <ActivityNoteForm opportunity={testOpportunity} />
       </TestWrapper>
@@ -189,7 +192,7 @@ describe("ActivityNoteForm - Quick Add Type Filtering", () => {
       },
     });
 
-    render(
+    renderWithAdminContext(
       <TestWrapper>
         <ActivityNoteForm opportunity={testOpportunity} />
       </TestWrapper>
@@ -232,7 +235,7 @@ describe("ActivityNoteForm - Quick Add Type Filtering", () => {
       },
     });
 
-    render(
+    renderWithAdminContext(
       <TestWrapper>
         <ActivityNoteForm opportunity={testOpportunity} />
       </TestWrapper>
@@ -266,7 +269,7 @@ describe("ActivityNoteForm - Quick Add Type Filtering", () => {
       data: { id: 999, type: "call", subject: "Test" },
     });
 
-    render(
+    renderWithAdminContext(
       <TestWrapper>
         <ActivityNoteForm opportunity={testOpportunity} />
       </TestWrapper>

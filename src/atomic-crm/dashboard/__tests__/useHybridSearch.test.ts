@@ -17,7 +17,10 @@ import type * as ReactAdmin from "react-admin";
 import { useHybridSearch } from "../useHybridSearch";
 
 // Generic record type for mock data
-type MockRecord = { id: number; name: string };
+interface MockRecord {
+  id: number;
+  name: string;
+}
 
 // Track mock state
 const mockInitialData = {
@@ -89,7 +92,7 @@ const createMockRecord = (id: number, name: string) => ({ id, name });
 
 describe("useHybridSearch", () => {
   beforeEach(() => {
-    vi.clearAllMocks();
+    vi.resetAllMocks();
     vi.useFakeTimers();
 
     // Reset mock state

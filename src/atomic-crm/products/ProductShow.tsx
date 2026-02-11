@@ -1,6 +1,7 @@
 import { useShowContext, RecordRepresentation } from "ra-core";
 import { ReferenceField } from "@/components/ra-wrappers/reference-field";
 import { DateField } from "@/components/ra-wrappers/date-field";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import type { Product } from "../types";
 

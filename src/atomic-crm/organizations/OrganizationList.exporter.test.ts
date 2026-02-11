@@ -171,7 +171,7 @@ describe("OrganizationList Exporter", () => {
   let mockFetchRelatedRecords: ReturnType<typeof vi.fn>;
 
   beforeEach(() => {
-    vi.clearAllMocks();
+    vi.resetAllMocks();
 
     // Configure jsonExport mock to simulate CSV generation
     getJsonExportMock().mockImplementation(

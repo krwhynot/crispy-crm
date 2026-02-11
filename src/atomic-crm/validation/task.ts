@@ -136,13 +136,13 @@ export const validateCreateTask = (data: unknown) => taskCreateSchema.parse(data
 /** Validate task update - throws on invalid data */
 export const validateUpdateTask = (data: unknown) => taskUpdateSchema.parse(data);
 
-/** Validate task for submission - throws on invalid data */
-export async function validateTaskForm(data: unknown, isUpdate = false): Promise<void> {
+/** Validate task for submission - throws on invalid data, returns parsed result */
+export async function validateTaskForm(data: unknown, isUpdate = false) {
   try {
     if (isUpdate) {
-      taskUpdateSchema.parse(data);
+      return taskUpdateSchema.parse(data);
     } else {
-      taskCreateSchema.parse(data);
+      return taskCreateSchema.parse(data);
     }
   } catch (error: unknown) {
     if (error instanceof z.ZodError) {

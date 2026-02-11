@@ -86,7 +86,7 @@ describe("Task API Boundary Integration", () => {
 
   // NOTE: Date transformation test removed per Engineering Constitution
   // (over-engineering - dates are passed through as-is, no complex transforms)
-  it("should pass dates through without transformation", () => {
+  it("should pass dates through without transformation", async () => {
     const apiPayload = {
       title: "Task with dates",
       contact_id: 123,
@@ -96,10 +96,10 @@ describe("Task API Boundary Integration", () => {
       completed_at: "2024-12-20T18:45:30.456Z",
     };
 
-    const result = validateTaskForm(apiPayload);
+    const result = await validateTaskForm(apiPayload);
     // z.coerce.date() converts strings to Date objects (per schema design)
     expect(result.due_date).toBeInstanceOf(Date);
-    expect(result.due_date.toISOString()).toBe("2024-12-31T15:30:45.123Z");
+    expect((result.due_date as Date).toISOString()).toBe("2024-12-31T15:30:45.123Z");
     expect(result.completed_at).toBe("2024-12-20T18:45:30.456Z"); // completed_at is string, not coerced
   });
 });

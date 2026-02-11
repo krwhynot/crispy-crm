@@ -427,7 +427,7 @@ describe("ContactList", () => {
 
   beforeEach(() => {
     // Reset all mocks
-    vi.clearAllMocks();
+    vi.resetAllMocks();
     mockOpenSlideOver.mockClear();
     mockCloseSlideOver.mockClear();
     mockToggleMode.mockClear();
@@ -547,7 +547,7 @@ describe("ContactList 5-column directory layout", () => {
   ];
 
   beforeEach(() => {
-    vi.clearAllMocks();
+    vi.resetAllMocks();
 
     vi.mocked(useGetList).mockReturnValue({
       data: mockTags,
@@ -642,7 +642,7 @@ describe("ContactListFilter", () => {
   ];
 
   beforeEach(() => {
-    vi.clearAllMocks();
+    vi.resetAllMocks();
 
     vi.mocked(useGetList).mockReturnValue({
       data: mockTags,
@@ -713,7 +713,7 @@ describe("ContactList localStorage cleanup", () => {
       writable: true,
     });
 
-    vi.clearAllMocks();
+    vi.resetAllMocks();
   });
 
   test("cleans up invalid status filter from localStorage", () => {
@@ -796,7 +796,10 @@ describe("ContactList exporter", () => {
     };
 
     type MockContactRecord = ReturnType<typeof createMockContact>;
-    type ContactInfoEntry = { value: string; type: string };
+    interface ContactInfoEntry {
+      value: string;
+      type: string;
+    }
 
     // Mock the exporter function - mirrors simplified single-org pattern from ContactList.tsx
     const exporter = async (records: MockContactRecord[]) => {

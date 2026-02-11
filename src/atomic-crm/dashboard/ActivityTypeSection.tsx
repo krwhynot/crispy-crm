@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import type { Control } from "react-hook-form";
 import { useFormContext } from "react-hook-form";
 import {
@@ -52,7 +52,10 @@ export function ActivityTypeSection({ control, activityType }: ActivityTypeSecti
 
   // Get context-specific outcomes for the selected activity type
   // Falls back to ["Completed"] if activity type is unknown (defensive)
-  const outcomeOptions = OUTCOME_OPTIONS_BY_TYPE[activityType] ?? ["Completed"];
+  const outcomeOptions = useMemo(
+    () => OUTCOME_OPTIONS_BY_TYPE[activityType] ?? ["Completed"],
+    [activityType]
+  );
 
   // Clear outcome when activity type changes and current outcome is invalid
   // This provides fail-fast UX - user sees immediately that they need to reselect

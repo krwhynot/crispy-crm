@@ -107,17 +107,17 @@ describe("Task Edge Cases and Business Rules", () => {
           sales_id: 1,
         })
       ).toThrow(z.ZodError);
+    });
 
-      // Empty due_date
-      expect(() =>
-        taskSchema.parse({
-          title: "Test",
-          contact_id: 1,
-          type: "Call",
-          due_date: "",
-          sales_id: 1,
-        })
-      ).toThrow(z.ZodError);
+    it("should treat empty due_date as undefined (preprocess strips empty strings)", () => {
+      const result = taskSchema.parse({
+        title: "Test",
+        contact_id: 1,
+        type: "Call",
+        due_date: "",
+        sales_id: 1,
+      });
+      expect(result.due_date).toBeUndefined();
     });
 
     it("should reject invalid task type enum", () => {

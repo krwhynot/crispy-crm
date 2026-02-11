@@ -13,6 +13,7 @@ import { useState, useCallback, useMemo, useEffect } from "react";
 import { useOrganizationImportUpload } from "./useOrganizationImportUpload";
 import { useOrganizationImportParser } from "./useOrganizationImportParser";
 import { useOrganizationImportMapper } from "./useOrganizationImportMapper";
+import { mapHeadersToFields } from "./organizationColumnAliases";
 import { useOrganizationImportExecution } from "./useOrganizationImportExecution";
 import { useOrganizationImportPreview } from "./useOrganizationImportPreview";
 import OrganizationImportPreview, { type DataQualityDecisions } from "./OrganizationImportPreview";
@@ -58,7 +59,7 @@ export function OrganizationImportDialog({ open, onClose }: OrganizationImportDi
 
   const mergedMappings = useMemo<Record<string, string | null>>(() => {
     if (rawHeaders.length === 0) return {};
-    const autoMappings = require("./organizationColumnAliases").mapHeadersToFields(rawHeaders);
+    const autoMappings = mapHeadersToFields(rawHeaders);
     const finalMappings: Record<string, string | null> = {};
     rawHeaders.forEach((header) => {
       finalMappings[header] = preview.userOverrides.get(header) ?? autoMappings[header];
@@ -101,7 +102,7 @@ export function OrganizationImportDialog({ open, onClose }: OrganizationImportDi
         setRawHeaders(headers);
         setRawDataRows(rows);
 
-        const columnMapping = require("./organizationColumnAliases").mapHeadersToFields(headers);
+        const columnMapping = mapHeadersToFields(headers);
 
         mapper.clearCaches();
         await mapper.resolveAccountManagers(rows, headers, columnMapping);

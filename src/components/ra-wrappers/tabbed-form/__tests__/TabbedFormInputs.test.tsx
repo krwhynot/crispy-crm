@@ -1,4 +1,5 @@
-import { render, screen } from "@testing-library/react";
+import { screen } from "@testing-library/react";
+import { renderWithAdminContext } from "@/tests/utils/render-admin";
 import { FormProvider, useForm } from "react-hook-form";
 import { Tabs } from "@/components/ui/tabs";
 import { TabbedFormInputs } from "../TabbedFormInputs";
@@ -26,7 +27,7 @@ describe("TabbedFormInputs", () => {
       },
     ];
 
-    render(
+    renderWithAdminContext(
       <FormWrapper>
         <Tabs defaultValue="general">
           <TabbedFormInputs tabs={tabs} />
@@ -54,7 +55,7 @@ describe("TabbedFormInputs", () => {
       },
     ];
 
-    const { container } = render(
+    const { container } = renderWithAdminContext(
       <FormWrapper>
         <Tabs defaultValue="general">
           <TabbedFormInputs tabs={tabs} />
@@ -82,7 +83,7 @@ describe("TabbedFormInputs", () => {
       },
     ];
 
-    const { container } = render(
+    const { container } = renderWithAdminContext(
       <FormWrapper>
         <Tabs defaultValue="general">
           <TabbedFormInputs tabs={tabs} />
@@ -110,7 +111,7 @@ describe("TabbedFormInputs", () => {
       },
     ];
 
-    render(
+    renderWithAdminContext(
       <FormWrapper>
         <Tabs defaultValue="other">
           <TabbedFormInputs tabs={tabs} defaultTab="other" />

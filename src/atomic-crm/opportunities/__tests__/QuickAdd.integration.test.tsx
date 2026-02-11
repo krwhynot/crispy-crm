@@ -22,7 +22,8 @@
  */
 
 import { describe, it, expect, vi, beforeEach, afterEach, type Mock } from "vitest";
-import { render, screen, waitFor, fireEvent, cleanup } from "@testing-library/react";
+import { screen, waitFor, fireEvent, cleanup } from "@testing-library/react";
+import { renderWithAdminContext } from "@/tests/utils/render-admin";
 import userEvent from "@testing-library/user-event";
 import { MemoryRouter } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -260,7 +261,7 @@ describe("QuickAdd Integration", () => {
   });
 
   it("renders all required form fields", async () => {
-    render(
+    renderWithAdminContext(
       <TestWrapper>
         <QuickAddForm onSuccess={mockOnSuccess} />
       </TestWrapper>
@@ -291,7 +292,7 @@ describe("QuickAdd Integration", () => {
   });
 
   it("selects principal and enables products dropdown", async () => {
-    render(
+    renderWithAdminContext(
       <TestWrapper>
         <QuickAddForm onSuccess={mockOnSuccess} />
       </TestWrapper>
@@ -316,7 +317,7 @@ describe("QuickAdd Integration", () => {
   }, 15000);
 
   it("defaults account manager to current user", async () => {
-    render(
+    renderWithAdminContext(
       <TestWrapper>
         <QuickAddForm onSuccess={mockOnSuccess} />
       </TestWrapper>
@@ -331,7 +332,7 @@ describe("QuickAdd Integration", () => {
   });
 
   it("handles Cancel button correctly", async () => {
-    render(
+    renderWithAdminContext(
       <TestWrapper>
         <QuickAddForm onSuccess={mockOnSuccess} />
       </TestWrapper>
@@ -349,7 +350,7 @@ describe("QuickAdd Integration", () => {
       isPending: true,
     });
 
-    render(
+    renderWithAdminContext(
       <TestWrapper>
         <QuickAddForm onSuccess={mockOnSuccess} />
       </TestWrapper>
@@ -361,7 +362,7 @@ describe("QuickAdd Integration", () => {
   });
 
   it("auto-fills state when city is selected from autocomplete", async () => {
-    render(
+    renderWithAdminContext(
       <TestWrapper>
         <QuickAddForm onSuccess={mockOnSuccess} />
       </TestWrapper>
@@ -389,7 +390,7 @@ describe("QuickAdd Integration", () => {
     // Note: This test verifies that the form reads from localStorage on mount.
     // The localStorage mock returns "Test Campaign" for last_campaign key
 
-    render(
+    renderWithAdminContext(
       <TestWrapper>
         <QuickAddForm onSuccess={mockOnSuccess} />
       </TestWrapper>
@@ -401,7 +402,7 @@ describe("QuickAdd Integration", () => {
   });
 
   it("shows opportunity name preview placeholder initially", () => {
-    render(
+    renderWithAdminContext(
       <TestWrapper>
         <QuickAddForm onSuccess={mockOnSuccess} />
       </TestWrapper>
@@ -415,19 +416,22 @@ describe("QuickAdd Integration", () => {
   });
 
   it("validates required fields on submit", async () => {
-    // Mock useGetIdentity to not return a default user (to test account_manager_id validation)
+    // Identity must be provided so the form renders past the loading guard.
+    // The component guards with `if (identityLoading || !identity?.id)` and
+    // shows a skeleton if identity is missing. To test field validation we
+    // need the form to render, so we provide a valid identity here.
     (useGetIdentity as Mock).mockReturnValue({
-      data: null,
+      data: { id: 100, fullName: "John Sales" },
       isLoading: false,
     });
 
-    render(
+    renderWithAdminContext(
       <TestWrapper>
         <QuickAddForm onSuccess={mockOnSuccess} />
       </TestWrapper>
     );
 
-    // Try to submit empty form
+    // Try to submit empty form (principal_id is required but not pre-selected)
     await user.click(screen.getByRole("button", { name: /save & close/i }));
 
     await waitFor(() => {

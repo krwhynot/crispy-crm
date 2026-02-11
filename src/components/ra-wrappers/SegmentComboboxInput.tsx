@@ -143,6 +143,7 @@ export const SegmentSelectInput = (props: SegmentSelectInputProps) => {
         className={props.className}
         emptyText={`Select ${defaultLabel.toLowerCase()}...`}
         parse={(value: string) => (value === "" ? null : value)}
+        // eslint-disable-next-line no-restricted-syntax -- UX-critical segment validation
         validate={validators}
       />
     </>

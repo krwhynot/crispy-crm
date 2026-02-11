@@ -42,7 +42,7 @@ describe("useFilterCleanup", () => {
 
   beforeEach(() => {
     // Clear all mocks and localStorage before each test
-    vi.clearAllMocks();
+    vi.resetAllMocks();
     localStorage.clear();
   });
 
@@ -325,7 +325,7 @@ describe("useFilterCleanup", () => {
       // Verify called with contacts
       expect(isValidFilterField).toHaveBeenCalledWith("contacts", "contact_field");
 
-      vi.clearAllMocks();
+      vi.resetAllMocks();
 
       // Rerender with different resource
       rerender({ resource: "organizations" });

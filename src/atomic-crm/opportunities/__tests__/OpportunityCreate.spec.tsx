@@ -3,7 +3,8 @@
  */
 
 import { vi, describe, it, expect } from "vitest";
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { screen, fireEvent, waitFor } from "@testing-library/react";
+import { renderWithAdminContext } from "@/tests/utils/render-admin";
 import { AdminContext } from "ra-core";
 import { MemoryRouter } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -121,7 +122,7 @@ const TestWrapper = ({ children }: { children: React.ReactNode }) => {
 
 describe("OpportunityCreate - Lifecycle Stages and B2B Features", () => {
   beforeEach(() => {
-    vi.clearAllMocks();
+    vi.resetAllMocks();
 
     // Mock getList for organizations
     mockDataProvider.getList.mockImplementation((resource, params) => {
@@ -169,7 +170,7 @@ describe("OpportunityCreate - Lifecycle Stages and B2B Features", () => {
   });
 
   it("should render opportunity creation form with all lifecycle stages", async () => {
-    render(
+    renderWithAdminContext(
       <TestWrapper>
         <OpportunityCreate open={true} />
       </TestWrapper>
@@ -198,7 +199,7 @@ describe("OpportunityCreate - Lifecycle Stages and B2B Features", () => {
   });
 
   it("should create opportunity with customer organization", async () => {
-    render(
+    renderWithAdminContext(
       <TestWrapper>
         <OpportunityCreate open={true} />
       </TestWrapper>
@@ -243,7 +244,7 @@ describe("OpportunityCreate - Lifecycle Stages and B2B Features", () => {
   });
 
   it("should support principal-distributor relationships", async () => {
-    render(
+    renderWithAdminContext(
       <TestWrapper>
         <OpportunityCreate open={true} />
       </TestWrapper>
@@ -293,7 +294,7 @@ describe("OpportunityCreate - Lifecycle Stages and B2B Features", () => {
   });
 
   it("should calculate probability based on stage", async () => {
-    render(
+    renderWithAdminContext(
       <TestWrapper>
         <OpportunityCreate open={true} />
       </TestWrapper>
@@ -328,7 +329,7 @@ describe("OpportunityCreate - Lifecycle Stages and B2B Features", () => {
   });
 
   it("should add opportunity participants", async () => {
-    render(
+    renderWithAdminContext(
       <TestWrapper>
         <OpportunityCreate open={true} />
       </TestWrapper>
@@ -387,7 +388,7 @@ describe("OpportunityCreate - Lifecycle Stages and B2B Features", () => {
   });
 
   it("should set commission fields for distributor opportunities", async () => {
-    render(
+    renderWithAdminContext(
       <TestWrapper>
         <OpportunityCreate open={true} />
       </TestWrapper>
@@ -436,7 +437,7 @@ describe("OpportunityCreate - Lifecycle Stages and B2B Features", () => {
   });
 
   it("should validate required fields", async () => {
-    render(
+    renderWithAdminContext(
       <TestWrapper>
         <OpportunityCreate open={true} />
       </TestWrapper>
@@ -460,7 +461,7 @@ describe("OpportunityCreate - Lifecycle Stages and B2B Features", () => {
   });
 
   it("should set expected closing date based on stage", async () => {
-    render(
+    renderWithAdminContext(
       <TestWrapper>
         <OpportunityCreate open={true} />
       </TestWrapper>
@@ -497,7 +498,7 @@ describe("OpportunityCreate - Lifecycle Stages and B2B Features", () => {
   });
 
   it("should support opportunity categorization", async () => {
-    render(
+    renderWithAdminContext(
       <TestWrapper>
         <OpportunityCreate open={true} />
       </TestWrapper>
@@ -538,7 +539,7 @@ describe("OpportunityCreate - Lifecycle Stages and B2B Features", () => {
   });
 
   it("should set opportunity priority", async () => {
-    render(
+    renderWithAdminContext(
       <TestWrapper>
         <OpportunityCreate open={true} />
       </TestWrapper>

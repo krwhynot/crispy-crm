@@ -1,5 +1,6 @@
 import { describe, it, expect, vi } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { screen } from "@testing-library/react";
+import { renderWithAdminContext } from "@/tests/utils/render-admin";
 import userEvent from "@testing-library/user-event";
 import { useForm, FormProvider } from "react-hook-form";
 import { createFormResolver } from "@/lib/zodErrorFormatting";
@@ -48,13 +49,13 @@ function TestWrapper({
 
 describe("NotesSection", () => {
   it("renders FormLabel 'Notes'", () => {
-    render(<TestWrapper />);
+    renderWithAdminContext(<TestWrapper />);
 
     expect(screen.getByText("Notes")).toBeInTheDocument();
   });
 
   it("renders Textarea with placeholder", () => {
-    render(<TestWrapper />);
+    renderWithAdminContext(<TestWrapper />);
 
     const textarea = screen.getByPlaceholderText("Summary of the interaction...");
     expect(textarea).toBeInTheDocument();
@@ -63,7 +64,7 @@ describe("NotesSection", () => {
 
   it("has aria-invalid when fieldState.invalid", async () => {
     const user = userEvent.setup();
-    render(<TestWrapper />);
+    renderWithAdminContext(<TestWrapper />);
 
     const textarea = screen.getByPlaceholderText("Summary of the interaction...");
 
@@ -76,7 +77,7 @@ describe("NotesSection", () => {
 
   it("has aria-describedby linking to error", async () => {
     const user = userEvent.setup();
-    render(<TestWrapper />);
+    renderWithAdminContext(<TestWrapper />);
 
     const textarea = screen.getByPlaceholderText("Summary of the interaction...");
 
@@ -91,7 +92,7 @@ describe("NotesSection", () => {
 
   it("FormMessage has role='alert'", async () => {
     const user = userEvent.setup();
-    render(<TestWrapper />);
+    renderWithAdminContext(<TestWrapper />);
 
     // Submit without filling notes to trigger validation error
     await user.click(screen.getByRole("button", { name: /submit/i }));
@@ -104,7 +105,7 @@ describe("NotesSection", () => {
 
   it("accepts user input", async () => {
     const user = userEvent.setup();
-    render(<TestWrapper />);
+    renderWithAdminContext(<TestWrapper />);
 
     const textarea = screen.getByPlaceholderText("Summary of the interaction...");
     await user.type(textarea, "Test notes content");
@@ -113,7 +114,7 @@ describe("NotesSection", () => {
   });
 
   it("has min-h-24 class for proper height", () => {
-    render(<TestWrapper />);
+    renderWithAdminContext(<TestWrapper />);
 
     const textarea = screen.getByPlaceholderText("Summary of the interaction...");
     expect(textarea).toHaveClass("min-h-24");
@@ -121,7 +122,7 @@ describe("NotesSection", () => {
 
   it("clears aria-invalid when valid input is provided", async () => {
     const user = userEvent.setup();
-    render(<TestWrapper />);
+    renderWithAdminContext(<TestWrapper />);
 
     const textarea = screen.getByPlaceholderText("Summary of the interaction...");
 

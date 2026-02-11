@@ -2,7 +2,8 @@
  * @vitest-environment jsdom
  */
 
-import { render, screen, waitFor } from "@testing-library/react";
+import { screen, waitFor } from "@testing-library/react";
+import { renderWithAdminContext } from "@/tests/utils/render-admin";
 import { AdminContext } from "ra-core";
 import { MemoryRouter } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -168,7 +169,7 @@ const TestWrapper = ({ children }: { children: React.ReactNode }) => {
 
 describe("OpportunityShow - Unified Provider", () => {
   beforeEach(() => {
-    vi.clearAllMocks();
+    vi.resetAllMocks();
 
     // Mock getOne for opportunity
     mockDataProvider.getOne.mockImplementation((resource, params) => {
@@ -217,7 +218,7 @@ describe("OpportunityShow - Unified Provider", () => {
   });
 
   it("should render opportunity details", async () => {
-    render(
+    renderWithAdminContext(
       <TestWrapper>
         <OpportunityShow />
       </TestWrapper>
@@ -232,7 +233,7 @@ describe("OpportunityShow - Unified Provider", () => {
   });
 
   it("should display opportunity stage and priority", async () => {
-    render(
+    renderWithAdminContext(
       <TestWrapper>
         <OpportunityShow />
       </TestWrapper>
@@ -245,7 +246,7 @@ describe("OpportunityShow - Unified Provider", () => {
   });
 
   it("should display financial information", async () => {
-    render(
+    renderWithAdminContext(
       <TestWrapper>
         <OpportunityShow />
       </TestWrapper>
@@ -258,7 +259,7 @@ describe("OpportunityShow - Unified Provider", () => {
   });
 
   it("should display expected closing date", async () => {
-    render(
+    renderWithAdminContext(
       <TestWrapper>
         <OpportunityShow />
       </TestWrapper>
@@ -270,7 +271,7 @@ describe("OpportunityShow - Unified Provider", () => {
   });
 
   it("should display linked organizations", async () => {
-    render(
+    renderWithAdminContext(
       <TestWrapper>
         <OpportunityShow />
       </TestWrapper>
@@ -284,7 +285,7 @@ describe("OpportunityShow - Unified Provider", () => {
   });
 
   it("should display opportunity participants with roles", async () => {
-    render(
+    renderWithAdminContext(
       <TestWrapper>
         <OpportunityShow />
       </TestWrapper>
@@ -299,7 +300,7 @@ describe("OpportunityShow - Unified Provider", () => {
   });
 
   it("should display participant influence levels", async () => {
-    render(
+    renderWithAdminContext(
       <TestWrapper>
         <OpportunityShow />
       </TestWrapper>
@@ -312,7 +313,7 @@ describe("OpportunityShow - Unified Provider", () => {
   });
 
   it("should display contact information for participants", async () => {
-    render(
+    renderWithAdminContext(
       <TestWrapper>
         <OpportunityShow />
       </TestWrapper>
@@ -327,7 +328,7 @@ describe("OpportunityShow - Unified Provider", () => {
   });
 
   it("should display activity tracking", async () => {
-    render(
+    renderWithAdminContext(
       <TestWrapper>
         <OpportunityShow />
       </TestWrapper>
@@ -340,7 +341,7 @@ describe("OpportunityShow - Unified Provider", () => {
   });
 
   it("should display activity types and dates", async () => {
-    render(
+    renderWithAdminContext(
       <TestWrapper>
         <OpportunityShow />
       </TestWrapper>
@@ -355,7 +356,7 @@ describe("OpportunityShow - Unified Provider", () => {
   });
 
   it("should display account manager information", async () => {
-    render(
+    renderWithAdminContext(
       <TestWrapper>
         <OpportunityShow />
       </TestWrapper>
@@ -377,7 +378,7 @@ describe("OpportunityShow - Unified Provider", () => {
       return Promise.resolve({ data: [], total: 0 });
     });
 
-    render(
+    renderWithAdminContext(
       <TestWrapper>
         <OpportunityShow />
       </TestWrapper>
@@ -391,7 +392,7 @@ describe("OpportunityShow - Unified Provider", () => {
   });
 
   it("should display opportunity lifecycle progression", async () => {
-    render(
+    renderWithAdminContext(
       <TestWrapper>
         <OpportunityShow />
       </TestWrapper>
@@ -405,7 +406,7 @@ describe("OpportunityShow - Unified Provider", () => {
   });
 
   it("should aggregate activity information correctly", async () => {
-    render(
+    renderWithAdminContext(
       <TestWrapper>
         <OpportunityShow />
       </TestWrapper>

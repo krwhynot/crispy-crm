@@ -135,7 +135,7 @@ const TestWrapper = ({ children }: { children: React.ReactNode }) => {
 
 describe("OrganizationList - Enhanced Organization Features (Unified Provider)", () => {
   beforeEach(() => {
-    vi.clearAllMocks();
+    vi.resetAllMocks();
 
     // Mock getList for organizations
     mockDataProvider.getList.mockImplementation((resource, params) => {

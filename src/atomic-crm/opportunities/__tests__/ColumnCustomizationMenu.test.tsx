@@ -1,4 +1,5 @@
-import { render, screen, fireEvent } from "@testing-library/react";
+import { screen, fireEvent } from "@testing-library/react";
+import { renderWithAdminContext } from "@/tests/utils/render-admin";
 import { ColumnCustomizationMenu } from "../kanban/ColumnCustomizationMenu";
 import { describe, it, expect, vi } from "vitest";
 
@@ -11,13 +12,13 @@ describe("ColumnCustomizationMenu", () => {
   };
 
   it("renders customization button", () => {
-    render(<ColumnCustomizationMenu {...mockProps} />);
+    renderWithAdminContext(<ColumnCustomizationMenu {...mockProps} />);
 
     expect(screen.getByRole("button", { name: /customize/i })).toBeInTheDocument();
   });
 
   it("shows menu on button click", () => {
-    render(<ColumnCustomizationMenu {...mockProps} />);
+    renderWithAdminContext(<ColumnCustomizationMenu {...mockProps} />);
 
     fireEvent.click(screen.getByRole("button", { name: /customize/i }));
 
@@ -26,7 +27,7 @@ describe("ColumnCustomizationMenu", () => {
   });
 
   it("calls collapseAll when clicked", () => {
-    render(<ColumnCustomizationMenu {...mockProps} />);
+    renderWithAdminContext(<ColumnCustomizationMenu {...mockProps} />);
 
     fireEvent.click(screen.getByRole("button", { name: /customize/i }));
     fireEvent.click(screen.getByText("Collapse All"));

@@ -10,7 +10,7 @@ const mockSupabaseClient = {
 
 describe("Data Provider Error Handling", () => {
   beforeEach(() => {
-    vi.clearAllMocks();
+    vi.resetAllMocks();
   });
 
   describe("HttpError Handling", () => {

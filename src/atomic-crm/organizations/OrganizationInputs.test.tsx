@@ -2,7 +2,8 @@
  * @vitest-environment jsdom
  */
 
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { screen, fireEvent, waitFor } from "@testing-library/react";
+import { renderWithAdminContext } from "@/tests/utils/render-admin";
 import { MemoryRouter } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
@@ -101,7 +102,7 @@ const TestWrapper = ({
 
 describe("OrganizationInputs - Compact Form", () => {
   beforeEach(() => {
-    vi.clearAllMocks();
+    vi.resetAllMocks();
 
     // Mock segments data for SegmentComboboxInput
     mockDataProvider.getList.mockResolvedValue({
@@ -124,7 +125,7 @@ describe("OrganizationInputs - Compact Form", () => {
   });
 
   it("should render organization name field", async () => {
-    render(
+    renderWithAdminContext(
       <TestWrapper defaultValues={{ name: "Test Org" }}>
         <OrganizationInputs />
       </TestWrapper>
@@ -138,7 +139,7 @@ describe("OrganizationInputs - Compact Form", () => {
   });
 
   it("should render type field", async () => {
-    render(
+    renderWithAdminContext(
       <TestWrapper>
         <OrganizationInputs />
       </TestWrapper>
@@ -152,7 +153,7 @@ describe("OrganizationInputs - Compact Form", () => {
   });
 
   it("should preserve form data on field change", async () => {
-    render(
+    renderWithAdminContext(
       <TestWrapper defaultValues={{ name: "Initial Name" }}>
         <OrganizationInputs />
       </TestWrapper>
@@ -172,7 +173,7 @@ describe("OrganizationInputs - Compact Form", () => {
   });
 
   it("should have collapsible sections for Location, Contact & Web, and Organization Hierarchy", async () => {
-    render(
+    renderWithAdminContext(
       <TestWrapper>
         <OrganizationInputs />
       </TestWrapper>
@@ -192,7 +193,7 @@ describe("OrganizationInputs - Compact Form", () => {
   });
 
   it("should expand collapsible sections when clicked", async () => {
-    render(
+    renderWithAdminContext(
       <TestWrapper>
         <OrganizationInputs />
       </TestWrapper>
@@ -218,7 +219,7 @@ describe("OrganizationInputs - Compact Form", () => {
   });
 
   it("should have responsive grid layout", async () => {
-    const { container } = render(
+    const { container } = renderWithAdminContext(
       <TestWrapper>
         <OrganizationInputs />
       </TestWrapper>
@@ -238,7 +239,7 @@ describe("OrganizationInputs - Compact Form", () => {
   });
 
   it("should render all visible fields", async () => {
-    render(
+    renderWithAdminContext(
       <TestWrapper>
         <OrganizationInputs />
       </TestWrapper>
@@ -255,7 +256,7 @@ describe("OrganizationInputs - Compact Form", () => {
   });
 
   it("should use 44px touch targets on collapsible triggers", async () => {
-    render(
+    renderWithAdminContext(
       <TestWrapper>
         <OrganizationInputs />
       </TestWrapper>
@@ -275,7 +276,7 @@ describe("OrganizationInputs - Compact Form", () => {
   });
 
   it("should display address fields when Location section is expanded", async () => {
-    render(
+    renderWithAdminContext(
       <TestWrapper>
         <OrganizationInputs />
       </TestWrapper>

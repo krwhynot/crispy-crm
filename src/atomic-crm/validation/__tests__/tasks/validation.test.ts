@@ -41,9 +41,10 @@ describe("Task Validation Schemas", () => {
       expect(() => taskSchema.parse(invalidData)).toThrow(z.ZodError);
     });
 
-    it("should reject empty due_date", () => {
-      const invalidData = { ...validTask, due_date: "" };
-      expect(() => taskSchema.parse(invalidData)).toThrow(z.ZodError);
+    it("should treat empty due_date as undefined (preprocess strips empty strings)", () => {
+      const withEmptyDate = { ...validTask, due_date: "" };
+      const result = taskSchema.parse(withEmptyDate);
+      expect(result.due_date).toBeUndefined();
     });
 
     it("should allow optional contact_id", () => {

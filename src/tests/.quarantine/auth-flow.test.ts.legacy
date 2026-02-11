@@ -71,7 +71,7 @@ describe("Authentication Flow Integration Tests", () => {
     mockLocation.search = "";
 
     // Clear any auth state
-    vi.clearAllMocks();
+    vi.resetAllMocks();
 
     // Mock console methods to avoid test noise
     vi.spyOn(console, "error").mockImplementation(() => {});
