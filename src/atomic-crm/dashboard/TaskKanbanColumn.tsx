@@ -135,7 +135,7 @@ export const TaskKanbanColumn = React.memo(function TaskKanbanColumn({
       >
         {tasks.length === 0 ? (
           // Empty State
-          <div className="flex flex-col items-center justify-center h-full min-h-[100px] text-center p-4">
+          <div className="flex flex-col items-center justify-center h-full min-h-[60px] text-center p-4">
             <p className="text-sm font-medium text-muted-foreground">{config.emptyText}</p>
             <p className="text-xs text-muted-foreground/70 mt-1">{config.emptySubtext}</p>
           </div>

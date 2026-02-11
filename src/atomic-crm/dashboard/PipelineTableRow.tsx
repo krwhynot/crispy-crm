@@ -1,7 +1,7 @@
 import { memo } from "react";
 import { TableCell, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { TrendingUp, TrendingDown, Minus, AlertCircle } from "lucide-react";
+import { TrendingUp, TrendingDown, Minus, AlertCircle, AlertTriangle } from "lucide-react";
 import type { PrincipalPipelineRow, Momentum } from "./types";
 
 interface PipelineTableRowProps {
@@ -82,7 +82,7 @@ export const PipelineTableRow = memo(function PipelineTableRow({
       {/* Principal name with decay indicator */}
       <TableCell className="font-medium relative">
         <div
-          className={`absolute left-0 top-0 bottom-0 w-1 ${getDecayIndicatorColor(row.momentum)}`}
+          className={`absolute left-0 top-0 bottom-0 w-1.5 ${getDecayIndicatorColor(row.momentum)}`}
           aria-hidden="true"
         />
         <span className="pl-2">{row.name}</span>
@@ -142,7 +142,10 @@ export const PipelineTableRow = memo(function PipelineTableRow({
             {row.nextAction}
           </span>
         ) : (
-          <span className="text-sm text-muted-foreground italic">No action scheduled</span>
+          <span className="text-sm text-warning font-medium inline-flex items-center gap-1">
+            <AlertTriangle className="h-3.5 w-3.5" aria-hidden="true" />
+            No action scheduled
+          </span>
         )}
       </TableCell>
     </TableRow>

@@ -104,8 +104,8 @@ function MetricCard({ type, metric, loading }: MetricCardProps) {
       role="group"
       aria-label={`${config.label}: ${metric.value}`}
     >
-      {/* Icon - 36px container for compact layout */}
-      <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary/10 text-primary shrink-0">
+      {/* Icon - 40px container for compact layout */}
+      <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary shrink-0">
         <Icon className="h-4 w-4" aria-hidden="true" />
       </div>
 

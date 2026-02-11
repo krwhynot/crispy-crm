@@ -247,10 +247,11 @@ export function DashboardTabPanel() {
             </Suspense>
           </TabsContent>
 
-          {/* Recently Viewed Tab Content */}
+          {/* Recently Viewed Tab Content - forceMount preserves state on tab switch */}
           <TabsContent
             value="recent"
             className="absolute inset-0 m-0 overflow-auto focus-visible:ring-0"
+            forceMount
           >
             <RecentItemsTabContent />
           </TabsContent>

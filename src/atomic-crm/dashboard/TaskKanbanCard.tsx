@@ -172,18 +172,11 @@ export const TaskKanbanCard = memo(function TaskKanbanCard({
     priorityColors[task.priority as keyof typeof priorityColors] || priorityColors.medium;
 
   return (
+    // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions -- keyboard access via explicit subject <button> inside; outer click is mouse-only convenience
     <div
       ref={!isDragOverlay ? setNodeRef : undefined}
       style={style}
-      role="button"
-      tabIndex={0}
       onClick={handleCardClick}
-      onKeyDown={(e) => {
-        if (e.key === "Enter" || e.key === " ") {
-          e.preventDefault();
-          handleCardClick(e);
-        }
-      }}
       className={`
         bg-card rounded-lg border border-border
         p-3
@@ -230,7 +223,17 @@ export const TaskKanbanCard = memo(function TaskKanbanCard({
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-1.5 mb-1">
             {getTaskIcon(task.taskType)}
-            <h3 className="font-medium text-sm text-foreground line-clamp-2">{task.subject}</h3>
+            <button
+              type="button"
+              className="line-clamp-2 cursor-pointer rounded-sm border-none bg-transparent p-0 text-left text-sm font-medium text-foreground hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1"
+              onClick={(e) => {
+                e.stopPropagation();
+                onView(task.id);
+              }}
+              aria-label={`Open details for: ${task.subject}`}
+            >
+              {task.subject}
+            </button>
           </div>
           <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
             <span className="truncate">→ {task.relatedTo.name}</span>
