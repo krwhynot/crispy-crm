@@ -4,6 +4,7 @@ import { logger } from "@/lib/logger";
 import { getWeekBoundaries } from "@/atomic-crm/utils/dateUtils";
 import { useCurrentSale } from "./useCurrentSale";
 import { CLOSED_STAGES } from "@/atomic-crm/opportunities/constants";
+import { calculateTrend } from "@/atomic-crm/utils/trendCalculation";
 
 /**
  * My Performance Metrics for Dashboard Widget (PRD v1.18)
@@ -43,28 +44,7 @@ interface UseMyPerformanceReturn {
   refetch: () => void;
 }
 
-/**
- * Calculate trend direction and percentage
- */
-function calculateTrend(
-  current: number,
-  previous: number
-): Pick<PerformanceMetric, "trend" | "direction"> {
-  if (previous === 0) {
-    // Avoid division by zero - show flat or positive if we have current activity
-    return {
-      trend: current > 0 ? 100 : 0,
-      direction: current > 0 ? "up" : "flat",
-    };
-  }
-
-  const percentChange = ((current - previous) / previous) * 100;
-
-  return {
-    trend: Math.round(percentChange),
-    direction: percentChange > 0 ? "up" : percentChange < 0 ? "down" : "flat",
-  };
-}
+// calculateTrend imported from @/atomic-crm/utils/trendCalculation
 
 /**
  * Create a metric object with trend data
@@ -121,8 +101,7 @@ export function useMyPerformance(): UseMyPerformanceReturn {
         setLoading(true);
         setError(null);
 
-        const { today, thisWeekStart, thisWeekEnd, lastWeekStart, lastWeekEnd } =
-          getWeekBoundaries();
+        const { thisWeekStart, thisWeekEnd, lastWeekStart, lastWeekEnd } = getWeekBoundaries();
 
         // Fetch all metrics in parallel using Promise.allSettled
         // This ensures partial failures don't break the entire widget

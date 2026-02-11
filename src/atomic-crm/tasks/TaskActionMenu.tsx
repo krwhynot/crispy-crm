@@ -3,6 +3,7 @@ import { useNotify, useUpdate, useDelete } from "react-admin";
 import { useQueryClient } from "@tanstack/react-query";
 import { taskKeys, entityTimelineKeys } from "@/atomic-crm/queryKeys";
 import { notificationMessages } from "@/atomic-crm/constants/notificationMessages";
+import { navigateToTaskSlideOver } from "./taskRoutes";
 import { AdminButton } from "@/components/admin/AdminButton";
 import {
   DropdownMenu,
@@ -156,8 +157,8 @@ export function TaskActionMenu({
     if (onEdit) {
       onEdit(taskId);
     } else {
-      // Default: navigate to edit page
-      window.location.href = `/#/tasks/${taskId}`;
+      // Default: navigate to canonical task edit slide-over URL
+      navigateToTaskSlideOver(taskId, "edit");
     }
   };
 

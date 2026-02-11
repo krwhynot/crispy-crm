@@ -19,6 +19,7 @@
  */
 
 import { memo, useMemo } from "react";
+import { Link } from "react-router-dom";
 import { pluralize } from "@/lib/utils/pluralize";
 // Card wrapper removed - parent DashboardTabPanel provides container
 import { AdminButton } from "@/components/admin/AdminButton";
@@ -270,10 +271,10 @@ const ActivityItem = memo(function ActivityItem({ activity }: ActivityItemProps)
   const formattedType = formatActivityType(activity.type);
 
   return (
-    <div
-      className="interactive-card flex items-start gap-3 px-4 py-3 transition-colors hover:bg-muted/50"
-      role="article"
-      aria-label={`${formattedType} by ${fullName}: ${activity.subject}`}
+    <Link
+      to={`/activities?view=${activity.id}`}
+      className="interactive-card flex items-start gap-3 px-4 py-3 transition-colors hover:bg-muted/50 no-underline text-inherit cursor-pointer"
+      aria-label={`${formattedType} by ${fullName}: ${activity.subject}. View details`}
     >
       {/* User Avatar */}
       <Avatar className="h-10 w-10 flex-shrink-0">
@@ -288,10 +289,10 @@ const ActivityItem = memo(function ActivityItem({ activity }: ActivityItemProps)
         {/* Header: Type icon + User name */}
         <div className="flex items-center gap-2">
           <div
-            className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-muted"
+            className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full bg-muted"
             title={formattedType}
           >
-            <Icon className="h-3.5 w-3.5 text-muted-foreground" />
+            <Icon className="h-4 w-4 text-muted-foreground" />
           </div>
           <span className="truncate text-sm font-medium text-foreground">{fullName}</span>
           <span className="text-xs text-muted-foreground">•</span>
@@ -304,6 +305,6 @@ const ActivityItem = memo(function ActivityItem({ activity }: ActivityItemProps)
         {/* Timestamp */}
         <p className="mt-1 text-xs text-muted-foreground">{relativeTime}</p>
       </div>
-    </div>
+    </Link>
   );
 });

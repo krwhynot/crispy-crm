@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useDataProvider } from "react-admin";
 import { logger } from "@/lib/logger";
-import { startOfDay, subDays } from "date-fns";
+import { subDays } from "date-fns";
 import { getWeekBoundaries } from "@/atomic-crm/utils/dateUtils";
 import { useCurrentSale } from "./useCurrentSale";
 import {
@@ -9,6 +9,7 @@ import {
   isOpportunityStale,
 } from "@/atomic-crm/utils/stalenessCalculation";
 import { CLOSED_STAGES } from "@/atomic-crm/opportunities/constants";
+import { calculateTrend } from "@/atomic-crm/utils/trendCalculation";
 
 // Re-export for backward compatibility
 export { STAGE_STALE_THRESHOLDS };
@@ -50,8 +51,18 @@ export interface KPIMetrics {
   staleDealsCount: number | null;
 }
 
+export interface KPITrend {
+  value: number;
+  direction: "up" | "down" | "neutral";
+}
+
+export interface KPITrends {
+  activitiesThisWeek: KPITrend | null;
+}
+
 interface UseKPIMetricsReturn {
   metrics: KPIMetrics;
+  trends: KPITrends;
   loading: boolean;
   error: Error | null;
   errorMessage: string | null;
@@ -68,10 +79,15 @@ const DEFAULT_METRICS: KPIMetrics = {
   staleDealsCount: null,
 };
 
+const DEFAULT_TRENDS: KPITrends = {
+  activitiesThisWeek: null,
+};
+
 export function useKPIMetrics(): UseKPIMetricsReturn {
   const dataProvider = useDataProvider();
   const { salesId, loading: salesLoading } = useCurrentSale();
   const [metrics, setMetrics] = useState<KPIMetrics>(DEFAULT_METRICS);
+  const [trends, setTrends] = useState<KPITrends>(DEFAULT_TRENDS);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -113,7 +129,13 @@ export function useKPIMetrics(): UseKPIMetricsReturn {
         // Check if aborted before making requests
         if (abortController.signal.aborted) return;
 
-        const { today, thisWeekStart: weekStart, thisWeekEnd: weekEnd } = getWeekBoundaries();
+        const {
+          today,
+          thisWeekStart: weekStart,
+          thisWeekEnd: weekEnd,
+          lastWeekStart,
+          lastWeekEnd,
+        } = getWeekBoundaries();
 
         // OPTIMIZATION: Use server-side total for simple counts
         // Only fetch full data for stale deals which requires client-side calculation
@@ -123,51 +145,66 @@ export function useKPIMetrics(): UseKPIMetricsReturn {
 
         // Fetch all metrics in parallel using Promise.allSettled
         // This ensures partial failures don't break the entire dashboard
-        const [openCountResult, staleOpportunitiesResult, tasksResult, activitiesResult] =
-          await Promise.allSettled([
-            // 1. Open opportunities COUNT ONLY (server-side total)
-            // OPTIMIZATION: perPage: 1 uses server-side count, avoiding full data transfer
-            dataProvider.getList("opportunities", {
-              filter: {
-                "stage@not_in": [...CLOSED_STAGES],
-              },
-              sort: { field: "id", order: "ASC" },
-              pagination: { page: 1, perPage: 1 }, // Server-side count only
-            }),
+        const [
+          openCountResult,
+          staleOpportunitiesResult,
+          tasksResult,
+          activitiesResult,
+          lastWeekActivitiesResult,
+        ] = await Promise.allSettled([
+          // 1. Open opportunities COUNT ONLY (server-side total)
+          // OPTIMIZATION: perPage: 1 uses server-side count, avoiding full data transfer
+          dataProvider.getList("opportunities", {
+            filter: {
+              "stage@not_in": [...CLOSED_STAGES],
+            },
+            sort: { field: "id", order: "ASC" },
+            pagination: { page: 1, perPage: 1 }, // Server-side count only
+          }),
 
-            // 2. Potentially stale opportunities (for client-side staleness calculation)
-            // OPTIMIZATION: Only fetch opportunities that MIGHT be stale (no activity in 21+ days)
-            // This reduces data transfer from ~1000 rows to ~50-100 rows typically
-            dataProvider.getList("opportunities", {
-              filter: {
-                "stage@not_in": [...CLOSED_STAGES],
-                "last_activity_date@lt": staleThresholdDate.toISOString(),
-              },
-              sort: { field: "id", order: "ASC" },
-              pagination: { page: 1, perPage: 500 }, // Only stale candidates
-            }),
+          // 2. Potentially stale opportunities (for client-side staleness calculation)
+          // OPTIMIZATION: Only fetch opportunities that MIGHT be stale (no activity in 21+ days)
+          // This reduces data transfer from ~1000 rows to ~50-100 rows typically
+          dataProvider.getList("opportunities", {
+            filter: {
+              "stage@not_in": [...CLOSED_STAGES],
+              "last_activity_date@lt": staleThresholdDate.toISOString(),
+            },
+            sort: { field: "id", order: "ASC" },
+            pagination: { page: 1, perPage: 500 }, // Only stale candidates
+          }),
 
-            // 3. Overdue tasks COUNT ONLY (server-side total)
-            dataProvider.getList("tasks", {
-              filter: {
-                sales_id: salesId,
-                completed: false,
-                "due_date@lt": today.toISOString(),
-              },
-              sort: { field: "id", order: "ASC" },
-              pagination: { page: 1, perPage: 1 }, // Server-side count only
-            }),
+          // 3. Overdue tasks COUNT ONLY (server-side total)
+          dataProvider.getList("tasks", {
+            filter: {
+              sales_id: salesId,
+              completed: false,
+              "due_date@lt": today.toISOString(),
+            },
+            sort: { field: "id", order: "ASC" },
+            pagination: { page: 1, perPage: 1 }, // Server-side count only
+          }),
 
-            // 4. Activities this week COUNT ONLY (server-side total)
-            dataProvider.getList("activities", {
-              filter: {
-                "activity_date@gte": weekStart.toISOString(),
-                "activity_date@lte": weekEnd.toISOString(),
-              },
-              sort: { field: "id", order: "ASC" },
-              pagination: { page: 1, perPage: 1 }, // Server-side count only
-            }),
-          ]);
+          // 4. Activities this week COUNT ONLY (server-side total)
+          dataProvider.getList("activities", {
+            filter: {
+              "activity_date@gte": weekStart.toISOString(),
+              "activity_date@lte": weekEnd.toISOString(),
+            },
+            sort: { field: "id", order: "ASC" },
+            pagination: { page: 1, perPage: 1 }, // Server-side count only
+          }),
+
+          // 5. Activities LAST week COUNT ONLY (for trend calculation)
+          dataProvider.getList("activities", {
+            filter: {
+              "activity_date@gte": lastWeekStart.toISOString(),
+              "activity_date@lte": lastWeekEnd.toISOString(),
+            },
+            sort: { field: "id", order: "ASC" },
+            pagination: { page: 1, perPage: 1 }, // Server-side count only
+          }),
+        ]);
 
         // Check if aborted before processing results
         if (abortController.signal.aborted || !isMounted) return;
@@ -238,12 +275,32 @@ export function useKPIMetrics(): UseKPIMetricsReturn {
           });
         }
 
+        // Calculate trends from previous-period data
+        let activitiesTrend: KPITrend | null = null;
+        if (lastWeekActivitiesResult.status === "fulfilled" && activitiesThisWeek !== null) {
+          const lastWeekCount = lastWeekActivitiesResult.value.total || 0;
+          const result = calculateTrend(activitiesThisWeek, lastWeekCount);
+          activitiesTrend = {
+            value: Math.abs(result.trend),
+            direction: result.direction === "flat" ? "neutral" : result.direction,
+          };
+        } else if (lastWeekActivitiesResult.status === "rejected") {
+          logger.error(
+            "Failed to fetch last week activities for trend",
+            lastWeekActivitiesResult.reason,
+            { feature: "useKPIMetrics" }
+          );
+        }
+
         if (isMounted) {
           setMetrics({
             openOpportunitiesCount,
             overdueTasksCount,
             activitiesThisWeek,
             staleDealsCount,
+          });
+          setTrends({
+            activitiesThisWeek: activitiesTrend,
           });
           // Set error state based on accumulated errors
           setErrorMessage(errors.length > 0 ? errors.join("; ") : null);
@@ -272,5 +329,5 @@ export function useKPIMetrics(): UseKPIMetricsReturn {
     setRefetchTrigger((prev) => prev + 1);
   };
 
-  return { metrics, loading, error, errorMessage, hasPartialFailure, refetch };
+  return { metrics, trends, loading, error, errorMessage, hasPartialFailure, refetch };
 }

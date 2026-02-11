@@ -16,6 +16,7 @@ import type { TaskItem, TaskStatus, TaskApiResponse } from "./types";
 import { parseDateSafely } from "@/lib/date-utils";
 import { MAX_PAGE_SIZE } from "@/atomic-crm/constants";
 import { SHORT_STALE_TIME_MS } from "@/atomic-crm/constants/appConstants";
+import { navigateToTaskSlideOver } from "@/atomic-crm/tasks/taskRoutes";
 
 /**
  * useMyTasks - Hook for managing current user's tasks
@@ -381,9 +382,8 @@ export function useMyTasks() {
    * This is a callback that panels can use to open task details
    */
   const viewTask = useCallback((taskId: number) => {
-    // Navigate to task show page (or could trigger a slide-over)
-    // For now, this is a placeholder that panels can override
-    window.location.href = `/#/tasks/${taskId}/show`;
+    // Navigate directly to canonical task view slide-over URL
+    navigateToTaskSlideOver(taskId, "view");
   }, []);
 
   /**

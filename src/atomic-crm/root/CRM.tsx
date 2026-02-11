@@ -15,6 +15,7 @@ import opportunities from "../opportunities/resource";
 import products from "../products/resource";
 import productDistributors from "../productDistributors/productDistributorsConfig";
 import tasks from "../tasks/resource";
+import { getTaskEditPath, getTaskViewPath } from "../tasks/taskRoutes";
 import notifications from "../notifications/resource";
 import activities from "../activities/resource";
 import tags from "../tags/resource";
@@ -76,7 +77,13 @@ const ContactShowRedirect = () => {
 // Redirect component for legacy /tasks/:id/show URLs
 const TaskShowRedirect = () => {
   const { id } = useParams();
-  return <Navigate to={`/tasks?view=${id}`} replace />;
+  return <Navigate to={getTaskViewPath(id)} replace />;
+};
+
+// Redirect component for legacy /tasks/:id URLs
+const TaskEditRedirect = () => {
+  const { id } = useParams();
+  return <Navigate to={getTaskEditPath(id)} replace />;
 };
 
 // Redirect component for legacy /products/:id/show URLs
@@ -245,6 +252,7 @@ export const CRM = ({
           <Route path="/opportunities/kanban" element={<OpportunityKanbanRedirect />} />
           {/* Legacy redirects */}
           <Route path="/contacts/:id/show" element={<ContactShowRedirect />} />
+          <Route path="/tasks/:id" element={<TaskEditRedirect />} />
           <Route path="/tasks/:id/show" element={<TaskShowRedirect />} />
           <Route path="/products/:id/show" element={<ProductShowRedirect />} />
           <Route path="/organizations/:id/show" element={<OrganizationShowRedirect />} />

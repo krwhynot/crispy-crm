@@ -1,4 +1,5 @@
 // Card wrapper removed - parent DashboardTabPanel provides container
+import { useNavigate } from "react-router-dom";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
 import {
@@ -56,10 +57,22 @@ const METRIC_CONFIG: Record<
   },
 };
 
+/**
+ * Navigation URLs for each metric type, matching KPI_NAVIGATION pattern
+ */
+const PERFORMANCE_NAVIGATION: Record<PerformanceMetricType, string> = {
+  activitiesThisWeek: "/reports",
+  dealsMoved: "/opportunities",
+  tasksCompleted: "/tasks",
+  openOpportunities:
+    "/opportunities?filter=%7B%22stage%40not_in%22%3A%5B%22closed_won%22%2C%22closed_lost%22%5D%7D",
+};
+
 interface MetricCardProps {
   type: PerformanceMetricType;
   metric: PerformanceMetric;
   loading?: boolean;
+  onClick?: () => void;
 }
 
 /**
@@ -71,7 +84,7 @@ interface MetricCardProps {
  * - text-destructive (red) for negative trends
  * - Compact layout for widget embedding
  */
-function MetricCard({ type, metric, loading }: MetricCardProps) {
+function MetricCard({ type, metric, loading, onClick }: MetricCardProps) {
   const config = METRIC_CONFIG[type];
   const Icon = config.icon;
 
@@ -98,11 +111,30 @@ function MetricCard({ type, metric, loading }: MetricCardProps) {
         ? "text-destructive"
         : "text-muted-foreground";
 
+  const isClickable = !!onClick;
+
   return (
     <div
-      className="flex items-center gap-3 p-3 rounded-lg hover:bg-muted/50 transition-colors"
-      role="group"
-      aria-label={`${config.label}: ${metric.value}`}
+      className={cn(
+        "flex items-center gap-3 p-3 rounded-lg transition-colors",
+        isClickable
+          ? "cursor-pointer hover:bg-muted/50 hover:shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1"
+          : "hover:bg-muted/50"
+      )}
+      role={isClickable ? "button" : "group"}
+      tabIndex={isClickable ? 0 : undefined}
+      onClick={onClick}
+      onKeyDown={
+        isClickable
+          ? (e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                onClick?.();
+              }
+            }
+          : undefined
+      }
+      aria-label={`${config.label}: ${metric.value}${isClickable ? ". Click to view details" : ""}`}
     >
       {/* Icon - 40px container for compact layout */}
       <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary shrink-0">
@@ -156,6 +188,7 @@ function MetricCard({ type, metric, loading }: MetricCardProps) {
  * - Keyboard navigable (inherits from Card)
  */
 function MyPerformanceWidget() {
+  const navigate = useNavigate();
   const { metrics, loading } = useMyPerformance();
 
   return (
@@ -173,10 +206,26 @@ function MyPerformanceWidget() {
           type="activitiesThisWeek"
           metric={metrics.activitiesThisWeek}
           loading={loading}
+          onClick={() => navigate(PERFORMANCE_NAVIGATION.activitiesThisWeek)}
         />
-        <MetricCard type="dealsMoved" metric={metrics.dealsMoved} loading={loading} />
-        <MetricCard type="tasksCompleted" metric={metrics.tasksCompleted} loading={loading} />
-        <MetricCard type="openOpportunities" metric={metrics.openOpportunities} loading={loading} />
+        <MetricCard
+          type="dealsMoved"
+          metric={metrics.dealsMoved}
+          loading={loading}
+          onClick={() => navigate(PERFORMANCE_NAVIGATION.dealsMoved)}
+        />
+        <MetricCard
+          type="tasksCompleted"
+          metric={metrics.tasksCompleted}
+          loading={loading}
+          onClick={() => navigate(PERFORMANCE_NAVIGATION.tasksCompleted)}
+        />
+        <MetricCard
+          type="openOpportunities"
+          metric={metrics.openOpportunities}
+          loading={loading}
+          onClick={() => navigate(PERFORMANCE_NAVIGATION.openOpportunities)}
+        />
       </div>
 
       {/* Week comparison note */}
