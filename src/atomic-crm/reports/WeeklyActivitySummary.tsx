@@ -11,7 +11,7 @@ import { pluralize } from "@/lib/utils/pluralize";
 import { sanitizeCsvValue } from "@/atomic-crm/utils/csvUploadValidator";
 import { AppliedFiltersBar, EmptyState } from "./components";
 import { useReportData } from "./hooks";
-import { DEFAULT_PAGE_SIZE } from "@/atomic-crm/constants/appConstants";
+import { DEFAULT_PAGE_SIZE, LOW_ACTIVITY_THRESHOLD } from "@/atomic-crm/constants/appConstants";
 import type { ActivityRecord, Organization, Sale } from "../types";
 
 /**
@@ -20,9 +20,9 @@ import type { ActivityRecord, Organization, Sale } from "../types";
  * Shows activity counts by rep and principal for manager visibility.
  * Groups: Sales Rep → Principal → Activity Type Counts
  *
- * Flags low-activity principals (< 3 activities/week) with warning.
+ * Flags low-activity principals (< LOW_ACTIVITY_THRESHOLD activities/week) with warning.
  *
- * CSV Export: rep_name, principal_name, calls, emails, meetings, notes, total
+ * CSV Export: rep_name, principal_name, calls, emails, meetings, tasks, notes, total
  */
 export default function WeeklyActivitySummary() {
   const { data: identity } = useGetIdentity();
@@ -135,6 +135,7 @@ export default function WeeklyActivitySummary() {
             calls: number;
             emails: number;
             meetings: number;
+            tasks: number;
             notes: number;
             total: number;
           }
@@ -162,6 +163,7 @@ export default function WeeklyActivitySummary() {
           calls: 0,
           emails: 0,
           meetings: 0,
+          tasks: 0,
           notes: 0,
           total: 0,
         });
@@ -169,8 +171,9 @@ export default function WeeklyActivitySummary() {
 
       const principalStats = repGroup.principals.get(orgId)!;
 
-      // Count by type
-      if (activity.type === "call") principalStats.calls++;
+      // Count by type: tasks use activity_type field, others use interaction type field
+      if (activity.activity_type === "task") principalStats.tasks++;
+      else if (activity.type === "call") principalStats.calls++;
       else if (activity.type === "email") principalStats.emails++;
       else if (activity.type === "meeting") principalStats.meetings++;
       else principalStats.notes++;
@@ -188,6 +191,7 @@ export default function WeeklyActivitySummary() {
       calls: number;
       emails: number;
       meetings: number;
+      tasks: number;
       notes: number;
       total: number;
     }> = [];
@@ -200,6 +204,7 @@ export default function WeeklyActivitySummary() {
           calls: stats.calls,
           emails: stats.emails,
           meetings: stats.meetings,
+          tasks: stats.tasks,
           notes: stats.notes,
           total: stats.total,
         });
@@ -233,15 +238,27 @@ export default function WeeklyActivitySummary() {
       onExport={handleExport}
       actions={
         <div className="flex items-center gap-2">
+          <label htmlFor="activity-start-date" className="sr-only">
+            Start date
+          </label>
           <input
+            id="activity-start-date"
             type="date"
+            aria-label="Start date"
             value={dateRange.start}
             onChange={(e) => setDateRange({ ...dateRange, start: e.target.value })}
             className="h-11 px-3 py-2 border rounded text-sm"
           />
-          <span className="text-muted-foreground">to</span>
+          <span className="text-muted-foreground" aria-hidden="true">
+            to
+          </span>
+          <label htmlFor="activity-end-date" className="sr-only">
+            End date
+          </label>
           <input
+            id="activity-end-date"
             type="date"
+            aria-label="End date"
             value={dateRange.end}
             onChange={(e) => setDateRange({ ...dateRange, end: e.target.value })}
             className="h-11 px-3 py-2 border rounded text-sm"
@@ -318,6 +335,7 @@ interface RepActivityCardProps {
         calls: number;
         emails: number;
         meetings: number;
+        tasks: number;
         notes: number;
         total: number;
       }
@@ -353,6 +371,7 @@ function RepActivityCard({ repGroup }: RepActivityCardProps) {
               <th className="text-right py-2">Calls</th>
               <th className="text-right py-2">Emails</th>
               <th className="text-right py-2">Meetings</th>
+              <th className="text-right py-2">Tasks</th>
               <th className="text-right py-2">Notes</th>
               <th className="text-right py-2">Total</th>
             </tr>
@@ -361,11 +380,11 @@ function RepActivityCard({ repGroup }: RepActivityCardProps) {
             {principalStats.map((stats, idx) => (
               <tr
                 key={stats.org.id || idx}
-                className={`border-b ${stats.total < 3 ? "bg-warning/10" : ""}`}
+                className={`border-b ${stats.total < LOW_ACTIVITY_THRESHOLD ? "bg-warning/10" : ""}`}
               >
                 <td className="py-2 flex items-center gap-2">
                   {stats.org.name}
-                  {stats.total < 3 && (
+                  {stats.total < LOW_ACTIVITY_THRESHOLD && (
                     <Badge variant="outline" className="text-xs">
                       ⚠️ Low Activity
                     </Badge>
@@ -374,6 +393,7 @@ function RepActivityCard({ repGroup }: RepActivityCardProps) {
                 <td className="text-right">{stats.calls}</td>
                 <td className="text-right">{stats.emails}</td>
                 <td className="text-right">{stats.meetings}</td>
+                <td className="text-right">{stats.tasks}</td>
                 <td className="text-right">{stats.notes}</td>
                 <td className="text-right font-semibold">{stats.total}</td>
               </tr>

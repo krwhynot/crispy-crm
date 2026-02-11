@@ -96,4 +96,53 @@ Tier D was executed after all three checks passed:
 
 ---
 
-*Full audit track closed. All tiers (A through D) executed and verified.*
+## 6) Reporting Automation Activation Addendum
+
+**Date:** 2026-02-11  
+**Source:** Reporting Audit Phase 5 completion pack  
+**Status:** ACTIVE
+
+### Summary
+
+Reporting audit automation was completed after Phase 3 implementation and Phase 4 signoff.
+
+- **Phase 4 status:** `FULL_GO` for metric-correctness implementation (conditional requirement cleared)
+- **Phase 5 status:** complete [Confidence: 92%]
+- **Suites implemented:** 3
+- **Total tests:** 40
+
+### Automation Suites
+
+| Suite | File | Tests | Result |
+|---|---|---:|---|
+| CLOSED_STAGES alignment | `src/atomic-crm/reports/__tests__/closed-stages-alignment.test.ts` | 14 | PASS |
+| `getWeekBoundaries()` edge cases | `src/atomic-crm/utils/__tests__/getWeekBoundaries.test.ts` | 21 | PASS |
+| KPI metric snapshot (Seed S0) | `src/atomic-crm/dashboard/__tests__/kpi-metric-snapshot.test.ts` | 5 | PASS |
+
+### Active CI Gate Policy
+
+1. **From 2026-02-11 to 2026-02-18:** run all three suites nightly, non-blocking.
+2. **Promotion checkpoint on 2026-02-18:** if stable for 7 days, promote:
+   - CLOSED_STAGES alignment -> PR-required
+   - KPI metric snapshot -> PR-required
+3. **DST-heavy week-boundary suite:** keep nightly-only if flake risk persists.
+
+### Commands
+
+- Nightly bundle: `just test-audit-nightly`
+- PR-required bundle (after promotion): `just test-audit-pr`
+
+### Linked Artifacts
+
+- `docs/audits/reporting-audit-phases/opus-4-6-prompts/phase-5-automation-progress-report.md`
+- `docs/audits/reporting-audit-phases/opus-4-6-prompts/phase-4-report.md`
+
+### Residual Follow-On (Non-Blocking)
+
+- Pre-existing unrelated test baseline: PrincipalDashboard FAB mock failure (`8/9`) tracked as non-blocking.
+- Weekly Activity date input accessibility P1 tracked via standalone follow-on ticket:
+  `docs/audits/reporting-audit-phases/opus-4-6-prompts/a11y-follow-on-weekly-activity-date-inputs.md`
+
+---
+
+*Full audit track closed. All tiers (A through D) executed and verified. Reporting automation gates are now active.*

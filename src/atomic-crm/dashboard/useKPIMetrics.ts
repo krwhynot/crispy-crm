@@ -1,7 +1,8 @@
 import { useState, useEffect, useRef } from "react";
 import { useDataProvider } from "react-admin";
 import { logger } from "@/lib/logger";
-import { startOfWeek, endOfWeek, startOfDay, subDays } from "date-fns";
+import { startOfDay, subDays } from "date-fns";
+import { getWeekBoundaries } from "@/atomic-crm/utils/dateUtils";
 import { useCurrentSale } from "./useCurrentSale";
 import {
   STAGE_STALE_THRESHOLDS,
@@ -43,10 +44,10 @@ export { STAGE_STALE_THRESHOLDS };
  */
 
 export interface KPIMetrics {
-  openOpportunitiesCount: number;
-  overdueTasksCount: number;
-  activitiesThisWeek: number;
-  staleDealsCount: number;
+  openOpportunitiesCount: number | null;
+  overdueTasksCount: number | null;
+  activitiesThisWeek: number | null;
+  staleDealsCount: number | null;
 }
 
 interface UseKPIMetricsReturn {
@@ -59,11 +60,12 @@ interface UseKPIMetricsReturn {
 }
 
 // Stable default metrics to avoid new reference on each render
+// G1 guardrail: null = unknown/not-yet-loaded, 0 = confirmed zero
 const DEFAULT_METRICS: KPIMetrics = {
-  openOpportunitiesCount: 0,
-  overdueTasksCount: 0,
-  activitiesThisWeek: 0,
-  staleDealsCount: 0,
+  openOpportunitiesCount: null,
+  overdueTasksCount: null,
+  activitiesThisWeek: null,
+  staleDealsCount: null,
 };
 
 export function useKPIMetrics(): UseKPIMetricsReturn {
@@ -111,9 +113,7 @@ export function useKPIMetrics(): UseKPIMetricsReturn {
         // Check if aborted before making requests
         if (abortController.signal.aborted) return;
 
-        const today = startOfDay(new Date());
-        const weekStart = startOfWeek(today, { weekStartsOn: 1 }); // Monday
-        const weekEnd = endOfWeek(today, { weekStartsOn: 1 }); // Sunday
+        const { today, thisWeekStart: weekStart, thisWeekEnd: weekEnd } = getWeekBoundaries();
 
         // OPTIMIZATION: Use server-side total for simple counts
         // Only fetch full data for stale deals which requires client-side calculation
@@ -172,11 +172,11 @@ export function useKPIMetrics(): UseKPIMetricsReturn {
         // Check if aborted before processing results
         if (abortController.signal.aborted || !isMounted) return;
 
-        // Process results, using 0 for failed requests
-        let openOpportunitiesCount = 0;
-        let staleDealsCount = 0;
-        let overdueTasksCount = 0;
-        let activitiesThisWeek = 0;
+        // G1 guardrail: null = query failed (unknown), never silently default to 0
+        let openOpportunitiesCount: number | null = null;
+        let staleDealsCount: number | null = null;
+        let overdueTasksCount: number | null = null;
+        let activitiesThisWeek: number | null = null;
 
         // Accumulate errors from rejected results
         const errors: string[] = [];

@@ -13,8 +13,8 @@ This directory contains automated analysis outputs for the database schema and U
 **Update frequency:** Run after adding new resources, components, or database tables.
 
 **Key Metrics (as of 2026-02-09):**
-- **Total database tables:** 34
-- **Resources with UI:** 14
+- **Total database tables:** 28
+- **Resources with UI:** 13
 - **Total UI components:** 75
 - **Unmapped tables:** 20 (junction tables, system tables, supporting tables)
 
@@ -23,7 +23,7 @@ This directory contains automated analysis outputs for the database schema and U
 {
   "generated_at": "ISO timestamp",
   "summary": {
-    "total_database_tables": 34,
+    "total_database_tables": 28,
     "total_resources": 21,
     "total_components": 75,
     "unmapped_tables": 20

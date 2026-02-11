@@ -72,7 +72,8 @@ describe("useKPIMetrics", () => {
       const { result } = renderHook(() => useKPIMetrics());
 
       expect(result.current.loading).toBe(true);
-      expect(result.current.metrics.openOpportunitiesCount).toBe(0);
+      // G1 guardrail: initial state is null (unknown), not 0
+      expect(result.current.metrics.openOpportunitiesCount).toBeNull();
     });
 
     it("should wait for sales loading to complete", async () => {
@@ -223,8 +224,8 @@ describe("useKPIMetrics", () => {
       // Should still have data from successful calls
       expect(result.current.metrics.openOpportunitiesCount).toBe(1);
       expect(result.current.metrics.activitiesThisWeek).toBe(8);
-      // Failed call should default to 0
-      expect(result.current.metrics.overdueTasksCount).toBe(0);
+      // G1 guardrail: failed call returns null (unknown), not 0
+      expect(result.current.metrics.overdueTasksCount).toBeNull();
 
       consoleErrorSpy.mockRestore();
     });
@@ -240,11 +241,11 @@ describe("useKPIMetrics", () => {
         expect(result.current.loading).toBe(false);
       });
 
-      // All metrics should be 0
-      expect(result.current.metrics.openOpportunitiesCount).toBe(0);
-      expect(result.current.metrics.overdueTasksCount).toBe(0);
-      expect(result.current.metrics.activitiesThisWeek).toBe(0);
-      expect(result.current.metrics.staleDealsCount).toBe(0);
+      // G1 guardrail: all failed metrics are null (unknown), not 0
+      expect(result.current.metrics.openOpportunitiesCount).toBeNull();
+      expect(result.current.metrics.overdueTasksCount).toBeNull();
+      expect(result.current.metrics.activitiesThisWeek).toBeNull();
+      expect(result.current.metrics.staleDealsCount).toBeNull();
 
       consoleErrorSpy.mockRestore();
     });
@@ -261,7 +262,8 @@ describe("useKPIMetrics", () => {
       });
 
       expect(mockGetList).not.toHaveBeenCalled();
-      expect(result.current.metrics.openOpportunitiesCount).toBe(0);
+      // No user = no queries fired, metrics stay at default (null)
+      expect(result.current.metrics.openOpportunitiesCount).toBeNull();
     });
 
     it("should handle undefined total in response", async () => {

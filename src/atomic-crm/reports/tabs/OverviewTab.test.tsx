@@ -82,9 +82,9 @@ describe("OverviewTab", () => {
     });
 
     await waitFor(() => {
-      expect(screen.getByText("Total Opportunities")).toBeInTheDocument();
+      expect(screen.getByText("Open Opportunities")).toBeInTheDocument();
     });
-    expect(screen.getByText("Activities This Week")).toBeInTheDocument();
+    expect(screen.getByText("Team Activities")).toBeInTheDocument();
     expect(screen.getByText("Stale Leads")).toBeInTheDocument();
   });
 

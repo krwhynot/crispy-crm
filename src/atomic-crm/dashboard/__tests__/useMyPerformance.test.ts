@@ -85,6 +85,17 @@ describe("useMyPerformance", () => {
           }),
         })
       );
+
+      // Verify deals moved uses opportunity_stage_changes view (not opportunities updated_at)
+      expect(mockGetList).toHaveBeenCalledWith(
+        "opportunity_stage_changes",
+        expect.objectContaining({
+          filter: expect.objectContaining({
+            changed_by: 42,
+            "from_stage@neq": null, // Excludes initial creates
+          }),
+        })
+      );
     });
 
     it("should return correct metric structure", async () => {
@@ -363,8 +374,8 @@ describe("useMyPerformance", () => {
       mockGetList.mockImplementation(() => {
         callCount++;
         // Return different values for each metric type
-        // Query order: activities(cur), tasks(cur), deals(cur), open_opps(cur),
-        //              activities(prev), tasks(prev), deals(prev), dashboard_snapshots
+        // Query order: activities(cur), tasks(cur), stage_changes(cur), open_opps(cur),
+        //              activities(prev), tasks(prev), stage_changes(prev), dashboard_snapshots
         switch (callCount) {
           case 1:
             return Promise.resolve(createMockResponse(10)); // activities this week

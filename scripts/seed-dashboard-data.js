@@ -2,6 +2,13 @@
 /**
  * Seed Dashboard V3 Demo Data
  * Runs SQL directly via Supabase client
+ *
+ * SECURITY REQUIREMENT: This script requires SUPABASE_SERVICE_ROLE_KEY
+ * The exec_sql RPC function only accepts calls from service_role JWT claims.
+ * Using anon key will result in permission denied errors.
+ *
+ * Usage:
+ *   SUPABASE_SERVICE_ROLE_KEY=your_key node scripts/seed-dashboard-data.js
  */
 
 import { createClient } from "@supabase/supabase-js";

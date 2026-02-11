@@ -14,23 +14,21 @@ const KPI_NAVIGATION = {
   staleDeals: "/opportunities?filter=%7B%22stale%22%3Atrue%7D",
 } as const;
 
+/** Format a KPI value: null = query failed (show dash), number = real count */
+function formatKPIValue(value: number | null): string {
+  return value === null ? "\u2013" : value.toLocaleString();
+}
+
 /**
  * KPISummaryRow - Dashboard KPI metrics header row (PRD v1.9 Section 9.2.1)
  *
  * Displays four key metrics in a horizontal row above the main dashboard grid:
  * 1. Open Opportunities - count (not $ value per Decision #5)
  * 2. Overdue Tasks - count (red accent if > 0)
- * 3. Activities This Week - count
+ * 3. Team Activities - count (team-wide, all reps)
  * 4. Stale Deals - count (amber/warning if > 0, per-stage thresholds)
  *
- * Layout (desktop-first):
- * - Desktop (≥1024px): 4-column horizontal row
- * - Tablet/Mobile (<1024px): 2x2 grid
- *
- * Behavior:
- * - Click on any metric → navigate to filtered list view
- * - Loading skeleton while fetching
- * - Uses useKPIMetrics hook for single aggregated query
+ * G1 guardrail: null metrics render as "–" (en-dash), never as "0".
  */
 export function KPISummaryRow() {
   const navigate = useNavigate();
@@ -45,7 +43,7 @@ export function KPISummaryRow() {
       {/* KPI #1: Open Opportunities (count, not $ value) */}
       <KPICard
         title="Open Opportunities"
-        value={metrics.openOpportunitiesCount.toLocaleString()}
+        value={formatKPIValue(metrics.openOpportunitiesCount)}
         icon={Briefcase}
         loading={loading}
         onClick={() => navigate(KPI_NAVIGATION.openOpportunities)}
@@ -55,18 +53,22 @@ export function KPISummaryRow() {
       {/* KPI #2: Overdue Tasks (red accent when > 0) */}
       <KPICard
         title="Overdue Tasks"
-        value={metrics.overdueTasksCount.toLocaleString()}
+        value={formatKPIValue(metrics.overdueTasksCount)}
         icon={AlertCircle}
         loading={loading}
-        variant={metrics.overdueTasksCount > 0 ? "destructive" : "default"}
+        variant={
+          metrics.overdueTasksCount !== null && metrics.overdueTasksCount > 0
+            ? "destructive"
+            : "default"
+        }
         onClick={() => navigate(KPI_NAVIGATION.overdueTasks)}
         data-tutorial="dashboard-kpi-overdue-tasks"
       />
 
-      {/* KPI #3: Activities This Week */}
+      {/* KPI #3: Team Activities This Week */}
       <KPICard
-        title="Activities This Week"
-        value={metrics.activitiesThisWeek.toLocaleString()}
+        title="Team Activities"
+        value={formatKPIValue(metrics.activitiesThisWeek)}
         icon={Activity}
         loading={loading}
         onClick={() => navigate(KPI_NAVIGATION.activitiesThisWeek)}
@@ -76,10 +78,12 @@ export function KPISummaryRow() {
       {/* KPI #4: Stale Deals (amber/warning when > 0) */}
       <KPICard
         title="Stale Deals"
-        value={metrics.staleDealsCount.toLocaleString()}
+        value={formatKPIValue(metrics.staleDealsCount)}
         icon={AlertTriangle}
         loading={loading}
-        variant={metrics.staleDealsCount > 0 ? "warning" : "default"}
+        variant={
+          metrics.staleDealsCount !== null && metrics.staleDealsCount > 0 ? "warning" : "default"
+        }
         onClick={() => navigate(KPI_NAVIGATION.staleDeals)}
         data-tutorial="dashboard-kpi-stale-deals"
       />

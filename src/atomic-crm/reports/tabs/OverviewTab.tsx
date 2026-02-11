@@ -12,7 +12,7 @@ import { PipelineChart } from "../charts/PipelineChart";
 import { ActivityTrendChart } from "../charts/ActivityTrendChart";
 import { TopPrincipalsChart } from "../charts/TopPrincipalsChart";
 import { RepPerformanceChart } from "../charts/RepPerformanceChart";
-import { OPPORTUNITY_STAGE_CHOICES, STAGE } from "../../opportunities/constants";
+import { OPPORTUNITY_STAGE_CHOICES, STAGE, CLOSED_STAGES } from "../../opportunities/constants";
 import { format, subDays, startOfDay, eachDayOfInterval } from "date-fns";
 import { DEFAULT_PAGE_SIZE } from "@/atomic-crm/constants/appConstants";
 import "../charts/chartSetup";
@@ -225,8 +225,11 @@ export default function OverviewTab() {
       activityTrend = "up";
     }
 
-    // Current period opportunities (last 30 days)
-    const currentOpportunities = opps.length;
+    // Current period opportunities - exclude closed stages to align with D-KPI-1 (Dashboard "Open Opportunities")
+    // B3: Both R-OV-1 and D-KPI-1 now use the same CLOSED_STAGES exclusion filter
+    const currentOpportunities = opps.filter(
+      (opp) => !CLOSED_STAGES.includes(opp.stage as (typeof CLOSED_STAGES)[number])
+    ).length;
 
     // Calculate opportunity trend (compare to nothing since we can't see historical counts)
     // For now, we'll base trend on activity in last 30 days
@@ -415,15 +418,15 @@ export default function OverviewTab() {
       ) : (
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-content" data-testid="kpi-grid">
           <KPICard
-            title="Total Opportunities"
+            title="Open Opportunities"
             value={kpis.totalOpportunities}
             trend={{ value: kpis.opportunityChange, direction: kpis.opportunityTrend }}
             icon={TrendingUp}
-            subtitle="Active opportunities in pipeline"
+            subtitle="Non-closed opportunities in pipeline"
             onClick={handleTotalOpportunitiesClick}
           />
           <KPICard
-            title="Activities This Week"
+            title="Team Activities"
             value={kpis.weekActivities}
             trend={{ value: kpis.activityChange, direction: kpis.activityTrend }}
             icon={Activity}

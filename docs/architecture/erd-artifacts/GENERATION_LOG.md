@@ -28,7 +28,7 @@
 
 ## Output
 
-**database-erd.md** (82 KB, 2,301 lines)
+**database-erd.md** (82 KB, 1,778 lines)
 
 ### Sections Generated
 

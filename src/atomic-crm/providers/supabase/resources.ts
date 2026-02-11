@@ -47,6 +47,7 @@ export const RESOURCE_MAPPING = {
   products: "products",
   dashboard_snapshots: "dashboard_snapshots", // Historical KPI snapshots for week-over-week trends
   user_favorites: "user_favorites", // User-specific favorites for quick access
+  opportunity_stage_changes: "opportunity_stage_changes", // View: stage transitions from audit trail
 } as const;
 
 /**

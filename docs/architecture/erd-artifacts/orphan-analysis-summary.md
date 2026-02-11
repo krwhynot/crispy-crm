@@ -1,65 +1,108 @@
 # Orphan Analysis Summary
 
-**Generated:** 2026-02-09T06:54:49.780Z
+**Generated:** 2026-02-09T08:52:08Z
 
 ## Overview
 
-Automated database orphan detection script that identifies:
+Automated database orphan detection that identifies:
 - Orphaned tables (no foreign key relationships)
-- Orphaned records (NULL FKs, soft-deleted parents, missing parents)
+- Orphaned records (active records pointing to soft-deleted parents)
 - Empty tables
 
 ## Current Results
 
 ### Summary
-- **Orphaned tables:** 1 (tags)
-- **Tables with orphaned records:** 0
-- **Empty tables:** 6
-- **Total orphaned records:** 0
+
+| Metric | Value |
+|--------|-------|
+| **Orphaned tables** | 6 |
+| **Tables with orphaned records** | 2 |
+| **Total orphaned records** | 1,195 |
+| **Empty tables** | 17 |
 
 ### Orphaned Tables
-- `tags` - No foreign key relationships detected
 
-**Analysis:** The `tags` table is designed to be a standalone reference table. It should have junction tables (e.g., `contact_tags`, `opportunity_tags`, `organization_tags`) to link tags to entities. This is a normal pattern, not a problem.
+Tables with no foreign key relationships (incoming or outgoing):
 
-### Empty Tables
-All core tables are empty because this is a development/test environment:
-- contacts
-- organizations
-- opportunities
-- products
-- activities
-- tags
+| Table | Analysis |
+|-------|----------|
+| `migration_history` | System table for tracking applied migrations |
+| `notifications` | Standalone notification storage (no FK to users yet) |
+| `tags` | Reference table - needs junction tables for entity linking |
+| `task_id_mapping` | Migration tracking table |
+| `test_user_metadata` | Test fixture data |
+| `user_favorites` | User preferences (no FK constraints defined) |
 
-**Recommendation:** Run `npm run seed:e2e:dashboard-v3` to populate with test data.
+**Recommendation:** Review whether these tables need foreign key relationships added or are intentionally standalone.
 
 ### Orphaned Records
-No orphaned records detected. This indicates good referential integrity in the current (empty) database state.
 
-## Interpretation
+**1,195 active records** point to soft-deleted parents across 2 tables:
 
-### Development Environment
-The analysis shows a clean, empty database. This is expected for local development environments before seeding test data.
+| Child Table | FK Column | Parent Table | Orphaned Count | Issue |
+|-------------|-----------|--------------|----------------|-------|
+| `activities` | `opportunity_id` | `opportunities` | 369 | Activities linked to deleted opportunities |
+| `activities` | `organization_id` | `organizations` | 308 | Activities linked to deleted organizations |
+| `opportunity_contacts` | `contact_id` | `contacts` | 149 | Junction records for deleted contacts |
+| `opportunity_contacts` | `opportunity_id` | `opportunities` | 369 | Junction records for deleted opportunities |
 
-### Production Environment
-When run against a production database, expected findings:
-- **null_fk (acceptable):** Optional relationships like `opportunities.account_manager_id` can be NULL
-- **soft_deleted_parent (needs attention):** Indicates cascade soft-delete triggers are missing
-- **missing_parent (critical):** Should never occur if foreign key constraints are properly defined
+**Root Cause:** Cascade soft-delete triggers are not implemented. When a parent record is soft-deleted, child records remain active.
 
-## Next Steps
+**Recommendations:**
+1. Implement cascade soft-delete triggers (set child `deleted_at` when parent is deleted)
+2. Or accept orphaned records as intentional (preserve activity history even when parent is deleted)
+3. Run cleanup script to soft-delete orphaned records if business rules require it
 
-1. **Add more tables to knownTables array** in `scripts/orphan-analysis.ts`:
-   - Currently only checks 18 tables
-   - Missing: opportunity_contacts, sales, companies, segments, etc.
+### Empty Tables (17)
 
-2. **Improve regex patterns** to catch all FK relationships:
-   - Currently detects 16 out of 125+ REFERENCES statements
-   - Missing patterns: multi-line FK declarations, complex table names with underscores
+| Category | Tables |
+|----------|--------|
+| **Notes** | `contact_notes`, `opportunity_notes`, `organization_notes` |
+| **Participants** | `interaction_participants`, `opportunity_participants` |
+| **Products** | `products`, `opportunity_products`, `product_distributors`, `product_distributor_authorizations` |
+| **System** | `dashboard_snapshots`, `migration_history`, `notifications`, `tutorial_progress`, `test_user_metadata`, `user_favorites` |
+| **Authorization** | `distributor_principal_authorizations` |
+| **Reference** | `tags` |
 
-3. **Run against production data** to identify real orphan issues
+**Note:** Empty tables may indicate unused features or awaiting seed data.
 
-4. **Automate in CI/CD** to catch data integrity issues early
+### Tables with Data
+
+| Table | Row Count |
+|-------|-----------|
+| `audit_trail` | 75,029 |
+| `organizations` | 2,369 |
+| `contacts` | 2,007 |
+| `organization_distributors` | 673 |
+| `activities` | 503 |
+| `opportunities` | 372 |
+| `opportunity_contacts` | 369 |
+| `segments` | 40 |
+| `task_id_mapping` | 6 |
+| `tasks_deprecated` | 6 |
+| `sales` | 4 |
+
+## How It Works
+
+The orphan analysis script (`scripts/orphan-analysis.ts`) uses:
+
+1. **Dynamic table discovery** via `information_schema.tables`
+2. **Full FK coverage** via `information_schema.table_constraints` and related views
+3. **Service role connection** (bypasses RLS for complete visibility)
+4. **Conditional soft-delete filtering** (only applies `deleted_at IS NULL` when column exists)
+
+### Detection Strategy
+
+1. **Orphaned Tables:** Tables with no foreign key relationships (no incoming or outgoing FKs)
+2. **Soft-Deleted Parents:** Active child records where `parent.deleted_at IS NOT NULL`
+3. **Missing Parents:** FK values pointing to non-existent IDs (critical integrity violation)
+
+### Script Features
+
+- Direct `pg.Client` connection using `DATABASE_URL`
+- Safe SQL generation via `client.escapeIdentifier()`
+- Distinguishes `soft_deleted_parent` from `missing_parent` orphan types
+- JSON output to `docs/architecture/erd-artifacts/orphan-analysis.json`
 
 ## Usage
 
@@ -70,59 +113,25 @@ npm run analyze:orphans
 # View results
 cat docs/architecture/erd-artifacts/orphan-analysis.json
 
-# Pretty print
-npx tsx -e "console.log(JSON.stringify(require('./docs/architecture/erd-artifacts/orphan-analysis.json'), null, 2))"
+# View summary only
+cat docs/architecture/erd-artifacts/orphan-analysis.json | jq '.summary'
+
+# View orphaned records by type
+cat docs/architecture/erd-artifacts/orphan-analysis.json | jq '.orphaned_records | group_by(.orphan_type)'
 ```
 
-## Technical Details
+## Interpreting Results
 
-**Foreign Key Extraction:**
-- Parses SQL migration files using regex
-- Patterns: `ALTER TABLE ... ADD FOREIGN KEY` and inline `REFERENCES`
-- Current limitation: Misses complex multi-line patterns
+| Finding | Severity | Action |
+|---------|----------|--------|
+| **Orphaned tables** | Low | Review if FK relationships are needed |
+| **soft_deleted_parent** | Medium | Implement cascade soft-delete or accept as intentional |
+| **missing_parent** | Critical | Data integrity violation - investigate immediately |
+| **Empty tables** | Info | May need seed data or indicate unused features |
 
-**Orphan Detection:**
-- Uses Supabase client to query tables
-- Filters by `deleted_at IS NULL` to respect soft deletes
-- Checks both directions: NULL child FKs and missing parents
+## Next Steps
 
-**Performance:**
-- Queries run sequentially to avoid rate limiting
-- Empty tables skip orphan checks
-- Full scan takes ~15-30 seconds on local database
-
-**RLS Considerations:**
-- Uses anon key, so RLS policies apply
-- May not see all data if RLS is restrictive
-- For full analysis, use service_role key (modify script)
-
-## Known Limitations
-
-1. **Static table list:** Must manually add new tables to `knownTables` array
-2. **Regex coverage:** Misses ~85% of FK relationships (16/125 captured)
-3. **RLS filtering:** Anon key may hide data due to row-level security
-4. **No polymorphic FK support:** Special handling needed for `activities.activity_parentable_id`
-5. **No VIEW analysis:** Only checks base tables, not `_summary` views
-
-## Improvement Opportunities
-
-**Priority 1: Complete FK Discovery**
-- Parse schema from `supabase db dump --schema-only` instead of regex
-- Or query `information_schema.table_constraints` via service_role key
-
-**Priority 2: Dynamic Table Discovery**
-- Auto-discover all tables instead of hardcoded list
-- Query `information_schema.tables` for public schema
-
-**Priority 3: Polymorphic Relationships**
-- Add special handling for `activity_parentable_type` + `activity_parentable_id`
-- Check multiple parent tables based on type field
-
-**Priority 4: Cascade Delete Verification**
-- Verify ON DELETE CASCADE/SET NULL behavior
-- Check if soft-delete triggers exist for all relationships
-
-**Priority 5: Performance**
-- Batch queries instead of sequential
-- Use database functions for complex checks
-- Cache table metadata
+1. **Address orphaned records:** Decide whether to implement cascade soft-delete triggers or document as intentional behavior
+2. **Review orphaned tables:** Add FK relationships where appropriate (e.g., `tags` → junction tables)
+3. **Automate in CI/CD:** Run analysis after migrations to catch new integrity issues
+4. **Schedule periodic runs:** Weekly analysis to track data quality trends

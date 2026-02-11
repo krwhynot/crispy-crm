@@ -5,11 +5,6 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { PrincipalDashboardV3 } from "../PrincipalDashboardV3";
 
-// Mock LogActivityFAB to avoid React Admin dependency in tests
-vi.mock("../components/LogActivityFAB", () => ({
-  LogActivityFAB: () => <button aria-label="Log Activity">Log Activity FAB</button>,
-}));
-
 // Mock the hooks
 vi.mock("../usePrincipalPipeline", () => ({
   usePrincipalPipeline: () => ({
@@ -133,12 +128,6 @@ describe("PrincipalDashboardV3", () => {
     expect(screen.getByText("My Tasks")).toBeInTheDocument();
   });
 
-  it("should render the Log Activity FAB", () => {
-    renderDashboard();
-
-    expect(screen.getByRole("button", { name: /log activity/i })).toBeInTheDocument();
-  });
-
   it("should use vertically stacked layout for main sections", () => {
     const { container } = renderDashboard();
 
@@ -210,11 +199,11 @@ describe("PrincipalDashboardV3", () => {
     // Check that KPI labels are rendered per PRD v1.9 Section 9.2.1
     // KPI #1: Open Opportunities (count, not $ value per Decision #5)
     // KPI #2: Overdue Tasks
-    // KPI #3: Activities This Week
+    // KPI #3: Team Activities
     // KPI #4: Stale Deals (with amber styling when > 0)
     expect(screen.getByText("Open Opportunities")).toBeInTheDocument();
     expect(screen.getByText("Overdue Tasks")).toBeInTheDocument();
-    expect(screen.getByText("Activities This Week")).toBeInTheDocument();
+    expect(screen.getByText("Team Activities")).toBeInTheDocument();
     expect(screen.getByText("Stale Deals")).toBeInTheDocument();
   });
 
@@ -225,7 +214,7 @@ describe("PrincipalDashboardV3", () => {
     // KPIs have aria-label like "Open Opportunities: 8. Click to view details."
     expect(screen.getByRole("button", { name: /Open Opportunities: 8/i })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /Overdue Tasks: 3/i })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /Activities This Week: 12/i })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /Team Activities: 12/i })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /Stale Deals: 2/i })).toBeInTheDocument();
   });
 });

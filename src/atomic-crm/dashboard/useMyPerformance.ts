@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useDataProvider } from "react-admin";
 import { logger } from "@/lib/logger";
-import { startOfWeek, endOfWeek, subWeeks, startOfDay } from "date-fns";
+import { getWeekBoundaries } from "@/atomic-crm/utils/dateUtils";
 import { useCurrentSale } from "./useCurrentSale";
 import { CLOSED_STAGES } from "@/atomic-crm/opportunities/constants";
 
@@ -121,11 +121,8 @@ export function useMyPerformance(): UseMyPerformanceReturn {
         setLoading(true);
         setError(null);
 
-        const today = startOfDay(new Date());
-        const thisWeekStart = startOfWeek(today, { weekStartsOn: 1 }); // Monday
-        const thisWeekEnd = endOfWeek(today, { weekStartsOn: 1 }); // Sunday
-        const lastWeekStart = subWeeks(thisWeekStart, 1);
-        const lastWeekEnd = subWeeks(thisWeekEnd, 1);
+        const { today, thisWeekStart, thisWeekEnd, lastWeekStart, lastWeekEnd } =
+          getWeekBoundaries();
 
         // Fetch all metrics in parallel using Promise.allSettled
         // This ensures partial failures don't break the entire widget
@@ -165,17 +162,17 @@ export function useMyPerformance(): UseMyPerformanceReturn {
             pagination: { page: 1, perPage: 1 }, // Only need count
           }),
 
-          // 3. Deals moved this week (stage changes by current user)
-          // We check for opportunities updated this week that aren't closed
-          // Note: opportunities table uses opportunity_owner_id, not sales_id
-          dataProvider.getList("opportunities", {
+          // 3. Deals moved this week (actual stage transitions, not just any update)
+          // Uses opportunity_stage_changes view which tracks real stage changes
+          // Excludes initial creates (from_stage IS NULL) per audit decision Q3-P3=A
+          dataProvider.getList("opportunity_stage_changes", {
             filter: {
-              opportunity_owner_id: salesId,
-              "updated_at@gte": thisWeekStart.toISOString(),
-              "updated_at@lte": thisWeekEnd.toISOString(),
-              "stage@not_in": [...CLOSED_STAGES],
+              changed_by: salesId,
+              "changed_at@gte": thisWeekStart.toISOString(),
+              "changed_at@lte": thisWeekEnd.toISOString(),
+              "from_stage@neq": null, // Exclude initial creates
             },
-            sort: { field: "id", order: "ASC" },
+            sort: { field: "audit_id", order: "ASC" },
             pagination: { page: 1, perPage: 1 }, // Only need count
           }),
 
@@ -215,16 +212,15 @@ export function useMyPerformance(): UseMyPerformanceReturn {
             pagination: { page: 1, perPage: 1 },
           }),
 
-          // 7. Deals moved last week
-          // Note: opportunities table uses opportunity_owner_id, not sales_id
-          dataProvider.getList("opportunities", {
+          // 7. Deals moved last week (actual stage transitions)
+          dataProvider.getList("opportunity_stage_changes", {
             filter: {
-              opportunity_owner_id: salesId,
-              "updated_at@gte": lastWeekStart.toISOString(),
-              "updated_at@lte": lastWeekEnd.toISOString(),
-              "stage@not_in": [...CLOSED_STAGES],
+              changed_by: salesId,
+              "changed_at@gte": lastWeekStart.toISOString(),
+              "changed_at@lte": lastWeekEnd.toISOString(),
+              "from_stage@neq": null, // Exclude initial creates
             },
-            sort: { field: "id", order: "ASC" },
+            sort: { field: "audit_id", order: "ASC" },
             pagination: { page: 1, perPage: 1 },
           }),
 

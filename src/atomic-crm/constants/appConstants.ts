@@ -105,6 +105,16 @@ export const TOAST_INFO_DURATION_MS = 4_000;
 export const TOAST_ERROR_DURATION_MS = 5_000;
 
 // =============================================================================
+// Reporting Thresholds
+// =============================================================================
+
+/**
+ * Minimum activities per principal per week before "Low Activity" warning
+ * PRD target is 10+ activities/week/principal; this threshold flags critically low
+ */
+export const LOW_ACTIVITY_THRESHOLD = 3;
+
+// =============================================================================
 // Animation & UI Timing
 // =============================================================================
 

@@ -1,4 +1,16 @@
 #!/usr/bin/env node
+/**
+ * Run SQL Import Script
+ * Executes SQL files via Supabase exec_sql RPC
+ *
+ * SECURITY REQUIREMENT: This script requires SUPABASE_SERVICE_ROLE_KEY
+ * The exec_sql RPC function only accepts calls from service_role JWT claims.
+ * Using anon key will result in permission denied errors.
+ *
+ * Usage:
+ *   node scripts/run-import.mjs
+ *   (requires SUPABASE_SERVICE_ROLE_KEY in .env)
+ */
 
 import { readFileSync } from "fs";
 import { createClient } from "@supabase/supabase-js";
@@ -8,7 +20,9 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const supabaseUrl = process.env.VITE_SUPABASE_URL;
-const supabaseServiceKey = process.env.SUPABASE_SERVICE_KEY;
+// Support both env var names for backward compatibility
+const supabaseServiceKey =
+  process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_SERVICE_KEY;
 
 if (!supabaseUrl) {
   console.error("❌ Missing VITE_SUPABASE_URL in .env file");
@@ -16,8 +30,9 @@ if (!supabaseUrl) {
 }
 
 if (!supabaseServiceKey) {
-  console.error("❌ Missing SUPABASE_SERVICE_KEY in .env file");
+  console.error("❌ Missing SUPABASE_SERVICE_ROLE_KEY in .env file");
   console.error("💡 You need the service role key to execute raw SQL");
+  console.error("   The exec_sql RPC requires service_role JWT claims.");
   console.error(
     "   Get it from: https://supabase.com/dashboard/project/aaqnanddcqvfiwhshndl/settings/api"
   );

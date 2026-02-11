@@ -27,7 +27,7 @@ export const DASHBOARD_TUTORIAL_STEPS: DriveStep[] = [
     popover: {
       title: "Key Metrics at a Glance",
       description:
-        "These four cards show your most important metrics: Open Opportunities, Overdue Tasks, Activities This Week, and Stale Deals. Click any card to see the filtered list.",
+        "These four cards show your most important metrics: Open Opportunities, Overdue Tasks, Team Activities, and Stale Deals. Click any card to see the filtered list.",
       side: "bottom",
       align: "center",
     },
@@ -55,9 +55,9 @@ export const DASHBOARD_TUTORIAL_STEPS: DriveStep[] = [
   {
     element: '[data-tutorial="dashboard-kpi-activities"]',
     popover: {
-      title: "Activities This Week",
+      title: "Team Activities",
       description:
-        "Track your engagement. Aim for 10+ activities per week per principal to keep deals moving.",
+        "Team-wide activity count for the week. Aim for 10+ activities per week per principal to keep deals moving.",
       side: "bottom",
       align: "center",
     },

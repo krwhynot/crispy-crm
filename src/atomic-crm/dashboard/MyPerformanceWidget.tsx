@@ -36,8 +36,8 @@ const METRIC_CONFIG: Record<
 > = {
   activitiesThisWeek: {
     icon: Activity,
-    label: "Activities This Week",
-    shortLabel: "Activities",
+    label: "My Activities This Week",
+    shortLabel: "My Activities",
   },
   dealsMoved: {
     icon: TrendingUp,
@@ -140,7 +140,7 @@ function MetricCard({ type, metric, loading }: MetricCardProps) {
  * MyPerformanceWidget - Personal performance metrics summary
  *
  * Displays 4 key personal performance metrics with week-over-week trends:
- * 1. Activities This Week - activities logged by current user
+ * 1. My Activities - activities logged by current user
  * 2. Deals Moved - opportunities with stage changes
  * 3. Tasks Completed - tasks marked complete this week
  * 4. Open Opportunities - current pipeline count

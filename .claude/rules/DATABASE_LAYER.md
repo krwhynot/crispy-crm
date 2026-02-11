@@ -147,6 +147,17 @@ CREATE INDEX idx_[table]_[fk2] ON [table] ([fk_column_2]) WHERE (deleted_at IS N
 
 Without indexes, EXISTS subqueries will cause full table scans and degrade write performance.
 
+## ON DELETE Convention for Sales References
+
+Sales team members (`sales` table) are **never hard-deleted** in production. Deactivation uses `disabled = true`. ON DELETE rules on FKs referencing `sales` are safety nets, not operational triggers.
+
+**Convention for new FKs referencing `sales`:**
+- `created_by / updated_by -> sales`: **SET NULL** (audit metadata, shouldn't block deactivation)
+- `sales_id -> sales` (ownership): **SET NULL** (reassignable ownership)
+- `changed_by -> sales` (audit trail): **NO ACTION** (audit integrity must be preserved)
+
+**Note:** Historical migrations have inconsistent ON DELETE rules across `created_by` columns (mix of NO ACTION and SET NULL). This is cosmetic — the rules never fire because sales rows aren't hard-deleted. Normalize if sales hard-deletion is ever introduced.
+
 ## Immutable Fields (Data Integrity)
 
 DO:

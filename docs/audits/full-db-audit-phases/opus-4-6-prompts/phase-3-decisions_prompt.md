@@ -19,6 +19,16 @@ are directionless. The output is a single, actionable cleanup roadmap.
 Business-logic review is equal priority to schema cleanup decisions.
 </context>
 
+<reporting_phase2_locked_inputs>
+When this prompt is used for shared reporting-remediation planning, apply these owner-locked inputs from reporting Phase 2:
+- Q1-P2 = A: Add `last_activity_date` computed column to `opportunities_summary` (root-cause fix for stale-deals mismatch).
+- Q2-P2 = A: Align activity counts to one weekly window and one timezone rule using server-side counting.
+- Q3-P2 = A: Add explicit `Tasks` bucket/column in Weekly Activity (do not classify tasks as notes).
+- Guardrail G1: Never silently default KPI values to `0` on query failure; show explicit error/unknown state.
+
+If reporting surfaces are in scope, treat these as fixed inputs and do not re-open them unless contradictory evidence is documented.
+</reporting_phase2_locked_inputs>
+
 <pre_work>
 Before starting:
 1. Read all prior reports:
@@ -38,6 +48,7 @@ CRITICAL ASSERTIONS (verify against Phase 2 findings):
 - [ ] Owner confirmation set (Q1-Q12) is reflected in all decisions:
       timeline completeness, task owner required, due date optional,
       duplicate warn-only, MVP excludes digest/notifications
+- [ ] If reporting surfaces/shared views are in scope, locked reporting inputs (Q1-P2/Q2-P2/Q3-P2 + G1) are reflected in all actions
 
 If any assertion is superseded, document with original claim, new evidence,
 and impact on this phase's decisions.
@@ -141,6 +152,8 @@ Think carefully about ordering:
 3. Local vs cloud ordering: generally local first (test), then cloud (deploy),
    unless drift resolution requires cloud-first
 4. If two actions are independent, note they can run in parallel
+5. If reporting remediation is in scope, use this execution baseline unless evidence requires change:
+   M5 -> M4 -> M2+M3 -> M6 -> M7 -> M8+M9
 </instructions>
 
 <constraints>
@@ -153,6 +166,8 @@ Think carefully about ordering:
 - No REMOVE decision without explicit business-logic owner confirmation
 - If business-logic-policy.md is unclear for a decision, STOP and request immediate clarification
 - Do not propose decisions that conflict with approved Q1-Q12 policy confirmations
+- If reporting remediation is in scope, do not re-ask Q1-P2/Q2-P2/Q3-P2.
+- Any action path that can show a false numeric `0` on data failure is non-compliant.
 </constraints>
 
 <output_format>
@@ -219,5 +234,6 @@ Rules:
 - Recommended option is always A
 - No "Other" or "Skip" options
 - Questions should address genuine risk tradeoffs in the cleanup plan
+- If reporting remediation is in scope, do not ask to re-decide Q1-P2/Q2-P2/Q3-P2.
 </question_rules>
 ```

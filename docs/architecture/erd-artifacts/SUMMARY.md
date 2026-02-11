@@ -29,13 +29,11 @@ This directory contains a comprehensive mapping of the Crispy CRM database schem
 6. **tasks** - 6 components (List, Create, Edit, Show, SlideOver, Filters)
 7. **sales** - 6 components (List, Create, Edit, Show, SlideOver, Filters)
 8. **tags** - 5 components (List, Create, Edit, Modals)
-9. **notes** - 2 components (Create, List) - Shared across contact/opportunity/organization notes
-10. **notifications** - 1 component (List)
-11. **timeline** - 1 component (Unified timeline view)
-12. **product_distributors** - 4 components (List, Create, Edit, Show)
-13. **contact_notes** - Uses shared notes components
-14. **opportunity_notes** - Uses shared notes components
-15. **organization_notes** - Uses shared notes components
+9. **contact_notes** - 2 components (Create, List) - Shared in `src/atomic-crm/notes/`
+10. **opportunity_notes** - 2 components (Create, List) - Shared in `src/atomic-crm/notes/`
+11. **organization_notes** - 2 components (Create, List) - Shared in `src/atomic-crm/notes/`
+12. **notifications** - 1 component (List)
+13. **product_distributors** - 4 components (List, Create, Edit, Show)
 
 ## Unmapped Tables (by Category)
 

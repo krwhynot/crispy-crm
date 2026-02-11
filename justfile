@@ -57,6 +57,14 @@ test-ui:
 test-smoke:
     npm run test:smoke
 
+# Phase 5: Reporting audit regression tests — nightly (all 3 suites)
+test-audit-nightly:
+    npx vitest run src/atomic-crm/reports/__tests__/closed-stages-alignment.test.ts src/atomic-crm/utils/__tests__/getWeekBoundaries.test.ts src/atomic-crm/dashboard/__tests__/kpi-metric-snapshot.test.ts
+
+# Phase 5: Reporting audit regression tests — PR-required (stable suites only)
+test-audit-pr:
+    npx vitest run src/atomic-crm/reports/__tests__/closed-stages-alignment.test.ts src/atomic-crm/dashboard/__tests__/kpi-metric-snapshot.test.ts
+
 # Seed E2E test data
 seed-e2e:
     npm run seed:e2e:dashboard-v3
