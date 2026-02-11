@@ -125,7 +125,7 @@ export function KPICard({
               {title}
             </span>
             <div className="mt-1 flex items-baseline gap-2">
-              <span className={cn("text-2xl font-bold truncate", valueStyle)}>{value}</span>
+              <span className={cn("text-3xl font-bold truncate", valueStyle)}>{value}</span>
               {trend && (
                 <span
                   className={cn(

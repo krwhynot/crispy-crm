@@ -32,7 +32,7 @@ function formatKPIValue(value: number | null): string {
  */
 export function KPISummaryRow() {
   const navigate = useNavigate();
-  const { metrics, loading } = useKPIMetrics();
+  const { metrics, trends, loading } = useKPIMetrics();
 
   return (
     <section
@@ -71,6 +71,7 @@ export function KPISummaryRow() {
         value={formatKPIValue(metrics.activitiesThisWeek)}
         icon={Activity}
         loading={loading}
+        trend={trends.activitiesThisWeek ?? undefined}
         onClick={() => navigate(KPI_NAVIGATION.activitiesThisWeek)}
         data-tutorial="dashboard-kpi-activities"
       />

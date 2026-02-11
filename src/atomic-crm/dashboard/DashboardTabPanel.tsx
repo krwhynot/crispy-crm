@@ -18,6 +18,7 @@ import {
   User,
   Target,
   ListTodo,
+  Activity,
 } from "lucide-react";
 
 // Lazy load tab content for performance
@@ -45,6 +46,7 @@ const RESOURCE_ICONS: Record<string, React.ComponentType<{ className?: string }>
   contacts: User,
   opportunities: Target,
   tasks: ListTodo,
+  activities: Activity,
 };
 
 /**

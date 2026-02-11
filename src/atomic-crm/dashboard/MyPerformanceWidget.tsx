@@ -198,7 +198,7 @@ function MyPerformanceWidget() {
       </div>
       {/* 2x2 grid on mobile, 2x2 on desktop for compact widget */}
       <div
-        className="grid grid-cols-2 gap-1"
+        className="grid grid-cols-2 gap-2"
         role="region"
         aria-label="Personal performance metrics"
       >

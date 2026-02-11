@@ -25,7 +25,7 @@ function MomentumIcon({ momentum }: { momentum: Momentum }) {
     case "decreasing":
       return <TrendingDown className="h-4 w-4 text-warning" />;
     case "steady":
-      return <Minus className="h-4 w-4 text-muted-foreground" />;
+      return <Minus className="h-4 w-4 text-foreground/60" />;
     case "stale":
       return <AlertCircle className="h-4 w-4 text-destructive" />;
   }

@@ -198,7 +198,7 @@ export const TaskKanbanCard = memo(function TaskKanbanCard({
           className="flex h-11 w-11 shrink-0 items-center justify-center -ml-2 -mt-1 cursor-grab active:cursor-grabbing touch-none text-muted-foreground hover:text-foreground"
           aria-label="Drag to reorder"
         >
-          <GripVertical className="h-4 w-4" />
+          <GripVertical className="h-5 w-5" />
         </div>
 
         {/* Checkbox - 44px touch target */}

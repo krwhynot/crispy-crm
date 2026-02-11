@@ -89,6 +89,9 @@ vi.mock("../useKPIMetrics", () => ({
       activitiesThisWeek: 12,
       staleDealsCount: 2,
     },
+    trends: {
+      activitiesThisWeek: null,
+    },
     loading: false,
     error: null,
     refetch: vi.fn(),
