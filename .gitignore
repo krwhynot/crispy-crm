@@ -109,6 +109,7 @@ supabase/cloud_users.sql
 # Claude Code session files
 .claude/checkpoint-state
 .claude/memory-capture.log
+.claude/settings.local.json
 .env.test
 .env.cloud
 
@@ -146,3 +147,12 @@ screenshots/
 .claude/state/schema-discovery.json
 .claude/state/test-discovery.json
 .claude-backup-*.tar.gz
+
+# Build caches
+tsconfig.tsbuildinfo
+
+# Temp/test output
+test-output.txt
+
+# Windows /dev/null artifact
+nul
