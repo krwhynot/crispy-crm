@@ -120,6 +120,7 @@ export const OpportunityCompactForm = ({ mode = "create" }: OpportunityCompactFo
                       size="sm"
                       onClick={regenerate}
                       disabled={!canGenerate || isLoading}
+                      aria-label="Generate name from customer and principal"
                     >
                       <RefreshCw className="w-4 h-4" />
                     </AdminButton>

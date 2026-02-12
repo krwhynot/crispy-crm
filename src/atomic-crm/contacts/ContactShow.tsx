@@ -4,6 +4,8 @@ import { TextField } from "@/components/ra-wrappers/text-field";
 import { SectionCard } from "@/components/ra-wrappers/SectionCard";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { ContactDetailSkeleton } from "@/components/ui/list-skeleton";
+import { NotFound } from "@/components/ui/not-found";
+import { DataFetchError } from "@/components/ui/data-fetch-error";
 import { ResponsiveGrid } from "@/components/design-system";
 import { ShowBase, useShowContext } from "ra-core";
 import { OrganizationAvatar } from "../organizations/OrganizationAvatar";
@@ -22,9 +24,10 @@ export const ContactShow = () => (
 );
 
 const ContactShowContent = () => {
-  const { record, isPending } = useShowContext<Contact>();
+  const { record, isPending, error, refetch } = useShowContext<Contact>();
   if (isPending) return <ContactDetailSkeleton />;
-  if (!record) return null;
+  if (error) return <DataFetchError message={error.message} onRetry={() => refetch()} />;
+  if (!record) return <NotFound resource="contact" />;
 
   return (
     <>

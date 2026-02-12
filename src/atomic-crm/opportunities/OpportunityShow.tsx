@@ -4,6 +4,8 @@ import { ShowBase, useShowContext } from "ra-core";
 import { useMatch, useNavigate } from "react-router-dom";
 import { parseDateSafely } from "@/lib/date-utils";
 import { OpportunityDetailSkeleton } from "@/components/ui/show-skeleton";
+import { NotFound } from "@/components/ui/not-found";
+import { DataFetchError } from "@/components/ui/data-fetch-error";
 
 import { DETAIL_FIELD_MIN_WIDTH } from "./constants";
 import { ArchivedBanner } from "./ArchivedBanner";
@@ -41,7 +43,7 @@ const OpportunityShow = () => (
 );
 
 const OpportunityShowContent = () => {
-  const { record, isPending } = useShowContext<Opportunity>();
+  const { record, isPending, error, refetch } = useShowContext<Opportunity>();
   const navigate = useNavigate();
   const [activityFilters, setActivityFilters] = useState<Record<string, unknown>>({});
 
@@ -70,7 +72,8 @@ const OpportunityShowContent = () => {
   ];
 
   if (isPending) return <OpportunityDetailSkeleton />;
-  if (!record) return null;
+  if (error) return <DataFetchError message={error.message} onRetry={() => refetch()} />;
+  if (!record) return <NotFound resource="opportunity" />;
 
   return (
     <>

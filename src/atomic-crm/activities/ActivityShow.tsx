@@ -3,6 +3,8 @@ import { ReferenceField } from "@/components/ra-wrappers/reference-field";
 import { DateField } from "@/components/ra-wrappers/date-field";
 import { SectionCard } from "@/components/ra-wrappers/SectionCard";
 import { Badge } from "@/components/ui/badge";
+import { NotFound } from "@/components/ui/not-found";
+import { DataFetchError } from "@/components/ui/data-fetch-error";
 import type { ActivityRecord } from "../types";
 import { ucFirst } from "@/atomic-crm/utils";
 import { SAMPLE_STATUS_OPTIONS, ACTIVITY_TYPE_FROM_API } from "../validation/activities";
@@ -17,15 +19,17 @@ import { SAMPLE_STATUS_OPTIONS, ACTIVITY_TYPE_FROM_API } from "../validation/act
  * sentiment, outcome, location, follow-up info, sample status, and related records.
  */
 export default function ActivityShow() {
-  const { record, isPending } = useShowContext<ActivityRecord>();
+  const { record, isPending, error, refetch } = useShowContext<ActivityRecord>();
 
-  if (isPending || !record) {
+  if (isPending) {
     return (
       <SectionCard contentClassName="p-8">
         <p className="text-muted-foreground">Loading activity...</p>
       </SectionCard>
     );
   }
+  if (error) return <DataFetchError message={error.message} onRetry={() => refetch()} />;
+  if (!record) return <NotFound resource="activity" />;
 
   const getSentimentVariant = (sentiment: string | undefined | null) => {
     switch (sentiment) {

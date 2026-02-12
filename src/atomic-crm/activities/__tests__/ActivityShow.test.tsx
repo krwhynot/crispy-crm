@@ -70,7 +70,7 @@ describe("ActivityShow", () => {
       expect(screen.getByText("Loading activity...")).toBeInTheDocument();
     });
 
-    test("renders loading state when record is null", () => {
+    test("renders NotFound when record is null", () => {
       (useShowContext as ReturnType<typeof vi.fn>).mockReturnValue({
         record: null,
         isPending: false,
@@ -80,7 +80,7 @@ describe("ActivityShow", () => {
         resource: "activities",
       });
 
-      expect(screen.getByText("Loading activity...")).toBeInTheDocument();
+      expect(screen.getByText("Record not found")).toBeInTheDocument();
     });
   });
 

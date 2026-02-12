@@ -37,15 +37,15 @@ describe("AppliedFiltersBar", () => {
     expect(screen.getByText("John Smith")).toBeInTheDocument();
   });
 
-  it("renders Reset All button", () => {
+  it("renders Clear filters button", () => {
     renderWithAdminContext(
       <AppliedFiltersBar filters={createFilters()} onResetAll={vi.fn()} hasActiveFilters={true} />
     );
 
-    expect(screen.getByRole("button", { name: /reset all/i })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /clear filters/i })).toBeInTheDocument();
   });
 
-  it("calls onResetAll when Reset All button is clicked", async () => {
+  it("calls onResetAll when Clear filters button is clicked", async () => {
     const onResetAll = vi.fn();
     const user = userEvent.setup();
 
@@ -57,7 +57,7 @@ describe("AppliedFiltersBar", () => {
       />
     );
 
-    await user.click(screen.getByRole("button", { name: /reset all/i }));
+    await user.click(screen.getByRole("button", { name: /clear filters/i }));
 
     expect(onResetAll).toHaveBeenCalledTimes(1);
   });
@@ -71,7 +71,9 @@ describe("AppliedFiltersBar", () => {
     ];
     const user = userEvent.setup();
 
-    renderWithAdminContext(<AppliedFiltersBar filters={filters} onResetAll={vi.fn()} hasActiveFilters={true} />);
+    renderWithAdminContext(
+      <AppliedFiltersBar filters={filters} onResetAll={vi.fn()} hasActiveFilters={true} />
+    );
 
     // Click remove on first filter
     const removeButtons = screen.getAllByRole("button", {

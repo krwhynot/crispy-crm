@@ -3,6 +3,8 @@ import { ReferenceField } from "@/components/ra-wrappers/reference-field";
 import { DateField } from "@/components/ra-wrappers/date-field";
 import { SectionCard } from "@/components/ra-wrappers/SectionCard";
 import { Badge } from "@/components/ui/badge";
+import { NotFound } from "@/components/ui/not-found";
+import { DataFetchError } from "@/components/ui/data-fetch-error";
 import { PriorityBadge } from "@/components/ui/priority-badge";
 import type { Task as TTask } from "./types";
 
@@ -13,15 +15,17 @@ import type { Task as TTask } from "./types";
  * Shows: title, description, dates, priority, type, linked opportunity/contact
  */
 export default function TaskShow() {
-  const { record, isPending } = useShowContext<TTask>();
+  const { record, isPending, error, refetch } = useShowContext<TTask>();
 
-  if (isPending || !record) {
+  if (isPending) {
     return (
       <SectionCard contentClassName="p-8">
         <p className="text-muted-foreground">Loading task...</p>
       </SectionCard>
     );
   }
+  if (error) return <DataFetchError message={error.message} onRetry={() => refetch()} />;
+  if (!record) return <NotFound resource="task" />;
 
   return (
     <SectionCard

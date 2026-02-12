@@ -23,6 +23,8 @@ import { AdminButton } from "@/components/admin/AdminButton";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { OrganizationDetailSkeleton } from "@/components/ui/list-skeleton";
+import { NotFound } from "@/components/ui/not-found";
+import { DataFetchError } from "@/components/ui/data-fetch-error";
 import { ReferenceManyField } from "@/components/ra-wrappers/reference-many-field";
 import { SortButton } from "@/components/ra-wrappers/sort-button";
 import { ResponsiveGrid } from "@/components/design-system";
@@ -48,7 +50,7 @@ const OrganizationShow = () => (
 );
 
 const OrganizationShowContent = () => {
-  const { record, isPending } = useShowContext<Company>();
+  const { record, isPending, error, refetch } = useShowContext<Company>();
   const navigate = useNavigate();
 
   // Get tab from URL or default to "activity"
@@ -65,7 +67,8 @@ const OrganizationShowContent = () => {
   };
 
   if (isPending) return <OrganizationDetailSkeleton />;
-  if (!record) return null;
+  if (error) return <DataFetchError message={error.message} onRetry={() => refetch()} />;
+  if (!record) return <NotFound resource="organization" />;
 
   // Check if this organization is a distributor (shows Authorizations tab)
   const isDistributor = record.organization_type === "distributor";

@@ -2,6 +2,8 @@ import { SectionCard } from "@/components/ra-wrappers/SectionCard";
 import { ShowBase, useShowContext } from "ra-core";
 import { AvatarFallback, AvatarImage, Avatar as ShadcnAvatar } from "@/components/ui/avatar";
 import { SalesDetailSkeleton } from "@/components/ui/show-skeleton";
+import { NotFound } from "@/components/ui/not-found";
+import { DataFetchError } from "@/components/ui/data-fetch-error";
 import type { Sale } from "../types";
 import { formatName } from "../utils/formatName";
 import { getInitials } from "@/atomic-crm/utils/formatters";
@@ -13,9 +15,10 @@ export const SalesShow = () => (
 );
 
 const SalesShowContent = () => {
-  const { record, isPending } = useShowContext<Sale>();
+  const { record, isPending, error, refetch } = useShowContext<Sale>();
   if (isPending) return <SalesDetailSkeleton />;
-  if (!record) return null;
+  if (error) return <DataFetchError message={error.message} onRetry={() => refetch()} />;
+  if (!record) return <NotFound resource="sales user" />;
 
   return (
     <div className="mt-2 mb-2">

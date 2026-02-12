@@ -62,14 +62,14 @@ describe("ProductShow", () => {
       expect(screen.getByText("Loading product...")).toBeInTheDocument();
     });
 
-    it("renders loading state when record is null", () => {
+    it("renders NotFound when record is null", () => {
       mockedUseShowContext.mockReturnValue(
         mockUseShowContextReturn<Product>({ isPending: false, record: undefined })
       );
 
       renderWithAdminContext(<ProductShow />, { resource: "products" });
 
-      expect(screen.getByText("Loading product...")).toBeInTheDocument();
+      expect(screen.getByText("Record not found")).toBeInTheDocument();
     });
   });
 

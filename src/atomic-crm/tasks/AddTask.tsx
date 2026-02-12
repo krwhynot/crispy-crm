@@ -110,6 +110,7 @@ export const AddTask = ({
                 variant="ghost"
                 className="h-11 w-11 p-0 cursor-pointer"
                 onClick={handleOpen}
+                aria-label="Create task"
               >
                 <Plus className="w-4 h-4" />
               </AdminButton>

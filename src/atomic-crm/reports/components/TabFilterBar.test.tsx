@@ -68,7 +68,7 @@ describe("TabFilterBar", () => {
       />
     );
 
-    const resetButton = screen.getByRole("button", { name: /reset/i });
+    const resetButton = screen.getByRole("button", { name: /clear filters/i });
     expect(resetButton).toBeInTheDocument();
 
     fireEvent.click(resetButton);

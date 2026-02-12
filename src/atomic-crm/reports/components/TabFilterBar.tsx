@@ -149,7 +149,7 @@ export function TabFilterBar({
       {hasActiveFilters && onReset && (
         <AdminButton variant="ghost" size="sm" onClick={onReset} className="h-11">
           <RotateCcw className="h-4 w-4 mr-2" aria-hidden="true" />
-          Reset Filters
+          Clear filters
         </AdminButton>
       )}
     </div>

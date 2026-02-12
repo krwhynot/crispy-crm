@@ -1,7 +1,10 @@
 import { useShowContext, RecordRepresentation } from "ra-core";
 import { ReferenceField } from "@/components/ra-wrappers/reference-field";
 import { DateField } from "@/components/ra-wrappers/date-field";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { NotFound } from "@/components/ui/not-found";
+import { DataFetchError } from "@/components/ui/data-fetch-error";
 import type { ProductDistributor } from "../validation/productDistributors";
 
 /**
@@ -11,9 +14,11 @@ import type { ProductDistributor } from "../validation/productDistributors";
  * Shows: product, distributor, DOT number, status, validity dates, notes
  */
 export default function ProductDistributorShow() {
-  const { record, isPending } = useShowContext<ProductDistributor & { id: string }>();
+  const { record, isPending, error, refetch } = useShowContext<
+    ProductDistributor & { id: string }
+  >();
 
-  if (isPending || !record) {
+  if (isPending) {
     return (
       <Card>
         <CardContent className="p-8">
@@ -22,6 +27,8 @@ export default function ProductDistributorShow() {
       </Card>
     );
   }
+  if (error) return <DataFetchError message={error.message} onRetry={() => refetch()} />;
+  if (!record) return <NotFound resource="authorization" />;
 
   const getStatusVariant = (status: string) => {
     switch (status) {

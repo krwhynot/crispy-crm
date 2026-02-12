@@ -38,7 +38,7 @@ export const AppliedFiltersBar = ({
       </div>
       <AdminButton variant="ghost" size="sm" onClick={onResetAll} className="h-11 shrink-0">
         <RotateCcw className="mr-2 h-4 w-4" />
-        Reset All
+        Clear filters
       </AdminButton>
     </div>
   );

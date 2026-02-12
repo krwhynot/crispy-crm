@@ -205,7 +205,7 @@ function OpportunityCard({
       </div>
 
       {/* View link (visible on hover) */}
-      <div className="mt-3 opacity-0 group-hover:opacity-100 transition-opacity">
+      <div className="mt-3 opacity-0 group-hover:opacity-100 focus-within:opacity-100 md:opacity-100 transition-opacity">
         <AdminButton variant="link" size="sm" className="h-auto p-0 text-primary">
           <ExternalLink className="h-3 w-3 mr-1" />
           View Details
