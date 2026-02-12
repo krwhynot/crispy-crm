@@ -260,7 +260,7 @@ interface SelectUIProps {
 
 **Purpose:** Entity selector for QuickLogForm (Pattern H).
 
-**File:** `src/atomic-crm/dashboard/v3/components/EntityCombobox.tsx`
+**File:** `src/atomic-crm/dashboard/EntityCombobox.tsx`
 
 **Key Features:**
 - Supports Contact, Organization, Opportunity

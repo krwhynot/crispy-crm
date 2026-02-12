@@ -486,5 +486,5 @@ CREATE TYPE opportunity_status AS ENUM (
 ## Related Documentation
 
 - [Pipeline Lifecycle](./pipeline-lifecycle.md) - Stage definitions and transitions
-- [Data Model](../architecture/data-model.md) - Database schema reference
+- [Data Model](../ERD.md) - Database schema reference
 - [Validation Schemas](../../src/atomic-crm/validation/) - Zod schemas for all entities

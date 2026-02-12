@@ -71,8 +71,8 @@ Some tables have stricter access controls:
 
 ## References
 
-- [DATABASE_LAYER.md](../.claude/rules/DATABASE_LAYER.md) - RLS policy patterns
-- [PROVIDER_RULES.md](../.claude/rules/PROVIDER_RULES.md) - Application-layer validation
+- [DATABASE_LAYER.md](../../.claude/rules/DATABASE_LAYER.md) - RLS policy patterns
+- [PROVIDER_RULES.md](../../.claude/rules/PROVIDER_RULES.md) - Application-layer validation
 
 ---
 

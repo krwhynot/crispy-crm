@@ -2763,7 +2763,7 @@ For developers investigating issues:
 | Opportunities | `src/atomic-crm/opportunities/` |
 | Tasks | `src/atomic-crm/tasks/` |
 | Products | `src/atomic-crm/products/` |
-| Dashboard | `src/atomic-crm/dashboard/v3/` |
+| Dashboard | `src/atomic-crm/dashboard/` |
 | Validation Schemas | `src/atomic-crm/validation/` |
 | Data Provider | `src/atomic-crm/providers/supabase/unifiedDataProvider.ts` |
 

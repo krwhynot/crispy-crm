@@ -2,7 +2,7 @@
 
 > Complete reference for dashboard widgets, data sources, and aggregation logic.
 >
-> **Entry Point:** `src/atomic-crm/dashboard/v3/index.tsx`
+> **Entry Point:** `src/atomic-crm/dashboard/index.tsx`
 > **Main Component:** `PrincipalDashboardV3.tsx`
 
 ## Architecture Overview
@@ -32,8 +32,8 @@
 
 ### 1. KPI Summary Row
 
-**Component:** `src/atomic-crm/dashboard/v3/components/KPISummaryRow.tsx`
-**Hook:** `src/atomic-crm/dashboard/v3/hooks/useKPIMetrics.ts`
+**Component:** `src/atomic-crm/dashboard/KPISummaryRow.tsx`
+**Hook:** `src/atomic-crm/dashboard/useKPIMetrics.ts`
 
 Displays 4 key performance indicators in a horizontal row above the main dashboard.
 
@@ -77,8 +77,8 @@ function isOpportunityStale(stage, lastActivityDate, referenceDate) {
 
 ### 2. Pipeline by Principal Table
 
-**Component:** `src/atomic-crm/dashboard/v3/components/PrincipalPipelineTable.tsx`
-**Hook:** `src/atomic-crm/dashboard/v3/hooks/usePrincipalPipeline.ts`
+**Component:** `src/atomic-crm/dashboard/PrincipalPipelineTable.tsx`
+**Hook:** `src/atomic-crm/dashboard/usePrincipalPipeline.ts`
 
 Aggregated pipeline view showing opportunity metrics per principal (manufacturer).
 
@@ -131,8 +131,8 @@ Momentum is calculated server-side in the `principal_pipeline_summary` database 
 
 ### 3. Tasks Kanban Panel
 
-**Component:** `src/atomic-crm/dashboard/v3/components/TasksKanbanPanel.tsx`
-**Hook:** `src/atomic-crm/dashboard/v3/hooks/useMyTasks.ts`
+**Component:** `src/atomic-crm/dashboard/TasksKanbanPanel.tsx`
+**Hook:** `src/atomic-crm/dashboard/useMyTasks.ts`
 
 Drag-and-drop kanban board for task management with time-horizon columns.
 
@@ -207,8 +207,8 @@ await dataProvider.update('tasks', { id, data, previousData });
 
 ### 4. My Performance Widget
 
-**Component:** `src/atomic-crm/dashboard/v3/components/MyPerformanceWidget.tsx`
-**Hook:** `src/atomic-crm/dashboard/v3/hooks/useMyPerformance.ts`
+**Component:** `src/atomic-crm/dashboard/MyPerformanceWidget.tsx`
+**Hook:** `src/atomic-crm/dashboard/useMyPerformance.ts`
 
 Personal performance metrics with week-over-week trend comparison.
 
@@ -248,8 +248,8 @@ function calculateTrend(current: number, previous: number) {
 
 ### 5. Team Activity Feed
 
-**Component:** `src/atomic-crm/dashboard/v3/components/ActivityFeedPanel.tsx`
-**Hook:** `src/atomic-crm/dashboard/v3/hooks/useTeamActivities.ts`
+**Component:** `src/atomic-crm/dashboard/ActivityFeedPanel.tsx`
+**Hook:** `src/atomic-crm/dashboard/useTeamActivities.ts`
 
 Real-time feed of recent activities across all team members.
 
@@ -316,7 +316,7 @@ function formatRelativeTime(dateString: string): string {
 
 ### CurrentSaleProvider
 
-**File:** `src/atomic-crm/dashboard/v3/context/CurrentSaleContext.tsx`
+**File:** `src/atomic-crm/dashboard/CurrentSaleContext.tsx`
 
 Caches the current user's `salesId` at the dashboard level to prevent redundant database lookups.
 
@@ -456,7 +456,7 @@ if (openCountResult.status === 'fulfilled') {
 
 ### useTaskCount
 
-**File:** `src/atomic-crm/dashboard/v3/hooks/useTaskCount.ts`
+**File:** `src/atomic-crm/dashboard/useTaskCount.ts`
 
 Simple count for the "My Tasks" tab badge:
 
@@ -467,7 +467,7 @@ const { pendingCount, isLoading } = useTaskCount();
 
 ### usePipelineTableState
 
-**File:** `src/atomic-crm/dashboard/v3/hooks/usePipelineTableState.ts`
+**File:** `src/atomic-crm/dashboard/usePipelineTableState.ts`
 
 Extracted state management for pipeline table (sorting, filtering):
 

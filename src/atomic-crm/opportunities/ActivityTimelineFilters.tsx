@@ -239,40 +239,54 @@ export const ActivityTimelineFilters: React.FC<ActivityTimelineFiltersProps> = (
       {hasActiveFilters && (
         <div className="flex flex-wrap items-center gap-2">
           {selectedTypes.map((type) => (
-            <Badge key={type} variant="secondary" className="gap-1">
+            <Badge key={type} variant="secondary" className="gap-1 overflow-visible">
               {INTERACTION_TYPE_OPTIONS.find((opt) => opt.value === type)?.label}
               <button
+                type="button"
                 onClick={() => handleTypeToggle(type)}
-                className="ml-1 hover:text-destructive"
+                className="relative -my-2 -mr-1 ml-0.5 h-11 w-11 flex items-center justify-center rounded-sm hover:text-destructive hover:bg-destructive/10 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                aria-label={`Remove ${INTERACTION_TYPE_OPTIONS.find((opt) => opt.value === type)?.label ?? "selected"} filter`}
               >
-                <X className="w-3 h-3" />
+                <X className="w-3 h-3" aria-hidden="true" />
               </button>
             </Badge>
           ))}
           {dateFrom && (
-            <Badge variant="secondary" className="gap-1">
+            <Badge variant="secondary" className="gap-1 overflow-visible">
               From: {dateFrom}
-              <button onClick={() => setDateFrom("")} className="ml-1 hover:text-destructive">
-                <X className="w-3 h-3" />
+              <button
+                type="button"
+                onClick={() => setDateFrom("")}
+                className="relative -my-2 -mr-1 ml-0.5 h-11 w-11 flex items-center justify-center rounded-sm hover:text-destructive hover:bg-destructive/10 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                aria-label="Remove start date filter"
+              >
+                <X className="w-3 h-3" aria-hidden="true" />
               </button>
             </Badge>
           )}
           {dateTo && (
-            <Badge variant="secondary" className="gap-1">
+            <Badge variant="secondary" className="gap-1 overflow-visible">
               To: {dateTo}
-              <button onClick={() => setDateTo("")} className="ml-1 hover:text-destructive">
-                <X className="w-3 h-3" />
+              <button
+                type="button"
+                onClick={() => setDateTo("")}
+                className="relative -my-2 -mr-1 ml-0.5 h-11 w-11 flex items-center justify-center rounded-sm hover:text-destructive hover:bg-destructive/10 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                aria-label="Remove end date filter"
+              >
+                <X className="w-3 h-3" aria-hidden="true" />
               </button>
             </Badge>
           )}
           {showStageChangesOnly && (
-            <Badge variant="secondary" className="gap-1">
+            <Badge variant="secondary" className="gap-1 overflow-visible">
               Stage changes only
               <button
+                type="button"
                 onClick={() => setShowStageChangesOnly(false)}
-                className="ml-1 hover:text-destructive"
+                className="relative -my-2 -mr-1 ml-0.5 h-11 w-11 flex items-center justify-center rounded-sm hover:text-destructive hover:bg-destructive/10 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                aria-label="Remove stage changes filter"
               >
-                <X className="w-3 h-3" />
+                <X className="w-3 h-3" aria-hidden="true" />
               </button>
             </Badge>
           )}

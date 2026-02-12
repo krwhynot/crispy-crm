@@ -445,7 +445,7 @@ describe("useFilterCleanup", () => {
 
 **Purpose:** Test that optimistic UI updates rollback on API failure (critical for UX)
 
-**Example from:** `src/atomic-crm/dashboard/v3/hooks/__tests__/useMyTasks.test.ts:396-460`
+**Example from:** `src/atomic-crm/dashboard/__tests__/useMyTasks.test.ts:396-460`
 
 ```typescript
 describe("snoozeTask() - Optimistic Update", () => {
@@ -513,7 +513,7 @@ describe("snoozeTask() - Optimistic Update", () => {
 
 **Purpose:** Test time-dependent logic using start-of-day calculations to avoid timezone issues
 
-**Example from:** `src/atomic-crm/dashboard/v3/hooks/__tests__/useMyTasks.test.ts:165-178`
+**Example from:** `src/atomic-crm/dashboard/__tests__/useMyTasks.test.ts:165-178`
 
 ```typescript
 // Create test fixtures based on real current time

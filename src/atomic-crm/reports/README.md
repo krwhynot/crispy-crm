@@ -2,7 +2,7 @@
 
 > **Comprehensive documentation for the Reports & Analytics system**
 > Last Updated: 2025-11-28
-> **PRD Reference:** See `docs/PRD.md` v1.18 Section 9.6 (Reports Module) for MVP requirements: 4 KPIs, per-stage stale thresholds, click-through navigation
+> **Reference:** See `CLAUDE.md` Business Domain section for MVP requirements.
 
 ---
 
@@ -977,10 +977,7 @@ jsonExport(exportData, (err, csv) => {
 
 ## Related Documentation
 
-- [Engineering Constitution](../../docs/claude/engineering-constitution.md) - Core principles
-- [Supabase Workflow](../../docs/supabase/WORKFLOW.md) - Database operations
-- [Color Theming Architecture](../../docs/internal-docs/color-theming-architecture.docs.md) - Design system
-- [Spacing System Design](../../docs/archive/plans/2025-11-08-spacing-layout-system-design.md) - Layout tokens
+- [Engineering Constitution](../../CLAUDE.md) - Core principles
 - [CSV Security](../utils/csvUploadValidator.ts) - Formula injection prevention
 
 ---

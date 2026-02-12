@@ -11,9 +11,9 @@
 
 | User | Email | Password | Role |
 |------|-------|----------|------|
-| Admin | admin@test.com | `password` | admin |
-| Manager | manager@mfbroker.com | `password` | manager |
-| Rep | rep@mfbroker.com | `password` | rep |
+| Admin | admin@test.com | `password123` | admin |
+| Manager | manager@mfbroker.com | `password123` | manager |
+| Rep | rep@mfbroker.com | `password123` | rep |
 
 ---
 

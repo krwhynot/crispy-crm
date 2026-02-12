@@ -127,9 +127,7 @@ Manual E2E tests are executed interactively with Claude Chrome:
 
 ## Related Documentation
 
-- [Automated E2E Tests](../../../tests/e2e/) - Playwright automated test suite
-- [Test Fixtures](../../../tests/e2e/fixtures/) - Test data SQL seeds
-- [Page Object Models](../../../tests/e2e/support/poms/) - Reusable page components
+No automated Playwright suite exists yet. This directory contains manual E2E testing documentation only.
 
 ## Contributing
 

@@ -1,42 +1,35 @@
 # Crispy CRM Audit Reports Index
 
-## Latest Audit: Workflow Gaps (2026-01-22)
+## Latest Audit: Dashboard UX (2026-02-11)
 
 **Files:**
-- Summary: `WORKFLOW_GAPS_SUMMARY.md`
-- Full Report: `workflow-gaps-audit-2026-01-22.json`
+- Report: `dashboard-ux-audit-2026-02-11.md`
 
 **Key Findings:**
-- 3 Critical Issues (P0)
-- 4 High Issues (P1)
-- 2 Medium Issues (P2)
-- **Overall Confidence:** 92%
-
-**Quick Stats:**
-- Data Integrity: 9/10 ✅ (No orphaned data, proper constraints)
-- Workflow Enforcement: 5/10 ⚠️ (No state machine, missing activity logging)
-- Audit Trail: 4/10 ❌ (Only 9 stage changes recorded)
+- Overall Sienna Score: 82/95 (up from 72 -> 75 -> 82)
+- 6 views analyzed (KPI Row + 5 Tabs), 18 source files
 
 ---
 
 ## All Audits
 
-### 2026-01-22
+### 2026-02
+- `dashboard-ux-audit-2026-02-11.md` - Dashboard UX audit (Sienna Score 82/95)
+- `ERD_VERIFICATION_AUDIT_2026-02-09.md` - ERD verification audit
+
+### 2026-01 (Active Summaries)
 - `WORKFLOW_GAPS_SUMMARY.md` - **Recommended reading**
-- `workflow-gaps-audit-2026-01-22.json` - Full technical details
+- `PERFORMANCE_AUDIT_SUMMARY.md` / `PERFORMANCE_AUDIT_REPORT.md`
+- `ERROR_HANDLING_AUDIT_REPORT.md`
+- `accessibility-full-audit.md` / `accessibility-audit-2026-01-25.md`
+- `database-security-audit-2026-01-22.md` / `database-hardening-audit-2026-01-25.md`
+- `stale-state-audit-2026-01-25.md`
+- `deep-data-flow-2026-01-29.md` / `ux-blockers-2026-01-29.md`
+- `DI-01-DI-02-resolution.md`
+- `activity-timeline-rls-audit.md`
 
-### 2026-01-20
-- `2026-01-20-full-audit.md`
-- `2026-01-20-workflow-gaps.md`
-- `2026-01-20-code-quality.md`
-- `2026-01-20-architecture.md`
-- `2026-01-20-error-handling.md`
-- `2026-01-20-data-integrity.md`
-
-### 2026-01-19+
-- Stale state audit
-- Data integrity audit
-- Full audits
+### Historical Snapshots
+Date-stamped audit reports and phase artifacts are archived in `archive/`.
 
 ---
 
@@ -76,11 +69,8 @@
 
 ---
 
-## Next Steps
+## Notes
 
-Schedule remediation:
-- Week of 2026-01-27: Critical fixes
-- Week of 2026-02-03: High-priority fixes
-- Week of 2026-02-10: Medium-priority fixes
-
-Follow-up audit: 2026-02-22
+- Actionable items from audits are consolidated into `../technical-debt.md`
+- Historical snapshots and phase artifacts are in `archive/`
+- Active summaries remain in this directory

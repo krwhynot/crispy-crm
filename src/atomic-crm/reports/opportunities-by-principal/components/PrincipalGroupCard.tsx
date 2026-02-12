@@ -82,7 +82,7 @@ export function PrincipalGroupCard({
                 <tr className="text-sm text-muted-foreground">
                   <th
                     scope="col"
-                    className="text-left py-2 px-2 min-w-[200px] border-b sticky left-0 bg-card z-10 shadow-[2px_0_4px_-2px_rgba(0,0,0,0.1)]"
+                    className="text-left py-2 px-2 min-w-[200px] border-b sticky left-0 bg-card z-10 shadow-col-sticky"
                   >
                     Opportunity
                   </th>
@@ -106,7 +106,7 @@ export function PrincipalGroupCard({
               <tbody>
                 {group.opportunities.map((opp) => (
                   <tr key={opp.id} className="group hover:bg-accent/30 transition-colors">
-                    <td className="py-2 px-2 border-b sticky left-0 bg-card z-10 shadow-[2px_0_4px_-2px_rgba(0,0,0,0.1)] group-hover:bg-accent/30 transition-colors">
+                    <td className="py-2 px-2 border-b sticky left-0 bg-card z-10 shadow-col-sticky group-hover:bg-accent/30 transition-colors">
                       <div className="flex items-center gap-2">
                         <span className="font-medium">{opp.name}</span>
                         {opp.priority === "high" && (

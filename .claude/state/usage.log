@@ -53,3 +53,13 @@
 [2026-02-06T15:37:41.308Z] ✓ find_references | symbolName="useDebouncedSearch", includeDefinition=false | results: 5 | 21ms
 [2026-02-06T18:02:54.810Z] ✓ search_code | query: "ReferenceInput contact in task form" | limit=10, type="all" | results: 0 | 97ms
 [2026-02-06T18:03:20.997Z] ✓ search_code | query: "contacts_summary handler getList filter" | limit=15, type="all" | results: 0 | 32ms
+[2026-02-12T04:05:14.954Z] ✓ find_references | symbolName="useShowContext", includeDefinition=true | 15ms
+[2026-02-12T04:05:15.035Z] ✓ find_references | symbolName="useStore", includeDefinition=true | 0ms
+[2026-02-12T04:05:15.128Z] ✓ find_references | symbolName="EmptyState", includeDefinition=true | results: 21 | 5ms
+[2026-02-12T04:05:24.756Z] ✓ go_to_definition | symbolName="EmptyState", kind="function" | 5ms
+[2026-02-12T04:05:24.836Z] ✓ find_references | symbolName="FilterChipBar", includeDefinition=true | results: 17 | 2ms
+[2026-02-12T04:05:24.945Z] ✓ find_references | symbolName="useReportData", includeDefinition=true | results: 20 | 2ms
+[2026-02-12T04:05:43.502Z] ✓ search_code | query: "EmptyState component reports" | limit=10, type="component" | results: 0 | 65ms
+[2026-02-12T04:06:04.001Z] ✓ go_to_definition | symbolName="useFilterChipBar", kind="function" | 1ms
+[2026-02-12T04:06:04.075Z] ✓ find_references | symbolName="Breadcrumb", includeDefinition=true | results: 18 | 2ms
+[2026-02-12T04:12:39.479Z] ✓ search_code | query: "useShowContext error isPending isLoading" | limit=10, type="hook" | results: 0 | 31ms

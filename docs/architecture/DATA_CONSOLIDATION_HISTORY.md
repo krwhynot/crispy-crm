@@ -75,8 +75,8 @@ find supabase/migrations -name "*.sql" -mtime -30 -exec grep -l "DELETE FROM" {}
 
 ## References
 
-- [DATABASE_LAYER.md](../.claude/rules/DATABASE_LAYER.md) - Soft delete rules
-- [PROVIDER_RULES.md](../.claude/rules/PROVIDER_RULES.md) - Provider-layer soft delete enforcement
+- [DATABASE_LAYER.md](../../.claude/rules/DATABASE_LAYER.md) - Soft delete rules
+- [PROVIDER_RULES.md](../../.claude/rules/PROVIDER_RULES.md) - Provider-layer soft delete enforcement
 
 ---
 

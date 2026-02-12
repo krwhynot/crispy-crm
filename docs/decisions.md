@@ -493,9 +493,9 @@ OPTIONAL (after user validation):
 
 | Document | Purpose |
 |----------|---------|
-| `docs/architecture/data-model.md` | Complete entity reference |
-| `docs/architecture/rls-policies.md` | Security policies |
-| `docs/testing/test-architecture.md` | Testing patterns |
+| `docs/ERD.md` | Database schema reference (auto-generated from live Supabase) |
+| `.claude/rules/DATABASE_LAYER.md` | RLS and security patterns |
+| `docs/architecture/TEST_PATTERNS.md` | Testing patterns |
 | `docs/design-system/` | UI/UX standards and design system |
 | `CLAUDE.md` | Engineering constitution |
 

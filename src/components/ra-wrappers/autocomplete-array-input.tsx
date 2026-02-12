@@ -163,10 +163,15 @@ export const AutocompleteArrayInput = (
             <div className="group rounded-md bg-transparent dark:bg-input/30 border border-input px-3 py-1.75 text-sm transition-all ring-offset-background focus-within:border-ring focus-within:ring-ring/50 focus-within:ring-[3px] aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40">
               <div className="flex flex-wrap gap-1">
                 {selectedChoices.map((choice) => (
-                  <Badge key={getChoiceValue(choice)} variant="outline">
+                  <Badge
+                    key={getChoiceValue(choice)}
+                    variant="outline"
+                    className="overflow-visible"
+                  >
                     {getInputText(choice)}
                     <button
-                      className="ml-1 rounded-full outline-none ring-offset-background focus:ring-2 focus:ring-ring focus:ring-offset-2"
+                      type="button"
+                      className="relative -my-2 -mr-1 ml-0.5 h-11 w-11 flex items-center justify-center rounded-full outline-none ring-offset-background hover:bg-accent/50 transition-colors focus:ring-2 focus:ring-ring focus:ring-offset-2"
                       onKeyDown={(e) => {
                         if (e.key === "Enter") {
                           handleUnselect(choice);
@@ -186,7 +191,7 @@ export const AutocompleteArrayInput = (
                           _: "Remove",
                         })}
                       </span>
-                      <X className="h-3 w-3" />
+                      <X className="h-3 w-3" aria-hidden="true" />
                     </button>
                   </Badge>
                 ))}

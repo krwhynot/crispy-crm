@@ -226,6 +226,10 @@
   .shadow-col-inner {
     box-shadow: var(--shadow-col-inner);
   }
+  /* Sticky column edge shadow for frozen table columns */
+  .shadow-col-sticky {
+    box-shadow: var(--shadow-col-sticky);
+  }
 
   /* Screen Reader Only - Accessibility */
   .sr-only {
@@ -1067,6 +1071,7 @@
   /* Column shadows - Optimized for paper cream background */
   --shadow-col: 0 2px 6px var(--shadow-ink) / 0.12;
   --shadow-col-inner: inset 0 1px 2px var(--shadow-ink) / 0.05;
+  --shadow-col-sticky: 2px 0 4px -2px var(--shadow-ink) / 0.1;
 }
 
 /* Two-column slide-over override (e.g., organizations with right panel) */
@@ -1337,6 +1342,7 @@
   /* Column shadows - dark mode with cool tinting */
   --shadow-col: 0 3px 10px var(--shadow-ink-dark) / 0.4;
   --shadow-col-inner: inset 0 1px 2px var(--shadow-ink-dark) / 0.08;
+  --shadow-col-sticky: 2px 0 6px -2px var(--shadow-ink-dark) / 0.25;
 
   /* Text Hierarchy - Dark Mode (WCAG AA Compliant)
    * Fixed: Increased lightness values to meet 4.5:1 contrast ratio requirement

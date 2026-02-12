@@ -90,7 +90,7 @@
 
 | ID | Category | Issue | File(s) | Status |
 |----|----------|-------|---------|--------|
-| UI-20 | Z-Index | LogActivityFAB z-40 may conflict with other z-40 elements | `src/atomic-crm/dashboard/v3/components/LogActivityFAB.tsx:219` | Open |
+| UI-20 | Z-Index | LogActivityFAB z-40 may conflict with other z-40 elements | `src/atomic-crm/dashboard/LogActivityFAB.tsx:219` | Open |
 
 ### Forms (Lower Priority)
 
@@ -144,7 +144,7 @@
 | ASYNC-04 | Unsaved Changes | Extend useInAppUnsavedChanges to all slide-over edit forms | All slide-over edit tabs | Open |
 | ASYNC-05 | Retry Option | Add explicit retry button on fetch errors | List components | Open |
 | ASYNC-06 | Optimistic Lock | Implement updated_at version check for opportunities | Data provider, opportunity forms | Open |
-| ASYNC-07 | AbortController | Add to EntityCombobox search | `src/atomic-crm/dashboard/v3/components/EntityCombobox.tsx` | Open |
+| ASYNC-07 | AbortController | Add to EntityCombobox search | `src/atomic-crm/dashboard/EntityCombobox.tsx` | Open |
 | EC-01 | i18n | RTL text support missing (dir="auto") - only textarea.tsx | `src/components/ui/textarea.tsx` (input.tsx already fixed) | Open |
 | CFG-01 | Config | DEFAULT_SEGMENT_ID hardcoded - consider environment variable | `src/atomic-crm/constants.ts:4` | Open |
 

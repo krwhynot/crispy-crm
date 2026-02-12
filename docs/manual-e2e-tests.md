@@ -9,9 +9,9 @@
 
 | User | Email | Password | Role |
 |------|-------|----------|------|
-| Admin | admin@test.com | `password` | admin |
-| Manager | manager@mfbroker.com | `password` | manager |
-| Rep | rep@mfbroker.com | `password` | rep |
+| Admin | admin@test.com | `password123` | admin |
+| Manager | manager@mfbroker.com | `password123` | manager |
+| Rep | rep@mfbroker.com | `password123` | rep |
 
 ---
 
@@ -70,7 +70,7 @@
 
 ### Test 2.1: Rep Sees Only Own Records
 1. Logout (click user menu → Logout)
-2. Login as **rep@mfbroker.com** / `password`
+2. Login as **rep@mfbroker.com** / `password123`
 3. Go to **Organizations**
 4. Note the count
 
@@ -80,7 +80,7 @@
 
 ### Test 2.2: Manager Sees All Records
 1. Logout
-2. Login as **manager@mfbroker.com** / `password`
+2. Login as **manager@mfbroker.com** / `password123`
 3. Go to **Organizations**
 4. Compare count to Rep's view
 
@@ -90,7 +90,7 @@
 
 ### Test 2.3: Admin Full Access
 1. Logout
-2. Login as **admin@test.com** / `password`
+2. Login as **admin@test.com** / `password123`
 3. Navigate to all sections
 
 **Expected:**

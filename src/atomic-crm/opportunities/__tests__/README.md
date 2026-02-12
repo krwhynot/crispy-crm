@@ -1,7 +1,5 @@
 # Opportunities Module Test Organization
 
-> **PRD Reference:** See `docs/PRD.md` v1.18 Section 7 (Pipeline Management) for the 7 pipeline stages and opportunity rules.
-
 This document explains the test file conventions for the opportunities module.
 
 ## Test File Naming Conventions

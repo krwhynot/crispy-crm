@@ -382,5 +382,5 @@ CREATE TYPE opportunity_stage AS ENUM (
 ## Related Documentation
 
 - [Business Workflows](./business-workflows.md) - Activity types, task management, business rules
-- [Data Model](../architecture/data-model.md) - Database schema reference
+- [Data Model](../ERD.md) - Database schema reference
 - [Validation Schemas](../../src/atomic-crm/validation/) - Zod schemas for all entities

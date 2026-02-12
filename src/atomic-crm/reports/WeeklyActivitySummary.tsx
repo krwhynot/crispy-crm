@@ -388,7 +388,7 @@ function RepActivityCard({ repGroup }: RepActivityCardProps) {
               <tr className="text-sm text-muted-foreground">
                 <th
                   scope="col"
-                  className="text-left py-2 px-3 border-b sticky left-0 bg-card z-10 min-w-[140px] shadow-[2px_0_4px_-2px_rgba(0,0,0,0.1)]"
+                  className="text-left py-2 px-3 border-b sticky left-0 bg-card z-10 min-w-[140px] shadow-col-sticky"
                 >
                   Principal
                 </th>
@@ -419,7 +419,7 @@ function RepActivityCard({ repGroup }: RepActivityCardProps) {
                   className={`group ${stats.total < LOW_ACTIVITY_THRESHOLD ? "bg-warning/10" : ""}`}
                   data-warning={stats.total < LOW_ACTIVITY_THRESHOLD || undefined}
                 >
-                  <td className="py-2 px-3 border-b sticky left-0 bg-card z-10 shadow-[2px_0_4px_-2px_rgba(0,0,0,0.1)] group-data-[warning]:bg-warning/10">
+                  <td className="py-2 px-3 border-b sticky left-0 bg-card z-10 shadow-col-sticky group-data-[warning]:bg-warning/10">
                     <div className="flex items-center gap-2">
                       {stats.org.name}
                       {stats.total < LOW_ACTIVITY_THRESHOLD && (

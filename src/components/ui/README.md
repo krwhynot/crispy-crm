@@ -1,7 +1,5 @@
 # UI Components
 
-> **PRD Reference:** See `docs/PRD.md` v1.18 Section 9 (UI/UX Guidelines) for design system requirements.
-
 The components in this directory come from [shadcn/ui](https://ui.shadcn.com/). They are low-level building blocks for creating user interfaces, including:
 
 - Badges
@@ -33,4 +31,4 @@ Shadcn/ui components are actively maintained and updated. To add or update a UI 
 npx shadcn@latest add [component-name]
 ```
 
-The admin components have a dependency on some ui components, so if you update the admin components, this will also update the ui components. Check [the admin components readme](../admin/Readme.md) for the command to update them.
+The admin components have a dependency on some ui components, so if you update the admin components, this will also update the ui components.

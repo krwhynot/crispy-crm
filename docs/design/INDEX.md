@@ -40,7 +40,6 @@ Central navigation hub for Crispy CRM design documentation.
 | Resource | Path | Description |
 |----------|------|-------------|
 | Implementation Patterns | [`../design-system/INDEX.md`](../design-system/INDEX.md) | Developer-focused technical specs (forms, filters, badges) |
-| UI/UX Audit Report | [`../archive/audits/ui-ux/FINAL-AUDIT-REPORT.md`](../archive/audits/ui-ux/FINAL-AUDIT-REPORT.md) | Comprehensive audit findings (93 violations identified) |
 | Technical Debt | [`../technical-debt.md`](../technical-debt.md) | Prioritized fix list with open/resolved status |
 | Dashboard Reference | [`../features/dashboard-reference.md`](../features/dashboard-reference.md) | Principal dashboard widget specifications |
 | Decisions Log | [`../decisions.md`](../decisions.md) | Architectural decisions affecting UI/UX |
