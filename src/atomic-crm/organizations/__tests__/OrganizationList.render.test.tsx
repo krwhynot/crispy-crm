@@ -17,7 +17,6 @@ import {
   mockCloseSlideOver,
   mockToggleMode,
   sortableColumns,
-  mockOrganizations,
   createDefaultListContext,
   resetMocks,
 } from "./OrganizationList.test-utils";

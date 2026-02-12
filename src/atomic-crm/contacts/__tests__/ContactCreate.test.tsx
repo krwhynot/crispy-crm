@@ -16,7 +16,7 @@ import type { Contact } from "../../types";
 
 describe("ContactCreate", () => {
   beforeEach(() => {
-    vi.resetAllMocks();
+    vi.clearAllMocks();
   });
 
   describe("Transform Function and Data Flow", () => {

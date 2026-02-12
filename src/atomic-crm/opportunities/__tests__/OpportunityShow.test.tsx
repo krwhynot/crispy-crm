@@ -18,7 +18,6 @@ import { Route, Routes } from "react-router-dom";
 import { renderWithAdminContext } from "@/tests/utils/render-admin";
 import { createMockOpportunity } from "@/tests/utils/mock-providers";
 import { mockUseShowContextReturn } from "@/tests/utils/typed-mocks";
-import type { OpportunityStage } from "../constants";
 import type { Opportunity } from "@/atomic-crm/validation/opportunities/opportunities-core";
 import OpportunityShow from "../OpportunityShow";
 
@@ -163,7 +162,7 @@ import { useShowContext } from "ra-core";
 
 describe("OpportunityShow", () => {
   beforeEach(() => {
-    vi.resetAllMocks();
+    vi.clearAllMocks();
   });
 
   test("renders loading state", () => {
@@ -497,7 +496,7 @@ describe("OpportunityShow", () => {
       });
 
       unmount();
-      vi.resetAllMocks();
+      vi.clearAllMocks();
     }
   });
 

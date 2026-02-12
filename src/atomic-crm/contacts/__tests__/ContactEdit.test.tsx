@@ -19,14 +19,6 @@ import { describe, it, expect, vi } from "vitest";
 import { contactKeys, activityKeys, opportunityKeys } from "../../queryKeys";
 
 /**
- * Typed interface for QueryClient invalidateQueries options
- * Matches TanStack Query's InvalidateQueryFilters structure
- */
-interface InvalidateQueryOptions {
-  queryKey: readonly unknown[];
-}
-
-/**
  * Mock QueryClient interface for type-safe testing
  */
 interface MockQueryClient {

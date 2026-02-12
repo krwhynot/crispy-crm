@@ -226,6 +226,7 @@ export function extractEmailLocalPart(email: string): string {
  * @returns True if email is valid for avatar generation
  */
 export function isValidEmailForAvatar(email: string): boolean {
+  if (!email) return false;
   const result = emailAndTypeSchema.shape.value.safeParse(email);
   return result.success;
 }

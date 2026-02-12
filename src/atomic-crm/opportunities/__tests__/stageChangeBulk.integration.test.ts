@@ -55,7 +55,7 @@ describe("Stage change via bulk action", () => {
   let mockCreate: ReturnType<typeof vi.fn>;
 
   beforeEach(() => {
-    vi.resetAllMocks();
+    vi.clearAllMocks();
 
     mockUpdate = vi.fn().mockResolvedValue({
       data: { id: 1, stage: "proposal" },
@@ -71,7 +71,7 @@ describe("Stage change via bulk action", () => {
   });
 
   afterEach(() => {
-    vi.resetAllMocks();
+    vi.clearAllMocks();
   });
 
   it("creates exactly N stage-change activities (one per opportunity) via DB trigger", async () => {

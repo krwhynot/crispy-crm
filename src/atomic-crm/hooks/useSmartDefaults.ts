@@ -2,8 +2,6 @@ import { useEffect, useRef } from "react";
 import { useGetIdentity, type Identifier } from "react-admin";
 import { format } from "date-fns";
 import type { FieldValues } from "react-hook-form";
-import type { UserIdentity } from "@/hooks/useUserRole";
-
 interface UseSmartDefaultsOptions {
   reset?: (values: FieldValues, options?: { keepDirtyValues?: boolean }) => void;
 }

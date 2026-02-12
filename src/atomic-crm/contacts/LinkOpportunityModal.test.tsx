@@ -24,9 +24,13 @@ vi.mock("ra-core", async () => {
 });
 
 // Mock @tanstack/react-query
-vi.mock("@tanstack/react-query", () => ({
-  useQueryClient: () => mockQueryClient,
-}));
+vi.mock("@tanstack/react-query", async () => {
+  const actual = (await vi.importActual("@tanstack/react-query")) as Record<string, unknown>;
+  return {
+    ...actual,
+    useQueryClient: () => mockQueryClient,
+  };
+});
 
 // Mock react-admin hooks - use importOriginal to preserve all exports
 vi.mock("react-admin", async (importOriginal) => {
@@ -65,7 +69,7 @@ vi.mock("@/components/ra-wrappers/autocomplete-input", () => ({
 
 describe("LinkOpportunityModal", () => {
   beforeEach(() => {
-    vi.resetAllMocks();
+    vi.clearAllMocks();
   });
 
   it("renders when open", () => {

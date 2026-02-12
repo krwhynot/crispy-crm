@@ -54,7 +54,7 @@ import { authProvider } from "./authProvider";
 
 describe("authProvider", () => {
   beforeEach(() => {
-    vi.resetAllMocks();
+    vi.clearAllMocks();
   });
 
   describe("login", () => {
@@ -271,7 +271,7 @@ describe("authProvider", () => {
       // Clear cache from previous test
       mockLogin.mockResolvedValue(undefined);
       await authProvider.login({ username: "test@test.com", password: "pass" });
-      vi.resetAllMocks();
+      vi.clearAllMocks();
 
       const mockSale = {
         id: "sale-456",
@@ -367,7 +367,7 @@ describe("authProvider", () => {
       // Clear cache first by calling login
       mockLogin.mockResolvedValue(undefined);
       await authProvider.login({ username: "test@test.com", password: "pass" });
-      vi.resetAllMocks(); // Clear the login call from mock counts
+      vi.clearAllMocks(); // Clear the login call from mock counts
 
       const mockSale = {
         id: "sale-123",
@@ -419,7 +419,7 @@ describe("authProvider", () => {
       // Ensure cache is cleared before starting this test
       mockLogin.mockResolvedValue(undefined);
       await authProvider.login({ username: "test@test.com", password: "pass" });
-      vi.resetAllMocks(); // Clear the initial login call
+      vi.clearAllMocks(); // Clear the initial login call
 
       const mockSale = {
         id: "sale-123",

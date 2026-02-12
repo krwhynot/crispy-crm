@@ -5,7 +5,7 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 
 describe("OpportunitiesTab (Contact) - WF-H2-005", () => {
   beforeEach(() => {
-    vi.resetAllMocks();
+    vi.clearAllMocks();
   });
 
   it("should create activity log when contact is linked to opportunity", async () => {

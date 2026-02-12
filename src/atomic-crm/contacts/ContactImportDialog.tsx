@@ -12,7 +12,6 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Loader2 } from "lucide-react";
 import { Form } from "ra-core";
 import { Link } from "react-router-dom";
-import type { DataQualityDecisions } from "./ContactImportPreview";
 import { ContactImportPreview } from "./ContactImportPreview";
 import { ContactImportResult } from "./ContactImportResult";
 import { useColumnMapping } from "./useColumnMapping";

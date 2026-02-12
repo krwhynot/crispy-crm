@@ -96,7 +96,7 @@ describe("TaskCompleteSheet", () => {
   const mockOnRefresh = vi.fn();
 
   beforeEach(() => {
-    vi.resetAllMocks();
+    vi.clearAllMocks();
     mockCompleteTask.mockResolvedValue(undefined);
     mockNotify.mockClear();
 

@@ -115,7 +115,7 @@ describe("composedDataProvider", () => {
       expect(mockBaseProvider.getList).toHaveBeenCalled();
     });
 
-    it("should route activities to composed handler", async () => {
+    it("should route activities to composed handler (activities_summary view)", async () => {
       const provider = createComposedDataProvider(mockBaseProvider);
 
       await provider.getList("activities", {
@@ -124,12 +124,12 @@ describe("composedDataProvider", () => {
         filter: {},
       });
 
+      // Activities handler routes to activities_summary view via getDatabaseResource
+      // Summary views handle soft delete filtering internally, so no deleted_at filter is added
       expect(mockBaseProvider.getList).toHaveBeenCalledWith(
-        "activities",
+        "activities_summary",
         expect.objectContaining({
-          filter: expect.objectContaining({
-            "deleted_at@is": null,
-          }),
+          filter: expect.any(Object),
         })
       );
     });

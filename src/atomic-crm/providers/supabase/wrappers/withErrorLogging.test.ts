@@ -46,11 +46,11 @@ describe("withErrorLogging", () => {
     };
 
     // Clear mock calls
-    vi.resetAllMocks();
+    vi.clearAllMocks();
   });
 
   afterEach(() => {
-    vi.resetAllMocks();
+    vi.clearAllMocks();
   });
 
   describe("successful operations", () => {

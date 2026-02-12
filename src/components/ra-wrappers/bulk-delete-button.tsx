@@ -8,7 +8,6 @@ import {
   useNotify,
   useRefresh,
   useResourceContext,
-  useTranslate,
   type MutationMode,
   type RaRecord,
   type UseDeleteManyOptions,
@@ -51,7 +50,6 @@ export const BulkDeleteButton = <
   const { selectedIds, onUnselectItems } = useListContext();
   const notify = useNotify();
   const refresh = useRefresh();
-  const translate = useTranslate();
   const [showConfirm, setShowConfirm] = useState(false);
 
   // Show confirmation dialog instead of immediate delete

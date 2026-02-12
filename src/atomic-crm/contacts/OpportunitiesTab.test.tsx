@@ -2,7 +2,6 @@ import { screen, waitFor, fireEvent } from "@testing-library/react";
 import { renderWithAdminContext } from "@/tests/utils/render-admin";
 import { ShowContextProvider } from "ra-core";
 import type * as ReactAdmin from "react-admin";
-import type * as RaCore from "ra-core";
 import type { ReactNode } from "react";
 import type { Identifier } from "ra-core";
 import { OpportunitiesTab } from "./OpportunitiesTab";
@@ -97,6 +96,13 @@ vi.mock("./UnlinkConfirmDialog", () => ({
   },
 }));
 
+// Mock PremiumDatagrid to avoid useListContext requirement
+vi.mock("@/components/ra-wrappers/PremiumDatagrid", () => ({
+  PremiumDatagrid: ({ children }: { children: ReactNode }) => (
+    <div data-testid="premium-datagrid">{children}</div>
+  ),
+}));
+
 // Mock react-admin components - use importOriginal to preserve all exports
 vi.mock("react-admin", async (importOriginal) => {
   const actual = await importOriginal<typeof ReactAdmin>();
@@ -146,7 +152,8 @@ const mockQueryClient = {
 };
 
 vi.mock("ra-core", async () => {
-  const actual = await vi.importActual<typeof RaCore>("ra-core");
+  // eslint-disable-next-line @typescript-eslint/consistent-type-imports -- typeof import() required in vi.mock factory (runs before static imports)
+  const actual = (await vi.importActual("ra-core")) as typeof import("ra-core");
   return {
     ...actual,
     useGetList: () => mockUseGetList(),
@@ -160,13 +167,17 @@ vi.mock("ra-core", async () => {
   };
 });
 
-vi.mock("@tanstack/react-query", () => ({
-  useQueryClient: () => mockQueryClient,
-}));
+vi.mock("@tanstack/react-query", async () => {
+  const actual = (await vi.importActual("@tanstack/react-query")) as Record<string, unknown>;
+  return {
+    ...actual,
+    useQueryClient: () => mockQueryClient,
+  };
+});
 
 describe("OpportunitiesTab", () => {
   beforeEach(() => {
-    vi.resetAllMocks();
+    vi.clearAllMocks();
   });
 
   it("shows loading state while fetching", () => {

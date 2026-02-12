@@ -3,7 +3,6 @@ import { renderWithAdminContext } from "@/tests/utils/render-admin";
 import userEvent from "@testing-library/user-event";
 import { OpportunityCardActions } from "../kanban/OpportunityCardActions";
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { BrowserRouter } from "react-router-dom";
 import type * as ReactAdmin from "react-admin";
 
 // Mock @tanstack/react-query for useQueryClient (added for cache invalidation in audit fixes)
@@ -36,12 +35,12 @@ vi.mock("react-admin", async (importOriginal) => {
 });
 
 const renderWithRouter = (component: React.ReactElement) => {
-  return renderWithAdminContext(<BrowserRouter>{component}</BrowserRouter>);
+  return renderWithAdminContext(component);
 };
 
 describe("OpportunityCardActions", () => {
   beforeEach(() => {
-    vi.resetAllMocks();
+    vi.clearAllMocks();
   });
 
   it("renders trigger button with correct attributes", () => {

@@ -4,13 +4,13 @@ import { renderWithAdminContext } from "@/tests/utils/render-admin";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { MemoryRouter } from "react-router-dom";
 import type { UseGetListHookValue } from "ra-core";
-import type * as RaCore from "ra-core";
 import { mockUseGetListReturn } from "@/tests/utils/typed-mocks";
 
 // Mock useGetList from ra-core
 const mockUseGetList = vi.fn();
 vi.mock("ra-core", async (importOriginal) => {
-  const actual = await importOriginal<typeof RaCore>();
+  // eslint-disable-next-line @typescript-eslint/consistent-type-imports -- typeof import() required in vi.mock factory (runs before static imports)
+  const actual = (await importOriginal()) as typeof import("ra-core");
   return {
     ...actual,
     useGetList: (...args: Parameters<typeof actual.useGetList>) => mockUseGetList(...args),
@@ -76,7 +76,7 @@ const createWrapper = () => {
 
 describe("UnifiedTimeline", () => {
   beforeEach(() => {
-    vi.resetAllMocks();
+    vi.clearAllMocks();
     mockUseGetList.mockReturnValue(
       mockUseGetListReturn<TimelineEntryData>({
         data: [],

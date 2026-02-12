@@ -100,7 +100,7 @@ describe("NotesSection", () => {
     // Error message should have role="alert"
     const errorMessage = screen.getByRole("alert");
     expect(errorMessage).toBeInTheDocument();
-    expect(errorMessage).toHaveTextContent("Notes are required");
+    expect(errorMessage).toHaveTextContent("This field is required.");
   });
 
   it("accepts user input", async () => {

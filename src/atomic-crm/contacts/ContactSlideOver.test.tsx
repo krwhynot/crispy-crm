@@ -282,7 +282,7 @@ describe("ContactSlideOver", () => {
   const mockNotify = vi.fn();
 
   beforeEach(() => {
-    vi.resetAllMocks();
+    vi.clearAllMocks();
 
     // Setup default mocks
     vi.mocked(useGetOne).mockReturnValue(

@@ -427,7 +427,7 @@ describe("ContactList", () => {
 
   beforeEach(() => {
     // Reset all mocks
-    vi.resetAllMocks();
+    vi.clearAllMocks();
     mockOpenSlideOver.mockClear();
     mockCloseSlideOver.mockClear();
     mockToggleMode.mockClear();
@@ -547,7 +547,7 @@ describe("ContactList 5-column directory layout", () => {
   ];
 
   beforeEach(() => {
-    vi.resetAllMocks();
+    vi.clearAllMocks();
 
     vi.mocked(useGetList).mockReturnValue({
       data: mockTags,
@@ -642,7 +642,7 @@ describe("ContactListFilter", () => {
   ];
 
   beforeEach(() => {
-    vi.resetAllMocks();
+    vi.clearAllMocks();
 
     vi.mocked(useGetList).mockReturnValue({
       data: mockTags,
@@ -713,7 +713,7 @@ describe("ContactList localStorage cleanup", () => {
       writable: true,
     });
 
-    vi.resetAllMocks();
+    vi.clearAllMocks();
   });
 
   test("cleans up invalid status filter from localStorage", () => {

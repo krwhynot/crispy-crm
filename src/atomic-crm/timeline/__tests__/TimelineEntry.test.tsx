@@ -88,7 +88,7 @@ function renderWithRouter(ui: React.ReactElement) {
 
 describe("TimelineEntry", () => {
   beforeEach(() => {
-    vi.resetAllMocks();
+    vi.clearAllMocks();
   });
 
   describe("icon rendering", () => {

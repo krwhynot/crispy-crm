@@ -45,14 +45,12 @@ import type { ProductFormData as ProductBase } from "./validation/products";
 export type { Contact } from "./validation/contacts/contacts-core";
 import type { Contact as ContactBase } from "./validation/contacts/contacts-core";
 export type { ActivityRecord } from "./validation/activities";
-import type { ActivityRecord as ActivityRecordBase } from "./validation/activities";
 
 // Note types (P2 consolidation)
 export type { ContactNote, OpportunityNote, OrganizationNote } from "./validation/notes";
 import type {
   ContactNote as ContactNoteBase,
   OpportunityNote as OpportunityNoteBase,
-  OrganizationNote as OrganizationNoteBase,
 } from "./validation/notes";
 
 // InteractionType is now derived from ActivityRecord schema

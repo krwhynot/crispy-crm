@@ -46,7 +46,7 @@ describe("Stage change via kanban", () => {
   let mockCreate: ReturnType<typeof vi.fn>;
 
   beforeEach(() => {
-    vi.resetAllMocks();
+    vi.clearAllMocks();
 
     mockUpdate = vi.fn().mockResolvedValue({
       data: { id: 1, stage: "qualified" },
@@ -62,7 +62,7 @@ describe("Stage change via kanban", () => {
   });
 
   afterEach(() => {
-    vi.resetAllMocks();
+    vi.clearAllMocks();
   });
 
   it("creates exactly one stage-change activity via DB trigger when card is dropped", async () => {

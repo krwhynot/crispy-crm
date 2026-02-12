@@ -95,7 +95,7 @@ import { useShowContext } from "ra-core";
 
 describe("ContactShow", () => {
   beforeEach(() => {
-    vi.resetAllMocks();
+    vi.clearAllMocks();
   });
 
   test("renders loading state", () => {

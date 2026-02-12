@@ -19,7 +19,7 @@ vi.mock("@/atomic-crm/utils/getRequiredFields", () => ({
 
 describe("FormProgressBar", () => {
   beforeEach(() => {
-    vi.resetAllMocks();
+    vi.clearAllMocks();
   });
 
   test("renders with correct ARIA attributes", () => {

@@ -163,7 +163,7 @@ describe("TaskSlideOver", () => {
   const mockOnModeToggle = vi.fn();
 
   beforeEach(() => {
-    vi.resetAllMocks();
+    vi.clearAllMocks();
   });
 
   afterEach(() => {

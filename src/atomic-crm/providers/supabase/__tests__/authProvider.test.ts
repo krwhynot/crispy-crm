@@ -40,7 +40,7 @@ import { supabase } from "../supabase";
 
 describe("authProvider", () => {
   beforeEach(() => {
-    vi.resetAllMocks();
+    vi.clearAllMocks();
     // Reset any cached state between tests
     global.window = Object.create(window);
     Object.defineProperty(window, "location", {
@@ -124,7 +124,7 @@ describe("authProvider", () => {
       const publicPaths = ["/login", "/forgot-password", "/set-password", "/reset-password"];
 
       for (const path of publicPaths) {
-        vi.resetAllMocks();
+        vi.clearAllMocks();
 
         // Mock no session for each test
         vi.mocked(supabase.auth.getSession).mockResolvedValue({

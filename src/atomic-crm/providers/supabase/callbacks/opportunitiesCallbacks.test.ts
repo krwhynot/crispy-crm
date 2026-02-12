@@ -31,7 +31,7 @@ describe("opportunitiesCallbacks", () => {
   let mockDataProvider: DataProvider;
 
   beforeEach(() => {
-    vi.resetAllMocks();
+    vi.clearAllMocks();
 
     mockDataProvider = {
       getList: vi.fn().mockResolvedValue({ data: [], total: 0 }),

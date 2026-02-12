@@ -100,7 +100,7 @@ export function useOrganizationImportExecution(callbacks: ExecutionCallbacks): E
         rowOffsetRef.current += batch.length;
       }
     },
-    [processBatchHook, notify, onProgressChange]
+    [processBatchHook, notify]
   );
 
   const executeImport = useCallback(

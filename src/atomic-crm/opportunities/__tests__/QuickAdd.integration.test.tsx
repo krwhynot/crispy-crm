@@ -25,8 +25,6 @@ import { describe, it, expect, vi, beforeEach, afterEach, type Mock } from "vite
 import { screen, waitFor, fireEvent, cleanup } from "@testing-library/react";
 import { renderWithAdminContext } from "@/tests/utils/render-admin";
 import userEvent from "@testing-library/user-event";
-import { MemoryRouter } from "react-router-dom";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { QuickAddForm } from "../QuickAddForm";
 import { useGetList, useGetIdentity, useDataProvider, useNotify } from "ra-core";
 import { useQuickAdd } from "../useQuickAdd";
@@ -44,20 +42,7 @@ vi.mock("ra-core", async () => {
   };
 });
 
-// Test wrapper component - includes MemoryRouter for React Admin Form component
-const TestWrapper = ({ children }: { children: React.ReactNode }) => {
-  const queryClient = new QueryClient({
-    defaultOptions: {
-      queries: { retry: false },
-      mutations: { retry: false },
-    },
-  });
-  return (
-    <QueryClientProvider client={queryClient}>
-      <MemoryRouter initialEntries={["/opportunities"]}>{children}</MemoryRouter>
-    </QueryClientProvider>
-  );
-};
+// renderWithAdminContext provides MemoryRouter and QueryClientProvider
 
 /**
  * Helper to find a cmdk CommandItem by text content.
@@ -186,7 +171,7 @@ describe("QuickAdd Integration", () => {
 
   beforeEach(() => {
     user = userEvent.setup();
-    vi.resetAllMocks();
+    vi.clearAllMocks();
 
     // Mock localStorage
     Object.defineProperty(window, "localStorage", {
@@ -261,11 +246,9 @@ describe("QuickAdd Integration", () => {
   });
 
   it("renders all required form fields", async () => {
-    renderWithAdminContext(
-      <TestWrapper>
-        <QuickAddForm onSuccess={mockOnSuccess} />
-      </TestWrapper>
-    );
+    renderWithAdminContext(<QuickAddForm onSuccess={mockOnSuccess} />, {
+      initialEntries: ["/opportunities"],
+    });
 
     // Verify all key form elements are present
     expect(screen.getByText("Organization")).toBeInTheDocument();
@@ -292,11 +275,9 @@ describe("QuickAdd Integration", () => {
   });
 
   it("selects principal and enables products dropdown", async () => {
-    renderWithAdminContext(
-      <TestWrapper>
-        <QuickAddForm onSuccess={mockOnSuccess} />
-      </TestWrapper>
-    );
+    renderWithAdminContext(<QuickAddForm onSuccess={mockOnSuccess} />, {
+      initialEntries: ["/opportunities"],
+    });
 
     // Initially should show message to select principal first for products
     expect(screen.getByText(/select a principal first/i)).toBeInTheDocument();
@@ -317,11 +298,9 @@ describe("QuickAdd Integration", () => {
   }, 15000);
 
   it("defaults account manager to current user", async () => {
-    renderWithAdminContext(
-      <TestWrapper>
-        <QuickAddForm onSuccess={mockOnSuccess} />
-      </TestWrapper>
-    );
+    renderWithAdminContext(<QuickAddForm onSuccess={mockOnSuccess} />, {
+      initialEntries: ["/opportunities"],
+    });
 
     // Account Manager dropdown should show current user (from useGetIdentity mock)
     // The useGetIdentity returns { id: 100 } and salesList has { id: 100, name: "John Sales" }
@@ -332,11 +311,9 @@ describe("QuickAdd Integration", () => {
   });
 
   it("handles Cancel button correctly", async () => {
-    renderWithAdminContext(
-      <TestWrapper>
-        <QuickAddForm onSuccess={mockOnSuccess} />
-      </TestWrapper>
-    );
+    renderWithAdminContext(<QuickAddForm onSuccess={mockOnSuccess} />, {
+      initialEntries: ["/opportunities"],
+    });
 
     await user.click(screen.getByRole("button", { name: /cancel/i }));
 
@@ -350,11 +327,9 @@ describe("QuickAdd Integration", () => {
       isPending: true,
     });
 
-    renderWithAdminContext(
-      <TestWrapper>
-        <QuickAddForm onSuccess={mockOnSuccess} />
-      </TestWrapper>
-    );
+    renderWithAdminContext(<QuickAddForm onSuccess={mockOnSuccess} />, {
+      initialEntries: ["/opportunities"],
+    });
 
     expect(screen.getByRole("button", { name: /cancel/i })).toBeDisabled();
     expect(screen.getByRole("button", { name: /save & add another/i })).toBeDisabled();
@@ -362,11 +337,9 @@ describe("QuickAdd Integration", () => {
   });
 
   it("auto-fills state when city is selected from autocomplete", async () => {
-    renderWithAdminContext(
-      <TestWrapper>
-        <QuickAddForm onSuccess={mockOnSuccess} />
-      </TestWrapper>
-    );
+    renderWithAdminContext(<QuickAddForm onSuccess={mockOnSuccess} />, {
+      initialEntries: ["/opportunities"],
+    });
 
     // City uses Combobox - use helper to select Chicago
     await selectCity("Chicago", user);
@@ -390,11 +363,9 @@ describe("QuickAdd Integration", () => {
     // Note: This test verifies that the form reads from localStorage on mount.
     // The localStorage mock returns "Test Campaign" for last_campaign key
 
-    renderWithAdminContext(
-      <TestWrapper>
-        <QuickAddForm onSuccess={mockOnSuccess} />
-      </TestWrapper>
-    );
+    renderWithAdminContext(<QuickAddForm onSuccess={mockOnSuccess} />, {
+      initialEntries: ["/opportunities"],
+    });
 
     // Verify campaign pre-filled from localStorage
     const campaignInput = screen.getByLabelText(/campaign/i) as HTMLInputElement;
@@ -402,11 +373,9 @@ describe("QuickAdd Integration", () => {
   });
 
   it("shows opportunity name preview placeholder initially", () => {
-    renderWithAdminContext(
-      <TestWrapper>
-        <QuickAddForm onSuccess={mockOnSuccess} />
-      </TestWrapper>
-    );
+    renderWithAdminContext(<QuickAddForm onSuccess={mockOnSuccess} />, {
+      initialEntries: ["/opportunities"],
+    });
 
     // Initially shows placeholder text when no org/principal selected
     expect(screen.getByText("Select organization and principal")).toBeInTheDocument();
@@ -425,11 +394,9 @@ describe("QuickAdd Integration", () => {
       isLoading: false,
     });
 
-    renderWithAdminContext(
-      <TestWrapper>
-        <QuickAddForm onSuccess={mockOnSuccess} />
-      </TestWrapper>
-    );
+    renderWithAdminContext(<QuickAddForm onSuccess={mockOnSuccess} />, {
+      initialEntries: ["/opportunities"],
+    });
 
     // Try to submit empty form (principal_id is required but not pre-selected)
     await user.click(screen.getByRole("button", { name: /save & close/i }));

@@ -12,7 +12,7 @@ describe("FilterChip", () => {
   };
 
   beforeEach(() => {
-    vi.resetAllMocks();
+    vi.clearAllMocks();
   });
 
   it("renders label and value", () => {

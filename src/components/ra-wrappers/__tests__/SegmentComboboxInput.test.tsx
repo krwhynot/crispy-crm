@@ -243,8 +243,6 @@ describe("SegmentComboboxInput", () => {
   });
 
   test("switches segment choices when organization_type changes", async () => {
-    const user = userEvent.setup();
-
     const { rerender } = renderWithAdminContext(
       <FormWrapper defaultValues={{ organization_type: "distributor" }}>
         <SegmentComboboxInput source="segment_id" />

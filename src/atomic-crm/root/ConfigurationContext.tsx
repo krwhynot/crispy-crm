@@ -14,7 +14,7 @@
  * but will cause re-renders when ANY config value changes.
  */
 import type { ReactNode } from "react";
-import { createContext, useContext, useMemo } from "react";
+import { createContext, useMemo } from "react";
 import type { ContactGender, DealStage, NoteStatus } from "../types";
 import {
   defaultContactGender,

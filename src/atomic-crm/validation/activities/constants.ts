@@ -4,8 +4,6 @@
  * Static constants for activity types, options, and display mappings.
  */
 
-import { sampleStatusSchema } from "./types";
-
 /**
  * Interaction type options for UI components (15 types after STI migration)
  */

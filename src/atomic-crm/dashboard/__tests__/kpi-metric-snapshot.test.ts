@@ -99,7 +99,7 @@ describe("KPI Metric Snapshot (Seed S0)", () => {
   let seed: ReturnType<typeof buildSeedData>;
 
   beforeEach(() => {
-    vi.resetAllMocks();
+    vi.clearAllMocks();
     currentSaleState.salesId = 42;
     currentSaleState.loading = false;
     currentSaleState.error = null;

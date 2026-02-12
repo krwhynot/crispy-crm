@@ -26,7 +26,7 @@ vi.mock("ra-core", () => ({
 
 describe("useDuplicateOrgCheck", () => {
   beforeEach(() => {
-    vi.resetAllMocks();
+    vi.clearAllMocks();
   });
 
   it("returns null when no duplicate is found", async () => {

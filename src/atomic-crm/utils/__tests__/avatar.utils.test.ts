@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import { describe, it, expect, vi, beforeEach } from "vitest";
 import type { Contact } from "../../types";
 import type { Organization } from "../../validation/organizations";
 
@@ -49,7 +49,7 @@ describe("isValidEmailForAvatar", () => {
 
 describe("processContactAvatar", () => {
   beforeEach(() => {
-    vi.resetAllMocks();
+    vi.clearAllMocks();
   });
 
   describe("when contact already has avatar", () => {
@@ -237,7 +237,7 @@ describe("processContactAvatar", () => {
 
 describe("processOrganizationLogo", () => {
   beforeEach(() => {
-    vi.resetAllMocks();
+    vi.clearAllMocks();
   });
 
   describe("when logo has existing src", () => {
@@ -383,7 +383,7 @@ describe("processOrganizationLogo", () => {
 
 describe("getContactAvatar", () => {
   beforeEach(() => {
-    vi.resetAllMocks();
+    vi.clearAllMocks();
   });
 
   it("should return null when no email provided", async () => {

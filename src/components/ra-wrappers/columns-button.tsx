@@ -119,7 +119,10 @@ export const ColumnsSelector = ({ children, storeKey: storeKeyProp }: ColumnsSel
   const translate = useTranslate();
   const dataTableContext = useDataTableStoreContext();
   const storeKey = storeKeyProp ?? dataTableContext?.storeKey;
-  const defaultHiddenColumns = dataTableContext?.defaultHiddenColumns ?? [];
+  const defaultHiddenColumns = useMemo(
+    () => dataTableContext?.defaultHiddenColumns ?? [],
+    [dataTableContext?.defaultHiddenColumns]
+  );
   const [columnRanks, setColumnRanks] = useStore<number[] | undefined>(`${storeKey}_columnRanks`);
   const [hiddenColumns, setHiddenColumns] = useStore<string[]>(
     storeKey ?? "",

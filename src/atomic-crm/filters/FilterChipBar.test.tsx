@@ -44,7 +44,7 @@ describe("FilterChipBar", () => {
   ];
 
   beforeEach(() => {
-    vi.resetAllMocks();
+    vi.clearAllMocks();
     mockHookReturn = {
       chips: [...defaultChips],
       removeFilter: mockRemoveFilter,

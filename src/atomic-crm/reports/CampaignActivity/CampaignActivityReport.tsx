@@ -75,7 +75,6 @@ export default function CampaignActivityReport() {
     isLoadingCampaigns,
     isLoadingActivities,
     staleOpportunities: staleOpportunitiesData,
-    isLoadingStaleOpportunities,
   } = useCampaignActivityData({
     selectedCampaign,
     dateRange,

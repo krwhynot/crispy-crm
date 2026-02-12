@@ -43,7 +43,13 @@ describe("Product Filtering - Unit Tests", () => {
 
     // Additional tests for other resources to ensure view/table duality works
     describe("view/table duality for all summary-enabled resources", () => {
-      const resourcesWithSummaryViews = ["organizations", "contacts", "opportunities", "products"];
+      const resourcesWithSummaryViews = [
+        "organizations",
+        "contacts",
+        "opportunities",
+        "products",
+        "activities",
+      ];
 
       resourcesWithSummaryViews.forEach((resource) => {
         it(`${resource}: uses _summary view for list, base table for writes`, () => {
@@ -60,7 +66,7 @@ describe("Product Filtering - Unit Tests", () => {
     });
 
     describe("resources without summary views", () => {
-      const resourcesWithoutSummary = ["activities", "tasks", "notes", "tags", "segments"];
+      const resourcesWithoutSummary = ["tasks", "notes", "tags", "segments"];
 
       resourcesWithoutSummary.forEach((resource) => {
         it(`${resource}: uses base table for all operations`, () => {

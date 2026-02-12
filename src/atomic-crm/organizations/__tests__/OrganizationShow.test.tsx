@@ -105,7 +105,7 @@ import { useShowContext } from "ra-core";
 
 describe("OrganizationShow", () => {
   beforeEach(() => {
-    vi.resetAllMocks();
+    vi.clearAllMocks();
   });
 
   test("renders loading state", () => {
@@ -214,7 +214,7 @@ describe("OrganizationShow", () => {
       });
 
       unmount();
-      vi.resetAllMocks();
+      vi.clearAllMocks();
     }
   });
 
@@ -257,7 +257,7 @@ describe("OrganizationShow", () => {
       });
 
       unmount();
-      vi.resetAllMocks();
+      vi.clearAllMocks();
     }
   });
 

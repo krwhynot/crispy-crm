@@ -55,7 +55,7 @@ describe("createOpportunitiesHandler", () => {
   let handler: DataProvider;
 
   beforeEach(() => {
-    vi.resetAllMocks();
+    vi.clearAllMocks();
     mockCreateWithProducts.mockReset();
     mockUpdateWithProducts.mockReset();
 

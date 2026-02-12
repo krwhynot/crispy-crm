@@ -2,21 +2,18 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import { screen, waitFor } from "@testing-library/react";
 import { renderWithAdminContext } from "@/tests/utils/render-admin";
 import userEvent from "@testing-library/user-event";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { MemoryRouter } from "react-router-dom";
 import { ActivityNoteForm } from "../ActivityNoteForm";
 import { useDataProvider, useGetList, useRefresh } from "ra-core";
 import { useQueryClient } from "@tanstack/react-query";
 import { useSafeNotify } from "@/atomic-crm/hooks/useSafeNotify";
 import { usePipelineConfig } from "../../root/ConfigurationContext";
 import { mockUseGetListReturn } from "@/tests/utils/typed-mocks";
-import type * as RaCore from "ra-core";
-import type * as ReactQuery from "@tanstack/react-query";
 import type { Opportunity, Contact } from "../../types";
 
 // Mock dependencies
 vi.mock("ra-core", async (importOriginal) => {
-  const actual = await importOriginal<typeof RaCore>();
+  // eslint-disable-next-line @typescript-eslint/consistent-type-imports -- typeof import() required in vi.mock factory (runs before static imports)
+  const actual = (await importOriginal()) as typeof import("ra-core");
   return {
     ...actual,
     useDataProvider: vi.fn(),
@@ -26,7 +23,8 @@ vi.mock("ra-core", async (importOriginal) => {
 });
 
 vi.mock("@tanstack/react-query", async (importOriginal) => {
-  const actual = await importOriginal<typeof ReactQuery>();
+  // eslint-disable-next-line @typescript-eslint/consistent-type-imports -- typeof import() required in vi.mock factory (runs before static imports)
+  const actual = (await importOriginal()) as typeof import("@tanstack/react-query");
   return {
     ...actual,
     useQueryClient: vi.fn(),
@@ -35,21 +33,6 @@ vi.mock("@tanstack/react-query", async (importOriginal) => {
 
 vi.mock("@/atomic-crm/hooks/useSafeNotify");
 vi.mock("../../root/ConfigurationContext");
-
-// Test wrapper
-const TestWrapper = ({ children }: { children: React.ReactNode }) => {
-  const queryClient = new QueryClient({
-    defaultOptions: {
-      queries: { retry: false },
-      mutations: { retry: false },
-    },
-  });
-  return (
-    <QueryClientProvider client={queryClient}>
-      <MemoryRouter>{children}</MemoryRouter>
-    </QueryClientProvider>
-  );
-};
 
 describe("ActivityNoteForm - Quick Add Type Filtering", () => {
   const mockDataProvider = {
@@ -97,7 +80,7 @@ describe("ActivityNoteForm - Quick Add Type Filtering", () => {
   ];
 
   beforeEach(() => {
-    vi.resetAllMocks();
+    vi.clearAllMocks();
 
     (useDataProvider as ReturnType<typeof vi.fn>).mockReturnValue(mockDataProvider);
     (useRefresh as ReturnType<typeof vi.fn>).mockReturnValue(vi.fn());
@@ -115,11 +98,7 @@ describe("ActivityNoteForm - Quick Add Type Filtering", () => {
   });
 
   it("should NOT show Sample type in Quick Add dropdown (WG-001)", async () => {
-    renderWithAdminContext(
-      <TestWrapper>
-        <ActivityNoteForm opportunity={testOpportunity} />
-      </TestWrapper>
-    );
+    renderWithAdminContext(<ActivityNoteForm opportunity={testOpportunity} />);
 
     const typeSelect = screen.getByRole("combobox", { name: /type/i });
     expect(typeSelect).toBeInTheDocument();
@@ -132,11 +111,7 @@ describe("ActivityNoteForm - Quick Add Type Filtering", () => {
   });
 
   it("should NOT show Administrative type in Quick Add dropdown", async () => {
-    renderWithAdminContext(
-      <TestWrapper>
-        <ActivityNoteForm opportunity={testOpportunity} />
-      </TestWrapper>
-    );
+    renderWithAdminContext(<ActivityNoteForm opportunity={testOpportunity} />);
 
     const typeSelect = screen.getByRole("combobox", { name: /type/i });
     await userEvent.click(typeSelect);
@@ -147,11 +122,7 @@ describe("ActivityNoteForm - Quick Add Type Filtering", () => {
   });
 
   it("should NOT show Other type in Quick Add dropdown", async () => {
-    renderWithAdminContext(
-      <TestWrapper>
-        <ActivityNoteForm opportunity={testOpportunity} />
-      </TestWrapper>
-    );
+    renderWithAdminContext(<ActivityNoteForm opportunity={testOpportunity} />);
 
     const typeSelect = screen.getByRole("combobox", { name: /type/i });
     await userEvent.click(typeSelect);
@@ -162,11 +133,7 @@ describe("ActivityNoteForm - Quick Add Type Filtering", () => {
   });
 
   it("should show standard interaction types (Call, Email, Meeting, etc.)", async () => {
-    renderWithAdminContext(
-      <TestWrapper>
-        <ActivityNoteForm opportunity={testOpportunity} />
-      </TestWrapper>
-    );
+    renderWithAdminContext(<ActivityNoteForm opportunity={testOpportunity} />);
 
     const typeSelect = screen.getByRole("combobox", { name: /type/i });
     await userEvent.click(typeSelect);
@@ -192,11 +159,7 @@ describe("ActivityNoteForm - Quick Add Type Filtering", () => {
       },
     });
 
-    renderWithAdminContext(
-      <TestWrapper>
-        <ActivityNoteForm opportunity={testOpportunity} />
-      </TestWrapper>
-    );
+    renderWithAdminContext(<ActivityNoteForm opportunity={testOpportunity} />);
 
     const typeSelect = screen.getByRole("combobox", { name: /type/i });
     await userEvent.click(typeSelect);
@@ -235,11 +198,7 @@ describe("ActivityNoteForm - Quick Add Type Filtering", () => {
       },
     });
 
-    renderWithAdminContext(
-      <TestWrapper>
-        <ActivityNoteForm opportunity={testOpportunity} />
-      </TestWrapper>
-    );
+    renderWithAdminContext(<ActivityNoteForm opportunity={testOpportunity} />);
 
     const typeSelect = screen.getByRole("combobox", { name: /type/i });
     await userEvent.click(typeSelect);
@@ -269,11 +228,7 @@ describe("ActivityNoteForm - Quick Add Type Filtering", () => {
       data: { id: 999, type: "call", subject: "Test" },
     });
 
-    renderWithAdminContext(
-      <TestWrapper>
-        <ActivityNoteForm opportunity={testOpportunity} />
-      </TestWrapper>
-    );
+    renderWithAdminContext(<ActivityNoteForm opportunity={testOpportunity} />);
 
     const typeSelect = screen.getByRole("combobox", { name: /type/i });
     await userEvent.click(typeSelect);

@@ -9,11 +9,6 @@
  */
 
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { screen, waitFor, fireEvent } from "@testing-library/react";
-import { userEvent } from "@testing-library/user-event";
-import type { QueryClient } from "@tanstack/react-query";
-import { renderWithAdminContext } from "@/tests/utils/render-admin";
-import { OrganizationRightPanel } from "../slideOverTabs/OrganizationRightPanel";
 import { organizationKeys, segmentKeys } from "@/atomic-crm/queryKeys";
 import type { OrganizationWithHierarchy } from "../../types";
 
@@ -48,25 +43,9 @@ const mockOrganization: OrganizationWithHierarchy = {
   children: [],
 };
 
-/**
- * Helper to get form inputs in edit mode
- */
-function getEditForm() {
-  return screen.getByRole("form", { hidden: true });
-}
-
 describe("OrganizationRightPanel - Cache Invalidation", () => {
-  let mockQueryClient: QueryClient;
-  let invalidateQueriesSpy: ReturnType<typeof vi.fn>;
-  let refetchQueriesSpy: ReturnType<typeof vi.fn>;
-
   beforeEach(() => {
-    // Reset all mocks
-    vi.resetAllMocks();
-
-    // Setup custom mock for queryClient
-    invalidateQueriesSpy = vi.fn();
-    refetchQueriesSpy = vi.fn();
+    vi.clearAllMocks();
   });
 
   afterEach(() => {

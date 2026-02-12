@@ -2,18 +2,15 @@ import { describe, it, expect, vi, beforeEach, beforeAll, type Mock } from "vite
 import { screen, waitFor, fireEvent } from "@testing-library/react";
 import { renderWithAdminContext } from "@/tests/utils/render-admin";
 import userEvent from "@testing-library/user-event";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { MemoryRouter } from "react-router-dom";
 import { QuickAddForm } from "../QuickAddForm";
 import { useQuickAdd } from "../useQuickAdd";
 import { useGetList, useGetIdentity, useDataProvider, useNotify } from "ra-core";
-import type * as RaCore from "ra-core";
-import { selectCityAndVerifyState } from "@/tests/utils/combobox";
 
 // Mock the external dependencies
 vi.mock("../useQuickAdd");
 vi.mock("ra-core", async (importOriginal) => {
-  const actual = await importOriginal<typeof RaCore>();
+  // eslint-disable-next-line @typescript-eslint/consistent-type-imports -- typeof import() required in vi.mock factory (runs before static imports)
+  const actual = (await importOriginal()) as typeof import("ra-core");
   return {
     ...actual,
     useGetList: vi.fn(),
@@ -33,21 +30,6 @@ const mockLocalStorage = {
   key: vi.fn(),
 };
 Object.defineProperty(window, "localStorage", { value: mockLocalStorage });
-
-// Test wrapper component - includes MemoryRouter for React Admin Form component
-const TestWrapper = ({ children }: { children: React.ReactNode }) => {
-  const queryClient = new QueryClient({
-    defaultOptions: {
-      queries: { retry: false },
-      mutations: { retry: false },
-    },
-  });
-  return (
-    <QueryClientProvider client={queryClient}>
-      <MemoryRouter>{children}</MemoryRouter>
-    </QueryClientProvider>
-  );
-};
 
 describe("QuickAddForm", () => {
   beforeAll(() => {
@@ -83,7 +65,7 @@ describe("QuickAddForm", () => {
   ];
 
   beforeEach(() => {
-    vi.resetAllMocks();
+    vi.clearAllMocks();
 
     // Setup default mocks
     (useQuickAdd as Mock).mockReturnValue({
@@ -141,11 +123,7 @@ describe("QuickAddForm", () => {
     // Clear localStorage to prevent pre-selection
     mockLocalStorage.getItem.mockImplementation(() => null);
 
-    renderWithAdminContext(
-      <TestWrapper>
-        <QuickAddForm onSuccess={mockOnSuccess} />
-      </TestWrapper>
-    );
+    renderWithAdminContext(<QuickAddForm onSuccess={mockOnSuccess} />);
 
     // Opportunity Details section (required fields)
     expect(screen.getByText("Organization")).toBeInTheDocument();
@@ -190,11 +168,7 @@ describe("QuickAddForm", () => {
   });
 
   it("pre-fills from localStorage", () => {
-    renderWithAdminContext(
-      <TestWrapper>
-        <QuickAddForm onSuccess={mockOnSuccess} />
-      </TestWrapper>
-    );
+    renderWithAdminContext(<QuickAddForm onSuccess={mockOnSuccess} />);
 
     const campaignInput = screen.getByLabelText(/campaign/i) as HTMLInputElement;
     expect(campaignInput.value).toBe("Test Campaign");
@@ -212,11 +186,7 @@ describe("QuickAddForm", () => {
       options.onSuccess();
     });
 
-    renderWithAdminContext(
-      <TestWrapper>
-        <QuickAddForm onSuccess={mockOnSuccess} />
-      </TestWrapper>
-    );
+    renderWithAdminContext(<QuickAddForm onSuccess={mockOnSuccess} />);
 
     // Fill contact info (optional but verifies reset behavior)
     await user.type(screen.getByLabelText(/first name/i), "John");
@@ -235,11 +205,7 @@ describe("QuickAddForm", () => {
     // Similar to Save & Add Another - test button behavior rather than full form flow
     const user = userEvent.setup({ delay: null });
 
-    renderWithAdminContext(
-      <TestWrapper>
-        <QuickAddForm onSuccess={mockOnSuccess} />
-      </TestWrapper>
-    );
+    renderWithAdminContext(<QuickAddForm onSuccess={mockOnSuccess} />);
 
     // Verify Save & Close button is present and clickable
     const saveCloseButton = screen.getByRole("button", { name: /save & close/i });
@@ -264,11 +230,7 @@ describe("QuickAddForm", () => {
       return null;
     });
 
-    renderWithAdminContext(
-      <TestWrapper>
-        <QuickAddForm onSuccess={mockOnSuccess} />
-      </TestWrapper>
-    );
+    renderWithAdminContext(<QuickAddForm onSuccess={mockOnSuccess} />);
 
     // Initially should show message to select principal
     expect(screen.getByText(/select a principal first to filter products/i)).toBeInTheDocument();
@@ -280,17 +242,13 @@ describe("QuickAddForm", () => {
     // Set localStorage to have no pre-filled values
     mockLocalStorage.getItem.mockImplementation(() => null);
 
-    // Mock useGetIdentity to not return a default user
+    // Provide valid identity so the form renders past the skeleton guard
     (useGetIdentity as Mock).mockReturnValue({
-      data: null,
+      data: { id: 100, fullName: "John Sales" },
       isLoading: false,
     });
 
-    renderWithAdminContext(
-      <TestWrapper>
-        <QuickAddForm onSuccess={mockOnSuccess} />
-      </TestWrapper>
-    );
+    renderWithAdminContext(<QuickAddForm onSuccess={mockOnSuccess} />);
 
     // Try to submit empty form
     await user.click(screen.getByRole("button", { name: /save & close/i }));
@@ -307,11 +265,7 @@ describe("QuickAddForm", () => {
   it("handles Cancel button correctly", async () => {
     const user = userEvent.setup();
 
-    renderWithAdminContext(
-      <TestWrapper>
-        <QuickAddForm onSuccess={mockOnSuccess} />
-      </TestWrapper>
-    );
+    renderWithAdminContext(<QuickAddForm onSuccess={mockOnSuccess} />);
 
     await user.click(screen.getByRole("button", { name: /cancel/i }));
 
@@ -325,11 +279,7 @@ describe("QuickAddForm", () => {
       isPending: true,
     });
 
-    renderWithAdminContext(
-      <TestWrapper>
-        <QuickAddForm onSuccess={mockOnSuccess} />
-      </TestWrapper>
-    );
+    renderWithAdminContext(<QuickAddForm onSuccess={mockOnSuccess} />);
 
     expect(screen.getByRole("button", { name: /cancel/i })).toBeDisabled();
     expect(screen.getByRole("button", { name: /save & add another/i })).toBeDisabled();
@@ -337,11 +287,7 @@ describe("QuickAddForm", () => {
   });
 
   it("shows opportunity name preview placeholder initially", () => {
-    renderWithAdminContext(
-      <TestWrapper>
-        <QuickAddForm onSuccess={mockOnSuccess} />
-      </TestWrapper>
-    );
+    renderWithAdminContext(<QuickAddForm onSuccess={mockOnSuccess} />);
 
     // Initially shows placeholder text when no org/principal selected
     expect(screen.getByText("Select organization and principal")).toBeInTheDocument();
@@ -351,11 +297,7 @@ describe("QuickAddForm", () => {
   });
 
   it("defaults account manager to current user", async () => {
-    renderWithAdminContext(
-      <TestWrapper>
-        <QuickAddForm onSuccess={mockOnSuccess} />
-      </TestWrapper>
-    );
+    renderWithAdminContext(<QuickAddForm onSuccess={mockOnSuccess} />);
 
     // Account Manager dropdown should show current user (from useGetIdentity mock)
     // The useGetIdentity returns { id: 100 } and salesList has { id: 100, name: "John Sales" }
@@ -454,7 +396,7 @@ describe("QuickAddForm - Principal Selection and Product Filtering", () => {
   };
 
   beforeEach(() => {
-    vi.resetAllMocks();
+    vi.clearAllMocks();
 
     (useQuickAdd as Mock).mockReturnValue({
       mutate: mockMutate,
@@ -506,11 +448,7 @@ describe("QuickAddForm - Principal Selection and Product Filtering", () => {
   };
 
   it("displays principal dropdown with all available principals", async () => {
-    renderWithAdminContext(
-      <TestWrapper>
-        <QuickAddForm onSuccess={mockOnSuccess} />
-      </TestWrapper>
-    );
+    renderWithAdminContext(<QuickAddForm onSuccess={mockOnSuccess} />);
 
     // Find principal dropdown by its accessible name (label)
     const principalTrigger = screen.getByRole("combobox", { name: /principal/i });
@@ -525,11 +463,7 @@ describe("QuickAddForm - Principal Selection and Product Filtering", () => {
   });
 
   it("selects a principal and updates the form state", async () => {
-    renderWithAdminContext(
-      <TestWrapper>
-        <QuickAddForm onSuccess={mockOnSuccess} />
-      </TestWrapper>
-    );
+    renderWithAdminContext(<QuickAddForm onSuccess={mockOnSuccess} />);
 
     // Initially products should be disabled
     expect(screen.getByText(/select a principal first/i)).toBeInTheDocument();
@@ -553,11 +487,7 @@ describe("QuickAddForm - Principal Selection and Product Filtering", () => {
   });
 
   it("fetches products with correct filter after principal selection", async () => {
-    renderWithAdminContext(
-      <TestWrapper>
-        <QuickAddForm onSuccess={mockOnSuccess} />
-      </TestWrapper>
-    );
+    renderWithAdminContext(<QuickAddForm onSuccess={mockOnSuccess} />);
 
     // Open principal dropdown and select "Acme Corp" (id: 1)
     const principalTrigger = screen.getByRole("combobox", { name: /principal/i });
@@ -582,11 +512,7 @@ describe("QuickAddForm - Principal Selection and Product Filtering", () => {
   });
 
   it("shows correct products for selected principal", async () => {
-    renderWithAdminContext(
-      <TestWrapper>
-        <QuickAddForm onSuccess={mockOnSuccess} />
-      </TestWrapper>
-    );
+    renderWithAdminContext(<QuickAddForm onSuccess={mockOnSuccess} />);
 
     // Select "Beta Industries" (id: 2)
     const principalTrigger = screen.getByRole("combobox", { name: /principal/i });
@@ -611,11 +537,7 @@ describe("QuickAddForm - Principal Selection and Product Filtering", () => {
   });
 
   it("updates products when switching principals", async () => {
-    renderWithAdminContext(
-      <TestWrapper>
-        <QuickAddForm onSuccess={mockOnSuccess} />
-      </TestWrapper>
-    );
+    renderWithAdminContext(<QuickAddForm onSuccess={mockOnSuccess} />);
 
     const principalTrigger = screen.getByRole("combobox", { name: /principal/i });
 
@@ -638,7 +560,7 @@ describe("QuickAddForm - Principal Selection and Product Filtering", () => {
     );
 
     // Clear mock call history to track new calls
-    vi.resetAllMocks();
+    vi.clearAllMocks();
     setupFilterAwareMock(); // Re-setup the mock
 
     // Second: Switch to "Beta Industries"
@@ -661,11 +583,7 @@ describe("QuickAddForm - Principal Selection and Product Filtering", () => {
   });
 
   it("handles principal with no products gracefully", async () => {
-    renderWithAdminContext(
-      <TestWrapper>
-        <QuickAddForm onSuccess={mockOnSuccess} />
-      </TestWrapper>
-    );
+    renderWithAdminContext(<QuickAddForm onSuccess={mockOnSuccess} />);
 
     // Select "Empty Principal" (id: 3) which has no products
     const principalTrigger = screen.getByRole("combobox", { name: /principal/i });
@@ -691,11 +609,7 @@ describe("QuickAddForm - Principal Selection and Product Filtering", () => {
   });
 
   it("persists principal selection after selecting it", async () => {
-    renderWithAdminContext(
-      <TestWrapper>
-        <QuickAddForm onSuccess={mockOnSuccess} />
-      </TestWrapper>
-    );
+    renderWithAdminContext(<QuickAddForm onSuccess={mockOnSuccess} />);
 
     // Select principal
     const principalTrigger = screen.getByRole("combobox", { name: /principal/i });

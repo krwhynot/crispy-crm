@@ -1,13 +1,17 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { screen } from "@testing-library/react";
 import { renderWithAdminContext } from "@/tests/utils/render-admin";
-import { MemoryRouter } from "react-router-dom";
 import ReportsPage from "./ReportsPage";
 
 // Mock ra-core hooks (used by GlobalFilterBar)
-vi.mock("ra-core", () => ({
-  useGetList: vi.fn(),
-}));
+vi.mock("ra-core", async () => {
+  // eslint-disable-next-line @typescript-eslint/consistent-type-imports -- typeof import() required in vi.mock factory
+  const actual = (await vi.importActual("ra-core")) as typeof import("ra-core");
+  return {
+    ...actual,
+    useGetList: vi.fn(),
+  };
+});
 
 import { useGetList } from "ra-core";
 
@@ -18,26 +22,18 @@ const mockSalesReps = [
 
 describe("ReportsPage", () => {
   beforeEach(() => {
-    vi.resetAllMocks();
+    vi.clearAllMocks();
     vi.mocked(useGetList).mockReturnValue({ data: mockSalesReps, isPending: false });
   });
 
   it("renders page title", () => {
-    renderWithAdminContext(
-      <MemoryRouter>
-        <ReportsPage />
-      </MemoryRouter>
-    );
+    renderWithAdminContext(<ReportsPage />);
 
     expect(screen.getByText("Reports & Analytics")).toBeInTheDocument();
   });
 
   it("renders all tabs", () => {
-    renderWithAdminContext(
-      <MemoryRouter>
-        <ReportsPage />
-      </MemoryRouter>
-    );
+    renderWithAdminContext(<ReportsPage />);
 
     expect(screen.getByRole("tab", { name: /overview/i })).toBeInTheDocument();
     expect(screen.getByRole("tab", { name: /^opportunities$/i })).toBeInTheDocument();
@@ -46,22 +42,14 @@ describe("ReportsPage", () => {
   });
 
   it("defaults to overview tab", () => {
-    renderWithAdminContext(
-      <MemoryRouter>
-        <ReportsPage />
-      </MemoryRouter>
-    );
+    renderWithAdminContext(<ReportsPage />);
 
     const overviewTab = screen.getByRole("tab", { name: /overview/i });
     expect(overviewTab).toHaveAttribute("data-state", "active");
   });
 
   it("uses desktop-first responsive tabs", () => {
-    renderWithAdminContext(
-      <MemoryRouter>
-        <ReportsPage />
-      </MemoryRouter>
-    );
+    renderWithAdminContext(<ReportsPage />);
 
     const tabList = screen.getByRole("tablist");
     expect(tabList).toHaveClass("grid-cols-2");
@@ -69,11 +57,7 @@ describe("ReportsPage", () => {
   });
 
   it("does not render GlobalFilterBar (filters moved to tabs)", () => {
-    renderWithAdminContext(
-      <MemoryRouter>
-        <ReportsPage />
-      </MemoryRouter>
-    );
+    renderWithAdminContext(<ReportsPage />);
 
     // GlobalFilterBar had date range label - should not exist at page level
     // Only individual tabs should have filter bars
@@ -81,11 +65,7 @@ describe("ReportsPage", () => {
   });
 
   it("uses Skeleton for tab loading states", () => {
-    renderWithAdminContext(
-      <MemoryRouter>
-        <ReportsPage />
-      </MemoryRouter>
-    );
+    renderWithAdminContext(<ReportsPage />);
 
     // Should show Skeleton components (with data-slot), not plain text "Loading..."
     expect(screen.queryByText("Loading...")).not.toBeInTheDocument();

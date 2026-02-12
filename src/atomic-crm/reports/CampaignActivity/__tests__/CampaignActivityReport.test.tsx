@@ -118,7 +118,7 @@ const createMockDataProviderWithActivities = (
 
 describe("CampaignActivityReport", () => {
   beforeEach(() => {
-    vi.resetAllMocks();
+    vi.clearAllMocks();
   });
 
   describe("Activity Grouping Logic", () => {

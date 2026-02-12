@@ -54,7 +54,7 @@ const mockProducts: Product[] = [
 
 describe("useFilteredProducts", () => {
   beforeEach(() => {
-    vi.resetAllMocks();
+    vi.clearAllMocks();
   });
 
   describe("when principalId is not provided", () => {
@@ -208,7 +208,7 @@ describe("useFilteredProducts", () => {
         expect.any(Object)
       );
 
-      vi.resetAllMocks();
+      vi.clearAllMocks();
 
       // Rerender with different principal
       rerender({ principalId: 200 });

@@ -13,7 +13,7 @@ describe("Unified Data Provider - Real Schema Tests", () => {
   });
 
   afterEach(() => {
-    vi.resetAllMocks();
+    vi.clearAllMocks();
   });
 
   describe("contacts_summary view queries", () => {

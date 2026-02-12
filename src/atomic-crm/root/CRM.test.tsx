@@ -1,17 +1,7 @@
-import { describe, it, expect, beforeEach } from "vitest";
+import { describe, it, expect } from "vitest";
 import { QueryClient } from "@tanstack/react-query";
-import { CRM } from "./CRM";
 
 describe("CRM QueryClient Configuration", () => {
-  let queryClient: QueryClient;
-
-  beforeEach(() => {
-    // Access the queryClient instance used by CRM
-    // Since queryClient is created at module level, we need to render CRM
-    // and then access the QueryClient through the React Query context
-    // For now, we'll test the configuration directly
-  });
-
   it("should disable refetchOnWindowFocus to prevent API storms", () => {
     // Test the default configuration that will be used
     const testQueryClient = new QueryClient({

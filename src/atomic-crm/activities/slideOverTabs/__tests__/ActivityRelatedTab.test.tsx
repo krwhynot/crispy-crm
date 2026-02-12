@@ -88,7 +88,7 @@ describe("ActivityRelatedTab", () => {
     }) as ActivityRecord;
 
   beforeEach(() => {
-    vi.resetAllMocks();
+    vi.clearAllMocks();
   });
 
   describe("Empty State", () => {

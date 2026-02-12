@@ -2,7 +2,6 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import { screen, fireEvent, waitFor } from "@testing-library/react";
 import { renderWithAdminContext } from "@/tests/utils/render-admin";
 import { TutorialProvider, useTutorial } from "../TutorialProvider";
-import { MemoryRouter } from "react-router-dom";
 import { driver as driverMock } from "driver.js";
 
 // Mock driver.js - the mock function must be defined inside the factory
@@ -54,17 +53,15 @@ function TestConsumer() {
 
 function renderWithProvider() {
   return renderWithAdminContext(
-    <MemoryRouter>
-      <TutorialProvider>
-        <TestConsumer />
-      </TutorialProvider>
-    </MemoryRouter>
+    <TutorialProvider>
+      <TestConsumer />
+    </TutorialProvider>
   );
 }
 
 describe("TutorialProvider", () => {
   beforeEach(() => {
-    vi.resetAllMocks();
+    vi.clearAllMocks();
   });
 
   it("should provide tutorial context to children", () => {

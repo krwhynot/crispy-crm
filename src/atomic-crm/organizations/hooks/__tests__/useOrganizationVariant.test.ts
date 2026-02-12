@@ -25,7 +25,7 @@ vi.mock("react-admin", () => ({
 
 describe("useOrganizationVariant", () => {
   beforeEach(() => {
-    vi.resetAllMocks();
+    vi.clearAllMocks();
   });
 
   it("detects quickCreate variant from URL path", () => {

@@ -447,7 +447,7 @@ describe("ProductList", () => {
   };
 
   beforeEach(() => {
-    vi.resetAllMocks();
+    vi.clearAllMocks();
     mockOpenSlideOver.mockClear();
     mockCloseSlideOver.mockClear();
     mockToggleMode.mockClear();
@@ -555,7 +555,7 @@ describe("ProductList 5-column structure", () => {
    */
 
   beforeEach(() => {
-    vi.resetAllMocks();
+    vi.clearAllMocks();
     sortableColumns.length = 0;
 
     vi.mocked(useGetList).mockReturnValue({
@@ -611,8 +611,8 @@ describe("ProductList 5-column structure", () => {
       expect(screen.getByTestId("function-field-Category")).toBeInTheDocument();
       expect(screen.getByTestId("function-field-Status")).toBeInTheDocument();
 
-      // ReferenceField for Principal
-      expect(screen.getByTestId("ref-field-principal_id")).toBeInTheDocument();
+      // TextField for Principal (uses principal_name from summary view)
+      expect(screen.getByTestId("text-field-principal_name")).toBeInTheDocument();
 
       // FunctionField for Certifications
       expect(screen.getByTestId("function-field-Certifications")).toBeInTheDocument();
@@ -631,7 +631,7 @@ describe("ProductList column sorting configuration", () => {
    */
 
   beforeEach(() => {
-    vi.resetAllMocks();
+    vi.clearAllMocks();
     sortableColumns.length = 0;
 
     vi.mocked(useGetList).mockReturnValue({
@@ -710,9 +710,9 @@ describe("ProductList column sorting configuration", () => {
     renderWithAdminContext(<ProductList />);
 
     await waitFor(() => {
-      const principalField = screen.getByTestId("ref-field-principal_id");
+      const principalField = screen.getByTestId("text-field-principal_name");
       expect(principalField).toHaveAttribute("data-sortable", "true");
-      expect(principalField).toHaveAttribute("data-sort-by", "principal_id");
+      expect(principalField).toHaveAttribute("data-sort-by", "principal_name");
     });
   });
 
@@ -735,7 +735,7 @@ describe("ProductList badge components", () => {
    */
 
   beforeEach(() => {
-    vi.resetAllMocks();
+    vi.clearAllMocks();
     sortableColumns.length = 0;
 
     vi.mocked(useGetList).mockReturnValue({

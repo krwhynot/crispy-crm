@@ -50,7 +50,7 @@ function buildProduct(overrides: Partial<Product> = {}): Product {
 
 describe("ProductShow", () => {
   beforeEach(() => {
-    vi.resetAllMocks();
+    vi.clearAllMocks();
   });
 
   describe("Loading and empty states", () => {

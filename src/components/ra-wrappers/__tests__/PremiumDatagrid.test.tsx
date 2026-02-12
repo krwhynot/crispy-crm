@@ -93,7 +93,7 @@ vi.mock("@/lib/utils", () => ({
 
 describe("PremiumDatagrid", () => {
   beforeEach(() => {
-    vi.resetAllMocks();
+    vi.clearAllMocks();
   });
 
   describe("Row Click", () => {

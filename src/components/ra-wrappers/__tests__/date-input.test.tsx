@@ -61,7 +61,7 @@ const FormWrapper = ({
 
 describe("DateInput", () => {
   beforeEach(() => {
-    vi.resetAllMocks();
+    vi.clearAllMocks();
   });
 
   describe("Rendering", () => {
@@ -204,9 +204,11 @@ describe("DateInput", () => {
       const user = userEvent.setup();
       const onSubmit = vi.fn();
 
-      // Use current year to avoid calendar navigation issues
-      const currentYear = new Date().getFullYear();
-      const testDate = `${currentYear}-01-01`;
+      // Use current year and month to avoid calendar navigation issues
+      const now = new Date();
+      const currentYear = now.getFullYear();
+      const currentMonth = String(now.getMonth() + 1).padStart(2, "0");
+      const testDate = `${currentYear}-${currentMonth}-01`;
 
       renderWithAdminContext(
         <FormWrapper onSubmit={onSubmit} defaultValues={{ activity_date: testDate }}>
@@ -236,8 +238,8 @@ describe("DateInput", () => {
       await waitFor(() => {
         expect(onSubmit).toHaveBeenCalledWith(
           expect.objectContaining({
-            // Verify date is in YYYY-MM-DD format with day 15 in the current year
-            activity_date: expect.stringMatching(new RegExp(`${currentYear}-01-15`)),
+            // Verify date is in YYYY-MM-DD format with day 15 in the current month
+            activity_date: expect.stringMatching(new RegExp(`${currentYear}-${currentMonth}-15`)),
           }),
           expect.anything()
         );

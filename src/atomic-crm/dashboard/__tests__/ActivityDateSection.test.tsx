@@ -9,9 +9,13 @@ vi.mock("@/components/ui/popover", () => ({
   Popover: ({ children }: { children: React.ReactNode }) => (
     <div data-testid="popover">{children}</div>
   ),
-  PopoverTrigger: ({ children, asChild }: { children: React.ReactNode; asChild?: boolean }) => (
-    <div data-testid="popover-trigger">{children}</div>
-  ),
+  PopoverTrigger: ({
+    children,
+    asChild: _asChild,
+  }: {
+    children: React.ReactNode;
+    asChild?: boolean;
+  }) => <div data-testid="popover-trigger">{children}</div>,
   PopoverContent: ({ children, align }: { children: React.ReactNode; align?: string }) => (
     <div data-testid="popover-content" data-align={align}>
       {children}
@@ -24,7 +28,7 @@ const mockOnSelect = vi.fn();
 vi.mock("@/components/ui/calendar", () => ({
   Calendar: ({
     mode,
-    selected,
+    selected: _selected,
     onSelect,
     disabled,
     initialFocus,
@@ -69,27 +73,6 @@ vi.mock("@/components/ui/calendar", () => ({
 // Import component AFTER mocks are set up
 import { ActivityDateSection } from "../ActivityDateSection";
 
-// Test wrapper that provides form context
-function TestWrapper({
-  children,
-  defaultValues,
-}: {
-  children: React.ReactNode;
-  defaultValues?: Partial<ActivityLogInput>;
-}) {
-  const methods = useForm<ActivityLogInput>({
-    defaultValues: {
-      date: undefined,
-      activityType: "Call",
-      outcome: "Connected",
-      notes: "",
-      ...defaultValues,
-    },
-  });
-
-  return <FormProvider {...methods}>{children}</FormProvider>;
-}
-
 // Wrapper component that exposes form methods for testing
 function TestWrapperWithControl({
   defaultValues,
@@ -126,7 +109,7 @@ function TestWrapperWithControl({
 
 describe("ActivityDateSection", () => {
   beforeEach(() => {
-    vi.resetAllMocks();
+    vi.clearAllMocks();
   });
 
   describe("Rendering", () => {
@@ -154,7 +137,9 @@ describe("ActivityDateSection", () => {
     });
 
     it("does not use text-muted-foreground when date is selected", () => {
-      renderWithAdminContext(<TestWrapperWithControl defaultValues={{ date: new Date("2025-01-10") }} />);
+      renderWithAdminContext(
+        <TestWrapperWithControl defaultValues={{ date: new Date("2025-01-10") }} />
+      );
 
       const triggerContainer = screen.getByTestId("popover-trigger");
       const button = triggerContainer.querySelector("button");

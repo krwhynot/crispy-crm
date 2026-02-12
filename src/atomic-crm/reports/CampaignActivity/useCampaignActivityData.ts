@@ -108,8 +108,14 @@ export function useCampaignActivityData(options: UseCampaignActivityDataOptions)
     [salesReps]
   );
 
-  const campaignOptions = reportStats?.campaign_options ?? [];
-  const salesRepOptions = reportStats?.sales_rep_options ?? [];
+  const campaignOptions = useMemo(
+    () => reportStats?.campaign_options ?? [],
+    [reportStats?.campaign_options]
+  );
+  const salesRepOptions = useMemo(
+    () => reportStats?.sales_rep_options ?? [],
+    [reportStats?.sales_rep_options]
+  );
   const activityTypeCounts = useMemo(
     () => new Map(Object.entries(reportStats?.activity_type_counts ?? {})),
     [reportStats?.activity_type_counts]

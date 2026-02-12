@@ -59,7 +59,7 @@ const createMockOpportunity = (overrides: Record<string, unknown> = {}) => ({
 
 describe("useKPIMetrics", () => {
   beforeEach(() => {
-    vi.resetAllMocks();
+    vi.clearAllMocks();
     currentSaleState.salesId = 42;
     currentSaleState.loading = false;
     currentSaleState.error = null;

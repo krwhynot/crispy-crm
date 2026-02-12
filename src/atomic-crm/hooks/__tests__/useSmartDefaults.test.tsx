@@ -15,7 +15,7 @@ vi.mock("react-admin", async (importOriginal) => {
 
 describe("useSmartDefaults", () => {
   beforeEach(() => {
-    vi.resetAllMocks();
+    vi.clearAllMocks();
   });
 
   describe("loading state", () => {

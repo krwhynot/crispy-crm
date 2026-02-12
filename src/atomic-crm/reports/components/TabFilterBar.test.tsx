@@ -5,9 +5,14 @@ import { TabFilterBar } from "./TabFilterBar";
 import { mockUseGetListReturn } from "@/tests/utils/typed-mocks";
 
 // Mock ra-core hooks
-vi.mock("ra-core", () => ({
-  useGetList: vi.fn(),
-}));
+vi.mock("ra-core", async () => {
+  // eslint-disable-next-line @typescript-eslint/consistent-type-imports -- typeof import() required in vi.mock factory
+  const actual = (await vi.importActual("ra-core")) as typeof import("ra-core");
+  return {
+    ...actual,
+    useGetList: vi.fn(),
+  };
+});
 
 import { useGetList } from "ra-core";
 
@@ -24,7 +29,7 @@ const mockSalesReps: SalesRep[] = [
 
 describe("TabFilterBar", () => {
   beforeEach(() => {
-    vi.resetAllMocks();
+    vi.clearAllMocks();
     vi.mocked(useGetList<SalesRep>).mockReturnValue(
       mockUseGetListReturn<SalesRep>({ data: mockSalesReps, isPending: false })
     );
@@ -44,7 +49,9 @@ describe("TabFilterBar", () => {
 
   it("renders sales rep selector when enabled", () => {
     const onChange = vi.fn();
-    renderWithAdminContext(<TabFilterBar showSalesRep salesRepId={null} onSalesRepChange={onChange} />);
+    renderWithAdminContext(
+      <TabFilterBar showSalesRep salesRepId={null} onSalesRepChange={onChange} />
+    );
 
     expect(screen.getByLabelText(/sales rep/i)).toBeInTheDocument();
   });

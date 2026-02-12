@@ -576,7 +576,7 @@ export function isAuthError(error: unknown): boolean {
  */
 export function sanitizeDatabaseError(
   message: string,
-  context?: ErrorContext
+  _context?: ErrorContext
 ): { field: string; message: string } | null {
   // Pattern: "null value in column 'X' of relation 'Y' violates not-null constraint"
   const notNullMatch = message.match(/null value in column '(\w+)'.*violates not-null constraint/i);

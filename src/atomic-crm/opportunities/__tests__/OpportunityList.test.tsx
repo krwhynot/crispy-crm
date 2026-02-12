@@ -87,7 +87,7 @@ describe("OpportunityListContent", () => {
 
   beforeEach(() => {
     // Reset all mocks
-    vi.resetAllMocks();
+    vi.clearAllMocks();
 
     // Setup default useListContext mock
     vi.mocked(useListContext).mockReturnValue(defaultListContext);
@@ -241,7 +241,7 @@ describe("OpportunityList localStorage persistence", () => {
       writable: true,
     });
 
-    vi.resetAllMocks();
+    vi.clearAllMocks();
   });
 
   test("persists stage filter preferences to localStorage", () => {

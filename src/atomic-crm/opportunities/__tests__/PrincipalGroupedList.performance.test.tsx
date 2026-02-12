@@ -1,12 +1,10 @@
 import { describe, it, expect, vi } from "vitest";
-import { fireEvent } from "@testing-library/react";
 import { renderWithAdminContext } from "@/tests/utils/render-admin";
 import { ListContextProvider } from "ra-core";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { createTestQueryClient } from "@/tests/setup";
 import { PrincipalGroupedList } from "../PrincipalGroupedList";
 import type { Opportunity } from "../../types";
-import { useState, useCallback } from "react";
 
 describe("PrincipalGroupedList - Performance", () => {
   it("is wrapped with React.memo", () => {

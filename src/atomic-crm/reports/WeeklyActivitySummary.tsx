@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback } from "react";
+import { useState, useMemo } from "react";
 import { useGetList, useGetIdentity, downloadCSV, useNotify } from "ra-core";
 import { getWeekRange } from "@/atomic-crm/utils";
 import jsonExport from "jsonexport/dist";

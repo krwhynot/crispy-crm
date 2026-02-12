@@ -133,7 +133,7 @@ const createMockPipelineRow = (
 
 describe("usePrincipalPipeline", () => {
   beforeEach(() => {
-    vi.resetAllMocks();
+    vi.clearAllMocks();
     currentSaleState.salesId = 42;
     currentSaleState.loading = false;
     currentSaleState.error = null;

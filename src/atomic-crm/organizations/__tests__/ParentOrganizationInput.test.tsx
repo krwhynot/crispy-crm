@@ -5,9 +5,8 @@
  * - Loading state while descendants fetch (race condition prevention)
  * - Self-exclusion from parent dropdown options
  * - Descendant exclusion from parent dropdown options
- * - Smart defaults (root orgs when search is empty)
- * - Name filtering when search text provided
  * - New record handling (create mode)
+ * - HierarchicalSelectInput prop configuration
  */
 
 import React from "react";
@@ -18,9 +17,14 @@ import { ParentOrganizationInput } from "../ParentOrganizationInput";
 
 // Mock ra-core - useRecordContext returns the current record
 const mockUseRecordContext = vi.fn();
-vi.mock("ra-core", () => ({
-  useRecordContext: () => mockUseRecordContext(),
-}));
+vi.mock("ra-core", async () => {
+  // eslint-disable-next-line @typescript-eslint/consistent-type-imports -- typeof import() required in vi.mock factory
+  const actual = (await vi.importActual("ra-core")) as typeof import("ra-core");
+  return {
+    ...actual,
+    useRecordContext: () => mockUseRecordContext(),
+  };
+});
 
 // Mock useOrganizationDescendants hook
 const mockUseOrganizationDescendants = vi.fn();
@@ -28,38 +32,35 @@ vi.mock("@/hooks", () => ({
   useOrganizationDescendants: (orgId: number | undefined) => mockUseOrganizationDescendants(orgId),
 }));
 
-// Mock ReferenceInput - capture props to verify filter configuration
-const mockReferenceInputProps = vi.fn();
-vi.mock("@/components/ra-wrappers/reference-input", () => ({
-  ReferenceInput: (props: { children?: React.ReactNode; filter?: Record<string, string> }) => {
-    mockReferenceInputProps(props);
+// Mock HierarchicalSelectInput - capture props to verify configuration
+const mockHierarchicalSelectInputProps = vi.fn();
+vi.mock("@/components/ra-wrappers/HierarchicalSelectInput", () => ({
+  HierarchicalSelectInput: (props: {
+    source?: string;
+    resource?: string;
+    label?: string;
+    helperText?: string;
+    excludeIds?: number[];
+    filter?: Record<string, unknown>;
+  }) => {
+    mockHierarchicalSelectInputProps(props);
     return (
-      <div data-testid="reference-input" data-filter={JSON.stringify(props.filter)}>
-        {props.children}
+      <div
+        data-testid="hierarchical-select-input"
+        data-source={props.source}
+        data-resource={props.resource}
+        data-exclude-ids={JSON.stringify(props.excludeIds)}
+      >
+        {props.label}
       </div>
     );
   },
 }));
 
-// Mock AutocompleteInput - capture props to verify filterToQuery behavior
-const mockAutocompleteInputProps = vi.fn();
-vi.mock("@/components/ra-wrappers/autocomplete-input", () => ({
-  AutocompleteInput: (props: Record<string, unknown>) => {
-    mockAutocompleteInputProps(props);
-    return <div data-testid="autocomplete-input" />;
-  },
-}));
-
-// Mock autocomplete defaults
-vi.mock("@/atomic-crm/utils/autocompleteDefaults", () => ({
-  AUTOCOMPLETE_DEBOUNCE_MS: 300,
-}));
-
 describe("ParentOrganizationInput", () => {
   beforeEach(() => {
-    vi.resetAllMocks();
-    mockReferenceInputProps.mockClear();
-    mockAutocompleteInputProps.mockClear();
+    vi.clearAllMocks();
+    mockHierarchicalSelectInputProps.mockClear();
   });
 
   describe("Loading state", () => {
@@ -77,10 +78,10 @@ describe("ParentOrganizationInput", () => {
       // Expect: Loading skeleton with "Loading hierarchy..." text
       expect(screen.getByText("Loading hierarchy...")).toBeInTheDocument();
       expect(screen.getByLabelText("Loading parent organization options")).toBeInTheDocument();
-      expect(screen.queryByTestId("reference-input")).not.toBeInTheDocument();
+      expect(screen.queryByTestId("hierarchical-select-input")).not.toBeInTheDocument();
     });
 
-    it("renders ReferenceInput after descendants are fetched", () => {
+    it("renders HierarchicalSelectInput after descendants are fetched", () => {
       // Given: existing record with descendants fetched
       mockUseRecordContext.mockReturnValue({ id: 5, parent_organization_id: null });
       mockUseOrganizationDescendants.mockReturnValue({
@@ -91,14 +92,14 @@ describe("ParentOrganizationInput", () => {
 
       renderWithAdminContext(<ParentOrganizationInput />);
 
-      // Expect: ReferenceInput rendered, no loading state
+      // Expect: HierarchicalSelectInput rendered, no loading state
       expect(screen.queryByText("Loading hierarchy...")).not.toBeInTheDocument();
-      expect(screen.getByTestId("reference-input")).toBeInTheDocument();
+      expect(screen.getByTestId("hierarchical-select-input")).toBeInTheDocument();
     });
   });
 
   describe("Self-exclusion from options", () => {
-    it("excludes self ID from ReferenceInput filter", () => {
+    it("excludes self ID via excludeIds prop", () => {
       // Given: record with id=5
       mockUseRecordContext.mockReturnValue({ id: 5, parent_organization_id: null });
       mockUseOrganizationDescendants.mockReturnValue({
@@ -109,15 +110,15 @@ describe("ParentOrganizationInput", () => {
 
       renderWithAdminContext(<ParentOrganizationInput />);
 
-      // Expect: ReferenceInput filter includes self exclusion
-      expect(mockReferenceInputProps).toHaveBeenCalled();
-      const props = mockReferenceInputProps.mock.calls[0]![0];
-      expect(props.filter).toEqual({ "id@not.in": "(5)" });
+      // Expect: excludeIds includes self
+      expect(mockHierarchicalSelectInputProps).toHaveBeenCalled();
+      const props = mockHierarchicalSelectInputProps.mock.calls[0]![0];
+      expect(props.excludeIds).toEqual([5]);
     });
   });
 
   describe("Descendant exclusion", () => {
-    it("excludes self AND all descendants from ReferenceInput filter", () => {
+    it("excludes self AND all descendants via excludeIds prop", () => {
       // Given: record with id=5, descendants=[10, 15, 20]
       mockUseRecordContext.mockReturnValue({ id: 5, parent_organization_id: null });
       mockUseOrganizationDescendants.mockReturnValue({
@@ -128,13 +129,13 @@ describe("ParentOrganizationInput", () => {
 
       renderWithAdminContext(<ParentOrganizationInput />);
 
-      // Expect: filter excludes self + all descendants
-      expect(mockReferenceInputProps).toHaveBeenCalled();
-      const props = mockReferenceInputProps.mock.calls[0]![0];
-      expect(props.filter).toEqual({ "id@not.in": "(5,10,15,20)" });
+      // Expect: excludeIds includes self + all descendants
+      expect(mockHierarchicalSelectInputProps).toHaveBeenCalled();
+      const props = mockHierarchicalSelectInputProps.mock.calls[0]![0];
+      expect(props.excludeIds).toEqual([5, 10, 15, 20]);
     });
 
-    it("updates filter when descendants change (ensures fresh data)", () => {
+    it("updates excludeIds when descendants change (ensures fresh data)", () => {
       // Given: record with id=1, descendants=[2,3]
       mockUseRecordContext.mockReturnValue({ id: 1, parent_organization_id: null });
       mockUseOrganizationDescendants.mockReturnValue({
@@ -145,13 +146,13 @@ describe("ParentOrganizationInput", () => {
 
       const { rerender } = renderWithAdminContext(<ParentOrganizationInput />);
 
-      // Initial render - verify filter
-      expect(mockReferenceInputProps).toHaveBeenCalled();
-      let props = mockReferenceInputProps.mock.calls[0]![0];
-      expect(props.filter).toEqual({ "id@not.in": "(1,2,3)" });
+      // Initial render - verify excludeIds
+      expect(mockHierarchicalSelectInputProps).toHaveBeenCalled();
+      let props = mockHierarchicalSelectInputProps.mock.calls[0]![0];
+      expect(props.excludeIds).toEqual([1, 2, 3]);
 
       // Clear mocks and update descendants
-      mockReferenceInputProps.mockClear();
+      mockHierarchicalSelectInputProps.mockClear();
       mockUseOrganizationDescendants.mockReturnValue({
         descendants: [2, 3, 4, 5],
         isLoading: false,
@@ -161,53 +162,10 @@ describe("ParentOrganizationInput", () => {
       // Re-render to simulate descendants changing
       rerender(<ParentOrganizationInput />);
 
-      // Expect: filter is updated with new descendants
-      expect(mockReferenceInputProps).toHaveBeenCalled();
-      props = mockReferenceInputProps.mock.calls[0]![0];
-      expect(props.filter).toEqual({ "id@not.in": "(1,2,3,4,5)" });
-    });
-  });
-
-  describe("filterToQuery behavior", () => {
-    it("returns root org filter when search is empty", () => {
-      // Given: component rendered
-      mockUseRecordContext.mockReturnValue({ id: 1, parent_organization_id: null });
-      mockUseOrganizationDescendants.mockReturnValue({
-        descendants: [],
-        isLoading: false,
-        isFetched: true,
-      });
-
-      renderWithAdminContext(<ParentOrganizationInput />);
-
-      // Get the filterToQuery function from AutocompleteInput props
-      expect(mockAutocompleteInputProps).toHaveBeenCalled();
-      const props = mockAutocompleteInputProps.mock.calls[0]![0];
-      const filterToQuery = props.filterToQuery as (searchText: string) => Record<string, string>;
-
-      // Expect: empty search returns root org filter
-      expect(filterToQuery("")).toEqual({ "parent_organization_id@is": "null" });
-    });
-
-    it("returns name filter when search text is provided", () => {
-      // Given: component rendered
-      mockUseRecordContext.mockReturnValue({ id: 1, parent_organization_id: null });
-      mockUseOrganizationDescendants.mockReturnValue({
-        descendants: [],
-        isLoading: false,
-        isFetched: true,
-      });
-
-      renderWithAdminContext(<ParentOrganizationInput />);
-
-      // Get the filterToQuery function from AutocompleteInput props
-      expect(mockAutocompleteInputProps).toHaveBeenCalled();
-      const props = mockAutocompleteInputProps.mock.calls[0]![0];
-      const filterToQuery = props.filterToQuery as (searchText: string) => Record<string, string>;
-
-      // Expect: search text returns name ilike filter
-      expect(filterToQuery("Acme")).toEqual({ "name@ilike": "%Acme%" });
-      expect(filterToQuery("Test Corp")).toEqual({ "name@ilike": "%Test Corp%" });
+      // Expect: excludeIds is updated with new descendants
+      expect(mockHierarchicalSelectInputProps).toHaveBeenCalled();
+      props = mockHierarchicalSelectInputProps.mock.calls[0]![0];
+      expect(props.excludeIds).toEqual([1, 2, 3, 4, 5]);
     });
   });
 
@@ -223,12 +181,12 @@ describe("ParentOrganizationInput", () => {
 
       renderWithAdminContext(<ParentOrganizationInput />);
 
-      // Expect: No loading state, ReferenceInput renders immediately
+      // Expect: No loading state, HierarchicalSelectInput renders immediately
       expect(screen.queryByText("Loading hierarchy...")).not.toBeInTheDocument();
-      expect(screen.getByTestId("reference-input")).toBeInTheDocument();
+      expect(screen.getByTestId("hierarchical-select-input")).toBeInTheDocument();
     });
 
-    it("passes empty filter when no IDs to exclude (new record)", () => {
+    it("passes empty excludeIds when no IDs to exclude (new record)", () => {
       // Given: new record (no ID)
       mockUseRecordContext.mockReturnValue({});
       mockUseOrganizationDescendants.mockReturnValue({
@@ -239,10 +197,10 @@ describe("ParentOrganizationInput", () => {
 
       renderWithAdminContext(<ParentOrganizationInput />);
 
-      // Expect: empty filter (no exclusions needed)
-      expect(mockReferenceInputProps).toHaveBeenCalled();
-      const props = mockReferenceInputProps.mock.calls[0]![0];
-      expect(props.filter).toEqual({});
+      // Expect: empty excludeIds (no exclusions needed)
+      expect(mockHierarchicalSelectInputProps).toHaveBeenCalled();
+      const props = mockHierarchicalSelectInputProps.mock.calls[0]![0];
+      expect(props.excludeIds).toEqual([]);
     });
 
     it("does not call useOrganizationDescendants with undefined when record has no ID", () => {
@@ -261,8 +219,8 @@ describe("ParentOrganizationInput", () => {
     });
   });
 
-  describe("ReferenceInput configuration", () => {
-    it("configures ReferenceInput with correct source and reference", () => {
+  describe("HierarchicalSelectInput configuration", () => {
+    it("configures HierarchicalSelectInput with correct source and resource", () => {
       mockUseRecordContext.mockReturnValue({ id: 1, parent_organization_id: null });
       mockUseOrganizationDescendants.mockReturnValue({
         descendants: [],
@@ -272,15 +230,13 @@ describe("ParentOrganizationInput", () => {
 
       renderWithAdminContext(<ParentOrganizationInput />);
 
-      expect(mockReferenceInputProps).toHaveBeenCalled();
-      const props = mockReferenceInputProps.mock.calls[0]![0];
+      expect(mockHierarchicalSelectInputProps).toHaveBeenCalled();
+      const props = mockHierarchicalSelectInputProps.mock.calls[0]![0];
       expect(props.source).toBe("parent_organization_id");
-      expect(props.reference).toBe("organizations");
+      expect(props.resource).toBe("organizations");
     });
-  });
 
-  describe("AutocompleteInput configuration", () => {
-    it("configures AutocompleteInput with correct label and helper text", () => {
+    it("configures HierarchicalSelectInput with correct label and helper text", () => {
       mockUseRecordContext.mockReturnValue({ id: 1, parent_organization_id: null });
       mockUseOrganizationDescendants.mockReturnValue({
         descendants: [],
@@ -290,29 +246,12 @@ describe("ParentOrganizationInput", () => {
 
       renderWithAdminContext(<ParentOrganizationInput />);
 
-      expect(mockAutocompleteInputProps).toHaveBeenCalled();
-      const props = mockAutocompleteInputProps.mock.calls[0]![0];
+      expect(mockHierarchicalSelectInputProps).toHaveBeenCalled();
+      const props = mockHierarchicalSelectInputProps.mock.calls[0]![0];
       expect(props.label).toBe("Parent Organization");
-      expect(props.emptyText).toBe("No parent organization");
       expect(props.helperText).toBe(
         "Link this organization to its parent (e.g., Sysco Chicago → Sysco Corporation for regional branches)"
       );
-      expect(props.optionText).toBe("name");
-    });
-
-    it("configures debounce from autocomplete defaults", () => {
-      mockUseRecordContext.mockReturnValue({ id: 1, parent_organization_id: null });
-      mockUseOrganizationDescendants.mockReturnValue({
-        descendants: [],
-        isLoading: false,
-        isFetched: true,
-      });
-
-      renderWithAdminContext(<ParentOrganizationInput />);
-
-      expect(mockAutocompleteInputProps).toHaveBeenCalled();
-      const props = mockAutocompleteInputProps.mock.calls[0]![0];
-      expect(props.debounce).toBe(300);
     });
   });
 
@@ -360,7 +299,7 @@ describe("ParentOrganizationInput", () => {
       renderWithAdminContext(<ParentOrganizationInput />);
 
       // Should render without error, treat as new record
-      expect(screen.getByTestId("reference-input")).toBeInTheDocument();
+      expect(screen.getByTestId("hierarchical-select-input")).toBeInTheDocument();
     });
 
     it("handles undefined record gracefully", () => {
@@ -374,7 +313,7 @@ describe("ParentOrganizationInput", () => {
       renderWithAdminContext(<ParentOrganizationInput />);
 
       // Should render without error, treat as new record
-      expect(screen.getByTestId("reference-input")).toBeInTheDocument();
+      expect(screen.getByTestId("hierarchical-select-input")).toBeInTheDocument();
     });
 
     it("handles record with only parent_organization_id (no id)", () => {
@@ -389,7 +328,7 @@ describe("ParentOrganizationInput", () => {
 
       // Should render without loading state since no ID means new record
       expect(screen.queryByText("Loading hierarchy...")).not.toBeInTheDocument();
-      expect(screen.getByTestId("reference-input")).toBeInTheDocument();
+      expect(screen.getByTestId("hierarchical-select-input")).toBeInTheDocument();
     });
   });
 });

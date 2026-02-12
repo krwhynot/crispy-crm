@@ -44,7 +44,7 @@ describe("OrganizationCard", () => {
   const mockOnClick = vi.fn();
 
   beforeEach(() => {
-    vi.resetAllMocks();
+    vi.clearAllMocks();
   });
 
   const renderCard = (overrides = {}) => {

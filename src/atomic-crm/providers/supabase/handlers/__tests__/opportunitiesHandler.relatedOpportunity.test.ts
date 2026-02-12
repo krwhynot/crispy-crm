@@ -58,7 +58,7 @@ describe("opportunitiesHandler - related_opportunity_id validation", () => {
   let handler: DataProvider;
 
   beforeEach(() => {
-    vi.resetAllMocks();
+    vi.clearAllMocks();
 
     // Restore mockFrom to return mockQueryBuilder (reset clears this)
     mockFrom.mockReturnValue(mockQueryBuilder);

@@ -92,7 +92,7 @@ const createMockRecord = (id: number, name: string) => ({ id, name });
 
 describe("useHybridSearch", () => {
   beforeEach(() => {
-    vi.resetAllMocks();
+    vi.clearAllMocks();
     vi.useFakeTimers();
 
     // Reset mock state

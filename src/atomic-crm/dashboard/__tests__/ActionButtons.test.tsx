@@ -11,7 +11,7 @@ describe("ActionButtons", () => {
   };
 
   beforeEach(() => {
-    vi.resetAllMocks();
+    vi.clearAllMocks();
   });
 
   describe("Rendering", () => {

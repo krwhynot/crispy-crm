@@ -414,7 +414,6 @@ describe("Config Consistency", () => {
     const SAVE_AND_ADD_ANOTHER_EXCEPTIONS = new Set(["organization_type", "sales_id"]);
 
     Object.entries(ORGANIZATION_FORM_VARIANTS).forEach(([variant, config]) => {
-      const requiredSet = new Set(config.requiredFields);
       const preservedSet = new Set(config.preserveFields);
 
       config.requiredFields.forEach((field) => {

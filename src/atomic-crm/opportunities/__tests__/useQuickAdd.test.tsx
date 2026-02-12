@@ -5,11 +5,11 @@ import type { ReactNode } from "react";
 import { useQuickAdd } from "../useQuickAdd";
 import type { QuickAddInput } from "@/atomic-crm/validation/quickAdd";
 import type { ExtendedDataProvider } from "@/atomic-crm/providers/supabase/extensions/types";
-import type * as RaCore from "ra-core";
 
 // Mock React Admin hooks
 vi.mock("ra-core", async (importOriginal) => {
-  const actual = await importOriginal<typeof RaCore>();
+  // eslint-disable-next-line @typescript-eslint/consistent-type-imports -- typeof import() required in vi.mock factory (runs before static imports)
+  const actual = (await importOriginal()) as typeof import("ra-core");
   return {
     ...actual,
     useDataProvider: vi.fn(),
@@ -82,7 +82,7 @@ describe("useQuickAdd", () => {
   });
 
   afterEach(() => {
-    vi.resetAllMocks();
+    vi.clearAllMocks();
   });
 
   // Wrapper component for providing QueryClient context

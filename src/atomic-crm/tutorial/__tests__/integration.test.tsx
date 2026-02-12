@@ -1,7 +1,6 @@
 import { describe, it, expect, vi } from "vitest";
 import { screen, fireEvent, waitFor } from "@testing-library/react";
 import { renderWithAdminContext } from "@/tests/utils/render-admin";
-import { MemoryRouter } from "react-router-dom";
 import { TutorialProvider, useTutorial } from "../TutorialProvider";
 import { TutorialLauncher } from "../TutorialLauncher";
 import {
@@ -36,14 +35,12 @@ vi.mock("../steps", () => ({
   ]),
 }));
 
-// Wrapper with dropdown menu container
+// Wrapper with tutorial provider
 function TestWrapper({ children }: { children: React.ReactNode }) {
   return (
-    <MemoryRouter>
-      <TutorialProvider>
-        <div>{children}</div>
-      </TutorialProvider>
-    </MemoryRouter>
+    <TutorialProvider>
+      <div>{children}</div>
+    </TutorialProvider>
   );
 }
 

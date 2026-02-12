@@ -104,7 +104,7 @@ describe("AuthorizationsTab", () => {
   ];
 
   beforeEach(() => {
-    vi.resetAllMocks();
+    vi.clearAllMocks();
 
     // Default implementations for all hooks
     vi.mocked(reactAdmin.useRefresh).mockReturnValue(mockRefresh);

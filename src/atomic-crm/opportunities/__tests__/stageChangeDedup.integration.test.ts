@@ -101,7 +101,7 @@ describe("Stage change deduplication", () => {
   let mockCreate: ReturnType<typeof vi.fn>;
 
   beforeEach(() => {
-    vi.resetAllMocks();
+    vi.clearAllMocks();
 
     const trackingProvider = createActivityTrackingProvider();
     dataProvider = trackingProvider.dataProvider;
@@ -112,7 +112,7 @@ describe("Stage change deduplication", () => {
   });
 
   afterEach(() => {
-    vi.resetAllMocks();
+    vi.clearAllMocks();
   });
 
   describe("single stage change", () => {

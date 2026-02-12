@@ -1,12 +1,6 @@
 import { describe, it, expect } from "vitest";
-import { z } from "zod";
 import {
   opportunitySchema,
-  createOpportunitySchema,
-  updateOpportunitySchema,
-  closeOpportunityBaseSchema,
-  closeOpportunitySchema,
-  quickCreateOpportunitySchema,
   opportunityProductSyncInputSchema,
   opportunityProductSyncHandlerSchema,
   opportunityParticipantSchema,

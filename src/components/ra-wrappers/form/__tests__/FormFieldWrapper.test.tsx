@@ -24,7 +24,7 @@ vi.mock("../formProgressUtils", () => ({
 }));
 
 // Import mocked modules to access their implementations
-import { useFormState, useWatch, useFormContext } from "react-hook-form";
+import { useFormState, useWatch } from "react-hook-form";
 import { useFormProgress } from "../formProgressUtils";
 
 // Get mock functions
@@ -37,7 +37,7 @@ describe("FormFieldWrapper", () => {
   let mockMarkFieldValid: ReturnType<typeof vi.fn>;
 
   beforeEach(() => {
-    vi.resetAllMocks();
+    vi.clearAllMocks();
     mockRegisterField = vi.fn();
     mockMarkFieldValid = vi.fn();
 

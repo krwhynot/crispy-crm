@@ -6,10 +6,15 @@ import { useGetIdentity, useGetList } from "ra-core";
 import { mockUseGetIdentityReturn, mockUseGetListReturn } from "@/tests/utils/typed-mocks";
 
 // Mock react-admin hooks
-vi.mock("ra-core", () => ({
-  useGetIdentity: vi.fn(),
-  useGetList: vi.fn(),
-}));
+vi.mock("ra-core", async () => {
+  // eslint-disable-next-line @typescript-eslint/consistent-type-imports -- typeof import() required in vi.mock factory
+  const actual = (await vi.importActual("ra-core")) as typeof import("ra-core");
+  return {
+    ...actual,
+    useGetIdentity: vi.fn(),
+    useGetList: vi.fn(),
+  };
+});
 
 const mockOpportunities = Array.from({ length: 100 }, (_, i) => ({
   id: i + 1,
@@ -21,7 +26,7 @@ const mockOpportunities = Array.from({ length: 100 }, (_, i) => ({
 
 describe("OpportunityArchivedList", () => {
   beforeEach(() => {
-    vi.resetAllMocks();
+    vi.clearAllMocks();
   });
 
   it("should fetch initial page with 25 items per page", () => {
@@ -169,7 +174,7 @@ describe("OpportunityArchivedList", () => {
       })
     );
 
-    const { rerender } = renderWithAdminContext(<OpportunityArchivedList />);
+    renderWithAdminContext(<OpportunityArchivedList />);
 
     // Open and close dialog
     const button = screen.getByText("View archived opportunities");

@@ -94,7 +94,7 @@ export function OpportunityContactsTab({
   const dataProvider = useDataProvider();
   const notify = useNotify();
   const queryClient = useQueryClient();
-  const [isSaving, setIsSaving] = useState(false);
+  const [, setIsSaving] = useState(false);
 
   // Fetch junction table data for view mode - only when tab is active AND in view mode
   const { data: junctionRecords, isLoading } = useGetList<OpportunityContact>(

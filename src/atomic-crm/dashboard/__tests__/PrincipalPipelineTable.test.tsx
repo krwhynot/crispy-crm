@@ -2,7 +2,6 @@ import { screen, waitFor, fireEvent } from "@testing-library/react";
 import { renderWithAdminContext } from "@/tests/utils/render-admin";
 import userEvent from "@testing-library/user-event";
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { MemoryRouter } from "react-router-dom";
 import { PrincipalPipelineTable } from "../PrincipalPipelineTable";
 
 const mockPipelineData = [
@@ -89,11 +88,7 @@ describe("PrincipalPipelineTable", () => {
   });
 
   it("should render table headers correctly", () => {
-    renderWithAdminContext(
-      <MemoryRouter>
-        <PrincipalPipelineTable />
-      </MemoryRouter>
-    );
+    renderWithAdminContext(<PrincipalPipelineTable />);
 
     expect(screen.getByText("Pipeline by Principal")).toBeInTheDocument();
     expect(
@@ -105,11 +100,7 @@ describe("PrincipalPipelineTable", () => {
   });
 
   it("should apply premium hover effects class", () => {
-    const { container } = renderWithAdminContext(
-      <MemoryRouter>
-        <PrincipalPipelineTable />
-      </MemoryRouter>
-    );
+    const { container } = renderWithAdminContext(<PrincipalPipelineTable />);
     const rows = container.querySelectorAll(".table-row-premium");
     expect(rows.length).toBeGreaterThan(0);
   });
@@ -122,11 +113,7 @@ describe("PrincipalPipelineTable", () => {
       error: null,
     });
 
-    renderWithAdminContext(
-      <MemoryRouter>
-        <PrincipalPipelineTable />
-      </MemoryRouter>
-    );
+    renderWithAdminContext(<PrincipalPipelineTable />);
 
     // Should show empty state message
     expect(screen.getByText(/no principals found/i)).toBeInTheDocument();
@@ -142,11 +129,7 @@ describe("PrincipalPipelineTable", () => {
         error: null,
       });
 
-      renderWithAdminContext(
-        <MemoryRouter>
-          <PrincipalPipelineTable />
-        </MemoryRouter>
-      );
+      renderWithAdminContext(<PrincipalPipelineTable />);
 
       // Column headers should have aria-sort attribute
       const principalHeader = screen.getByRole("columnheader", { name: /principal/i });
@@ -164,11 +147,7 @@ describe("PrincipalPipelineTable", () => {
         error: null,
       });
 
-      renderWithAdminContext(
-        <MemoryRouter>
-          <PrincipalPipelineTable />
-        </MemoryRouter>
-      );
+      renderWithAdminContext(<PrincipalPipelineTable />);
 
       // Get the Pipeline column header and click it
       const pipelineHeader = screen.getByRole("columnheader", { name: /pipeline/i });
@@ -188,11 +167,7 @@ describe("PrincipalPipelineTable", () => {
         error: null,
       });
 
-      renderWithAdminContext(
-        <MemoryRouter>
-          <PrincipalPipelineTable />
-        </MemoryRouter>
-      );
+      renderWithAdminContext(<PrincipalPipelineTable />);
 
       const principalHeader = screen.getByRole("columnheader", { name: /principal/i });
 
@@ -221,11 +196,7 @@ describe("PrincipalPipelineTable", () => {
         error: null,
       });
 
-      renderWithAdminContext(
-        <MemoryRouter>
-          <PrincipalPipelineTable />
-        </MemoryRouter>
-      );
+      renderWithAdminContext(<PrincipalPipelineTable />);
 
       expect(screen.getByPlaceholderText(/search principals/i)).toBeInTheDocument();
     });
@@ -237,11 +208,7 @@ describe("PrincipalPipelineTable", () => {
         error: null,
       });
 
-      renderWithAdminContext(
-        <MemoryRouter>
-          <PrincipalPipelineTable />
-        </MemoryRouter>
-      );
+      renderWithAdminContext(<PrincipalPipelineTable />);
 
       // Initially shows all 3 rows
       expect(screen.getByText("Acme Corporation")).toBeInTheDocument();
@@ -267,11 +234,7 @@ describe("PrincipalPipelineTable", () => {
         error: null,
       });
 
-      renderWithAdminContext(
-        <MemoryRouter>
-          <PrincipalPipelineTable />
-        </MemoryRouter>
-      );
+      renderWithAdminContext(<PrincipalPipelineTable />);
 
       const searchInput = screen.getByPlaceholderText(/search principals/i);
       fireEvent.change(searchInput, { target: { value: "beta" } }); // lowercase
@@ -292,11 +255,7 @@ describe("PrincipalPipelineTable", () => {
         error: null,
       });
 
-      renderWithAdminContext(
-        <MemoryRouter>
-          <PrincipalPipelineTable />
-        </MemoryRouter>
-      );
+      renderWithAdminContext(<PrincipalPipelineTable />);
 
       // Click Filters button
       const filtersButton = screen.getByRole("button", { name: /filters/i });
@@ -320,11 +279,7 @@ describe("PrincipalPipelineTable", () => {
         error: null,
       });
 
-      renderWithAdminContext(
-        <MemoryRouter>
-          <PrincipalPipelineTable />
-        </MemoryRouter>
-      );
+      renderWithAdminContext(<PrincipalPipelineTable />);
 
       // Click Filters button and select "increasing" momentum
       const filtersButton = screen.getByRole("button", { name: /filters/i });

@@ -14,7 +14,6 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { renderHook } from "@testing-library/react";
 import { usePermissions } from "../usePermissions";
-import type { UserRole } from "../useUserRole";
 import { mockUseGetIdentityReturn } from "@/tests/utils/typed-mocks";
 
 vi.mock("react-admin", () => ({
@@ -25,16 +24,9 @@ import { useGetIdentity } from "react-admin";
 
 const mockUseGetIdentity = vi.mocked(useGetIdentity);
 
-interface MockIdentity {
-  id: number;
-  role: UserRole;
-  fullName: string;
-  avatar?: string;
-}
-
 describe("usePermissions", () => {
   beforeEach(() => {
-    vi.resetAllMocks();
+    vi.clearAllMocks();
   });
 
   afterEach(() => {

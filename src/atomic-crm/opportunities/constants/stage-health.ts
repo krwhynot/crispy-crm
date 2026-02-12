@@ -3,10 +3,9 @@
  * Depends on: stage-enums, stage-config
  */
 
-import { addDays } from "date-fns";
 import { parseDateSafely } from "@/lib/date-utils";
 import type { Opportunity } from "../../types";
-import { STAGE, CLOSED_STAGES } from "./stage-enums";
+import { STAGE } from "./stage-enums";
 import type { OpportunityStageValue } from "./stage-enums";
 import { OPPORTUNITY_STAGES } from "./stage-config";
 

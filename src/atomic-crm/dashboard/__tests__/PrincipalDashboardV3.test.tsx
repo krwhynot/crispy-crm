@@ -117,7 +117,7 @@ describe("PrincipalDashboardV3", () => {
   });
 
   it("wraps KPISummaryRow in a shrink-0 container", () => {
-    const { container } = renderDashboard();
+    renderDashboard();
 
     const kpiStub = screen.getByTestId("kpi-summary-row");
     const wrapper = kpiStub.parentElement;

@@ -14,13 +14,13 @@
 import { describe, it, expect, vi, beforeEach, type Mock } from "vitest";
 import { screen } from "@testing-library/react";
 import { useGetIdentity, useGetList } from "ra-core";
-import type * as RaCore from "ra-core";
 import { QuickAddForm } from "../QuickAddForm";
 import { renderWithAdminContext } from "@/tests/utils/render-admin";
 
 // Mock ra-core hooks to control identity loading state
 vi.mock("ra-core", async (importOriginal) => {
-  const actual = await importOriginal<typeof RaCore>();
+  // eslint-disable-next-line @typescript-eslint/consistent-type-imports -- typeof import() required in vi.mock factory (runs before static imports)
+  const actual = (await importOriginal()) as typeof import("ra-core");
   return {
     ...actual,
     useGetIdentity: vi.fn(),
@@ -30,7 +30,7 @@ vi.mock("ra-core", async (importOriginal) => {
 
 describe("QuickAddForm - identity-dependent defaults", () => {
   beforeEach(() => {
-    vi.resetAllMocks();
+    vi.clearAllMocks();
 
     // Mock useGetList for reference inputs
     (useGetList as Mock).mockImplementation(() => ({

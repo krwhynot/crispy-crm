@@ -4,8 +4,6 @@
 
 import { screen, fireEvent, waitFor } from "@testing-library/react";
 import { renderWithAdminContext } from "@/tests/utils/render-admin";
-import { MemoryRouter } from "react-router-dom";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import type { Company } from "../types";
 import { vi } from "vitest";
@@ -20,7 +18,7 @@ vi.mock("ra-core", async () => {
 });
 
 // Import ra-core components after mock definition
-import { CoreAdminContext as AdminContext, SaveContextProvider, Form as RaForm } from "ra-core";
+import { SaveContextProvider, Form as RaForm } from "ra-core";
 import { Form, FormProgressProvider } from "@/components/ra-wrappers/form";
 import { OrganizationInputs } from "./OrganizationInputs";
 
@@ -79,30 +77,15 @@ const TestWrapper = ({
   children: React.ReactNode;
   defaultValues?: Partial<Company>;
 }) => {
-  const queryClient = new QueryClient({
-    defaultOptions: {
-      queries: { retry: false },
-      mutations: { retry: false },
-    },
-  });
-
   // Merge with default name to prevent useRecordContext issues
   const mergedDefaults = { name: "Test Org", ...defaultValues };
 
-  return (
-    <QueryClientProvider client={queryClient}>
-      <MemoryRouter>
-        <AdminContext dataProvider={mockDataProvider}>
-          <MockFormWrapper defaultValues={mergedDefaults}>{children}</MockFormWrapper>
-        </AdminContext>
-      </MemoryRouter>
-    </QueryClientProvider>
-  );
+  return <MockFormWrapper defaultValues={mergedDefaults}>{children}</MockFormWrapper>;
 };
 
 describe("OrganizationInputs - Compact Form", () => {
   beforeEach(() => {
-    vi.resetAllMocks();
+    vi.clearAllMocks();
 
     // Mock segments data for SegmentComboboxInput
     mockDataProvider.getList.mockResolvedValue({
@@ -128,7 +111,8 @@ describe("OrganizationInputs - Compact Form", () => {
     renderWithAdminContext(
       <TestWrapper defaultValues={{ name: "Test Org" }}>
         <OrganizationInputs />
-      </TestWrapper>
+      </TestWrapper>,
+      { dataProvider: mockDataProvider }
     );
 
     await waitFor(() => {
@@ -142,7 +126,8 @@ describe("OrganizationInputs - Compact Form", () => {
     renderWithAdminContext(
       <TestWrapper>
         <OrganizationInputs />
-      </TestWrapper>
+      </TestWrapper>,
+      { dataProvider: mockDataProvider }
     );
 
     await waitFor(() => {
@@ -156,7 +141,8 @@ describe("OrganizationInputs - Compact Form", () => {
     renderWithAdminContext(
       <TestWrapper defaultValues={{ name: "Initial Name" }}>
         <OrganizationInputs />
-      </TestWrapper>
+      </TestWrapper>,
+      { dataProvider: mockDataProvider }
     );
 
     // Find the name input field and verify initial value
@@ -176,7 +162,8 @@ describe("OrganizationInputs - Compact Form", () => {
     renderWithAdminContext(
       <TestWrapper>
         <OrganizationInputs />
-      </TestWrapper>
+      </TestWrapper>,
+      { dataProvider: mockDataProvider }
     );
 
     await waitFor(() => {
@@ -196,7 +183,8 @@ describe("OrganizationInputs - Compact Form", () => {
     renderWithAdminContext(
       <TestWrapper>
         <OrganizationInputs />
-      </TestWrapper>
+      </TestWrapper>,
+      { dataProvider: mockDataProvider }
     );
 
     // Find and click "Contact & Web" collapsible trigger
@@ -222,7 +210,8 @@ describe("OrganizationInputs - Compact Form", () => {
     const { container } = renderWithAdminContext(
       <TestWrapper>
         <OrganizationInputs />
-      </TestWrapper>
+      </TestWrapper>,
+      { dataProvider: mockDataProvider }
     );
 
     await waitFor(() => {
@@ -242,7 +231,8 @@ describe("OrganizationInputs - Compact Form", () => {
     renderWithAdminContext(
       <TestWrapper>
         <OrganizationInputs />
-      </TestWrapper>
+      </TestWrapper>,
+      { dataProvider: mockDataProvider }
     );
 
     await waitFor(() => {
@@ -259,7 +249,8 @@ describe("OrganizationInputs - Compact Form", () => {
     renderWithAdminContext(
       <TestWrapper>
         <OrganizationInputs />
-      </TestWrapper>
+      </TestWrapper>,
+      { dataProvider: mockDataProvider }
     );
 
     await waitFor(() => {
@@ -279,7 +270,8 @@ describe("OrganizationInputs - Compact Form", () => {
     renderWithAdminContext(
       <TestWrapper>
         <OrganizationInputs />
-      </TestWrapper>
+      </TestWrapper>,
+      { dataProvider: mockDataProvider }
     );
 
     // Initially, address fields are hidden (Location section is collapsed)

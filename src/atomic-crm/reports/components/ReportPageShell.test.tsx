@@ -1,20 +1,17 @@
 import { screen } from "@testing-library/react";
 import { renderWithAdminContext } from "@/tests/utils/render-admin";
-import { MemoryRouter } from "react-router-dom";
 import { describe, it, expect } from "vitest";
 import { ReportPageShell } from "./ReportPageShell";
 
 describe("ReportPageShell", () => {
   it("renders breadcrumbs with Reports root link", () => {
     renderWithAdminContext(
-      <MemoryRouter>
-        <ReportPageShell
-          title="Weekly Activity"
-          breadcrumbs={[{ label: "Reports", href: "/reports" }, { label: "Weekly Activity" }]}
-        >
-          <div>Content</div>
-        </ReportPageShell>
-      </MemoryRouter>
+      <ReportPageShell
+        title="Weekly Activity"
+        breadcrumbs={[{ label: "Reports", href: "/reports" }, { label: "Weekly Activity" }]}
+      >
+        <div>Content</div>
+      </ReportPageShell>
     );
 
     const nav = screen.getByRole("navigation", { name: /breadcrumb/i });
@@ -25,11 +22,9 @@ describe("ReportPageShell", () => {
 
   it("renders title with semantic heading", () => {
     renderWithAdminContext(
-      <MemoryRouter>
-        <ReportPageShell title="Campaign Activity" breadcrumbs={[]}>
-          <div>Content</div>
-        </ReportPageShell>
-      </MemoryRouter>
+      <ReportPageShell title="Campaign Activity" breadcrumbs={[]}>
+        <div>Content</div>
+      </ReportPageShell>
     );
 
     expect(
@@ -39,11 +34,9 @@ describe("ReportPageShell", () => {
 
   it("renders actions slot when provided", () => {
     renderWithAdminContext(
-      <MemoryRouter>
-        <ReportPageShell title="Test" breadcrumbs={[]} actions={<button>Export</button>}>
-          <div>Content</div>
-        </ReportPageShell>
-      </MemoryRouter>
+      <ReportPageShell title="Test" breadcrumbs={[]} actions={<button>Export</button>}>
+        <div>Content</div>
+      </ReportPageShell>
     );
 
     expect(screen.getByRole("button", { name: "Export" })).toBeInTheDocument();
@@ -51,11 +44,9 @@ describe("ReportPageShell", () => {
 
   it("uses semantic spacing tokens", () => {
     const { container } = renderWithAdminContext(
-      <MemoryRouter>
-        <ReportPageShell title="Test" breadcrumbs={[]}>
-          <div>Content</div>
-        </ReportPageShell>
-      </MemoryRouter>
+      <ReportPageShell title="Test" breadcrumbs={[]}>
+        <div>Content</div>
+      </ReportPageShell>
     );
 
     const shell = container.firstChild;

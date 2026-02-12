@@ -8,12 +8,7 @@
  */
 
 import { validateFilterConfig } from "../filters/filterConfigSchema";
-import {
-  ORGANIZATION_TYPE_CHOICES,
-  ORG_SCOPE_CHOICES,
-  PRIORITY_CHOICES,
-  US_STATES,
-} from "./constants";
+import { ORGANIZATION_TYPE_CHOICES, PRIORITY_CHOICES, US_STATES } from "./constants";
 
 /**
  * Filter configuration for Organizations list
