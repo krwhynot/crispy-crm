@@ -368,8 +368,18 @@ export default function OverviewTab() {
   // Compute whether we have any data to show
   const hasData = (opportunities?.length ?? 0) > 0 || (activities?.length ?? 0) > 0;
 
+  // Distinguish first load (no cached data) from background refresh (has cached data)
+  const isFirstLoad = isLoading && !hasData;
+  const isRefreshing = isLoading && hasData;
+
   return (
     <div className="space-y-section">
+      {isRefreshing && (
+        <div className="text-xs text-muted-foreground animate-pulse" role="status">
+          Updating...
+        </div>
+      )}
+
       <TabFilterBar
         showDateRange
         dateRange={dateRange}
@@ -409,7 +419,7 @@ export default function OverviewTab() {
         />
       )}
 
-      {isLoading ? (
+      {isFirstLoad ? (
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-content" data-testid="kpi-grid">
           {[...Array(4)].map((_, i) => (
             <Skeleton key={i} className="h-32" />
@@ -455,19 +465,19 @@ export default function OverviewTab() {
       )}
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-section">
-        <ChartWrapper title="Pipeline by Stage" isLoading={isLoading}>
+        <ChartWrapper title="Pipeline by Stage" isLoading={isFirstLoad}>
           <PipelineChart data={pipelineData} />
         </ChartWrapper>
 
-        <ChartWrapper title="Activity Trend (14 Days)" isLoading={isLoading}>
+        <ChartWrapper title="Activity Trend (14 Days)" isLoading={isFirstLoad}>
           <ActivityTrendChart data={activityTrendData} />
         </ChartWrapper>
 
-        <ChartWrapper title="Top Principals by Opportunities" isLoading={isLoading}>
+        <ChartWrapper title="Top Principals by Opportunities" isLoading={isFirstLoad}>
           <TopPrincipalsChart data={topPrincipalsData} />
         </ChartWrapper>
 
-        <ChartWrapper title="Rep Performance" isLoading={isLoading}>
+        <ChartWrapper title="Rep Performance" isLoading={isFirstLoad}>
           <RepPerformanceChart data={repPerformanceData} />
         </ChartWrapper>
       </div>

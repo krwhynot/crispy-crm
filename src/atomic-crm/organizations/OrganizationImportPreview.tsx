@@ -176,25 +176,35 @@ export function OrganizationImportPreview({
 
       <Collapsible open={expandedSections.mappings}>
         <Card>
-          <CollapsibleTrigger asChild>
-            <CardHeader className="cursor-pointer" onClick={() => toggleSection("mappings")}>
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <CardTitle>Column Mappings</CardTitle>
-                  {preview.lowConfidenceMappings > 0 && (
-                    <Badge variant="destructive">{preview.lowConfidenceMappings} need review</Badge>
+          <CardHeader>
+            <CollapsibleTrigger asChild>
+              <button
+                type="button"
+                onClick={() => toggleSection("mappings")}
+                className="w-full text-left cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-md"
+                aria-expanded={expandedSections.mappings}
+                aria-controls="import-mappings"
+              >
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <CardTitle>Column Mappings</CardTitle>
+                    {preview.lowConfidenceMappings > 0 && (
+                      <Badge variant="destructive">
+                        {preview.lowConfidenceMappings} need review
+                      </Badge>
+                    )}
+                  </div>
+                  {expandedSections.mappings ? (
+                    <ChevronUp className="h-4 w-4" aria-hidden="true" />
+                  ) : (
+                    <ChevronDown className="h-4 w-4" aria-hidden="true" />
                   )}
                 </div>
-                {expandedSections.mappings ? (
-                  <ChevronUp className="h-4 w-4" />
-                ) : (
-                  <ChevronDown className="h-4 w-4" />
-                )}
-              </div>
-              <CardDescription>How CSV columns map to organization fields</CardDescription>
-            </CardHeader>
-          </CollapsibleTrigger>
-          <CollapsibleContent>
+                <CardDescription>How CSV columns map to organization fields</CardDescription>
+              </button>
+            </CollapsibleTrigger>
+          </CardHeader>
+          <CollapsibleContent id="import-mappings">
             <CardContent>
               <Table>
                 <TableHeader>
@@ -271,31 +281,39 @@ export function OrganizationImportPreview({
       {preview.duplicates && preview.duplicates.length > 0 && (
         <Collapsible open={expandedSections.duplicates}>
           <Card>
-            <CollapsibleTrigger asChild>
-              <CardHeader className="cursor-pointer" onClick={() => toggleSection("duplicates")}>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <AlertTriangle className="h-4 w-4 text-warning" />
-                    <CardTitle>Duplicate Organizations</CardTitle>
-                    <Badge variant="secondary">
-                      {preview.duplicates.length} name{preview.duplicates.length > 1 ? "s" : ""},{" "}
-                      {duplicateCount} duplicate{duplicateCount > 1 ? "s" : ""}
-                    </Badge>
+            <CardHeader>
+              <CollapsibleTrigger asChild>
+                <button
+                  type="button"
+                  onClick={() => toggleSection("duplicates")}
+                  className="w-full text-left cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-md"
+                  aria-expanded={expandedSections.duplicates}
+                  aria-controls="import-duplicates"
+                >
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <AlertTriangle className="h-4 w-4 text-warning" aria-hidden="true" />
+                      <CardTitle>Duplicate Organizations</CardTitle>
+                      <Badge variant="secondary">
+                        {preview.duplicates.length} name{preview.duplicates.length > 1 ? "s" : ""},{" "}
+                        {duplicateCount} duplicate{duplicateCount > 1 ? "s" : ""}
+                      </Badge>
+                    </div>
+                    {expandedSections.duplicates ? (
+                      <ChevronUp className="h-4 w-4" aria-hidden="true" />
+                    ) : (
+                      <ChevronDown className="h-4 w-4" aria-hidden="true" />
+                    )}
                   </div>
-                  {expandedSections.duplicates ? (
-                    <ChevronUp className="h-4 w-4" />
-                  ) : (
-                    <ChevronDown className="h-4 w-4" />
-                  )}
-                </div>
-                <CardDescription>
-                  {preview.duplicates.length} organization name
-                  {preview.duplicates.length > 1 ? "s appear" : " appears"} multiple times (
-                  {duplicateCount} total duplicate {duplicateCount === 1 ? "entry" : "entries"})
-                </CardDescription>
-              </CardHeader>
-            </CollapsibleTrigger>
-            <CollapsibleContent>
+                  <CardDescription>
+                    {preview.duplicates.length} organization name
+                    {preview.duplicates.length > 1 ? "s appear" : " appears"} multiple times (
+                    {duplicateCount} total duplicate {duplicateCount === 1 ? "entry" : "entries"})
+                  </CardDescription>
+                </button>
+              </CollapsibleTrigger>
+            </CardHeader>
+            <CollapsibleContent id="import-duplicates">
               <CardContent>
                 <div className="space-y-3">
                   {preview.duplicates.slice(0, 10).map((group, index) => (
@@ -357,22 +375,30 @@ export function OrganizationImportPreview({
       {/* Sample Data Preview */}
       <Collapsible open={expandedSections.sampleData}>
         <Card>
-          <CollapsibleTrigger asChild>
-            <CardHeader className="cursor-pointer" onClick={() => toggleSection("sampleData")}>
-              <div className="flex items-center justify-between">
-                <div>
-                  <CardTitle>Sample Data Preview</CardTitle>
-                  <CardDescription>First 5 organizations after transformation</CardDescription>
+          <CardHeader>
+            <CollapsibleTrigger asChild>
+              <button
+                type="button"
+                onClick={() => toggleSection("sampleData")}
+                className="w-full text-left cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-md"
+                aria-expanded={expandedSections.sampleData}
+                aria-controls="import-sample-data"
+              >
+                <div className="flex items-center justify-between">
+                  <div>
+                    <CardTitle>Sample Data Preview</CardTitle>
+                    <CardDescription>First 5 organizations after transformation</CardDescription>
+                  </div>
+                  {expandedSections.sampleData ? (
+                    <ChevronUp className="h-4 w-4" aria-hidden="true" />
+                  ) : (
+                    <ChevronDown className="h-4 w-4" aria-hidden="true" />
+                  )}
                 </div>
-                {expandedSections.sampleData ? (
-                  <ChevronUp className="h-4 w-4" />
-                ) : (
-                  <ChevronDown className="h-4 w-4" />
-                )}
-              </div>
-            </CardHeader>
-          </CollapsibleTrigger>
-          <CollapsibleContent>
+              </button>
+            </CollapsibleTrigger>
+          </CardHeader>
+          <CollapsibleContent id="import-sample-data">
             <CardContent>
               <div className="overflow-x-auto">
                 <Table>
@@ -416,24 +442,32 @@ export function OrganizationImportPreview({
       {preview.newTags.length > 0 && (
         <Collapsible open={expandedSections.tags}>
           <Card>
-            <CollapsibleTrigger asChild>
-              <CardHeader className="cursor-pointer" onClick={() => toggleSection("tags")}>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <Tag className="h-4 w-4" />
-                    <CardTitle>New Tags</CardTitle>
-                    <Badge variant="secondary">{preview.newTags.length}</Badge>
+            <CardHeader>
+              <CollapsibleTrigger asChild>
+                <button
+                  type="button"
+                  onClick={() => toggleSection("tags")}
+                  className="w-full text-left cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-md"
+                  aria-expanded={expandedSections.tags}
+                  aria-controls="import-tags"
+                >
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <Tag className="h-4 w-4" aria-hidden="true" />
+                      <CardTitle>New Tags</CardTitle>
+                      <Badge variant="secondary">{preview.newTags.length}</Badge>
+                    </div>
+                    {expandedSections.tags ? (
+                      <ChevronUp className="h-4 w-4" aria-hidden="true" />
+                    ) : (
+                      <ChevronDown className="h-4 w-4" aria-hidden="true" />
+                    )}
                   </div>
-                  {expandedSections.tags ? (
-                    <ChevronUp className="h-4 w-4" />
-                  ) : (
-                    <ChevronDown className="h-4 w-4" />
-                  )}
-                </div>
-                <CardDescription>These tags will be created automatically</CardDescription>
-              </CardHeader>
-            </CollapsibleTrigger>
-            <CollapsibleContent>
+                  <CardDescription>These tags will be created automatically</CardDescription>
+                </button>
+              </CollapsibleTrigger>
+            </CardHeader>
+            <CollapsibleContent id="import-tags">
               <CardContent>
                 <div className="flex flex-wrap gap-2">
                   {preview.newTags.map((tag, index) => (

@@ -344,12 +344,22 @@ export default function CampaignActivityReport() {
     }
   };
 
+  const hasActivityData = activities.length > 0;
+  const isFirstLoad = isLoadingActivities && !hasActivityData;
+  const isRefreshing = isLoadingActivities && hasActivityData;
+
   return (
     <ReportLayout title="Campaign Activity Report">
       {/* Screen reader announcements */}
       <div className="sr-only" role="status" aria-live="polite" aria-atomic="true">
         {ariaLiveMessage}
       </div>
+
+      {isRefreshing && (
+        <div className="text-xs text-muted-foreground animate-pulse" role="status">
+          Updating...
+        </div>
+      )}
 
       {/* Campaign Selector and Filters */}
       <div className="mb-section">
@@ -437,7 +447,7 @@ export default function CampaignActivityReport() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 gap-content mb-section">
         <CampaignActivitySummaryCards
-          isLoadingActivities={isLoadingActivities}
+          isLoadingActivities={isFirstLoad}
           totalActivities={totalActivities}
           uniqueOrgs={uniqueOrgs}
           coverageRate={coverageRate}
@@ -446,7 +456,7 @@ export default function CampaignActivityReport() {
       </div>
 
       {/* Conditional Rendering: Stale Leads View or Activity Type Breakdown */}
-      {isLoadingActivities ? (
+      {isFirstLoad ? (
         <div className="space-y-4" role="status" aria-label="Loading campaign activities">
           <div className="h-6 bg-muted animate-pulse rounded w-48 mb-4" />
           {[1, 2, 3].map((i) => (

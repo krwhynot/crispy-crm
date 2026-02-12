@@ -36,36 +36,44 @@ export function PrincipalGroupCard({
     .map(([stage, count]) => `${stage}: ${count}`)
     .join(", ");
 
+  const principalGroupId = `principal-group-${group.principalId ?? "unknown"}`;
+
   return (
     <Card>
-      <CardHeader
-        className="cursor-pointer hover:bg-accent/50 transition-colors"
-        onClick={onToggle}
-      >
-        <CardTitle className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            {isExpanded ? (
-              <ChevronDown className="w-5 h-5" />
-            ) : (
-              <ChevronRight className="w-5 h-5" />
-            )}
-            <span>{group.principalName}</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <Badge variant="secondary">
-              {group.totalCount} {group.totalCount === 1 ? "opportunity" : "opportunities"}
-            </Badge>
-            {stageSummary && (
-              <span className="text-sm text-muted-foreground hidden md:inline">
-                ({stageSummary})
-              </span>
-            )}
-          </div>
-        </CardTitle>
+      <CardHeader className="pb-3">
+        <button
+          type="button"
+          onClick={onToggle}
+          className="w-full text-left cursor-pointer hover:bg-accent/50 transition-colors rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          aria-expanded={isExpanded}
+          aria-controls={principalGroupId}
+          aria-label={`${isExpanded ? "Collapse" : "Expand"} ${group.principalName} with ${group.totalCount} ${group.totalCount === 1 ? "opportunity" : "opportunities"}`}
+        >
+          <CardTitle className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              {isExpanded ? (
+                <ChevronDown className="w-5 h-5" aria-hidden="true" />
+              ) : (
+                <ChevronRight className="w-5 h-5" aria-hidden="true" />
+              )}
+              <span>{group.principalName}</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <Badge variant="secondary">
+                {group.totalCount} {group.totalCount === 1 ? "opportunity" : "opportunities"}
+              </Badge>
+              {stageSummary && (
+                <span className="text-sm text-muted-foreground hidden md:inline">
+                  ({stageSummary})
+                </span>
+              )}
+            </div>
+          </CardTitle>
+        </button>
       </CardHeader>
 
       {isExpanded && (
-        <CardContent>
+        <CardContent id={principalGroupId}>
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
@@ -117,12 +125,13 @@ export function PrincipalGroupCard({
                       <AdminButton
                         variant="ghost"
                         size="sm"
+                        aria-label="View opportunity"
                         onClick={(e) => {
                           e.stopPropagation();
                           onOpportunityClick(opp.id);
                         }}
                       >
-                        <ExternalLink className="w-4 h-4" />
+                        <ExternalLink className="w-4 h-4" aria-hidden="true" />
                       </AdminButton>
                     </td>
                   </tr>

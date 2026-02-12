@@ -15,6 +15,9 @@ import type { ReactNode } from "react";
 import { Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { EditButton } from "@/components/ra-wrappers/edit-button";
+import { SlideOverSkeleton } from "@/components/ui/list-skeleton";
+import { DataFetchError } from "@/components/ui/data-fetch-error";
+import { NotFound } from "@/components/ui/not-found";
 
 export interface ShowProps extends ShowViewProps, Omit<ShowBaseProps, "children"> {}
 
@@ -57,7 +60,7 @@ export const ShowView = ({
   title,
   children,
   className,
-  emptyWhileLoading,
+  emptyWhileLoading: _emptyWhileLoading,
 }: ShowViewProps) => {
   const context = useShowContext();
 
@@ -79,12 +82,10 @@ export const ShowView = ({
   const { hasEdit } = useResourceDefinition({ resource });
   const hasDashboard = useHasDashboard();
 
-  if (context.isLoading || !context.record) {
-    return null;
-  }
-  if (!context.record && emptyWhileLoading) {
-    return null;
-  }
+  if (context.isLoading) return <SlideOverSkeleton />;
+  if (context.error)
+    return <DataFetchError message={context.error.message} onRetry={() => context.refetch()} />;
+  if (!context.record) return <NotFound resource={resource} />;
 
   return (
     <>

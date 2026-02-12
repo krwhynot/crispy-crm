@@ -260,8 +260,11 @@ export default function OpportunitiesByPrincipalReport() {
     });
   };
 
-  // Loading state
-  if (opportunitiesLoading) {
+  const hasOpportunityData = (opportunities?.length ?? 0) > 0;
+  const isFirstLoad = opportunitiesLoading && !hasOpportunityData;
+  const isRefreshing = opportunitiesLoading && hasOpportunityData;
+
+  if (isFirstLoad) {
     return (
       <ReportLayout title="Opportunities by Principal">
         <p className="text-muted-foreground">Loading opportunities...</p>
@@ -279,6 +282,12 @@ export default function OpportunitiesByPrincipalReport() {
       actions={<FilterToolbar filters={filters} onFiltersChange={setFilters} />}
     >
       <div className="space-y-section">
+        {isRefreshing && (
+          <div className="text-xs text-muted-foreground animate-pulse" role="status">
+            Updating...
+          </div>
+        )}
+
         <AppliedFiltersBar
           filters={appliedFilters}
           onResetAll={handleResetAllFilters}

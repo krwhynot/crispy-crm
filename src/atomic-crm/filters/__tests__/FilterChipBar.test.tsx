@@ -149,15 +149,15 @@ describe("FilterChipBar", () => {
       expect(screen.getByText("Org org-123")).toBeInTheDocument();
     });
 
-    test("shows 'Clear all' button only when 2+ filters active", () => {
-      // Single filter - no Clear all
+    test("shows 'Clear all' button when 1+ filters active", () => {
+      // Single filter - shows Clear all
       mockFilterValues = { status: "active" };
       const { rerender } = renderWithAdminContext(
         <FilterChipBar filterConfig={TEST_FILTER_CONFIG} />
       );
-      expect(screen.queryByText("Clear all")).not.toBeInTheDocument();
+      expect(screen.getByText("Clear all")).toBeInTheDocument();
 
-      // Multiple filters - shows Clear all
+      // Multiple filters - also shows Clear all
       mockFilterValues = { status: "active", priority: ["high"] };
       rerender(<FilterChipBar filterConfig={TEST_FILTER_CONFIG} />);
       expect(screen.getByText("Clear all")).toBeInTheDocument();

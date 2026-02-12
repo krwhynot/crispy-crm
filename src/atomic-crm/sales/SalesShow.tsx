@@ -1,6 +1,7 @@
 import { SectionCard } from "@/components/ra-wrappers/SectionCard";
 import { ShowBase, useShowContext } from "ra-core";
 import { AvatarFallback, AvatarImage, Avatar as ShadcnAvatar } from "@/components/ui/avatar";
+import { SalesDetailSkeleton } from "@/components/ui/show-skeleton";
 import type { Sale } from "../types";
 import { formatName } from "../utils/formatName";
 import { getInitials } from "@/atomic-crm/utils/formatters";
@@ -13,7 +14,8 @@ export const SalesShow = () => (
 
 const SalesShowContent = () => {
   const { record, isPending } = useShowContext<Sale>();
-  if (isPending || !record) return null;
+  if (isPending) return <SalesDetailSkeleton />;
+  if (!record) return null;
 
   return (
     <div className="mt-2 mb-2">

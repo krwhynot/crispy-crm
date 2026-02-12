@@ -22,6 +22,7 @@ import { Link as RouterLink, useLocation, useMatch, useNavigate } from "react-ro
 import { AdminButton } from "@/components/admin/AdminButton";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { OrganizationDetailSkeleton } from "@/components/ui/list-skeleton";
 import { ReferenceManyField } from "@/components/ra-wrappers/reference-many-field";
 import { SortButton } from "@/components/ra-wrappers/sort-button";
 import { ResponsiveGrid } from "@/components/design-system";
@@ -63,7 +64,8 @@ const OrganizationShowContent = () => {
     navigate(`/organizations/${record?.id}/show/${value}`);
   };
 
-  if (isPending || !record) return null;
+  if (isPending) return <OrganizationDetailSkeleton />;
+  if (!record) return null;
 
   // Check if this organization is a distributor (shows Authorizations tab)
   const isDistributor = record.organization_type === "distributor";

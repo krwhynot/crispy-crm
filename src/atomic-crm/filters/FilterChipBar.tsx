@@ -143,7 +143,7 @@ export function FilterChipBar<TContext = unknown>({
           </div>
         ))}
       </div>
-      {activeCount >= 2 && (
+      {activeCount >= 1 && (
         <AdminButton
           variant="ghost"
           size="sm"

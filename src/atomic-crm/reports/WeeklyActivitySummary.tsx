@@ -222,7 +222,11 @@ export default function WeeklyActivitySummary() {
     });
   };
 
-  if (activitiesLoading || !identity) {
+  const hasActivityData = (activities?.length ?? 0) > 0;
+  const isFirstLoad = (activitiesLoading || !identity) && !hasActivityData;
+  const isRefreshing = activitiesLoading && hasActivityData;
+
+  if (isFirstLoad) {
     return (
       <ReportLayout title="Weekly Activity Summary">
         <p className="text-muted-foreground">Loading activities...</p>
@@ -266,6 +270,12 @@ export default function WeeklyActivitySummary() {
         </div>
       }
     >
+      {isRefreshing && (
+        <div className="text-xs text-muted-foreground animate-pulse mb-4" role="status">
+          Updating...
+        </div>
+      )}
+
       <AppliedFiltersBar
         filters={appliedFilters}
         onResetAll={handleResetAllFilters}

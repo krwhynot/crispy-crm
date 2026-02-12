@@ -45,20 +45,30 @@ export function ContactImportPreviewTable({
   return (
     <Collapsible open={isExpanded}>
       <Card>
-        <CollapsibleTrigger asChild>
-          <CardHeader className="cursor-pointer" onClick={onToggle}>
-            <div className="flex items-center justify-between">
+        <CardHeader>
+          <CollapsibleTrigger asChild>
+            <button
+              type="button"
+              onClick={onToggle}
+              className="flex items-center justify-between w-full text-left cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-md"
+              aria-expanded={isExpanded}
+              aria-controls="import-preview-content"
+            >
               <div>
                 <CardTitle>Sample Data Preview</CardTitle>
                 <CardDescription>
                   First 5 rows after transformation ({validSamples}/5 valid)
                 </CardDescription>
               </div>
-              {isExpanded ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
-            </div>
-          </CardHeader>
-        </CollapsibleTrigger>
-        <CollapsibleContent>
+              {isExpanded ? (
+                <ChevronUp className="h-4 w-4" aria-hidden="true" />
+              ) : (
+                <ChevronDown className="h-4 w-4" aria-hidden="true" />
+              )}
+            </button>
+          </CollapsibleTrigger>
+        </CardHeader>
+        <CollapsibleContent id="import-preview-content">
           <CardContent>
             <div className="overflow-x-auto">
               <Table>

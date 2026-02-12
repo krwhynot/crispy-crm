@@ -395,6 +395,7 @@ export const AddItemButton = (props: React.ComponentProps<"button">) => {
             size="icon"
             onClick={() => add()}
             className={cn("button-add", `button-add-${source}`, className)}
+            aria-label={translate("ra.action.add")}
             {...rest}
           >
             <PlusCircle className="h-5 w-5" />
@@ -436,7 +437,13 @@ export const ClearArrayButton = (props: React.ComponentProps<"button">) => {
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger asChild>
-          <Button type="button" variant="ghost" size="icon" {...props}>
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon"
+            aria-label={translate("ra.action.clear_array_input")}
+            {...props}
+          >
             <Trash className="h-5 w-5 text-destructive" aria-hidden="true" />
           </Button>
         </TooltipTrigger>
@@ -462,6 +469,7 @@ export const RemoveItemButton = (props: React.ComponentProps<"button">) => {
             size="icon"
             onClick={() => remove()}
             className={cn("button-remove", `button-remove-${source}-${index}`, className)}
+            aria-label={translate("ra.action.remove")}
             {...rest}
           >
             <XCircle className="h-5 w-5 text-destructive" aria-hidden="true" />

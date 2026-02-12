@@ -84,7 +84,7 @@ describe("FilterChipBar", () => {
       expect(container.firstChild).toBeNull();
     });
 
-    it("should render Clear all button when 2+ filters active", () => {
+    it("should render Clear all button when 1+ filters active", () => {
       renderWithAdminContext(<FilterChipBar filterConfig={mockFilterConfig} />);
 
       const clearButton = screen.getByRole("button", { name: /Clear all 2 filters/i });

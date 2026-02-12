@@ -6,6 +6,7 @@ import {
   Translate,
   useGetResourceLabel,
   useHasDashboard,
+  useListContext,
   useResourceContext,
   useResourceDefinition,
 } from "ra-core";
@@ -18,6 +19,7 @@ import { CreateButton } from "@/components/ra-wrappers/create-button";
 import { ExportButton } from "@/components/ra-wrappers/export-button";
 import { ListPagination } from "@/components/ra-wrappers/list-pagination";
 import { FilterForm } from "@/components/ra-wrappers/filter-form";
+import { ListNoResults } from "@/components/ra-wrappers/ListNoResults";
 
 export const List = <RecordType extends RaRecord = RaRecord>(props: ListProps<RecordType>) => {
   const {
@@ -78,7 +80,7 @@ export interface ListProps<RecordType extends RaRecord = RaRecord>
 export const ListView = <RecordType extends RaRecord = RaRecord>(
   props: ListViewProps<RecordType>
 ) => {
-  const { filters, pagination = defaultPagination, children, actions } = props;
+  const { filters, pagination = defaultPagination, children, actions, empty } = props;
   const resource = useResourceContext();
   if (!resource) {
     throw new Error("The ListView component must be used within a ResourceContextProvider");
@@ -87,6 +89,7 @@ export const ListView = <RecordType extends RaRecord = RaRecord>(
   const resourceLabel = getResourceLabel(resource, 2);
   const { hasCreate } = useResourceDefinition({ resource });
   const hasDashboard = useHasDashboard();
+  const { data, isPending, filterValues } = useListContext();
 
   return (
     <div className="flex h-[calc(100dvh-140px)] flex-col overflow-hidden">
@@ -127,7 +130,7 @@ export const ListView = <RecordType extends RaRecord = RaRecord>(
             props.className
           )}
         >
-          {children}
+          {!isPending && data?.length === 0 ? renderEmptyState(filterValues, empty) : children}
         </div>
 
         {/* Fixed pagination at bottom - only render if pagination is provided */}
@@ -141,10 +144,25 @@ export const ListView = <RecordType extends RaRecord = RaRecord>(
 
 const defaultPagination = <ListPagination />;
 
+function renderEmptyState(
+  filterValues: Record<string, unknown> | undefined,
+  empty: ReactElement | undefined
+): ReactNode {
+  const hasFilters = filterValues && Object.keys(filterValues).length > 0;
+  if (hasFilters) {
+    return <ListNoResults />;
+  }
+  if (empty) {
+    return empty;
+  }
+  return <ListNoResults />;
+}
+
 export interface ListViewProps<RecordType extends RaRecord = RaRecord> {
   children?: ReactNode;
   render?: (props: ListControllerResult<RecordType, Error>) => ReactNode;
   actions?: ReactElement | false;
+  empty?: ReactElement;
   filters?: ReactElement<FilterElementProps>[];
   pagination?: ReactNode;
   title?: ReactNode | string | false;

@@ -27,6 +27,10 @@ interface UseReportDataResult<T> {
   error: Error | null;
   /** Trigger a refetch */
   refetch: () => void;
+  /** True when total records exceed the pagination limit (1000) */
+  isTruncated: boolean;
+  /** Total record count from the data provider response */
+  total: number;
 }
 
 /**
@@ -59,6 +63,8 @@ export function useReportData<T extends RaRecord>(
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
   const [refetchTrigger, setRefetchTrigger] = useState(0);
+  const [isTruncated, setIsTruncated] = useState(false);
+  const [total, setTotal] = useState(0);
 
   const { dateRange, salesRepId, additionalFilters, dateField = "created_at" } = options;
 
@@ -125,6 +131,8 @@ export function useReportData<T extends RaRecord>(
             );
           }
           setData(result.data);
+          setTotal(result.total ?? result.data.length);
+          setIsTruncated((result.total ?? result.data.length) > 1000);
           setIsLoading(false);
         }
       })
@@ -145,5 +153,5 @@ export function useReportData<T extends RaRecord>(
     setRefetchTrigger((n) => n + 1);
   }, []);
 
-  return { data, isLoading, error, refetch };
+  return { data, isLoading, error, refetch, isTruncated, total };
 }

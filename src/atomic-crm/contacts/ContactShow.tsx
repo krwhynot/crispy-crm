@@ -3,6 +3,7 @@ import { ReferenceManyField } from "@/components/ra-wrappers/reference-many-fiel
 import { TextField } from "@/components/ra-wrappers/text-field";
 import { SectionCard } from "@/components/ra-wrappers/SectionCard";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { ContactDetailSkeleton } from "@/components/ui/list-skeleton";
 import { ResponsiveGrid } from "@/components/design-system";
 import { ShowBase, useShowContext } from "ra-core";
 import { OrganizationAvatar } from "../organizations/OrganizationAvatar";
@@ -22,7 +23,8 @@ export const ContactShow = () => (
 
 const ContactShowContent = () => {
   const { record, isPending } = useShowContext<Contact>();
-  if (isPending || !record) return null;
+  if (isPending) return <ContactDetailSkeleton />;
+  if (!record) return null;
 
   return (
     <>

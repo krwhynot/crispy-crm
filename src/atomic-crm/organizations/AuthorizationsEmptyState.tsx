@@ -2,10 +2,11 @@
  * AuthorizationsEmptyState - Empty state for when no principals are authorized
  *
  * Displays a helpful message and CTA button to add the first principal.
+ * Uses the centralized EmptyState component for consistent empty state rendering.
  */
 
-import { Building2, Plus } from "lucide-react";
-import { AdminButton } from "@/components/admin/AdminButton";
+import { Building2 } from "lucide-react";
+import { EmptyState } from "@/components/ui/empty-state";
 
 interface AuthorizationsEmptyStateProps {
   onAddClick: () => void;
@@ -13,16 +14,12 @@ interface AuthorizationsEmptyStateProps {
 
 export function AuthorizationsEmptyState({ onAddClick }: AuthorizationsEmptyStateProps) {
   return (
-    <div className="text-center py-12 border border-dashed border-border rounded-lg">
-      <Building2 className="h-12 w-12 mx-auto text-muted-foreground/50 mb-4" />
-      <h3 className="text-lg font-medium mb-2">No Authorized Principals</h3>
-      <p className="text-sm text-muted-foreground mb-4">
-        Add principals that are authorized to sell through this distributor.
-      </p>
-      <AdminButton variant="outline" onClick={onAddClick} className="h-11">
-        <Plus className="h-4 w-4 mr-1" />
-        Add First Principal
-      </AdminButton>
-    </div>
+    <EmptyState
+      icon={Building2}
+      title="No Authorized Principals"
+      description="Add principals that are authorized to sell through this distributor."
+      action={{ label: "Add First Principal", onClick: onAddClick }}
+      className="border border-dashed border-border rounded-lg py-4"
+    />
   );
 }

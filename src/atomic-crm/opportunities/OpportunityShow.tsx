@@ -3,6 +3,7 @@ import { format, formatDistanceToNow, isPast } from "date-fns";
 import { ShowBase, useShowContext } from "ra-core";
 import { useMatch, useNavigate } from "react-router-dom";
 import { parseDateSafely } from "@/lib/date-utils";
+import { OpportunityDetailSkeleton } from "@/components/ui/show-skeleton";
 
 import { DETAIL_FIELD_MIN_WIDTH } from "./constants";
 import { ArchivedBanner } from "./ArchivedBanner";
@@ -68,7 +69,8 @@ const OpportunityShowContent = () => {
     { value: "nurturing", label: "Nurturing" },
   ];
 
-  if (isPending || !record) return null;
+  if (isPending) return <OpportunityDetailSkeleton />;
+  if (!record) return null;
 
   return (
     <>
