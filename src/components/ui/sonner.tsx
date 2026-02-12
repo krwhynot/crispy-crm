@@ -1,3 +1,8 @@
+/**
+ * Storybook-only Toaster wrapper.
+ * Runtime notifications use Notification (src/components/ra-wrappers/notification.tsx).
+ * Do NOT import this in application code — use useNotify() or useSafeNotify() instead.
+ */
 import { useTheme } from "next-themes";
 import type { ToasterProps } from "sonner";
 import { Toaster as Sonner } from "sonner";

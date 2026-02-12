@@ -278,6 +278,30 @@ export default tseslint.config(
       ],
     },
   },
+  // Notification architecture: Block direct sonner imports (use useNotify/useSafeNotify)
+  // Sonner is an internal renderer only — accessed through notification.tsx
+  {
+    files: ["src/**/*.{ts,tsx}"],
+    ignores: [
+      "src/components/ra-wrappers/notification.tsx", // Runtime renderer
+      "src/components/ui/sonner.tsx", // Storybook-only wrapper
+      "src/components/ui/sonner.stories.tsx", // Storybook stories
+    ],
+    rules: {
+      "no-restricted-imports": [
+        "error",
+        {
+          paths: [
+            {
+              name: "sonner",
+              message:
+                "[NOTIFICATION] Direct sonner imports are forbidden. Use useNotify() or useSafeNotify() instead. Sonner is an internal renderer in notification.tsx only.",
+            },
+          ],
+        },
+      ],
+    },
+  },
   // Feature code restrictions: Enforce Tier 2 wrapper usage (UI_STANDARDS.md)
   // Blocks direct react-admin input imports in atomic-crm features
   {

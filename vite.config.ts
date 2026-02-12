@@ -50,7 +50,6 @@ export default defineConfig(({ mode }) => ({
 
       // Form libraries
       "react-hook-form",
-      "@hookform/resolvers",
       "zod",
 
       // Utilities
@@ -210,7 +209,7 @@ export default defineConfig(({ mode }) => ({
           ],
 
           // Form handling libraries
-          forms: ["react-hook-form", "@hookform/resolvers", "zod"],
+          forms: ["react-hook-form", "zod"],
 
           // Drag and drop - All Kanban boards (dnd-kit)
           "dnd-kit": ["@dnd-kit/core", "@dnd-kit/sortable", "@dnd-kit/utilities"],
