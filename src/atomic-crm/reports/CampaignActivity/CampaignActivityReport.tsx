@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { ReportLayout } from "@/atomic-crm/reports/ReportLayout";
 import {
   Select,
@@ -21,6 +21,7 @@ import { format, subDays, startOfMonth } from "date-fns";
 import { AppliedFiltersBar } from "@/atomic-crm/reports/components";
 import { EmptyState } from "@/components/ui/empty-state";
 import { Activity, CheckCircle } from "lucide-react";
+import { useReportFilterState, CAMPAIGN_DEFAULTS, type CampaignFilterState } from "../hooks";
 
 /** Activity type matching useCampaignActivityData return type and Activity from types.ts */
 interface CampaignActivity {
@@ -50,15 +51,18 @@ interface CampaignActivityGroup {
 
 export default function CampaignActivityReport() {
   const [expandedTypes, setExpandedTypes] = useState<Set<string>>(new Set());
-  const [selectedCampaign, setSelectedCampaign] = useState<string>("Grand Rapids Trade Show");
+
+  const campaignDefaults: CampaignFilterState = {
+    ...CAMPAIGN_DEFAULTS,
+    selectedActivityTypes: INTERACTION_TYPE_OPTIONS.map((opt) => opt.value),
+  };
+
+  const [filterState, updateFilters, resetFilters] = useReportFilterState<CampaignFilterState>(
+    "reports.campaign",
+    campaignDefaults
+  );
 
   const [dateRange, setDateRange] = useState<{ start: string; end: string } | null>(null);
-  const [selectedActivityTypes, setSelectedActivityTypes] = useState<string[]>(
-    INTERACTION_TYPE_OPTIONS.map((opt) => opt.value)
-  );
-  const [datePreset, setDatePreset] = useState<string>("allTime");
-  const [selectedSalesRep, setSelectedSalesRep] = useState<number | null>(null);
-  const [showStaleLeads, setShowStaleLeads] = useState<boolean>(false);
   const [ariaLiveMessage, setAriaLiveMessage] = useState<string>("");
 
   const hasInitialized = React.useRef(false);
@@ -76,20 +80,38 @@ export default function CampaignActivityReport() {
     isLoadingActivities,
     staleOpportunities: staleOpportunitiesData,
   } = useCampaignActivityData({
-    selectedCampaign,
+    selectedCampaign: filterState.selectedCampaign || "Grand Rapids Trade Show",
     dateRange,
-    selectedActivityTypes,
-    selectedSalesRep,
+    selectedActivityTypes:
+      filterState.selectedActivityTypes.length > 0
+        ? filterState.selectedActivityTypes
+        : INTERACTION_TYPE_OPTIONS.map((opt) => opt.value),
+    selectedSalesRep: filterState.selectedSalesRep,
     allActivityTypes: INTERACTION_TYPE_OPTIONS,
-    showStaleLeads,
+    showStaleLeads: filterState.showStaleLeads,
   });
+
+  const selectedCampaign =
+    filterState.selectedCampaign || campaignOptions[0]?.name || "Grand Rapids Trade Show";
+  const datePreset = filterState.datePreset;
+  const selectedActivityTypes =
+    filterState.selectedActivityTypes.length > 0
+      ? filterState.selectedActivityTypes
+      : INTERACTION_TYPE_OPTIONS.map((opt) => opt.value);
+  const selectedSalesRep = filterState.selectedSalesRep;
+  const showStaleLeads = filterState.showStaleLeads;
+
+  useEffect(() => {
+    if (!filterState.selectedCampaign && campaignOptions.length > 0) {
+      updateFilters({ selectedCampaign: campaignOptions[0].name });
+    }
+  }, [campaignOptions, filterState.selectedCampaign, updateFilters]);
 
   const { exportStaleLeads, exportActivities } = useCampaignActivityExport(
     selectedCampaign,
     salesMap
   );
 
-  // Group activities by type
   const activityGroups = useMemo((): CampaignActivityGroup[] => {
     if (activities.length === 0) return [];
 
@@ -116,7 +138,6 @@ export default function CampaignActivityReport() {
       group.totalCount += 1;
     });
 
-    // Calculate metrics for each group
     const result = Array.from(grouped.values()).map((group) => {
       const orgCounts = new Map<number, { name: string; count: number }>();
 
@@ -149,7 +170,6 @@ export default function CampaignActivityReport() {
     return result.toSorted((a, b) => b.totalCount - a.totalCount);
   }, [activities]);
 
-  // Map RPC response to component shape
   const staleOpportunities = useMemo(
     () =>
       (staleOpportunitiesData || []).map((opp) => ({
@@ -165,7 +185,6 @@ export default function CampaignActivityReport() {
     [staleOpportunitiesData]
   );
 
-  // Auto-expand top 3 activity types on load
   React.useEffect(() => {
     if (activityGroups.length > 0 && !hasInitialized.current) {
       const topThreeTypes = new Set(activityGroups.slice(0, 3).map((g) => g.type));
@@ -174,7 +193,6 @@ export default function CampaignActivityReport() {
     }
   }, [activityGroups]);
 
-  // Announce view changes to screen readers
   React.useEffect(() => {
     if (showStaleLeads) {
       setAriaLiveMessage(
@@ -185,12 +203,10 @@ export default function CampaignActivityReport() {
         `Switched to activity breakdown view. Showing ${activityGroups.length} activity types.`
       );
     }
-    // Clear message after announcement
     const timer = setTimeout(() => setAriaLiveMessage(""), 1000);
     return () => clearTimeout(timer);
   }, [showStaleLeads, staleOpportunities.length, activityGroups.length]);
 
-  // Calculate summary metrics
   const totalActivities = activities.length;
   const uniqueOrgs = new Set(activities.map((a) => a.organization_id)).size;
   const totalOpportunities = totalCampaignOpportunities || 1;
@@ -209,9 +225,8 @@ export default function CampaignActivityReport() {
     setExpandedTypes(newExpanded);
   };
 
-  // Date preset handlers
   const setDatePresetHandler = (preset: string) => {
-    setDatePreset(preset);
+    updateFilters({ datePreset: preset });
     const today = new Date();
     switch (preset) {
       case "last7":
@@ -239,90 +254,79 @@ export default function CampaignActivityReport() {
     }
   };
 
-  // Activity type toggle handler
   const toggleActivityType = (type: string) => {
     if (selectedActivityTypes.includes(type)) {
-      // Don't allow deselecting if it's the last one
       if (selectedActivityTypes.length > 1) {
-        setSelectedActivityTypes(selectedActivityTypes.filter((t) => t !== type));
+        updateFilters({ selectedActivityTypes: selectedActivityTypes.filter((t) => t !== type) });
       }
     } else {
-      setSelectedActivityTypes([...selectedActivityTypes, type]);
+      updateFilters({ selectedActivityTypes: [...selectedActivityTypes, type] });
     }
   };
 
-  // Select/deselect all activity types
   const toggleAllActivityTypes = () => {
     if (selectedActivityTypes.length === INTERACTION_TYPE_OPTIONS.length) {
-      setSelectedActivityTypes([]);
+      updateFilters({ selectedActivityTypes: [] });
     } else {
-      setSelectedActivityTypes(INTERACTION_TYPE_OPTIONS.map((opt) => opt.value));
+      updateFilters({ selectedActivityTypes: INTERACTION_TYPE_OPTIONS.map((opt) => opt.value) });
     }
   };
 
-  // Clear all filters (keeps campaign selected)
   const clearFilters = () => {
+    resetFilters();
     setDateRange(null);
-    setSelectedActivityTypes(INTERACTION_TYPE_OPTIONS.map((opt) => opt.value));
-    setDatePreset("allTime");
-    setSelectedSalesRep(null);
-    setShowStaleLeads(false);
   };
 
-  // Check if any filters are active
   const hasActiveFilters =
     dateRange !== null ||
     selectedActivityTypes.length < INTERACTION_TYPE_OPTIONS.length ||
     selectedSalesRep !== null ||
     showStaleLeads;
 
-  // Build applied filters array for AppliedFiltersBar
   const appliedFilters = useMemo(() => {
     const result: Array<{ label: string; value: string; onRemove: () => void }> = [];
 
-    // Campaign filter (always visible)
     result.push({
       label: "Campaign",
       value: selectedCampaign,
-      onRemove: () => {}, // Can't remove campaign - it's required
+      onRemove: () => {},
     });
 
-    // Date range (if not all time)
     if (dateRange) {
       result.push({
         label: "Date Range",
         value: `${dateRange.start} to ${dateRange.end}`,
         onRemove: () => {
           setDateRange(null);
-          setDatePreset("allTime");
+          updateFilters({ datePreset: "allTime" });
         },
       });
     }
 
-    // Activity types (if not all)
     if (selectedActivityTypes.length < INTERACTION_TYPE_OPTIONS.length) {
       result.push({
         label: "Activity Types",
         value: `${selectedActivityTypes.length} selected`,
-        onRemove: () => setSelectedActivityTypes(INTERACTION_TYPE_OPTIONS.map((opt) => opt.value)),
+        onRemove: () =>
+          updateFilters({
+            selectedActivityTypes: INTERACTION_TYPE_OPTIONS.map((opt) => opt.value),
+          }),
       });
     }
 
-    // Sales rep
     if (selectedSalesRep !== null) {
       result.push({
         label: "Sales Rep",
         value: salesMap.get(selectedSalesRep) || `Rep ${selectedSalesRep}`,
-        onRemove: () => setSelectedSalesRep(null),
+        onRemove: () => updateFilters({ selectedSalesRep: null }),
       });
     }
 
-    // Stale leads toggle
     if (showStaleLeads) {
       result.push({
         label: "View",
         value: "Stale Leads Only",
-        onRemove: () => setShowStaleLeads(false),
+        onRemove: () => updateFilters({ showStaleLeads: false }),
       });
     }
 
@@ -334,6 +338,7 @@ export default function CampaignActivityReport() {
     selectedSalesRep,
     showStaleLeads,
     salesMap,
+    updateFilters,
   ]);
 
   const handleExport = () => {
@@ -375,7 +380,10 @@ export default function CampaignActivityReport() {
                 aria-label="Loading campaigns"
               />
             ) : (
-              <Select value={selectedCampaign} onValueChange={setSelectedCampaign}>
+              <Select
+                value={selectedCampaign}
+                onValueChange={(val) => updateFilters({ selectedCampaign: val })}
+              >
                 <SelectTrigger id="campaign-select">
                   <SelectValue placeholder="Choose a campaign" />
                 </SelectTrigger>
@@ -413,7 +421,7 @@ export default function CampaignActivityReport() {
           dateRange={dateRange}
           setDateRange={setDateRange}
           datePreset={datePreset}
-          setDatePreset={setDatePreset}
+          setDatePreset={(val) => updateFilters({ datePreset: val })}
           setDatePresetHandler={setDatePresetHandler}
           selectedActivityTypes={selectedActivityTypes}
           toggleActivityType={toggleActivityType}
@@ -421,11 +429,11 @@ export default function CampaignActivityReport() {
           activityTypeOptions={INTERACTION_TYPE_OPTIONS}
           activityTypeCounts={activityTypeCounts}
           selectedSalesRep={selectedSalesRep}
-          setSelectedSalesRep={setSelectedSalesRep}
+          setSelectedSalesRep={(val) => updateFilters({ selectedSalesRep: val })}
           salesRepOptions={salesRepOptions}
           allCampaignActivitiesCount={totalCampaignActivitiesCount}
           showStaleLeads={showStaleLeads}
-          setShowStaleLeads={setShowStaleLeads}
+          setShowStaleLeads={(val) => updateFilters({ showStaleLeads: val })}
           staleOpportunitiesCount={staleOpportunities.length}
         />
       </div>

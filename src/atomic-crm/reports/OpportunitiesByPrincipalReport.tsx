@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect, useRef } from "react";
+import { useState, useMemo, useCallback, useEffect, useRef } from "react";
 import { useGetList, useNotify } from "ra-core";
 import { useNavigate } from "react-router-dom";
 import { format } from "date-fns";
@@ -6,7 +6,12 @@ import { TrendingUp } from "lucide-react";
 import { ReportLayout } from "./ReportLayout";
 import { Card, CardContent } from "@/components/ui/card";
 import { AppliedFiltersBar, EmptyState } from "./components";
-import { useReportData } from "./hooks";
+import {
+  useReportData,
+  useReportFilterState,
+  OPPORTUNITIES_DEFAULTS,
+  type OpportunitiesFilterState,
+} from "./hooks";
 import { DEFAULT_PAGE_SIZE } from "@/atomic-crm/constants/appConstants";
 import type { Opportunity, Sale } from "../types";
 import {
@@ -37,14 +42,34 @@ export default function OpportunitiesByPrincipalReport() {
   const navigate = useNavigate();
   const notify = useNotify();
 
-  // Filter state
-  const [filters, setFilters] = useState<FilterValues>({
-    principal_organization_id: null,
-    stage: [],
-    opportunity_owner_id: null,
-    startDate: null,
-    endDate: null,
-  });
+  const [filterState, updateFilters, resetFilters] = useReportFilterState<OpportunitiesFilterState>(
+    "reports.opportunities",
+    OPPORTUNITIES_DEFAULTS
+  );
+
+  const filters: FilterValues = useMemo(
+    () => ({
+      principal_organization_id: filterState.principal_organization_id,
+      stage: filterState.stage,
+      opportunity_owner_id: filterState.opportunity_owner_id,
+      startDate: filterState.startDate,
+      endDate: filterState.endDate,
+    }),
+    [filterState]
+  );
+
+  const handleFiltersChange = useCallback(
+    (newFilters: FilterValues) => {
+      updateFilters({
+        principal_organization_id: newFilters.principal_organization_id,
+        stage: newFilters.stage,
+        opportunity_owner_id: newFilters.opportunity_owner_id,
+        startDate: newFilters.startDate,
+        endDate: newFilters.endDate,
+      });
+    },
+    [updateFilters]
+  );
 
   // Track expanded principals
   const [expandedPrincipals, setExpandedPrincipals] = useState<Set<string>>(new Set());
@@ -204,7 +229,7 @@ export default function OpportunitiesByPrincipalReport() {
       result.push({
         label: "Principal",
         value: "Selected",
-        onRemove: () => setFilters({ ...filters, principal_organization_id: null }),
+        onRemove: () => updateFilters({ principal_organization_id: null }),
       });
     }
 
@@ -212,7 +237,7 @@ export default function OpportunitiesByPrincipalReport() {
       result.push({
         label: "Stage",
         value: `${filters.stage.length} selected`,
-        onRemove: () => setFilters({ ...filters, stage: [] }),
+        onRemove: () => updateFilters({ stage: [] }),
       });
     }
 
@@ -220,7 +245,7 @@ export default function OpportunitiesByPrincipalReport() {
       result.push({
         label: "Sales Rep",
         value: "Selected",
-        onRemove: () => setFilters({ ...filters, opportunity_owner_id: null }),
+        onRemove: () => updateFilters({ opportunity_owner_id: null }),
       });
     }
 
@@ -228,7 +253,7 @@ export default function OpportunitiesByPrincipalReport() {
       result.push({
         label: "Start Date",
         value: format(new Date(filters.startDate), "MMM dd, yyyy"),
-        onRemove: () => setFilters({ ...filters, startDate: null }),
+        onRemove: () => updateFilters({ startDate: null }),
       });
     }
 
@@ -236,12 +261,12 @@ export default function OpportunitiesByPrincipalReport() {
       result.push({
         label: "End Date",
         value: format(new Date(filters.endDate), "MMM dd, yyyy"),
-        onRemove: () => setFilters({ ...filters, endDate: null }),
+        onRemove: () => updateFilters({ endDate: null }),
       });
     }
 
     return result;
-  }, [filters]);
+  }, [filters, updateFilters]);
 
   const hasActiveFilters =
     filters.principal_organization_id ||
@@ -251,13 +276,7 @@ export default function OpportunitiesByPrincipalReport() {
     filters.endDate;
 
   const handleResetAllFilters = () => {
-    setFilters({
-      principal_organization_id: null,
-      stage: [],
-      opportunity_owner_id: null,
-      startDate: null,
-      endDate: null,
-    });
+    resetFilters();
   };
 
   const hasOpportunityData = (opportunities?.length ?? 0) > 0;
@@ -279,7 +298,7 @@ export default function OpportunitiesByPrincipalReport() {
     <ReportLayout
       title="Opportunities by Principal"
       onExport={handleExport}
-      actions={<FilterToolbar filters={filters} onFiltersChange={setFilters} />}
+      actions={<FilterToolbar filters={filters} onFiltersChange={handleFiltersChange} />}
     >
       <div className="space-y-section">
         {isRefreshing && (

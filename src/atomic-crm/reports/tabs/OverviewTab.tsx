@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback } from "react";
+import { useMemo, useCallback } from "react";
 import { useGetList } from "ra-core";
 import { useNavigate } from "react-router-dom";
 import { TrendingUp, Activity, AlertCircle, Clock } from "lucide-react";
@@ -7,7 +7,12 @@ import { ChartWrapper } from "../components/ChartWrapper";
 import { Skeleton } from "@/components/ui/skeleton";
 import { TabFilterBar } from "../components/TabFilterBar";
 import { AppliedFiltersBar, EmptyState } from "../components";
-import { useReportData } from "../hooks";
+import {
+  useReportData,
+  useReportFilterState,
+  OVERVIEW_DEFAULTS,
+  type OverviewFilterState,
+} from "../hooks";
 import { PipelineChart } from "../charts/PipelineChart";
 import { ActivityTrendChart } from "../charts/ActivityTrendChart";
 import { TopPrincipalsChart } from "../charts/TopPrincipalsChart";
@@ -45,20 +50,23 @@ interface ActivityRecord {
 export default function OverviewTab() {
   const navigate = useNavigate();
 
-  // Local filter state (replaces GlobalFilterContext)
-  const [dateRange, setDateRange] = useState({
-    preset: "last30",
+  const [filterState, updateFilters, resetFilters] = useReportFilterState<OverviewFilterState>(
+    "reports.overview",
+    OVERVIEW_DEFAULTS
+  );
+
+  const dateRange = {
+    preset: filterState.datePreset,
     start: null as string | null,
     end: null as string | null,
-  });
-  const [salesRepId, setSalesRepId] = useState<number | null>(null);
+  };
+  const salesRepId = filterState.salesRepId;
 
-  const hasActiveFilters = dateRange.preset !== "last30" || salesRepId !== null;
+  const hasActiveFilters = filterState.datePreset !== "last30" || filterState.salesRepId !== null;
 
   const handleReset = useCallback(() => {
-    setDateRange({ preset: "last30", start: null, end: null });
-    setSalesRepId(null);
-  }, []);
+    resetFilters();
+  }, [resetFilters]);
 
   // Fetch sales reps for filter display and rep performance
   const { data: salesReps = [] } = useGetList<Sale>("sales", {
@@ -83,7 +91,7 @@ export default function OverviewTab() {
       filters.push({
         label: "Date Range",
         value: dateLabels[dateRange.preset] || dateRange.preset,
-        onRemove: () => setDateRange({ preset: "last30", start: null, end: null }),
+        onRemove: () => updateFilters({ datePreset: "last30" }),
       });
     }
 
@@ -94,12 +102,12 @@ export default function OverviewTab() {
       filters.push({
         label: "Sales Rep",
         value: repName,
-        onRemove: () => setSalesRepId(null),
+        onRemove: () => updateFilters({ salesRepId: null }),
       });
     }
 
     return filters;
-  }, [dateRange.preset, salesRepId, salesReps]);
+  }, [dateRange.preset, salesRepId, salesReps, updateFilters]);
 
   // KPI click handlers - navigate to filtered list views (PRD Section 9.2.1)
   const handleTotalOpportunitiesClick = useCallback(() => {
@@ -383,10 +391,10 @@ export default function OverviewTab() {
       <TabFilterBar
         showDateRange
         dateRange={dateRange}
-        onDateRangeChange={setDateRange}
+        onDateRangeChange={(range) => updateFilters({ datePreset: range.preset })}
         showSalesRep
         salesRepId={salesRepId}
-        onSalesRepChange={setSalesRepId}
+        onSalesRepChange={(value) => updateFilters({ salesRepId: value })}
         hasActiveFilters={hasActiveFilters}
         onReset={handleReset}
       />

@@ -1,9 +1,22 @@
 import { useSearchParams } from "react-router-dom";
+import { useStore } from "ra-core";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Suspense, lazy, useEffect } from "react";
+import { Suspense, lazy, useCallback, useEffect, useState } from "react";
+import { Link2, Check } from "lucide-react";
+import { AdminButton } from "@/components/admin/AdminButton";
 import { cleanupOldReportKeys } from "./utils/cleanupMigration";
 import { ReportPageShell } from "./components/ReportPageShell";
+import {
+  buildShareUrl,
+  OVERVIEW_DEFAULTS,
+  CAMPAIGN_DEFAULTS,
+  OPPORTUNITIES_DEFAULTS,
+  type OverviewFilterState,
+  type CampaignFilterState,
+  type WeeklyFilterState,
+  type OpportunitiesFilterState,
+} from "./hooks";
 
 const OverviewTab = lazy(() => import("./tabs/OverviewTab"));
 const OpportunitiesTab = lazy(() => import("./tabs/OpportunitiesTab"));
@@ -30,6 +43,16 @@ function TabSkeleton() {
 export default function ReportsPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const activeTab = searchParams.get("tab") || "overview";
+  const [copied, setCopied] = useState(false);
+
+  // Read stored filter state for each tab (for share URL generation)
+  const [overviewFilters] = useStore<OverviewFilterState>("reports.overview", OVERVIEW_DEFAULTS);
+  const [campaignFilters] = useStore<CampaignFilterState>("reports.campaign", CAMPAIGN_DEFAULTS);
+  const [weeklyFilters] = useStore<WeeklyFilterState>("reports.weekly", { start: "", end: "" });
+  const [opportunitiesFilters] = useStore<OpportunitiesFilterState>(
+    "reports.opportunities",
+    OPPORTUNITIES_DEFAULTS
+  );
 
   useEffect(() => {
     cleanupOldReportKeys();
@@ -38,6 +61,24 @@ export default function ReportsPage() {
   const handleTabChange = (value: string) => {
     setSearchParams({ tab: value });
   };
+
+  const handleCopyShareUrl = useCallback(() => {
+    const filterMap: Record<string, { filters: unknown; defaults: unknown }> = {
+      overview: { filters: overviewFilters, defaults: OVERVIEW_DEFAULTS },
+      campaign: { filters: campaignFilters, defaults: CAMPAIGN_DEFAULTS },
+      weekly: { filters: weeklyFilters, defaults: { start: "", end: "" } },
+      opportunities: { filters: opportunitiesFilters, defaults: OPPORTUNITIES_DEFAULTS },
+    };
+
+    const entry = filterMap[activeTab];
+    if (!entry) return;
+
+    const url = buildShareUrl(activeTab, entry.filters as never, entry.defaults as never);
+    navigator.clipboard.writeText(url).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    });
+  }, [activeTab, overviewFilters, campaignFilters, weeklyFilters, opportunitiesFilters]);
 
   const tabLabels: Record<string, string> = {
     overview: "Overview",
@@ -52,7 +93,31 @@ export default function ReportsPage() {
   ];
 
   return (
-    <ReportPageShell title="Reports & Analytics" breadcrumbs={breadcrumbs}>
+    <ReportPageShell
+      title="Reports & Analytics"
+      breadcrumbs={breadcrumbs}
+      actions={
+        <AdminButton
+          variant="outline"
+          size="sm"
+          onClick={handleCopyShareUrl}
+          className="h-11 gap-2"
+          aria-label="Copy shareable link with current filters"
+        >
+          {copied ? (
+            <>
+              <Check className="h-4 w-4" aria-hidden="true" />
+              Copied!
+            </>
+          ) : (
+            <>
+              <Link2 className="h-4 w-4" aria-hidden="true" />
+              Copy Link
+            </>
+          )}
+        </AdminButton>
+      }
+    >
       <Tabs value={activeTab} onValueChange={handleTabChange}>
         <TabsList className="grid w-full grid-cols-2 lg:grid-cols-4 h-auto">
           <TabsTrigger value="overview" className="h-11">

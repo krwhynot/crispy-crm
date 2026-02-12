@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useMemo } from "react";
 import { useGetList, useGetIdentity, downloadCSV, useNotify } from "ra-core";
 import { getWeekRange } from "@/atomic-crm/utils";
 import jsonExport from "jsonexport/dist";
@@ -10,7 +10,7 @@ import { Badge } from "@/components/ui/badge";
 import { pluralize } from "@/lib/utils/pluralize";
 import { sanitizeCsvValue } from "@/atomic-crm/utils/csvUploadValidator";
 import { AppliedFiltersBar, EmptyState } from "./components";
-import { useReportData } from "./hooks";
+import { useReportData, useReportFilterState, type WeeklyFilterState } from "./hooks";
 import { DEFAULT_PAGE_SIZE, LOW_ACTIVITY_THRESHOLD } from "@/atomic-crm/constants/appConstants";
 import type { ActivityRecord, Organization, Sale } from "../types";
 
@@ -27,7 +27,15 @@ import type { ActivityRecord, Organization, Sale } from "../types";
 export default function WeeklyActivitySummary() {
   const { data: identity } = useGetIdentity();
   const notify = useNotify();
-  const [dateRange, setDateRange] = useState(() => getWeekRange());
+  const weeklyDefaults: WeeklyFilterState = getWeekRange();
+  const [filterState, updateFilters, resetFilters] = useReportFilterState<WeeklyFilterState>(
+    "reports.weekly",
+    weeklyDefaults
+  );
+  const dateRange = useMemo(
+    () => ({ start: filterState.start, end: filterState.end }),
+    [filterState.start, filterState.end]
+  );
 
   // CRITICAL: Memoize Date objects to prevent render loop
   // new Date() creates new object reference every render, causing useReportData
@@ -98,13 +106,13 @@ export default function WeeklyActivitySummary() {
       label: "Week",
       value: `${dateRange.start} to ${dateRange.end}`,
       onRemove: () => {
-        // Reset to current week
-        setDateRange(getWeekRange());
+        resetFilters();
       },
     });
 
     return result;
-  }, [dateRange]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- resetFilters is stable (useCallback with defaults dep)
+  }, [dateRange.start, dateRange.end, resetFilters]);
 
   // Check if we're viewing current week (not a non-default filter)
   const isCurrentWeek = useMemo(() => {
@@ -112,12 +120,12 @@ export default function WeeklyActivitySummary() {
     const currentStart = currentWeek.start;
     const currentEnd = currentWeek.end;
     return dateRange.start === currentStart && dateRange.end === currentEnd;
-  }, [dateRange]);
+  }, [dateRange.start, dateRange.end]);
 
   const hasActiveFilters = !isCurrentWeek;
 
   const handleResetAllFilters = () => {
-    setDateRange(getWeekRange());
+    resetFilters();
   };
 
   // Group activities by rep → principal → type
@@ -250,7 +258,7 @@ export default function WeeklyActivitySummary() {
             type="date"
             aria-label="Start date"
             value={dateRange.start}
-            onChange={(e) => setDateRange({ ...dateRange, start: e.target.value })}
+            onChange={(e) => updateFilters({ start: e.target.value })}
             className="h-11 px-3 py-2 border rounded text-sm"
           />
           <span className="text-muted-foreground" aria-hidden="true">
@@ -264,7 +272,7 @@ export default function WeeklyActivitySummary() {
             type="date"
             aria-label="End date"
             value={dateRange.end}
-            onChange={(e) => setDateRange({ ...dateRange, end: e.target.value })}
+            onChange={(e) => updateFilters({ end: e.target.value })}
             className="h-11 px-3 py-2 border rounded text-sm"
           />
         </div>
