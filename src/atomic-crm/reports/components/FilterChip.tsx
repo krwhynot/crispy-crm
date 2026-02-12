@@ -18,7 +18,7 @@ export const FilterChip = React.memo(({ label, value, onRemove }: FilterChipProp
   return (
     <div
       role="listitem"
-      className="inline-flex items-center gap-2 rounded-md bg-muted px-3 py-2 text-sm text-foreground"
+      className="inline-flex items-center gap-compact rounded-md bg-muted px-3 py-2 text-sm text-foreground min-h-[44px]"
     >
       <span className="text-muted-foreground">{label}:</span>
       <span className="font-medium">{value}</span>

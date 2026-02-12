@@ -7,6 +7,7 @@
 
 export { useReportData } from "./useReportData";
 export { useChartTheme, type ChartTheme } from "./useChartTheme";
+export { useScrollFadeRight } from "./useScrollFadeRight";
 export {
   useReportFilterState,
   buildShareUrl,

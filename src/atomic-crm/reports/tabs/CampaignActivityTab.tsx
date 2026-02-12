@@ -18,7 +18,7 @@ export default function CampaignActivityTab() {
             {/* Filter bar skeleton */}
             <Skeleton className="h-14 rounded-lg" />
             {/* Summary cards skeleton */}
-            <div className="grid grid-cols-1 lg:grid-cols-4 gap-content">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-content">
               {[...Array(4)].map((_, i) => (
                 <Skeleton key={i} className="h-24 rounded-lg" />
               ))}

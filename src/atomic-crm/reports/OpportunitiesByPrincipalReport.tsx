@@ -321,7 +321,7 @@ export default function OpportunitiesByPrincipalReport() {
         )}
 
         {/* Summary Stats */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-content">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-content">
           <Card>
             <CardContent className="p-4">
               <p className="text-sm text-muted-foreground">Total Opportunities</p>

@@ -16,7 +16,7 @@ interface ReportPageShellProps {
 
 export function ReportPageShell({ title, breadcrumbs, actions, children }: ReportPageShellProps) {
   return (
-    <div className="p-content lg:p-widget space-y-section">
+    <div className="p-content md:p-widget space-y-section">
       <Breadcrumb>
         <BreadcrumbItem>
           <Link to="/">Home</Link>
@@ -33,7 +33,7 @@ export function ReportPageShell({ title, breadcrumbs, actions, children }: Repor
       </Breadcrumb>
 
       <div className="flex items-center justify-between gap-content">
-        <h1 className="text-3xl font-bold">{title}</h1>
+        <h1 className="text-2xl md:text-3xl font-bold">{title}</h1>
         {actions && <div className="flex items-center gap-compact">{actions}</div>}
       </div>
 

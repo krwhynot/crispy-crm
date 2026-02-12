@@ -381,6 +381,22 @@
     @apply tabular-nums lining-nums slashed-zero text-right;
   }
 
+  /* Scroll signposting: right-edge fade to indicate more content */
+  .scroll-fade-right {
+    position: relative;
+  }
+  .scroll-fade-right.can-scroll-right::after {
+    content: "";
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 2rem;
+    background: linear-gradient(to left, var(--card), transparent);
+    pointer-events: none;
+    z-index: 20;
+  }
+
   /* Performance: Skip rendering off-screen list rows */
   .list-row-virtualized {
     content-visibility: auto;

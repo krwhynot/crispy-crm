@@ -131,8 +131,8 @@ describe("OverviewTab", () => {
 
     const kpiGrid = container.querySelector('[data-testid="kpi-grid"]');
     expect(kpiGrid).toHaveClass("lg:grid-cols-4");
-    // Should NOT have md: breakpoint
-    expect(kpiGrid?.className).not.toMatch(/md:grid-cols-2/);
+    // Should have md: breakpoint for tablet portrait
+    expect(kpiGrid?.className).toMatch(/md:grid-cols-2/);
   });
 
   it("uses semantic spacing tokens", async () => {

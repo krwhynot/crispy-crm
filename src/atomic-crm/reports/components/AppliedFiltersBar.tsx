@@ -24,8 +24,8 @@ export const AppliedFiltersBar = ({
   }
 
   return (
-    <div className="flex items-center justify-between gap-4 rounded-lg bg-muted/50 p-3">
-      <div role="list" className="flex flex-wrap items-center gap-2">
+    <div className="flex flex-wrap items-center justify-between gap-content rounded-lg bg-muted/50 p-compact md:p-content">
+      <div role="list" className="flex flex-wrap items-center gap-compact">
         <span className="text-sm text-muted-foreground">Applied:</span>
         {filters.map((filter) => (
           <FilterChip

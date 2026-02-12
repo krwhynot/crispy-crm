@@ -60,11 +60,11 @@ export const CampaignActivityFilters: React.FC<CampaignActivityFiltersProps> = (
   return (
     <Card>
       <CardContent className="pt-6">
-        <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 gap-section">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-content md:gap-section">
           <div>
             <h4 className="text-sm font-medium mb-3">Date Range</h4>
             <div className="space-y-3">
-              <div className="flex gap-2 flex-wrap">
+              <div className="flex gap-compact flex-wrap">
                 <AdminButton
                   variant={datePreset === "allTime" ? "default" : "outline"}
                   size="sm"

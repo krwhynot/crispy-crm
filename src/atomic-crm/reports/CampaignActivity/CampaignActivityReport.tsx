@@ -453,7 +453,7 @@ export default function CampaignActivityReport() {
         </div>
       )}
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 gap-content mb-section">
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-content mb-section">
         <CampaignActivitySummaryCards
           isLoadingActivities={isFirstLoad}
           totalActivities={totalActivities}

@@ -20,9 +20,9 @@ interface ReportLayoutProps {
  */
 export function ReportLayout({ title, children, onExport, actions }: ReportLayoutProps) {
   return (
-    <div className="space-y-4 p-6">
+    <div className="space-y-content p-content md:p-widget">
       <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold">{title}</h1>
+        <h1 className="text-2xl md:text-3xl font-bold">{title}</h1>
         <div className="flex items-center gap-2">
           {actions}
           {onExport && (
@@ -34,7 +34,7 @@ export function ReportLayout({ title, children, onExport, actions }: ReportLayou
         </div>
       </div>
       <Card>
-        <CardContent className="p-6">{children}</CardContent>
+        <CardContent className="p-content md:p-widget">{children}</CardContent>
       </Card>
     </div>
   );

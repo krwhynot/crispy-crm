@@ -16,7 +16,7 @@ export default function OpportunitiesTab() {
         fallback={
           <div className="space-y-section">
             {/* Summary cards skeleton */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-content">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-content">
               {[...Array(3)].map((_, i) => (
                 <Skeleton key={i} className="h-24 rounded-lg" />
               ))}

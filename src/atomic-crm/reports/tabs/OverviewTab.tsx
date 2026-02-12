@@ -428,13 +428,19 @@ export default function OverviewTab() {
       )}
 
       {isFirstLoad ? (
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-content" data-testid="kpi-grid">
+        <div
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-content"
+          data-testid="kpi-grid"
+        >
           {[...Array(4)].map((_, i) => (
             <Skeleton key={i} className="h-32" />
           ))}
         </div>
       ) : (
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-content" data-testid="kpi-grid">
+        <div
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-content"
+          data-testid="kpi-grid"
+        >
           <KPICard
             title="Open Opportunities"
             value={kpis.totalOpportunities}
@@ -472,7 +478,7 @@ export default function OverviewTab() {
         </div>
       )}
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-section">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-content md:gap-section">
         <ChartWrapper title="Pipeline by Stage" isLoading={isFirstLoad}>
           <PipelineChart data={pipelineData} />
         </ChartWrapper>

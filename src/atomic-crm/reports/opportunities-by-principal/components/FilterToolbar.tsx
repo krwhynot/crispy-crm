@@ -101,7 +101,7 @@ export function FilterToolbar({ filters, onFiltersChange }: FilterToolbarProps) 
 
   return (
     <FormProvider {...form}>
-      <form className="flex flex-wrap items-center gap-2">
+      <form className="flex flex-wrap items-center gap-compact md:gap-content">
         {/* Principal Filter */}
         <ReferenceInput
           source="principal_organization_id"
@@ -133,7 +133,7 @@ export function FilterToolbar({ filters, onFiltersChange }: FilterToolbarProps) 
         </ReferenceInput>
 
         {/* Date Range */}
-        <div className="flex items-center gap-2">
+        <div className="flex flex-col md:flex-row items-stretch md:items-center gap-compact">
           <input
             type="date"
             {...form.register("startDate")}

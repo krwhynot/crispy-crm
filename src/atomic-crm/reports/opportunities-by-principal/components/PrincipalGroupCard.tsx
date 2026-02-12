@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { AdminButton } from "@/components/admin/AdminButton";
 import { ChevronDown, ChevronRight, ExternalLink } from "lucide-react";
 import { parseDateSafely } from "@/lib/date-utils";
+import { useScrollFadeRight } from "@/atomic-crm/reports/hooks";
 import type { Opportunity } from "@/atomic-crm/types";
 
 export interface PrincipalGroup {
@@ -29,6 +30,7 @@ export function PrincipalGroupCard({
   onOpportunityClick,
   salesMap,
 }: PrincipalGroupCardProps) {
+  const scrollRef = useScrollFadeRight<HTMLDivElement>();
   // Get stage summary
   const stageSummary = Object.entries(group.stageBreakdown)
     .toSorted(([, a], [, b]) => b - a)
@@ -74,22 +76,37 @@ export function PrincipalGroupCard({
 
       {isExpanded && (
         <CardContent id={principalGroupId}>
-          <div className="overflow-x-auto">
-            <table className="w-full">
+          <div ref={scrollRef} className="overflow-x-auto scroll-fade-right">
+            <table className="w-full border-separate border-spacing-0">
               <thead>
-                <tr className="border-b text-sm text-muted-foreground">
-                  <th className="text-left py-2 px-2 min-w-[200px]">Opportunity</th>
-                  <th className="text-left py-2 px-2 min-w-[150px]">Organization</th>
-                  <th className="text-left py-2 px-2 min-w-[120px]">Stage</th>
-                  <th className="text-left py-2 px-2 min-w-[100px]">Close Date</th>
-                  <th className="text-left py-2 px-2 min-w-[100px]">Sales Rep</th>
-                  <th className="text-center py-2 px-2 min-w-[50px]">Action</th>
+                <tr className="text-sm text-muted-foreground">
+                  <th
+                    scope="col"
+                    className="text-left py-2 px-2 min-w-[200px] border-b sticky left-0 bg-card z-10 shadow-[2px_0_4px_-2px_rgba(0,0,0,0.1)]"
+                  >
+                    Opportunity
+                  </th>
+                  <th scope="col" className="text-left py-2 px-2 min-w-[150px] border-b">
+                    Organization
+                  </th>
+                  <th scope="col" className="text-left py-2 px-2 min-w-[120px] border-b">
+                    Stage
+                  </th>
+                  <th scope="col" className="text-left py-2 px-2 min-w-[100px] border-b">
+                    Close Date
+                  </th>
+                  <th scope="col" className="text-left py-2 px-2 min-w-[100px] border-b">
+                    Sales Rep
+                  </th>
+                  <th scope="col" className="text-center py-2 px-2 min-w-[50px] border-b">
+                    Action
+                  </th>
                 </tr>
               </thead>
               <tbody>
                 {group.opportunities.map((opp) => (
-                  <tr key={opp.id} className="border-b hover:bg-accent/30 transition-colors">
-                    <td className="py-2 px-2">
+                  <tr key={opp.id} className="group hover:bg-accent/30 transition-colors">
+                    <td className="py-2 px-2 border-b sticky left-0 bg-card z-10 shadow-[2px_0_4px_-2px_rgba(0,0,0,0.1)] group-hover:bg-accent/30 transition-colors">
                       <div className="flex items-center gap-2">
                         <span className="font-medium">{opp.name}</span>
                         {opp.priority === "high" && (
@@ -109,19 +126,19 @@ export function PrincipalGroupCard({
                         )}
                       </div>
                     </td>
-                    <td className="py-2 px-2">{opp.customer_organization_name || "-"}</td>
-                    <td className="py-2 px-2">
+                    <td className="py-2 px-2 border-b">{opp.customer_organization_name || "-"}</td>
+                    <td className="py-2 px-2 border-b">
                       <Badge variant="outline">{opp.stage}</Badge>
                     </td>
-                    <td className="py-2 px-2">
+                    <td className="py-2 px-2 border-b">
                       {opp.estimated_close_date && parseDateSafely(opp.estimated_close_date)
                         ? format(parseDateSafely(opp.estimated_close_date)!, "MMM dd, yyyy")
                         : "-"}
                     </td>
-                    <td className="py-2 px-2">
+                    <td className="py-2 px-2 border-b">
                       {salesMap.get(opp.opportunity_owner_id!) || "Unassigned"}
                     </td>
-                    <td className="py-2 px-2 text-center">
+                    <td className="py-2 px-2 text-center border-b">
                       <AdminButton
                         variant="ghost"
                         size="sm"

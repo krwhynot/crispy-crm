@@ -249,7 +249,7 @@ export default function WeeklyActivitySummary() {
       title="Weekly Activity Summary"
       onExport={handleExport}
       actions={
-        <div className="flex items-center gap-2">
+        <div className="flex flex-col md:flex-row items-stretch md:items-center gap-compact">
           <label htmlFor="activity-start-date" className="sr-only">
             Start date
           </label>
@@ -300,7 +300,7 @@ export default function WeeklyActivitySummary() {
         )}
 
         {/* Summary Stats */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-content">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-content">
           <Card>
             <CardContent className="p-4">
               <p className="text-sm text-muted-foreground">Total Activities</p>
@@ -332,7 +332,7 @@ export default function WeeklyActivitySummary() {
           />
         )}
         {reportData.length > 0 && (
-          <div className="space-y-6">
+          <div className="space-y-section">
             {reportData.map((repGroup) => (
               <RepActivityCard key={repGroup.rep.id} repGroup={repGroup} />
             ))}
@@ -382,42 +382,64 @@ function RepActivityCard({ repGroup }: RepActivityCardProps) {
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <table className="w-full">
-          <thead>
-            <tr className="border-b text-sm text-muted-foreground">
-              <th className="text-left py-2">Principal</th>
-              <th className="text-right py-2">Calls</th>
-              <th className="text-right py-2">Emails</th>
-              <th className="text-right py-2">Meetings</th>
-              <th className="text-right py-2">Tasks</th>
-              <th className="text-right py-2">Notes</th>
-              <th className="text-right py-2">Total</th>
-            </tr>
-          </thead>
-          <tbody>
-            {principalStats.map((stats, idx) => (
-              <tr
-                key={stats.org.id || idx}
-                className={`border-b ${stats.total < LOW_ACTIVITY_THRESHOLD ? "bg-warning/10" : ""}`}
-              >
-                <td className="py-2 flex items-center gap-2">
-                  {stats.org.name}
-                  {stats.total < LOW_ACTIVITY_THRESHOLD && (
-                    <Badge variant="outline" className="text-xs">
-                      ⚠️ Low Activity
-                    </Badge>
-                  )}
-                </td>
-                <td className="text-right">{stats.calls}</td>
-                <td className="text-right">{stats.emails}</td>
-                <td className="text-right">{stats.meetings}</td>
-                <td className="text-right">{stats.tasks}</td>
-                <td className="text-right">{stats.notes}</td>
-                <td className="text-right font-semibold">{stats.total}</td>
+        <div className="overflow-x-auto -mx-6">
+          <table className="w-full min-w-[600px] border-separate border-spacing-0">
+            <thead>
+              <tr className="text-sm text-muted-foreground">
+                <th
+                  scope="col"
+                  className="text-left py-2 px-3 border-b sticky left-0 bg-card z-10 min-w-[140px] shadow-[2px_0_4px_-2px_rgba(0,0,0,0.1)]"
+                >
+                  Principal
+                </th>
+                <th scope="col" className="text-right py-2 border-b">
+                  Calls
+                </th>
+                <th scope="col" className="text-right py-2 border-b">
+                  Emails
+                </th>
+                <th scope="col" className="text-right py-2 border-b">
+                  Meetings
+                </th>
+                <th scope="col" className="text-right py-2 border-b">
+                  Tasks
+                </th>
+                <th scope="col" className="text-right py-2 border-b">
+                  Notes
+                </th>
+                <th scope="col" className="text-right py-2 border-b">
+                  Total
+                </th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {principalStats.map((stats, idx) => (
+                <tr
+                  key={stats.org.id || idx}
+                  className={`group ${stats.total < LOW_ACTIVITY_THRESHOLD ? "bg-warning/10" : ""}`}
+                  data-warning={stats.total < LOW_ACTIVITY_THRESHOLD || undefined}
+                >
+                  <td className="py-2 px-3 border-b sticky left-0 bg-card z-10 shadow-[2px_0_4px_-2px_rgba(0,0,0,0.1)] group-data-[warning]:bg-warning/10">
+                    <div className="flex items-center gap-2">
+                      {stats.org.name}
+                      {stats.total < LOW_ACTIVITY_THRESHOLD && (
+                        <Badge variant="outline" className="text-xs">
+                          ⚠️ Low Activity
+                        </Badge>
+                      )}
+                    </div>
+                  </td>
+                  <td className="text-right border-b">{stats.calls}</td>
+                  <td className="text-right border-b">{stats.emails}</td>
+                  <td className="text-right border-b">{stats.meetings}</td>
+                  <td className="text-right border-b">{stats.tasks}</td>
+                  <td className="text-right border-b">{stats.notes}</td>
+                  <td className="text-right font-semibold border-b">{stats.total}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </CardContent>
     </Card>
   );

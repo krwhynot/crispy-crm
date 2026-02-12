@@ -64,6 +64,6 @@ describe("ReportPageShell", () => {
 
     const shell = container.firstChild;
     expect(shell).toHaveClass("p-content");
-    expect(shell).toHaveClass("lg:p-widget");
+    expect(shell).toHaveClass("md:p-widget");
   });
 });

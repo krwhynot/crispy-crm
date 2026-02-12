@@ -101,7 +101,10 @@ export function TabFilterBar({
           <div className="flex items-center gap-compact">
             <Calendar className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
             <Select value={dateRange.preset} onValueChange={handleDatePresetChange}>
-              <SelectTrigger className="w-[160px] h-11" aria-label="Date Range">
+              <SelectTrigger
+                className="w-full md:w-auto md:min-w-[160px] h-11"
+                aria-label="Date Range"
+              >
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -120,7 +123,10 @@ export function TabFilterBar({
           <div className="flex items-center gap-compact">
             <User className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
             <Select value={salesRepId?.toString() || "all"} onValueChange={handleSalesRepChange}>
-              <SelectTrigger className="w-[180px] h-11" aria-label="Sales Rep">
+              <SelectTrigger
+                className="w-full md:w-auto md:min-w-[180px] h-11"
+                aria-label="Sales Rep"
+              >
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
