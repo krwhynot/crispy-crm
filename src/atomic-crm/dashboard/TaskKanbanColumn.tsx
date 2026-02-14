@@ -1,6 +1,7 @@
 import React, { useMemo } from "react";
 import { useDroppable } from "@dnd-kit/core";
 import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
+import { CheckCircle2, CalendarClock, CalendarPlus } from "lucide-react";
 import { TaskKanbanCard } from "./TaskKanbanCard";
 import type { TaskItem } from "./types";
 import { cn } from "@/lib/utils";
@@ -29,6 +30,7 @@ const columnConfig: Record<
   {
     accentColor: string;
     bgColor: string;
+    emptyIcon: React.ComponentType<{ className?: string }>;
     emptyText: string;
     emptySubtext: string;
   }
@@ -36,18 +38,21 @@ const columnConfig: Record<
   overdue: {
     accentColor: "border-destructive",
     bgColor: "bg-destructive/5",
+    emptyIcon: CheckCircle2,
     emptyText: "No overdue tasks",
     emptySubtext: "Great job staying on top of things!",
   },
   today: {
     accentColor: "border-primary",
     bgColor: "bg-primary/5",
+    emptyIcon: CalendarClock,
     emptyText: "No tasks due today",
     emptySubtext: "Drag tasks here to focus on them today",
   },
   thisWeek: {
     accentColor: "border-muted-foreground",
     bgColor: "bg-muted/30",
+    emptyIcon: CalendarPlus,
     emptyText: "No upcoming tasks",
     emptySubtext: "Plan your week by adding tasks here",
   },
@@ -135,7 +140,8 @@ export const TaskKanbanColumn = React.memo(function TaskKanbanColumn({
       >
         {tasks.length === 0 ? (
           // Empty State
-          <div className="flex flex-col items-center justify-center h-full min-h-[60px] text-center p-4">
+          <div className="flex flex-col items-center justify-center h-full min-h-[60px] text-center p-4 rounded-lg border border-dashed border-border bg-muted/30">
+            <config.emptyIcon className="h-6 w-6 text-muted-foreground/50 mb-2" />
             <p className="text-sm font-medium text-muted-foreground">{config.emptyText}</p>
             <p className="text-xs text-muted-foreground/70 mt-1">{config.emptySubtext}</p>
           </div>

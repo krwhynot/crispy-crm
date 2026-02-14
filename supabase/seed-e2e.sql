@@ -187,6 +187,37 @@ DECLARE
   v_act_count INT := 0;
   v_task_count INT := 0;
 
+  -- Per-rep opportunity counts (position in filtered v_sales_ids)
+  -- Adapts dynamically: if fewer reps exist, wraps to last profile
+  v_rep_opp_counts INT[] := ARRAY[8, 14, 14, 18, 14, 12, 8, 10, 12];
+
+  -- Stage profiles: cumulative thresholds out of 100
+  -- Columns: [new_lead, initial_outreach, sample_visit, feedback, demo, closed_won, closed_lost]
+  -- Mapped by position in v_sales_ids (1st rep gets profile 1, 2nd gets profile 2, etc.)
+  -- If more reps than profiles, extra reps reuse the last profile
+  v_stage_profiles INT[][] := ARRAY[
+    ARRAY[15, 30, 45, 57, 70, 88, 100],  -- Profile 1: Balanced (even across all stages)
+    ARRAY[10, 22, 35, 47, 62, 85, 100],  -- Profile 2: Slight close bias (manager archetype)
+    ARRAY[10, 20, 40, 60, 75, 88, 100],  -- Profile 3: Mid-pipeline heavy (sample/feedback)
+    ARRAY[5,  12, 20, 28, 48, 85, 100],  -- Profile 4: TOP CLOSER (heavy demo/closed_won)
+    ARRAY[8,  18, 42, 62, 75, 90, 100],  -- Profile 5: Sample specialist (heavy sample_visit/feedback)
+    ARRAY[10, 18, 28, 38, 58, 82, 100],  -- Profile 6: Ramping closer (growing demo/closed_won)
+    ARRAY[50, 75, 85, 90, 94, 98, 100],  -- Profile 7: Just starting (heavy new_lead/outreach)
+    ARRAY[30, 45, 55, 62, 70, 78, 100],  -- Profile 8: Struggling (high closed_lost ratio)
+    ARRAY[12, 25, 38, 50, 65, 88, 100]   -- Profile 9: Rising star (balanced, good closed_won)
+  ];
+
+  -- New loop variables for per-rep nested loop structure
+  v_opp_idx INT := 0;
+  v_rep_target INT;
+  v_rep_opp_seq INT;
+  v_profile_idx INT;
+  v_rand_pct INT;
+  v_act_offset INT;
+  v_act_day INT;
+  v_act_idx INT;
+  v_sales_idx INT;
+
   -- Opportunity stages (matching enum)
   v_stages TEXT[] := ARRAY['new_lead', 'initial_outreach', 'sample_visit_offered', 'feedback_logged', 'demo_scheduled', 'closed_won', 'closed_lost'];
 
@@ -230,6 +261,25 @@ DECLARE
   -- Sample statuses
   v_sample_statuses TEXT[] := ARRAY['sent', 'received', 'feedback_pending', 'feedback_received'];
 
+  -- Segment UUIDs for backfill (customer-facing)
+  v_customer_segment_ids UUID[] := ARRAY[
+    '33333333-3333-4333-8333-000000000001'::UUID,  -- Full-Service Restaurant
+    '33333333-3333-4333-8333-000000000002'::UUID,  -- Limited-Service Restaurant
+    '33333333-3333-4333-8333-000000000003'::UUID,  -- Bars & Lounges
+    '33333333-3333-4333-8333-000000000005'::UUID,  -- Hotels & Lodging
+    '33333333-3333-4333-8333-000000000006'::UUID,  -- Catering
+    '33333333-3333-4333-8333-000000000008'::UUID,  -- Restaurant Group
+    '33333333-3333-4333-8333-000000000012'::UUID,  -- Healthcare
+    '33333333-3333-4333-8333-000000000013'::UUID,  -- Business & Industry
+    '33333333-3333-4333-8333-000000000102'::UUID,  -- Casual Dining
+    '33333333-3333-4333-8333-000000000202'::UUID   -- Fast Casual
+  ];
+  v_distributor_segment_ids UUID[] := ARRAY[
+    '22222222-2222-4222-8222-000000000001'::UUID,  -- Major Broadline
+    '22222222-2222-4222-8222-000000000002'::UUID,  -- Specialty/Regional
+    '22222222-2222-4222-8222-000000000004'::UUID   -- GPO
+  ];
+
 BEGIN
   -- ============================================================================
   -- Fetch sales rep IDs (all active, non-deleted reps)
@@ -242,6 +292,127 @@ BEGIN
   END IF;
 
   RAISE NOTICE 'Found % active sales reps: %', array_length(v_sales_ids, 1), v_sales_ids;
+
+  -- Exclude Brent Gustafson (owner/admin, id=2) from seed data assignment
+  -- He's the business owner, not an active sales rep
+  v_sales_ids := array_remove(v_sales_ids, 2::BIGINT);
+
+  IF array_length(v_sales_ids, 1) = 0 THEN
+    RAISE EXCEPTION 'No sales reps remain after excluding owner. Check seed data.';
+  END IF;
+
+  RAISE NOTICE 'Seed data will be assigned to % reps (excluding owner): %', array_length(v_sales_ids, 1), v_sales_ids;
+
+  -- ============================================================================
+  -- BACKFILL: Assign account managers to organizations missing sales_id
+  -- ============================================================================
+  -- The generated seed.sql (from CSVs) does not include sales_id or created_by.
+  -- Distribute orgs round-robin across active reps for realistic data.
+  UPDATE organizations SET
+    sales_id = v_sales_ids[((id - 1) % array_length(v_sales_ids, 1)) + 1],
+    created_by = v_sales_ids[((id - 1) % array_length(v_sales_ids, 1)) + 1]
+  WHERE sales_id IS NULL AND deleted_at IS NULL;
+
+  RAISE NOTICE 'Backfilled sales_id on % organizations',
+    (SELECT COUNT(*) FROM organizations WHERE sales_id IS NOT NULL AND deleted_at IS NULL);
+
+  -- ============================================================================
+  -- SECONDARY ACCOUNT MANAGERS (for testing dual-manager filtering)
+  -- ============================================================================
+  -- Set secondary_sales_id on a few organizations for E2E testing
+  -- Uses sales IDs from the dynamically fetched v_sales_ids array
+  UPDATE organizations SET secondary_sales_id = v_sales_ids[2]
+  WHERE id = 90001 AND secondary_sales_id IS NULL;
+  UPDATE organizations SET secondary_sales_id = v_sales_ids[3]
+  WHERE id = 90002 AND secondary_sales_id IS NULL;
+  UPDATE organizations SET secondary_sales_id = v_sales_ids[1]
+  WHERE id = 90003 AND secondary_sales_id IS NULL;
+
+  RAISE NOTICE 'Set secondary_sales_id on 3 organizations for dual-manager testing';
+
+  -- ============================================================================
+  -- BACKFILL: Assign account managers to contacts missing sales_id
+  -- ============================================================================
+  -- Contacts inherit the account manager from their parent organization.
+  -- Contacts without an org get round-robin assignment.
+  UPDATE contacts SET
+    sales_id = COALESCE(
+      (SELECT o.sales_id FROM organizations o WHERE o.id = contacts.organization_id),
+      v_sales_ids[((contacts.id - 1) % array_length(v_sales_ids, 1)) + 1]
+    ),
+    created_by = COALESCE(
+      (SELECT o.sales_id FROM organizations o WHERE o.id = contacts.organization_id),
+      v_sales_ids[((contacts.id - 1) % array_length(v_sales_ids, 1)) + 1]
+    )
+  WHERE contacts.sales_id IS NULL AND contacts.deleted_at IS NULL;
+
+  RAISE NOTICE 'Backfilled sales_id on % contacts',
+    (SELECT COUNT(*) FROM contacts WHERE sales_id IS NOT NULL AND deleted_at IS NULL);
+
+  -- ============================================================================
+  -- BACKFILL: Assign realistic segments to organizations with 'Unknown' segment
+  -- ============================================================================
+  -- Zod createOrganizationSchema rejects 'Unknown' segment_id.
+  -- Assign segments by org type for realistic data.
+
+  -- Update customers/prospects with customer segments (round-robin by id)
+  UPDATE organizations SET
+    segment_id = v_customer_segment_ids[((id - 1) % array_length(v_customer_segment_ids, 1)) + 1]
+  WHERE segment_id = '22222222-2222-4222-8222-000000000009'
+    AND organization_type IN ('customer', 'prospect')
+    AND deleted_at IS NULL;
+
+  -- Update distributors with distributor segments
+  UPDATE organizations SET
+    segment_id = v_distributor_segment_ids[((id - 1) % array_length(v_distributor_segment_ids, 1)) + 1]
+  WHERE segment_id = '22222222-2222-4222-8222-000000000009'
+    AND organization_type = 'distributor'
+    AND deleted_at IS NULL;
+
+  -- Update principals with the Principal/Manufacturer segment
+  UPDATE organizations SET
+    segment_id = '22222222-2222-4222-8222-000000000010'  -- Principal/Manufacturer
+  WHERE segment_id = '22222222-2222-4222-8222-000000000009'
+    AND organization_type = 'principal'
+    AND deleted_at IS NULL;
+
+  RAISE NOTICE 'Backfilled segments: % orgs no longer on Unknown',
+    (SELECT COUNT(*) FROM organizations
+     WHERE segment_id <> '22222222-2222-4222-8222-000000000009' AND deleted_at IS NULL);
+
+  -- ============================================================================
+  -- BACKFILL: Fill missing first_name/last_name on contacts
+  -- ============================================================================
+  -- Zod createContactSchema requires both via superRefine.
+
+  -- Contacts with no name data at all (name='Unknown', both fields empty)
+  UPDATE contacts SET
+    first_name = 'Contact',
+    last_name = '#' || id::text,
+    name = 'Contact #' || id::text
+  WHERE (first_name IS NULL OR first_name = '')
+    AND (last_name IS NULL OR last_name = '')
+    AND deleted_at IS NULL;
+
+  -- Contacts with first_name but no last_name
+  UPDATE contacts SET
+    last_name = '(No Last Name)'
+  WHERE (last_name IS NULL OR last_name = '')
+    AND first_name IS NOT NULL AND first_name <> ''
+    AND deleted_at IS NULL;
+
+  RAISE NOTICE 'Backfilled names: % contacts with empty first_name, % with empty last_name remaining',
+    (SELECT COUNT(*) FROM contacts WHERE (first_name IS NULL OR first_name = '') AND deleted_at IS NULL),
+    (SELECT COUNT(*) FROM contacts WHERE (last_name IS NULL OR last_name = '') AND deleted_at IS NULL);
+
+  -- ============================================================================
+  -- BACKFILL: Set created_by on opportunities missing it
+  -- ============================================================================
+  -- protect_audit_fields trigger prevents UPDATE on created_by, so disable temporarily
+  ALTER TABLE opportunities DISABLE TRIGGER protect_opportunities_audit;
+  UPDATE opportunities SET created_by = opportunity_owner_id
+  WHERE created_by IS NULL AND deleted_at IS NULL;
+  ALTER TABLE opportunities ENABLE TRIGGER protect_opportunities_audit;
 
   -- ============================================================================
   -- Fetch [RPT] product IDs (created by prerequisite block above)
@@ -323,135 +494,151 @@ BEGIN
   UPDATE contacts SET tags = ARRAY[v_tag_ids[6], v_tag_ids[9]]::bigint[] WHERE id = 70 AND deleted_at IS NULL;  -- Influencer + Technical
 
   -- ============================================================================
-  -- OPPORTUNITIES (~120 across all stages, campaigns, statuses)
+  -- OPPORTUNITIES (per-rep profiles with varied stages and date spread)
   -- ============================================================================
-  FOR v_idx IN 1..120 LOOP
-    v_rep_idx := ((v_idx - 1) % array_length(v_sales_ids, 1)) + 1;
-    v_sales_id := v_sales_ids[v_rep_idx];
-    v_principal_idx := ((v_idx - 1) % 10) + 1;
-    v_customer_idx := ((v_idx - 1) % array_length(v_customer_ids, 1)) + 1;
+  v_opp_idx := 0;
 
-    -- Distribute stages: weighted toward early pipeline
-    CASE
-      WHEN v_idx <= 25 THEN v_stage := 'new_lead';
-      WHEN v_idx <= 45 THEN v_stage := 'initial_outreach';
-      WHEN v_idx <= 60 THEN v_stage := 'sample_visit_offered';
-      WHEN v_idx <= 72 THEN v_stage := 'feedback_logged';
-      WHEN v_idx <= 84 THEN v_stage := 'demo_scheduled';
-      WHEN v_idx <= 108 THEN v_stage := 'closed_won';
-      ELSE v_stage := 'closed_lost';
-    END CASE;
+  FOR v_sales_idx IN 1..array_length(v_sales_ids, 1) LOOP
+    v_sales_id := v_sales_ids[v_sales_idx];
 
-    v_priority := v_priorities[((v_idx - 1) % 6) + 1];
-    v_days_ago := (v_idx * 73 % 90) + 1;  -- Spread across 90 days
-    v_campaign := v_campaigns[((v_idx - 1) % 8) + 1]; -- 3 campaigns + 5 NULLs
+    -- Get this rep's target opportunity count (wrap for reps beyond profile array)
+    v_rep_target := v_rep_opp_counts[LEAST(v_sales_idx, array_length(v_rep_opp_counts, 1))];
 
-    INSERT INTO opportunities (
-      name, description, stage, status, priority,
-      estimated_close_date, actual_close_date,
-      customer_organization_id, principal_organization_id,
-      opportunity_owner_id, account_manager_id, created_by, campaign,
-      created_at, updated_at,
-      win_reason, loss_reason
-    ) VALUES (
-      '[RPT] ' || v_principal_names[v_principal_idx] || ' - Deal #' || v_idx,
-      'Report seed opportunity #' || v_idx || ' for ' || v_principal_names[v_principal_idx],
-      v_stage::opportunity_stage,
-      'active'::opportunity_status,
-      v_priority::priority_level,
-      CURRENT_DATE + (v_idx || ' days')::INTERVAL,
-      CASE WHEN v_stage IN ('closed_won', 'closed_lost')
-        THEN (NOW() - (v_days_ago || ' days')::INTERVAL)::DATE
-        ELSE NULL
-      END,
-      v_customer_ids[v_customer_idx],
-      v_principal_ids[v_principal_idx],
-      v_sales_id, v_sales_id, v_sales_id, v_campaign,
-      NOW() - (v_days_ago || ' days')::INTERVAL,
-      NOW() - ((v_days_ago / 2) || ' days')::INTERVAL,
-      CASE WHEN v_stage = 'closed_won' THEN
-        (ARRAY['relationship', 'product_quality', 'price_competitive', 'timing'])[((v_idx - 1) % 4) + 1]::win_reason
-        ELSE NULL END,
-      CASE WHEN v_stage = 'closed_lost' THEN
-        (ARRAY['price_too_high', 'competitor_relationship', 'timing', 'no_authorization'])[((v_idx - 1) % 4) + 1]::loss_reason
-        ELSE NULL END
-    ) RETURNING id INTO v_opp_id;
+    -- Get this rep's stage profile (wrap for reps beyond profile array)
+    v_profile_idx := LEAST(v_sales_idx, array_length(v_stage_profiles, 1));
 
-    v_opp_count := v_opp_count + 1;
+    FOR v_rep_opp_seq IN 1..v_rep_target LOOP
+      v_opp_idx := v_opp_idx + 1;
+      v_principal_idx := ((v_opp_idx - 1) % 10) + 1;
+      v_customer_idx := ((v_opp_idx - 1) % array_length(v_customer_ids, 1)) + 1;
 
-    -- ============================================================================
-    -- OPPORTUNITY-PRODUCT LINKS (2 products per opportunity)
-    -- ============================================================================
-    v_product_id := v_product_ids[((v_idx - 1) % array_length(v_product_ids, 1)) + 1];
-    INSERT INTO opportunity_products (
-      opportunity_id, product_id_reference, product_name, product_category, notes,
-      created_by, created_at, updated_at
-    ) VALUES (
-      v_opp_id, v_product_id,
-      (SELECT name FROM products WHERE id = v_product_id),
-      (SELECT category FROM products WHERE id = v_product_id),
-      NULL, v_sales_id, NOW() - (v_days_ago || ' days')::INTERVAL, NOW()
-    );
+      -- Determine stage using cumulative profile weights (deterministic pseudo-random)
+      v_rand_pct := ((v_rep_opp_seq * 73 + v_sales_idx * 41) % 100) + 1;
 
-    v_product_id := v_product_ids[((v_idx + 59) % array_length(v_product_ids, 1)) + 1];
-    INSERT INTO opportunity_products (
-      opportunity_id, product_id_reference, product_name, product_category, notes,
-      created_by, created_at, updated_at
-    ) VALUES (
-      v_opp_id, v_product_id,
-      (SELECT name FROM products WHERE id = v_product_id),
-      (SELECT category FROM products WHERE id = v_product_id),
-      NULL, v_sales_id, NOW() - (v_days_ago || ' days')::INTERVAL, NOW()
-    );
+      CASE
+        WHEN v_rand_pct <= v_stage_profiles[v_profile_idx][1] THEN v_stage := 'new_lead';
+        WHEN v_rand_pct <= v_stage_profiles[v_profile_idx][2] THEN v_stage := 'initial_outreach';
+        WHEN v_rand_pct <= v_stage_profiles[v_profile_idx][3] THEN v_stage := 'sample_visit_offered';
+        WHEN v_rand_pct <= v_stage_profiles[v_profile_idx][4] THEN v_stage := 'feedback_logged';
+        WHEN v_rand_pct <= v_stage_profiles[v_profile_idx][5] THEN v_stage := 'demo_scheduled';
+        WHEN v_rand_pct <= v_stage_profiles[v_profile_idx][6] THEN v_stage := 'closed_won';
+        ELSE v_stage := 'closed_lost';
+      END CASE;
 
-    -- ============================================================================
-    -- ACTIVITIES (~4 per opportunity = ~480 total)
-    -- ============================================================================
-    FOR v_rep_idx IN 1..4 LOOP
-      v_act_type := v_act_types[((v_idx * 4 + v_rep_idx - 1) % array_length(v_act_types, 1)) + 1];
-      v_sentiment := v_sentiments[((v_idx + v_rep_idx - 1) % 6) + 1];
+      v_priority := v_priorities[((v_opp_idx - 1) % 6) + 1];
+      -- Date spread: unique per rep, spread across 90 days
+      v_days_ago := ((v_rep_opp_seq * 73 + v_sales_idx * 17) % 90) + 1;
+      v_campaign := v_campaigns[((v_opp_idx - 1) % 8) + 1];
 
-      -- Get a contact for ~70% of activities
-      -- MUST belong to the opportunity's customer org (trigger validates contacts.organization_id = opp.customer_organization_id)
-      v_contact_id := NULL;
-      IF random() < 0.7 THEN
-        SELECT c.id INTO v_contact_id
-        FROM contacts c
-        WHERE c.deleted_at IS NULL
-          AND c.organization_id = v_customer_ids[v_customer_idx]
-        ORDER BY (c.id + v_idx + v_rep_idx) % 100  -- pseudo-random ordering
-        LIMIT 1;
-        -- v_contact_id remains NULL if no contacts exist for this org (that's OK)
-      END IF;
+      INSERT INTO opportunities (
+        name, description, stage, status, priority,
+        estimated_close_date, actual_close_date,
+        customer_organization_id, principal_organization_id,
+        opportunity_owner_id, account_manager_id, created_by, campaign,
+        created_at, updated_at,
+        win_reason, loss_reason
+      ) VALUES (
+        '[RPT] ' || v_principal_names[v_principal_idx] || ' - Deal #' || v_opp_idx,
+        'Report seed opportunity #' || v_opp_idx || ' for ' || v_principal_names[v_principal_idx],
+        v_stage::opportunity_stage,
+        'active'::opportunity_status,
+        v_priority::priority_level,
+        CURRENT_DATE + (v_opp_idx || ' days')::INTERVAL,
+        CASE WHEN v_stage IN ('closed_won', 'closed_lost')
+          THEN (NOW() - (v_days_ago || ' days')::INTERVAL)::DATE
+          ELSE NULL
+        END,
+        v_customer_ids[v_customer_idx],
+        v_principal_ids[v_principal_idx],
+        v_sales_id, v_sales_id, v_sales_id, v_campaign,
+        NOW() - (v_days_ago || ' days')::INTERVAL,
+        NOW() - ((v_days_ago / 2) || ' days')::INTERVAL,
+        CASE WHEN v_stage = 'closed_won' THEN
+          (ARRAY['relationship', 'product_quality', 'price_competitive', 'timing'])[((v_opp_idx - 1) % 4) + 1]::win_reason
+          ELSE NULL END,
+        CASE WHEN v_stage = 'closed_lost' THEN
+          (ARRAY['price_too_high', 'competitor_relationship', 'timing', 'no_authorization'])[((v_opp_idx - 1) % 4) + 1]::loss_reason
+          ELSE NULL END
+      ) RETURNING id INTO v_opp_id;
 
-      INSERT INTO activities (
-        activity_type, type, subject, description,
-        activity_date, duration_minutes,
-        contact_id, organization_id, opportunity_id,
-        sentiment, sample_status,
+      v_opp_count := v_opp_count + 1;
+
+      -- ============================================================================
+      -- OPPORTUNITY-PRODUCT LINKS (2 products per opportunity)
+      -- ============================================================================
+      v_product_id := v_product_ids[((v_opp_idx - 1) % array_length(v_product_ids, 1)) + 1];
+      INSERT INTO opportunity_products (
+        opportunity_id, product_id_reference, product_name, product_category, notes,
         created_by, created_at, updated_at
       ) VALUES (
-        'activity'::activity_type,
-        v_act_type::interaction_type,
-        '[RPT] ' || initcap(replace(v_act_type, '_', ' ')) || ' - ' || v_principal_names[v_principal_idx] || ' #' || v_idx || '.' || v_rep_idx,
-        'Auto-generated activity for report coverage. ' || v_principal_names[v_principal_idx] || ' deal #' || v_idx,
-        NOW() - ((v_days_ago - v_rep_idx + 1) || ' days')::INTERVAL,
-        CASE WHEN v_act_type IN ('call', 'check_in') THEN 15 + (v_idx % 30)
-             WHEN v_act_type IN ('meeting', 'demo', 'trade_show') THEN 30 + (v_idx % 60)
-             ELSE NULL END,
-        v_contact_id,
-        v_customer_ids[v_customer_idx],
-        v_opp_id,
-        v_sentiment,
-        CASE WHEN v_act_type = 'sample' THEN
-          v_sample_statuses[((v_idx + v_rep_idx - 1) % 4) + 1]::sample_status
-          ELSE NULL END,
-        v_sales_id,
-        NOW() - ((v_days_ago - v_rep_idx + 1) || ' days')::INTERVAL,
-        NOW() - ((v_days_ago - v_rep_idx) || ' days')::INTERVAL
+        v_opp_id, v_product_id,
+        (SELECT name FROM products WHERE id = v_product_id),
+        (SELECT category FROM products WHERE id = v_product_id),
+        NULL, v_sales_id, NOW() - (v_days_ago || ' days')::INTERVAL, NOW()
       );
 
-      v_act_count := v_act_count + 1;
+      v_product_id := v_product_ids[((v_opp_idx + 59) % array_length(v_product_ids, 1)) + 1];
+      INSERT INTO opportunity_products (
+        opportunity_id, product_id_reference, product_name, product_category, notes,
+        created_by, created_at, updated_at
+      ) VALUES (
+        v_opp_id, v_product_id,
+        (SELECT name FROM products WHERE id = v_product_id),
+        (SELECT category FROM products WHERE id = v_product_id),
+        NULL, v_sales_id, NOW() - (v_days_ago || ' days')::INTERVAL, NOW()
+      );
+
+      -- ============================================================================
+      -- ACTIVITIES (~4 per opportunity, with jittered dates)
+      -- ============================================================================
+      FOR v_act_idx IN 1..4 LOOP
+        v_act_type := v_act_types[((v_opp_idx * 4 + v_act_idx - 1) % array_length(v_act_types, 1)) + 1];
+        v_sentiment := v_sentiments[((v_opp_idx + v_act_idx - 1) % 6) + 1];
+
+        -- Jitter activity dates across a ~14-day window around the opportunity date
+        v_act_offset := ((v_act_idx * 5 + v_opp_idx * 3) % 14) - 4;
+        v_act_day := GREATEST(1, LEAST(90, v_days_ago + v_act_offset));
+
+        -- Get a contact for ~70% of activities
+        v_contact_id := NULL;
+        IF random() < 0.7 THEN
+          SELECT c.id INTO v_contact_id
+          FROM contacts c
+          WHERE c.deleted_at IS NULL
+            AND c.organization_id = v_customer_ids[v_customer_idx]
+          ORDER BY (c.id + v_opp_idx + v_act_idx) % 100
+          LIMIT 1;
+        END IF;
+
+        INSERT INTO activities (
+          activity_type, type, subject, description,
+          activity_date, duration_minutes,
+          contact_id, organization_id, opportunity_id,
+          sentiment, sample_status,
+          created_by, created_at, updated_at
+        ) VALUES (
+          'activity'::activity_type,
+          v_act_type::interaction_type,
+          '[RPT] ' || initcap(replace(v_act_type, '_', ' ')) || ' - ' || v_principal_names[v_principal_idx] || ' #' || v_opp_idx || '.' || v_act_idx,
+          'Auto-generated activity for report coverage. ' || v_principal_names[v_principal_idx] || ' deal #' || v_opp_idx,
+          NOW() - (v_act_day || ' days')::INTERVAL,
+          CASE WHEN v_act_type IN ('call', 'check_in') THEN 15 + (v_opp_idx % 30)
+               WHEN v_act_type IN ('meeting', 'demo', 'trade_show') THEN 30 + (v_opp_idx % 60)
+               ELSE NULL END,
+          v_contact_id,
+          v_customer_ids[v_customer_idx],
+          v_opp_id,
+          v_sentiment,
+          CASE WHEN v_act_type = 'sample' THEN
+            v_sample_statuses[((v_opp_idx + v_act_idx - 1) % 4) + 1]::sample_status
+            ELSE NULL END,
+          v_sales_id,
+          NOW() - (v_act_day || ' days')::INTERVAL,
+          NOW() - ((v_act_day - 1) || ' days')::INTERVAL
+        );
+
+        v_act_count := v_act_count + 1;
+      END LOOP;
     END LOOP;
   END LOOP;
 
@@ -728,7 +915,7 @@ BEGIN
   RAISE NOTICE 'E2E SEED DATA ADDED SUCCESSFULLY';
   RAISE NOTICE '============================================================';
   RAISE NOTICE '- Tags: 10 (with 36 contact assignments, 6 multi-tag)';
-  RAISE NOTICE '- Opportunities: % (5 on_hold, 3 nurturing, 3 soft-deleted)', v_opp_count;
+  RAISE NOTICE '- Opportunities: % (per-rep stage profiles, 5 on_hold, 3 nurturing, 3 soft-deleted)', v_opp_count;
   RAISE NOTICE '- Opportunity-Product links: % (2 per opp)', v_opp_count * 2;
   RAISE NOTICE '- Activities: % (with contact_id on ~70%%, expanded types)', v_act_count;
   RAISE NOTICE '- Tasks: % (25 overdue, 8 today, 52 completed, 10 snoozed)', v_task_count;
@@ -800,3 +987,19 @@ COMMIT;
 -- UNION ALL SELECT 'rpt_activities', COUNT(*) FROM activities WHERE subject LIKE '[RPT]%' AND deleted_at IS NULL AND activity_type = 'activity'
 -- UNION ALL SELECT 'rpt_tasks', COUNT(*) FROM activities WHERE subject LIKE '[RPT]%' AND activity_type = 'task'
 -- ORDER BY entity;
+--
+-- Per-rep stage distribution:
+-- SELECT s.first_name, o.stage, COUNT(*) as cnt
+-- FROM opportunities o
+-- JOIN sales s ON o.opportunity_owner_id = s.id
+-- WHERE o.name LIKE '[RPT]%' AND o.deleted_at IS NULL
+-- GROUP BY s.first_name, o.stage
+-- ORDER BY s.first_name, o.stage;
+--
+-- Per-rep activity date spread:
+-- SELECT s.first_name, MIN(a.activity_date)::date as earliest,
+--   MAX(a.activity_date)::date as latest, COUNT(*) as total
+-- FROM activities a
+-- JOIN sales s ON a.created_by = s.id
+-- WHERE a.subject LIKE '[RPT]%' AND a.deleted_at IS NULL AND a.activity_type = 'activity'
+-- GROUP BY s.first_name ORDER BY s.first_name;

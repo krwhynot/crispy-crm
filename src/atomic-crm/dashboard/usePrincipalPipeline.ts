@@ -15,11 +15,11 @@ export function usePrincipalPipeline(filters?: { myPrincipalsOnly?: boolean }) {
   const queryFilter = useMemo(() => {
     const filter: Record<string, unknown> = {};
     if (filters?.myPrincipalsOnly && salesId) {
-      filter.sales_id = salesId;
+      filter.$or = [{ sales_id: salesId }, { opportunity_owner_id: salesId }];
 
       // Debug logging for B1 filtering investigation
       if (import.meta.env.DEV) {
-        devLog("usePrincipalPipeline", "Filtering by sales_id", salesId);
+        devLog("usePrincipalPipeline", "Filtering by sales_id or opportunity_owner_id", salesId);
       }
     }
     return filter;

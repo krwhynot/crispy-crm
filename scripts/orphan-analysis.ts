@@ -41,7 +41,7 @@ interface ForeignKey {
   references_column: string;
 }
 
-interface TableInfo {
+interface _TableInfo {
   table_name: string;
   has_soft_delete: boolean;
   row_count: number;
@@ -115,7 +115,7 @@ async function getRowCount(client: pkg.Client, tableName: string): Promise<numbe
   }
 }
 
-async function checkNullForeignKeys(
+async function _checkNullForeignKeys(
   client: pkg.Client,
   table: string,
   fkColumn: string,

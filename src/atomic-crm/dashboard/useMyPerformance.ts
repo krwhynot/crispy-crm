@@ -155,11 +155,11 @@ export function useMyPerformance(): UseMyPerformanceReturn {
             pagination: { page: 1, perPage: 1 }, // Only need count
           }),
 
-          // 4. Open opportunities (by current user)
-          // Note: opportunities table uses opportunity_owner_id, not sales_id
+          // 4. Open opportunities (by current user - primary or secondary)
+          // Note: opportunities table uses opportunity_owner_id and account_manager_id
           dataProvider.getList("opportunities", {
             filter: {
-              opportunity_owner_id: salesId,
+              $or: [{ opportunity_owner_id: salesId }, { account_manager_id: salesId }],
               "stage@not_in": [...CLOSED_STAGES],
             },
             sort: { field: "id", order: "ASC" },

@@ -60,6 +60,7 @@ type UserRole = "admin" | "manager" | "rep";
  * Checks if a record is owned by the current user based on common ownership fields.
  * Ownership can be established through any of:
  * - sales_id: Primary ownership field for most records
+ * - secondary_sales_id: Secondary account manager for contacts/organizations
  * - created_by: Creator of the record
  * - opportunity_owner_id: Owner of an opportunity
  * - account_manager_id: Account manager for organizations
@@ -74,6 +75,7 @@ const isRecordOwner = <RecordType extends Record<string, unknown>>(
 ): boolean => {
   return (
     record.sales_id === currentSalesId ||
+    record.secondary_sales_id === currentSalesId ||
     record.created_by === currentSalesId ||
     record.opportunity_owner_id === currentSalesId ||
     record.account_manager_id === currentSalesId

@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { useRecentSearches, type RecentSearchItem } from "../hooks/useRecentSearches";
 import { Building2, User, Target, ListTodo, Clock } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 /**
  * Icon mapping for each resource type.
@@ -74,23 +75,39 @@ const RecentItemLink = memo(function RecentItemLink({ item }: { item: RecentSear
  *
  * @example
  * ```tsx
- * // In dashboard layout
+ * // Full-size in dashboard tab
  * <RecentItemsWidget />
+ *
+ * // Compact variant in V4 widget row (200px height, scrollable)
+ * <RecentItemsWidget compact />
  * ```
  */
-export function RecentItemsWidget() {
+export function RecentItemsWidget({ compact = false }: { compact?: boolean }) {
   const { recentItems } = useRecentSearches();
-  const displayItems = recentItems.slice(0, 5);
+  const displayItems = recentItems.slice(0, compact ? 8 : 5);
 
   return (
-    <Card data-tutorial="dashboard-recent-items-widget">
-      <CardHeader className="pb-3">
-        <CardTitle className="flex items-center gap-2 text-base">
-          <Clock className="h-4 w-4 text-primary" />
-          Recently Viewed
-        </CardTitle>
+    <Card
+      className={cn(compact && "h-[200px] flex flex-col overflow-hidden")}
+      data-tutorial="dashboard-recent-items-widget"
+    >
+      <CardHeader className={cn(compact ? "py-2 px-3 shrink-0" : "pb-3")}>
+        <div className="flex items-center justify-between">
+          <CardTitle className={cn("flex items-center gap-2", compact ? "text-sm" : "text-base")}>
+            <Clock className="h-4 w-4 text-primary" />
+            Recently Viewed
+          </CardTitle>
+          {compact && (
+            <Link
+              to="/contacts"
+              className="text-xs text-primary hover:text-primary/80 transition-colors"
+            >
+              View All
+            </Link>
+          )}
+        </div>
       </CardHeader>
-      <CardContent>
+      <CardContent className={cn(compact && "flex-1 overflow-y-auto px-3 pb-3")}>
         {displayItems.length === 0 ? (
           <p className="text-muted-foreground text-sm py-2">
             No recent items. Start browsing to see your history.

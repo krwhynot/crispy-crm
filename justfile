@@ -1,6 +1,9 @@
 # Crispy CRM Development Commands
 # Run `just --list` to see all available commands
 
+# Windows: use PowerShell as the shell (Unix uses sh by default)
+set windows-shell := ["powershell.exe", "-NoLogo", "-Command"]
+
 # Default recipe: show help
 default:
     @just --list --unsorted
@@ -94,6 +97,7 @@ colors:
     npm run validate:semantic-colors
 
 # Code health check (enforced in CI/CD)
+[unix]
 health-check:
     #!/usr/bin/env bash
     set -euo pipefail
@@ -113,9 +117,14 @@ health-check:
       echo "✅ All files below churn threshold"
     fi
 
+# Code health check (enforced in CI/CD)
+[windows]
+health-check:
+    echo "=== Code Health Check (CI/CD Enforced) ==="; echo "Checking for high-churn files (14 days, threshold: 16 edits)..."; $files = git log --name-only --since="14 days ago" --pretty=format: -- 'src/**/*.ts' 'src/**/*.tsx'; $grouped = $files | Where-Object { $_ -ne '' } | Group-Object | Where-Object { $_.Count -ge 16 } | Sort-Object Count -Descending; if ($grouped) { echo "CHURN THRESHOLD EXCEEDED:"; $grouped | ForEach-Object { echo "$($_.Count) $($_.Name)" }; echo ""; echo "Action Required: Files with 16+ edits in 14 days need architectural review."; echo "See CLAUDE.md Code Health Monitoring section."; exit 1 } else { echo "All files below churn threshold" }
+
 # Full quality check: typecheck + lint + colors + health-check
 check: typecheck lint colors health-check
-    @echo "✅ All quality checks passed"
+    @echo "All quality checks passed"
 
 # ─────────────────────────────────────────────────────────────
 # 🏗️ Build
@@ -171,15 +180,15 @@ db-link:
 
 # Check for migration drift between local and cloud
 db-drift:
-    ./scripts/check-migration-drift.sh
+    bash ./scripts/check-migration-drift.sh
 
 # Quick drift check (pass/fail only)
 db-drift-quick:
-    ./scripts/check-migration-drift.sh --quick
+    bash ./scripts/check-migration-drift.sh --quick
 
 # Show migration repair commands
 db-drift-repair:
-    ./scripts/check-migration-drift.sh --repair
+    bash ./scripts/check-migration-drift.sh --repair
 
 # ─────────────────────────────────────────────────────────────
 # 🧹 Maintenance
@@ -216,38 +225,49 @@ storage-audit-json:
 # Run full codebase discovery (SCIP + extractors)
 discover:
     npx tsx scripts/discover/index.ts
-    @rm -f .claude/state/.state-stale
-    @echo "✅ State refreshed, staleness marker cleared"
+    node -e "require('fs').rmSync('.claude/state/.state-stale',{force:true})"
+    @echo "State refreshed, staleness marker cleared"
 
 # Generate SCIP index from TypeScript codebase
 discover-scip:
-    @echo "🔍 Generating SCIP index..."
+    @echo "Generating SCIP index..."
     npx tsx scripts/discover/scip/generate.ts --verbose
-    @echo "✅ SCIP index generated at .claude/state/index.scip"
+    @echo "SCIP index generated at .claude/state/index.scip"
 
 # Populate SQLite FTS5 database from SCIP index
 discover-scip-db:
-    @echo "📊 Populating SQLite database..."
+    @echo "Populating SQLite database..."
     npx tsx scripts/discover/scip/populate.ts --verbose
-    @echo "✅ Database populated at .claude/state/search.db"
+    @echo "Database populated at .claude/state/search.db"
 
 # Verify SCIP index and database integrity
 discover-scip-verify:
-    @echo "🔬 Verifying SCIP index..."
+    @echo "Verifying SCIP index..."
     npx tsx scripts/discover/scip/verify.ts --verbose
 
 # Full SCIP pipeline: generate index + populate DB + verify
 discover-scip-full: discover-scip discover-scip-db discover-scip-verify
-    @echo "✅ Full SCIP pipeline complete"
+    @echo "Full SCIP pipeline complete"
 
 # Start discovery services (Ollama only - LanceDB is file-based)
+[unix]
 discover-services:
-    @echo "🐳 Starting discovery services..."
+    @echo "Starting discovery services..."
     docker compose up -d ollama
-    @echo "⏳ Waiting for Ollama to be healthy..."
+    @echo "Waiting for Ollama to be healthy..."
     @sleep 3
-    @curl -s http://localhost:11434/api/version > /dev/null && echo "✅ Ollama: http://localhost:11434" || echo "❌ Ollama not ready"
-    @echo "ℹ️  LanceDB requires no server (file-based storage)"
+    @curl -s http://localhost:11434/api/version > /dev/null && echo "Ollama: http://localhost:11434" || echo "Ollama not ready"
+    @echo "LanceDB requires no server (file-based storage)"
+
+# Start discovery services (Ollama only - LanceDB is file-based)
+[windows]
+discover-services:
+    @echo "Starting discovery services..."
+    docker compose up -d ollama
+    @echo "Waiting for Ollama to be healthy..."
+    node -e "setTimeout(()=>{},3000)"
+    node -e "fetch('http://localhost:11434/api/version').then(()=>console.log('Ollama: http://localhost:11434')).catch(()=>console.log('Ollama not ready'))"
+    @echo "LanceDB requires no server (file-based storage)"
 
 # Stop discovery services (Ollama only - LanceDB is file-based)
 discover-services-stop:
@@ -271,7 +291,7 @@ discover-search query *args:
 
 # Full semantic discovery: services + SCIP + embeddings
 discover-full: discover-services discover-scip discover-embeddings
-    @echo "✅ Full discovery complete"
+    @echo "Full discovery complete"
 
 # Run priority extractors only (components + hooks)
 discover-priority:
@@ -321,12 +341,21 @@ discover-watch:
 callgraph-viz:
     npx tsx scripts/discover/generate-viz.ts
 
-# Render call graph DOT to SVG/PNG (requires graphviz: apt install graphviz)
+# Render call graph DOT to SVG/PNG (requires graphviz)
+[unix]
 callgraph-render:
     @mkdir -p docs/architecture/call-graphs
     dot -Tsvg .claude/state/call-graph-inventory/_visualization/full-graph.dot -o docs/architecture/call-graphs/full-graph.svg
     dot -Tpng .claude/state/call-graph-inventory/_visualization/full-graph.dot -o docs/architecture/call-graphs/full-graph.png
-    @echo "✅ Rendered to docs/architecture/call-graphs/"
+    @echo "Rendered to docs/architecture/call-graphs/"
+
+# Render call graph DOT to SVG/PNG (requires graphviz)
+[windows]
+callgraph-render:
+    node -e "require('fs').mkdirSync('docs/architecture/call-graphs',{recursive:true})"
+    dot -Tsvg .claude/state/call-graph-inventory/_visualization/full-graph.dot -o docs/architecture/call-graphs/full-graph.svg
+    dot -Tpng .claude/state/call-graph-inventory/_visualization/full-graph.dot -o docs/architecture/call-graphs/full-graph.png
+    @echo "Rendered to docs/architecture/call-graphs/"
 
 # ─────────────────────────────────────────────────────────────
 # 🔌 MCP Server
@@ -337,28 +366,51 @@ mcp-start:
     npx tsx scripts/mcp/server.ts
 
 # Test MCP tools/list endpoint
+[unix]
 mcp-test:
     @echo '{"jsonrpc":"2.0","id":1,"method":"tools/list"}' | npx tsx scripts/mcp/server.ts 2>/dev/null | head -1
+
+# Test MCP tools/list endpoint
+[windows]
+mcp-test:
+    echo '{"jsonrpc":"2.0","id":1,"method":"tools/list"}' | npx tsx scripts/mcp/server.ts 2>$null | Select-Object -First 1
 
 # Interactive MCP testing with inspector
 mcp-inspect:
     npx @modelcontextprotocol/inspector npx tsx scripts/mcp/server.ts
 
 # View MCP tool usage logs (live tail)
+[unix]
 mcp-logs:
-    @echo "📊 MCP Tool Usage Log (Ctrl+C to exit)"
+    @echo "MCP Tool Usage Log (Ctrl+C to exit)"
     @echo "─────────────────────────────────────"
     @tail -f .claude/state/usage.log 2>/dev/null || echo "No usage log yet. Use Claude's search_code/go_to_definition/find_references tools to generate entries."
 
+# View MCP tool usage logs (live tail)
+[windows]
+mcp-logs:
+    @echo "MCP Tool Usage Log (Ctrl+C to exit)"
+    @echo "-------------------------------------"
+    if (Test-Path .claude/state/usage.log) { Get-Content -Wait .claude/state/usage.log } else { echo "No usage log yet. Use Claude's search_code/go_to_definition/find_references tools to generate entries." }
+
 # Show recent MCP tool calls
+[unix]
 mcp-recent count="20":
-    @echo "📊 Recent MCP Tool Calls (last {{count}})"
+    @echo "Recent MCP Tool Calls (last {{count}})"
     @echo "─────────────────────────────────────"
     @tail -n {{count}} .claude/state/usage.log 2>/dev/null || echo "No usage log yet."
 
+# Show recent MCP tool calls
+[windows]
+mcp-recent count="20":
+    @echo "Recent MCP Tool Calls (last {{count}})"
+    @echo "-------------------------------------"
+    if (Test-Path .claude/state/usage.log) { Get-Content .claude/state/usage.log | Select-Object -Last {{count}} } else { echo "No usage log yet." }
+
 # Show MCP usage stats summary
+[unix]
 mcp-stats:
-    @echo "📊 MCP Tool Usage Statistics"
+    @echo "MCP Tool Usage Statistics"
     @echo "─────────────────────────────────────"
     @if [ -f .claude/state/usage.log ]; then \
         echo "Total calls: $$(wc -l < .claude/state/usage.log)"; \
@@ -372,25 +424,28 @@ mcp-stats:
         echo "No usage log yet."; \
     fi
 
+# Show MCP usage stats summary
+[windows]
+mcp-stats:
+    @echo "MCP Tool Usage Statistics"
+    @echo "-------------------------------------"
+    if (Test-Path .claude/state/usage.log) { $lines = Get-Content .claude/state/usage.log; echo "Total calls: $($lines.Count)"; echo ""; echo "By tool:"; $lines | Select-String -Pattern '(search_code|go_to_definition|find_references)' -AllMatches | ForEach-Object { $_.Matches.Value } | Group-Object | Sort-Object Count -Descending | ForEach-Object { echo "$($_.Count) $($_.Name)" }; echo ""; echo "Last 5 calls:"; $lines | Select-Object -Last 5 } else { echo "No usage log yet." }
+
 # ─────────────────────────────────────────────────────────────
 # 📦 Composite Commands
 # ─────────────────────────────────────────────────────────────
 
 # Fresh start: reset DB + generate types + start dev
-fresh:
-    just db-reset && just db-types && just dev
+fresh: db-reset db-types dev
 
 # Pre-commit check: format, lint, typecheck, test
-pre-commit:
-    just fmt && just check && just test-ci
+pre-commit: fmt check test-ci
 
 # CI pipeline: all checks + build
-ci:
-    just check && just test-ci && just build
+ci: check test-ci build
 
 # Quick validation before pushing
-push-check:
-    just typecheck && just lint && just test-ci
+push-check: typecheck lint test-ci
 
 # ─────────────────────────────────────────────────────────────
 # 🔍 Audits (Claude Code Commands)

@@ -127,6 +127,8 @@ export interface OrganizationExportRow {
   parent_organization?: string;
   segment?: string;
   sales_rep?: string;
+  secondary_sales_rep?: string;
+  secondary_sales_id: string | null;
 }
 
 // =====================================================================

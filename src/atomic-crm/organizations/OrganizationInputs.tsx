@@ -5,7 +5,8 @@ import { OrganizationCompactForm } from "./OrganizationCompactForm";
 const ORGANIZATION_FIELD_LABELS: Record<string, string> = {
   name: "Organization Name",
   organization_type: "Type",
-  sales_id: "Account Manager",
+  sales_id: "Primary Account Manager",
+  secondary_sales_id: "Secondary Account Manager",
   segment_id: "Segment",
   address: "Street",
   city: "City",

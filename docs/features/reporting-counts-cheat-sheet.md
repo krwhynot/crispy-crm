@@ -29,7 +29,7 @@ Use this as a quick reference for what each dashboard/report number includes.
 |---|---|---|
 | Overview | Opportunity totals, activity trend, stale lead/deal KPIs, principal/rep chart totals | Deleted records; stale KPIs exclude closed deals |
 | Opportunities by Principal | Active opportunities grouped by principal (respecting your filters) | Deleted or inactive opportunities; anything outside filters |
-| Weekly Activity | Activities in selected date range, grouped by rep and principal | Activities outside range, deleted records |
+| Weekly Activity | Activities in selected date range, grouped by rep and principal. Columns: Call, Email, Meeting, Follow-up, Demo, Proposal, Notes, Other, Total | Activities outside range, deleted records |
 | Campaign Activity | Activities linked to opportunities in selected campaign (plus filtered breakdowns) | Records outside selected campaign, deleted records, anything outside filters |
 | Campaign Stale Leads View | Campaign opportunities past stage-specific inactivity thresholds | Closed won/lost opportunities, opportunities still within threshold |
 

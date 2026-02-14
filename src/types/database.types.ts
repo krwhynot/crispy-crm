@@ -3114,6 +3114,8 @@ export type Database = {
           organization_name: string | null;
           outcome: string | null;
           overdue_notified_at: string | null;
+          principal_organization_id: number | null;
+          principal_organization_name: string | null;
           priority: Database["public"]["Enums"]["priority_level"] | null;
           related_task_id: number | null;
           reminder_date: string | null;

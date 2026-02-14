@@ -1,6 +1,6 @@
 {
   "chunk_name": "contacts-quick-create",
-  "generated_at": "2026-02-07T02:57:36.865Z",
+  "generated_at": "2026-02-13T16:48:38.852Z",
   "item_count": 2,
   "items": [
     {
@@ -37,8 +37,9 @@
           "name": "email",
           "zodType": "string",
           "constraints": [
-            "email(\"Invalid email\")",
-            "max(255)"
+            "trim()",
+            "max(255)",
+            "email()"
           ],
           "optional": false,
           "nullable": false,
@@ -59,7 +60,7 @@
     {
       "name": "quickCreateContactSchema",
       "file": "src\\atomic-crm\\validation\\contacts\\contacts-quick-create.ts",
-      "line": 31,
+      "line": 38,
       "schemaType": "strictObject",
       "fields": [
         {

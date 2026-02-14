@@ -1,6 +1,6 @@
 {
   "chunk_name": "schemas",
-  "generated_at": "2026-02-07T02:57:36.839Z",
+  "generated_at": "2026-02-13T16:48:38.810Z",
   "item_count": 3,
   "items": [
     {
@@ -450,7 +450,9 @@
           "hasDefault": false
         }
       ],
-      "relatedSchemas": [],
+      "relatedSchemas": [
+        "noteFormSchema"
+      ],
       "validationFunctions": [],
       "hasTransforms": false,
       "hasSuperRefine": false

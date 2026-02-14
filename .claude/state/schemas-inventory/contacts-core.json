@@ -1,12 +1,12 @@
 {
   "chunk_name": "contacts-core",
-  "generated_at": "2026-02-07T02:57:36.856Z",
+  "generated_at": "2026-02-13T16:48:38.827Z",
   "item_count": 3,
   "items": [
     {
       "name": "contactBaseSchema",
       "file": "src\\atomic-crm\\validation\\contacts\\contacts-core.ts",
-      "line": 74,
+      "line": 75,
       "schemaType": "strictObject",
       "fields": [
         {
@@ -373,10 +373,8 @@
         },
         {
           "name": "tags",
-          "zodType": "array",
+          "zodType": "coerce.number",
           "constraints": [
-            "trim()",
-            "max(100)",
             "max(50, \"Maximum 50 tags\")"
           ],
           "optional": false,
@@ -422,6 +420,15 @@
           "nullable": false,
           "hasTransform": false,
           "hasDefault": false
+        },
+        {
+          "name": "search_tsv",
+          "zodType": "unknown",
+          "constraints": [],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
         }
       ],
       "relatedSchemas": [
@@ -439,7 +446,7 @@
     {
       "name": "contactSchema",
       "file": "src\\atomic-crm\\validation\\contacts\\contacts-core.ts",
-      "line": 183,
+      "line": 191,
       "schemaType": "other",
       "fields": [],
       "relatedSchemas": [
@@ -460,7 +467,7 @@
     {
       "name": "createContactSchema",
       "file": "src\\atomic-crm\\validation\\contacts\\contacts-core.ts",
-      "line": 321,
+      "line": 329,
       "schemaType": "other",
       "fields": [],
       "relatedSchemas": [

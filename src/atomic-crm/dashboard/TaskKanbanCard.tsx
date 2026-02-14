@@ -9,19 +9,9 @@ import { AdminButton } from "@/components/admin/AdminButton";
 import { Checkbox } from "@/components/ui/checkbox";
 import { ucFirst } from "@/atomic-crm/utils";
 import { TaskActionMenu } from "@/atomic-crm/tasks/TaskActionMenu";
-import {
-  Phone,
-  Mail,
-  Users,
-  FileText,
-  CheckCircle2,
-  Loader2,
-  AlarmClock,
-  Presentation,
-  FileSignature,
-  GripVertical,
-} from "lucide-react";
+import { Loader2, AlarmClock, GripVertical } from "lucide-react";
 import type { TaskItem } from "./types";
+import { priorityColors, getTaskIcon } from "./taskUtils";
 
 interface TaskKanbanCardProps {
   task: TaskItem;
@@ -32,39 +22,6 @@ interface TaskKanbanCardProps {
   onDelete: (taskId: number) => Promise<void>;
   onView: (taskId: number) => void;
 }
-
-/**
- * Priority color mappings using semantic Tailwind classes
- */
-const priorityColors = {
-  critical: "bg-destructive text-destructive-foreground",
-  high: "bg-warning/10 text-warning",
-  medium: "bg-primary/10 text-primary",
-  low: "bg-muted text-muted-foreground",
-} as const;
-
-/**
- * Task type icon mapping
- */
-const getTaskIcon = (type: TaskItem["taskType"]) => {
-  switch (type) {
-    case "Call":
-      return <Phone className="h-3.5 w-3.5" />;
-    case "Email":
-      return <Mail className="h-3.5 w-3.5" />;
-    case "Meeting":
-      return <Users className="h-3.5 w-3.5" />;
-    case "Follow-up":
-      return <CheckCircle2 className="h-3.5 w-3.5" />;
-    case "Demo":
-      return <Presentation className="h-3.5 w-3.5" />;
-    case "Proposal":
-      return <FileSignature className="h-3.5 w-3.5" />;
-    case "Other":
-    default:
-      return <FileText className="h-3.5 w-3.5" />;
-  }
-};
 
 /**
  * Custom comparison function for React.memo optimization
@@ -171,6 +128,8 @@ export const TaskKanbanCard = memo(function TaskKanbanCard({
   const priorityClass =
     priorityColors[task.priority as keyof typeof priorityColors] || priorityColors.medium;
 
+  const TaskTypeIcon = getTaskIcon(task.taskType);
+
   return (
     // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions -- keyboard access via explicit subject <button> inside; outer click is mouse-only convenience
     <div
@@ -222,7 +181,7 @@ export const TaskKanbanCard = memo(function TaskKanbanCard({
         {/* Subject + Related */}
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-1.5 mb-1">
-            {getTaskIcon(task.taskType)}
+            <TaskTypeIcon className="h-3.5 w-3.5" />
             <button
               type="button"
               className="line-clamp-2 cursor-pointer rounded-sm border-none bg-transparent p-0 text-left text-sm font-medium text-foreground hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1"

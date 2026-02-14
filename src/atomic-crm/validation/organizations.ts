@@ -145,6 +145,7 @@ export const organizationSchema = z.strictObject({
   city: z.string().trim().max(100, "City name too long").nullish(),
   state: z.string().trim().max(100, "State name too long").nullish(), // was: stateAbbr
   sales_id: z.coerce.number().nullish(),
+  secondary_sales_id: z.coerce.number().nullish(),
   description: z
     .string()
     .trim()

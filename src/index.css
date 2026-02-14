@@ -450,6 +450,18 @@
     vertical-align: middle;
   }
 
+  /* Compact density variant — scoped to containers with data-density="compact" */
+  /* Used by dashboard Pipeline table; does NOT affect global PremiumDatagrid tables */
+  [data-density="compact"] .table-row-premium {
+    height: 48px;
+    contain-intrinsic-size: 0 48px;
+  }
+
+  [data-density="compact"] .table-row-premium td {
+    @apply py-2;
+    vertical-align: middle;
+  }
+
   /* Standard card container */
   .card-container {
     @apply bg-card border border-border shadow-sm rounded-xl p-6;

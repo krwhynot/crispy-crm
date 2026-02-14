@@ -10,7 +10,8 @@ const CONTACT_FIELD_LABELS: Record<string, string> = {
 
   // Organization and relationships
   organization_id: "Organization",
-  sales_id: "Account Manager",
+  sales_id: "Primary Account Manager",
+  secondary_sales_id: "Secondary Account Manager",
   manager_id: "Manager",
 
   // Contact information - top level

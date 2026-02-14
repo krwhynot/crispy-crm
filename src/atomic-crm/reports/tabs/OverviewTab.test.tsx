@@ -103,18 +103,20 @@ describe("OverviewTab", () => {
     expect(screen.getByText("Rep Performance")).toBeInTheDocument();
   });
 
-  it("renders embedded TabFilterBar", async () => {
+  it("renders AppliedFiltersBar (filters moved to sidebar)", async () => {
     renderWithAdminContext(<OverviewTab />, {
       dataProvider: {
         getList: createMockGetList(),
       },
     });
 
-    // Filter bar should be inside the tab, not global
+    // TabFilterBar has been removed; filters are now in the sidebar.
+    // The tab still renders AppliedFiltersBar and KPI cards.
     await waitFor(() => {
-      expect(screen.getByLabelText(/date range/i)).toBeInTheDocument();
+      expect(screen.getByText("Open Opportunities")).toBeInTheDocument();
     });
-    expect(screen.getByLabelText(/sales rep/i)).toBeInTheDocument();
+    // Date Range / Sales Rep selects are no longer rendered inline in the tab
+    expect(screen.queryByLabelText(/date range/i)).not.toBeInTheDocument();
   });
 
   it("uses lg: breakpoint for desktop-first grid", async () => {
@@ -144,7 +146,7 @@ describe("OverviewTab", () => {
 
     await waitFor(() => {
       const wrapper = container.firstChild;
-      expect(wrapper).toHaveClass("space-y-section");
+      expect(wrapper).toHaveClass("space-y-widget");
     });
   });
 });

@@ -24,6 +24,7 @@ export const contactsFilters = {
     "linkedin_url",
     "twitter_handle",
     "sales_id",
+    "secondary_sales_id",
     "created_at",
     "updated_at",
     "deleted_at", // Soft delete timestamp
@@ -55,6 +56,7 @@ export const contactsFilters = {
     "linkedin_url",
     "twitter_handle",
     "sales_id",
+    "secondary_sales_id",
     "created_at",
     "updated_at",
     "deleted_at", // Soft delete timestamp

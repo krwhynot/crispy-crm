@@ -55,12 +55,12 @@ export function KPICard({
         aria-label={`Loading ${title}`}
         data-tutorial={dataTutorial}
       >
-        <CardContent className="p-3 lg:p-4">
-          <div className="flex items-center gap-3">
-            <Skeleton className="h-11 w-11 rounded-lg shrink-0" />
-            <div className="flex-1 space-y-2">
+        <CardContent className="px-3 py-2">
+          <div className="flex items-center gap-2">
+            <Skeleton className="h-7 w-7 rounded shrink-0" />
+            <div className="flex-1 space-y-1">
               <Skeleton className="h-3 w-20" />
-              <Skeleton className="h-6 w-16" />
+              <Skeleton className="h-5 w-12" />
             </div>
           </div>
         </CardContent>
@@ -108,41 +108,44 @@ export function KPICard({
       aria-label={isClickable ? `${title}: ${value}. Click to view details.` : undefined}
       data-tutorial={dataTutorial}
     >
-      <CardContent className="p-3 lg:p-4">
-        <div className="flex items-center gap-3">
+      <CardContent className="px-3 py-2">
+        <div className="flex items-center gap-2">
           {Icon && (
             <div
-              className={cn(
-                "flex h-11 w-11 items-center justify-center rounded-lg shrink-0",
-                iconStyle
-              )}
+              className={cn("flex h-7 w-7 items-center justify-center rounded shrink-0", iconStyle)}
             >
-              <Icon className="h-5 w-5" aria-hidden="true" />
+              <Icon className="h-3.5 w-3.5" aria-hidden="true" />
             </div>
           )}
           <div className="flex-1 min-w-0">
-            <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
+            <span className="text-[11px] font-medium text-muted-foreground uppercase tracking-wide">
               {title}
             </span>
-            <div className="mt-1 flex items-baseline gap-2">
-              <span className={cn("text-2xl md:text-3xl font-bold truncate", valueStyle)}>
+            <div className="flex items-baseline gap-1.5">
+              <span className={cn("text-lg font-bold truncate leading-tight", valueStyle)}>
                 {value}
               </span>
               {trend && (
                 <span
                   className={cn(
-                    "text-xs font-medium",
+                    "text-[10px] font-medium",
                     trend.direction === "up" && "text-success",
                     trend.direction === "down" && "text-destructive",
                     trend.direction === "neutral" && "text-muted-foreground"
                   )}
                 >
-                  {trend.direction === "up" ? "↑" : trend.direction === "down" ? "↓" : "→"}
+                  {trend.direction === "up"
+                    ? "\u2191"
+                    : trend.direction === "down"
+                      ? "\u2193"
+                      : "\u2192"}
                   {Math.abs(trend.value)}%
                 </span>
               )}
             </div>
-            {subtitle && <p className="mt-1 text-xs text-muted-foreground truncate">{subtitle}</p>}
+            {subtitle && (
+              <p className="text-[10px] text-muted-foreground truncate leading-tight">{subtitle}</p>
+            )}
           </div>
         </div>
       </CardContent>

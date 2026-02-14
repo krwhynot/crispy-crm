@@ -49,6 +49,7 @@ export interface KPIMetrics {
   overdueTasksCount: number | null;
   activitiesThisWeek: number | null;
   staleDealsCount: number | null;
+  recentActivityCount: number | null;
 }
 
 export interface KPITrend {
@@ -77,6 +78,7 @@ const DEFAULT_METRICS: KPIMetrics = {
   overdueTasksCount: null,
   activitiesThisWeek: null,
   staleDealsCount: null,
+  recentActivityCount: null,
 };
 
 const DEFAULT_TRENDS: KPITrends = {
@@ -142,6 +144,7 @@ export function useKPIMetrics(): UseKPIMetricsReturn {
         // Maximum stale threshold is 21 days, so we only need opportunities with
         // last_activity_date older than 21 days ago (potential stale candidates)
         const staleThresholdDate = subDays(today, 21);
+        const recentActivityCutoff = new Date(Date.now() - 60 * 60 * 1000); // 1 hour ago
 
         // Fetch all metrics in parallel using Promise.allSettled
         // This ensures partial failures don't break the entire dashboard
@@ -151,6 +154,7 @@ export function useKPIMetrics(): UseKPIMetricsReturn {
           tasksResult,
           activitiesResult,
           lastWeekActivitiesResult,
+          recentActivitiesResult,
         ] = await Promise.allSettled([
           // 1. Open opportunities COUNT ONLY (server-side total)
           // OPTIMIZATION: perPage: 1 uses server-side count, avoiding full data transfer
@@ -204,6 +208,15 @@ export function useKPIMetrics(): UseKPIMetricsReturn {
             sort: { field: "id", order: "ASC" },
             pagination: { page: 1, perPage: 1 }, // Server-side count only
           }),
+
+          // 6. Recent activities COUNT ONLY (last 1 hour, for KPI alert subtitle)
+          dataProvider.getList("activities", {
+            filter: {
+              "activity_date@gte": recentActivityCutoff.toISOString(),
+            },
+            sort: { field: "id", order: "ASC" },
+            pagination: { page: 1, perPage: 1 }, // Server-side count only
+          }),
         ]);
 
         // Check if aborted before processing results
@@ -214,6 +227,7 @@ export function useKPIMetrics(): UseKPIMetricsReturn {
         let staleDealsCount: number | null = null;
         let overdueTasksCount: number | null = null;
         let activitiesThisWeek: number | null = null;
+        let recentActivityCount: number | null = null;
 
         // Accumulate errors from rejected results
         const errors: string[] = [];
@@ -275,6 +289,16 @@ export function useKPIMetrics(): UseKPIMetricsReturn {
           });
         }
 
+        // Recent activity count (last 1 hour) for KPI alert subtitle
+        if (recentActivitiesResult.status === "fulfilled") {
+          recentActivityCount = recentActivitiesResult.value.total || 0;
+        } else {
+          // Non-critical — don't add to errors array, just log
+          logger.error("Failed to fetch recent activities count", recentActivitiesResult.reason, {
+            feature: "useKPIMetrics",
+          });
+        }
+
         // Calculate trends from previous-period data
         let activitiesTrend: KPITrend | null = null;
         if (lastWeekActivitiesResult.status === "fulfilled" && activitiesThisWeek !== null) {
@@ -298,6 +322,7 @@ export function useKPIMetrics(): UseKPIMetricsReturn {
             overdueTasksCount,
             activitiesThisWeek,
             staleDealsCount,
+            recentActivityCount,
           });
           setTrends({
             activitiesThisWeek: activitiesTrend,

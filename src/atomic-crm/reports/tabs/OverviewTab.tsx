@@ -5,7 +5,6 @@ import { TrendingUp, Activity, AlertCircle, Clock } from "lucide-react";
 import { KPICard } from "@/components/ui/kpi-card";
 import { ChartWrapper } from "../components/ChartWrapper";
 import { Skeleton } from "@/components/ui/skeleton";
-import { TabFilterBar } from "../components/TabFilterBar";
 import { AppliedFiltersBar, EmptyState } from "../components";
 import {
   useReportData,
@@ -19,7 +18,7 @@ import { TopPrincipalsChart } from "../charts/TopPrincipalsChart";
 import { RepPerformanceChart } from "../charts/RepPerformanceChart";
 import { OPPORTUNITY_STAGE_CHOICES, STAGE, CLOSED_STAGES } from "../../opportunities/constants";
 import { format, subDays, startOfDay, eachDayOfInterval } from "date-fns";
-import { DEFAULT_PAGE_SIZE } from "@/atomic-crm/constants/appConstants";
+import { LOOKUP_PAGE_SIZE } from "@/atomic-crm/constants/appConstants";
 import "../charts/chartSetup";
 import type { Sale } from "../types";
 import {
@@ -70,7 +69,7 @@ export default function OverviewTab() {
 
   // Fetch sales reps for filter display and rep performance
   const { data: salesReps = [] } = useGetList<Sale>("sales", {
-    pagination: { page: 1, perPage: DEFAULT_PAGE_SIZE },
+    pagination: { page: 1, perPage: LOOKUP_PAGE_SIZE },
   });
 
   // Build filters array for AppliedFiltersBar
@@ -381,23 +380,12 @@ export default function OverviewTab() {
   const isRefreshing = isLoading && hasData;
 
   return (
-    <div className="space-y-section">
+    <div className="space-y-widget">
       {isRefreshing && (
         <div className="text-xs text-muted-foreground animate-pulse" role="status">
           Updating...
         </div>
       )}
-
-      <TabFilterBar
-        showDateRange
-        dateRange={dateRange}
-        onDateRangeChange={(range) => updateFilters({ datePreset: range.preset })}
-        showSalesRep
-        salesRepId={salesRepId}
-        onSalesRepChange={(value) => updateFilters({ salesRepId: value })}
-        hasActiveFilters={hasActiveFilters}
-        onReset={handleReset}
-      />
 
       {/* Show applied filters bar when filters are active */}
       <AppliedFiltersBar

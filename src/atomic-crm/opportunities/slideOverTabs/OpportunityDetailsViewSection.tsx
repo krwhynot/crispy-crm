@@ -150,14 +150,24 @@ export function OpportunityDetailsViewSection({
           </div>
         </SidepaneSection>
 
-        {record.account_manager_id && (
+        {(record.opportunity_owner_id || record.account_manager_id) && (
           <SidepaneSection label="Ownership" showSeparator>
-            <div>
-              <span className="text-xs text-muted-foreground">Account Manager</span>
-              <div className="mt-1 text-sm">
-                <ReferenceField source="account_manager_id" reference="sales" link={false} />
+            {record.opportunity_owner_id && (
+              <div>
+                <span className="text-xs text-muted-foreground">Primary Account Manager</span>
+                <div className="mt-1 text-sm">
+                  <ReferenceField source="opportunity_owner_id" reference="sales" link={false} />
+                </div>
               </div>
-            </div>
+            )}
+            {record.account_manager_id && (
+              <div>
+                <span className="text-xs text-muted-foreground">Secondary Account Manager</span>
+                <div className="mt-1 text-sm">
+                  <ReferenceField source="account_manager_id" reference="sales" link={false} />
+                </div>
+              </div>
+            )}
           </SidepaneSection>
         )}
 

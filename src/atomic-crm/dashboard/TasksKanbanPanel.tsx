@@ -20,7 +20,7 @@ import { Badge } from "@/components/ui/badge";
 import { Plus } from "lucide-react";
 import { TaskKanbanColumn, type TaskColumnId } from "./TaskKanbanColumn";
 import { TaskKanbanCard } from "./TaskKanbanCard";
-import type { TaskItem } from "./types";
+import { groupTasksByColumn } from "./taskUtils";
 import { useMyTasks } from "./useMyTasks";
 
 /**
@@ -106,29 +106,7 @@ function TasksKanbanPanel() {
   const [activeId, setActiveId] = useState<string | null>(null);
 
   // Memoize filtered task lists by time horizon
-  const tasksByColumn = useMemo(() => {
-    const overdue: TaskItem[] = [];
-    const today: TaskItem[] = [];
-    const thisWeek: TaskItem[] = [];
-
-    for (const task of tasks) {
-      switch (task.status) {
-        case "overdue":
-          overdue.push(task);
-          break;
-        case "today":
-          today.push(task);
-          break;
-        case "tomorrow":
-        case "upcoming":
-          thisWeek.push(task);
-          break;
-        // 'later' tasks not shown in this view
-      }
-    }
-
-    return { overdue, today, thisWeek };
-  }, [tasks]);
+  const tasksByColumn = useMemo(() => groupTasksByColumn(tasks), [tasks]);
 
   const activeTask = activeId
     ? [...tasksByColumn.overdue, ...tasksByColumn.today, ...tasksByColumn.thisWeek].find(

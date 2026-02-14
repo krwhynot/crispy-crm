@@ -285,14 +285,25 @@ function ContactViewSections({ record }: { record: Contact }) {
         </div>
       </SidepaneSection>
 
-      {/* Account Section - assigned sales rep */}
-      {record.sales_id && (
-        <SidepaneSection label="Assigned To" showSeparator>
-          <div className="text-sm">
-            <ReferenceField source="sales_id" reference="sales">
-              <SaleName />
-            </ReferenceField>
-          </div>
+      {/* Account Section - assigned sales reps */}
+      {(record.sales_id || record.secondary_sales_id) && (
+        <SidepaneSection label="Account Managers" showSeparator>
+          {record.sales_id && (
+            <div className="text-sm">
+              <span className="text-xs text-muted-foreground">Primary: </span>
+              <ReferenceField source="sales_id" reference="sales">
+                <SaleName />
+              </ReferenceField>
+            </div>
+          )}
+          {record.secondary_sales_id && (
+            <div className="text-sm">
+              <span className="text-xs text-muted-foreground">Secondary: </span>
+              <ReferenceField source="secondary_sales_id" reference="sales">
+                <SaleName />
+              </ReferenceField>
+            </div>
+          )}
         </SidepaneSection>
       )}
 

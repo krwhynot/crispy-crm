@@ -90,6 +90,8 @@ export const shouldDisplayFilter = (key: string): boolean => {
   const hiddenFilters = [
     "deleted_at",
     "sales_id",
+    "secondary_sales_id",
+    "$or",
     "q", // search query
   ];
 

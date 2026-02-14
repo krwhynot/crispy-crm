@@ -11,6 +11,7 @@
  *
  * Ownership Fields (any match grants access):
  * - sales_id: Primary ownership
+ * - secondary_sales_id: Secondary account manager
  * - created_by: Creator of record
  * - opportunity_owner_id: Opportunity owner
  * - account_manager_id: Organization account manager
@@ -249,11 +250,26 @@ describe("canAccess", () => {
     });
   });
 
+  describe("rep role - edit/delete WITH record and currentSalesId matching secondary_sales_id", () => {
+    it("should allow edit when currentSalesId matches record.secondary_sales_id", () => {
+      const record = { id: 1, sales_id: 999, secondary_sales_id: 123 };
+      expect(canAccess("rep", { action: "edit", resource: "contacts", record }, 123)).toBe(true);
+    });
+
+    it("should allow delete when currentSalesId matches record.secondary_sales_id", () => {
+      const record = { id: 1, sales_id: 999, secondary_sales_id: 456 };
+      expect(canAccess("rep", { action: "delete", resource: "organizations", record }, 456)).toBe(
+        true
+      );
+    });
+  });
+
   describe("rep role - edit/delete WITH record and NO matching ownership", () => {
     it("should deny edit when no ownership field matches currentSalesId", () => {
       const record = {
         id: 1,
         sales_id: 100,
+        secondary_sales_id: 500,
         created_by: 200,
         opportunity_owner_id: 300,
         account_manager_id: 400,
@@ -265,6 +281,7 @@ describe("canAccess", () => {
       const record = {
         id: 1,
         sales_id: 100,
+        secondary_sales_id: 500,
         created_by: 200,
         opportunity_owner_id: 300,
         account_manager_id: 400,
@@ -352,6 +369,7 @@ describe("canAccess", () => {
       const record = {
         id: 1,
         sales_id: null,
+        secondary_sales_id: null,
         created_by: null,
         opportunity_owner_id: null,
         account_manager_id: null,
@@ -382,6 +400,7 @@ describe("canAccess", () => {
       const record = {
         id: 1,
         sales_id: 123,
+        secondary_sales_id: 123,
         created_by: 123,
         opportunity_owner_id: 123,
         account_manager_id: 123,

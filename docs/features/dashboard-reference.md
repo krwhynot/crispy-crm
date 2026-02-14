@@ -498,6 +498,6 @@ const {
 
 ## Related Documentation
 
-- [Business Logic Discovery](../_state/business-logic-discovery.json) - Pipeline stages, activity types, business rules
-- [Stage Constants](../../src/atomic-crm/opportunities/constants/stageConstants.ts) - Stage metadata
+- [Business Logic Discovery](../../.claude/state/business-logic-discovery.json) - Pipeline stages, activity types, business rules
+- [Stage Constants](../../src/atomic-crm/opportunities/constants/stage-config.ts) - Stage metadata
 - [Staleness Calculation](../../src/atomic-crm/utils/stalenessCalculation.ts) - Stale threshold logic

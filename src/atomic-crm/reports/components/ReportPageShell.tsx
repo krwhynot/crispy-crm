@@ -37,7 +37,7 @@ export function ReportPageShell({ title, breadcrumbs, actions, children }: Repor
         {actions && <div className="flex items-center gap-compact">{actions}</div>}
       </div>
 
-      <div className="space-y-section">{children}</div>
+      <div className="space-y-widget">{children}</div>
     </div>
   );
 }

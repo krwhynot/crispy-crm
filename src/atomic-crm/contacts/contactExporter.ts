@@ -39,7 +39,8 @@ export interface ContactExportRow {
   last_seen: string | undefined;
   tags: string;
   linkedin_url: string | null | undefined;
-  sales: string;
+  primary_sales: string;
+  secondary_sales: string;
   department: string;
   id: number | string;
   sales_id: number | string | null | undefined;
@@ -48,6 +49,7 @@ export interface ContactExportRow {
 
 export const contactExporter: Exporter<Contact> = async (records, fetchRelatedRecords) => {
   const sales = await fetchRelatedRecords<Sale>(records, "sales_id", "sales");
+  const secondarySales = await fetchRelatedRecords<Sale>(records, "secondary_sales_id", "sales");
   const tags = await fetchRelatedRecords<Tag>(records, "tags", "tags");
   const organizations = await fetchRelatedRecords<Organization>(
     records,
@@ -70,7 +72,10 @@ export const contactExporter: Exporter<Contact> = async (records, fetchRelatedRe
     last_seen: contact.last_seen,
     tags: formatTagsForExport(contact.tags, tags),
     linkedin_url: contact.linkedin_url,
-    sales: formatSalesName(contact.sales_id ? sales[contact.sales_id] : null),
+    primary_sales: formatSalesName(contact.sales_id ? sales[contact.sales_id] : null),
+    secondary_sales: formatSalesName(
+      contact.secondary_sales_id ? secondarySales[contact.secondary_sales_id] : null
+    ),
     department: contact.department || "",
     id: contact.id,
     sales_id: contact.sales_id,

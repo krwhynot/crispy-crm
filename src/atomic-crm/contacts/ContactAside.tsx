@@ -110,11 +110,19 @@ export const ContactAside = ({ link = "edit" }: { link?: "edit" | "show" }) => {
         </div>
 
         <div className="text-muted-foreground">
-          Followed by{" "}
+          Primary:{" "}
           <ReferenceField source="sales_id" reference="sales">
             <SaleName />
           </ReferenceField>
         </div>
+        {record.secondary_sales_id && (
+          <div className="text-muted-foreground">
+            Secondary:{" "}
+            <ReferenceField source="secondary_sales_id" reference="sales">
+              <SaleName />
+            </ReferenceField>
+          </div>
+        )}
       </AsideSection>
 
       <AsideSection title="Tags">

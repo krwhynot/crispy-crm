@@ -24,7 +24,7 @@ export const AppliedFiltersBar = ({
   }
 
   return (
-    <div className="flex flex-wrap items-center justify-between gap-content rounded-lg bg-muted/50 p-compact md:p-content">
+    <div className="flex flex-wrap items-center justify-between gap-content py-compact border-b border-border">
       <div role="list" className="flex flex-wrap items-center gap-compact">
         <span className="text-sm text-muted-foreground">Applied:</span>
         {filters.map((filter) => (

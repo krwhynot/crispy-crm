@@ -1,10 +1,10 @@
-import { useState, useMemo, useCallback, useEffect, useRef } from "react";
+import { useState, useMemo, useEffect, useRef } from "react";
 import { useGetList, useNotify } from "ra-core";
 import { useNavigate } from "react-router-dom";
 import { format } from "date-fns";
-import { TrendingUp } from "lucide-react";
-import { ReportLayout } from "./ReportLayout";
-import { Card, CardContent } from "@/components/ui/card";
+import { TrendingUp, Building2, BarChart3, Download } from "lucide-react";
+import { KPICard } from "@/components/ui/kpi-card";
+import { AdminButton } from "@/components/admin/AdminButton";
 import { AppliedFiltersBar, EmptyState } from "./components";
 import {
   useReportData,
@@ -12,12 +12,8 @@ import {
   OPPORTUNITIES_DEFAULTS,
   type OpportunitiesFilterState,
 } from "./hooks";
-import { DEFAULT_PAGE_SIZE } from "@/atomic-crm/constants/appConstants";
+import { LOOKUP_PAGE_SIZE } from "@/atomic-crm/constants/appConstants";
 import type { Opportunity, Sale } from "../types";
-import {
-  FilterToolbar,
-  type FilterValues,
-} from "./opportunities-by-principal/components/FilterToolbar";
 import {
   PrincipalGroupCard,
   type PrincipalGroup,
@@ -47,72 +43,48 @@ export default function OpportunitiesByPrincipalReport() {
     OPPORTUNITIES_DEFAULTS
   );
 
-  const filters: FilterValues = useMemo(
-    () => ({
-      principal_organization_id: filterState.principal_organization_id,
-      stage: filterState.stage,
-      opportunity_owner_id: filterState.opportunity_owner_id,
-      startDate: filterState.startDate,
-      endDate: filterState.endDate,
-    }),
-    [filterState]
-  );
-
-  const handleFiltersChange = useCallback(
-    (newFilters: FilterValues) => {
-      updateFilters({
-        principal_organization_id: newFilters.principal_organization_id,
-        stage: newFilters.stage,
-        opportunity_owner_id: newFilters.opportunity_owner_id,
-        startDate: newFilters.startDate,
-        endDate: newFilters.endDate,
-      });
-    },
-    [updateFilters]
-  );
-
   // Track expanded principals
   const [expandedPrincipals, setExpandedPrincipals] = useState<Set<string>>(new Set());
   const hasInitializedRef = useRef(false);
 
   // Build filter object for API
   // CRITICAL: Use primitive dependencies to prevent render loops
-  // Depending on entire `filters` object causes recalculation when object reference changes
-  const stageJson = JSON.stringify(filters.stage);
+  // Depending on entire `filterState` object causes recalculation when object reference changes
+  const stageJson = JSON.stringify(filterState.stage);
   const apiFilter = useMemo(() => {
     const filter: Record<string, unknown> = {
       "deleted_at@is": null,
       status: "active",
     };
 
-    if (filters.principal_organization_id) {
-      filter.principal_organization_id = filters.principal_organization_id;
+    if (filterState.principal_organization_id) {
+      filter.principal_organization_id = filterState.principal_organization_id;
     }
 
-    if (filters.stage.length > 0) {
-      filter.stage = filters.stage;
+    if (filterState.stage.length > 0) {
+      filter.stage = filterState.stage;
     }
 
-    if (filters.opportunity_owner_id) {
-      filter.opportunity_owner_id = filters.opportunity_owner_id;
+    if (filterState.opportunity_owner_id) {
+      filter.opportunity_owner_id = filterState.opportunity_owner_id;
     }
 
-    if (filters.startDate) {
-      filter["estimated_close_date@gte"] = filters.startDate;
+    if (filterState.startDate) {
+      filter["estimated_close_date@gte"] = filterState.startDate;
     }
 
-    if (filters.endDate) {
-      filter["estimated_close_date@lte"] = filters.endDate;
+    if (filterState.endDate) {
+      filter["estimated_close_date@lte"] = filterState.endDate;
     }
 
     return filter;
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- stageJson serializes filters.stage for stable array comparison
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- stageJson serializes filterState.stage for stable array comparison
   }, [
-    filters.principal_organization_id,
+    filterState.principal_organization_id,
     stageJson,
-    filters.opportunity_owner_id,
-    filters.startDate,
-    filters.endDate,
+    filterState.opportunity_owner_id,
+    filterState.startDate,
+    filterState.endDate,
   ]);
 
   // Fetch opportunities
@@ -138,7 +110,7 @@ export default function OpportunitiesByPrincipalReport() {
   );
 
   const { data: salesReps } = useGetList<Sale>("sales", {
-    pagination: { page: 1, perPage: DEFAULT_PAGE_SIZE },
+    pagination: { page: 1, perPage: Math.max(ownerIds.length, LOOKUP_PAGE_SIZE) },
     filter: salesFilter,
   });
 
@@ -225,7 +197,7 @@ export default function OpportunitiesByPrincipalReport() {
   const appliedFilters = useMemo(() => {
     const result: Array<{ label: string; value: string; onRemove: () => void }> = [];
 
-    if (filters.principal_organization_id) {
+    if (filterState.principal_organization_id) {
       result.push({
         label: "Principal",
         value: "Selected",
@@ -233,15 +205,15 @@ export default function OpportunitiesByPrincipalReport() {
       });
     }
 
-    if (filters.stage.length > 0) {
+    if (filterState.stage.length > 0) {
       result.push({
         label: "Stage",
-        value: `${filters.stage.length} selected`,
+        value: `${filterState.stage.length} selected`,
         onRemove: () => updateFilters({ stage: [] }),
       });
     }
 
-    if (filters.opportunity_owner_id) {
+    if (filterState.opportunity_owner_id) {
       result.push({
         label: "Sales Rep",
         value: "Selected",
@@ -249,31 +221,31 @@ export default function OpportunitiesByPrincipalReport() {
       });
     }
 
-    if (filters.startDate) {
+    if (filterState.startDate) {
       result.push({
         label: "Start Date",
-        value: format(new Date(filters.startDate), "MMM dd, yyyy"),
+        value: format(new Date(filterState.startDate), "MMM dd, yyyy"),
         onRemove: () => updateFilters({ startDate: null }),
       });
     }
 
-    if (filters.endDate) {
+    if (filterState.endDate) {
       result.push({
         label: "End Date",
-        value: format(new Date(filters.endDate), "MMM dd, yyyy"),
+        value: format(new Date(filterState.endDate), "MMM dd, yyyy"),
         onRemove: () => updateFilters({ endDate: null }),
       });
     }
 
     return result;
-  }, [filters, updateFilters]);
+  }, [filterState, updateFilters]);
 
   const hasActiveFilters =
-    filters.principal_organization_id ||
-    filters.stage.length > 0 ||
-    filters.opportunity_owner_id ||
-    filters.startDate ||
-    filters.endDate;
+    filterState.principal_organization_id ||
+    filterState.stage.length > 0 ||
+    filterState.opportunity_owner_id ||
+    filterState.startDate ||
+    filterState.endDate;
 
   const handleResetAllFilters = () => {
     resetFilters();
@@ -285,9 +257,9 @@ export default function OpportunitiesByPrincipalReport() {
 
   if (isFirstLoad) {
     return (
-      <ReportLayout title="Opportunities by Principal">
+      <div className="space-y-widget">
         <p className="text-muted-foreground">Loading opportunities...</p>
-      </ReportLayout>
+      </div>
     );
   }
 
@@ -295,81 +267,74 @@ export default function OpportunitiesByPrincipalReport() {
   const totalPrincipals = principalGroups.length;
 
   return (
-    <ReportLayout
-      title="Opportunities by Principal"
-      onExport={handleExport}
-      actions={<FilterToolbar filters={filters} onFiltersChange={handleFiltersChange} />}
-    >
-      <div className="space-y-section">
-        {isRefreshing && (
-          <div className="text-xs text-muted-foreground animate-pulse" role="status">
-            Updating...
-          </div>
-        )}
+    <div className="space-y-widget">
+      {isRefreshing && (
+        <div className="text-xs text-muted-foreground animate-pulse" role="status">
+          Updating...
+        </div>
+      )}
 
+      <div className="flex items-center justify-between gap-2">
         <AppliedFiltersBar
           filters={appliedFilters}
           onResetAll={handleResetAllFilters}
           hasActiveFilters={hasActiveFilters}
         />
-
-        {opportunitiesError && (
-          <div className="rounded-lg border border-destructive/50 bg-destructive/10 p-4 text-destructive">
-            <p className="font-medium">Failed to load opportunities</p>
-            <p className="text-sm">{opportunitiesError.message}</p>
-          </div>
-        )}
-
-        {/* Summary Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-content">
-          <Card>
-            <CardContent className="p-4">
-              <p className="text-sm text-muted-foreground">Total Opportunities</p>
-              <p className="text-2xl font-bold">{totalOpportunities}</p>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardContent className="p-4">
-              <p className="text-sm text-muted-foreground">Principals</p>
-              <p className="text-2xl font-bold">{totalPrincipals}</p>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardContent className="p-4">
-              <p className="text-sm text-muted-foreground">Avg per Principal</p>
-              <p className="text-2xl font-bold">
-                {totalPrincipals > 0 ? Math.round(totalOpportunities / totalPrincipals) : 0}
-              </p>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Principal Groups */}
-        {principalGroups.length === 0 && !opportunitiesLoading && !opportunitiesError ? (
-          <EmptyState
-            title="No Opportunities Found"
-            description="Try adjusting your filters or create a new opportunity."
-            icon={TrendingUp}
-            action={{
-              label: "Create Opportunity",
-              onClick: () => navigate("/opportunities/create"),
-            }}
-          />
-        ) : (
-          <div className="space-y-content">
-            {principalGroups.map((group) => (
-              <PrincipalGroupCard
-                key={group.principalId || "null"}
-                group={group}
-                isExpanded={expandedPrincipals.has(group.principalId || "null")}
-                onToggle={() => togglePrincipalExpansion(group.principalId)}
-                onOpportunityClick={handleOpportunityClick}
-                salesMap={salesMap}
-              />
-            ))}
-          </div>
-        )}
+        <AdminButton
+          variant="outline"
+          size="sm"
+          className="h-11 shrink-0 gap-2"
+          onClick={handleExport}
+          disabled={opportunitiesLoading || (opportunities?.length ?? 0) === 0}
+        >
+          <Download className="h-4 w-4" aria-hidden="true" />
+          Export CSV
+        </AdminButton>
       </div>
-    </ReportLayout>
+
+      {opportunitiesError && (
+        <div className="rounded-lg border border-destructive/50 bg-destructive/10 p-4 text-destructive">
+          <p className="font-medium">Failed to load opportunities</p>
+          <p className="text-sm">{opportunitiesError.message}</p>
+        </div>
+      )}
+
+      {/* Summary Stats */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-content">
+        <KPICard title="Total Opportunities" value={totalOpportunities} icon={TrendingUp} />
+        <KPICard title="Principals" value={totalPrincipals} icon={Building2} />
+        <KPICard
+          title="Avg per Principal"
+          value={totalPrincipals > 0 ? Math.round(totalOpportunities / totalPrincipals) : 0}
+          icon={BarChart3}
+        />
+      </div>
+
+      {/* Principal Groups */}
+      {principalGroups.length === 0 && !opportunitiesLoading && !opportunitiesError ? (
+        <EmptyState
+          title="No Opportunities Found"
+          description="Try adjusting your filters or create a new opportunity."
+          icon={TrendingUp}
+          action={{
+            label: "Create Opportunity",
+            onClick: () => navigate("/opportunities/create"),
+          }}
+        />
+      ) : (
+        <div className="space-y-content">
+          {principalGroups.map((group) => (
+            <PrincipalGroupCard
+              key={group.principalId || "null"}
+              group={group}
+              isExpanded={expandedPrincipals.has(group.principalId || "null")}
+              onToggle={() => togglePrincipalExpansion(group.principalId)}
+              onOpportunityClick={handleOpportunityClick}
+              salesMap={salesMap}
+            />
+          ))}
+        </div>
+      )}
+    </div>
   );
 }

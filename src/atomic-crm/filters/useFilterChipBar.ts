@@ -54,7 +54,7 @@ export interface UseFilterChipBarReturn {
  *
  * NOTE: 'q' (search) is NOT excluded - we show search chips for user clarity
  */
-const SYSTEM_FILTERS = new Set(["deleted_at", "deleted_at@is"]);
+const SYSTEM_FILTERS = new Set(["deleted_at", "deleted_at@is", "$or"]);
 
 /**
  * Transform React Admin filter state into displayable chips.
@@ -115,7 +115,11 @@ export function useFilterChipBar<TContext = unknown>(
 
       if (config.reference === "organizations" || config.key === "organization_id") {
         ids.organizations.push(...values.map(String));
-      } else if (config.reference === "sales" || config.key === "sales_id") {
+      } else if (
+        config.reference === "sales" ||
+        config.key === "sales_id" ||
+        config.key === "secondary_sales_id"
+      ) {
         ids.sales.push(...values.map(String));
       } else if (config.reference === "tags" || config.key === "tags") {
         ids.tags.push(...values.map(String));

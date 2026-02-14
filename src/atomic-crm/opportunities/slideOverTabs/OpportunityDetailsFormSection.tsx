@@ -128,7 +128,19 @@ export function OpportunityDetailsFormSection({
               helperText={false}
             />
           </CompactFormRow>
-          <CompactFormRow>
+          <CompactFormRow columns="md:grid-cols-3">
+            <ReferenceInput
+              source="opportunity_owner_id"
+              reference="sales"
+              sort={{ field: "last_name", order: "ASC" }}
+              filter={{ "disabled@neq": true }}
+            >
+              <SelectInput
+                label="Primary Account Manager"
+                optionText={saleOptionRenderer}
+                helperText={false}
+              />
+            </ReferenceInput>
             <ReferenceInput
               source="account_manager_id"
               reference="sales"
@@ -136,7 +148,7 @@ export function OpportunityDetailsFormSection({
               filter={{ "disabled@neq": true }}
             >
               <SelectInput
-                label="Account Manager"
+                label="Secondary Account Manager"
                 optionText={saleOptionRenderer}
                 helperText={false}
               />

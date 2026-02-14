@@ -578,6 +578,6 @@ If a component must use Tier 1 despite being in a form context, add a code comme
 ## Related Documentation
 
 - [Engineering Constitution](../../CLAUDE.md) — Core principles including fail-fast, Zod validation, form patterns
-- [UI Components](../patterns/tier-3-frontend/ui-components.md) — shadcn/ui patterns, accessibility, semantic colors
+- [UI Components](../../src/components/ui/PATTERNS.md) — shadcn/ui patterns, accessibility, semantic colors
 - [MODULE_CHECKLIST.md](../../.claude/rules/MODULE_CHECKLIST.md) — Feature module standardization
 - [Accessibility Design](../design/ACCESSIBILITY.md) — ARIA patterns, touch targets, screen reader support

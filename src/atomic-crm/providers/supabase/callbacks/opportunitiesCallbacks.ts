@@ -72,26 +72,19 @@ const TYPED_COMPUTED_FIELDS = [
   "stage_manual",
   "status_manual",
   "competition",
-  // NOTE: opportunity_owner_id removed - it's in UPDATE_ONLY_STRIP_FIELDS
-  // because CREATE operations need to pass it to the database
+  // NOTE: opportunity_owner_id is NOT a computed field - it's user-editable
+  // (Primary Account Manager) and passes through on both CREATE and UPDATE
 ] as const satisfies readonly (keyof Opportunity)[];
 
 /**
  * Fields that should ONLY be stripped from UPDATE operations, NOT create.
  *
- * FIX [WF-E2E-001]: opportunity_owner_id must be preserved during CREATE
- * so the database can set the owner. The trigger `set_opportunity_owner_defaults`
- * expects this field or falls back to current_sales_id(). If we strip it
- * during CREATE and auth context isn't properly set, the trigger fails with:
- * "Cannot determine opportunity owner. User may not have a sales record."
- *
- * For UPDATE operations, this field should be stripped because:
- * - updateOpportunitySchema does not include it (strictObject validation)
- * - Ownership changes should go through dedicated reassignment flows
+ * HISTORY: opportunity_owner_id was previously stripped here to prevent
+ * direct edits, requiring reassignment flows instead. Removed to make
+ * opportunity_owner_id (Primary Account Manager) directly editable in forms.
+ * The field is now in updateOpportunitySchema and passes through on UPDATE.
  */
-const UPDATE_ONLY_STRIP_FIELDS = [
-  "opportunity_owner_id",
-] as const satisfies readonly (keyof Opportunity)[];
+const UPDATE_ONLY_STRIP_FIELDS = [] as const satisfies readonly (keyof Opportunity)[];
 
 /**
  * View-only fields that exist in database views but NOT on the Opportunity type

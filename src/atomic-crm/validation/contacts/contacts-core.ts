@@ -96,6 +96,7 @@ export const contactBaseSchema = z.strictObject({
 
   // Relationships - ContactPositionInputs
   sales_id: z.coerce.number().nullish(),
+  secondary_sales_id: z.coerce.number().nullish(),
   // Manager relationship - BIGINT FK for manager hierarchy
   manager_id: z.coerce.number().nullable().optional(),
   // REQUIRED: Contacts must belong to an organization (no orphans)
@@ -222,6 +223,15 @@ export const contactSchema = contactBaseSchema
         path: ["manager_id"],
       });
     }
+
+    // Prevent same person as both primary and secondary manager (defense in depth)
+    if (data.sales_id && data.secondary_sales_id && data.sales_id === data.secondary_sales_id) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Primary and secondary account managers must be different",
+        path: ["secondary_sales_id"],
+      });
+    }
   });
 
 // Type inference
@@ -308,6 +318,15 @@ export async function validateContactForm(data: unknown): Promise<void> {
         code: z.ZodIssueCode.custom,
         message: "Contact cannot be their own manager",
         path: ["manager_id"],
+      });
+    }
+
+    // Prevent same person as both primary and secondary manager (defense in depth)
+    if (data.sales_id && data.secondary_sales_id && data.sales_id === data.secondary_sales_id) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Primary and secondary account managers must be different",
+        path: ["secondary_sales_id"],
       });
     }
   });
@@ -495,6 +514,15 @@ export async function validateCreateContact(data: unknown): Promise<void> {
           code: z.ZodIssueCode.custom,
           path: ["organization_id"],
           message: "Organization is required - contacts cannot exist without an organization",
+        });
+      }
+
+      // Prevent same person as both primary and secondary manager (defense in depth)
+      if (data.sales_id && data.secondary_sales_id && data.sales_id === data.secondary_sales_id) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "Primary and secondary account managers must be different",
+          path: ["secondary_sales_id"],
         });
       }
 

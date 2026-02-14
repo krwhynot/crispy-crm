@@ -112,8 +112,30 @@ export const ContactCompactForm = ({ disabled = false }: ContactCompactFormProps
               disabled={disabled}
             >
               <SelectInput
-                helperText="Account manager is required"
-                label="Account manager"
+                helperText="Primary account manager is required"
+                label="Primary Account Manager *"
+                optionText={saleOptionRenderer}
+              />
+            </ReferenceInput>
+          </FormFieldWrapper>
+        </div>
+
+        {/* Secondary Account Manager - optional */}
+        <div data-tutorial="contact-secondary-manager">
+          <FormFieldWrapper name="secondary_sales_id">
+            <ReferenceInput
+              reference="sales"
+              source="secondary_sales_id"
+              sort={{ field: "last_name", order: "ASC" }}
+              filter={{
+                "disabled@neq": true,
+                "user_id@not.is": null,
+              }}
+              disabled={disabled}
+            >
+              <SelectInput
+                helperText={false}
+                label="Secondary Account Manager"
                 optionText={saleOptionRenderer}
               />
             </ReferenceInput>

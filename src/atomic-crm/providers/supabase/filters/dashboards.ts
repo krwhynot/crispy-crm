@@ -71,6 +71,7 @@ export const dashboardsFilters = {
     "momentum", // Enum: increasing/steady/decreasing/stale
     "next_action_summary",
     "sales_id",
+    "opportunity_owner_id",
     "completed_tasks_30d",
     "total_tasks_30d",
   ],

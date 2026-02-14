@@ -99,6 +99,7 @@ export default function TaskCreate() {
 
   return (
     <CreateBase
+      resource="tasks"
       redirect={redirect}
       mutationOptions={{
         onSuccess: () => {

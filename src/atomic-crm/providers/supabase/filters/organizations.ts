@@ -25,6 +25,7 @@ export const organizationsFilters = {
     "email",
     "linkedin_url",
     "sales_id",
+    "secondary_sales_id",
     "segment_id",
     "segment_name", // Computed: segment name (from segments JOIN, used for sorting)
     "created_at",
@@ -52,6 +53,7 @@ export const organizationsFilters = {
     "email",
     "linkedin_url",
     "sales_id",
+    "secondary_sales_id",
     "segment_id",
     "segment_name", // Computed: segment name (from segments JOIN)
     "employee_count",

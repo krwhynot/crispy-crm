@@ -203,7 +203,7 @@ export const ORGANIZATION_COLUMN_ALIASES: Record<string, string[]> = {
     "distribution_partner",
   ],
 
-  // Sales rep field (if applicable)
+  // Primary sales rep field
   sales_id: [
     "sales",
     "sales_id",
@@ -214,13 +214,28 @@ export const ORGANIZATION_COLUMN_ALIASES: Record<string, string[]> = {
     "account_manager",
     "primary acct manager",
     "primary acct. manager",
-    "secondary acct manager",
-    "secondary acct. manager",
+    "primary account manager",
+    "primary_account_manager",
     "rep",
     "representative",
     "assigned to",
     "assigned_to",
     "owner",
+  ],
+
+  // Secondary sales rep field
+  secondary_sales_id: [
+    "secondary_sales_id",
+    "secondary sales",
+    "secondary sales_id",
+    "secondary account manager",
+    "secondary_account_manager",
+    "secondary acct manager",
+    "secondary acct. manager",
+    "secondary rep",
+    "secondary owner",
+    "secondary assigned to",
+    "secondary_assigned_to",
   ],
 };
 

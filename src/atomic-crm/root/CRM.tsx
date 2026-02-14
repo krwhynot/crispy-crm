@@ -14,7 +14,7 @@ import { DashboardErrorBoundary, PrincipalDashboardV3 } from "../dashboard";
 import opportunities from "../opportunities/resource";
 import products from "../products/resource";
 import productDistributors from "../productDistributors/productDistributorsConfig";
-import tasks from "../tasks/resource";
+import tasks, { TaskCreateView } from "../tasks/resource";
 import { getTaskEditPath, getTaskViewPath } from "../tasks/taskRoutes";
 import notifications from "../notifications/resource";
 import activities from "../activities/resource";
@@ -252,6 +252,8 @@ export const CRM = ({
           <Route path="/opportunities/kanban" element={<OpportunityKanbanRedirect />} />
           {/* Legacy redirects */}
           <Route path="/contacts/:id/show" element={<ContactShowRedirect />} />
+          {/* Explicit /tasks/create before :id wildcard — prevents "create" matching as an id */}
+          <Route path="/tasks/create" element={<TaskCreateView />} />
           <Route path="/tasks/:id" element={<TaskEditRedirect />} />
           <Route path="/tasks/:id/show" element={<TaskShowRedirect />} />
           <Route path="/products/:id/show" element={<ProductShowRedirect />} />

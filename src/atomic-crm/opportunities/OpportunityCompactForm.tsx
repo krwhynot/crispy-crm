@@ -197,8 +197,22 @@ export const OpportunityCompactForm = ({ mode = "create" }: OpportunityCompactFo
           </div>
         </CompactFormRow>
 
-        {/* Row 4: Account Manager | Distributor (type-to-create via AutocompleteOrganizationInput) */}
-        <CompactFormRow>
+        {/* Row 4: Primary AM | Secondary AM | Distributor */}
+        <CompactFormRow columns="md:grid-cols-3">
+          <div data-tutorial="opp-owner">
+            <ReferenceInput
+              source="opportunity_owner_id"
+              reference="sales"
+              sort={{ field: "last_name", order: "ASC" }}
+              filter={{ "disabled@neq": true }}
+            >
+              <SelectInput
+                label="Primary Account Manager"
+                optionText={saleOptionRenderer}
+                helperText={false}
+              />
+            </ReferenceInput>
+          </div>
           <div data-tutorial="opp-account-manager">
             <ReferenceInput
               source="account_manager_id"
@@ -207,7 +221,7 @@ export const OpportunityCompactForm = ({ mode = "create" }: OpportunityCompactFo
               filter={{ "disabled@neq": true }}
             >
               <SelectInput
-                label="Account Manager"
+                label="Secondary Account Manager"
                 optionText={saleOptionRenderer}
                 helperText={false}
               />

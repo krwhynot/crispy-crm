@@ -7,27 +7,30 @@ Standard patterns for business intelligence, analytics, and reporting in Crispy 
 ```
 ReportsPage (Entry Point)
 ├── ReportPageShell (Layout wrapper with breadcrumbs)
-│   ├── Breadcrumb Navigation
-│   ├── Title + Actions (Export buttons)
-│   └── Tab Container
-│       ├── OverviewTab
-│       │   ├── KPICard × 4 (Dashboard metrics)
-│       │   ├── ChartWrapper (Pipeline)
-│       │   │   └── PipelineChart (Doughnut)
-│       │   ├── ChartWrapper (Activity Trends)
-│       │   │   └── ActivityTrendChart (Line)
-│       │   └── ChartWrapper (Rep Performance)
-│       │       └── RepPerformanceChart (Bar)
-│       ├── CampaignActivityTab
-│       │   ├── CampaignActivityFilters (Dropdowns + date range)
-│       │   ├── CampaignActivitySummaryCards (KPIs)
-│       │   ├── ActivityTypeCard × N (Grouped metrics)
-│       │   └── StaleLeadsView (Conditional on flag)
-│       ├── OpportunitiesTab
-│       │   ├── FilterToolbar (Principal + Stage filters)
-│       │   └── PrincipalGroupCard × N (Collapsible groups)
-│       └── WeeklyActivityTab
-│           └── WeeklyActivitySummary (Time-based metrics)
+│   └── StandardListLayout (wrapMainInCard=false, storageKey="crm-report-sidebar-collapsed")
+│       ├── <aside> ReportFilterSidebar (switches per active tab)
+│       │   ├── OverviewFilterSidebar (Date Range, Sales Rep)
+│       │   ├── OpportunitiesFilterSidebar (Principal, Stage, Owner, Date Range)
+│       │   ├── WeeklyFilterSidebar (Date Range)
+│       │   ├── CampaignFilterSidebar (Campaign, Date Range, Sales Rep, Activity Types, Options)
+│       │   └── "Clear filters" reset button (when hasActiveFilters)
+│       └── <main> Tab Container
+│           ├── OverviewTab
+│           │   ├── KPICard × 4 (Dashboard metrics)
+│           │   ├── ChartWrapper (Pipeline)
+│           │   │   └── PipelineChart (Doughnut)
+│           │   ├── ChartWrapper (Activity Trends)
+│           │   │   └── ActivityTrendChart (Line)
+│           │   └── ChartWrapper (Rep Performance)
+│           │       └── RepPerformanceChart (Bar)
+│           ├── CampaignActivityTab
+│           │   ├── AppliedFiltersBar (Active filter chips)
+│           │   ├── ActivityTypeCard × N (Grouped metrics)
+│           │   └── StaleLeadsView (Conditional on flag)
+│           ├── OpportunitiesTab
+│           │   └── PrincipalGroupCard × N (Collapsible groups)
+│           └── WeeklyActivityTab
+│               └── WeeklyActivitySummary (Time-based metrics)
 │
 └── Data Hooks Layer
     ├── useReportData<T> (Generic data fetcher) ◄──────────┐
@@ -677,69 +680,48 @@ export function useCampaignActivityExport(selectedCampaign: string, salesMap: Ma
 
 ---
 
-## Pattern G: ReportLayout with Action Slot
+## Pattern G: Sidebar + Tab Layout (FilterSidebar | Tabs > AppliedFiltersBar > Content)
 
-Consistent page structure with title, export button, and custom action slot.
-
-```tsx
-// ReportLayout.tsx
-interface ReportLayoutProps {
-  title: string;
-  children: ReactNode;
-  onExport?: () => void;
-  actions?: ReactNode; // Custom action buttons
-}
-
-export function ReportLayout({ title, children, onExport, actions }: ReportLayoutProps) {
-  return (
-    <div className="space-y-4 p-6">
-      <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold">{title}</h1>
-        <div className="flex items-center gap-2">
-          {actions}
-          {onExport && (
-            <AdminButton onClick={onExport} variant="outline" size="sm">
-              <Download className="w-4 h-4 mr-2" />
-              Export CSV
-            </AdminButton>
-          )}
-        </div>
-      </div>
-      <Card>
-        <CardContent className="p-6">{children}</CardContent>
-      </Card>
-    </div>
-  );
-}
-```
+Reports use `StandardListLayout` with a collapsible left sidebar for filters, matching the pattern used by all other list pages (Contacts, Organizations, Opportunities).
 
 ```tsx
-// Usage
-<ReportLayout
-  title="Campaign Activity Report"
-  onExport={handleExport}
-  actions={
-    <>
-      <Button onClick={handleRefresh}>Refresh</Button>
-      <DateRangePicker value={dateRange} onChange={setDateRange} />
-    </>
-  }
->
-  <CampaignActivityFilters />
-  <ActivityTypeCards />
-</ReportLayout>
+// ReportsPage.tsx — page-level structure
+<ReportPageShell title="Reports" breadcrumbs={...} actions={<CopyLinkButton />}>
+  <StandardListLayout
+    resource="reports"
+    filterComponent={<ReportFilterSidebar activeTab={activeTab} />}
+    wrapMainInCard={false}
+    storageKey="crm-report-sidebar-collapsed"
+  >
+    <Tabs value={activeTab} onValueChange={handleTabChange}>
+      <TabsList>...</TabsList>
+      <TabsContent>...</TabsContent>
+    </Tabs>
+  </StandardListLayout>
+</ReportPageShell>
+
+// Each tab's content area retains AppliedFiltersBar + Export CSV + report content
+<>
+  <AppliedFiltersBar
+    filters={appliedFilters}
+    onResetAll={resetFilters}
+    hasActiveFilters={hasActiveFilters}
+  />
+  <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
+    <KPICard ... />
+  </div>
+</>
 ```
 
-**When to use**: All report pages. Provides consistent header structure with export functionality.
+**When to use**: All report tabs. Sidebar handles filter controls; tab content handles data display.
 
 **Key points:**
-- **Semantic Spacing**: `space-y-4 p-6` follows design system rhythm
-- **Title Hierarchy**: `text-3xl` for page title, `text-base` for chart titles
-- **Action Slot**: `actions` prop for custom buttons (filters, refresh, date pickers)
-- **Export Button**: Optional, right-aligned with download icon
-- **Card Wrapper**: Semantic container for report content
-
-**Example:** `src/atomic-crm/reports/ReportLayout.tsx`
+- **Sidebar per tab**: `ReportFilterSidebar` switches content based on `activeTab` — each tab has its own sidebar component using `FilterCategory` sections
+- **Single URL-seeding owner**: Only tab content calls `useReportFilterState` (URL seeding). Sidebar uses `useStore` directly to avoid double-seeding
+- **Filter chips**: `AppliedFiltersBar` remains in each tab's content area with individual and bulk removal
+- **Export CSV**: Inline button in each tab's content area (moved from deleted `TabFilterBar`)
+- **Reset button**: "Clear filters" button at the bottom of the sidebar when any filter deviates from defaults
+- **Separate localStorage key**: `"crm-report-sidebar-collapsed"` decouples sidebar state from list pages
 
 ---
 
@@ -977,7 +959,7 @@ When adding a new report page:
    export function MyReport() { /* ... */ }
    ```
 
-2. [ ] **Use ReportPageShell or ReportLayout** for consistent structure
+2. [ ] **Use ReportPageShell** for page-level structure, **sidebar filters (via ReportFilterSidebar) + AppliedFiltersBar** for tab content
    ```tsx
    <ReportPageShell
      title="My Report"

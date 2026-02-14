@@ -18,6 +18,10 @@ export const OrganizationSavedQueries = () => {
   const isPresetActive = (presetFilters: Record<string, unknown>): boolean => {
     return Object.entries(presetFilters).every(([key, value]) => {
       const currentValue = filterValues?.[key];
+      if (key === "$or" && Array.isArray(value) && Array.isArray(currentValue)) {
+        // Deep compare $or arrays (both are arrays of {field: value} objects)
+        return JSON.stringify(value) === JSON.stringify(currentValue);
+      }
       if (Array.isArray(value) && Array.isArray(currentValue)) {
         return value.every((v) => currentValue.includes(v));
       }
@@ -43,9 +47,19 @@ export const OrganizationSavedQueries = () => {
     <FilterCategory label="Quick Filters" icon={<Zap className="h-4 w-4" />} defaultExpanded>
       <AdminButton
         type="button"
-        variant={isPresetActive({ sales_id: identity?.id }) ? "default" : "outline"}
+        variant={
+          isPresetActive({
+            $or: [{ sales_id: identity?.id }, { secondary_sales_id: identity?.id }],
+          })
+            ? "default"
+            : "outline"
+        }
         size="sm"
-        onClick={() => handlePresetClick({ sales_id: identity?.id })}
+        onClick={() =>
+          handlePresetClick({
+            $or: [{ sales_id: identity?.id }, { secondary_sales_id: identity?.id }],
+          })
+        }
         className="w-full justify-start"
         title="Organizations assigned to me"
       >

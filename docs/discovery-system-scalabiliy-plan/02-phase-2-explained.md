@@ -518,4 +518,4 @@ This is normal for first-time indexing. Consider running it in the background.
 
 ---
 
-**Next:** [Phase 3: Worker Parallelization](./03-phase-3-worker-parallelization.md) for faster indexing and incremental updates.
+**Next:** [Phase 3: Integration Layer](./03-phase-3-integration-layer.md) for tool integration and faster retrieval.

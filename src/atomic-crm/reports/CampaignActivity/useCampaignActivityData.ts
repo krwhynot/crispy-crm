@@ -3,6 +3,7 @@ import { useGetList, useDataProvider } from "ra-core";
 import { useQuery } from "@tanstack/react-query";
 import { useReportData } from "@/atomic-crm/reports/hooks";
 import { reportKeys } from "@/atomic-crm/queryKeys";
+import { LOOKUP_PAGE_SIZE } from "@/atomic-crm/constants/appConstants";
 import type { Sale } from "../types";
 import type { ExtendedDataProvider } from "../../providers/supabase/extensions/types";
 import type {
@@ -100,7 +101,7 @@ export function useCampaignActivityData(options: UseCampaignActivityDataOptions)
 
   const { data: salesReps = [] } = useGetList<Sale>("sales", {
     filter: ownerIds.length > 0 ? { id: ownerIds } : undefined,
-    pagination: { page: 1, perPage: 100 },
+    pagination: { page: 1, perPage: Math.max(ownerIds.length, LOOKUP_PAGE_SIZE) },
   });
 
   const salesMap = useMemo(

@@ -11,25 +11,23 @@ const CampaignActivityReport = lazy(() => import("../CampaignActivity/CampaignAc
  */
 export default function CampaignActivityTab() {
   return (
-    <div className="space-y-section">
-      <Suspense
-        fallback={
-          <div className="space-y-section">
-            {/* Filter bar skeleton */}
-            <Skeleton className="h-14 rounded-lg" />
-            {/* Summary cards skeleton */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-content">
-              {[...Array(4)].map((_, i) => (
-                <Skeleton key={i} className="h-24 rounded-lg" />
-              ))}
-            </div>
-            {/* Chart skeleton */}
-            <Skeleton className="h-80 rounded-lg" />
+    <Suspense
+      fallback={
+        <div className="space-y-widget">
+          {/* Filter bar skeleton */}
+          <Skeleton className="h-14 rounded-lg" />
+          {/* Summary cards skeleton */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-content">
+            {[...Array(4)].map((_, i) => (
+              <Skeleton key={i} className="h-24 rounded-lg" />
+            ))}
           </div>
-        }
-      >
-        <CampaignActivityReport />
-      </Suspense>
-    </div>
+          {/* Chart skeleton */}
+          <Skeleton className="h-80 rounded-lg" />
+        </div>
+      }
+    >
+      <CampaignActivityReport />
+    </Suspense>
   );
 }

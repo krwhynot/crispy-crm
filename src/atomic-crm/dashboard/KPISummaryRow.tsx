@@ -19,6 +19,12 @@ function formatKPIValue(value: number | null): string {
   return value === null ? "\u2013" : value.toLocaleString();
 }
 
+/** Format recent activity count as a subtitle (e.g., "3 new in last hour") */
+function formatRecentActivitySubtitle(count: number | null): string | undefined {
+  if (count === null || count === 0) return undefined;
+  return `${count} new in last hour`;
+}
+
 /**
  * KPISummaryRow - Dashboard KPI metrics header row (PRD v1.9 Section 9.2.1)
  *
@@ -37,7 +43,7 @@ export function KPISummaryRow() {
   return (
     <section
       aria-label="Key Performance Indicators"
-      className="grid grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-4"
+      className="grid grid-cols-2 gap-2"
       data-tutorial="dashboard-kpi-row"
     >
       {/* KPI #1: Open Opportunities (count, not $ value) */}
@@ -71,6 +77,7 @@ export function KPISummaryRow() {
         value={formatKPIValue(metrics.activitiesThisWeek)}
         icon={Activity}
         loading={loading}
+        subtitle={formatRecentActivitySubtitle(metrics.recentActivityCount)}
         trend={trends.activitiesThisWeek ?? undefined}
         onClick={() => navigate(KPI_NAVIGATION.activitiesThisWeek)}
         data-tutorial="dashboard-kpi-activities"

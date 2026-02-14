@@ -138,7 +138,13 @@ const AddressInfo = ({ record }: { record: Company }) => {
 };
 
 const AdditionalInfo = ({ record }: { record: Company }) => {
-  if (!record.created_at && !record.sales_id && !record.description && !record.context_links) {
+  if (
+    !record.created_at &&
+    !record.sales_id &&
+    !record.secondary_sales_id &&
+    !record.description &&
+    !record.context_links
+  ) {
     return null;
   }
 
@@ -165,8 +171,16 @@ const AdditionalInfo = ({ record }: { record: Company }) => {
       )}
       {record.sales_id !== null && (
         <div className="text-sm text-muted-foreground mb-1">
-          Followed by{" "}
+          Primary:{" "}
           <ReferenceField source="sales_id" reference="sales">
+            <SaleName />
+          </ReferenceField>
+        </div>
+      )}
+      {record.secondary_sales_id && (
+        <div className="text-sm text-muted-foreground mb-1">
+          Secondary:{" "}
+          <ReferenceField source="secondary_sales_id" reference="sales">
             <SaleName />
           </ReferenceField>
         </div>

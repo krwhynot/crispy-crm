@@ -38,7 +38,7 @@ import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip
  * @param resource - Resource name for ARIA labels (e.g., "contacts", "opportunities")
  */
 
-const STORAGE_KEY = "crm-filter-sidebar-collapsed";
+const DEFAULT_STORAGE_KEY = "crm-filter-sidebar-collapsed";
 
 interface StandardListLayoutProps {
   /** Filter sidebar content (e.g., SearchInput, FilterCategories) */
@@ -47,18 +47,24 @@ interface StandardListLayoutProps {
   children: React.ReactNode;
   /** Resource name for accessibility labels */
   resource: string;
+  /** Whether to wrap main content in a card container (default: true) */
+  wrapMainInCard?: boolean;
+  /** localStorage key for sidebar collapse state (default: "crm-filter-sidebar-collapsed") */
+  storageKey?: string;
 }
 
 export function StandardListLayout({
   filterComponent,
   children,
   resource,
+  wrapMainInCard = true,
+  storageKey = DEFAULT_STORAGE_KEY,
 }: StandardListLayoutProps) {
   // Initialize collapsed state from localStorage, default to collapsed on tablet
   const [isCollapsed, setIsCollapsed] = useState(() => {
     if (typeof window === "undefined") return false;
 
-    const stored = localStorage.getItem(STORAGE_KEY);
+    const stored = localStorage.getItem(storageKey);
     if (stored !== null) {
       return stored === "true";
     }
@@ -68,8 +74,8 @@ export function StandardListLayout({
 
   // Persist collapse state to localStorage
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, String(isCollapsed));
-  }, [isCollapsed]);
+    localStorage.setItem(storageKey, String(isCollapsed));
+  }, [isCollapsed, storageKey]);
 
   const toggleSidebar = useCallback(() => {
     setIsCollapsed((prev) => !prev);
@@ -181,9 +187,13 @@ export function StandardListLayout({
         aria-label={`${resource} list`}
         className="flex h-full min-h-0 min-w-0 lg:min-w-[600px] flex-col overflow-hidden"
       >
-        <div className="card-container flex h-full min-h-0 flex-1 flex-col overflow-hidden pb-2">
-          {children}
-        </div>
+        {wrapMainInCard ? (
+          <div className="card-container flex h-full min-h-0 flex-1 flex-col overflow-hidden pb-2">
+            {children}
+          </div>
+        ) : (
+          <div className="flex h-full min-h-0 flex-1 flex-col overflow-hidden">{children}</div>
+        )}
       </main>
     </div>
   );

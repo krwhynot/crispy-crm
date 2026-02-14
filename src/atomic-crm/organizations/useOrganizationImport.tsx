@@ -139,6 +139,7 @@ export function useOrganizationImport() {
             description,
             tags: tagNames,
             sales_id,
+            secondary_sales_id,
           } = orgData;
 
           // Note: Validation already done by validateTransformedOrganizations
@@ -176,6 +177,7 @@ export function useOrganizationImport() {
               tags: tagNames || undefined,
               // Use sales_id from CSV (already resolved to numeric ID) or fallback to current user
               sales_id: sales_id || identity?.id,
+              secondary_sales_id: secondary_sales_id || null,
               created_at: today,
             };
 

@@ -171,7 +171,20 @@ export function OrganizationRightPanel({
                     filter={{ "disabled@neq": true, "user_id@not.is": null }}
                   >
                     <SelectInput
-                      label="Account Manager"
+                      label="Primary Account Manager"
+                      optionText={saleOptionRenderer}
+                      disabled={isLoading}
+                    />
+                  </ReferenceInput>
+
+                  <ReferenceInput
+                    reference="sales"
+                    source="secondary_sales_id"
+                    sort={{ field: "last_name", order: "ASC" }}
+                    filter={{ "disabled@neq": true, "user_id@not.is": null }}
+                  >
+                    <SelectInput
+                      label="Secondary Account Manager"
                       optionText={saleOptionRenderer}
                       disabled={isLoading}
                     />

@@ -34,8 +34,8 @@ export interface OpportunityExportRow {
   customer_name: string | undefined;
   principal_name: string | undefined;
   distributor_name: string | undefined;
-  opportunity_owner: string;
-  account_manager: string;
+  primary_account_manager: string;
+  secondary_account_manager: string;
   lead_source: string | undefined;
   estimated_close_date: string;
   actual_close_date: string | undefined;
@@ -89,10 +89,10 @@ export const opportunityExporter: Exporter<Opportunity> = async (records, fetchR
     distributor_name: opp.distributor_organization_id
       ? distributors[opp.distributor_organization_id]?.name
       : undefined,
-    opportunity_owner: formatSalesName(
+    primary_account_manager: formatSalesName(
       opp.opportunity_owner_id ? sales[opp.opportunity_owner_id] : null
     ),
-    account_manager: formatSalesName(
+    secondary_account_manager: formatSalesName(
       opp.account_manager_id ? accountManagers[opp.account_manager_id] : null
     ),
     lead_source: opp.lead_source,

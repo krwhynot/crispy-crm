@@ -74,8 +74,6 @@ src/atomic-crm/reports/
 │
 ├── utils/
 │   └── cleanupMigration.ts       # localStorage cleanup for old reports
-│
-└── ReportLayout.tsx              # Common layout with header and export button
 ```
 
 ### Test Files
@@ -111,7 +109,7 @@ tests/
 - **Status**: ✅ **Actively used** across all reports
 
 #### Button
-- **Files**: `ReportLayout.tsx`, `OpportunitiesByPrincipalReport.tsx`, `GlobalFilterBar.tsx`, `CampaignActivityReport.tsx`
+- **Files**: `OpportunitiesByPrincipalReport.tsx`, `GlobalFilterBar.tsx`, `CampaignActivityReport.tsx`
 - **Variants**: `default`, `outline`, `ghost`, `link`
 - **Purpose**: Export CSV, filter actions, clear filters, navigation
 - **Status**: ✅ **Actively used**
@@ -192,7 +190,7 @@ const { data: opportunities, isPending } = useGetList<Opportunity>(
 
 | Icon | Component | Purpose |
 |------|-----------|---------|
-| `Download` | ReportLayout, GlobalFilterBar | CSV export button |
+| `Download` | GlobalFilterBar | CSV export button |
 | `ChevronDown`/`ChevronRight` | OpportunitiesByPrincipalReport, ActivityTypeCard | Expand/collapse controls |
 | `ExternalLink` | OpportunitiesByPrincipalReport | Navigate to opportunity detail |
 | `Calendar` | GlobalFilterBar | Date range selector |
@@ -745,7 +743,7 @@ const OverviewTab = lazy(() => import('./tabs/OverviewTab'));
 #### 2. **Container/Presentation Pattern**
 - **Tabs** (`tabs/*.tsx`) = Smart containers with data fetching
 - **Reports** (`*Report.tsx`) = Presentation components
-- **ReportLayout** = Consistent wrapper for all reports
+- **Sidebar + Tab pattern**: `StandardListLayout(FilterSidebar | Tabs > AppliedFiltersBar > KPIs > Content)`
 
 #### 3. **Optimistic Expansion State**
 Reports auto-expand top items on first load:
@@ -903,8 +901,7 @@ jsonExport(exportData, (err, csv) => {
    ├── components/KPICard.tsx (metrics)
    ├── components/ChartWrapper.tsx (chart container)
    ├── charts/PipelineChart.tsx (doughnut chart)
-   ├── contexts/GlobalFilterContext.tsx (shared filters)
-   └── ReportLayout.tsx (common layout)
+   └── contexts/GlobalFilterContext.tsx (shared filters)
 
 📁 Utilities
    ├── hooks/useChartTheme.ts (CSS theme extraction)
@@ -928,7 +925,7 @@ jsonExport(exportData, (err, csv) => {
    import { sanitizeCsvValue } from "@/atomic-crm/utils/csvUploadValidator";
    ```
 2. Create export handler (sanitize all string fields)
-3. Pass to ReportLayout: `<ReportLayout onExport={handleExport} />`
+3. Wire export handler to a Button in the report's action area
 
 #### Add a New KPI Card
 ```typescript
@@ -977,7 +974,7 @@ jsonExport(exportData, (err, csv) => {
 
 ## Related Documentation
 
-- [Engineering Constitution](../../CLAUDE.md) - Core principles
+- [Engineering Constitution](../../../CLAUDE.md) - Core principles
 - [CSV Security](../utils/csvUploadValidator.ts) - Formula injection prevention
 
 ---

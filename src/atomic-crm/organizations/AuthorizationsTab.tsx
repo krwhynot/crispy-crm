@@ -12,7 +12,7 @@
  * - Territory restrictions and notes display
  * - Product-level exceptions (expand to see/manage per-product overrides)
  *
- * @see docs/PRD.md Section 4.3 - Distributor Authorization Model
+ * @see docs/features/business-workflows.md - Distributor authorization model
  */
 
 import { useState } from "react";

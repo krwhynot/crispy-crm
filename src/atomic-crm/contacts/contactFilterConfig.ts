@@ -65,4 +65,10 @@ export const CONTACT_FILTER_CONFIG = validateFilterConfig([
     type: "reference",
     reference: "sales",
   },
+  {
+    key: "secondary_sales_id",
+    label: "Secondary Manager",
+    type: "reference",
+    reference: "sales",
+  },
 ]);

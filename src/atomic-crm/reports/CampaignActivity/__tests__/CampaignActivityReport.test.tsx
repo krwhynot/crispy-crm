@@ -1,4 +1,4 @@
-import { screen, waitFor, fireEvent } from "@testing-library/react";
+import { screen, waitFor } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import userEvent from "@testing-library/user-event";
 import CampaignActivityReport from "../CampaignActivityReport";
@@ -103,7 +103,7 @@ const createMockDataProviderWithActivities = (
     }
     return Promise.resolve({ data: [], total: 0 });
   }),
-  // Mock RPC for get_campaign_report_stats - required for useCampaignActivityData
+  // Mock RPC for get_campaign_report_stats and get_stale_opportunities
   rpc: vi.fn().mockImplementation((procedureName: string) => {
     if (procedureName === "get_campaign_report_stats") {
       return Promise.resolve({
@@ -111,6 +111,9 @@ const createMockDataProviderWithActivities = (
         sales_rep_options: [],
         activity_type_counts: {},
       });
+    }
+    if (procedureName === "get_stale_opportunities") {
+      return Promise.resolve([]);
     }
     return Promise.resolve({});
   }),
@@ -473,9 +476,13 @@ describe("CampaignActivityReport", () => {
   });
 
   describe("Filter Combinations", () => {
-    it("filters by date range (start date)", async () => {
+    // Note: TabFilterBar, ActivityTypesPopover, and StaleLeadsToggle have been
+    // moved to the sidebar (ReportFilterSidebar). These tests now verify that
+    // inline filter controls are NOT rendered in the report body, and that
+    // the AppliedFiltersBar and Export button are present instead.
+
+    it("does not render inline date range select (moved to sidebar)", async () => {
       const { useGetList } = await import("ra-core");
-      const user = userEvent.setup();
 
       vi.mocked(useGetList).mockReturnValue(
         mockUseGetListReturn<TestActivity>({
@@ -491,18 +498,12 @@ describe("CampaignActivityReport", () => {
       renderWithAdminContext(<CampaignActivityReport />);
 
       await waitFor(() => {
-        expect(screen.getByLabelText("Start Date")).toBeInTheDocument();
-      });
-
-      const startDateInput = screen.getByLabelText("Start Date");
-      await user.type(startDateInput, "2025-11-01");
-
-      await waitFor(() => {
-        expect(startDateInput).toHaveValue("2025-11-01");
+        // Date Range select is no longer inline -- it lives in the sidebar
+        expect(screen.queryByLabelText("Date Range")).not.toBeInTheDocument();
       });
     });
 
-    it("filters by date range (end date)", async () => {
+    it("does not render inline activity types popover (moved to sidebar)", async () => {
       const { useGetList } = await import("ra-core");
 
       vi.mocked(useGetList).mockReturnValue(
@@ -519,23 +520,13 @@ describe("CampaignActivityReport", () => {
       renderWithAdminContext(<CampaignActivityReport />);
 
       await waitFor(() => {
-        expect(screen.getByLabelText("End Date")).toBeInTheDocument();
-      });
-
-      const startDateInput = screen.getByLabelText("Start Date");
-      const endDateInput = screen.getByLabelText("End Date");
-
-      fireEvent.change(startDateInput, { target: { value: "2025-11-01" } });
-      fireEvent.change(endDateInput, { target: { value: "2025-11-30" } });
-
-      await waitFor(() => {
-        expect(endDateInput).toHaveValue("2025-11-30");
+        // ActivityTypesPopover is no longer inline
+        expect(screen.queryByText(/Activity Types \(/)).not.toBeInTheDocument();
       });
     });
 
-    it("filters by date preset (last 7 days)", async () => {
+    it("does not render inline sales rep select (moved to sidebar)", async () => {
       const { useGetList } = await import("ra-core");
-      const user = userEvent.setup();
 
       vi.mocked(useGetList).mockReturnValue(
         mockUseGetListReturn<TestActivity>({
@@ -551,19 +542,12 @@ describe("CampaignActivityReport", () => {
       renderWithAdminContext(<CampaignActivityReport />);
 
       await waitFor(() => {
-        expect(screen.getByText("Last 7 days")).toBeInTheDocument();
-      });
-
-      const last7DaysButton = screen.getByText("Last 7 days");
-      await user.click(last7DaysButton);
-
-      await waitFor(() => {
-        expect(screen.getByLabelText("Start Date")).toHaveValue();
-        expect(screen.getByLabelText("End Date")).toHaveValue();
+        // Sales Rep select is no longer inline
+        expect(screen.queryByLabelText("Sales Rep")).not.toBeInTheDocument();
       });
     });
 
-    it("filters by activity type multi-select", async () => {
+    it("renders Export CSV button", async () => {
       const { useGetList } = await import("ra-core");
 
       vi.mocked(useGetList).mockReturnValue(
@@ -580,90 +564,7 @@ describe("CampaignActivityReport", () => {
       renderWithAdminContext(<CampaignActivityReport />);
 
       await waitFor(() => {
-        expect(screen.getByText("Activity Type")).toBeInTheDocument();
-      });
-    });
-
-    it("filters by sales rep", async () => {
-      const { useGetList } = await import("ra-core");
-
-      vi.mocked(useGetList).mockReturnValue(
-        mockUseGetListReturn<TestActivity>({
-          data: [],
-          total: 0,
-          isPending: false,
-          isLoading: false,
-          error: null,
-          refetch: vi.fn(),
-        })
-      );
-
-      renderWithAdminContext(<CampaignActivityReport />);
-
-      await waitFor(() => {
-        expect(screen.getByText("Sales Rep")).toBeInTheDocument();
-      });
-    });
-
-    it("combines date and activity type filters", async () => {
-      const { useGetList } = await import("ra-core");
-
-      vi.mocked(useGetList).mockReturnValue(
-        mockUseGetListReturn<TestActivity>({
-          data: [],
-          total: 0,
-          isPending: false,
-          isLoading: false,
-          error: null,
-          refetch: vi.fn(),
-        })
-      );
-
-      renderWithAdminContext(<CampaignActivityReport />);
-
-      await waitFor(() => {
-        expect(screen.getByText("Activity Type")).toBeInTheDocument();
-        expect(screen.getByLabelText("Start Date")).toBeInTheDocument();
-      });
-    });
-
-    it("clears all filters when Clear Filters is clicked", async () => {
-      const { useGetList } = await import("ra-core");
-      const user = userEvent.setup();
-
-      vi.mocked(useGetList).mockReturnValue(
-        mockUseGetListReturn<TestActivity>({
-          data: [],
-          total: 0,
-          isPending: false,
-          isLoading: false,
-          error: null,
-          refetch: vi.fn(),
-        })
-      );
-
-      renderWithAdminContext(<CampaignActivityReport />);
-
-      // Set a date filter first
-      await waitFor(() => {
-        expect(screen.getByText("Last 7 days")).toBeInTheDocument();
-      });
-
-      const last7DaysButton = screen.getByText("Last 7 days");
-      await user.click(last7DaysButton);
-
-      await waitFor(() => {
-        expect(screen.getAllByText("Clear Filters").length).toBeGreaterThan(0);
-      });
-
-      // Use getAllByText and pick the first "Clear Filters" button (toolbar button)
-      const clearFiltersButtons = screen.getAllByText("Clear Filters");
-      expect(clearFiltersButtons[0]).toBeDefined();
-      await user.click(clearFiltersButtons[0]!);
-
-      await waitFor(() => {
-        expect(screen.getByLabelText("Start Date")).toHaveValue("");
-        expect(screen.getByLabelText("End Date")).toHaveValue("");
+        expect(screen.getByText("Export CSV")).toBeInTheDocument();
       });
     });
   });
@@ -1070,7 +971,7 @@ describe("CampaignActivityReport", () => {
       renderWithAdminContext(<CampaignActivityReport />);
 
       await waitFor(() => {
-        expect(screen.getByText("Export to CSV")).toBeInTheDocument();
+        expect(screen.getByText("Export CSV")).toBeInTheDocument();
       });
     });
 
@@ -1143,9 +1044,8 @@ describe("CampaignActivityReport", () => {
       });
     });
 
-    it("shows empty state when filters result in 0 matches", async () => {
+    it("shows empty state when no activities match", async () => {
       const { useGetList } = await import("ra-core");
-      const user = userEvent.setup();
 
       vi.mocked(useGetList).mockImplementation(() => {
         return mockUseGetListReturn<TestActivity>({
@@ -1162,17 +1062,9 @@ describe("CampaignActivityReport", () => {
         dataProvider: createMockDataProviderWithActivities([]),
       });
 
+      // With 0 activities and no stale leads toggle (now in sidebar), shows empty state
       await waitFor(() => {
-        expect(screen.getByText("Last 7 days")).toBeInTheDocument();
-      });
-
-      const last7DaysButton = screen.getByText("Last 7 days");
-      await user.click(last7DaysButton);
-
-      await waitFor(() => {
-        expect(
-          screen.getByText("Try adjusting your filters to see more results.")
-        ).toBeInTheDocument();
+        expect(screen.getByText("No Campaign Activities")).toBeInTheDocument();
       });
     });
 
@@ -1274,15 +1166,14 @@ describe("CampaignActivityReport", () => {
         dataProvider: createMockDataProviderWithActivities([]),
       });
 
+      // KPI summary cards (no separate report title - TabFilterBar replaces ReportLayout)
       await waitFor(() => {
-        expect(screen.getByText("Campaign Activity Report")).toBeInTheDocument();
+        expect(screen.getByText("Total Activities")).toBeInTheDocument();
       });
 
-      // Summary cards
-      expect(screen.getByText("Total Activities")).toBeInTheDocument();
-      expect(screen.getByText("Organizations Contacted")).toBeInTheDocument();
+      expect(screen.getByText("Orgs Contacted")).toBeInTheDocument();
       expect(screen.getByText("Coverage Rate")).toBeInTheDocument();
-      expect(screen.getByText("Avg Activities per Lead")).toBeInTheDocument();
+      expect(screen.getByText("Avg per Lead")).toBeInTheDocument();
     });
 
     it("calculates summary metrics correctly", async () => {

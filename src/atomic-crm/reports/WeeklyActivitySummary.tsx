@@ -2,10 +2,10 @@ import { useState, useEffect, useMemo } from "react";
 import { useGetIdentity, downloadCSV, useNotify } from "ra-core";
 import { getWeekRange } from "@/atomic-crm/utils";
 import jsonExport from "jsonexport/dist";
-import { Activity, Users, TrendingUp, ChevronRight } from "lucide-react";
+import { Activity, Users, TrendingUp, ChevronRight, Download } from "lucide-react";
 import { logger } from "@/lib/logger";
 import { cn } from "@/lib/utils";
-import { TabFilterBar } from "./components/TabFilterBar";
+import { AdminButton } from "@/components/admin/AdminButton";
 import { KPICard } from "@/components/ui/kpi-card";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -61,7 +61,7 @@ export default function WeeklyActivitySummary() {
   const { data: identity } = useGetIdentity();
   const notify = useNotify();
   const weeklyDefaults: WeeklyFilterState = getWeekRange();
-  const [filterState, updateFilters, resetFilters] = useReportFilterState<WeeklyFilterState>(
+  const [filterState, _updateFilters, resetFilters] = useReportFilterState<WeeklyFilterState>(
     "reports.weekly",
     weeklyDefaults
   );
@@ -269,30 +269,29 @@ export default function WeeklyActivitySummary() {
 
   return (
     <div className="space-y-widget">
-      <TabFilterBar
-        showCustomDateRange
-        customDateStart={dateRange.start}
-        customDateEnd={dateRange.end}
-        onCustomDateStartChange={(value) => updateFilters({ start: value })}
-        onCustomDateEndChange={(value) => updateFilters({ end: value })}
-        showExport
-        onExport={handleExport}
-        exportDisabled={!hasActivityData}
-        hasActiveFilters={hasActiveFilters}
-        onReset={handleResetAllFilters}
-      />
-
       {isRefreshing && (
         <div className="text-xs text-muted-foreground animate-pulse" role="status">
           Updating...
         </div>
       )}
 
-      <AppliedFiltersBar
-        filters={appliedFilters}
-        onResetAll={handleResetAllFilters}
-        hasActiveFilters={hasActiveFilters}
-      />
+      <div className="flex items-center justify-between gap-2">
+        <AppliedFiltersBar
+          filters={appliedFilters}
+          onResetAll={handleResetAllFilters}
+          hasActiveFilters={hasActiveFilters}
+        />
+        <AdminButton
+          variant="outline"
+          size="sm"
+          className="h-11 shrink-0 gap-2"
+          onClick={handleExport}
+          disabled={!hasActivityData}
+        >
+          <Download className="h-4 w-4" aria-hidden="true" />
+          Export CSV
+        </AdminButton>
+      </div>
 
       {/* Error display (fail-fast principle) */}
       {activitiesError && (

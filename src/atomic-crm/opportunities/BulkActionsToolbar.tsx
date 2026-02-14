@@ -17,6 +17,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
+import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import {
   CheckCircle2,
   XCircle,
@@ -63,6 +65,8 @@ export const BulkActionsToolbar = ({
     setSelectedStatus,
     selectedOwner,
     setSelectedOwner,
+    assignField,
+    setAssignField,
     isProcessing,
     handleOpenDialog,
     handleCloseDialog,
@@ -299,6 +303,28 @@ export const BulkActionsToolbar = ({
                   </div>
                 ))}
               </div>
+            </div>
+
+            {/* Role selection */}
+            <div className="space-y-2">
+              <span id="opp-assign-role-label" className="text-sm font-medium">
+                Assign as
+              </span>
+              <RadioGroup
+                value={assignField}
+                onValueChange={(value) => setAssignField(value as "primary" | "secondary")}
+                className="flex gap-4"
+                aria-labelledby="opp-assign-role-label"
+              >
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="primary" id="opp-role-primary" />
+                  <Label htmlFor="opp-role-primary">Primary Account Manager</Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="secondary" id="opp-role-secondary" />
+                  <Label htmlFor="opp-role-secondary">Secondary Account Manager</Label>
+                </div>
+              </RadioGroup>
             </div>
 
             {/* Owner selector */}

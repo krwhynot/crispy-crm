@@ -13,15 +13,15 @@
 
 | Category | Count | Key Components |
 |----------|-------|----------------|
-| Entry/Layout | 3 | index.tsx, ReportsPage, ReportPageShell |
+| Entry/Layout | 2 | index.tsx, ReportsPage |
 | Tabs | 4 | Overview, Opportunities, Weekly Activity, Campaign |
-| Sub-Reports | 3 | OpportunitiesByPrincipal, WeeklyActivity, CampaignActivity |
+| Sub-Reports | 5 | OpportunitiesByPrincipal, WeeklyActivity, CampaignActivity, ActivityTypesPopover, StaleLeadsToggle |
 | UI Components | 8 | KPICard, ChartWrapper, TabFilterBar, FilterChip, etc. |
 | Charts | 4 | Pipeline, ActivityTrend, TopPrincipals, RepPerformance |
 | Hooks | 2 | useReportData, useChartTheme |
 | Tests | 13 | Full coverage across components |
 
-**Total: 45 files (32 source + 13 tests)**
+**Total: 46 files (33 source + 13 tests)**
 
 ---
 
@@ -31,8 +31,7 @@
 |---|-----------|------|
 | 1 | `src/atomic-crm/reports/index.tsx` | Entry/exports |
 | 2 | `src/atomic-crm/reports/ReportsPage.tsx` | Main container |
-| 3 | `src/atomic-crm/reports/ReportLayout.tsx` | Layout wrapper |
-| 4 | `src/atomic-crm/reports/types.ts` | Shared types |
+| 3 | `src/atomic-crm/reports/types.ts` | Shared types |
 | **Tabs** |||
 | 5 | `src/atomic-crm/reports/tabs/OverviewTab.tsx` | Tab component |
 | 6 | `src/atomic-crm/reports/tabs/OpportunitiesTab.tsx` | Tab component |
@@ -43,7 +42,9 @@
 | 10 | `src/atomic-crm/reports/WeeklyActivitySummary.tsx` | Report component |
 | 11 | `src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx` | Report component |
 | 12 | `src/atomic-crm/reports/CampaignActivity/ActivityTypeCard.tsx` | Card component |
-| 13 | `src/atomic-crm/reports/CampaignActivity/StaleLeadsView.tsx` | View component |
+| 13 | `src/atomic-crm/reports/CampaignActivity/ActivityTypesPopover.tsx` | Filter popover |
+| 14 | `src/atomic-crm/reports/CampaignActivity/StaleLeadsToggle.tsx` | Toggle component |
+| 15 | `src/atomic-crm/reports/CampaignActivity/StaleLeadsView.tsx` | View component |
 | **UI Components** |||
 | 14 | `src/atomic-crm/reports/components/index.ts` | Barrel export |
 | 15 | `src/atomic-crm/reports/components/ReportPageShell.tsx` | Layout shell |
@@ -142,7 +143,6 @@ OpportunitiesByPrincipalReport.tsx
 ├── useForm, FormProvider (from react-hook-form)
 ├── ReferenceInput, AutocompleteArrayInput (from react-admin)
 ├── useReportData (from ./hooks)
-├── ReportLayout (local)
 ├── Card, CardHeader, CardTitle, CardContent (from @/components/ui/card)
 ├── Table components (from @/components/ui/table)
 ├── jsonexport (external)
@@ -152,7 +152,6 @@ OpportunitiesByPrincipalReport.tsx
 WeeklyActivitySummary.tsx
 ├── useGetList, useGetIdentity, downloadCSV, useNotify (from react-admin)
 ├── useReportData (from ./hooks)
-├── ReportLayout (local)
 ├── Card, CardHeader, CardTitle, CardContent (from @/components/ui/card)
 ├── Table components (from @/components/ui/table)
 ├── date-fns utilities
@@ -162,9 +161,10 @@ WeeklyActivitySummary.tsx
 CampaignActivityReport.tsx
 ├── useGetList, useNotify, downloadCSV (from react-admin)
 ├── ActivityTypeCard (local)
+├── ActivityTypesPopover (local)
+├── StaleLeadsToggle (local)
 ├── StaleLeadsView (local)
-├── ReportLayout (from ../ReportLayout)
-├── Select, Checkbox, Label (from @/components/ui/)
+├── Select (from @/components/ui/)
 ├── isOpportunityStale, getStaleThreshold (from @/atomic-crm/utils/stalenessCalculation)
 ├── sanitizeCsvValue (from @/atomic-crm/utils/csvUploadValidator)
 └── [data: opportunities, activities, sales tables]
@@ -264,7 +264,7 @@ useReportData.ts
   - `useGetList`, `useNotify`, `downloadCSV` from `react-admin`
   - `useForm`, `FormProvider` from `react-hook-form`
   - `useReportData` hook
-  - `ReportLayout`, Card/Table UI components
+  - Card/Table UI components
   - `jsonexport` for CSV
   - `sanitizeCsvValue` from CSV utils
 
@@ -279,7 +279,7 @@ useReportData.ts
 - **Dependencies:**
   - `useGetList`, `useGetIdentity`, `downloadCSV`, `useNotify` from `react-admin`
   - `useReportData` hook
-  - `ReportLayout`, Card/Table UI components
+  - Card/Table UI components
   - `date-fns` utilities
   - `sanitizeCsvValue` from CSV utils
 
@@ -293,8 +293,8 @@ useReportData.ts
   - `sales` table via `useGetList`
 - **Dependencies:**
   - `useGetList`, `useNotify`, `downloadCSV` from `react-admin`
-  - `ActivityTypeCard`, `StaleLeadsView` (local)
-  - `ReportLayout`, Select/Checkbox UI components
+  - `ActivityTypeCard`, `ActivityTypesPopover`, `StaleLeadsToggle`, `StaleLeadsView` (local)
+  - Select UI components
   - `isOpportunityStale`, `getStaleThreshold` from staleness utils
   - `sanitizeCsvValue` from CSV utils
 
@@ -315,6 +315,45 @@ interface ActivityTypeCardProps {
   - `Card, CardContent, CardHeader` from `@/components/ui/card`
   - `ChevronRight, ChevronDown` from `lucide-react`
   - `parseDateSafely` from `@/lib/date-utils`
+
+#### `ActivityTypesPopover`
+- **File:** `src/atomic-crm/reports/CampaignActivity/ActivityTypesPopover.tsx`
+- **Purpose:** Popover with checkboxes for multi-selecting activity types, with per-type counts
+- **Props:**
+```typescript
+interface ActivityTypesPopoverProps {
+  selectedTypes: string[];
+  options: readonly ActivityTypeOption[];
+  counts: Map<string, number>;
+  onToggle: (type: string) => void;
+  onToggleAll: () => void;
+}
+```
+- **Data Sources:** None (receives data via props)
+- **Dependencies:**
+  - `Popover, PopoverContent, PopoverTrigger` from `@/components/ui/popover`
+  - `Checkbox` from `@/components/ui/checkbox`
+  - `Label` from `@/components/ui/label`
+  - `AdminButton` from `@/components/admin/AdminButton`
+  - `Filter` from `lucide-react`
+
+#### `StaleLeadsToggle`
+- **File:** `src/atomic-crm/reports/CampaignActivity/StaleLeadsToggle.tsx`
+- **Purpose:** Toggle button to show/hide stale leads view, with tooltip showing per-stage staleness thresholds
+- **Props:**
+```typescript
+interface StaleLeadsToggleProps {
+  showStaleLeads: boolean;
+  onToggle: (show: boolean) => void;
+  staleCount: number;
+}
+```
+- **Data Sources:** None (receives data via props)
+- **Dependencies:**
+  - `Tooltip, TooltipContent, TooltipTrigger` from `@/components/ui/tooltip`
+  - `AdminButton` from `@/components/admin/AdminButton`
+  - `AlertTriangle` from `lucide-react`
+  - `STAGE_STALE_THRESHOLDS` from staleness utils
 
 #### `StaleLeadsView`
 - **File:** `src/atomic-crm/reports/CampaignActivity/StaleLeadsView.tsx`
@@ -344,14 +383,6 @@ interface ReportPageShellProps {
 - **Dependencies:**
   - `Link` from `react-router-dom`
   - `ChevronRight` from `lucide-react`
-
-#### `ReportLayout`
-- **File:** `src/atomic-crm/reports/ReportLayout.tsx`
-- **Purpose:** Report wrapper with title, export button, and actions slot
-- **Props:** (title, actions, children)
-- **Data Sources:** None
-- **Dependencies:**
-  - UI components from `@/components/ui/`
 
 ---
 

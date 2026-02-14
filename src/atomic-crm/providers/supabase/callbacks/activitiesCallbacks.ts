@@ -43,6 +43,9 @@ export const COMPUTED_FIELDS = [
   // From priority_tasks view
   "customer_name",
   "principal_name",
+  // From activities_summary view (principal org join)
+  "principal_organization_id",
+  "principal_organization_name",
   // Timeline computed fields
   "entry_type",
   "subtype",

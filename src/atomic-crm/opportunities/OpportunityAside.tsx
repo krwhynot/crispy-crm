@@ -113,7 +113,7 @@ export const OpportunityAside = ({ link = "edit" }: { link?: "edit" | "show" }) 
         <div className="flex flex-col gap-2">
           {record.opportunity_owner_id && (
             <div>
-              <span className="text-xs text-muted-foreground">Owner</span>
+              <span className="text-xs text-muted-foreground">Primary</span>
               <div className="flex items-center gap-2 mt-1">
                 <ReferenceField source="opportunity_owner_id" reference="sales" link={false}>
                   <SaleAvatar size="sm" />
@@ -126,7 +126,7 @@ export const OpportunityAside = ({ link = "edit" }: { link?: "edit" | "show" }) 
           )}
           {record.account_manager_id && (
             <div>
-              <span className="text-xs text-muted-foreground">Account Manager</span>
+              <span className="text-xs text-muted-foreground">Secondary</span>
               <div className="flex items-center gap-2 mt-1">
                 <ReferenceField source="account_manager_id" reference="sales" link={false}>
                   <SaleAvatar size="sm" />

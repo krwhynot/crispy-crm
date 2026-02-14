@@ -13,6 +13,7 @@
 import { useCallback, useEffect, useRef } from "react";
 import { useStore } from "ra-core";
 import { useSearchParams } from "react-router-dom";
+import { INTERACTION_TYPE_OPTIONS } from "@/atomic-crm/validation/activities";
 
 /** Overview tab filter state */
 export interface OverviewFilterState {
@@ -29,6 +30,8 @@ const OVERVIEW_DEFAULTS: OverviewFilterState = {
 export interface CampaignFilterState {
   selectedCampaign: string;
   datePreset: string;
+  startDate: string | null;
+  endDate: string | null;
   selectedActivityTypes: string[];
   selectedSalesRep: number | null;
   showStaleLeads: boolean;
@@ -37,7 +40,9 @@ export interface CampaignFilterState {
 const CAMPAIGN_DEFAULTS: CampaignFilterState = {
   selectedCampaign: "",
   datePreset: "allTime",
-  selectedActivityTypes: [],
+  startDate: null,
+  endDate: null,
+  selectedActivityTypes: INTERACTION_TYPE_OPTIONS.map((opt) => opt.value),
   selectedSalesRep: null,
   showStaleLeads: false,
 };

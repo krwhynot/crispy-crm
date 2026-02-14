@@ -1,7 +1,7 @@
 {
   "chunk_name": "notes",
-  "generated_at": "2026-02-07T02:57:36.877Z",
-  "item_count": 4,
+  "generated_at": "2026-02-13T16:48:38.863Z",
+  "item_count": 5,
   "items": [
     {
       "name": "baseNoteSchema",
@@ -96,9 +96,78 @@
       "hasSuperRefine": false
     },
     {
+      "name": "noteFormSchema",
+      "file": "src\\atomic-crm\\validation\\notes.ts",
+      "line": 59,
+      "schemaType": "object",
+      "fields": [
+        {
+          "name": "text",
+          "zodType": "unknown",
+          "constraints": [
+            "trim()",
+            "min(1, \"Note text is required\")",
+            "max(10000, \"Note text too long\")"
+          ],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": true,
+          "hasDefault": false,
+          "transformDetails": {
+            "functionName": "anonymous",
+            "isSecurity": false
+          }
+        },
+        {
+          "name": "date",
+          "zodType": "coerce.date",
+          "constraints": [],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": true
+        },
+        {
+          "name": "sales_id",
+          "zodType": "union",
+          "constraints": [],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "attachments",
+          "zodType": "array",
+          "constraints": [
+            "max(20, \"Maximum 20 attachments\")"
+          ],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "id",
+          "zodType": "union",
+          "constraints": [],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        }
+      ],
+      "relatedSchemas": [
+        "activityNoteFormSchema"
+      ],
+      "validationFunctions": [],
+      "hasTransforms": true,
+      "hasSuperRefine": false
+    },
+    {
       "name": "contactNoteSchema",
       "file": "src\\atomic-crm\\validation\\notes.ts",
-      "line": 57,
+      "line": 75,
       "schemaType": "union",
       "fields": [],
       "relatedSchemas": [
@@ -113,7 +182,7 @@
     {
       "name": "opportunityNoteSchema",
       "file": "src\\atomic-crm\\validation\\notes.ts",
-      "line": 67,
+      "line": 85,
       "schemaType": "union",
       "fields": [],
       "relatedSchemas": [
@@ -127,7 +196,7 @@
     {
       "name": "organizationNoteSchema",
       "file": "src\\atomic-crm\\validation\\notes.ts",
-      "line": 78,
+      "line": 96,
       "schemaType": "union",
       "fields": [],
       "relatedSchemas": [

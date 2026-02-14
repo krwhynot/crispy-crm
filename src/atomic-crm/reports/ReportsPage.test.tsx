@@ -56,12 +56,12 @@ describe("ReportsPage", () => {
     expect(tabList).toHaveClass("lg:grid-cols-4");
   });
 
-  it("does not render GlobalFilterBar (filters moved to tabs)", () => {
+  it("renders filter sidebar via StandardListLayout", () => {
     renderWithAdminContext(<ReportsPage />);
 
-    // GlobalFilterBar had date range label - should not exist at page level
-    // Only individual tabs should have filter bars
-    expect(screen.queryByText(/last 30 days/i)).not.toBeInTheDocument();
+    // Filters are now in a sidebar via StandardListLayout, not inline TabFilterBar
+    // The sidebar includes a "Filters" label and a filter navigation
+    expect(screen.getByLabelText("Filter reports")).toBeInTheDocument();
   });
 
   it("uses Skeleton for tab loading states", () => {

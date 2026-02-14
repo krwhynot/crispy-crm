@@ -1,10 +1,30 @@
 export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[];
 
 export type Database = {
-  // Allows to automatically instantiate createClient with right options
-  // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
-  __InternalSupabase: {
-    PostgrestVersion: "13.0.5";
+  graphql_public: {
+    Tables: {
+      [_ in never]: never;
+    };
+    Views: {
+      [_ in never]: never;
+    };
+    Functions: {
+      graphql: {
+        Args: {
+          extensions?: Json;
+          operationName?: string;
+          query?: string;
+          variables?: Json;
+        };
+        Returns: Json;
+      };
+    };
+    Enums: {
+      [_ in never]: never;
+    };
+    CompositeTypes: {
+      [_ in never]: never;
+    };
   };
   public: {
     Tables: {
@@ -215,6 +235,48 @@ export type Database = {
             isOneToOne: false;
             referencedRelation: "principal_pipeline_summary";
             referencedColumns: ["principal_id"];
+          },
+          {
+            foreignKeyName: "activities_related_task_id_fkey";
+            columns: ["related_task_id"];
+            isOneToOne: false;
+            referencedRelation: "activities";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "activities_related_task_id_fkey";
+            columns: ["related_task_id"];
+            isOneToOne: false;
+            referencedRelation: "activities_summary";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "activities_related_task_id_fkey";
+            columns: ["related_task_id"];
+            isOneToOne: false;
+            referencedRelation: "activities_with_task_details";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "activities_related_task_id_fkey";
+            columns: ["related_task_id"];
+            isOneToOne: false;
+            referencedRelation: "priority_tasks";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "activities_related_task_id_fkey";
+            columns: ["related_task_id"];
+            isOneToOne: false;
+            referencedRelation: "tasks_summary";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "activities_related_task_id_fkey";
+            columns: ["related_task_id"];
+            isOneToOne: false;
+            referencedRelation: "tasks_v";
+            referencedColumns: ["id"];
           },
           {
             foreignKeyName: "activities_sales_id_fkey";
@@ -773,6 +835,7 @@ export type Database = {
           notes: string | null;
           organization_id: number | null;
           role: string | null;
+          updated_at: string | null;
         };
         Insert: {
           activity_id: number;
@@ -784,6 +847,7 @@ export type Database = {
           notes?: string | null;
           organization_id?: number | null;
           role?: string | null;
+          updated_at?: string | null;
         };
         Update: {
           activity_id?: number;
@@ -795,6 +859,7 @@ export type Database = {
           notes?: string | null;
           organization_id?: number | null;
           role?: string | null;
+          updated_at?: string | null;
         };
         Relationships: [
           {
@@ -826,6 +891,20 @@ export type Database = {
             referencedColumns: ["id"];
           },
           {
+            foreignKeyName: "interaction_participants_activity_id_fkey";
+            columns: ["activity_id"];
+            isOneToOne: false;
+            referencedRelation: "tasks_summary";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "interaction_participants_activity_id_fkey";
+            columns: ["activity_id"];
+            isOneToOne: false;
+            referencedRelation: "tasks_v";
+            referencedColumns: ["id"];
+          },
+          {
             foreignKeyName: "interaction_participants_contact_id_fkey";
             columns: ["contact_id"];
             isOneToOne: false;
@@ -853,7 +932,95 @@ export type Database = {
             referencedRelation: "sales";
             referencedColumns: ["id"];
           },
+          {
+            foreignKeyName: "interaction_participants_organization_id_fkey";
+            columns: ["organization_id"];
+            isOneToOne: false;
+            referencedRelation: "dashboard_principal_summary";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "interaction_participants_organization_id_fkey";
+            columns: ["organization_id"];
+            isOneToOne: false;
+            referencedRelation: "organizations";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "interaction_participants_organization_id_fkey";
+            columns: ["organization_id"];
+            isOneToOne: false;
+            referencedRelation: "organizations_summary";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "interaction_participants_organization_id_fkey";
+            columns: ["organization_id"];
+            isOneToOne: false;
+            referencedRelation: "organizations_with_account_manager";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "interaction_participants_organization_id_fkey";
+            columns: ["organization_id"];
+            isOneToOne: false;
+            referencedRelation: "principal_opportunities";
+            referencedColumns: ["principal_id"];
+          },
+          {
+            foreignKeyName: "interaction_participants_organization_id_fkey";
+            columns: ["organization_id"];
+            isOneToOne: false;
+            referencedRelation: "principal_pipeline_summary";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "interaction_participants_organization_id_fkey";
+            columns: ["organization_id"];
+            isOneToOne: false;
+            referencedRelation: "principal_pipeline_summary";
+            referencedColumns: ["principal_id"];
+          },
         ];
+      };
+      migration_history: {
+        Row: {
+          completed_at: string | null;
+          created_at: string | null;
+          error_message: string | null;
+          id: number;
+          phase_name: string;
+          phase_number: string;
+          rollback_sql: string | null;
+          rows_affected: number | null;
+          started_at: string | null;
+          status: string;
+        };
+        Insert: {
+          completed_at?: string | null;
+          created_at?: string | null;
+          error_message?: string | null;
+          id?: number;
+          phase_name: string;
+          phase_number: string;
+          rollback_sql?: string | null;
+          rows_affected?: number | null;
+          started_at?: string | null;
+          status?: string;
+        };
+        Update: {
+          completed_at?: string | null;
+          created_at?: string | null;
+          error_message?: string | null;
+          id?: number;
+          phase_name?: string;
+          phase_number?: string;
+          rollback_sql?: string | null;
+          rows_affected?: number | null;
+          started_at?: string | null;
+          status?: string;
+        };
+        Relationships: [];
       };
       notifications: {
         Row: {
@@ -863,9 +1030,9 @@ export type Database = {
           entity_type: string | null;
           id: number;
           message: string;
-          metadata: Json | null;
           read: boolean;
           type: string;
+          updated_at: string | null;
           user_id: string;
         };
         Insert: {
@@ -875,9 +1042,9 @@ export type Database = {
           entity_type?: string | null;
           id?: never;
           message: string;
-          metadata?: Json | null;
           read?: boolean;
           type: string;
+          updated_at?: string | null;
           user_id: string;
         };
         Update: {
@@ -887,9 +1054,9 @@ export type Database = {
           entity_type?: string | null;
           id?: never;
           message?: string;
-          metadata?: Json | null;
           read?: boolean;
           type?: string;
+          updated_at?: string | null;
           user_id?: string;
         };
         Relationships: [];
@@ -919,7 +1086,7 @@ export type Database = {
           next_action: string | null;
           next_action_date: string | null;
           notes: string | null;
-          opportunity_owner_id: number;
+          opportunity_owner_id: number | null;
           primary_contact_id: number | null;
           principal_organization_id: number;
           priority: Database["public"]["Enums"]["priority_level"] | null;
@@ -960,7 +1127,7 @@ export type Database = {
           next_action?: string | null;
           next_action_date?: string | null;
           notes?: string | null;
-          opportunity_owner_id: number;
+          opportunity_owner_id?: number | null;
           primary_contact_id?: number | null;
           principal_organization_id: number;
           priority?: Database["public"]["Enums"]["priority_level"] | null;
@@ -1001,7 +1168,7 @@ export type Database = {
           next_action?: string | null;
           next_action_date?: string | null;
           notes?: string | null;
-          opportunity_owner_id?: number;
+          opportunity_owner_id?: number | null;
           primary_contact_id?: number | null;
           principal_organization_id?: number;
           priority?: Database["public"]["Enums"]["priority_level"] | null;
@@ -1209,6 +1376,20 @@ export type Database = {
             referencedColumns: ["id"];
           },
           {
+            foreignKeyName: "opportunities_founding_interaction_id_fkey";
+            columns: ["founding_interaction_id"];
+            isOneToOne: false;
+            referencedRelation: "tasks_summary";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "opportunities_founding_interaction_id_fkey";
+            columns: ["founding_interaction_id"];
+            isOneToOne: false;
+            referencedRelation: "tasks_v";
+            referencedColumns: ["id"];
+          },
+          {
             foreignKeyName: "opportunities_opportunity_owner_id_fkey";
             columns: ["opportunity_owner_id"];
             isOneToOne: false;
@@ -1276,6 +1457,7 @@ export type Database = {
           notes: string | null;
           opportunity_id: number;
           role: string | null;
+          updated_at: string | null;
         };
         Insert: {
           contact_id: number;
@@ -1286,6 +1468,7 @@ export type Database = {
           notes?: string | null;
           opportunity_id: number;
           role?: string | null;
+          updated_at?: string | null;
         };
         Update: {
           contact_id?: number;
@@ -1296,6 +1479,7 @@ export type Database = {
           notes?: string | null;
           opportunity_id?: number;
           role?: string | null;
+          updated_at?: string | null;
         };
         Relationships: [
           {
@@ -1492,6 +1676,55 @@ export type Database = {
             isOneToOne: false;
             referencedRelation: "principal_opportunities";
             referencedColumns: ["opportunity_id"];
+          },
+          {
+            foreignKeyName: "opportunity_participants_organization_id_fkey";
+            columns: ["organization_id"];
+            isOneToOne: false;
+            referencedRelation: "dashboard_principal_summary";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "opportunity_participants_organization_id_fkey";
+            columns: ["organization_id"];
+            isOneToOne: false;
+            referencedRelation: "organizations";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "opportunity_participants_organization_id_fkey";
+            columns: ["organization_id"];
+            isOneToOne: false;
+            referencedRelation: "organizations_summary";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "opportunity_participants_organization_id_fkey";
+            columns: ["organization_id"];
+            isOneToOne: false;
+            referencedRelation: "organizations_with_account_manager";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "opportunity_participants_organization_id_fkey";
+            columns: ["organization_id"];
+            isOneToOne: false;
+            referencedRelation: "principal_opportunities";
+            referencedColumns: ["principal_id"];
+          },
+          {
+            foreignKeyName: "opportunity_participants_organization_id_fkey";
+            columns: ["organization_id"];
+            isOneToOne: false;
+            referencedRelation: "principal_pipeline_summary";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "opportunity_participants_organization_id_fkey";
+            columns: ["organization_id"];
+            isOneToOne: false;
+            referencedRelation: "principal_pipeline_summary";
+            referencedColumns: ["principal_id"];
           },
         ];
       };
@@ -2195,6 +2428,7 @@ export type Database = {
           product_id: number;
           status: string;
           updated_at: string | null;
+          updated_by: number | null;
           valid_from: string;
           valid_to: string | null;
           vendor_item_number: string | null;
@@ -2208,6 +2442,7 @@ export type Database = {
           product_id: number;
           status?: string;
           updated_at?: string | null;
+          updated_by?: number | null;
           valid_from?: string;
           valid_to?: string | null;
           vendor_item_number?: string | null;
@@ -2221,11 +2456,19 @@ export type Database = {
           product_id?: number;
           status?: string;
           updated_at?: string | null;
+          updated_by?: number | null;
           valid_from?: string;
           valid_to?: string | null;
           vendor_item_number?: string | null;
         };
         Relationships: [
+          {
+            foreignKeyName: "fk_product_distributors_created_by";
+            columns: ["created_by"];
+            isOneToOne: false;
+            referencedRelation: "sales";
+            referencedColumns: ["id"];
+          },
           {
             foreignKeyName: "fk_product_distributors_distributor";
             columns: ["distributor_id"];
@@ -2289,6 +2532,13 @@ export type Database = {
             referencedRelation: "products_summary";
             referencedColumns: ["id"];
           },
+          {
+            foreignKeyName: "product_distributors_updated_by_fkey";
+            columns: ["updated_by"];
+            isOneToOne: false;
+            referencedRelation: "sales";
+            referencedColumns: ["id"];
+          },
         ];
       };
       product_features: {
@@ -2329,6 +2579,13 @@ export type Database = {
           updated_at?: string | null;
         };
         Relationships: [
+          {
+            foreignKeyName: "product_features_created_by_fkey";
+            columns: ["created_by"];
+            isOneToOne: false;
+            referencedRelation: "sales";
+            referencedColumns: ["id"];
+          },
           {
             foreignKeyName: "product_features_product_id_fkey";
             columns: ["product_id"];
@@ -2400,6 +2657,55 @@ export type Database = {
             referencedColumns: ["id"];
           },
           {
+            foreignKeyName: "products_principal_id_fkey";
+            columns: ["principal_id"];
+            isOneToOne: false;
+            referencedRelation: "dashboard_principal_summary";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "products_principal_id_fkey";
+            columns: ["principal_id"];
+            isOneToOne: false;
+            referencedRelation: "organizations";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "products_principal_id_fkey";
+            columns: ["principal_id"];
+            isOneToOne: false;
+            referencedRelation: "organizations_summary";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "products_principal_id_fkey";
+            columns: ["principal_id"];
+            isOneToOne: false;
+            referencedRelation: "organizations_with_account_manager";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "products_principal_id_fkey";
+            columns: ["principal_id"];
+            isOneToOne: false;
+            referencedRelation: "principal_opportunities";
+            referencedColumns: ["principal_id"];
+          },
+          {
+            foreignKeyName: "products_principal_id_fkey";
+            columns: ["principal_id"];
+            isOneToOne: false;
+            referencedRelation: "principal_pipeline_summary";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "products_principal_id_fkey";
+            columns: ["principal_id"];
+            isOneToOne: false;
+            referencedRelation: "principal_pipeline_summary";
+            referencedColumns: ["principal_id"];
+          },
+          {
             foreignKeyName: "products_updated_by_fkey";
             columns: ["updated_by"];
             isOneToOne: false;
@@ -2468,7 +2774,7 @@ export type Database = {
       segments: {
         Row: {
           created_at: string;
-          created_by: string | null;
+          created_by: string;
           deleted_at: string | null;
           display_order: number | null;
           id: string;
@@ -2476,10 +2782,11 @@ export type Database = {
           parent_id: string | null;
           segment_type: string | null;
           ui_group: string | null;
+          updated_at: string | null;
         };
         Insert: {
           created_at?: string;
-          created_by?: string | null;
+          created_by?: string;
           deleted_at?: string | null;
           display_order?: number | null;
           id?: string;
@@ -2487,10 +2794,11 @@ export type Database = {
           parent_id?: string | null;
           segment_type?: string | null;
           ui_group?: string | null;
+          updated_at?: string | null;
         };
         Update: {
           created_at?: string;
-          created_by?: string | null;
+          created_by?: string;
           deleted_at?: string | null;
           display_order?: number | null;
           id?: string;
@@ -2498,6 +2806,7 @@ export type Database = {
           parent_id?: string | null;
           segment_type?: string | null;
           ui_group?: string | null;
+          updated_at?: string | null;
         };
         Relationships: [
           {
@@ -2542,6 +2851,204 @@ export type Database = {
         };
         Relationships: [];
       };
+      tutorial_progress: {
+        Row: {
+          activity_completed: boolean;
+          contact_completed: boolean;
+          created_activity_id: number | null;
+          created_at: string | null;
+          created_contact_id: number | null;
+          created_opportunity_id: number | null;
+          created_organization_id: number | null;
+          deleted_at: string | null;
+          dismissed: boolean;
+          dismissed_at: string | null;
+          id: number;
+          opportunity_completed: boolean;
+          organization_completed: boolean;
+          sales_id: number;
+          task_completed: boolean;
+          updated_at: string | null;
+        };
+        Insert: {
+          activity_completed?: boolean;
+          contact_completed?: boolean;
+          created_activity_id?: number | null;
+          created_at?: string | null;
+          created_contact_id?: number | null;
+          created_opportunity_id?: number | null;
+          created_organization_id?: number | null;
+          deleted_at?: string | null;
+          dismissed?: boolean;
+          dismissed_at?: string | null;
+          id?: number;
+          opportunity_completed?: boolean;
+          organization_completed?: boolean;
+          sales_id: number;
+          task_completed?: boolean;
+          updated_at?: string | null;
+        };
+        Update: {
+          activity_completed?: boolean;
+          contact_completed?: boolean;
+          created_activity_id?: number | null;
+          created_at?: string | null;
+          created_contact_id?: number | null;
+          created_opportunity_id?: number | null;
+          created_organization_id?: number | null;
+          deleted_at?: string | null;
+          dismissed?: boolean;
+          dismissed_at?: string | null;
+          id?: number;
+          opportunity_completed?: boolean;
+          organization_completed?: boolean;
+          sales_id?: number;
+          task_completed?: boolean;
+          updated_at?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "tutorial_progress_created_activity_id_fkey";
+            columns: ["created_activity_id"];
+            isOneToOne: false;
+            referencedRelation: "activities";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "tutorial_progress_created_activity_id_fkey";
+            columns: ["created_activity_id"];
+            isOneToOne: false;
+            referencedRelation: "activities_summary";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "tutorial_progress_created_activity_id_fkey";
+            columns: ["created_activity_id"];
+            isOneToOne: false;
+            referencedRelation: "activities_with_task_details";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "tutorial_progress_created_activity_id_fkey";
+            columns: ["created_activity_id"];
+            isOneToOne: false;
+            referencedRelation: "priority_tasks";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "tutorial_progress_created_activity_id_fkey";
+            columns: ["created_activity_id"];
+            isOneToOne: false;
+            referencedRelation: "tasks_summary";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "tutorial_progress_created_activity_id_fkey";
+            columns: ["created_activity_id"];
+            isOneToOne: false;
+            referencedRelation: "tasks_v";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "tutorial_progress_created_contact_id_fkey";
+            columns: ["created_contact_id"];
+            isOneToOne: false;
+            referencedRelation: "contacts";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "tutorial_progress_created_contact_id_fkey";
+            columns: ["created_contact_id"];
+            isOneToOne: false;
+            referencedRelation: "contacts_summary";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "tutorial_progress_created_contact_id_fkey";
+            columns: ["created_contact_id"];
+            isOneToOne: false;
+            referencedRelation: "contacts_with_account_manager";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "tutorial_progress_created_opportunity_id_fkey";
+            columns: ["created_opportunity_id"];
+            isOneToOne: false;
+            referencedRelation: "opportunities";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "tutorial_progress_created_opportunity_id_fkey";
+            columns: ["created_opportunity_id"];
+            isOneToOne: false;
+            referencedRelation: "opportunities_summary";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "tutorial_progress_created_opportunity_id_fkey";
+            columns: ["created_opportunity_id"];
+            isOneToOne: false;
+            referencedRelation: "principal_opportunities";
+            referencedColumns: ["opportunity_id"];
+          },
+          {
+            foreignKeyName: "tutorial_progress_created_organization_id_fkey";
+            columns: ["created_organization_id"];
+            isOneToOne: false;
+            referencedRelation: "dashboard_principal_summary";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "tutorial_progress_created_organization_id_fkey";
+            columns: ["created_organization_id"];
+            isOneToOne: false;
+            referencedRelation: "organizations";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "tutorial_progress_created_organization_id_fkey";
+            columns: ["created_organization_id"];
+            isOneToOne: false;
+            referencedRelation: "organizations_summary";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "tutorial_progress_created_organization_id_fkey";
+            columns: ["created_organization_id"];
+            isOneToOne: false;
+            referencedRelation: "organizations_with_account_manager";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "tutorial_progress_created_organization_id_fkey";
+            columns: ["created_organization_id"];
+            isOneToOne: false;
+            referencedRelation: "principal_opportunities";
+            referencedColumns: ["principal_id"];
+          },
+          {
+            foreignKeyName: "tutorial_progress_created_organization_id_fkey";
+            columns: ["created_organization_id"];
+            isOneToOne: false;
+            referencedRelation: "principal_pipeline_summary";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "tutorial_progress_created_organization_id_fkey";
+            columns: ["created_organization_id"];
+            isOneToOne: false;
+            referencedRelation: "principal_pipeline_summary";
+            referencedColumns: ["principal_id"];
+          },
+          {
+            foreignKeyName: "tutorial_progress_sales_id_fkey";
+            columns: ["sales_id"];
+            isOneToOne: true;
+            referencedRelation: "sales";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       user_favorites: {
         Row: {
           created_at: string;
@@ -2550,6 +3057,8 @@ export type Database = {
           entity_id: number;
           entity_type: string;
           id: number;
+          updated_at: string | null;
+          updated_by: string | null;
           user_id: string;
         };
         Insert: {
@@ -2559,6 +3068,8 @@ export type Database = {
           entity_id: number;
           entity_type: string;
           id?: number;
+          updated_at?: string | null;
+          updated_by?: string | null;
           user_id: string;
         };
         Update: {
@@ -2568,6 +3079,8 @@ export type Database = {
           entity_id?: number;
           entity_type?: string;
           id?: number;
+          updated_at?: string | null;
+          updated_by?: string | null;
           user_id?: string;
         };
         Relationships: [];
@@ -2601,6 +3114,8 @@ export type Database = {
           organization_name: string | null;
           outcome: string | null;
           overdue_notified_at: string | null;
+          principal_organization_id: number | null;
+          principal_organization_name: string | null;
           priority: Database["public"]["Enums"]["priority_level"] | null;
           related_task_id: number | null;
           reminder_date: string | null;
@@ -2711,6 +3226,48 @@ export type Database = {
             referencedColumns: ["principal_id"];
           },
           {
+            foreignKeyName: "activities_related_task_id_fkey";
+            columns: ["related_task_id"];
+            isOneToOne: false;
+            referencedRelation: "activities";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "activities_related_task_id_fkey";
+            columns: ["related_task_id"];
+            isOneToOne: false;
+            referencedRelation: "activities_summary";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "activities_related_task_id_fkey";
+            columns: ["related_task_id"];
+            isOneToOne: false;
+            referencedRelation: "activities_with_task_details";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "activities_related_task_id_fkey";
+            columns: ["related_task_id"];
+            isOneToOne: false;
+            referencedRelation: "priority_tasks";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "activities_related_task_id_fkey";
+            columns: ["related_task_id"];
+            isOneToOne: false;
+            referencedRelation: "tasks_summary";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "activities_related_task_id_fkey";
+            columns: ["related_task_id"];
+            isOneToOne: false;
+            referencedRelation: "tasks_v";
+            referencedColumns: ["id"];
+          },
+          {
             foreignKeyName: "activities_sales_id_fkey";
             columns: ["sales_id"];
             isOneToOne: false;
@@ -2723,6 +3280,55 @@ export type Database = {
             isOneToOne: false;
             referencedRelation: "sales";
             referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "fk_opportunities_principal_organization";
+            columns: ["principal_organization_id"];
+            isOneToOne: false;
+            referencedRelation: "dashboard_principal_summary";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "fk_opportunities_principal_organization";
+            columns: ["principal_organization_id"];
+            isOneToOne: false;
+            referencedRelation: "organizations";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "fk_opportunities_principal_organization";
+            columns: ["principal_organization_id"];
+            isOneToOne: false;
+            referencedRelation: "organizations_summary";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "fk_opportunities_principal_organization";
+            columns: ["principal_organization_id"];
+            isOneToOne: false;
+            referencedRelation: "organizations_with_account_manager";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "fk_opportunities_principal_organization";
+            columns: ["principal_organization_id"];
+            isOneToOne: false;
+            referencedRelation: "principal_opportunities";
+            referencedColumns: ["principal_id"];
+          },
+          {
+            foreignKeyName: "fk_opportunities_principal_organization";
+            columns: ["principal_organization_id"];
+            isOneToOne: false;
+            referencedRelation: "principal_pipeline_summary";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "fk_opportunities_principal_organization";
+            columns: ["principal_organization_id"];
+            isOneToOne: false;
+            referencedRelation: "principal_pipeline_summary";
+            referencedColumns: ["principal_id"];
           },
         ];
       };
@@ -2936,6 +3542,48 @@ export type Database = {
             isOneToOne: false;
             referencedRelation: "principal_pipeline_summary";
             referencedColumns: ["principal_id"];
+          },
+          {
+            foreignKeyName: "activities_related_task_id_fkey";
+            columns: ["related_task_id"];
+            isOneToOne: false;
+            referencedRelation: "activities";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "activities_related_task_id_fkey";
+            columns: ["related_task_id"];
+            isOneToOne: false;
+            referencedRelation: "activities_summary";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "activities_related_task_id_fkey";
+            columns: ["related_task_id"];
+            isOneToOne: false;
+            referencedRelation: "activities_with_task_details";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "activities_related_task_id_fkey";
+            columns: ["related_task_id"];
+            isOneToOne: false;
+            referencedRelation: "priority_tasks";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "activities_related_task_id_fkey";
+            columns: ["related_task_id"];
+            isOneToOne: false;
+            referencedRelation: "tasks_summary";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "activities_related_task_id_fkey";
+            columns: ["related_task_id"];
+            isOneToOne: false;
+            referencedRelation: "tasks_v";
+            referencedColumns: ["id"];
           },
           {
             foreignKeyName: "activities_sales_id_fkey";
@@ -3460,6 +4108,7 @@ export type Database = {
           founding_interaction_id: number | null;
           id: number | null;
           index: number | null;
+          last_activity_date: string | null;
           lead_source: string | null;
           name: string | null;
           next_action: string | null;
@@ -3669,6 +4318,20 @@ export type Database = {
             columns: ["founding_interaction_id"];
             isOneToOne: false;
             referencedRelation: "priority_tasks";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "opportunities_founding_interaction_id_fkey";
+            columns: ["founding_interaction_id"];
+            isOneToOne: false;
+            referencedRelation: "tasks_summary";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "opportunities_founding_interaction_id_fkey";
+            columns: ["founding_interaction_id"];
+            isOneToOne: false;
+            referencedRelation: "tasks_v";
             referencedColumns: ["id"];
           },
           {
@@ -4574,8 +5237,364 @@ export type Database = {
             referencedColumns: ["id"];
           },
           {
+            foreignKeyName: "products_principal_id_fkey";
+            columns: ["principal_id"];
+            isOneToOne: false;
+            referencedRelation: "dashboard_principal_summary";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "products_principal_id_fkey";
+            columns: ["principal_id"];
+            isOneToOne: false;
+            referencedRelation: "organizations";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "products_principal_id_fkey";
+            columns: ["principal_id"];
+            isOneToOne: false;
+            referencedRelation: "organizations_summary";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "products_principal_id_fkey";
+            columns: ["principal_id"];
+            isOneToOne: false;
+            referencedRelation: "organizations_with_account_manager";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "products_principal_id_fkey";
+            columns: ["principal_id"];
+            isOneToOne: false;
+            referencedRelation: "principal_opportunities";
+            referencedColumns: ["principal_id"];
+          },
+          {
+            foreignKeyName: "products_principal_id_fkey";
+            columns: ["principal_id"];
+            isOneToOne: false;
+            referencedRelation: "principal_pipeline_summary";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "products_principal_id_fkey";
+            columns: ["principal_id"];
+            isOneToOne: false;
+            referencedRelation: "principal_pipeline_summary";
+            referencedColumns: ["principal_id"];
+          },
+          {
             foreignKeyName: "products_updated_by_fkey";
             columns: ["updated_by"];
+            isOneToOne: false;
+            referencedRelation: "sales";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      tasks_summary: {
+        Row: {
+          assignee_email: string | null;
+          assignee_name: string | null;
+          completed: boolean | null;
+          completed_at: string | null;
+          contact_id: number | null;
+          contact_name: string | null;
+          created_at: string | null;
+          created_by: number | null;
+          creator_name: string | null;
+          description: string | null;
+          due_date: string | null;
+          id: number | null;
+          opportunity_id: number | null;
+          opportunity_name: string | null;
+          organization_id: number | null;
+          organization_name: string | null;
+          overdue_notified_at: string | null;
+          priority: Database["public"]["Enums"]["priority_level"] | null;
+          reminder_date: string | null;
+          sales_id: number | null;
+          snooze_until: string | null;
+          title: string | null;
+          type: string | null;
+          updated_at: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "activities_contact_id_fkey";
+            columns: ["contact_id"];
+            isOneToOne: false;
+            referencedRelation: "contacts";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "activities_contact_id_fkey";
+            columns: ["contact_id"];
+            isOneToOne: false;
+            referencedRelation: "contacts_summary";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "activities_contact_id_fkey";
+            columns: ["contact_id"];
+            isOneToOne: false;
+            referencedRelation: "contacts_with_account_manager";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "activities_created_by_fkey";
+            columns: ["created_by"];
+            isOneToOne: false;
+            referencedRelation: "sales";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "activities_opportunity_id_fkey";
+            columns: ["opportunity_id"];
+            isOneToOne: false;
+            referencedRelation: "opportunities";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "activities_opportunity_id_fkey";
+            columns: ["opportunity_id"];
+            isOneToOne: false;
+            referencedRelation: "opportunities_summary";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "activities_opportunity_id_fkey";
+            columns: ["opportunity_id"];
+            isOneToOne: false;
+            referencedRelation: "principal_opportunities";
+            referencedColumns: ["opportunity_id"];
+          },
+          {
+            foreignKeyName: "activities_organization_id_fkey";
+            columns: ["organization_id"];
+            isOneToOne: false;
+            referencedRelation: "dashboard_principal_summary";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "activities_organization_id_fkey";
+            columns: ["organization_id"];
+            isOneToOne: false;
+            referencedRelation: "organizations";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "activities_organization_id_fkey";
+            columns: ["organization_id"];
+            isOneToOne: false;
+            referencedRelation: "organizations_summary";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "activities_organization_id_fkey";
+            columns: ["organization_id"];
+            isOneToOne: false;
+            referencedRelation: "organizations_with_account_manager";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "activities_organization_id_fkey";
+            columns: ["organization_id"];
+            isOneToOne: false;
+            referencedRelation: "principal_opportunities";
+            referencedColumns: ["principal_id"];
+          },
+          {
+            foreignKeyName: "activities_organization_id_fkey";
+            columns: ["organization_id"];
+            isOneToOne: false;
+            referencedRelation: "principal_pipeline_summary";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "activities_organization_id_fkey";
+            columns: ["organization_id"];
+            isOneToOne: false;
+            referencedRelation: "principal_pipeline_summary";
+            referencedColumns: ["principal_id"];
+          },
+          {
+            foreignKeyName: "activities_sales_id_fkey";
+            columns: ["sales_id"];
+            isOneToOne: false;
+            referencedRelation: "sales";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      tasks_v: {
+        Row: {
+          completed: boolean | null;
+          completed_at: string | null;
+          contact_id: number | null;
+          created_at: string | null;
+          created_by: number | null;
+          deleted_at: string | null;
+          description: string | null;
+          due_date: string | null;
+          id: number | null;
+          opportunity_id: number | null;
+          organization_id: number | null;
+          overdue_notified_at: string | null;
+          priority: Database["public"]["Enums"]["priority_level"] | null;
+          reminder_date: string | null;
+          sales_id: number | null;
+          snooze_until: string | null;
+          title: string | null;
+          type: string | null;
+          updated_at: string | null;
+        };
+        Insert: {
+          completed?: boolean | null;
+          completed_at?: string | null;
+          contact_id?: number | null;
+          created_at?: string | null;
+          created_by?: number | null;
+          deleted_at?: string | null;
+          description?: string | null;
+          due_date?: string | null;
+          id?: number | null;
+          opportunity_id?: number | null;
+          organization_id?: number | null;
+          overdue_notified_at?: string | null;
+          priority?: Database["public"]["Enums"]["priority_level"] | null;
+          reminder_date?: string | null;
+          sales_id?: number | null;
+          snooze_until?: string | null;
+          title?: string | null;
+          type?: never;
+          updated_at?: string | null;
+        };
+        Update: {
+          completed?: boolean | null;
+          completed_at?: string | null;
+          contact_id?: number | null;
+          created_at?: string | null;
+          created_by?: number | null;
+          deleted_at?: string | null;
+          description?: string | null;
+          due_date?: string | null;
+          id?: number | null;
+          opportunity_id?: number | null;
+          organization_id?: number | null;
+          overdue_notified_at?: string | null;
+          priority?: Database["public"]["Enums"]["priority_level"] | null;
+          reminder_date?: string | null;
+          sales_id?: number | null;
+          snooze_until?: string | null;
+          title?: string | null;
+          type?: never;
+          updated_at?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "activities_contact_id_fkey";
+            columns: ["contact_id"];
+            isOneToOne: false;
+            referencedRelation: "contacts";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "activities_contact_id_fkey";
+            columns: ["contact_id"];
+            isOneToOne: false;
+            referencedRelation: "contacts_summary";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "activities_contact_id_fkey";
+            columns: ["contact_id"];
+            isOneToOne: false;
+            referencedRelation: "contacts_with_account_manager";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "activities_created_by_fkey";
+            columns: ["created_by"];
+            isOneToOne: false;
+            referencedRelation: "sales";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "activities_opportunity_id_fkey";
+            columns: ["opportunity_id"];
+            isOneToOne: false;
+            referencedRelation: "opportunities";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "activities_opportunity_id_fkey";
+            columns: ["opportunity_id"];
+            isOneToOne: false;
+            referencedRelation: "opportunities_summary";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "activities_opportunity_id_fkey";
+            columns: ["opportunity_id"];
+            isOneToOne: false;
+            referencedRelation: "principal_opportunities";
+            referencedColumns: ["opportunity_id"];
+          },
+          {
+            foreignKeyName: "activities_organization_id_fkey";
+            columns: ["organization_id"];
+            isOneToOne: false;
+            referencedRelation: "dashboard_principal_summary";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "activities_organization_id_fkey";
+            columns: ["organization_id"];
+            isOneToOne: false;
+            referencedRelation: "organizations";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "activities_organization_id_fkey";
+            columns: ["organization_id"];
+            isOneToOne: false;
+            referencedRelation: "organizations_summary";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "activities_organization_id_fkey";
+            columns: ["organization_id"];
+            isOneToOne: false;
+            referencedRelation: "organizations_with_account_manager";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "activities_organization_id_fkey";
+            columns: ["organization_id"];
+            isOneToOne: false;
+            referencedRelation: "principal_opportunities";
+            referencedColumns: ["principal_id"];
+          },
+          {
+            foreignKeyName: "activities_organization_id_fkey";
+            columns: ["organization_id"];
+            isOneToOne: false;
+            referencedRelation: "principal_pipeline_summary";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "activities_organization_id_fkey";
+            columns: ["organization_id"];
+            isOneToOne: false;
+            referencedRelation: "principal_pipeline_summary";
+            referencedColumns: ["principal_id"];
+          },
+          {
+            foreignKeyName: "activities_sales_id_fkey";
+            columns: ["sales_id"];
             isOneToOne: false;
             referencedRelation: "sales";
             referencedColumns: ["id"];
@@ -4699,6 +5718,19 @@ export type Database = {
         };
         Returns: Json;
       };
+      get_campaign_report_stats: {
+        Args: { p_campaign?: string };
+        Returns: Json;
+      };
+      get_contact_organizations: {
+        Args: { p_contact_id: number };
+        Returns: {
+          is_primary: boolean;
+          is_primary_decision_maker: boolean;
+          organization_id: number;
+          organization_name: string;
+        }[];
+      };
       get_current_sales_id: { Args: never; Returns: number };
       get_current_user_company_id: { Args: never; Returns: number };
       get_current_user_sales_id: { Args: never; Returns: number };
@@ -4717,6 +5749,16 @@ export type Database = {
           phone: Json;
           task_count: number;
         }[];
+      };
+      get_opportunities_by_principal_report: {
+        Args: {
+          p_end_date?: string;
+          p_opportunity_owner_id?: number;
+          p_principal_organization_id?: number;
+          p_stage?: string[];
+          p_start_date?: string;
+        };
+        Returns: Json;
       };
       get_organization_contacts: {
         Args: { p_organization_id: number };
@@ -4741,13 +5783,6 @@ export type Database = {
           isOneToOne: false;
           isSetofReturn: true;
         };
-      };
-      get_playbook_category_ids: {
-        Args: never;
-        Returns: {
-          count: number;
-          playbook_category_id: string;
-        }[];
       };
       get_product_distributor_pricing: {
         Args: { p_distributor_id: number; p_product_id: number };
@@ -4932,6 +5967,10 @@ export type Database = {
         Args: { product_ids: number[] };
         Returns: number[];
       };
+      sync_contact_organizations: {
+        Args: { p_contact_id: number; p_organizations: Json };
+        Returns: undefined;
+      };
       sync_opportunity_with_contacts: {
         Args: { p_contact_ids: number[]; p_opportunity_id: number };
         Returns: undefined;
@@ -4956,16 +5995,8 @@ export type Database = {
             };
             Returns: Json;
           };
-      unarchive_contact_with_relations: {
-        Args: { contact_id: number };
-        Returns: undefined;
-      };
       unarchive_opportunity_with_relations: {
         Args: { opp_id: number };
-        Returns: undefined;
-      };
-      unarchive_organization_with_relations: {
-        Args: { org_id: number };
         Returns: undefined;
       };
       update_digest_preference: { Args: { p_opt_in: boolean }; Returns: Json };
@@ -5121,6 +6152,127 @@ export type Database = {
       };
     };
   };
+  storage: {
+    Tables: {
+      buckets: {
+        Row: {
+          created_at: string | null;
+          id: string;
+          name: string;
+          owner: string | null;
+          updated_at: string | null;
+        };
+        Insert: {
+          created_at?: string | null;
+          id: string;
+          name: string;
+          owner?: string | null;
+          updated_at?: string | null;
+        };
+        Update: {
+          created_at?: string | null;
+          id?: string;
+          name?: string;
+          owner?: string | null;
+          updated_at?: string | null;
+        };
+        Relationships: [];
+      };
+      migrations: {
+        Row: {
+          executed_at: string | null;
+          hash: string;
+          id: number;
+          name: string;
+        };
+        Insert: {
+          executed_at?: string | null;
+          hash: string;
+          id: number;
+          name: string;
+        };
+        Update: {
+          executed_at?: string | null;
+          hash?: string;
+          id?: number;
+          name?: string;
+        };
+        Relationships: [];
+      };
+      objects: {
+        Row: {
+          bucket_id: string | null;
+          created_at: string | null;
+          id: string;
+          last_accessed_at: string | null;
+          metadata: Json | null;
+          name: string | null;
+          owner: string | null;
+          updated_at: string | null;
+        };
+        Insert: {
+          bucket_id?: string | null;
+          created_at?: string | null;
+          id?: string;
+          last_accessed_at?: string | null;
+          metadata?: Json | null;
+          name?: string | null;
+          owner?: string | null;
+          updated_at?: string | null;
+        };
+        Update: {
+          bucket_id?: string | null;
+          created_at?: string | null;
+          id?: string;
+          last_accessed_at?: string | null;
+          metadata?: Json | null;
+          name?: string | null;
+          owner?: string | null;
+          updated_at?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "objects_bucketId_fkey";
+            columns: ["bucket_id"];
+            isOneToOne: false;
+            referencedRelation: "buckets";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+    };
+    Views: {
+      [_ in never]: never;
+    };
+    Functions: {
+      extension: { Args: { name: string }; Returns: string };
+      filename: { Args: { name: string }; Returns: string };
+      foldername: { Args: { name: string }; Returns: string[] };
+      search: {
+        Args: {
+          bucketname: string;
+          levels?: number;
+          limits?: number;
+          offsets?: number;
+          prefix: string;
+        };
+        Returns: {
+          created_at: string;
+          id: string;
+          last_accessed_at: string;
+          metadata: Json;
+          name: string;
+          updated_at: string;
+        }[];
+      };
+    };
+    Enums: {
+      [_ in never]: never;
+    };
+    CompositeTypes: {
+      [_ in never]: never;
+    };
+  };
 };
 
 type DatabaseWithoutInternals = Omit<Database, "__InternalSupabase">;
@@ -5239,6 +6391,9 @@ export type CompositeTypes<
     : never;
 
 export const Constants = {
+  graphql_public: {
+    Enums: {},
+  },
   public: {
     Enums: {
       activity_type: ["engagement", "interaction", "task", "activity"],
@@ -5318,5 +6473,8 @@ export const Constants = {
       user_role: ["admin", "manager", "rep"],
       win_reason: ["relationship", "product_quality", "price_competitive", "timing", "other"],
     },
+  },
+  storage: {
+    Enums: {},
   },
 } as const;

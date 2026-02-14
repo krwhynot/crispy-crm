@@ -16,6 +16,8 @@ interface UseReportDataOptions {
   additionalFilters?: Record<string, unknown>;
   /** Field to use for date filtering (default: "created_at") */
   dateField?: string;
+  /** When provided with salesRepId, uses $or filter for primary + secondary fields */
+  secondarySalesSource?: string;
 }
 
 interface UseReportDataResult<T> {
@@ -66,7 +68,13 @@ export function useReportData<T extends RaRecord>(
   const [isTruncated, setIsTruncated] = useState(false);
   const [total, setTotal] = useState(0);
 
-  const { dateRange, salesRepId, additionalFilters, dateField = "created_at" } = options;
+  const {
+    dateRange,
+    salesRepId,
+    additionalFilters,
+    dateField = "created_at",
+    secondarySalesSource,
+  } = options;
 
   // CRITICAL: Extract primitive values to prevent render loops
   // Objects (dateRange, additionalFilters) compared by reference cause infinite loops
@@ -84,11 +92,15 @@ export function useReportData<T extends RaRecord>(
       baseFilter[`${dateField}@lte`] = dateEndStr;
     }
     if (salesRepId) {
-      baseFilter.sales_id = salesRepId;
+      if (secondarySalesSource) {
+        baseFilter.$or = [{ sales_id: salesRepId }, { [secondarySalesSource]: salesRepId }];
+      } else {
+        baseFilter.sales_id = salesRepId;
+      }
     }
 
     return baseFilter;
-  }, [dateStartStr, dateEndStr, salesRepId, dateField, additionalFilters]);
+  }, [dateStartStr, dateEndStr, salesRepId, dateField, additionalFilters, secondarySalesSource]);
 
   useEffect(() => {
     let cancelled = false;

@@ -24,6 +24,8 @@ export interface UseBulkActionsStateResult {
   setSelectedStatus: (status: string) => void;
   selectedOwner: string;
   setSelectedOwner: (owner: string) => void;
+  assignField: "primary" | "secondary";
+  setAssignField: (field: "primary" | "secondary") => void;
 
   isProcessing: boolean;
 
@@ -44,6 +46,7 @@ export function useBulkActionsState({
   const [selectedStage, setSelectedStage] = useState<string>("");
   const [selectedStatus, setSelectedStatus] = useState<string>("");
   const [selectedOwner, setSelectedOwner] = useState<string>("");
+  const [assignField, setAssignField] = useState<"primary" | "secondary">("primary");
   const [isProcessing, setIsProcessing] = useState(false);
 
   const notify = useNotify();
@@ -56,6 +59,7 @@ export function useBulkActionsState({
     setSelectedStage("");
     setSelectedStatus("");
     setSelectedOwner("");
+    setAssignField("primary");
   }, []);
 
   const handleCloseDialog = useCallback(() => {
@@ -63,6 +67,7 @@ export function useBulkActionsState({
     setSelectedStage("");
     setSelectedStatus("");
     setSelectedOwner("");
+    setAssignField("primary");
   }, []);
 
   const handleExecuteBulkAction = useCallback(async () => {
@@ -80,7 +85,8 @@ export function useBulkActionsState({
       } else if (activeAction === "change_status" && selectedStatus) {
         updateData = { status: selectedStatus as Opportunity["status"], stage_manual: true };
       } else if (activeAction === "assign_owner" && selectedOwner) {
-        updateData = { opportunity_owner_id: parseInt(selectedOwner) };
+        const field = assignField === "primary" ? "opportunity_owner_id" : "account_manager_id";
+        updateData = { [field]: parseInt(selectedOwner) } as Partial<Opportunity>;
       }
 
       const updatePromises = selectedIds.map((id) =>
@@ -138,6 +144,7 @@ export function useBulkActionsState({
     selectedStage,
     selectedStatus,
     selectedOwner,
+    assignField,
     selectedIds,
     resource,
     dataProvider,
@@ -232,6 +239,8 @@ export function useBulkActionsState({
     setSelectedStatus,
     selectedOwner,
     setSelectedOwner,
+    assignField,
+    setAssignField,
     isProcessing,
     handleOpenDialog,
     handleCloseDialog,

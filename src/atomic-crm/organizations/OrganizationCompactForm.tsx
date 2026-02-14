@@ -89,7 +89,7 @@ export const OrganizationCompactForm = ({ isRep }: OrganizationCompactFormProps)
             >
               <SelectInput
                 helperText={isRep ? "Assigned to you" : false}
-                label="Account Manager *"
+                label="Primary Account Manager *"
                 optionText={saleOptionRenderer}
                 disabled={isRep}
               />
@@ -108,6 +108,22 @@ export const OrganizationCompactForm = ({ isRep }: OrganizationCompactFormProps)
             />
           </FormFieldWrapper>
         </CompactFormRow>
+
+        {/* Secondary Account Manager - optional */}
+        <FormFieldWrapper name="secondary_sales_id">
+          <ReferenceInput
+            reference="sales"
+            source="secondary_sales_id"
+            sort={{ field: "last_name", order: "ASC" }}
+            filter={{ "disabled@neq": true, "user_id@not.is": null }}
+          >
+            <SelectInput
+              helperText={false}
+              label="Secondary Account Manager"
+              optionText={saleOptionRenderer}
+            />
+          </ReferenceInput>
+        </FormFieldWrapper>
       </FormSectionWithProgress>
 
       <CollapsibleSection title="Location">

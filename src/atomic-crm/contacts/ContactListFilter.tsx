@@ -91,7 +91,11 @@ export const ContactListFilter = () => {
         </FilterCategory>
 
         <FilterCategory label="Account Manager" icon={<User className="h-4 w-4" />}>
-          <OwnerFilterDropdown source="sales_id" label="Account Manager" />
+          <OwnerFilterDropdown
+            source="sales_id"
+            secondarySource="secondary_sales_id"
+            label="Account Manager"
+          />
         </FilterCategory>
       </div>
     </div>

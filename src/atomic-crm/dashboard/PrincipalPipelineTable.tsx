@@ -135,7 +135,7 @@ export function PrincipalPipelineTable() {
   // Error state
   if (error) {
     return (
-      <div className="flex h-full items-center justify-center">
+      <div className="flex min-h-[300px] items-center justify-center">
         <div className="text-center">
           <p className="text-destructive">Failed to load pipeline data</p>
           <p className="text-sm text-muted-foreground">{error.message}</p>
@@ -145,17 +145,21 @@ export function PrincipalPipelineTable() {
   }
 
   return (
-    <div className="flex h-full flex-col p-4" data-tutorial="dashboard-pipeline-table">
+    <div
+      className="flex flex-col p-4"
+      data-density="compact"
+      data-tutorial="dashboard-pipeline-table"
+    >
       {/* Header with title and filters */}
       <div className="border-b border-border pb-3">
-        <div className="flex items-start justify-between">
+        <div className="flex flex-wrap items-start justify-between gap-y-2">
           <div>
             <h2 className="text-lg font-semibold">Pipeline by Principal</h2>
             <p className="text-sm text-muted-foreground">
               Track opportunity momentum across your customer accounts
             </p>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
             {/* Search input */}
             <div className="relative">
               <Search className="absolute left-2.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
@@ -189,14 +193,16 @@ export function PrincipalPipelineTable() {
       </div>
 
       {/* Table - scroll container for sticky headers */}
-      <div
-        className={cn(
-          "flex-1 min-h-0 overflow-y-auto pt-2 transition-opacity",
-          isPending && "opacity-50"
-        )}
-      >
+      <div className={cn("pt-2 transition-opacity", isPending && "opacity-50")}>
         {sortedData?.length === 0 ? (
-          <EmptyState searchQuery={searchQuery} />
+          <EmptyState
+            searchQuery={searchQuery}
+            hasActiveFilters={momentumFilters.size > 0}
+            onClearFilters={() => {
+              setSearchQuery("");
+              momentumFilters.forEach((m) => toggleMomentumFilter(m));
+            }}
+          />
         ) : (
           <Table>
             <TableHeader className="sticky top-0 z-10 bg-background shadow-sm">
@@ -390,20 +396,33 @@ function MomentumFilterDropdown({
 
 interface EmptyStateProps {
   searchQuery: string;
+  hasActiveFilters: boolean;
+  onClearFilters: () => void;
 }
 
-function EmptyState({ searchQuery }: EmptyStateProps) {
+function EmptyState({ searchQuery, hasActiveFilters, onClearFilters }: EmptyStateProps) {
+  const hasFilters = searchQuery.length > 0 || hasActiveFilters;
+
   return (
-    <div className="flex h-full items-center justify-center py-12">
+    <div className="flex min-h-[300px] items-center justify-center py-12">
       <div className="text-center">
         <p className="text-muted-foreground">
-          {searchQuery ? "No matching principals found" : "No principals found"}
+          {hasFilters ? "No principals match your filters" : "No principals found"}
         </p>
         <p className="mt-1 text-sm text-muted-foreground">
-          {searchQuery
-            ? `Try adjusting your search term "${searchQuery}"`
+          {hasFilters
+            ? "Try broadening your search or removing filters"
             : "Create opportunities linked to organizations to see them here"}
         </p>
+        {hasFilters && (
+          <button
+            type="button"
+            onClick={onClearFilters}
+            className="mt-3 text-sm font-medium text-primary hover:text-primary/80 transition-colors"
+          >
+            Clear all filters
+          </button>
+        )}
       </div>
     </div>
   );

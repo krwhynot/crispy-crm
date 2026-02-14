@@ -1,6 +1,6 @@
 {
   "chunk_name": "organizations",
-  "generated_at": "2026-02-07T02:57:36.892Z",
+  "generated_at": "2026-02-13T16:48:38.889Z",
   "item_count": 9,
   "items": [
     {
@@ -299,15 +299,14 @@
         },
         {
           "name": "tags",
-          "zodType": "string",
+          "zodType": "coerce.number",
           "constraints": [
-            "trim()",
-            "max(1000, \"Tags too long\")"
+            "max(50, \"Maximum 50 tags\")"
           ],
-          "optional": true,
+          "optional": false,
           "nullable": false,
           "hasTransform": false,
-          "hasDefault": false
+          "hasDefault": true
         },
         {
           "name": "email",
@@ -736,7 +735,7 @@
     {
       "name": "createOrganizationSchema",
       "file": "src\\atomic-crm\\validation\\organizations.ts",
-      "line": 234,
+      "line": 236,
       "schemaType": "other",
       "fields": [],
       "relatedSchemas": [
@@ -757,7 +756,7 @@
     {
       "name": "organizationQuickCreateSchema",
       "file": "src\\atomic-crm\\validation\\organizations.ts",
-      "line": 301,
+      "line": 303,
       "schemaType": "strictObject",
       "fields": [
         {

@@ -60,6 +60,12 @@ export const OPPORTUNITY_FILTER_CONFIG = validateFilterConfig([
     reference: "sales",
   },
   {
+    key: "account_manager_id",
+    label: "Secondary Manager",
+    type: "reference",
+    reference: "sales",
+  },
+  {
     key: "priority",
     label: "Priority",
     type: "multiselect",

@@ -1,26 +1,15 @@
-import React, { useEffect, useMemo, useState } from "react";
-import { ReportLayout } from "@/atomic-crm/reports/ReportLayout";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { AdminButton } from "@/components/admin/AdminButton";
-import { Label } from "@/components/ui/label";
+import React, { useMemo, useState } from "react";
 import { Card, CardHeader } from "@/components/ui/card";
 import { ActivityTypeCard } from "./ActivityTypeCard";
 import { StaleLeadsView } from "./StaleLeadsView";
-import { CampaignActivityFilters } from "./CampaignActivityFilters";
-import { CampaignActivitySummaryCards } from "./CampaignActivitySummaryCards";
 import { useCampaignActivityData } from "./useCampaignActivityData";
 import { useCampaignActivityExport } from "./useCampaignActivityExport";
 import { INTERACTION_TYPE_OPTIONS } from "@/atomic-crm/validation/activities";
-import { format, subDays, startOfMonth } from "date-fns";
-import { AppliedFiltersBar } from "@/atomic-crm/reports/components";
+import { AppliedFiltersBar, KPICard } from "@/atomic-crm/reports/components";
+import { AdminButton } from "@/components/admin/AdminButton";
+import { CAMPAIGN_DATE_PRESETS } from "@/atomic-crm/reports/constants";
 import { EmptyState } from "@/components/ui/empty-state";
-import { Activity, CheckCircle } from "lucide-react";
+import { Activity, CheckCircle, Building2, Target, BarChart3, Download } from "lucide-react";
 import { useReportFilterState, CAMPAIGN_DEFAULTS, type CampaignFilterState } from "../hooks";
 
 /** Activity type matching useCampaignActivityData return type and Activity from types.ts */
@@ -52,40 +41,33 @@ interface CampaignActivityGroup {
 export default function CampaignActivityReport() {
   const [expandedTypes, setExpandedTypes] = useState<Set<string>>(new Set());
 
-  const campaignDefaults: CampaignFilterState = {
-    ...CAMPAIGN_DEFAULTS,
-    selectedActivityTypes: INTERACTION_TYPE_OPTIONS.map((opt) => opt.value),
-  };
-
   const [filterState, updateFilters, resetFilters] = useReportFilterState<CampaignFilterState>(
     "reports.campaign",
-    campaignDefaults
+    CAMPAIGN_DEFAULTS
   );
 
-  const [dateRange, setDateRange] = useState<{ start: string; end: string } | null>(null);
   const [ariaLiveMessage, setAriaLiveMessage] = useState<string>("");
 
   const hasInitialized = React.useRef(false);
+
+  // Build dateRange from store state (fixes rehydration bug where dates weren't restored on mount)
+  const dateRange =
+    filterState.startDate && filterState.endDate
+      ? { start: filterState.startDate, end: filterState.endDate }
+      : null;
 
   const {
     activities,
     activitiesError,
     salesMap,
     campaignOptions,
-    salesRepOptions,
-    activityTypeCounts,
-    totalCampaignActivitiesCount,
     totalCampaignOpportunities,
-    isLoadingCampaigns,
     isLoadingActivities,
     staleOpportunities: staleOpportunitiesData,
   } = useCampaignActivityData({
     selectedCampaign: filterState.selectedCampaign || "Grand Rapids Trade Show",
     dateRange,
-    selectedActivityTypes:
-      filterState.selectedActivityTypes.length > 0
-        ? filterState.selectedActivityTypes
-        : INTERACTION_TYPE_OPTIONS.map((opt) => opt.value),
+    selectedActivityTypes: filterState.selectedActivityTypes,
     selectedSalesRep: filterState.selectedSalesRep,
     allActivityTypes: INTERACTION_TYPE_OPTIONS,
     showStaleLeads: filterState.showStaleLeads,
@@ -93,15 +75,11 @@ export default function CampaignActivityReport() {
 
   const selectedCampaign =
     filterState.selectedCampaign || campaignOptions[0]?.name || "Grand Rapids Trade Show";
-  const datePreset = filterState.datePreset;
-  const selectedActivityTypes =
-    filterState.selectedActivityTypes.length > 0
-      ? filterState.selectedActivityTypes
-      : INTERACTION_TYPE_OPTIONS.map((opt) => opt.value);
+  const selectedActivityTypes = filterState.selectedActivityTypes;
   const selectedSalesRep = filterState.selectedSalesRep;
   const showStaleLeads = filterState.showStaleLeads;
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (!filterState.selectedCampaign && campaignOptions.length > 0) {
       updateFilters({ selectedCampaign: campaignOptions[0].name });
     }
@@ -225,60 +203,12 @@ export default function CampaignActivityReport() {
     setExpandedTypes(newExpanded);
   };
 
-  const setDatePresetHandler = (preset: string) => {
-    updateFilters({ datePreset: preset });
-    const today = new Date();
-    switch (preset) {
-      case "last7":
-        setDateRange({
-          start: format(subDays(today, 7), "yyyy-MM-dd"),
-          end: format(today, "yyyy-MM-dd"),
-        });
-        break;
-      case "last30":
-        setDateRange({
-          start: format(subDays(today, 30), "yyyy-MM-dd"),
-          end: format(today, "yyyy-MM-dd"),
-        });
-        break;
-      case "thisMonth":
-        setDateRange({
-          start: format(startOfMonth(today), "yyyy-MM-dd"),
-          end: format(today, "yyyy-MM-dd"),
-        });
-        break;
-      case "allTime":
-      default:
-        setDateRange(null);
-        break;
-    }
-  };
-
-  const toggleActivityType = (type: string) => {
-    if (selectedActivityTypes.includes(type)) {
-      if (selectedActivityTypes.length > 1) {
-        updateFilters({ selectedActivityTypes: selectedActivityTypes.filter((t) => t !== type) });
-      }
-    } else {
-      updateFilters({ selectedActivityTypes: [...selectedActivityTypes, type] });
-    }
-  };
-
-  const toggleAllActivityTypes = () => {
-    if (selectedActivityTypes.length === INTERACTION_TYPE_OPTIONS.length) {
-      updateFilters({ selectedActivityTypes: [] });
-    } else {
-      updateFilters({ selectedActivityTypes: INTERACTION_TYPE_OPTIONS.map((opt) => opt.value) });
-    }
-  };
-
   const clearFilters = () => {
     resetFilters();
-    setDateRange(null);
   };
 
   const hasActiveFilters =
-    dateRange !== null ||
+    filterState.datePreset !== "allTime" ||
     selectedActivityTypes.length < INTERACTION_TYPE_OPTIONS.length ||
     selectedSalesRep !== null ||
     showStaleLeads;
@@ -292,14 +222,16 @@ export default function CampaignActivityReport() {
       onRemove: () => {},
     });
 
-    if (dateRange) {
+    if (filterState.datePreset !== "allTime") {
+      const dateLabel =
+        filterState.datePreset === "custom" && filterState.startDate && filterState.endDate
+          ? `${filterState.startDate} to ${filterState.endDate}`
+          : (CAMPAIGN_DATE_PRESETS.find((p) => p.value === filterState.datePreset)?.label ??
+            filterState.datePreset);
       result.push({
         label: "Date Range",
-        value: `${dateRange.start} to ${dateRange.end}`,
-        onRemove: () => {
-          setDateRange(null);
-          updateFilters({ datePreset: "allTime" });
-        },
+        value: dateLabel,
+        onRemove: () => updateFilters({ datePreset: "allTime", startDate: null, endDate: null }),
       });
     }
 
@@ -333,7 +265,9 @@ export default function CampaignActivityReport() {
     return result;
   }, [
     selectedCampaign,
-    dateRange,
+    filterState.datePreset,
+    filterState.startDate,
+    filterState.endDate,
     selectedActivityTypes,
     selectedSalesRep,
     showStaleLeads,
@@ -354,7 +288,7 @@ export default function CampaignActivityReport() {
   const isRefreshing = isLoadingActivities && hasActivityData;
 
   return (
-    <ReportLayout title="Campaign Activity Report">
+    <div className="space-y-widget">
       {/* Screen reader announcements */}
       <div className="sr-only" role="status" aria-live="polite" aria-atomic="true">
         {ariaLiveMessage}
@@ -366,107 +300,65 @@ export default function CampaignActivityReport() {
         </div>
       )}
 
-      {/* Campaign Selector and Filters */}
-      <div className="mb-section">
-        <div className="flex flex-col sm:flex-row sm:items-end gap-4 mb-4">
-          <div className="flex-1 sm:max-w-xs">
-            <Label htmlFor="campaign-select" className="block text-sm font-medium mb-2">
-              Select Campaign
-            </Label>
-            {isLoadingCampaigns ? (
-              <div
-                className="h-10 bg-muted animate-pulse rounded-md"
-                role="status"
-                aria-label="Loading campaigns"
-              />
-            ) : (
-              <Select
-                value={selectedCampaign}
-                onValueChange={(val) => updateFilters({ selectedCampaign: val })}
-              >
-                <SelectTrigger id="campaign-select">
-                  <SelectValue placeholder="Choose a campaign" />
-                </SelectTrigger>
-                <SelectContent>
-                  {campaignOptions.map((campaign) => (
-                    <SelectItem key={campaign.name} value={campaign.name}>
-                      {campaign.name} ({campaign.count} opportunities)
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            )}
-          </div>
-          <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
-            {hasActiveFilters && (
-              <AdminButton variant="outline" onClick={clearFilters} className="w-full sm:w-auto">
-                Clear Filters
-              </AdminButton>
-            )}
-            <AdminButton
-              variant="default"
-              onClick={handleExport}
-              disabled={
-                isLoadingActivities ||
-                (showStaleLeads ? staleOpportunities.length === 0 : activities.length === 0)
-              }
-              className="w-full sm:w-auto"
-            >
-              Export to CSV
-            </AdminButton>
-          </div>
-        </div>
-
-        <CampaignActivityFilters
-          dateRange={dateRange}
-          setDateRange={setDateRange}
-          datePreset={datePreset}
-          setDatePreset={(val) => updateFilters({ datePreset: val })}
-          setDatePresetHandler={setDatePresetHandler}
-          selectedActivityTypes={selectedActivityTypes}
-          toggleActivityType={toggleActivityType}
-          toggleAllActivityTypes={toggleAllActivityTypes}
-          activityTypeOptions={INTERACTION_TYPE_OPTIONS}
-          activityTypeCounts={activityTypeCounts}
-          selectedSalesRep={selectedSalesRep}
-          setSelectedSalesRep={(val) => updateFilters({ selectedSalesRep: val })}
-          salesRepOptions={salesRepOptions}
-          allCampaignActivitiesCount={totalCampaignActivitiesCount}
-          showStaleLeads={showStaleLeads}
-          setShowStaleLeads={(val) => updateFilters({ showStaleLeads: val })}
-          staleOpportunitiesCount={staleOpportunities.length}
+      {/* Applied Filters Bar + Export */}
+      <div className="flex items-center justify-between gap-2">
+        <AppliedFiltersBar
+          filters={appliedFilters}
+          onResetAll={clearFilters}
+          hasActiveFilters={hasActiveFilters}
         />
+        <AdminButton
+          variant="outline"
+          size="sm"
+          className="h-11 shrink-0 gap-2"
+          onClick={handleExport}
+          disabled={
+            isLoadingActivities ||
+            (showStaleLeads ? staleOpportunities.length === 0 : activities.length === 0) ||
+            (filterState.datePreset === "custom" &&
+              (!filterState.startDate || !filterState.endDate))
+          }
+        >
+          <Download className="h-4 w-4" aria-hidden="true" />
+          Export CSV
+        </AdminButton>
       </div>
-
-      {/* Applied Filters Bar */}
-      <AppliedFiltersBar
-        filters={appliedFilters}
-        onResetAll={clearFilters}
-        hasActiveFilters={hasActiveFilters}
-      />
 
       {/* Error Display */}
       {activitiesError && (
-        <div className="rounded-lg border border-destructive/50 bg-destructive/10 p-4 text-destructive mb-section">
+        <div className="rounded-lg border border-destructive/50 bg-destructive/10 p-4 text-destructive">
           <p className="font-medium">Failed to load campaign activities</p>
           <p className="text-sm">{activitiesError.message}</p>
         </div>
       )}
 
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-content mb-section">
-        <CampaignActivitySummaryCards
-          isLoadingActivities={isFirstLoad}
-          totalActivities={totalActivities}
-          uniqueOrgs={uniqueOrgs}
-          coverageRate={coverageRate}
-          avgActivitiesPerLead={avgActivitiesPerLead}
+      {/* KPI Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-content">
+        <KPICard
+          title="Total Activities"
+          value={totalActivities}
+          icon={Activity}
+          loading={isFirstLoad}
+        />
+        <KPICard title="Orgs Contacted" value={uniqueOrgs} icon={Building2} loading={isFirstLoad} />
+        <KPICard
+          title="Coverage Rate"
+          value={`${coverageRate}%`}
+          icon={Target}
+          loading={isFirstLoad}
+        />
+        <KPICard
+          title="Avg per Lead"
+          value={avgActivitiesPerLead}
+          icon={BarChart3}
+          loading={isFirstLoad}
         />
       </div>
 
       {/* Conditional Rendering: Stale Leads View or Activity Type Breakdown */}
       {isFirstLoad ? (
         <div className="space-y-4" role="status" aria-label="Loading campaign activities">
-          <div className="h-6 bg-muted animate-pulse rounded w-48 mb-4" />
+          <div className="h-6 bg-muted animate-pulse rounded w-48" />
           {[1, 2, 3].map((i) => (
             <Card key={i}>
               <CardHeader className="pb-3">
@@ -525,6 +417,6 @@ export default function CampaignActivityReport() {
           />
         )
       )}
-    </ReportLayout>
+    </div>
   );
 }

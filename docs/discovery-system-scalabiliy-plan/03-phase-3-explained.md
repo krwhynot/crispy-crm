@@ -549,4 +549,4 @@ The integration layer is the phone line to the research librarian. Now Claude ca
 
 ---
 
-**Next:** [Phase 4: Testing and Optimization](./04-phase-4-testing-optimization.md)
+**Next:** [Full Architecture Recap](./blog/12-full-architecture-recap.md)

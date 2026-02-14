@@ -51,6 +51,7 @@ export const quickCreateContactSchema = z.strictObject({
 
   // PASS-THROUGH: Other valid fields
   sales_id: z.coerce.number().int().positive().optional(),
+  secondary_sales_id: z.coerce.number().int().positive().optional(),
   first_seen: z.string().max(50).optional(),
   last_seen: z.string().max(50).optional(),
   quickCreate: z.literal(true), // Must be explicitly true

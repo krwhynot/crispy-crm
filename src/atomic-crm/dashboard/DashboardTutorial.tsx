@@ -1,10 +1,15 @@
 import { useRef, useCallback, useState, useEffect } from "react";
 import { HelpCircle } from "lucide-react";
-import { driver, type Driver } from "driver.js";
+import { driver, type Driver, type DriveStep } from "driver.js";
 import "driver.js/dist/driver.css";
 import { AdminButton } from "@/components/admin/AdminButton";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { DASHBOARD_TUTORIAL_STEPS } from "./dashboardTutorialSteps";
+
+interface DashboardTutorialProps {
+  /** Tutorial steps to use. Defaults to V3 steps for rollback safety. */
+  steps?: DriveStep[];
+}
 
 /**
  * Standalone floating tutorial button for the Principal Dashboard.
@@ -15,10 +20,11 @@ import { DASHBOARD_TUTORIAL_STEPS } from "./dashboardTutorialSteps";
  * - No TutorialProvider context dependency
  * - No progress persistence
  * - Covers all dashboard sections via Driver.js tour
+ * - Accepts optional `steps` prop — V3 gets default, V4 passes explicit steps
  *
  * Follows the same pattern as ContactFormTutorial.tsx
  */
-export function DashboardTutorial() {
+export function DashboardTutorial({ steps }: DashboardTutorialProps) {
   const driverRef = useRef<Driver | null>(null);
   const [isActive, setIsActive] = useState(false);
 
@@ -52,7 +58,7 @@ export function DashboardTutorial() {
       nextBtnText: "Next →",
       prevBtnText: "← Back",
       doneBtnText: "Done ✓",
-      steps: DASHBOARD_TUTORIAL_STEPS,
+      steps: steps ?? DASHBOARD_TUTORIAL_STEPS,
       onDestroyStarted: () => {
         // Cleanup on close
         setIsActive(false);

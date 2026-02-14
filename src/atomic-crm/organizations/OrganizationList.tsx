@@ -147,6 +147,7 @@ const OrganizationListActions = () => (
 
 const exporter: Exporter<OrganizationRecord> = async (records, fetchRelatedRecords) => {
   const sales = await fetchRelatedRecords<Sale>(records, "sales_id", "sales");
+  const secondarySales = await fetchRelatedRecords<Sale>(records, "secondary_sales_id", "sales");
   const segments = await fetchRelatedRecords<Segment>(records, "segment_id", "segments");
 
   // Collect all parent organization IDs
@@ -180,6 +181,9 @@ const exporter: Exporter<OrganizationRecord> = async (records, fetchRelatedRecor
       sales_rep: org.sales_id
         ? `${sales[org.sales_id]?.first_name} ${sales[org.sales_id]?.last_name}`
         : undefined,
+      secondary_sales_rep: org.secondary_sales_id
+        ? `${secondarySales[org.secondary_sales_id]?.first_name} ${secondarySales[org.secondary_sales_id]?.last_name}`
+        : undefined,
 
       // Contact information
       website: org.website ?? null,
@@ -201,6 +205,7 @@ const exporter: Exporter<OrganizationRecord> = async (records, fetchRelatedRecor
       // Metadata
       created_at: org.created_at!,
       sales_id: org.sales_id ? String(org.sales_id) : null,
+      secondary_sales_id: org.secondary_sales_id ? String(org.secondary_sales_id) : null,
       segment_id: org.segment_id ? String(org.segment_id) : null,
       parent_organization_id: org.parent_organization_id
         ? String(org.parent_organization_id)

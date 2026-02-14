@@ -58,6 +58,12 @@ export const ORGANIZATION_FILTER_CONFIG = validateFilterConfig([
     type: "reference",
     reference: "sales",
   },
+  {
+    key: "secondary_sales_id",
+    label: "Secondary Manager",
+    type: "reference",
+    reference: "sales",
+  },
   // Created date filter (used by OrganizationSavedQueries "Recent Prospects" preset)
   {
     key: "created_at_gte",

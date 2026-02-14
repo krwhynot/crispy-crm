@@ -20,6 +20,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { UserPlus } from "lucide-react";
+import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import type { Sale } from "@/atomic-crm/types";
 import { formatName } from "@/atomic-crm/utils/formatName";
 import { ucFirst } from "@/atomic-crm/utils";
@@ -49,7 +51,13 @@ export const BulkReassignButton = <T extends ResourceItem>({
 }: BulkReassignButtonProps<T>) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [selectedSalesId, setSelectedSalesId] = useState<string>("");
+  const [selectedRole, setSelectedRole] = useState<"primary" | "secondary">("primary");
   const [isProcessing, setIsProcessing] = useState(false);
+
+  const FIELD_MAP: Record<string, { primary: string; secondary: string }> = {
+    contacts: { primary: "sales_id", secondary: "secondary_sales_id" },
+    organizations: { primary: "sales_id", secondary: "secondary_sales_id" },
+  };
 
   const abortControllerRef = useRef<AbortController | null>(null);
 
@@ -79,11 +87,13 @@ export const BulkReassignButton = <T extends ResourceItem>({
   const handleOpenDialog = () => {
     setIsDialogOpen(true);
     setSelectedSalesId("");
+    setSelectedRole("primary");
   };
 
   const handleCloseDialog = () => {
     setIsDialogOpen(false);
     setSelectedSalesId("");
+    setSelectedRole("primary");
   };
 
   const handleCancelOperation = () => {
@@ -117,7 +127,9 @@ export const BulkReassignButton = <T extends ResourceItem>({
         try {
           await dataProvider.update(resource, {
             id,
-            data: { sales_id: parseInt(selectedSalesId) },
+            data: {
+              [FIELD_MAP[resource]?.[selectedRole] ?? "sales_id"]: parseInt(selectedSalesId),
+            },
             previousData: data?.find((item) => item.id === id),
           });
           successCount++;
@@ -225,6 +237,30 @@ export const BulkReassignButton = <T extends ResourceItem>({
                 ))}
               </div>
             </div>
+
+            {/* Role selection */}
+            {FIELD_MAP[resource] && (
+              <div className="space-y-2">
+                <span id="reassign-role-label" className="text-sm font-medium">
+                  Assign as
+                </span>
+                <RadioGroup
+                  value={selectedRole}
+                  onValueChange={(value) => setSelectedRole(value as "primary" | "secondary")}
+                  className="flex gap-4"
+                  aria-labelledby="reassign-role-label"
+                >
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="primary" id="role-primary" />
+                    <Label htmlFor="role-primary">Primary Account Manager</Label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="secondary" id="role-secondary" />
+                    <Label htmlFor="role-secondary">Secondary Account Manager</Label>
+                  </div>
+                </RadioGroup>
+              </div>
+            )}
 
             <div className="space-y-2">
               <label htmlFor="bulk-reassign-select" className="text-sm font-medium">

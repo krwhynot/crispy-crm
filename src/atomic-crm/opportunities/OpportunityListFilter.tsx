@@ -132,13 +132,27 @@ export const OpportunityListFilter = () => {
   const today = new Date();
   const thirtyDaysFromNow = addDays(today, 30);
 
-  const handlePresetClick = (filters: Record<string, any>) => {
-    setFilters({ ...filterValues, ...filters });
+  const handlePresetClick = (filters: Record<string, unknown>) => {
+    if (isPresetActive(filters)) {
+      // Toggle OFF: remove preset keys from current filters
+      const next = { ...filterValues };
+      for (const key of Object.keys(filters)) {
+        delete next[key];
+      }
+      setFilters(next);
+    } else {
+      // Toggle ON: merge preset into current filters
+      setFilters({ ...filterValues, ...filters });
+    }
   };
 
-  const isPresetActive = (presetFilters: Record<string, any>): boolean => {
+  const isPresetActive = (presetFilters: Record<string, unknown>): boolean => {
     return Object.entries(presetFilters).every(([key, value]) => {
       const currentValue = filterValues?.[key];
+      if (key === "$or" && Array.isArray(value) && Array.isArray(currentValue)) {
+        // Deep compare $or arrays (both are arrays of {field: value} objects)
+        return JSON.stringify(value) === JSON.stringify(currentValue);
+      }
       if (Array.isArray(value) && Array.isArray(currentValue)) {
         return value.every((v) => currentValue.includes(v));
       }
@@ -163,9 +177,19 @@ export const OpportunityListFilter = () => {
         >
           <AdminButton
             type="button"
-            variant={isPresetActive({ opportunity_owner_id: identity?.id }) ? "default" : "outline"}
+            variant={
+              isPresetActive({
+                $or: [{ opportunity_owner_id: identity?.id }, { account_manager_id: identity?.id }],
+              })
+                ? "default"
+                : "outline"
+            }
             size="sm"
-            onClick={() => handlePresetClick({ opportunity_owner_id: identity?.id })}
+            onClick={() =>
+              handlePresetClick({
+                $or: [{ opportunity_owner_id: identity?.id }, { account_manager_id: identity?.id }],
+              })
+            }
             className="w-full justify-start"
             title="Opportunities I manage"
           >
@@ -349,7 +373,11 @@ export const OpportunityListFilter = () => {
           </Select>
         </FilterCategory>
 
-        <OwnerFilterDropdown source="opportunity_owner_id" label="Owner" />
+        <OwnerFilterDropdown
+          source="opportunity_owner_id"
+          secondarySource="account_manager_id"
+          label="Owner"
+        />
       </div>
     </div>
   );
