@@ -109,10 +109,5 @@ export function StandardListLayout({
     </div>
   );
 
-  // Wrap in FilterSidebarProvider when toolbar is enabled (needs context for sidebar toggle)
-  if (sortFields) {
-    return <FilterSidebarProvider storageKey={storageKey}>{content}</FilterSidebarProvider>;
-  }
-
-  return content;
+  return <FilterSidebarProvider storageKey={storageKey}>{content}</FilterSidebarProvider>;
 }

@@ -7,7 +7,7 @@ import {
   useState,
   type ReactNode,
 } from "react";
-import { useListContext } from "ra-core";
+import { ListContext } from "ra-core";
 
 const DEFAULT_STORAGE_KEY = "crm-filter-sidebar-collapsed";
 
@@ -39,7 +39,11 @@ export function FilterSidebarProvider({
   children,
   storageKey = DEFAULT_STORAGE_KEY,
 }: FilterSidebarProviderProps) {
-  const { filterValues } = useListContext();
+  // Use ListContext directly (returns null outside <List>) instead of
+  // useListContext() which throws when no ListContext provider exists.
+  // This makes the provider safe for non-List pages like Reports.
+  const listContext = useContext(ListContext);
+  const filterValues = listContext?.filterValues;
 
   // Desktop sidebar collapse state — persisted to localStorage
   const [isCollapsed, setIsCollapsed] = useState(() => {
