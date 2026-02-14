@@ -132,4 +132,43 @@ describe("Filter Registry Completeness", () => {
       expect(missingCommonFields).toHaveLength(0);
     });
   });
+
+  describe("STI Pattern: tasks → activities filter coverage", () => {
+    // tasksHandler forwards getList("tasks", ...) to activitiesHandler.getList("activities", ...).
+    // withValidation inside activitiesHandler validates filters against the "activities"
+    // registry. Any task filter field that is a real activities column but missing from
+    // the activities list will cause HttpError 400 at runtime.
+    // See: Sentry 7219630052 (due_date@lt invalid for activities)
+
+    // Fields that task-domain code actively uses as filters AND are real activities columns.
+    // "title" is excluded: tasksHandler maps title↔subject (task alias, not a DB column).
+    const TASK_FILTER_FIELDS_ROUTED_TO_ACTIVITIES = [
+      "due_date", // useKPIMetrics, TaskListFilter
+      "completed_at", // useMyPerformance
+      "completed", // useKPIMetrics, TaskListFilter
+      "sales_id", // useKPIMetrics, useMyPerformance, TaskListFilter
+      "type", // Task type filtering
+      "contact_id", // Task relationship filtering
+      "opportunity_id", // Task relationship filtering
+    ];
+
+    it("activities filter list should include task filter fields used in STI routing", () => {
+      const activitiesFields = filterableFields["activities"];
+      expect(activitiesFields).toBeDefined();
+
+      const missingFields = TASK_FILTER_FIELDS_ROUTED_TO_ACTIVITIES.filter(
+        (field) => !activitiesFields!.includes(field)
+      );
+
+      if (missingFields.length > 0) {
+        throw new Error(
+          `Task filter fields missing from activities registry (STI routing breaks): [${missingFields.join(", ")}]\n` +
+            `tasksHandler forwards to activitiesHandler which validates against "activities" filter list.\n` +
+            `Add these fields to the activities array in filters/activities.ts`
+        );
+      }
+
+      expect(missingFields).toHaveLength(0);
+    });
+  });
 });

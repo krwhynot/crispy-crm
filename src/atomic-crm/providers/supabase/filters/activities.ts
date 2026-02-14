@@ -30,6 +30,8 @@ export const activitiesFilters = {
     "created_by", // FK to sales (for filtering by creator/owner - activities table uses created_by, NOT sales_id)
     "sales_id", // Task assignee filtering (STI: tasks stored in activities table)
     "completed", // Task completion filtering (STI: tasks stored in activities table)
+    "due_date", // Task due date filtering (STI: used by useKPIMetrics, TaskListFilter)
+    "completed_at", // Task completion date filtering (STI: used by useMyPerformance)
     "q", // Special: full-text search parameter
     // Nested relationship filters for CampaignActivityReport
     "opportunities.campaign", // Filter by related opportunity's campaign
