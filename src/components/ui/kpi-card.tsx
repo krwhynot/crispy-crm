@@ -118,7 +118,7 @@ export function KPICard({
             </div>
           )}
           <div className="flex-1 min-w-0">
-            <span className="text-[11px] font-medium text-muted-foreground uppercase tracking-wide">
+            <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
               {title}
             </span>
             <div className="flex items-baseline gap-1.5">
@@ -128,7 +128,7 @@ export function KPICard({
               {trend && (
                 <span
                   className={cn(
-                    "text-[10px] font-medium",
+                    "text-[11px] font-medium",
                     trend.direction === "up" && "text-success",
                     trend.direction === "down" && "text-destructive",
                     trend.direction === "neutral" && "text-muted-foreground"
@@ -144,7 +144,9 @@ export function KPICard({
               )}
             </div>
             {subtitle && (
-              <p className="text-[10px] text-muted-foreground truncate leading-tight">{subtitle}</p>
+              <p className="text-[11px] text-muted-foreground truncate leading-tight dark:font-medium">
+                {subtitle}
+              </p>
             )}
           </div>
         </div>

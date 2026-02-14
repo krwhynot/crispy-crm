@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useTheme } from "@/components/ra-wrappers/theme-provider";
 
 /** Chart color palette derived from CSS custom properties */
 interface ChartColors {
@@ -9,6 +10,9 @@ interface ChartColors {
   warning: string;
   destructive: string;
   muted: string;
+  gridline: string;
+  axisText: string;
+  foreground: string;
 }
 
 /** Chart font configuration */
@@ -55,6 +59,9 @@ const DEFAULT_THEME: ChartTheme = {
     warning: "var(--warning)",
     destructive: "var(--destructive)",
     muted: "var(--muted)",
+    gridline: "var(--chart-gridline)",
+    axisText: "var(--chart-axis-text)",
+    foreground: "var(--foreground)",
   },
   font: {
     family: "var(--font-sans, system-ui)",
@@ -63,6 +70,7 @@ const DEFAULT_THEME: ChartTheme = {
 };
 
 export function useChartTheme(): ChartTheme {
+  const { resolvedTheme } = useTheme();
   const [theme, setTheme] = useState<ChartTheme>(DEFAULT_THEME);
 
   useEffect(() => {
@@ -94,6 +102,9 @@ export function useChartTheme(): ChartTheme {
         warning: getCssVar("warning"),
         destructive: getCssVar("destructive"),
         muted: getCssVar("muted"),
+        gridline: getCssVar("chart-gridline"),
+        axisText: getCssVar("chart-axis-text"),
+        foreground: getCssVar("foreground"),
       },
       font: {
         // Font variable with system-ui fallback (safe fallback for non-color)
@@ -101,7 +112,7 @@ export function useChartTheme(): ChartTheme {
         size: 12,
       },
     });
-  }, []);
+  }, [resolvedTheme]);
 
   return theme;
 }

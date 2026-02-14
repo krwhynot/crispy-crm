@@ -86,9 +86,10 @@ export function TopPrincipalsChart({ data }: TopPrincipalsChartProps) {
         x: {
           beginAtZero: true,
           grid: {
-            color: "var(--chart-gridline)",
+            color: colors.gridline,
           },
           ticks: {
+            color: colors.axisText,
             font: {
               family: font.family,
               size: font.size,
@@ -101,6 +102,7 @@ export function TopPrincipalsChart({ data }: TopPrincipalsChartProps) {
             display: false,
           },
           ticks: {
+            color: colors.axisText,
             font: {
               family: font.family,
               size: font.size,
@@ -109,7 +111,7 @@ export function TopPrincipalsChart({ data }: TopPrincipalsChartProps) {
         },
       },
     };
-  }, [topData, font]);
+  }, [topData, font, colors.gridline, colors.axisText]);
 
   if (data.length === 0) {
     return (

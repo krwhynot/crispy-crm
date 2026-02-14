@@ -3,8 +3,6 @@
  *
  * Three-way toggle (Light/Dark/System) with proper hydration safety.
  * Uses mounted check to prevent hydration mismatch between server and client.
- *
- * @see docs/decisions/dark-mode-best-practices.md - Hydration Safety section
  */
 
 import { useState, useEffect } from "react";

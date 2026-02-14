@@ -70,6 +70,7 @@ export function RepPerformanceChart({ data }: RepPerformanceChartProps) {
         legend: {
           position: "top" as const,
           labels: {
+            color: colors.foreground,
             font: {
               family: font.family,
               size: 14,
@@ -93,6 +94,7 @@ export function RepPerformanceChart({ data }: RepPerformanceChartProps) {
             display: false,
           },
           ticks: {
+            color: colors.axisText,
             font: {
               family: font.family,
               size: font.size,
@@ -102,9 +104,10 @@ export function RepPerformanceChart({ data }: RepPerformanceChartProps) {
         y: {
           beginAtZero: true,
           grid: {
-            color: "var(--chart-gridline)",
+            color: colors.gridline,
           },
           ticks: {
+            color: colors.axisText,
             font: {
               family: font.family,
               size: font.size,
@@ -114,7 +117,7 @@ export function RepPerformanceChart({ data }: RepPerformanceChartProps) {
         },
       },
     };
-  }, [topData, font]);
+  }, [topData, font, colors.gridline, colors.axisText, colors.foreground]);
 
   if (data.length === 0) {
     return (

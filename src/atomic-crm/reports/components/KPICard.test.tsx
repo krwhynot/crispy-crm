@@ -158,6 +158,39 @@ describe("KPICard", () => {
     });
   });
 
+  describe("dark-mode readability", () => {
+    it("uses text-xs for title readability", () => {
+      renderWithAdminContext(<KPICard title="Dark Mode Title" value="42" icon={TrendingUp} />);
+
+      const title = screen.getByText("Dark Mode Title");
+      expect(title).toHaveClass("text-xs");
+    });
+
+    it("uses text-[11px] for trend readability", () => {
+      renderWithAdminContext(
+        <KPICard
+          title="Trend KPI"
+          value="10"
+          trend={{ value: 5, direction: "up" }}
+          icon={TrendingUp}
+        />
+      );
+
+      const trend = screen.getByText(/↑5%/);
+      expect(trend).toHaveClass("text-[11px]");
+    });
+
+    it("uses text-[11px] and dark:font-medium for subtitle readability", () => {
+      renderWithAdminContext(
+        <KPICard title="Subtitle KPI" value="99" subtitle="vs last week" icon={TrendingUp} />
+      );
+
+      const subtitle = screen.getByText("vs last week");
+      expect(subtitle).toHaveClass("text-[11px]");
+      expect(subtitle).toHaveClass("dark:font-medium");
+    });
+  });
+
   describe("loading state", () => {
     it("shows loading skeleton when loading is true", () => {
       renderWithAdminContext(<KPICard title="Loading KPI" value="0" loading={true} />);

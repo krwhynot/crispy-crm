@@ -2,8 +2,16 @@ import { RefreshButton } from "@/components/ra-wrappers/refresh-button";
 import { ThemeModeToggle } from "@/components/ra-wrappers/theme-mode-toggle";
 import { UserMenu } from "@/components/ra-wrappers/user-menu";
 import { useUserMenu } from "ra-core";
-import { DropdownMenuItem, DropdownMenuSeparator } from "@/components/ui/dropdown-menu";
-import { Settings, Users } from "lucide-react";
+import {
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Check, Moon, Monitor, Settings, Sun, Users } from "lucide-react";
+import { useTheme } from "@/components/ra-wrappers/theme-provider";
+import { cn } from "@/lib/utils";
 import { CanAccess } from "ra-core";
 import { Link, matchPath, useLocation } from "react-router-dom";
 import { useAppBranding } from "../root/ConfigurationContext";
@@ -104,6 +112,8 @@ const Header = () => {
                 <DropdownMenuSeparator />
                 <TutorialLauncher />
                 <DropdownMenuSeparator />
+                <ThemeMenu />
+                <DropdownMenuSeparator />
                 <CanAccess resource="sales" action="list">
                   <UsersMenu />
                 </CanAccess>
@@ -139,6 +149,46 @@ const NavigationTab = ({
     {label}
   </Link>
 );
+
+const ThemeMenu = () => {
+  const { onClose } = useUserMenu() ?? {};
+  const { theme, setTheme, resolvedTheme } = useTheme();
+
+  const handleSelect = (value: "light" | "dark" | "system") => {
+    setTheme(value);
+    onClose?.();
+  };
+
+  return (
+    <DropdownMenuSub>
+      <DropdownMenuSubTrigger>
+        <Sun className="h-4 w-4 mr-2 dark:hidden" />
+        <Moon className="h-4 w-4 mr-2 hidden dark:block" />
+        Theme
+      </DropdownMenuSubTrigger>
+      <DropdownMenuSubContent>
+        <DropdownMenuItem onClick={() => handleSelect("light")}>
+          <Sun className="mr-2 h-4 w-4" />
+          Light
+          <Check className={cn("ml-auto h-4 w-4", theme !== "light" && "opacity-0")} />
+        </DropdownMenuItem>
+        <DropdownMenuItem onClick={() => handleSelect("dark")}>
+          <Moon className="mr-2 h-4 w-4" />
+          Dark
+          <Check className={cn("ml-auto h-4 w-4", theme !== "dark" && "opacity-0")} />
+        </DropdownMenuItem>
+        <DropdownMenuItem onClick={() => handleSelect("system")}>
+          <Monitor className="mr-2 h-4 w-4" />
+          System
+          {theme === "system" && (
+            <span className="ml-1 text-xs text-muted-foreground">({resolvedTheme})</span>
+          )}
+          <Check className={cn("ml-auto h-4 w-4", theme !== "system" && "opacity-0")} />
+        </DropdownMenuItem>
+      </DropdownMenuSubContent>
+    </DropdownMenuSub>
+  );
+};
 
 const UsersMenu = () => {
   const { onClose } = useUserMenu() ?? {};

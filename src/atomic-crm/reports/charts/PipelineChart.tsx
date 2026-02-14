@@ -57,6 +57,7 @@ export function PipelineChart({ data }: PipelineChartProps) {
         legend: {
           position: "right" as const,
           labels: {
+            color: colors.foreground,
             font: {
               family: font.family,
               size: 14,
@@ -75,7 +76,7 @@ export function PipelineChart({ data }: PipelineChartProps) {
         },
       },
     };
-  }, [font]);
+  }, [font, colors.foreground]);
 
   if (data.length === 0) {
     return (

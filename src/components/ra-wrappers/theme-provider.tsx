@@ -8,8 +8,6 @@
  * - Cross-tab synchronization
  * - Transition disabling during theme switch
  * - color-scheme CSS property management
- *
- * @see docs/decisions/dark-mode-best-practices.md
  */
 
 import { ThemeProvider as NextThemesProvider } from "next-themes";

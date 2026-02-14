@@ -2,6 +2,7 @@ import { useMemo } from "react";
 import { Line } from "react-chartjs-2";
 import { useChartTheme } from "../hooks/useChartTheme";
 import type { TooltipContextY } from "./chartUtils";
+import { withOklchAlpha } from "./chartUtils";
 import "./chartSetup";
 
 interface ActivityTrendChartProps {
@@ -27,7 +28,7 @@ export function ActivityTrendChart({ data }: ActivityTrendChartProps) {
           label: "Activities",
           data: data.map((d) => d.count),
           borderColor: colors.primary,
-          backgroundColor: `${colors.primary}20`,
+          backgroundColor: withOklchAlpha(colors.primary, 0.125),
           fill: true,
           tension: 0.3,
           pointRadius: 6,
@@ -73,6 +74,7 @@ export function ActivityTrendChart({ data }: ActivityTrendChartProps) {
             display: false,
           },
           ticks: {
+            color: colors.axisText,
             font: {
               family: font.family,
               size: font.size,
@@ -82,9 +84,10 @@ export function ActivityTrendChart({ data }: ActivityTrendChartProps) {
         y: {
           beginAtZero: true,
           grid: {
-            color: "var(--chart-gridline)",
+            color: colors.gridline,
           },
           ticks: {
+            color: colors.axisText,
             font: {
               family: font.family,
               size: font.size,
@@ -94,7 +97,7 @@ export function ActivityTrendChart({ data }: ActivityTrendChartProps) {
         },
       },
     };
-  }, [font]);
+  }, [font, colors.gridline, colors.axisText]);
 
   if (data.length === 0) {
     return (
