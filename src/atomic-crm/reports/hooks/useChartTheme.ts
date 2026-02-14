@@ -13,6 +13,15 @@ interface ChartColors {
   gridline: string;
   axisText: string;
   foreground: string;
+  /** Design system chart palette */
+  chart1: string;
+  chart2: string;
+  chart3: string;
+  chart4: string;
+  chart5: string;
+  chart6: string;
+  chart7: string;
+  chart8: string;
 }
 
 /** Chart font configuration */
@@ -62,6 +71,14 @@ const DEFAULT_THEME: ChartTheme = {
     gridline: "var(--chart-gridline)",
     axisText: "var(--chart-axis-text)",
     foreground: "var(--foreground)",
+    chart1: "var(--chart-1)",
+    chart2: "var(--chart-2)",
+    chart3: "var(--chart-3)",
+    chart4: "var(--chart-4)",
+    chart5: "var(--chart-5)",
+    chart6: "var(--chart-6)",
+    chart7: "var(--chart-7)",
+    chart8: "var(--chart-8)",
   },
   font: {
     family: "var(--font-sans, system-ui)",
@@ -105,6 +122,14 @@ export function useChartTheme(): ChartTheme {
         gridline: getCssVar("chart-gridline"),
         axisText: getCssVar("chart-axis-text"),
         foreground: getCssVar("foreground"),
+        chart1: getCssVar("chart-1"),
+        chart2: getCssVar("chart-2"),
+        chart3: getCssVar("chart-3"),
+        chart4: getCssVar("chart-4"),
+        chart5: getCssVar("chart-5"),
+        chart6: getCssVar("chart-6"),
+        chart7: getCssVar("chart-7"),
+        chart8: getCssVar("chart-8"),
       },
       font: {
         // Font variable with system-ui fallback (safe fallback for non-color)

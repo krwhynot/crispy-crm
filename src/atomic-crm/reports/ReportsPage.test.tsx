@@ -1,5 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { renderWithAdminContext } from "@/tests/utils/render-admin";
 import ReportsPage from "./ReportsPage";
 
@@ -64,11 +65,24 @@ describe("ReportsPage", () => {
     expect(tabList).toHaveClass("lg:grid-cols-4");
   });
 
-  it("renders filter sidebar via StandardListLayout", () => {
+  it("hides filter sidebar on Overview tab (uses inline context header instead)", () => {
     renderWithAdminContext(<ReportsPage />);
 
-    // Filters are now in a sidebar via StandardListLayout, not inline TabFilterBar
-    // The sidebar includes a "Filters" label and a filter navigation
+    // Overview tab uses ReportContextHeader instead of sidebar
+    expect(screen.queryByLabelText("Filter reports")).not.toBeInTheDocument();
+    // Context header with Overview filters should be present
+    expect(screen.getByRole("toolbar", { name: "Overview filters" })).toBeInTheDocument();
+  });
+
+  it("shows filter sidebar on non-Overview tabs", async () => {
+    const user = userEvent.setup();
+    renderWithAdminContext(<ReportsPage />);
+
+    // Switch to Opportunities tab
+    const oppsTab = screen.getByRole("tab", { name: /^opportunities$/i });
+    await user.click(oppsTab);
+
+    // Sidebar should now be visible for non-overview tabs
     expect(screen.getByLabelText("Filter reports")).toBeInTheDocument();
   });
 

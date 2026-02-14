@@ -5,6 +5,7 @@
  */
 
 import type { TooltipItem } from "chart.js";
+import type { ChartTheme } from "../hooks/useChartTheme";
 
 /**
  * Truncates a label to a maximum length, appending "..." if truncated.
@@ -30,6 +31,46 @@ export function withOklchAlpha(oklchColor: string, alpha: number): string {
     return `oklch(${trimmed.slice(6, -1)} / ${alpha})`;
   }
   return trimmed;
+}
+
+/** Base chart options shared by all chart components */
+export function createBaseChartOptions(_colors: ChartTheme["colors"], _font: ChartTheme["font"]) {
+  return {
+    responsive: true,
+    maintainAspectRatio: false,
+    layout: {
+      padding: { top: 12, right: 24, bottom: 12, left: 24 },
+    },
+    interaction: {
+      mode: "nearest" as const,
+      intersect: false,
+    },
+  };
+}
+
+/** Standard axis configuration with dashed gridlines and consistent font */
+export function createAxisConfig(
+  colors: ChartTheme["colors"],
+  font: ChartTheme["font"],
+  opts?: { beginAtZero?: boolean; display?: boolean; stepSize?: number }
+) {
+  return {
+    ...(opts?.beginAtZero !== undefined && { beginAtZero: opts.beginAtZero }),
+    grid: {
+      display: opts?.display !== false,
+      color: colors.gridline,
+      borderDash: [4, 4],
+      drawBorder: false,
+    },
+    ticks: {
+      color: colors.axisText,
+      font: {
+        family: font.family,
+        size: 11,
+      },
+      ...(opts?.stepSize !== undefined && { stepSize: opts.stepSize }),
+    },
+  };
 }
 
 /**

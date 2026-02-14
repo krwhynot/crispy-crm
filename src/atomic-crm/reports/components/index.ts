@@ -11,4 +11,5 @@ export { EmptyState } from "@/components/ui/empty-state";
 export { KPICard } from "@/components/ui/kpi-card";
 export { ChartWrapper } from "./ChartWrapper";
 export { ReportPageShell } from "./ReportPageShell";
+export { ReportContextHeader } from "./ReportContextHeader";
 export { KPIDrillDown } from "./KPIDrillDown";

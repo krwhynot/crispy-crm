@@ -2,6 +2,10 @@
  * ReportFilterSidebar -- Switcher that renders the correct filter sidebar
  * based on the active report tab.
  *
+ * Note: Overview tab no longer uses the sidebar — its filters are in
+ * ReportContextHeader (inline header bar). This sidebar only renders
+ * for opportunities, weekly, and campaign tabs.
+ *
  * Includes a "Clear filters" button when any filter deviates from defaults.
  */
 import { useCallback } from "react";
@@ -11,18 +15,12 @@ import { RotateCcw } from "lucide-react";
 import { AdminButton } from "@/components/admin/AdminButton";
 import { INTERACTION_TYPE_OPTIONS } from "@/atomic-crm/validation/activities";
 import type {
-  OverviewFilterState,
   CampaignFilterState,
   WeeklyFilterState,
   OpportunitiesFilterState,
 } from "@/atomic-crm/reports/hooks";
-import {
-  OVERVIEW_DEFAULTS,
-  CAMPAIGN_DEFAULTS,
-  OPPORTUNITIES_DEFAULTS,
-} from "@/atomic-crm/reports/hooks";
+import { CAMPAIGN_DEFAULTS, OPPORTUNITIES_DEFAULTS } from "@/atomic-crm/reports/hooks";
 
-import { OverviewFilterSidebar, useOverviewHasActiveFilters } from "./OverviewFilterSidebar";
 import {
   OpportunitiesFilterSidebar,
   useOpportunitiesHasActiveFilters,
@@ -39,13 +37,11 @@ const WEEKLY_DEFAULTS: WeeklyFilterState = { start: "", end: "" };
 const ALL_ACTIVITY_TYPE_VALUES = INTERACTION_TYPE_OPTIONS.map((o) => o.value);
 
 export function ReportFilterSidebar({ activeTab }: ReportFilterSidebarProps) {
-  const overviewActive = useOverviewHasActiveFilters();
   const opportunitiesActive = useOpportunitiesHasActiveFilters();
   const weeklyActive = useWeeklyHasActiveFilters();
   const campaignActive = useCampaignHasActiveFilters();
 
   // Store setters for resetting each tab
-  const [, setOverview] = useStore<OverviewFilterState>("reports.overview", OVERVIEW_DEFAULTS);
   const [, setOpportunities] = useStore<OpportunitiesFilterState>(
     "reports.opportunities",
     OPPORTUNITIES_DEFAULTS
@@ -58,16 +54,12 @@ export function ReportFilterSidebar({ activeTab }: ReportFilterSidebarProps) {
   );
 
   const hasActiveFilters =
-    (activeTab === "overview" && overviewActive) ||
     (activeTab === "opportunities" && opportunitiesActive) ||
     (activeTab === "weekly" && weeklyActive) ||
     (activeTab === "campaign" && campaignActive);
 
   const handleReset = useCallback(() => {
     switch (activeTab) {
-      case "overview":
-        setOverview(OVERVIEW_DEFAULTS);
-        break;
       case "opportunities":
         setOpportunities(OPPORTUNITIES_DEFAULTS);
         break;
@@ -83,19 +75,11 @@ export function ReportFilterSidebar({ activeTab }: ReportFilterSidebarProps) {
         });
         break;
     }
-  }, [
-    activeTab,
-    setOverview,
-    setOpportunities,
-    setWeekly,
-    setCampaign,
-    campaignState.selectedCampaign,
-  ]);
+  }, [activeTab, setOpportunities, setWeekly, setCampaign, campaignState.selectedCampaign]);
 
   return (
     <nav aria-label="Report filters" className="flex flex-col gap-1 w-full">
-      {/* Tab-specific filter panel */}
-      {activeTab === "overview" && <OverviewFilterSidebar />}
+      {/* Tab-specific filter panel (overview uses ReportContextHeader instead) */}
       {activeTab === "opportunities" && <OpportunitiesFilterSidebar />}
       {activeTab === "weekly" && <WeeklyFilterSidebar />}
       {activeTab === "campaign" && <CampaignFilterSidebar />}

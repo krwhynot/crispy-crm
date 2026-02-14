@@ -8,6 +8,7 @@ import { AdminButton } from "@/components/admin/AdminButton";
 import { StandardListLayout } from "@/components/layouts/StandardListLayout";
 import { cleanupOldReportKeys } from "./utils/cleanupMigration";
 import { ReportPageShell } from "./components/ReportPageShell";
+import { ReportContextHeader } from "./components/ReportContextHeader";
 import { ReportFilterSidebar } from "./filters/ReportFilterSidebar";
 import {
   buildShareUrl,
@@ -98,6 +99,7 @@ export default function ReportsPage() {
     <ReportPageShell
       title="Reports & Analytics"
       breadcrumbs={breadcrumbs}
+      contextHeader={<ReportContextHeader activeTab={activeTab} />}
       actions={
         <AdminButton
           variant="outline"
@@ -125,6 +127,7 @@ export default function ReportsPage() {
         filterComponent={<ReportFilterSidebar activeTab={activeTab} />}
         wrapMainInCard={false}
         storageKey="crm-report-sidebar-collapsed"
+        showFilterSidebar={activeTab !== "overview"}
       >
         <Tabs value={activeTab} onValueChange={handleTabChange}>
           <TabsList className="grid w-full grid-cols-2 lg:grid-cols-4 h-auto bg-transparent p-0 border-b border-border rounded-none">

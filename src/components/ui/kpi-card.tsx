@@ -2,8 +2,10 @@
 
 import { cva, type VariantProps } from "class-variance-authority";
 import { Card, CardContent } from "@/components/ui/card";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Info } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
 const kpiCardVariants = cva(
@@ -29,6 +31,10 @@ export interface KPICardProps extends VariantProps<typeof kpiCardVariants> {
   icon?: LucideIcon;
   subtitle?: string;
   trend?: { value: number; direction: "up" | "down" | "neutral" };
+  /** Comparison context label next to trend (e.g., "vs last week", "No prior data") */
+  comparisonLabel?: string;
+  /** Tooltip text shown on hover of (i) icon after title */
+  infoTooltip?: string;
   loading?: boolean;
   onClick?: () => void;
   className?: string;
@@ -41,6 +47,8 @@ export function KPICard({
   icon: Icon,
   subtitle,
   trend,
+  comparisonLabel,
+  infoTooltip,
   loading = false,
   variant,
   onClick,
@@ -118,8 +126,21 @@ export function KPICard({
             </div>
           )}
           <div className="flex-1 min-w-0">
-            <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
+            <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide inline-flex items-center gap-1">
               {title}
+              {infoTooltip && (
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Info
+                      className="h-3 w-3 text-muted-foreground/60 cursor-help shrink-0"
+                      aria-label={`Info: ${infoTooltip}`}
+                    />
+                  </TooltipTrigger>
+                  <TooltipContent side="top" className="max-w-xs text-xs">
+                    {infoTooltip}
+                  </TooltipContent>
+                </Tooltip>
+              )}
             </span>
             <div className="flex items-baseline gap-1.5">
               <span className={cn("text-lg font-bold truncate leading-tight", valueStyle)}>
@@ -139,8 +160,13 @@ export function KPICard({
                     : trend.direction === "down"
                       ? "\u2193"
                       : "\u2192"}
-                  {Math.abs(trend.value)}%
+                  {trend.value === 0 && trend.direction === "neutral"
+                    ? ""
+                    : `${Math.abs(trend.value)}%`}
                 </span>
+              )}
+              {comparisonLabel && (
+                <span className="text-[10px] text-muted-foreground">{comparisonLabel}</span>
               )}
             </div>
             {subtitle && (

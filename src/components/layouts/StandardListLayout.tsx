@@ -52,6 +52,8 @@ interface StandardListLayoutProps {
   overflowActions?: ReactNode;
   /** Show filter toggle button in toolbar (default: true) */
   showFilterToggle?: boolean;
+  /** Show the filter sidebar (default: true). Set false to hide sidebar entirely (e.g., Overview tab uses inline header instead) */
+  showFilterSidebar?: boolean;
 }
 
 export function StandardListLayout({
@@ -67,10 +69,15 @@ export function StandardListLayout({
   viewSwitcher,
   overflowActions,
   showFilterToggle,
+  showFilterSidebar = true,
 }: StandardListLayoutProps) {
   const content = (
-    <div className="flex h-full min-h-0 flex-1 flex-col lg:grid lg:grid-cols-[auto_1fr] gap-6">
-      <AdaptiveFilterContainer filterComponent={filterComponent} resource={resource} />
+    <div
+      className={`flex h-full min-h-0 flex-1 flex-col ${showFilterSidebar ? "lg:grid lg:grid-cols-[auto_1fr]" : ""} gap-6`}
+    >
+      {showFilterSidebar && (
+        <AdaptiveFilterContainer filterComponent={filterComponent} resource={resource} />
+      )}
 
       <div className="flex flex-col min-h-0 min-w-0 flex-1 overflow-hidden">
         {/* Active filter chips - always visible above content when filters applied */}

@@ -2,11 +2,13 @@ import { useMemo } from "react";
 import { Bar } from "react-chartjs-2";
 import { useChartTheme } from "../hooks/useChartTheme";
 import type { TooltipTitleContext } from "./chartUtils";
-import { truncateLabel } from "./chartUtils";
+import { createAxisConfig, createBaseChartOptions, truncateLabel } from "./chartUtils";
 import "./chartSetup";
 
 interface RepPerformanceChartProps {
-  data: Array<{ name: string; activities: number; opportunities: number }>;
+  data: Array<{ name: string; activities: number; opportunities: number; id?: number }>;
+  onBarClick?: (repName: string, repId?: number) => void;
+  showDrilldownLinks?: boolean;
 }
 
 /**
@@ -15,7 +17,11 @@ interface RepPerformanceChartProps {
  * Grouped bar chart showing activities and opportunities per sales rep.
  * Helps managers compare team performance at a glance.
  */
-export function RepPerformanceChart({ data }: RepPerformanceChartProps) {
+export function RepPerformanceChart({
+  data,
+  onBarClick,
+  showDrilldownLinks = true,
+}: RepPerformanceChartProps) {
   const { colors, font } = useChartTheme();
 
   // Memoize derived data - sort by total and take top 5
@@ -34,19 +40,19 @@ export function RepPerformanceChart({ data }: RepPerformanceChartProps) {
           id: "activities",
           label: "Activities",
           data: topData.map((d) => d.activities),
-          backgroundColor: colors.primary,
+          backgroundColor: colors.chart2,
           borderRadius: 4,
         },
         {
           id: "opportunities",
           label: "Opportunities",
           data: topData.map((d) => d.opportunities),
-          backgroundColor: colors.success,
+          backgroundColor: colors.chart4,
           borderRadius: 4,
         },
       ],
     };
-  }, [topData, colors.primary, colors.success]);
+  }, [topData, colors.chart2, colors.chart4]);
 
   const ariaLabel = useMemo(() => {
     const totalActivities = topData.reduce((sum, d) => sum + d.activities, 0);
@@ -60,11 +66,13 @@ export function RepPerformanceChart({ data }: RepPerformanceChartProps) {
   // Memoize chart options to prevent recalculation on every render
   const options = useMemo(() => {
     return {
-      responsive: true,
-      maintainAspectRatio: false,
-      interaction: {
-        mode: "nearest" as const,
-        intersect: false,
+      ...createBaseChartOptions(colors, font),
+      onClick: (_event: unknown, elements: Array<{ index: number }>) => {
+        if (elements.length > 0 && onBarClick) {
+          const idx = elements[0].index;
+          const item = topData[idx];
+          onBarClick(item.name, item.id);
+        }
       },
       plugins: {
         legend: {
@@ -73,7 +81,7 @@ export function RepPerformanceChart({ data }: RepPerformanceChartProps) {
             color: colors.foreground,
             font: {
               family: font.family,
-              size: 14,
+              size: 11,
             },
             usePointStyle: true,
             padding: 16,
@@ -83,41 +91,23 @@ export function RepPerformanceChart({ data }: RepPerformanceChartProps) {
           callbacks: {
             title: (context: TooltipTitleContext[]) => {
               const index = context[0].dataIndex;
-              return topData[index]?.name || "";
+              const item = topData[index];
+              if (!item) return "";
+              return `${item.name}: ${item.activities} activities, ${item.opportunities} opportunities`;
             },
+            label: () => "",
           },
         },
       },
       scales: {
-        x: {
-          grid: {
-            display: false,
-          },
-          ticks: {
-            color: colors.axisText,
-            font: {
-              family: font.family,
-              size: font.size,
-            },
-          },
-        },
-        y: {
-          beginAtZero: true,
-          grid: {
-            color: colors.gridline,
-          },
-          ticks: {
-            color: colors.axisText,
-            font: {
-              family: font.family,
-              size: font.size,
-            },
-            stepSize: 1,
-          },
-        },
+        x: createAxisConfig(colors, font, { display: false }),
+        y: createAxisConfig(colors, font, { beginAtZero: true }),
       },
     };
-  }, [topData, font, colors.gridline, colors.axisText, colors.foreground]);
+  }, [topData, font, colors, onBarClick]);
+
+  // Limit drilldown links to top 5
+  const drilldownItems = useMemo(() => topData.slice(0, 5), [topData]);
 
   if (data.length === 0) {
     return (
@@ -128,6 +118,33 @@ export function RepPerformanceChart({ data }: RepPerformanceChartProps) {
   }
 
   return (
-    <Bar data={chartData} options={options} datasetIdKey="id" aria-label={ariaLabel} role="img" />
+    <div className="flex flex-col h-full">
+      <div className="relative flex-1 min-h-0">
+        <Bar
+          data={chartData}
+          options={options}
+          datasetIdKey="id"
+          aria-label={ariaLabel}
+          role="img"
+        />
+      </div>
+      {showDrilldownLinks && drilldownItems.length > 0 && (
+        <ul
+          className="flex flex-wrap gap-2 mt-2 list-none p-0 m-0 shrink-0"
+          aria-label="Rep performance drill-down links"
+        >
+          {drilldownItems.map((item) => (
+            <li key={item.name}>
+              <button
+                className="text-xs text-muted-foreground hover:text-foreground underline-offset-2 hover:underline focus-visible:ring-2 focus-visible:ring-ring rounded px-1 py-0.5 h-auto"
+                onClick={() => onBarClick?.(item.name, item.id)}
+              >
+                {item.name}: {item.activities}
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
   );
 }

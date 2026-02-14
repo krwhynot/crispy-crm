@@ -4,8 +4,9 @@ import { useNavigate } from "react-router-dom";
 import { TrendingUp, Activity, AlertCircle, Clock } from "lucide-react";
 import { KPICard } from "@/components/ui/kpi-card";
 import { ChartWrapper } from "../components/ChartWrapper";
+import { KeyInsightsStrip } from "../components/KeyInsightsStrip";
 import { Skeleton } from "@/components/ui/skeleton";
-import { AppliedFiltersBar, EmptyState } from "../components";
+import { EmptyState } from "../components";
 import {
   useReportData,
   useReportFilterState,
@@ -18,6 +19,7 @@ import { TopPrincipalsChart } from "../charts/TopPrincipalsChart";
 import { RepPerformanceChart } from "../charts/RepPerformanceChart";
 import { OPPORTUNITY_STAGE_CHOICES, STAGE, CLOSED_STAGES } from "../../opportunities/constants";
 import { format, subDays, startOfDay, eachDayOfInterval } from "date-fns";
+import { resolvePreset } from "../utils/resolvePreset";
 import { LOOKUP_PAGE_SIZE } from "@/atomic-crm/constants/appConstants";
 import "../charts/chartSetup";
 import type { Sale } from "../types";
@@ -49,64 +51,24 @@ interface ActivityRecord {
 export default function OverviewTab() {
   const navigate = useNavigate();
 
-  const [filterState, updateFilters, resetFilters] = useReportFilterState<OverviewFilterState>(
+  // URL-seeding owner per PATTERNS.md:720 — OverviewTab seeds store from URL on mount
+  const [filterState] = useReportFilterState<OverviewFilterState>(
     "reports.overview",
     OVERVIEW_DEFAULTS
   );
 
-  const dateRange = {
-    preset: filterState.datePreset,
-    start: null as string | null,
-    end: null as string | null,
-  };
   const salesRepId = filterState.salesRepId;
 
-  const hasActiveFilters = filterState.datePreset !== "last30" || filterState.salesRepId !== null;
+  // Resolve date preset to concrete Date range for query filtering
+  const resolvedDateRange = useMemo(
+    () => resolvePreset(filterState.datePreset),
+    [filterState.datePreset]
+  );
 
-  const handleReset = useCallback(() => {
-    resetFilters();
-  }, [resetFilters]);
-
-  // Fetch sales reps for filter display and rep performance
+  // Fetch sales reps for rep performance chart
   const { data: salesReps = [] } = useGetList<Sale>("sales", {
     pagination: { page: 1, perPage: LOOKUP_PAGE_SIZE },
   });
-
-  // Build filters array for AppliedFiltersBar
-  const appliedFilters = useMemo(() => {
-    const filters: Array<{ label: string; value: string; onRemove: () => void }> = [];
-
-    // Date range filter (only show if not default)
-    if (dateRange.preset !== "last30") {
-      const dateLabels: Record<string, string> = {
-        last7: "Last 7 Days",
-        last30: "Last 30 Days",
-        last90: "Last 90 Days",
-        thisMonth: "This Month",
-        lastMonth: "Last Month",
-        thisQuarter: "This Quarter",
-        thisYear: "This Year",
-      };
-      filters.push({
-        label: "Date Range",
-        value: dateLabels[dateRange.preset] || dateRange.preset,
-        onRemove: () => updateFilters({ datePreset: "last30" }),
-      });
-    }
-
-    // Sales rep filter (only show if selected)
-    if (salesRepId) {
-      const rep = salesReps.find((r) => r.id === salesRepId);
-      const repName = rep ? `${rep.first_name} ${rep.last_name}` : `Rep ${salesRepId}`;
-      filters.push({
-        label: "Sales Rep",
-        value: repName,
-        onRemove: () => updateFilters({ salesRepId: null }),
-      });
-    }
-
-    return filters;
-  }, [dateRange.preset, salesRepId, salesReps, updateFilters]);
 
   // KPI click handlers - navigate to filtered list views (PRD Section 9.2.1)
   const handleTotalOpportunitiesClick = useCallback(() => {
@@ -151,8 +113,10 @@ export default function OverviewTab() {
     () => ({
       "deleted_at@is": null,
       ...(salesRepId && { opportunity_owner_id: salesRepId }),
+      ...(resolvedDateRange && { "created_at@gte": resolvedDateRange.start.toISOString() }),
+      ...(resolvedDateRange && { "created_at@lte": resolvedDateRange.end.toISOString() }),
     }),
-    [salesRepId]
+    [salesRepId, resolvedDateRange]
   );
 
   // Fetch opportunities via useReportData (centralizes through unifiedDataProvider)
@@ -164,14 +128,11 @@ export default function OverviewTab() {
     additionalFilters: opportunityFilters,
   });
 
-  // Activity date range: always 60 days for trend comparison (KPI calculations)
-  // This is independent of UI date range filters - we need historical data for trends
+  // Activity date range: use resolved preset when available, fall back to 60 days
+  // for KPI trend comparison (need at least 14 days for current/previous week comparison)
   const activityDateRange = useMemo(
-    () => ({
-      start: subDays(new Date(), 60),
-      end: new Date(),
-    }),
-    []
+    () => resolvedDateRange ?? { start: subDays(new Date(), 60), end: new Date() },
+    [resolvedDateRange]
   );
 
   // Memoize activity filters - activities use 'created_by' not 'sales_id'
@@ -317,17 +278,24 @@ export default function OverviewTab() {
     });
   }, [activities]);
 
-  // Prepare top principals data
+  // Prepare top principals data (includes id for drilldown navigation)
   const topPrincipalsData = useMemo(() => {
     const opps = opportunities ?? [];
-    const principalCounts = new Map<string, { name: string; count: number }>();
+    const principalCounts = new Map<
+      string,
+      { name: string; count: number; id: number | undefined }
+    >();
 
     opps.forEach((opp) => {
       const principalName = opp.principal_organization_name || "No Principal";
       const key = opp.principal_organization_id?.toString() || "none";
 
       if (!principalCounts.has(key)) {
-        principalCounts.set(key, { name: principalName, count: 0 });
+        principalCounts.set(key, {
+          name: principalName,
+          count: 0,
+          id: opp.principal_organization_id ?? undefined,
+        });
       }
       principalCounts.get(key)!.count += 1;
     });
@@ -335,11 +303,14 @@ export default function OverviewTab() {
     return Array.from(principalCounts.values()).filter((p) => p.name !== "No Principal");
   }, [opportunities]);
 
-  // Prepare rep performance data
+  // Prepare rep performance data (includes id for drilldown navigation)
   const repPerformanceData = useMemo(() => {
     const opps = opportunities ?? [];
     const acts = activities ?? [];
-    const repStats = new Map<number, { name: string; activities: number; opportunities: number }>();
+    const repStats = new Map<
+      number,
+      { name: string; activities: number; opportunities: number; id: number }
+    >();
 
     // Count activities per rep
     acts.forEach((activity) => {
@@ -349,6 +320,7 @@ export default function OverviewTab() {
           name: salesMap.get(activity.created_by) || `Rep ${activity.created_by}`,
           activities: 0,
           opportunities: 0,
+          id: activity.created_by,
         });
       }
       repStats.get(activity.created_by)!.activities += 1;
@@ -362,6 +334,7 @@ export default function OverviewTab() {
           name: salesMap.get(opp.opportunity_owner_id) || `Rep ${opp.opportunity_owner_id}`,
           activities: 0,
           opportunities: 0,
+          id: opp.opportunity_owner_id,
         });
       }
       repStats.get(opp.opportunity_owner_id)!.opportunities += 1;
@@ -387,13 +360,6 @@ export default function OverviewTab() {
         </div>
       )}
 
-      {/* Show applied filters bar when filters are active */}
-      <AppliedFiltersBar
-        filters={appliedFilters}
-        onResetAll={handleReset}
-        hasActiveFilters={hasActiveFilters}
-      />
-
       {/* Error display (fail-fast principle) */}
       {(opportunitiesError || activitiesError) && (
         <div className="rounded-lg border border-destructive/50 bg-destructive/10 p-4 text-destructive">
@@ -415,6 +381,14 @@ export default function OverviewTab() {
         />
       )}
 
+      {/* Key insights strip — auto-generated contextual summaries */}
+      <KeyInsightsStrip
+        pipelineData={pipelineData}
+        repPerformanceData={repPerformanceData}
+        staleDeals={kpis.staleDeals}
+        isLoading={isFirstLoad}
+      />
+
       {isFirstLoad ? (
         <div
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-content"
@@ -435,6 +409,8 @@ export default function OverviewTab() {
             trend={{ value: kpis.opportunityChange, direction: kpis.opportunityTrend }}
             icon={TrendingUp}
             subtitle="Non-closed opportunities in pipeline"
+            comparisonLabel="vs prior 30d activity"
+            infoTooltip="Open opportunities excluding Closed Won and Closed Lost stages"
             onClick={handleTotalOpportunitiesClick}
           />
           <KPICard
@@ -443,6 +419,12 @@ export default function OverviewTab() {
             trend={{ value: kpis.activityChange, direction: kpis.activityTrend }}
             icon={Activity}
             subtitle="Calls, emails, meetings logged"
+            comparisonLabel={
+              kpis.activityChange === 100 && kpis.activityTrend === "up"
+                ? "No prior data"
+                : "vs last week"
+            }
+            infoTooltip="Activities logged in the last 7 days compared to the prior 7 days"
             onClick={handleActivitiesClick}
           />
           <KPICard
@@ -451,6 +433,7 @@ export default function OverviewTab() {
             trend={{ value: 0, direction: "neutral" }}
             icon={AlertCircle}
             subtitle={`New leads with no activity in ${STAGE_STALE_THRESHOLDS.new_lead}+ days`}
+            infoTooltip={`New Lead stage opportunities with no activity for ${STAGE_STALE_THRESHOLDS.new_lead}+ days`}
             onClick={handleStaleLeadsClick}
           />
           {/* KPI #4: Stale Deals with amber/warning styling (PRD Section 9.2.1) */}
@@ -460,6 +443,7 @@ export default function OverviewTab() {
             trend={{ value: 0, direction: "neutral" }}
             icon={Clock}
             subtitle="Deals exceeding stage thresholds"
+            infoTooltip="Opportunities exceeding per-stage inactivity thresholds (7-21 days depending on stage)"
             variant={kpis.staleDeals > 0 ? "warning" : "default"}
             onClick={handleStaleDealsClick}
           />
@@ -468,7 +452,20 @@ export default function OverviewTab() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-content md:gap-section">
         <ChartWrapper title="Pipeline by Stage" isLoading={isFirstLoad}>
-          <PipelineChart data={pipelineData} />
+          <PipelineChart
+            data={pipelineData}
+            onBarClick={(stage) => {
+              const stageChoice = OPPORTUNITY_STAGE_CHOICES.find((s) => s.name === stage);
+              if (stageChoice) {
+                const params = new URLSearchParams();
+                params.set(
+                  "filter",
+                  JSON.stringify({ stage: stageChoice.id, "deleted_at@is": null })
+                );
+                navigate(`/opportunities?${params.toString()}`);
+              }
+            }}
+          />
         </ChartWrapper>
 
         <ChartWrapper title="Activity Trend (14 Days)" isLoading={isFirstLoad}>
@@ -476,11 +473,35 @@ export default function OverviewTab() {
         </ChartWrapper>
 
         <ChartWrapper title="Top Principals by Opportunities" isLoading={isFirstLoad}>
-          <TopPrincipalsChart data={topPrincipalsData} />
+          <TopPrincipalsChart
+            data={topPrincipalsData}
+            onBarClick={(_name, principalId) => {
+              if (principalId) {
+                const params = new URLSearchParams();
+                params.set(
+                  "filter",
+                  JSON.stringify({
+                    principal_organization_id: principalId,
+                    "deleted_at@is": null,
+                  })
+                );
+                navigate(`/opportunities?${params.toString()}`);
+              }
+            }}
+          />
         </ChartWrapper>
 
         <ChartWrapper title="Rep Performance" isLoading={isFirstLoad}>
-          <RepPerformanceChart data={repPerformanceData} />
+          <RepPerformanceChart
+            data={repPerformanceData}
+            onBarClick={(_name, repId) => {
+              if (repId) {
+                const params = new URLSearchParams();
+                params.set("filter", JSON.stringify({ created_by: repId }));
+                navigate(`/activities?${params.toString()}`);
+              }
+            }}
+          />
         </ChartWrapper>
       </div>
     </div>

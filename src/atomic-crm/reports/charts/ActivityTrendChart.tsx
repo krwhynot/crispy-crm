@@ -2,11 +2,12 @@ import { useMemo } from "react";
 import { Line } from "react-chartjs-2";
 import { useChartTheme } from "../hooks/useChartTheme";
 import type { TooltipContextY } from "./chartUtils";
-import { withOklchAlpha } from "./chartUtils";
+import { createAxisConfig, createBaseChartOptions, withOklchAlpha } from "./chartUtils";
 import "./chartSetup";
 
 interface ActivityTrendChartProps {
   data: Array<{ date: string; count: number }>;
+  onPointClick?: (date: string) => void;
 }
 
 /**
@@ -15,7 +16,7 @@ interface ActivityTrendChartProps {
  * Shows activity counts over time as a line chart.
  * Used in the Overview tab to visualize engagement trends.
  */
-export function ActivityTrendChart({ data }: ActivityTrendChartProps) {
+export function ActivityTrendChart({ data, onPointClick }: ActivityTrendChartProps) {
   const { colors, font } = useChartTheme();
 
   // Memoize chart data to prevent recalculation on every render
@@ -27,8 +28,8 @@ export function ActivityTrendChart({ data }: ActivityTrendChartProps) {
           id: "activities",
           label: "Activities",
           data: data.map((d) => d.count),
-          borderColor: colors.primary,
-          backgroundColor: withOklchAlpha(colors.primary, 0.125),
+          borderColor: colors.chart2,
+          backgroundColor: withOklchAlpha(colors.chart2, 0.125),
           fill: true,
           tension: 0.3,
           pointRadius: 6,
@@ -37,7 +38,7 @@ export function ActivityTrendChart({ data }: ActivityTrendChartProps) {
         },
       ],
     };
-  }, [data, colors.primary]);
+  }, [data, colors.chart2]);
 
   const ariaLabel = useMemo(() => {
     const total = data.reduce((sum, d) => sum + d.count, 0);
@@ -49,12 +50,17 @@ export function ActivityTrendChart({ data }: ActivityTrendChartProps) {
   // Memoize chart options to prevent recalculation on every render
   const options = useMemo(() => {
     return {
-      responsive: true,
-      maintainAspectRatio: false,
+      ...createBaseChartOptions(colors, font),
       interaction: {
         mode: "nearest" as const,
         axis: "x" as const,
         intersect: false,
+      },
+      onClick: (_event: unknown, elements: Array<{ index: number }>) => {
+        if (elements.length > 0 && onPointClick) {
+          const idx = elements[0].index;
+          onPointClick(data[idx].date);
+        }
       },
       plugins: {
         legend: {
@@ -69,35 +75,11 @@ export function ActivityTrendChart({ data }: ActivityTrendChartProps) {
         },
       },
       scales: {
-        x: {
-          grid: {
-            display: false,
-          },
-          ticks: {
-            color: colors.axisText,
-            font: {
-              family: font.family,
-              size: font.size,
-            },
-          },
-        },
-        y: {
-          beginAtZero: true,
-          grid: {
-            color: colors.gridline,
-          },
-          ticks: {
-            color: colors.axisText,
-            font: {
-              family: font.family,
-              size: font.size,
-            },
-            stepSize: 1,
-          },
-        },
+        x: createAxisConfig(colors, font, { display: false }),
+        y: createAxisConfig(colors, font, { beginAtZero: true }),
       },
     };
-  }, [font, colors.gridline, colors.axisText]);
+  }, [font, colors, onPointClick, data]);
 
   if (data.length === 0) {
     return (
