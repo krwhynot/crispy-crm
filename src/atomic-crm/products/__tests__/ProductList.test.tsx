@@ -326,13 +326,6 @@ vi.mock("@/components/ra-wrappers/FloatingCreateButton", () => ({
   FloatingCreateButton: () => <button data-testid="floating-create">Create</button>,
 }));
 
-// Mock TopToolbar
-vi.mock("../layout/TopToolbar", () => ({
-  TopToolbar: ({ children }: { children: React.ReactNode }) => (
-    <div data-testid="top-toolbar">{children}</div>
-  ),
-}));
-
 vi.mock("@/components/ra-wrappers/bulk-actions-toolbar", () => ({
   BulkActionsToolbar: () => <div data-testid="bulk-actions-toolbar">Bulk Actions</div>,
 }));
@@ -340,15 +333,6 @@ vi.mock("@/components/ra-wrappers/bulk-actions-toolbar", () => ({
 // Mock ProductListFilter
 vi.mock("../ProductListFilter", () => ({
   ProductListFilter: () => <div data-testid="product-list-filter">Filters</div>,
-}));
-
-// Mock ListSearchBar to avoid FilterLiveForm/SearchInput context issues
-vi.mock("@/components/ra-wrappers/ListSearchBar", () => ({
-  ListSearchBar: ({ placeholder }: { placeholder?: string }) => (
-    <div data-testid="list-search-bar">
-      <input type="text" placeholder={placeholder || "Search..."} data-testid="search-input" />
-    </div>
-  ),
 }));
 
 // Mock useSlideOverState hook

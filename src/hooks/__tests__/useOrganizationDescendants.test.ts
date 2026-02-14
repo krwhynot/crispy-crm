@@ -9,8 +9,7 @@
  * The hook is used by ParentOrganizationInput to exclude self + descendants
  * from parent selection dropdown, preventing circular references.
  *
- * These tests FAIL initially because error handling is not yet implemented.
- * Implement error handling in the hook to make tests pass.
+ * Tests use dataProvider.rpc() (Postgres RPC) — not invoke() (Edge Functions).
  */
 
 import { renderHook, waitFor } from "@testing-library/react";
@@ -20,14 +19,14 @@ import React from "react";
 import { useOrganizationDescendants } from "../useOrganizationDescendants";
 import { logger } from "@/lib/logger";
 
-// Track invoke calls
-const mockInvoke = vi.fn();
+// Track rpc calls
+const mockRpc = vi.fn();
 
 // Mock react-admin
 vi.mock("ra-core", async () => {
   return {
     useDataProvider: () => ({
-      invoke: mockInvoke,
+      rpc: mockRpc,
       getList: vi.fn(),
       getOne: vi.fn(),
       create: vi.fn(),
@@ -74,7 +73,7 @@ describe("useOrganizationDescendants", () => {
       const orgId = 123;
 
       // Mock RPC to fail
-      mockInvoke.mockRejectedValueOnce(new Error("RPC error: get_organization_descendants failed"));
+      mockRpc.mockRejectedValueOnce(new Error("RPC error: get_organization_descendants failed"));
 
       const { result } = renderHook(() => useOrganizationDescendants(orgId), {
         wrapper: createQueryClientWrapper(),
@@ -97,7 +96,7 @@ describe("useOrganizationDescendants", () => {
       expect(result.current.isFetched).toBe(true);
 
       // Verify RPC was called with correct params
-      expect(mockInvoke).toHaveBeenCalledWith("get_organization_descendants", {
+      expect(mockRpc).toHaveBeenCalledWith("get_organization_descendants", {
         org_id: orgId,
       });
     });
@@ -107,7 +106,7 @@ describe("useOrganizationDescendants", () => {
       const rpcError = new Error("RPC timeout: descendants query took too long");
 
       // Mock RPC to fail
-      mockInvoke.mockRejectedValueOnce(rpcError);
+      mockRpc.mockRejectedValueOnce(rpcError);
 
       const { result } = renderHook(() => useOrganizationDescendants(orgId), {
         wrapper: createQueryClientWrapper(),
@@ -139,7 +138,7 @@ describe("useOrganizationDescendants", () => {
       const descendants = [100, 101, 102];
 
       // Setup: first call fails, second succeeds
-      mockInvoke.mockRejectedValueOnce(new Error("Network error"));
+      mockRpc.mockRejectedValueOnce(new Error("Network error"));
 
       const { result } = renderHook(({ id }) => useOrganizationDescendants(id), {
         initialProps: { id: orgId },
@@ -156,8 +155,8 @@ describe("useOrganizationDescendants", () => {
 
       expect(result.current.descendants).toEqual([]);
 
-      // Setup mock for the recovery call
-      mockInvoke.mockResolvedValueOnce({ data: descendants });
+      // Setup mock for the recovery call — rpc() returns data directly
+      mockRpc.mockResolvedValueOnce(descendants);
 
       // Re-render with same orgId to trigger new query
       // (relies on useQuery's behavior to refetch)
@@ -182,9 +181,8 @@ describe("useOrganizationDescendants", () => {
       const orgId = 999;
       const descendants = [100, 101, 102, 103];
 
-      mockInvoke.mockResolvedValueOnce({
-        data: descendants,
-      });
+      // rpc() returns data directly (not wrapped in { data })
+      mockRpc.mockResolvedValueOnce(descendants);
 
       const { result } = renderHook(() => useOrganizationDescendants(orgId), {
         wrapper: createQueryClientWrapper(),
@@ -205,9 +203,8 @@ describe("useOrganizationDescendants", () => {
     it("returns empty array when RPC returns empty data", async () => {
       const orgId = 111;
 
-      mockInvoke.mockResolvedValueOnce({
-        data: [],
-      });
+      // rpc() returns data directly
+      mockRpc.mockResolvedValueOnce([]);
 
       const { result } = renderHook(() => useOrganizationDescendants(orgId), {
         wrapper: createQueryClientWrapper(),
@@ -233,7 +230,7 @@ describe("useOrganizationDescendants", () => {
       });
 
       // Should not make any RPC call
-      expect(mockInvoke).not.toHaveBeenCalled();
+      expect(mockRpc).not.toHaveBeenCalled();
       expect(result.current.descendants).toEqual([]);
       expect(result.current.isLoading).toBe(false);
       expect(result.current.isFetched).toBe(false);
@@ -245,7 +242,7 @@ describe("useOrganizationDescendants", () => {
       });
 
       // Should not make RPC call for invalid orgId
-      expect(mockInvoke).not.toHaveBeenCalled();
+      expect(mockRpc).not.toHaveBeenCalled();
       expect(result.current.descendants).toEqual([]);
       expect(result.current.isLoading).toBe(false);
       expect(result.current.isFetched).toBe(false);
@@ -254,9 +251,8 @@ describe("useOrganizationDescendants", () => {
     it("handles RPC returning undefined data gracefully", async () => {
       const orgId = 222;
 
-      mockInvoke.mockResolvedValueOnce({
-        data: undefined,
-      });
+      // rpc() returns data directly — undefined means no descendants
+      mockRpc.mockResolvedValueOnce(undefined);
 
       const { result } = renderHook(() => useOrganizationDescendants(orgId), {
         wrapper: createQueryClientWrapper(),

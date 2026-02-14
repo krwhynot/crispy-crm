@@ -104,7 +104,11 @@ export const SegmentBadge = memo(function SegmentBadge({
 
   const colorClass = getSegmentColor(segmentId);
 
-  return <Badge className={`text-xs px-2 py-1 ${colorClass}`}>{segmentName}</Badge>;
+  return (
+    <Badge className={`text-xs px-2 py-1 max-w-[130px] truncate ${colorClass}`} title={segmentName}>
+      {segmentName}
+    </Badge>
+  );
 });
 
 SegmentBadge.displayName = "SegmentBadge";

@@ -20,14 +20,11 @@ import { saveStagePreferences } from "../filters/opportunityStagePreferences";
 import { useSlideOverState } from "@/hooks/useSlideOverState";
 import { OpportunitySlideOver } from "./OpportunitySlideOver";
 import { useFilterCleanup } from "../hooks/useFilterCleanup";
-import { ListSearchBar } from "@/components/ra-wrappers/ListSearchBar";
 import { OpportunityListFilter } from "./OpportunityListFilter";
 import { OPPORTUNITY_FILTER_CONFIG } from "./opportunityFilterConfig";
 import { OpportunityListTutorial } from "./OpportunityListTutorial";
 import { ListNoResults } from "@/components/ra-wrappers/ListNoResults";
-import { TopToolbar } from "../layout/TopToolbar";
-import { SortButton } from "@/components/ra-wrappers/sort-button";
-import { ExportButton } from "@/components/ra-wrappers/export-button";
+import { ExportMenuItem } from "@/components/ra-wrappers/export-menu-item";
 import { SORT_BY_CREATED_DESC, FILTER_ACTIVE_RECORDS } from "@/atomic-crm/constants/listDefaults";
 
 // Helper functions for view preference persistence
@@ -46,22 +43,6 @@ const saveViewPreference = (view: OpportunityView) => {
 
 // Valid view options (module-scoped for stable reference in useEffect deps)
 const validViews: OpportunityView[] = ["kanban", "list", "campaign", "principal"];
-
-/**
- * OpportunityListActions - TopToolbar with sort and export actions
- *
- * Follows ContactList reference pattern with SortButton + ExportButton.
- * Works across all view modes (kanban, list, campaign, principal).
- */
-const OpportunityListActions = () => (
-  <TopToolbar>
-    <SortButton
-      fields={["name", "stage", "priority", "estimated_close_date", "created_at"]}
-      data-testid="opportunity-sort-btn"
-    />
-    <ExportButton data-testid="opportunity-export-btn" />
-  </TopToolbar>
-);
 
 const OpportunityList = () => {
   const { data: identity, isPending: isIdentityPending } = useGetIdentity();
@@ -110,7 +91,7 @@ const OpportunityList = () => {
           filter={FILTER_ACTIVE_RECORDS}
           title={false}
           sort={SORT_BY_CREATED_DESC}
-          actions={<OpportunityListActions />}
+          actions={false}
           exporter={opportunityExporter}
           pagination={<ListPagination rowsPerPageOptions={[10, 25, 50]} />}
         >
@@ -172,7 +153,20 @@ const OpportunityListLayout = ({
   // Show skeleton during loading
   if (isPending) {
     return (
-      <StandardListLayout resource="opportunities" filterComponent={<OpportunityListFilter />}>
+      <StandardListLayout
+        resource="opportunities"
+        filterComponent={<OpportunityListFilter />}
+        filterConfig={OPPORTUNITY_FILTER_CONFIG}
+        sortFields={["name", "stage", "priority", "estimated_close_date", "created_at"]}
+        searchPlaceholder="Search opportunities..."
+        enableRecentSearches
+        viewSwitcher={
+          <span data-tutorial="opp-view-switcher">
+            <OpportunityViewSwitcher view={view} onViewChange={onViewChange} />
+          </span>
+        }
+        overflowActions={<ExportMenuItem />}
+      >
         <ListSkeleton rows={8} columns={5} />
       </StandardListLayout>
     );
@@ -181,7 +175,20 @@ const OpportunityListLayout = ({
   // Empty state when no data and no filters applied
   if (!data?.length && !hasFilters) {
     return (
-      <StandardListLayout resource="opportunities" filterComponent={<OpportunityListFilter />}>
+      <StandardListLayout
+        resource="opportunities"
+        filterComponent={<OpportunityListFilter />}
+        filterConfig={OPPORTUNITY_FILTER_CONFIG}
+        sortFields={["name", "stage", "priority", "estimated_close_date", "created_at"]}
+        searchPlaceholder="Search opportunities..."
+        enableRecentSearches
+        viewSwitcher={
+          <span data-tutorial="opp-view-switcher">
+            <OpportunityViewSwitcher view={view} onViewChange={onViewChange} />
+          </span>
+        }
+        overflowActions={<ExportMenuItem />}
+      >
         <OpportunityEmpty>
           <OpportunityArchivedList />
         </OpportunityEmpty>
@@ -192,21 +199,20 @@ const OpportunityListLayout = ({
   // Filtered empty state: filters are applied but no results match
   if (!data?.length && hasFilters) {
     return (
-      <StandardListLayout resource="opportunities" filterComponent={<OpportunityListFilter />}>
-        <div className="flex items-center gap-4 mb-4">
-          <div className="flex-1">
-            <ListSearchBar
-              placeholder="Search opportunities..."
-              filterConfig={OPPORTUNITY_FILTER_CONFIG}
-              enableRecentSearches
-            />
-          </div>
-          <div className="flex-shrink-0">
-            <span data-tutorial="opp-view-switcher">
-              <OpportunityViewSwitcher view={view} onViewChange={onViewChange} />
-            </span>
-          </div>
-        </div>
+      <StandardListLayout
+        resource="opportunities"
+        filterComponent={<OpportunityListFilter />}
+        filterConfig={OPPORTUNITY_FILTER_CONFIG}
+        sortFields={["name", "stage", "priority", "estimated_close_date", "created_at"]}
+        searchPlaceholder="Search opportunities..."
+        enableRecentSearches
+        viewSwitcher={
+          <span data-tutorial="opp-view-switcher">
+            <OpportunityViewSwitcher view={view} onViewChange={onViewChange} />
+          </span>
+        }
+        overflowActions={<ExportMenuItem />}
+      >
         <ListNoResults />
         <OpportunityArchivedList />
       </StandardListLayout>
@@ -217,21 +223,20 @@ const OpportunityListLayout = ({
   // Use flex column layout so kanban can fill remaining height
   // CRITICAL: h-full + min-h-0 + overflow-hidden enables scroll in child components
   return (
-    <StandardListLayout resource="opportunities" filterComponent={<OpportunityListFilter />}>
-      {/* Search bar + view toggles row */}
-      <div className="flex items-center gap-4 mb-4">
-        <div className="flex-1">
-          <ListSearchBar
-            placeholder="Search opportunities..."
-            filterConfig={OPPORTUNITY_FILTER_CONFIG}
-          />
-        </div>
-        <div className="flex-shrink-0">
-          <span data-tutorial="opp-view-switcher">
-            <OpportunityViewSwitcher view={view} onViewChange={onViewChange} />
-          </span>
-        </div>
-      </div>
+    <StandardListLayout
+      resource="opportunities"
+      filterComponent={<OpportunityListFilter />}
+      filterConfig={OPPORTUNITY_FILTER_CONFIG}
+      sortFields={["name", "stage", "priority", "estimated_close_date", "created_at"]}
+      searchPlaceholder="Search opportunities..."
+      enableRecentSearches
+      viewSwitcher={
+        <span data-tutorial="opp-view-switcher">
+          <OpportunityViewSwitcher view={view} onViewChange={onViewChange} />
+        </span>
+      }
+      overflowActions={<ExportMenuItem />}
+    >
       <div className="flex h-full min-h-0 w-full flex-1 flex-col overflow-hidden">
         {view === "kanban" ? (
           <OpportunityListContent

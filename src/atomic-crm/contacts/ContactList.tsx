@@ -7,8 +7,7 @@ import { ContactBulkActionsToolbar } from "./ContactBulkActionsToolbar";
 import { List } from "@/components/ra-wrappers/list";
 import { FloatingCreateButton } from "@/components/ra-wrappers/FloatingCreateButton";
 import { StandardListLayout } from "@/components/layouts/StandardListLayout";
-import { SortButton } from "@/components/ra-wrappers/sort-button";
-import { ExportButton } from "@/components/ra-wrappers/export-button";
+import { ExportMenuItem } from "@/components/ra-wrappers/export-menu-item";
 import { PremiumDatagrid } from "@/components/ra-wrappers/PremiumDatagrid";
 import { FunctionField } from "react-admin";
 import { useSlideOverState } from "@/hooks/useSlideOverState";
@@ -16,12 +15,10 @@ import { useListKeyboardNavigation } from "@/hooks/useListKeyboardNavigation";
 import { ContactListSkeleton } from "@/components/ui/list-skeleton";
 import type { Contact } from "../types";
 import { useFilterCleanup } from "../hooks/useFilterCleanup";
-import { ListSearchBar } from "@/components/ra-wrappers/ListSearchBar";
 import { ContactEmpty } from "./ContactEmpty";
 import { ContactListFilter } from "./ContactListFilter";
 import { ListNoResults } from "@/components/ra-wrappers/ListNoResults";
 import { ContactSlideOver } from "./ContactSlideOver";
-import { TopToolbar } from "../layout/TopToolbar";
 import { Avatar } from "./Avatar";
 import { ContactStatusBadge } from "./ContactBadges";
 import { ContactNameHeader, ContactStatusHeader } from "./ContactDatagridHeader";
@@ -44,13 +41,13 @@ const ContactIdentityCell = React.memo(function ContactIdentityCell({
 }) {
   const emails = record?.email as Array<{ value: string; type: string }> | undefined;
   return (
-    <div className="flex items-center gap-3">
-      <Avatar record={record} width={40} height={40} />
-      <div className="flex flex-col gap-0.5">
-        <span className="font-medium text-sm">
+    <div className="flex items-center gap-2 min-w-0">
+      <Avatar record={record} width={32} height={32} />
+      <div className="flex flex-col gap-0.5 min-w-0">
+        <span className="font-medium text-sm truncate">
           {formatFullName(record.first_name, record.last_name)}
         </span>
-        <span className="text-xs text-muted-foreground">{emails?.[0]?.value || "—"}</span>
+        <span className="text-xs text-muted-foreground truncate">{emails?.[0]?.value || "—"}</span>
       </div>
     </div>
   );
@@ -58,8 +55,8 @@ const ContactIdentityCell = React.memo(function ContactIdentityCell({
 
 const ContactContextCell = React.memo(function ContactContextCell({ record }: { record: Contact }) {
   return (
-    <div className="flex flex-col">
-      <span className="text-sm">{record.title || "—"}</span>
+    <div className="flex flex-col min-w-0">
+      <span className="text-sm truncate">{record.title || "—"}</span>
       {record.organization_id && record.company_name ? (
         <Link
           to={`/organizations/${record.organization_id}`}
@@ -135,7 +132,7 @@ export const ContactList = () => {
       <div data-tutorial="contacts-list">
         <List
           title={false}
-          actions={<ContactListActions />}
+          actions={false}
           perPage={25}
           sort={{ field: "last_seen", order: "DESC" }}
           exporter={contactExporter}
@@ -177,7 +174,15 @@ const ContactListLayout = ({
   // Show skeleton during initial load (identity check happens in parent)
   if (isPending) {
     return (
-      <StandardListLayout resource="contacts" filterComponent={<ContactListFilter />}>
+      <StandardListLayout
+        resource="contacts"
+        filterComponent={<ContactListFilter />}
+        filterConfig={CONTACT_FILTER_CONFIG}
+        sortFields={["first_name", "title", "last_seen"]}
+        searchPlaceholder="Search contacts..."
+        enableRecentSearches
+        overflowActions={<ExportMenuItem />}
+      >
         <ContactListSkeleton />
       </StandardListLayout>
     );
@@ -190,12 +195,15 @@ const ContactListLayout = ({
   // Filtered empty state: filters are applied but no results match
   if (!data?.length && hasFilters) {
     return (
-      <StandardListLayout resource="contacts" filterComponent={<ContactListFilter />}>
-        <ListSearchBar
-          placeholder="Search contacts..."
-          filterConfig={CONTACT_FILTER_CONFIG}
-          enableRecentSearches
-        />
+      <StandardListLayout
+        resource="contacts"
+        filterComponent={<ContactListFilter />}
+        filterConfig={CONTACT_FILTER_CONFIG}
+        sortFields={["first_name", "title", "last_seen"]}
+        searchPlaceholder="Search contacts..."
+        enableRecentSearches
+        overflowActions={<ExportMenuItem />}
+      >
         <ListNoResults />
       </StandardListLayout>
     );
@@ -203,12 +211,15 @@ const ContactListLayout = ({
 
   return (
     <>
-      <StandardListLayout resource="contacts" filterComponent={<ContactListFilter />}>
-        <ListSearchBar
-          placeholder="Search contacts..."
-          filterConfig={CONTACT_FILTER_CONFIG}
-          enableRecentSearches
-        />
+      <StandardListLayout
+        resource="contacts"
+        filterComponent={<ContactListFilter />}
+        filterConfig={CONTACT_FILTER_CONFIG}
+        sortFields={["first_name", "title", "last_seen"]}
+        searchPlaceholder="Search contacts..."
+        enableRecentSearches
+        overflowActions={<ExportMenuItem />}
+      >
         <PremiumDatagrid
           onRowClick={(id) => openSlideOver(Number(id), "view")}
           focusedIndex={focusedIndex}
@@ -217,6 +228,7 @@ const ContactListLayout = ({
           <FunctionField
             label={<ContactNameHeader />}
             sortBy="first_name"
+            cellClassName="max-w-[240px]"
             render={(record: Contact) => <ContactIdentityCell record={record} />}
           />
 
@@ -224,6 +236,7 @@ const ContactListLayout = ({
           <FunctionField
             label="Role"
             sortBy="title"
+            cellClassName="max-w-[160px]"
             render={(record: Contact) => <ContactContextCell record={record} />}
           />
 
@@ -232,7 +245,7 @@ const ContactListLayout = ({
             label="Tags"
             sortable={false}
             render={(record: Contact) => <ContactTagsCell record={record} />}
-            cellClassName="hidden md:table-cell"
+            cellClassName="hidden md:table-cell max-w-[200px]"
             headerClassName="hidden md:table-cell"
           />
 
@@ -253,16 +266,6 @@ const ContactListLayout = ({
       </StandardListLayout>
       <ContactBulkActionsToolbar />
     </>
-  );
-};
-
-const ContactListActions = () => {
-  const { selectedIds } = useListContext();
-  return (
-    <TopToolbar>
-      <SortButton fields={["first_name", "title", "last_seen"]} dataTutorial="contact-sort-btn" />
-      {!selectedIds?.length && <ExportButton dataTutorial="contact-export-btn" />}
-    </TopToolbar>
   );
 };
 

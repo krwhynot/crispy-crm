@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/accordion";
 import { OwnerFilterDropdown } from "@/components/ra-wrappers/OwnerFilterDropdown";
 import { OrganizationSavedQueries } from "./OrganizationSavedQueries";
+import { FilterRailHidden } from "../filters/FilterLayoutModeContext";
 import {
   ORGANIZATION_TYPE_CHOICES,
   ORG_TYPE_COLOR_MAP,
@@ -129,10 +130,14 @@ export const OrganizationListFilter = (): React.ReactElement => {
   return (
     <div className="flex flex-col gap-4" data-tutorial="org-filters">
       {/* Starred Quick Filter - TOP of sidebar */}
-      <StarredFilterToggle entityType="organizations" />
+      <FilterRailHidden>
+        <StarredFilterToggle entityType="organizations" />
+      </FilterRailHidden>
 
       {/* Quick Filter Presets */}
-      <OrganizationSavedQueries />
+      <FilterRailHidden>
+        <OrganizationSavedQueries />
+      </FilterRailHidden>
 
       {/* Collapsible Filter Sections */}
       <div className="flex flex-col gap-2">
@@ -157,49 +162,41 @@ export const OrganizationListFilter = (): React.ReactElement => {
 
         {/* Category - unified section with helper text */}
         <FilterCategory icon={<Truck className="h-4 w-4" />} label="Category">
-          {!typeFilter ? (
-            <div className="px-3 py-6 text-center text-sm text-muted-foreground">
-              <p>Select an Organization Type to filter categories</p>
-            </div>
-          ) : (
+          {/* Playbook categories - for Distributors/Principals */}
+          {showPlaybookFilters && (
             <>
-              {/* Playbook categories - for Distributors/Principals */}
-              {showPlaybookFilters && (
-                <>
-                  {showPrincipalOnlyPlaybook ? (
-                    <Badge
-                      className={`text-xs px-3 py-2 min-h-[44px] flex items-center ${getSegmentColor(principalPlaybookChoice?.id)}`}
-                    >
-                      {principalPlaybookChoice?.name ?? "Principal/Manufacturer"} (fixed)
-                    </Badge>
-                  ) : (
-                    PLAYBOOK_CATEGORY_CHOICES.map((category) => (
-                      <ToggleFilterButton
-                        multiselect
-                        key={category.id}
-                        className="w-full justify-between"
-                        label={
-                          <Badge
-                            className={`text-xs px-3 py-2 min-h-[44px] flex items-center ${getSegmentColor(category.id)}`}
-                          >
-                            {category.name}
-                          </Badge>
-                        }
-                        value={{ segment_id: category.id }}
-                      />
-                    ))
-                  )}
-                </>
-              )}
-
-              {/* Operator segments - for Customers/Prospects (grouped accordion) */}
-              {showOperatorFilters && (
-                <OperatorSegmentAccordion
-                  filterValues={filterValues}
-                  getSegmentColor={getSegmentColor}
-                />
+              {showPrincipalOnlyPlaybook ? (
+                <Badge
+                  className={`text-xs px-3 py-2 min-h-[44px] flex items-center ${getSegmentColor(principalPlaybookChoice?.id)}`}
+                >
+                  {principalPlaybookChoice?.name ?? "Principal/Manufacturer"} (fixed)
+                </Badge>
+              ) : (
+                PLAYBOOK_CATEGORY_CHOICES.map((category) => (
+                  <ToggleFilterButton
+                    multiselect
+                    key={category.id}
+                    className="w-full justify-between"
+                    label={
+                      <Badge
+                        className={`text-xs px-3 py-2 min-h-[44px] flex items-center ${getSegmentColor(category.id)}`}
+                      >
+                        {category.name}
+                      </Badge>
+                    }
+                    value={{ segment_id: category.id }}
+                  />
+                ))
               )}
             </>
+          )}
+
+          {/* Operator segments - for Customers/Prospects (grouped accordion) */}
+          {showOperatorFilters && (
+            <OperatorSegmentAccordion
+              filterValues={filterValues}
+              getSegmentColor={getSegmentColor}
+            />
           )}
         </FilterCategory>
 

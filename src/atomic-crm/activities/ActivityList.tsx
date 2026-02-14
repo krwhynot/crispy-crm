@@ -13,21 +13,18 @@ import { ReferenceField } from "@/components/ra-wrappers/reference-field";
 import { Badge } from "@/components/ui/badge";
 import { ActivityListSkeleton } from "@/components/ui/list-skeleton";
 import { SaleName } from "../sales/SaleName";
-import { TopToolbar } from "../layout/TopToolbar";
 import { ActivityListFilter } from "./ActivityListFilter";
 import { SampleStatusBadge } from "../components/SampleStatusBadge";
 import { useFilterCleanup } from "../hooks/useFilterCleanup";
-import { ListSearchBar } from "@/components/ra-wrappers/ListSearchBar";
 import { useListKeyboardNavigation } from "@/hooks/useListKeyboardNavigation";
 import { useSlideOverState } from "@/hooks/useSlideOverState";
 import { BulkActionsToolbar } from "@/components/ra-wrappers/bulk-actions-toolbar";
+import { ExportMenuItem } from "@/components/ra-wrappers/export-menu-item";
 import { COLUMN_VISIBILITY } from "../utils/listPatterns";
 import { PageTutorialTrigger } from "../tutorial";
 import type { ActivityRecord, Contact, Opportunity, Organization, Sale } from "../types";
 import { INTERACTION_TYPE_OPTIONS } from "../validation/activities";
 import { ACTIVITY_FILTER_CONFIG } from "./activityFilterConfig";
-import { SortButton } from "@/components/ra-wrappers/sort-button";
-import { ExportButton } from "@/components/ra-wrappers/export-button";
 import { ActivitySlideOver } from "./ActivitySlideOver";
 import { ucFirst } from "@/atomic-crm/utils";
 
@@ -120,7 +117,7 @@ export default function ActivityList() {
           filter={{
             "deleted_at@is": null,
           }}
-          actions={<ActivityListActions />}
+          actions={false}
         >
           <ActivityListLayout openSlideOver={openSlideOver} isSlideOverOpen={isOpen} />
           <FloatingCreateButton />
@@ -162,7 +159,14 @@ const ActivityListLayout = ({
 
   if (isPending) {
     return (
-      <StandardListLayout resource="activities" filterComponent={<ActivityListFilter />}>
+      <StandardListLayout
+        resource="activities"
+        filterComponent={<ActivityListFilter />}
+        filterConfig={ACTIVITY_FILTER_CONFIG}
+        sortFields={["type", "subject", "activity_date", "created_at"]}
+        searchPlaceholder="Search activities..."
+        overflowActions={<ExportMenuItem />}
+      >
         <ActivityListSkeleton />
       </StandardListLayout>
     );
@@ -170,7 +174,14 @@ const ActivityListLayout = ({
 
   if (!data?.length && !hasFilters) {
     return (
-      <StandardListLayout resource="activities" filterComponent={<ActivityListFilter />}>
+      <StandardListLayout
+        resource="activities"
+        filterComponent={<ActivityListFilter />}
+        filterConfig={ACTIVITY_FILTER_CONFIG}
+        sortFields={["type", "subject", "activity_date", "created_at"]}
+        searchPlaceholder="Search activities..."
+        overflowActions={<ExportMenuItem />}
+      >
         <div className="flex flex-col items-center justify-center py-12 text-center">
           <p className="text-muted-foreground">No activities found.</p>
           <p className="text-sm text-muted-foreground mt-2">
@@ -183,8 +194,14 @@ const ActivityListLayout = ({
 
   return (
     <>
-      <StandardListLayout resource="activities" filterComponent={<ActivityListFilter />}>
-        <ListSearchBar placeholder="Search activities..." filterConfig={ACTIVITY_FILTER_CONFIG} />
+      <StandardListLayout
+        resource="activities"
+        filterComponent={<ActivityListFilter />}
+        filterConfig={ACTIVITY_FILTER_CONFIG}
+        sortFields={["type", "subject", "activity_date", "created_at"]}
+        searchPlaceholder="Search activities..."
+        overflowActions={<ExportMenuItem />}
+      >
         <PremiumDatagrid
           onRowClick={(id) => openSlideOver(Number(id), "view")}
           focusedIndex={focusedIndex}
@@ -271,22 +288,6 @@ const ActivityListLayout = ({
     </>
   );
 };
-
-/**
- * ActivityListActions - TopToolbar with sort and export actions
- *
- * Follows ContactList reference pattern with SortButton + ExportButton.
- * Exporter is already defined and connected via List props.
- */
-const ActivityListActions = () => (
-  <TopToolbar>
-    <SortButton
-      fields={["type", "subject", "activity_date", "created_at"]}
-      data-testid="activity-sort-btn"
-    />
-    <ExportButton data-testid="activity-export-btn" />
-  </TopToolbar>
-);
 
 /**
  * CSV exporter for Activity records

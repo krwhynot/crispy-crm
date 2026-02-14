@@ -37,11 +37,8 @@ import { SaleName } from "../sales/SaleName";
 import { TASK_FILTER_CONFIG } from "./taskFilterConfig";
 import { PageTutorialTrigger } from "../tutorial";
 import { TaskTitleHeader, TaskPriorityHeader, TaskTypeHeader } from "./TasksDatagridHeader";
-import { TopToolbar } from "../layout/TopToolbar";
-import { ListSearchBar } from "@/components/ra-wrappers/ListSearchBar";
+import { ExportMenuItem } from "@/components/ra-wrappers/export-menu-item";
 import { TaskActionMenu } from "./TaskActionMenu";
-import { SortButton } from "@/components/ra-wrappers/sort-button";
-import { ExportButton } from "@/components/ra-wrappers/export-button";
 import { taskKeys, entityTimelineKeys } from "@/atomic-crm/queryKeys";
 import type { Task } from "./types";
 import type { Opportunity, Organization } from "../types";
@@ -106,19 +103,6 @@ const TaskActionsCell = React.memo(function TaskActionsCell({
 });
 
 /**
- * TaskListActions - TopToolbar actions for Tasks list
- *
- * Includes SortButton + ExportButton following ContactList pattern.
- * perPage=100 is intentional - shows all open/overdue tasks at once.
- */
-const TaskListActions = () => (
-  <TopToolbar>
-    <SortButton fields={["title", "due_date", "priority", "type"]} data-testid="task-sort-btn" />
-    <ExportButton data-testid="task-export-btn" />
-  </TopToolbar>
-);
-
-/**
  * TaskList - Standard list page for Task records
  *
  * Follows ContactList reference pattern:
@@ -151,7 +135,7 @@ export default function TaskList() {
       <div data-tutorial="tasks-list">
         <List
           title={false}
-          actions={<TaskListActions />}
+          actions={false}
           perPage={100}
           sort={{ field: "due_date", order: "ASC" }}
           exporter={exporter}
@@ -230,7 +214,14 @@ const TaskListLayout = ({
   // Show skeleton during initial load
   if (isPending) {
     return (
-      <StandardListLayout resource="tasks" filterComponent={<TaskListFilter />}>
+      <StandardListLayout
+        resource="tasks"
+        filterComponent={<TaskListFilter />}
+        filterConfig={TASK_FILTER_CONFIG}
+        sortFields={["title", "due_date", "priority", "type"]}
+        searchPlaceholder="Search tasks..."
+        overflowActions={<ExportMenuItem />}
+      >
         <TaskListSkeleton />
       </StandardListLayout>
     );
@@ -242,8 +233,14 @@ const TaskListLayout = ({
 
   return (
     <>
-      <StandardListLayout resource="tasks" filterComponent={<TaskListFilter />}>
-        <ListSearchBar placeholder="Search tasks..." filterConfig={TASK_FILTER_CONFIG} />
+      <StandardListLayout
+        resource="tasks"
+        filterComponent={<TaskListFilter />}
+        filterConfig={TASK_FILTER_CONFIG}
+        sortFields={["title", "due_date", "priority", "type"]}
+        searchPlaceholder="Search tasks..."
+        overflowActions={<ExportMenuItem />}
+      >
         <PremiumDatagrid
           onRowClick={(id) => openSlideOver(Number(id), "view")}
           focusedIndex={focusedIndex}

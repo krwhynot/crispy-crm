@@ -3,6 +3,14 @@ import { screen } from "@testing-library/react";
 import { renderWithAdminContext } from "@/tests/utils/render-admin";
 import ReportsPage from "./ReportsPage";
 
+// Mock useBreakpoint to return "desktop" — JSDOM has no real viewport
+vi.mock("@/hooks/useBreakpoint", () => ({
+  useBreakpoint: () => "desktop" as const,
+  useIsDesktop: () => true,
+  useIsLaptopOrLarger: () => true,
+  useIsMobileOrTablet: () => false,
+}));
+
 // Mock ra-core hooks (used by GlobalFilterBar)
 vi.mock("ra-core", async () => {
   // eslint-disable-next-line @typescript-eslint/consistent-type-imports -- typeof import() required in vi.mock factory

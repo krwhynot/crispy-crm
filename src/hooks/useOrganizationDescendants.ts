@@ -34,10 +34,10 @@ export function useOrganizationDescendants(
     queryFn: async () => {
       if (!orgId) return [];
       try {
-        const result = await dataProvider.invoke("get_organization_descendants", {
+        const result = await dataProvider.rpc<number[]>("get_organization_descendants", {
           org_id: orgId,
         });
-        return (result.data as number[]) || [];
+        return result || [];
       } catch (error: unknown) {
         // RPC can fail mid-mutation when parent_id is being updated
         // Return empty array to allow ParentOrganizationInput to render

@@ -2,38 +2,37 @@ import { useState, useCallback } from "react";
 import { FilterLiveForm, useListContext } from "ra-core";
 import { Popover, PopoverAnchor, PopoverContent } from "@/components/ui/popover";
 import { SearchInput } from "@/components/ra-wrappers/search-input";
-import { FilterChipBar } from "@/atomic-crm/filters/FilterChipBar";
 import { RecentSearchesContent } from "@/components/ra-wrappers/RecentSearchesDropdown";
 import { useRecentSearches } from "@/atomic-crm/hooks/useRecentSearches";
-import type { FilterConfig } from "@/atomic-crm/filters/types";
 
 interface ListSearchBarProps {
   /** Placeholder text for search input */
   placeholder?: string;
   /** Filter source field name (default: "q") */
   source?: string;
-  /** Filter configuration array for chip bar labels (optional for search-only views) */
-  filterConfig?: FilterConfig[];
   /** Enable recent searches dropdown (default: false for backward compatibility) */
   enableRecentSearches?: boolean;
+  /**
+   * @deprecated Filter chips are now rendered by StandardListLayout via filterConfig prop.
+   * This prop is ignored and will be removed in a future version.
+   */
+  filterConfig?: unknown[];
 }
 
 /**
- * ListSearchBar - Unified search + filter chips component for list views
+ * ListSearchBar - Search input component for list views
  *
- * Combines:
- * - Global search input (left)
- * - Active filter chips (right, via FilterChipBar)
+ * Provides:
+ * - Global search input
  * - Recent searches dropdown (optional, enabled via prop)
  *
- * Place this above the PremiumDatagrid in list layouts to provide
- * consistent search UX across all list views.
+ * Note: Filter chips (FilterChipBar) are now rendered by StandardListLayout
+ * via the `filterConfig` prop, not by this component.
  *
  * @example
  * ```tsx
  * <ListSearchBar
  *   placeholder="Search organizations..."
- *   filterConfig={ORGANIZATION_FILTER_CONFIG}
  *   enableRecentSearches
  * />
  * <PremiumDatagrid>...</PremiumDatagrid>
@@ -42,7 +41,6 @@ interface ListSearchBarProps {
 export function ListSearchBar({
   placeholder = "Search...",
   source = "q",
-  filterConfig,
   enableRecentSearches = false,
 }: ListSearchBarProps) {
   const { filterValues } = useListContext();
@@ -117,13 +115,6 @@ export function ListSearchBar({
         </Popover>
       ) : (
         <div className="flex-shrink-0 w-64">{searchInputContent}</div>
-      )}
-
-      {/* Active Filter Chips - only rendered when filter config exists */}
-      {filterConfig && filterConfig.length > 0 && (
-        <div className="flex-1 min-w-0">
-          <FilterChipBar filterConfig={filterConfig} />
-        </div>
       )}
     </div>
   );

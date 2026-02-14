@@ -7,11 +7,10 @@ import { BulkActionsToolbar } from "@/components/ra-wrappers/bulk-actions-toolba
 import { StandardListLayout } from "@/components/layouts/StandardListLayout";
 import { PremiumDatagrid } from "@/components/ra-wrappers/PremiumDatagrid";
 import { ProductListSkeleton } from "@/components/ui/list-skeleton";
-import { TopToolbar } from "../layout/TopToolbar";
 import { useSlideOverState } from "@/hooks/useSlideOverState";
 import { useListKeyboardNavigation } from "@/hooks/useListKeyboardNavigation";
 import { useFilterCleanup } from "../hooks/useFilterCleanup";
-import { ListSearchBar } from "@/components/ra-wrappers/ListSearchBar";
+import { ExportMenuItem } from "@/components/ra-wrappers/export-menu-item";
 import { Badge } from "@/components/ui/badge";
 import { ucFirst } from "@/atomic-crm/utils";
 import { COLUMN_VISIBILITY } from "../utils/listPatterns";
@@ -26,8 +25,6 @@ import {
   ProductCategoryHeader,
   ProductStatusHeader,
 } from "./ProductsDatagridHeader";
-import { SortButton } from "@/components/ra-wrappers/sort-button";
-import { ExportButton } from "@/components/ra-wrappers/export-button";
 import type { Product } from "../types";
 
 /**
@@ -57,12 +54,7 @@ export const ProductList = () => {
   return (
     <>
       <div data-tutorial="products-list">
-        <List
-          title={false}
-          actions={<ProductListActions />}
-          perPage={25}
-          sort={{ field: "name", order: "ASC" }}
-        >
+        <List title={false} actions={false} perPage={25} sort={{ field: "name", order: "ASC" }}>
           <ProductListLayout openSlideOver={openSlideOver} isSlideOverOpen={isOpen} />
           <FloatingCreateButton />
         </List>
@@ -103,7 +95,14 @@ const ProductListLayout = ({
   // Show skeleton during initial load
   if (isPending) {
     return (
-      <StandardListLayout resource="products" filterComponent={<ProductListFilter />}>
+      <StandardListLayout
+        resource="products"
+        filterComponent={<ProductListFilter />}
+        filterConfig={PRODUCT_FILTER_CONFIG}
+        sortFields={["name", "category", "status", "created_at"]}
+        searchPlaceholder="Search products..."
+        overflowActions={<ExportMenuItem />}
+      >
         <ProductListSkeleton />
       </StandardListLayout>
     );
@@ -115,8 +114,14 @@ const ProductListLayout = ({
 
   return (
     <>
-      <StandardListLayout resource="products" filterComponent={<ProductListFilter />}>
-        <ListSearchBar placeholder="Search products..." filterConfig={PRODUCT_FILTER_CONFIG} />
+      <StandardListLayout
+        resource="products"
+        filterComponent={<ProductListFilter />}
+        filterConfig={PRODUCT_FILTER_CONFIG}
+        sortFields={["name", "category", "status", "created_at"]}
+        searchPlaceholder="Search products..."
+        overflowActions={<ExportMenuItem />}
+      >
         <PremiumDatagrid
           onRowClick={(id) => openSlideOver(Number(id), "view")}
           focusedIndex={focusedIndex}
@@ -177,21 +182,6 @@ const ProductListLayout = ({
     </>
   );
 };
-
-/**
- * ProductListActions - TopToolbar with sort and export actions
- *
- * Follows ContactList reference pattern with SortButton + ExportButton.
- */
-const ProductListActions = () => (
-  <TopToolbar>
-    <SortButton
-      fields={["name", "category", "status", "created_at"]}
-      data-testid="product-sort-btn"
-    />
-    <ExportButton data-testid="product-export-btn" />
-  </TopToolbar>
-);
 
 /**
  * CategoryBadge - Display product category with proper formatting

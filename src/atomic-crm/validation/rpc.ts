@@ -318,6 +318,14 @@ export const getStaleOpportunitiesResponseSchema = z
   .array(staleOpportunityRecordSchema)
   .max(1000, "Maximum 1000 stale opportunities");
 
+/**
+ * get_organization_descendants(org_id BIGINT)
+ * Returns array of descendant organization IDs for hierarchy cycle prevention.
+ */
+export const getOrganizationDescendantsParamsSchema = z.strictObject({
+  org_id: z.coerce.number().int().positive("Organization ID must be positive"),
+});
+
 export const RPC_SCHEMAS = {
   get_or_create_segment: getOrCreateSegmentParamsSchema,
   set_primary_organization: setPrimaryOrganizationParamsSchema,
@@ -330,6 +338,7 @@ export const RPC_SCHEMAS = {
   check_similar_opportunities: checkSimilarOpportunitiesParamsSchema,
   get_campaign_report_stats: getCampaignReportStatsParamsSchema,
   get_stale_opportunities: getStaleOpportunitiesParamsSchema,
+  get_organization_descendants: getOrganizationDescendantsParamsSchema,
 } as const;
 
 export type RPCFunctionName = keyof typeof RPC_SCHEMAS;

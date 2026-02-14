@@ -24,6 +24,7 @@ import { addDays } from "date-fns";
 import { ToggleFilterButton } from "@/components/ra-wrappers/toggle-filter-button";
 import { SearchInput } from "@/components/ra-wrappers/search-input";
 import { FilterCategory } from "../filters/FilterCategory";
+import { FilterRailHidden } from "../filters/FilterLayoutModeContext";
 import { OPPORTUNITY_STAGES, STAGE, priorityChoices } from "./constants";
 import { OwnerFilterDropdown } from "@/components/ra-wrappers/OwnerFilterDropdown";
 import { DEFAULT_PAGE_SIZE } from "@/atomic-crm/constants/appConstants";
@@ -163,9 +164,11 @@ export const OpportunityListFilter = () => {
   return (
     <div className="flex flex-col gap-4" data-tutorial="opp-filters">
       {/* Search - Always visible */}
-      <FilterLiveForm>
-        <SearchInput source="q" placeholder="Search opportunities..." />
-      </FilterLiveForm>
+      <FilterRailHidden>
+        <FilterLiveForm>
+          <SearchInput source="q" placeholder="Search opportunities..." />
+        </FilterLiveForm>
+      </FilterRailHidden>
 
       {/* Collapsible Filter Sections */}
       <div className="flex flex-col gap-2">

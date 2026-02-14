@@ -264,17 +264,6 @@ vi.mock("@/components/ra-wrappers/FloatingCreateButton", () => ({
   FloatingCreateButton: () => <button data-testid="floating-create">Create</button>,
 }));
 
-// Mock TopToolbar and buttons
-vi.mock("../layout/TopToolbar", () => ({
-  TopToolbar: ({ children }: { children: React.ReactNode }) => (
-    <div data-testid="top-toolbar">{children}</div>
-  ),
-}));
-
-vi.mock("@/components/ra-wrappers/export-button", () => ({
-  ExportButton: () => <button data-testid="export-button">Export</button>,
-}));
-
 vi.mock("@/components/ra-wrappers/bulk-actions-toolbar", () => ({
   BulkActionsToolbar: () => <div data-testid="bulk-actions-toolbar">Bulk Actions</div>,
 }));

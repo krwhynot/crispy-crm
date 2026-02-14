@@ -210,9 +210,10 @@ vi.mock("../OrganizationBadges", () => ({
 }));
 
 vi.mock("@/components/layouts/StandardListLayout", () => ({
-  StandardListLayout: ({ children, filterComponent }: MockLayoutProps) => (
+  StandardListLayout: ({ children, filterComponent, viewSwitcher }: MockLayoutProps) => (
     <div data-testid="standard-list-layout">
       <div data-testid="filter-sidebar">{filterComponent}</div>
+      {viewSwitcher && <div data-testid="toolbar-view-switcher">{viewSwitcher}</div>}
       <div data-testid="list-content">{children}</div>
     </div>
   ),
@@ -234,28 +235,12 @@ vi.mock("@/components/ra-wrappers/FloatingCreateButton", () => ({
   FloatingCreateButton: () => <button data-testid="floating-create">Create</button>,
 }));
 
-vi.mock("../layout/TopToolbar", () => ({
-  TopToolbar: ({ children }: MockChildrenProps) => <div data-testid="top-toolbar">{children}</div>,
-}));
-
-vi.mock("@/components/ra-wrappers/export-button", () => ({
-  ExportButton: () => <button data-testid="export-button">Export</button>,
-}));
-
 vi.mock("@/components/ra-wrappers/bulk-actions-toolbar", () => ({
   BulkActionsToolbar: () => <div data-testid="bulk-actions-toolbar">Bulk Actions</div>,
 }));
 
 vi.mock("../OrganizationListFilter", () => ({
   OrganizationListFilter: () => <div data-testid="organization-list-filter">Filters</div>,
-}));
-
-vi.mock("@/components/ra-wrappers/ListSearchBar", () => ({
-  ListSearchBar: ({ placeholder }: MockLayoutProps) => (
-    <div data-testid="list-search-bar">
-      <input type="text" placeholder={placeholder || "Search..."} data-testid="search-input" />
-    </div>
-  ),
 }));
 
 vi.mock("@/hooks/useSlideOverState", () => ({

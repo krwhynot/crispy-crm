@@ -12,7 +12,6 @@ import { OrganizationListSkeleton } from "@/components/ui/list-skeleton";
 import { useSlideOverState } from "@/hooks/useSlideOverState";
 import { useListKeyboardNavigation } from "@/hooks/useListKeyboardNavigation";
 import { useFilterCleanup } from "../hooks/useFilterCleanup";
-import { ListSearchBar } from "@/components/ra-wrappers/ListSearchBar";
 import { OrganizationListFilter } from "./OrganizationListFilter";
 import { OrganizationSlideOver } from "./OrganizationSlideOver";
 import { OrganizationTypeBadge, PriorityBadge, SegmentBadge } from "./OrganizationBadges";
@@ -20,10 +19,8 @@ import { OrganizationEmpty } from "./OrganizationEmpty";
 import { OrganizationHierarchyChips } from "./OrganizationHierarchyChips";
 import { FilterableBadge } from "@/components/ra-wrappers/FilterableBadge";
 import { ListNoResults } from "@/components/ra-wrappers/ListNoResults";
-import { TopToolbar } from "../layout/TopToolbar";
-import { SortButton } from "@/components/ra-wrappers/sort-button";
-import { ExportButton } from "@/components/ra-wrappers/export-button";
-import { OrganizationImportButton } from "./OrganizationImportButton";
+import { ExportMenuItem } from "@/components/ra-wrappers/export-menu-item";
+import { OrganizationImportMenuItem } from "./OrganizationImportMenuItem";
 import { ORGANIZATION_FILTER_CONFIG } from "./organizationFilterConfig";
 import {
   OrganizationNameHeader,
@@ -134,17 +131,6 @@ const OrganizationOpportunitiesCell = memo(function OrganizationOpportunitiesCel
   return <>{record.nb_opportunities || 0}</>;
 });
 
-const OrganizationListActions = () => (
-  <TopToolbar>
-    <OrganizationImportButton />
-    <SortButton
-      fields={["name", "organization_type", "priority", "segment_name", "created_at"]}
-      dataTutorial="org-sort-btn"
-    />
-    <ExportButton dataTutorial="org-export-btn" />
-  </TopToolbar>
-);
-
 const exporter: Exporter<OrganizationRecord> = async (records, fetchRelatedRecords) => {
   const sales = await fetchRelatedRecords<Sale>(records, "sales_id", "sales");
   const secondarySales = await fetchRelatedRecords<Sale>(records, "secondary_sales_id", "sales");
@@ -246,7 +232,21 @@ const OrganizationListLayout = ({
   // Show skeleton during initial load or while identity is loading
   if (isPending || isIdentityPending) {
     return (
-      <StandardListLayout resource="organizations" filterComponent={<OrganizationListFilter />}>
+      <StandardListLayout
+        resource="organizations"
+        filterComponent={<OrganizationListFilter />}
+        filterConfig={ORGANIZATION_FILTER_CONFIG}
+        sortFields={["name", "organization_type", "priority", "segment_name", "created_at"]}
+        searchPlaceholder="Search organizations..."
+        enableRecentSearches
+        viewSwitcher={<OrganizationViewSwitcher view={view} onViewChange={onViewChange} />}
+        overflowActions={
+          <>
+            <OrganizationImportMenuItem />
+            <ExportMenuItem />
+          </>
+        }
+      >
         <OrganizationListSkeleton />
       </StandardListLayout>
     );
@@ -256,7 +256,21 @@ const OrganizationListLayout = ({
 
   if (error) {
     return (
-      <StandardListLayout resource="organizations" filterComponent={<OrganizationListFilter />}>
+      <StandardListLayout
+        resource="organizations"
+        filterComponent={<OrganizationListFilter />}
+        filterConfig={ORGANIZATION_FILTER_CONFIG}
+        sortFields={["name", "organization_type", "priority", "segment_name", "created_at"]}
+        searchPlaceholder="Search organizations..."
+        enableRecentSearches
+        viewSwitcher={<OrganizationViewSwitcher view={view} onViewChange={onViewChange} />}
+        overflowActions={
+          <>
+            <OrganizationImportMenuItem />
+            <ExportMenuItem />
+          </>
+        }
+      >
         <div className="p-8 text-center text-destructive">
           Error loading organizations. Please try refreshing the page.
         </div>
@@ -269,19 +283,21 @@ const OrganizationListLayout = ({
   // Filtered empty state: filters are applied but no results match
   if (!data?.length && hasFilters) {
     return (
-      <StandardListLayout resource="organizations" filterComponent={<OrganizationListFilter />}>
-        <div className="flex items-center gap-4 mb-4">
-          <div className="flex-1">
-            <ListSearchBar
-              placeholder="Search organizations..."
-              filterConfig={ORGANIZATION_FILTER_CONFIG}
-              enableRecentSearches
-            />
-          </div>
-          <div className="flex-shrink-0">
-            <OrganizationViewSwitcher view={view} onViewChange={onViewChange} />
-          </div>
-        </div>
+      <StandardListLayout
+        resource="organizations"
+        filterComponent={<OrganizationListFilter />}
+        filterConfig={ORGANIZATION_FILTER_CONFIG}
+        sortFields={["name", "organization_type", "priority", "segment_name", "created_at"]}
+        searchPlaceholder="Search organizations..."
+        enableRecentSearches
+        viewSwitcher={<OrganizationViewSwitcher view={view} onViewChange={onViewChange} />}
+        overflowActions={
+          <>
+            <OrganizationImportMenuItem />
+            <ExportMenuItem />
+          </>
+        }
+      >
         <ListNoResults />
       </StandardListLayout>
     );
@@ -289,19 +305,21 @@ const OrganizationListLayout = ({
 
   return (
     <>
-      <StandardListLayout resource="organizations" filterComponent={<OrganizationListFilter />}>
-        <div className="flex items-center gap-4 mb-4">
-          <div className="flex-1">
-            <ListSearchBar
-              placeholder="Search organizations..."
-              filterConfig={ORGANIZATION_FILTER_CONFIG}
-              enableRecentSearches
-            />
-          </div>
-          <div className="flex-shrink-0">
-            <OrganizationViewSwitcher view={view} onViewChange={onViewChange} />
-          </div>
-        </div>
+      <StandardListLayout
+        resource="organizations"
+        filterComponent={<OrganizationListFilter />}
+        filterConfig={ORGANIZATION_FILTER_CONFIG}
+        sortFields={["name", "organization_type", "priority", "segment_name", "created_at"]}
+        searchPlaceholder="Search organizations..."
+        enableRecentSearches
+        viewSwitcher={<OrganizationViewSwitcher view={view} onViewChange={onViewChange} />}
+        overflowActions={
+          <>
+            <OrganizationImportMenuItem />
+            <ExportMenuItem />
+          </>
+        }
+      >
         {/* Flex container enables scroll in child components - mirrors OpportunityList pattern */}
         <div className="flex h-full min-h-0 w-full flex-1 flex-col overflow-hidden">
           {view === "card" ? (
@@ -317,7 +335,7 @@ const OrganizationListLayout = ({
                 label={<OrganizationNameHeader />}
                 sortBy="name"
                 render={(record: OrganizationRecord) => <OrganizationNameCell record={record} />}
-                cellClassName="max-w-[250px]"
+                cellClassName="max-w-[220px]"
               />
 
               {/* Column 2: Type - Organization classification (sortable by organization_type) - always visible */}
@@ -344,6 +362,7 @@ const OrganizationListLayout = ({
                 label={<OrganizationSegmentHeader />}
                 sortBy="segment_name"
                 render={(record: OrganizationRecord) => <OrganizationSegmentCell record={record} />}
+                cellClassName="max-w-[160px]"
               />
 
               {/* Column 5: State - US state code (sortable, filterable) - hidden on tablet */}
@@ -351,7 +370,7 @@ const OrganizationListLayout = ({
                 source="state"
                 label={<OrganizationStateHeader />}
                 sortable
-                cellClassName="hidden lg:table-cell"
+                cellClassName="hidden lg:table-cell w-[60px]"
                 headerClassName="hidden lg:table-cell"
               />
 
@@ -361,11 +380,11 @@ const OrganizationListLayout = ({
                 label="Parent"
                 sortBy="parent_organization_name"
                 render={(record: OrganizationRecord) => (
-                  <span className="truncate max-w-[200px]">
+                  <span className="truncate block max-w-[120px]">
                     {record.parent_organization_name || "-"}
                   </span>
                 )}
-                cellClassName="hidden lg:table-cell"
+                cellClassName="hidden lg:table-cell max-w-[140px]"
                 headerClassName="hidden lg:table-cell"
               />
 
@@ -385,7 +404,7 @@ const OrganizationListLayout = ({
               {/* Column 8: Opportunities - Computed count metric (non-sortable) - hidden on mobile */}
               <FunctionField
                 source="nb_opportunities"
-                label="Opportunities"
+                label="Opps"
                 sortable={false}
                 render={(record: OrganizationRecord) => (
                   <OrganizationOpportunitiesCell record={record} />
@@ -427,7 +446,7 @@ export const OrganizationList = () => {
       <div data-tutorial="organizations-list">
         <List
           title={false}
-          actions={<OrganizationListActions />}
+          actions={false}
           perPage={DEFAULT_LIST_PAGE_SIZE}
           sort={SORT_BY_UPDATED_DESC}
           exporter={exporter}

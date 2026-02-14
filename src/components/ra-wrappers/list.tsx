@@ -106,30 +106,24 @@ export const ListView = <RecordType extends RaRecord = RaRecord>(
           <BreadcrumbPage>{resourceLabel}</BreadcrumbPage>
         </Breadcrumb>
 
-        <FilterContext.Provider value={filters}>
-          <div className="flex justify-between items-center flex-wrap gap-2 my-2">
-            <FilterForm />
-            {actions ?? (
-              <div className="flex items-center gap-2">
-                {hasCreate ? <CreateButton /> : null}
-                {<ExportButton />}
-              </div>
-            )}
-          </div>
-        </FilterContext.Provider>
+        {actions !== false && (
+          <FilterContext.Provider value={filters}>
+            <div className="flex justify-between items-center flex-wrap gap-2 my-2">
+              <FilterForm />
+              {actions ?? (
+                <div className="flex items-center gap-2">
+                  {hasCreate ? <CreateButton /> : null}
+                  {<ExportButton />}
+                </div>
+              )}
+            </div>
+          </FilterContext.Provider>
+        )}
       </div>
 
       {/* Content area - scrolls vertically for paginated lists, fills height for kanban */}
       <FilterContext.Provider value={filters}>
-        <div
-          className={cn(
-            "h-full min-h-0 flex-1 overflow-hidden",
-            // Only add vertical scroll when pagination exists (standard Datagrid lists)
-            // When pagination={null} (e.g., Kanban), let content fill remaining height
-            pagination && "overflow-y-auto",
-            props.className
-          )}
-        >
+        <div className={cn("h-full min-h-0 flex-1 overflow-hidden", props.className)}>
           {!isPending && data?.length === 0 ? renderEmptyState(filterValues, empty) : children}
         </div>
 

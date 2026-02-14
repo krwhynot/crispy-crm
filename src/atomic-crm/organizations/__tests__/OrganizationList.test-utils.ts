@@ -25,6 +25,7 @@ export interface MockFieldProps extends MockChildrenProps {
 
 export interface MockLayoutProps extends MockChildrenProps {
   filterComponent?: React.ReactNode;
+  viewSwitcher?: React.ReactNode;
   onRowClick?: (id: string | number, resource: string, record: unknown) => void;
   recordId?: string | number;
   isOpen?: boolean;

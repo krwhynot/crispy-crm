@@ -217,9 +217,10 @@ vi.mock("../OrganizationBadges", () => ({
 }));
 
 vi.mock("@/components/layouts/StandardListLayout", () => ({
-  StandardListLayout: ({ children, filterComponent }: MockLayoutProps) => (
+  StandardListLayout: ({ children, filterComponent, viewSwitcher }: MockLayoutProps) => (
     <div data-testid="standard-list-layout">
       <div data-testid="filter-sidebar">{filterComponent}</div>
+      {viewSwitcher && <div data-testid="toolbar-view-switcher">{viewSwitcher}</div>}
       <div data-testid="list-content">{children}</div>
     </div>
   ),
@@ -228,7 +229,7 @@ vi.mock("@/components/layouts/StandardListLayout", () => ({
 vi.mock("@/components/ra-wrappers/list", () => ({
   List: ({ children, actions }: MockChildrenProps & { actions?: React.ReactNode }) => (
     <div data-testid="list-wrapper">
-      {actions}
+      {actions !== false && actions}
       {children}
     </div>
   ),
@@ -246,36 +247,12 @@ vi.mock("@/components/ra-wrappers/FloatingCreateButton", () => ({
   FloatingCreateButton: () => <button data-testid="floating-create">Create</button>,
 }));
 
-vi.mock("../layout/TopToolbar", () => ({
-  TopToolbar: ({ children }: MockChildrenProps) => <div data-testid="top-toolbar">{children}</div>,
-}));
-
-vi.mock("@/components/ra-wrappers/sort-button", () => ({
-  SortButton: () => <button data-testid="sort-button">Sort</button>,
-}));
-
-vi.mock("@/components/ra-wrappers/export-button", () => ({
-  ExportButton: () => <button data-testid="export-button">Export</button>,
-}));
-
-vi.mock("../OrganizationImportButton", () => ({
-  OrganizationImportButton: () => <button data-testid="import-button">Import</button>,
-}));
-
 vi.mock("@/components/ra-wrappers/bulk-actions-toolbar", () => ({
   BulkActionsToolbar: () => <div data-testid="bulk-actions-toolbar">Bulk Actions</div>,
 }));
 
 vi.mock("../OrganizationListFilter", () => ({
   OrganizationListFilter: () => <div data-testid="organization-list-filter">Filters</div>,
-}));
-
-vi.mock("@/components/ra-wrappers/ListSearchBar", () => ({
-  ListSearchBar: ({ placeholder }: MockLayoutProps) => (
-    <div data-testid="list-search-bar">
-      <input type="text" placeholder={placeholder || "Search..."} data-testid="search-input" />
-    </div>
-  ),
 }));
 
 vi.mock("@/hooks/useSlideOverState", () => ({
@@ -291,6 +268,25 @@ vi.mock("@/hooks/useSlideOverState", () => ({
 
 vi.mock("../hooks/useFilterCleanup", () => ({
   useFilterCleanup: vi.fn(),
+}));
+
+vi.mock("../OrganizationViewSwitcher", () => ({
+  OrganizationViewSwitcher: ({
+    view,
+    onViewChange,
+  }: {
+    view: string;
+    onViewChange: (v: string) => void;
+  }) => (
+    <div data-testid="org-view-switcher" data-view={view}>
+      <button data-testid="switch-to-list" onClick={() => onViewChange("list")}>
+        List
+      </button>
+      <button data-testid="switch-to-card" onClick={() => onViewChange("card")}>
+        Card
+      </button>
+    </div>
+  ),
 }));
 
 import { useListContext, useGetList } from "ra-core";
@@ -368,7 +364,7 @@ describe("OrganizationList 6-column structure", () => {
       expect(screen.getByTestId("function-field-Contacts")).toBeInTheDocument();
 
       // Column 8: Opportunities (FunctionField)
-      expect(screen.getByTestId("function-field-Opportunities")).toBeInTheDocument();
+      expect(screen.getByTestId("function-field-Opps")).toBeInTheDocument();
     });
   });
 });
@@ -481,7 +477,7 @@ describe("OrganizationList column sorting configuration", () => {
     renderWithAdminContext(<OrganizationList />);
 
     await waitFor(() => {
-      const opportunitiesField = screen.getByTestId("function-field-Opportunities");
+      const opportunitiesField = screen.getByTestId("function-field-Opps");
       expect(opportunitiesField).toHaveAttribute("data-sortable", "false");
     });
   });
