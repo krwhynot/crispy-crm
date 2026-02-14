@@ -981,7 +981,7 @@
 
   /* Chart support tokens */
   --chart-gridline: oklch(90% 0.01 92); /* Subtle paper cream gridlines */
-  --chart-axis-text: var(--muted-foreground); /* Axis labels */
+  --chart-axis-text: oklch(46% 0.018 85); /* Axis labels - neutral-600 for WCAG AA on white cards */
   --chart-disabled: oklch(78% 0.008 85); /* Disabled/muted data */
 
   /* Sidebar Colors - Paper cream tint with forest green accents */
@@ -1324,7 +1324,7 @@
 
   /* Chart support tokens - dark mode */
   --chart-gridline: oklch(30% 0.015 85); /* Darker gridlines for dark bg */
-  --chart-axis-text: var(--muted-foreground);
+  --chart-axis-text: oklch(88.4% 0.005 284.8); /* Axis labels - high contrast on dark cards */
   --chart-disabled: oklch(35% 0.008 85); /* Disabled/muted data */
 
   /* Sidebar Colors - Dark Mode with Forest Green */

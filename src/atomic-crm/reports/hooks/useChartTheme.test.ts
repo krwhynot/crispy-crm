@@ -34,8 +34,16 @@ const lightVars: Record<string, string> = {
   "--destructive": "oklch(58% 0.18 27)",
   "--muted": "oklch(90% 0.01 92)",
   "--chart-gridline": "oklch(90% 0.01 92)",
-  "--chart-axis-text": "oklch(71.6% 0.018 85)",
+  "--chart-axis-text": "oklch(46% 0.018 85)",
   "--foreground": "oklch(20% 0.012 85)",
+  "--chart-1": "oklch(63.7% 0.183 142)",
+  "--chart-2": "oklch(60% 0.15 145)",
+  "--chart-3": "oklch(75% 0.15 85)",
+  "--chart-4": "oklch(58% 0.18 27)",
+  "--chart-5": "oklch(55% 0.17 280)",
+  "--chart-6": "oklch(70% 0.14 200)",
+  "--chart-7": "oklch(65% 0.16 50)",
+  "--chart-8": "oklch(50% 0.12 320)",
   "--font-sans": "Inter, system-ui",
 };
 
@@ -50,6 +58,14 @@ const darkVars: Record<string, string> = {
   "--chart-gridline": "oklch(30% 0.015 85)",
   "--chart-axis-text": "oklch(88.4% 0.005 284.8)",
   "--foreground": "oklch(95% 0.005 85)",
+  "--chart-1": "oklch(73.7% 0.183 142)",
+  "--chart-2": "oklch(70% 0.15 145)",
+  "--chart-3": "oklch(80% 0.15 85)",
+  "--chart-4": "oklch(65% 0.18 27)",
+  "--chart-5": "oklch(65% 0.17 280)",
+  "--chart-6": "oklch(75% 0.14 200)",
+  "--chart-7": "oklch(70% 0.16 50)",
+  "--chart-8": "oklch(55% 0.12 320)",
   "--font-sans": "Inter, system-ui",
 };
 
@@ -88,7 +104,7 @@ describe("useChartTheme", () => {
     const { result } = renderHook(() => useChartTheme());
 
     expect(result.current.colors.gridline).toBe("oklch(90% 0.01 92)");
-    expect(result.current.colors.axisText).toBe("oklch(71.6% 0.018 85)");
+    expect(result.current.colors.axisText).toBe("oklch(46% 0.018 85)");
     expect(result.current.colors.foreground).toBe("oklch(20% 0.012 85)");
   });
 
