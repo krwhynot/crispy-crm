@@ -53,7 +53,9 @@ describe("KPICard", () => {
   describe("onClick navigation (PRD Section 9.2.1)", () => {
     it("calls onClick when card is clicked", async () => {
       const handleClick = vi.fn();
-      renderWithAdminContext(<KPICard title="Clickable KPI" value="100" icon={TrendingUp} onClick={handleClick} />);
+      renderWithAdminContext(
+        <KPICard title="Clickable KPI" value="100" icon={TrendingUp} onClick={handleClick} />
+      );
 
       const card = screen.getByRole("button", { name: /Clickable KPI: 100/i });
       await userEvent.click(card);
@@ -63,7 +65,9 @@ describe("KPICard", () => {
 
     it("calls onClick on Enter key press", () => {
       const handleClick = vi.fn();
-      renderWithAdminContext(<KPICard title="Keyboard KPI" value="50" icon={TrendingUp} onClick={handleClick} />);
+      renderWithAdminContext(
+        <KPICard title="Keyboard KPI" value="50" icon={TrendingUp} onClick={handleClick} />
+      );
 
       const card = screen.getByRole("button", { name: /Keyboard KPI: 50/i });
       fireEvent.keyDown(card, { key: "Enter" });
@@ -73,7 +77,9 @@ describe("KPICard", () => {
 
     it("calls onClick on Space key press", () => {
       const handleClick = vi.fn();
-      renderWithAdminContext(<KPICard title="Spacebar KPI" value="25" icon={TrendingUp} onClick={handleClick} />);
+      renderWithAdminContext(
+        <KPICard title="Spacebar KPI" value="25" icon={TrendingUp} onClick={handleClick} />
+      );
 
       const card = screen.getByRole("button", { name: /Spacebar KPI: 25/i });
       fireEvent.keyDown(card, { key: " " });
@@ -83,7 +89,9 @@ describe("KPICard", () => {
 
     it("has cursor-pointer class when clickable", () => {
       const handleClick = vi.fn();
-      renderWithAdminContext(<KPICard title="Pointer KPI" value="75" icon={TrendingUp} onClick={handleClick} />);
+      renderWithAdminContext(
+        <KPICard title="Pointer KPI" value="75" icon={TrendingUp} onClick={handleClick} />
+      );
 
       const card = screen.getByRole("button", { name: /Pointer KPI: 75/i });
       expect(card).toHaveClass("cursor-pointer");
@@ -98,7 +106,9 @@ describe("KPICard", () => {
 
     it("is keyboard focusable when clickable", () => {
       const handleClick = vi.fn();
-      renderWithAdminContext(<KPICard title="Focusable KPI" value="150" icon={TrendingUp} onClick={handleClick} />);
+      renderWithAdminContext(
+        <KPICard title="Focusable KPI" value="150" icon={TrendingUp} onClick={handleClick} />
+      );
 
       const card = screen.getByRole("button", { name: /Focusable KPI: 150/i });
       expect(card).toHaveAttribute("tabIndex", "0");
@@ -107,7 +117,9 @@ describe("KPICard", () => {
 
   describe("variant styling (PRD Section 9.2.1)", () => {
     it("applies warning styling for warning variant", () => {
-      renderWithAdminContext(<KPICard title="Stale Deals" value="5" icon={TrendingUp} variant="warning" />);
+      renderWithAdminContext(
+        <KPICard title="Stale Deals" value="5" icon={TrendingUp} variant="warning" />
+      );
 
       // Find the card element (not button since no onClick)
       const card = screen.getByText("Stale Deals").closest('[data-slot="card"]');
@@ -116,7 +128,9 @@ describe("KPICard", () => {
     });
 
     it("applies success styling for success variant", () => {
-      renderWithAdminContext(<KPICard title="Wins" value="10" icon={TrendingUp} variant="success" />);
+      renderWithAdminContext(
+        <KPICard title="Wins" value="10" icon={TrendingUp} variant="success" />
+      );
 
       const card = screen.getByText("Wins").closest('[data-slot="card"]');
       expect(card).toHaveClass("border-success/50");
@@ -124,7 +138,9 @@ describe("KPICard", () => {
     });
 
     it("applies destructive styling for destructive variant", () => {
-      renderWithAdminContext(<KPICard title="Overdue Tasks" value="3" icon={TrendingDown} variant="destructive" />);
+      renderWithAdminContext(
+        <KPICard title="Overdue Tasks" value="3" icon={TrendingDown} variant="destructive" />
+      );
 
       const card = screen.getByText("Overdue Tasks").closest('[data-slot="card"]');
       expect(card).toHaveClass("border-destructive/50");

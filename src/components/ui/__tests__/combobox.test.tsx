@@ -24,7 +24,9 @@ describe("Combobox", () => {
     });
 
     it("displays selected option label", () => {
-      renderWithAdminContext(<Combobox options={defaultOptions} value="chicago" placeholder="Select city..." />);
+      renderWithAdminContext(
+        <Combobox options={defaultOptions} value="chicago" placeholder="Select city..." />
+      );
       expect(screen.getByRole("combobox")).toHaveTextContent("Chicago");
     });
 
@@ -70,7 +72,9 @@ describe("Combobox", () => {
 
     it("deselects option when same option is selected again", async () => {
       const mockOnChange = vi.fn();
-      renderWithAdminContext(<Combobox options={defaultOptions} value="chicago" onValueChange={mockOnChange} />);
+      renderWithAdminContext(
+        <Combobox options={defaultOptions} value="chicago" onValueChange={mockOnChange} />
+      );
 
       await user.click(screen.getByRole("combobox"));
       // Use role="option" to specifically target the dropdown item, not the trigger button
@@ -131,7 +135,9 @@ describe("Combobox", () => {
 
     it("calls onValueChange with the typed value when 'Create' option is selected", async () => {
       const mockOnChange = vi.fn();
-      renderWithAdminContext(<Combobox options={defaultOptions} creatable onValueChange={mockOnChange} />);
+      renderWithAdminContext(
+        <Combobox options={defaultOptions} creatable onValueChange={mockOnChange} />
+      );
 
       await user.click(screen.getByRole("combobox"));
       await user.type(screen.getByPlaceholderText("Search..."), "Boston");
@@ -142,7 +148,9 @@ describe("Combobox", () => {
 
     it("closes popover and clears search after selecting 'Create' option", async () => {
       const mockOnChange = vi.fn();
-      renderWithAdminContext(<Combobox options={defaultOptions} creatable onValueChange={mockOnChange} />);
+      renderWithAdminContext(
+        <Combobox options={defaultOptions} creatable onValueChange={mockOnChange} />
+      );
 
       await user.click(screen.getByRole("combobox"));
       await user.type(screen.getByPlaceholderText("Search..."), "Boston");
@@ -205,7 +213,9 @@ describe("MultiSelectCombobox", () => {
 
   describe("Basic Functionality", () => {
     it("renders with placeholder when no value selected", () => {
-      renderWithAdminContext(<MultiSelectCombobox options={defaultOptions} placeholder="Select cities..." />);
+      renderWithAdminContext(
+        <MultiSelectCombobox options={defaultOptions} placeholder="Select cities..." />
+      );
       expect(screen.getByRole("combobox")).toHaveTextContent("Select cities...");
     });
 

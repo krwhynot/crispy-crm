@@ -7,7 +7,9 @@ import { NextTaskBadge } from "../NextTaskBadge";
 describe("NextTaskBadge", () => {
   describe("empty states", () => {
     it("renders 'No tasks' when taskId is null", () => {
-      renderWithAdminContext(<NextTaskBadge taskId={null} title={null} dueDate={null} priority={null} />);
+      renderWithAdminContext(
+        <NextTaskBadge taskId={null} title={null} dueDate={null} priority={null} />
+      );
       expect(screen.getByText("No tasks")).toBeInTheDocument();
     });
 
@@ -19,7 +21,9 @@ describe("NextTaskBadge", () => {
     });
 
     it("renders 'No tasks' when title is missing", () => {
-      renderWithAdminContext(<NextTaskBadge taskId={123} title={null} dueDate="2025-12-20" priority="high" />);
+      renderWithAdminContext(
+        <NextTaskBadge taskId={123} title={null} dueDate="2025-12-20" priority="high" />
+      );
       expect(screen.getByText("No tasks")).toBeInTheDocument();
     });
   });
@@ -45,7 +49,9 @@ describe("NextTaskBadge", () => {
     });
 
     it("includes task title in aria-label", () => {
-      renderWithAdminContext(<NextTaskBadge taskId={123} title="Send proposal" dueDate={null} priority="medium" />);
+      renderWithAdminContext(
+        <NextTaskBadge taskId={123} title="Send proposal" dueDate={null} priority="medium" />
+      );
       const button = screen.getByRole("button");
       expect(button).toHaveAttribute("aria-label", "Task: Send proposal");
     });
@@ -90,7 +96,9 @@ describe("NextTaskBadge", () => {
       tomorrow.setDate(tomorrow.getDate() + 2);
       const dateStr = tomorrow.toISOString().split("T")[0];
 
-      renderWithAdminContext(<NextTaskBadge taskId={123} title="Soon task" dueDate={dateStr} priority="medium" />);
+      renderWithAdminContext(
+        <NextTaskBadge taskId={123} title="Soon task" dueDate={dateStr} priority="medium" />
+      );
       // Should show a day abbreviation like "Mon", "Tue", etc.
       const dayAbbreviations = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
       const hasDayAbbr = dayAbbreviations.some((day) => screen.queryByText(day));
@@ -110,7 +118,9 @@ describe("NextTaskBadge", () => {
     });
 
     it("handles null due date gracefully", () => {
-      renderWithAdminContext(<NextTaskBadge taskId={123} title="No date task" dueDate={null} priority="high" />);
+      renderWithAdminContext(
+        <NextTaskBadge taskId={123} title="No date task" dueDate={null} priority="high" />
+      );
       expect(screen.getByText("No date task")).toBeInTheDocument();
       // Should not crash, just not show a date
     });
@@ -228,7 +238,9 @@ describe("NextTaskBadge", () => {
       futureDate.setDate(futureDate.getDate() + 7);
       const dateStr = futureDate.toISOString().split("T")[0];
 
-      renderWithAdminContext(<NextTaskBadge taskId={123} title="Future task" dueDate={dateStr} priority="high" />);
+      renderWithAdminContext(
+        <NextTaskBadge taskId={123} title="Future task" dueDate={dateStr} priority="high" />
+      );
       const button = screen.getByRole("button");
       // Should include date info in aria-label
       expect(button.getAttribute("aria-label")).toContain("Future task");

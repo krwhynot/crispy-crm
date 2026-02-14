@@ -71,7 +71,9 @@ describe("ActionButtons", () => {
     });
 
     it("shows Loader2 spinner when submitting", () => {
-      const { container } = renderWithAdminContext(<ActionButtons {...defaultProps} isSubmitting={true} />);
+      const { container } = renderWithAdminContext(
+        <ActionButtons {...defaultProps} isSubmitting={true} />
+      );
 
       const spinner = container.querySelector(".animate-spin");
       expect(spinner).toBeInTheDocument();
@@ -87,7 +89,9 @@ describe("ActionButtons", () => {
 
   describe("Accessibility", () => {
     it("spinner icon has aria-hidden for screen readers", () => {
-      const { container } = renderWithAdminContext(<ActionButtons {...defaultProps} isSubmitting={true} />);
+      const { container } = renderWithAdminContext(
+        <ActionButtons {...defaultProps} isSubmitting={true} />
+      );
 
       const spinner = container.querySelector('svg[aria-hidden="true"]');
       expect(spinner).toBeInTheDocument();

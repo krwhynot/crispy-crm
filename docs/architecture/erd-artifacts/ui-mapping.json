@@ -23,78 +23,49 @@
         {
           "file": "ContactEdit.tsx",
           "type": "edit",
-          "exports": [
-            "ContactEdit"
-          ],
+          "exports": ["ContactEdit"],
           "features": []
         },
         {
           "file": "ContactList.tsx",
           "type": "list",
-          "exports": [
-            "ContactList"
-          ],
-          "features": [
-            "PremiumDatagrid",
-            "Filters",
-            "BulkActions",
-            "ExportButton"
-          ]
+          "exports": ["ContactList"],
+          "features": ["PremiumDatagrid", "Filters", "BulkActions", "ExportButton"]
         },
         {
           "file": "ContactListFilter.tsx",
           "type": "list",
-          "exports": [
-            "ContactListFilter"
-          ],
-          "features": [
-            "Filters"
-          ]
+          "exports": ["ContactListFilter"],
+          "features": ["Filters"]
         },
         {
           "file": "ContactShow.tsx",
           "type": "show",
-          "exports": [
-            "ContactShow"
-          ],
-          "features": [
-            "ReferenceManyField",
-            "ReferenceField"
-          ]
+          "exports": ["ContactShow"],
+          "features": ["ReferenceManyField", "ReferenceField"]
         },
         {
           "file": "ContactSlideOver.tsx",
           "type": "slideOver",
-          "exports": [
-            "ContactSlideOver"
-          ],
+          "exports": ["ContactSlideOver"],
           "features": []
         },
         {
           "file": "QuickCreateContactPopover.tsx",
           "type": "create",
-          "exports": [
-            "QuickCreateContactPopover",
-            "QuickCreateContactRA"
-          ],
+          "exports": ["QuickCreateContactPopover", "QuickCreateContactRA"],
           "features": []
         },
         {
           "file": "TagsList.tsx",
           "type": "list",
-          "exports": [
-            "TagsList"
-          ],
-          "features": [
-            "Filters"
-          ]
+          "exports": ["TagsList"],
+          "features": ["Filters"]
         },
         {
           "file": "TagsListEdit.tsx",
           "type": "list",
-          "exports": [
-            "TagsListEdit"
-          ],
+          "exports": ["TagsListEdit"],
           "features": []
         }
       ],
@@ -203,9 +174,7 @@
         {
           "file": "OrganizationCreateFormFooter.tsx",
           "type": "create",
-          "exports": [
-            "OrganizationCreateFormFooter"
-          ],
+          "exports": ["OrganizationCreateFormFooter"],
           "features": []
         },
         {
@@ -217,49 +186,31 @@
         {
           "file": "OrganizationList.tsx",
           "type": "list",
-          "exports": [
-            "OrganizationList"
-          ],
-          "features": [
-            "PremiumDatagrid",
-            "Filters",
-            "BulkActions",
-            "ExportButton"
-          ]
+          "exports": ["OrganizationList"],
+          "features": ["PremiumDatagrid", "Filters", "BulkActions", "ExportButton"]
         },
         {
           "file": "OrganizationListFilter.tsx",
           "type": "list",
-          "exports": [
-            "OrganizationListFilter"
-          ],
-          "features": [
-            "Filters"
-          ]
+          "exports": ["OrganizationListFilter"],
+          "features": ["Filters"]
         },
         {
           "file": "OrganizationShow.tsx",
           "type": "show",
           "exports": [],
-          "features": [
-            "ReferenceManyField"
-          ]
+          "features": ["ReferenceManyField"]
         },
         {
           "file": "OrganizationSlideOver.tsx",
           "type": "slideOver",
-          "exports": [
-            "OrganizationSlideOver"
-          ],
+          "exports": ["OrganizationSlideOver"],
           "features": []
         },
         {
           "file": "QuickCreatePopover.tsx",
           "type": "create",
-          "exports": [
-            "QuickCreatePopover",
-            "QuickCreateOrganizationRA"
-          ],
+          "exports": ["QuickCreatePopover", "QuickCreateOrganizationRA"],
           "features": []
         }
       ],
@@ -302,34 +253,25 @@
         {
           "file": "ActivitiesList.tsx",
           "type": "list",
-          "exports": [
-            "ActivitiesList"
-          ],
+          "exports": ["ActivitiesList"],
           "features": []
         },
         {
           "file": "CampaignGroupedList.tsx",
           "type": "list",
-          "exports": [
-            "CampaignGroupedList"
-          ],
+          "exports": ["CampaignGroupedList"],
           "features": []
         },
         {
           "file": "ContactList.tsx",
           "type": "list",
-          "exports": [
-            "ContactList"
-          ],
+          "exports": ["ContactList"],
           "features": []
         },
         {
           "file": "OpportunityArchivedList.tsx",
           "type": "list",
-          "exports": [
-            "OpportunityArchivedList",
-            "getRelativeTimeString"
-          ],
+          "exports": ["OpportunityArchivedList", "getRelativeTimeString"],
           "features": []
         },
         {
@@ -341,93 +283,61 @@
         {
           "file": "OpportunityCreateFormFooter.tsx",
           "type": "create",
-          "exports": [
-            "OpportunityCreateFormFooter"
-          ],
+          "exports": ["OpportunityCreateFormFooter"],
           "features": []
         },
         {
           "file": "OpportunityCreateSaveButton.tsx",
           "type": "create",
-          "exports": [
-            "OpportunityCreateSaveButton"
-          ],
+          "exports": ["OpportunityCreateSaveButton"],
           "features": []
         },
         {
           "file": "OpportunityEdit.tsx",
           "type": "edit",
           "exports": [],
-          "features": [
-            "DeleteButton",
-            "ReferenceField"
-          ]
+          "features": ["DeleteButton", "ReferenceField"]
         },
         {
           "file": "OpportunityList.tsx",
           "type": "list",
           "exports": [],
-          "features": [
-            "Filters",
-            "ExportButton"
-          ]
+          "features": ["Filters", "ExportButton"]
         },
         {
           "file": "OpportunityListFilter.tsx",
           "type": "list",
-          "exports": [
-            "OpportunityListFilter"
-          ],
-          "features": [
-            "Filters"
-          ]
+          "exports": ["OpportunityListFilter"],
+          "features": ["Filters"]
         },
         {
           "file": "OpportunityListTutorial.tsx",
           "type": "list",
-          "exports": [
-            "OpportunityListTutorial"
-          ],
-          "features": [
-            "Filters"
-          ]
+          "exports": ["OpportunityListTutorial"],
+          "features": ["Filters"]
         },
         {
           "file": "OpportunityRowListView.tsx",
           "type": "list",
-          "exports": [
-            "OpportunityRowListView"
-          ],
-          "features": [
-            "BulkActions",
-            "EditButton",
-            "ReferenceField"
-          ]
+          "exports": ["OpportunityRowListView"],
+          "features": ["BulkActions", "EditButton", "ReferenceField"]
         },
         {
           "file": "OpportunityShow.tsx",
           "type": "show",
           "exports": [],
-          "features": [
-            "Filters",
-            "ReferenceManyField",
-            "ReferenceField"
-          ]
+          "features": ["Filters", "ReferenceManyField", "ReferenceField"]
         },
         {
           "file": "OpportunitySlideOver.tsx",
           "type": "slideOver",
-          "exports": [
-            "OpportunitySlideOver"
-          ],
+          "exports": ["OpportunitySlideOver"],
           "features": []
         },
         {
           "file": "PrincipalGroupedList.tsx",
           "type": "list",
-          "exports": [
-            "PrincipalGroupedList"
-          ],
+          "exports": ["PrincipalGroupedList"],
           "features": []
         }
       ],
@@ -602,27 +512,19 @@
         {
           "file": "ActivityListFilter.tsx",
           "type": "list",
-          "exports": [
-            "ActivityListFilter"
-          ],
-          "features": [
-            "Filters"
-          ]
+          "exports": ["ActivityListFilter"],
+          "features": ["Filters"]
         },
         {
           "file": "ActivityShow.tsx",
           "type": "show",
           "exports": [],
-          "features": [
-            "ReferenceField"
-          ]
+          "features": ["ReferenceField"]
         },
         {
           "file": "ActivitySlideOver.tsx",
           "type": "slideOver",
-          "exports": [
-            "ActivitySlideOver"
-          ],
+          "exports": ["ActivitySlideOver"],
           "features": []
         }
       ],
@@ -690,55 +592,36 @@
           "file": "ProductEdit.tsx",
           "type": "edit",
           "exports": [],
-          "features": [
-            "DeleteButton"
-          ]
+          "features": ["DeleteButton"]
         },
         {
           "file": "ProductList.tsx",
           "type": "list",
-          "exports": [
-            "ProductList"
-          ],
-          "features": [
-            "PremiumDatagrid",
-            "Filters",
-            "BulkActions",
-            "ExportButton"
-          ]
+          "exports": ["ProductList"],
+          "features": ["PremiumDatagrid", "Filters", "BulkActions", "ExportButton"]
         },
         {
           "file": "ProductListContent.tsx",
           "type": "list",
-          "exports": [
-            "ProductListContent"
-          ],
+          "exports": ["ProductListContent"],
           "features": []
         },
         {
           "file": "ProductListFilter.tsx",
           "type": "list",
-          "exports": [
-            "ProductListFilter"
-          ],
-          "features": [
-            "Filters"
-          ]
+          "exports": ["ProductListFilter"],
+          "features": ["Filters"]
         },
         {
           "file": "ProductShow.tsx",
           "type": "show",
           "exports": [],
-          "features": [
-            "ReferenceField"
-          ]
+          "features": ["ReferenceField"]
         },
         {
           "file": "ProductSlideOver.tsx",
           "type": "slideOver",
-          "exports": [
-            "ProductSlideOver"
-          ],
+          "exports": ["ProductSlideOver"],
           "features": []
         }
       ],
@@ -787,9 +670,7 @@
         {
           "file": "TaskEdit.tsx",
           "type": "edit",
-          "exports": [
-            "TaskEdit"
-          ],
+          "exports": ["TaskEdit"],
           "features": []
         },
         {
@@ -807,38 +688,26 @@
         {
           "file": "TaskListFilter.tsx",
           "type": "list",
-          "exports": [
-            "TaskListFilter"
-          ],
-          "features": [
-            "Filters"
-          ]
+          "exports": ["TaskListFilter"],
+          "features": ["Filters"]
         },
         {
           "file": "TaskShow.tsx",
           "type": "show",
           "exports": [],
-          "features": [
-            "ReferenceField"
-          ]
+          "features": ["ReferenceField"]
         },
         {
           "file": "TaskSlideOver.tsx",
           "type": "slideOver",
-          "exports": [
-            "TaskSlideOver"
-          ],
+          "exports": ["TaskSlideOver"],
           "features": []
         },
         {
           "file": "TaskSlideOverDetailsTab.tsx",
           "type": "slideOver",
-          "exports": [
-            "TaskSlideOverDetailsTab"
-          ],
-          "features": [
-            "ReferenceField"
-          ]
+          "exports": ["TaskSlideOverDetailsTab"],
+          "features": ["ReferenceField"]
         }
       ],
       "relationships_rendered": [
@@ -893,20 +762,14 @@
         {
           "file": "NoteCreate.tsx",
           "type": "create",
-          "exports": [
-            "NoteCreate"
-          ],
+          "exports": ["NoteCreate"],
           "features": []
         },
         {
           "file": "NotesList.tsx",
           "type": "list",
-          "exports": [
-            "NotesList"
-          ],
-          "features": [
-            "ReferenceManyField"
-          ]
+          "exports": ["NotesList"],
+          "features": ["ReferenceManyField"]
         }
       ],
       "relationships_rendered": [
@@ -946,20 +809,14 @@
         {
           "file": "NoteCreate.tsx",
           "type": "create",
-          "exports": [
-            "NoteCreate"
-          ],
+          "exports": ["NoteCreate"],
           "features": []
         },
         {
           "file": "NotesList.tsx",
           "type": "list",
-          "exports": [
-            "NotesList"
-          ],
-          "features": [
-            "ReferenceManyField"
-          ]
+          "exports": ["NotesList"],
+          "features": ["ReferenceManyField"]
         }
       ],
       "relationships_rendered": [
@@ -999,20 +856,14 @@
         {
           "file": "NoteCreate.tsx",
           "type": "create",
-          "exports": [
-            "NoteCreate"
-          ],
+          "exports": ["NoteCreate"],
           "features": []
         },
         {
           "file": "NotesList.tsx",
           "type": "list",
-          "exports": [
-            "NotesList"
-          ],
-          "features": [
-            "ReferenceManyField"
-          ]
+          "exports": ["NotesList"],
+          "features": ["ReferenceManyField"]
         }
       ],
       "relationships_rendered": [
@@ -1052,51 +903,37 @@
         {
           "file": "TagCreate.tsx",
           "type": "create",
-          "exports": [
-            "TagCreate"
-          ],
+          "exports": ["TagCreate"],
           "features": []
         },
         {
           "file": "TagCreateModal.tsx",
           "type": "create",
-          "exports": [
-            "TagCreateModal"
-          ],
+          "exports": ["TagCreateModal"],
           "features": []
         },
         {
           "file": "TagEdit.tsx",
           "type": "edit",
-          "exports": [
-            "TagEdit"
-          ],
+          "exports": ["TagEdit"],
           "features": []
         },
         {
           "file": "TagEditModal.tsx",
           "type": "edit",
-          "exports": [
-            "TagEditModal"
-          ],
+          "exports": ["TagEditModal"],
           "features": []
         },
         {
           "file": "TagList.tsx",
           "type": "list",
-          "exports": [
-            "TagList"
-          ],
-          "features": [
-            "PremiumDatagrid"
-          ]
+          "exports": ["TagList"],
+          "features": ["PremiumDatagrid"]
         },
         {
           "file": "TagSelectWithCreate.tsx",
           "type": "create",
-          "exports": [
-            "TagSelectWithCreate"
-          ],
+          "exports": ["TagSelectWithCreate"],
           "features": []
         }
       ],
@@ -1113,51 +950,36 @@
           "file": "SalesCreate.tsx",
           "type": "create",
           "exports": [],
-          "features": [
-            "SimpleForm"
-          ]
+          "features": ["SimpleForm"]
         },
         {
           "file": "SalesEdit.tsx",
           "type": "edit",
           "exports": [],
-          "features": [
-            "SimpleForm"
-          ]
+          "features": ["SimpleForm"]
         },
         {
           "file": "SalesList.tsx",
           "type": "list",
           "exports": [],
-          "features": [
-            "PremiumDatagrid",
-            "Filters"
-          ]
+          "features": ["PremiumDatagrid", "Filters"]
         },
         {
           "file": "SalesListFilter.tsx",
           "type": "list",
-          "exports": [
-            "SalesListFilter"
-          ],
-          "features": [
-            "Filters"
-          ]
+          "exports": ["SalesListFilter"],
+          "features": ["Filters"]
         },
         {
           "file": "SalesShow.tsx",
           "type": "show",
-          "exports": [
-            "SalesShow"
-          ],
+          "exports": ["SalesShow"],
           "features": []
         },
         {
           "file": "SalesSlideOver.tsx",
           "type": "slideOver",
-          "exports": [
-            "SalesSlideOver"
-          ],
+          "exports": ["SalesSlideOver"],
           "features": []
         }
       ],
@@ -1175,40 +997,26 @@
         {
           "file": "ProductDistributorCreate.tsx",
           "type": "create",
-          "exports": [
-            "ProductDistributorCreate"
-          ],
+          "exports": ["ProductDistributorCreate"],
           "features": []
         },
         {
           "file": "ProductDistributorEdit.tsx",
           "type": "edit",
-          "exports": [
-            "ProductDistributorEdit"
-          ],
-          "features": [
-            "SimpleForm",
-            "ReferenceField"
-          ]
+          "exports": ["ProductDistributorEdit"],
+          "features": ["SimpleForm", "ReferenceField"]
         },
         {
           "file": "ProductDistributorList.tsx",
           "type": "list",
-          "exports": [
-            "ProductDistributorList"
-          ],
-          "features": [
-            "PremiumDatagrid",
-            "Filters"
-          ]
+          "exports": ["ProductDistributorList"],
+          "features": ["PremiumDatagrid", "Filters"]
         },
         {
           "file": "ProductDistributorShow.tsx",
           "type": "show",
           "exports": [],
-          "features": [
-            "ReferenceField"
-          ]
+          "features": ["ReferenceField"]
         }
       ],
       "relationships_rendered": [
@@ -1249,10 +1057,7 @@
           "file": "NotificationsList.tsx",
           "type": "list",
           "exports": [],
-          "features": [
-            "Filters",
-            "BulkActions"
-          ]
+          "features": ["Filters", "BulkActions"]
         }
       ],
       "relationships_rendered": [],

@@ -232,7 +232,9 @@ describe("ContactBadgeGroup", () => {
   });
 
   test("renders horizontal layout by default", () => {
-    const { container } = renderWithAdminContext(<ContactBadgeGroup status="warm" role="champion" />);
+    const { container } = renderWithAdminContext(
+      <ContactBadgeGroup status="warm" role="champion" />
+    );
 
     const group = container.firstChild;
     expect(group).toHaveClass("flex-row");

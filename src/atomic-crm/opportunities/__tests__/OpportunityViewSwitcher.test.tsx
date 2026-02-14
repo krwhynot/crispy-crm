@@ -13,7 +13,9 @@ describe("OpportunityViewSwitcher", () => {
   test("renders both view options", () => {
     const mockOnViewChange = vi.fn();
 
-    renderWithAdminContext(<OpportunityViewSwitcher view="kanban" onViewChange={mockOnViewChange} />);
+    renderWithAdminContext(
+      <OpportunityViewSwitcher view="kanban" onViewChange={mockOnViewChange} />
+    );
 
     // Check that both buttons are present
     expect(screen.getByLabelText("Kanban view")).toBeInTheDocument();
@@ -42,7 +44,9 @@ describe("OpportunityViewSwitcher", () => {
   test("calls onViewChange when clicking different view", () => {
     const mockOnViewChange = vi.fn();
 
-    renderWithAdminContext(<OpportunityViewSwitcher view="kanban" onViewChange={mockOnViewChange} />);
+    renderWithAdminContext(
+      <OpportunityViewSwitcher view="kanban" onViewChange={mockOnViewChange} />
+    );
 
     const listButton = screen.getByLabelText("List view");
     fireEvent.click(listButton);
@@ -54,7 +58,9 @@ describe("OpportunityViewSwitcher", () => {
   test("does not call onViewChange when clicking current view", () => {
     const mockOnViewChange = vi.fn();
 
-    renderWithAdminContext(<OpportunityViewSwitcher view="kanban" onViewChange={mockOnViewChange} />);
+    renderWithAdminContext(
+      <OpportunityViewSwitcher view="kanban" onViewChange={mockOnViewChange} />
+    );
 
     const kanbanButton = screen.getByLabelText("Kanban view");
     fireEvent.click(kanbanButton);
@@ -66,7 +72,9 @@ describe("OpportunityViewSwitcher", () => {
   test("has proper touch-manipulation class for mobile", () => {
     const mockOnViewChange = vi.fn();
 
-    renderWithAdminContext(<OpportunityViewSwitcher view="kanban" onViewChange={mockOnViewChange} />);
+    renderWithAdminContext(
+      <OpportunityViewSwitcher view="kanban" onViewChange={mockOnViewChange} />
+    );
 
     const kanbanButton = screen.getByLabelText("Kanban view");
     const listButton = screen.getByLabelText("List view");
@@ -78,7 +86,9 @@ describe("OpportunityViewSwitcher", () => {
   test("renders with accessible labels", () => {
     const mockOnViewChange = vi.fn();
 
-    renderWithAdminContext(<OpportunityViewSwitcher view="kanban" onViewChange={mockOnViewChange} />);
+    renderWithAdminContext(
+      <OpportunityViewSwitcher view="kanban" onViewChange={mockOnViewChange} />
+    );
 
     // Check aria-labels are present
     expect(screen.getByLabelText("Kanban view")).toBeInTheDocument();

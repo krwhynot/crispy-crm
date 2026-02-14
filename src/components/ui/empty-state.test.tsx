@@ -6,7 +6,9 @@ import { EmptyState } from "./empty-state";
 
 describe("EmptyState", () => {
   it("renders title and description", () => {
-    renderWithAdminContext(<EmptyState title="No Data Found" description="Try adjusting your filters." />);
+    renderWithAdminContext(
+      <EmptyState title="No Data Found" description="Try adjusting your filters." />
+    );
 
     expect(screen.getByRole("heading", { name: "No Data Found" })).toBeInTheDocument();
     expect(screen.getByText("Try adjusting your filters.")).toBeInTheDocument();
@@ -27,7 +29,9 @@ describe("EmptyState", () => {
   });
 
   it("does not render icon when not provided", () => {
-    renderWithAdminContext(<EmptyState title="No Data Found" description="Try adjusting your filters." />);
+    renderWithAdminContext(
+      <EmptyState title="No Data Found" description="Try adjusting your filters." />
+    );
 
     const svg = document.querySelector("svg");
     expect(svg).not.toBeInTheDocument();
@@ -65,7 +69,9 @@ describe("EmptyState", () => {
   });
 
   it("does not render action button when not provided", () => {
-    renderWithAdminContext(<EmptyState title="No Data Found" description="Try adjusting your filters." />);
+    renderWithAdminContext(
+      <EmptyState title="No Data Found" description="Try adjusting your filters." />
+    );
 
     expect(screen.queryByRole("button")).not.toBeInTheDocument();
   });

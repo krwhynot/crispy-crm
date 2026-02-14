@@ -42,7 +42,9 @@ describe("FormProgressBar", () => {
   });
 
   test("shows step info in wizard mode", () => {
-    renderWithAdminContext(<FormProgressBar currentStep={2} totalSteps={5} stepName="Contact Information" />);
+    renderWithAdminContext(
+      <FormProgressBar currentStep={2} totalSteps={5} stepName="Contact Information" />
+    );
 
     expect(screen.getByText("Step 2 of 5: Contact Information")).toBeInTheDocument();
     expect(screen.getByText("50%")).toBeInTheDocument();
@@ -122,7 +124,9 @@ describe("FormProgressBar", () => {
   });
 
   test("aria-valuetext in wizard mode includes step name", () => {
-    renderWithAdminContext(<FormProgressBar currentStep={1} totalSteps={3} stepName="Account Details" />);
+    renderWithAdminContext(
+      <FormProgressBar currentStep={1} totalSteps={3} stepName="Account Details" />
+    );
 
     const progressBar = screen.getByRole("progressbar");
     expect(progressBar).toHaveAttribute("aria-valuetext", "Step 1 of 3: Account Details");
@@ -217,7 +221,9 @@ describe("FormProgressBar", () => {
 
     test("wizard mode ignores schema and shows percentage bar", () => {
       const mockSchema = z.strictObject({ name: z.string() });
-      renderWithAdminContext(<FormProgressBar schema={mockSchema} currentStep={1} totalSteps={3} />);
+      renderWithAdminContext(
+        <FormProgressBar schema={mockSchema} currentStep={1} totalSteps={3} />
+      );
 
       expect(screen.getByRole("progressbar")).toBeInTheDocument();
       expect(screen.queryByRole("group")).not.toBeInTheDocument();

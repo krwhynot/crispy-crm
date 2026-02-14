@@ -131,14 +131,18 @@ describe("SegmentBadge", () => {
   });
 
   test("renders dash placeholder for null segment", () => {
-    const { container } = renderWithAdminContext(<SegmentBadge segmentId={null} segmentName={null} />);
+    const { container } = renderWithAdminContext(
+      <SegmentBadge segmentId={null} segmentName={null} />
+    );
 
     expect(container.textContent).toBe("—");
     expect(container.querySelector(".badge")).not.toBeInTheDocument();
   });
 
   test("renders dash placeholder for undefined segment", () => {
-    const { container } = renderWithAdminContext(<SegmentBadge segmentId={undefined} segmentName={undefined} />);
+    const { container } = renderWithAdminContext(
+      <SegmentBadge segmentId={undefined} segmentName={undefined} />
+    );
 
     expect(container.textContent).toBe("—");
     expect(container.querySelector(".badge")).not.toBeInTheDocument();

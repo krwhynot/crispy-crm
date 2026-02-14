@@ -40,7 +40,9 @@ describe("DuplicateOrgWarningDialog", () => {
   });
 
   it("displays the duplicate organization name", () => {
-    renderWithAdminContext(<DuplicateOrgWarningDialog {...defaultProps} duplicateName="Test Company" />);
+    renderWithAdminContext(
+      <DuplicateOrgWarningDialog {...defaultProps} duplicateName="Test Company" />
+    );
 
     expect(screen.getByText(/Test Company/)).toBeInTheDocument();
     expect(screen.getByText(/already exists in the system/i)).toBeInTheDocument();
@@ -103,7 +105,9 @@ describe("DuplicateOrgWarningDialog", () => {
     const user = userEvent.setup();
     const onViewExisting = vi.fn();
 
-    renderWithAdminContext(<DuplicateOrgWarningDialog {...defaultProps} onViewExisting={onViewExisting} />);
+    renderWithAdminContext(
+      <DuplicateOrgWarningDialog {...defaultProps} onViewExisting={onViewExisting} />
+    );
 
     await user.click(screen.getByRole("button", { name: /View Existing/i }));
 
@@ -111,13 +115,17 @@ describe("DuplicateOrgWarningDialog", () => {
   });
 
   it("does not render 'View Existing' button when onViewExisting is not provided", () => {
-    renderWithAdminContext(<DuplicateOrgWarningDialog {...defaultProps} onViewExisting={undefined} />);
+    renderWithAdminContext(
+      <DuplicateOrgWarningDialog {...defaultProps} onViewExisting={undefined} />
+    );
 
     expect(screen.queryByRole("button", { name: /View Existing/i })).not.toBeInTheDocument();
   });
 
   it("does not render 'View Existing' button when duplicateOrgId is not provided", () => {
-    renderWithAdminContext(<DuplicateOrgWarningDialog {...defaultProps} duplicateOrgId={undefined} />);
+    renderWithAdminContext(
+      <DuplicateOrgWarningDialog {...defaultProps} duplicateOrgId={undefined} />
+    );
 
     expect(screen.queryByRole("button", { name: /View Existing/i })).not.toBeInTheDocument();
   });
