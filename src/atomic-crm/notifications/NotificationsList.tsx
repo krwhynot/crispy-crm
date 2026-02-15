@@ -1,12 +1,11 @@
 import { memo } from "react";
 import { formatDistanceToNow } from "date-fns";
-import { Bell, Check, Eye, ExternalLink } from "lucide-react";
+import { Bell, Eye, ExternalLink } from "lucide-react";
 import { useListContext, useUpdate, useNotify } from "ra-core";
 import { useQueryClient } from "@tanstack/react-query";
 
-import { BulkActionsToolbar } from "@/components/ra-wrappers/bulk-actions-toolbar";
 import { List } from "@/components/ra-wrappers/list";
-import { TopToolbar } from "../layout/TopToolbar";
+import { UnifiedListPageLayout } from "@/components/layouts/UnifiedListPageLayout";
 import { Card } from "@/components/ui/card";
 import { FilterLiveForm } from "ra-core";
 import { SearchInput } from "@/components/ra-wrappers/search-input";
@@ -31,41 +30,26 @@ interface Notification {
 
 const NotificationsList = () => {
   return (
-    <List
-      title="Notifications"
-      actions={<NotificationsListActions />}
-      perPage={20}
-      sort={{ field: "created_at", order: "DESC" }}
-      empty={<NotificationsEmpty />}
-    >
-      <NotificationsListLayout />
+    <List title={false} actions={false} perPage={20} sort={{ field: "created_at", order: "DESC" }}>
+      <UnifiedListPageLayout
+        resource="notifications"
+        showFilterSidebar={false}
+        showFilterToggle={false}
+        wrapMainInCard={false}
+        emptyState={<NotificationsEmpty />}
+      >
+        <div className="flex flex-row gap-6 w-full min-w-0">
+          <NotificationsListFilter />
+          <div className="flex-1 flex flex-col min-h-0">
+            <Card className="bg-card border border-border shadow-sm rounded-xl p-2 flex-1 overflow-y-auto min-h-0">
+              <NotificationsListContent />
+            </Card>
+          </div>
+        </div>
+      </UnifiedListPageLayout>
     </List>
   );
 };
-
-const NotificationsListLayout = () => {
-  const { isPending } = useListContext<Notification>();
-
-  if (isPending) return <div className="p-6 text-center">Loading...</div>;
-
-  return (
-    <div className="flex flex-row gap-6">
-      <NotificationsListFilter />
-      <div className="flex-1 flex flex-col gap-4">
-        <Card className="bg-card border border-border shadow-sm rounded-xl p-2">
-          <NotificationsListContent />
-        </Card>
-      </div>
-      <BulkActionsToolbar>
-        <NotificationsBulkActions />
-      </BulkActionsToolbar>
-    </div>
-  );
-};
-
-const NotificationsListActions = () => (
-  <TopToolbar>{/* No actions needed for notifications list */}</TopToolbar>
-);
 
 const NotificationsListFilter = () => {
   return (
@@ -103,13 +87,7 @@ const NotificationsListContent = () => {
   const { data } = useListContext<Notification>();
 
   if (!data || data.length === 0) {
-    return (
-      <div className="flex flex-col items-center justify-center py-12 text-muted-foreground">
-        <Bell className="h-12 w-12 mb-4 opacity-50" />
-        <p className="text-lg font-medium">No notifications</p>
-        <p className="text-sm">You're all caught up!</p>
-      </div>
-    );
+    return null;
   }
 
   return (
@@ -210,47 +188,6 @@ const NotificationRow = memo(function NotificationRow({
     </div>
   );
 });
-
-const NotificationsBulkActions = () => {
-  const [update] = useUpdate();
-  const notify = useNotify();
-  const queryClient = useQueryClient();
-  const { selectedIds } = useListContext();
-
-  const markAllAsRead = async () => {
-    try {
-      // Phase 3: Use Promise.allSettled() to handle partial failures gracefully
-      const results = await Promise.allSettled(
-        selectedIds.map((id) => update("notifications", { id, data: { read: true } }))
-      );
-
-      // Count successes and failures
-      const successes = results.filter((r) => r.status === "fulfilled").length;
-      const failures = results.filter((r) => r.status === "rejected").length;
-
-      if (failures === 0) {
-        notify(`${successes} notification(s) marked as read`, { type: "success" });
-      } else if (successes > 0) {
-        notify(`${successes} notification(s) marked as read, ${failures} failed`, {
-          type: "warning",
-        });
-      } else {
-        notify("Failed to mark notifications as read", { type: "error" });
-      }
-
-      queryClient.invalidateQueries({ queryKey: notificationKeys.all });
-    } catch {
-      notify("Error marking notifications as read", { type: "error" });
-    }
-  };
-
-  return (
-    <AdminButton variant="ghost" size="sm" onClick={markAllAsRead} className="h-11 text-xs">
-      <Check className="h-4 w-4 mr-2" />
-      Mark as read
-    </AdminButton>
-  );
-};
 
 const NotificationsEmpty = () => {
   return (

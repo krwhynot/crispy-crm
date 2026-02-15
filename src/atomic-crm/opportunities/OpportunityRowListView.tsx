@@ -81,7 +81,7 @@ export const OpportunityRowListView = ({
   };
 
   return (
-    <>
+    <div className="flex flex-1 min-h-0 flex-col w-full">
       {/* Bulk selection controls - shown when items are selected */}
       {selectedIds.length > 0 && (
         <div className="space-y-3">
@@ -117,7 +117,7 @@ export const OpportunityRowListView = ({
         </div>
       )}
 
-      <Card className="bg-card border border-border shadow-sm rounded-xl p-2">
+      <Card className="bg-card border border-border shadow-sm rounded-xl p-2 flex-1 overflow-y-auto min-h-0">
         <div className="space-y-2">
           {opportunities.map((opportunity, index) => {
             const canEdit =
@@ -299,6 +299,6 @@ export const OpportunityRowListView = ({
           })}
         </div>
       </Card>
-    </>
+    </div>
   );
 };

@@ -68,10 +68,10 @@ export function ListToolbar({
     <div
       role="toolbar"
       aria-label={resource ? `${resource} list toolbar` : "List toolbar"}
-      className="flex items-center gap-2 mb-3 shrink-0"
+      className="flex flex-wrap items-center gap-2 gap-y-2 mb-3 shrink-0"
     >
-      {/* 1. Search - fills remaining space */}
-      <div className="flex-1 min-w-0">
+      {/* 1. Search - fills remaining space, full row on wrap */}
+      <div className="flex-1 min-w-0 basis-full xl:basis-auto order-1">
         <ListSearchBar
           placeholder={searchPlaceholder}
           enableRecentSearches={enableRecentSearches}
@@ -79,21 +79,27 @@ export function ListToolbar({
       </div>
 
       {/* 2. Filter toggle with badge */}
-      {showFilterToggle && <FilterToggleButton />}
+      {showFilterToggle && (
+        <div className="order-2">
+          <FilterToggleButton />
+        </div>
+      )}
 
       {/* 3. Sort dropdown - hidden below md, moves to kebab */}
-      <div className="hidden md:block">
+      <div className="hidden md:block order-3">
         <SortButton fields={sortFields} />
       </div>
 
       {/* 4. View switcher slot */}
-      {viewSwitcher}
+      {viewSwitcher && <div className="order-4">{viewSwitcher}</div>}
 
       {/* 5. Primary action slot (e.g., Create button) */}
-      {primaryAction}
+      {primaryAction && <div className="order-5">{primaryAction}</div>}
 
       {/* 6. Kebab overflow menu */}
-      <OverflowMenu sortFields={sortFields} overflowActions={overflowActions} />
+      <div className="order-6">
+        <OverflowMenu sortFields={sortFields} overflowActions={overflowActions} />
+      </div>
     </div>
   );
 }

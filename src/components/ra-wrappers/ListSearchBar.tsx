@@ -94,7 +94,7 @@ export function ListSearchBar({
           }}
         >
           <PopoverAnchor asChild>
-            <div className="flex-shrink-0 w-64" onBlurCapture={handleBlur}>
+            <div className="w-full max-w-sm" onBlurCapture={handleBlur}>
               {searchInputContent}
             </div>
           </PopoverAnchor>
@@ -114,7 +114,7 @@ export function ListSearchBar({
           </PopoverContent>
         </Popover>
       ) : (
-        <div className="flex-shrink-0 w-64">{searchInputContent}</div>
+        <div className="w-full max-w-sm">{searchInputContent}</div>
       )}
     </div>
   );

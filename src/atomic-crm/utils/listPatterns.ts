@@ -1,7 +1,7 @@
 /**
  * listPatterns.ts - Common patterns for list page configuration
  *
- * Design System: Desktop-first responsive (iPad 1024px as primary target)
+ * Design System: Desktop-first responsive (xl: 1280px+ column visibility breakpoint)
  * @see docs/architecture/design-system.md
  */
 
@@ -14,7 +14,7 @@
  * ```
  *
  * @property largeDesktopOnly - Only visible on large desktop (1280px+), hidden on tablet/iPad
- * @property desktopOnly - Only visible on desktop (1024px+), hidden on tablet/mobile
+ * @property desktopOnly - Only visible on desktop (1280px+), identical to largeDesktopOnly by design
  * @property tabletUp - Visible on tablet (768px+) and desktop, hidden on mobile only
  * @property alwaysVisible - Always visible on all screen sizes (use for critical columns)
  */
@@ -25,7 +25,7 @@ export const COLUMN_VISIBILITY = {
     cellClassName: "!hidden xl:!table-cell",
     headerClassName: "!hidden xl:!table-cell",
   },
-  /** Only visible on desktop (1280px+). Use for secondary information.
+  /** Only visible on desktop (1280px+). Same breakpoint as largeDesktopOnly — both use xl:.
    * Uses !important to override MUI's MuiTableCell-root display: table-cell specificity. */
   desktopOnly: {
     cellClassName: "!hidden xl:!table-cell",
