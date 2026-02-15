@@ -28,6 +28,19 @@ import {
   resetMocks,
 } from "./OrganizationList.test-utils";
 
+/**
+ * Shared mock state for UnifiedListPageLayout branching.
+ * Synced in beforeEach with the same values set on useListContext mock.
+ */
+const mockListState = vi.hoisted(() => ({
+  data: [] as unknown[],
+  isPending: false,
+  filterValues: {} as Record<string, unknown>,
+}));
+
+// System filter keys excluded from empty-state detection (matches UnifiedListPageLayout)
+const EMPTY_STATE_SYSTEM_KEYS = vi.hoisted(() => new Set(["deleted_at", "deleted_at@is", "$or"]));
+
 // Mock dependencies - must be at top level
 vi.mock("ra-core", async () => {
   const actual = await vi.importActual("ra-core");
@@ -216,14 +229,53 @@ vi.mock("../OrganizationBadges", () => ({
   ),
 }));
 
-vi.mock("@/components/layouts/StandardListLayout", () => ({
-  StandardListLayout: ({ children, filterComponent, viewSwitcher }: MockLayoutProps) => (
-    <div data-testid="standard-list-layout">
-      <div data-testid="filter-sidebar">{filterComponent}</div>
-      {viewSwitcher && <div data-testid="toolbar-view-switcher">{viewSwitcher}</div>}
-      <div data-testid="list-content">{children}</div>
-    </div>
-  ),
+vi.mock("@/components/layouts/UnifiedListPageLayout", () => ({
+  UnifiedListPageLayout: ({
+    children,
+    filterComponent,
+    viewSwitcher,
+    emptyState,
+  }: {
+    children: React.ReactNode;
+    filterComponent?: React.ReactNode;
+    viewSwitcher?: React.ReactNode;
+    emptyState?: React.ReactNode;
+    [key: string]: unknown;
+  }) => {
+    const hasUserFilters =
+      mockListState.filterValues &&
+      Object.keys(mockListState.filterValues).some(
+        (key: string) => !EMPTY_STATE_SYSTEM_KEYS.has(key)
+      );
+
+    if (mockListState.isPending) {
+      return <div data-testid="loading-skeleton">Loading...</div>;
+    }
+
+    if (!mockListState.data?.length && !hasUserFilters && emptyState) {
+      return <>{emptyState}</>;
+    }
+
+    if (!mockListState.data?.length && hasUserFilters) {
+      return (
+        <div data-testid="standard-list-layout">
+          <div data-testid="filter-sidebar">{filterComponent}</div>
+          {viewSwitcher && <div data-testid="toolbar-view-switcher">{viewSwitcher}</div>}
+          <div data-testid="list-content">
+            <div data-testid="list-no-results">No results</div>
+          </div>
+        </div>
+      );
+    }
+
+    return (
+      <div data-testid="standard-list-layout">
+        <div data-testid="filter-sidebar">{filterComponent}</div>
+        {viewSwitcher && <div data-testid="toolbar-view-switcher">{viewSwitcher}</div>}
+        <div data-testid="list-content">{children}</div>
+      </div>
+    );
+  },
 }));
 
 vi.mock("@/components/ra-wrappers/list", () => ({
@@ -241,10 +293,6 @@ vi.mock("../OrganizationEmpty", () => ({
 
 vi.mock("@/components/ra-wrappers/ListNoResults", () => ({
   ListNoResults: () => <div data-testid="list-no-results">No results</div>,
-}));
-
-vi.mock("@/components/ra-wrappers/FloatingCreateButton", () => ({
-  FloatingCreateButton: () => <button data-testid="floating-create">Create</button>,
 }));
 
 vi.mock("@/components/ra-wrappers/bulk-actions-toolbar", () => ({
@@ -301,7 +349,7 @@ describe("OrganizationList 6-column structure", () => {
       isPending: false,
     });
 
-    vi.mocked(useListContext).mockReturnValue({
+    const listContext = {
       data: [
         {
           id: 1,
@@ -333,7 +381,14 @@ describe("OrganizationList 6-column structure", () => {
       onUnselectItems: vi.fn(),
       hasNextPage: false,
       hasPreviousPage: false,
-    });
+    };
+
+    vi.mocked(useListContext).mockReturnValue(listContext);
+
+    // Sync hoisted mock state for UnifiedListPageLayout branching
+    mockListState.data = listContext.data;
+    mockListState.isPending = listContext.isPending;
+    mockListState.filterValues = listContext.filterValues;
   });
 
   test("renders 8 columns: Name, Type, Priority, Segment, State, Parent, Contacts, Opportunities", async () => {
@@ -379,7 +434,7 @@ describe("OrganizationList column sorting configuration", () => {
       isPending: false,
     });
 
-    vi.mocked(useListContext).mockReturnValue({
+    const listContext = {
       data: [
         {
           id: 1,
@@ -411,7 +466,14 @@ describe("OrganizationList column sorting configuration", () => {
       onUnselectItems: vi.fn(),
       hasNextPage: false,
       hasPreviousPage: false,
-    });
+    };
+
+    vi.mocked(useListContext).mockReturnValue(listContext);
+
+    // Sync hoisted mock state for UnifiedListPageLayout branching
+    mockListState.data = listContext.data;
+    mockListState.isPending = listContext.isPending;
+    mockListState.filterValues = listContext.filterValues;
   });
 
   test("Name column is sortable", async () => {

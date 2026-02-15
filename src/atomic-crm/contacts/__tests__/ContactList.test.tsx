@@ -259,11 +259,6 @@ vi.mock("@/components/ra-wrappers/ListNoResults", () => ({
   ListNoResults: () => <div data-testid="list-no-results">No results</div>,
 }));
 
-// Mock FloatingCreateButton
-vi.mock("@/components/ra-wrappers/FloatingCreateButton", () => ({
-  FloatingCreateButton: () => <button data-testid="floating-create">Create</button>,
-}));
-
 vi.mock("@/components/ra-wrappers/bulk-actions-toolbar", () => ({
   BulkActionsToolbar: () => <div data-testid="bulk-actions-toolbar">Bulk Actions</div>,
 }));

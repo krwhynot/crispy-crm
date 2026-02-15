@@ -1,6 +1,6 @@
 import { type ReactNode } from "react";
 import { useListContext } from "ra-core";
-import { PanelLeftClose, PanelLeft, SlidersHorizontal } from "lucide-react";
+import { PanelLeftClose, SlidersHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetFooter } from "@/components/ui/sheet";
@@ -21,9 +21,8 @@ interface AdaptiveFilterContainerProps {
  *
  * Requires a FilterSidebarProvider ancestor for collapse/sheet state management.
  *
- * - Tier 1 (≥1280px, laptop/desktop): Expanded sidebar with collapse toggle
- * - Tier 2 (1024-1279px, tablet-landscape): Icon rail with popover flyouts
- * - Tier 3 (<1024px, mobile/tablet-portrait): Sheet modal trigger
+ * - Tier 1 (>=1280px, desktop/laptop): Expanded sidebar with collapse toggle
+ * - Tier 2 (<1280px): Sheet modal (trigger hidden when ListToolbar owns it)
  */
 export function AdaptiveFilterContainer({
   filterComponent,
@@ -39,15 +38,7 @@ export function AdaptiveFilterContainer({
     );
   }
 
-  if (breakpoint === "tablet-landscape") {
-    return (
-      <FilterLayoutModeProvider value="icon-rail">
-        <IconRailSidebar filterComponent={filterComponent} resource={resource} />
-      </FilterLayoutModeProvider>
-    );
-  }
-
-  // Mobile / tablet-portrait
+  // Tablet-landscape / tablet-portrait / mobile
   return (
     <FilterLayoutModeProvider value="sheet">
       <FilterSheetTrigger filterComponent={filterComponent} resource={resource} />
@@ -70,7 +61,7 @@ function ExpandedSidebar({
 
   return (
     <div
-      className={`hidden lg:block lg:sticky lg:top-0 lg:self-start relative ${isCollapsed ? "w-11 h-[50vh]" : "h-fit"}`}
+      className={`hidden xl:block xl:sticky xl:top-0 xl:self-start ${isCollapsed ? "w-0" : "h-fit"}`}
     >
       {/* Filter sidebar with collapse animation */}
       <aside
@@ -78,7 +69,7 @@ function ExpandedSidebar({
         aria-label={`Filter ${resource}`}
         className={`
           filter-sidebar transition-all duration-200 ease-out overflow-y-auto
-          ${isCollapsed ? "w-0 opacity-0 invisible overflow-hidden" : "w-72 opacity-100 max-h-[calc(100vh-6rem)]"}
+          ${isCollapsed ? "w-0 opacity-0 invisible overflow-hidden" : "w-72 opacity-100 max-h-[80dvh]"}
         `}
         aria-hidden={isCollapsed}
       >
@@ -105,51 +96,13 @@ function ExpandedSidebar({
         </div>
       </aside>
 
-      {/* Desktop expand button - centered vertically */}
-      {isCollapsed && (
-        <div className="absolute top-1/2 -translate-y-1/2 left-0 z-10">
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button
-                variant="outline"
-                size="icon"
-                onClick={toggleSidebar}
-                className="h-11 w-11"
-                aria-label="Show filters"
-                aria-expanded={false}
-                aria-controls="filter-sidebar"
-              >
-                <PanelLeft className="size-5" />
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent side="right">Show filters</TooltipContent>
-          </Tooltip>
-        </div>
-      )}
+      {/* When collapsed, toolbar FilterToggleButton handles re-expand — no floating button needed */}
     </div>
   );
 }
 
 // ---------------------------------------------------------------------------
-// Tier 2: Icon Rail Sidebar (1024-1279px)
-// ---------------------------------------------------------------------------
-
-function IconRailSidebar({
-  filterComponent,
-  resource,
-}: {
-  filterComponent: ReactNode;
-  resource: string;
-}) {
-  return (
-    <aside aria-label={`Filter ${resource}`} className="w-14 flex-shrink-0 sticky top-0 self-start">
-      <div className="flex flex-col items-center gap-1 py-2 card-container">{filterComponent}</div>
-    </aside>
-  );
-}
-
-// ---------------------------------------------------------------------------
-// Tier 3: Filter Sheet Trigger (<1024px)
+// Tier 2: Filter Sheet (<1280px)
 // ---------------------------------------------------------------------------
 
 function FilterSheetTrigger({
@@ -159,26 +112,32 @@ function FilterSheetTrigger({
   filterComponent: ReactNode;
   resource: string;
 }) {
-  const { isSheetOpen, setSheetOpen } = useFilterSidebarContext();
+  const { isSheetOpen, setSheetOpen, hasToolbar } = useFilterSidebarContext();
 
   return (
-    <div className="shrink-0 mb-2">
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <Button
-            variant="outline"
-            size="icon"
-            onClick={() => setSheetOpen(true)}
-            className="h-11 w-11"
-            aria-label="Open filters"
-            aria-expanded={isSheetOpen}
-          >
-            <SlidersHorizontal className="size-5" />
-          </Button>
-        </TooltipTrigger>
-        <TooltipContent side="right">Filters</TooltipContent>
-      </Tooltip>
+    <>
+      {/* Standalone trigger - only when no ListToolbar provides its own */}
+      {!hasToolbar && (
+        <div className="shrink-0 mb-2">
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant="outline"
+                size="icon"
+                onClick={() => setSheetOpen(true)}
+                className="h-11 w-11"
+                aria-label="Open filters"
+                aria-expanded={isSheetOpen}
+              >
+                <SlidersHorizontal className="size-5" />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent side="right">Filters</TooltipContent>
+          </Tooltip>
+        </div>
+      )}
 
+      {/* Sheet always renders -- controlled by setSheetOpen from either toolbar or standalone button */}
       <Sheet open={isSheetOpen} onOpenChange={setSheetOpen}>
         <SheetContent side="left" aria-label={`Filter ${resource}`}>
           <SheetHeader>
@@ -188,7 +147,7 @@ function FilterSheetTrigger({
           <FilterSheetFooter onClose={() => setSheetOpen(false)} />
         </SheetContent>
       </Sheet>
-    </div>
+    </>
   );
 }
 

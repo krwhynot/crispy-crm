@@ -1,15 +1,14 @@
-import { useGetIdentity, useListContext } from "ra-core";
+import { useGetIdentity } from "ra-core";
 import { FunctionField } from "react-admin";
 import { List } from "@/components/ra-wrappers/list";
 import { TextField } from "@/components/ra-wrappers/text-field";
-import { FloatingCreateButton } from "@/components/ra-wrappers/FloatingCreateButton";
-import { BulkActionsToolbar } from "@/components/ra-wrappers/bulk-actions-toolbar";
-import { StandardListLayout } from "@/components/layouts/StandardListLayout";
+import { CreateButton } from "@/components/ra-wrappers/create-button";
+import { BulkActionsToolbarChildren } from "@/components/ra-wrappers/bulk-actions-toolbar";
+import { UnifiedListPageLayout } from "@/components/layouts/UnifiedListPageLayout";
 import { PremiumDatagrid } from "@/components/ra-wrappers/PremiumDatagrid";
 import { ProductListSkeleton } from "@/components/ui/list-skeleton";
 import { useSlideOverState } from "@/hooks/useSlideOverState";
 import { useListKeyboardNavigation } from "@/hooks/useListKeyboardNavigation";
-import { useFilterCleanup } from "../hooks/useFilterCleanup";
 import { ExportMenuItem } from "@/components/ra-wrappers/export-menu-item";
 import { Badge } from "@/components/ui/badge";
 import { ucFirst } from "@/atomic-crm/utils";
@@ -30,7 +29,10 @@ import type { Product } from "../types";
 /**
  * ProductList - Standard list page for Product records
  *
- * Follows ContactList reference pattern:
+ * Uses UnifiedListPageLayout for centralized empty-state branching,
+ * loading states, filter cleanup, and bulk actions.
+ *
+ * Features:
  * - Identity-aware rendering with skeleton loading
  * - Keyboard navigation with slide-over integration
  * - BulkActionsToolbar for selection operations
@@ -40,9 +42,6 @@ export const ProductList = () => {
   const { data: identity, isPending: isIdentityPending } = useGetIdentity();
   const { slideOverId, isOpen, mode, openSlideOver, closeSlideOver, toggleMode } =
     useSlideOverState();
-
-  // Clean up stale cached filters from localStorage
-  useFilterCleanup("products");
 
   if (isIdentityPending) {
     return <ProductListSkeleton />;
@@ -55,8 +54,20 @@ export const ProductList = () => {
     <>
       <div data-tutorial="products-list">
         <List title={false} actions={false} perPage={25} sort={{ field: "name", order: "ASC" }}>
-          <ProductListLayout openSlideOver={openSlideOver} isSlideOverOpen={isOpen} />
-          <FloatingCreateButton />
+          <UnifiedListPageLayout
+            resource="products"
+            filterComponent={<ProductListFilter />}
+            filterConfig={PRODUCT_FILTER_CONFIG}
+            sortFields={["name", "category", "status", "created_at"]}
+            searchPlaceholder="Search products..."
+            overflowActions={<ExportMenuItem />}
+            primaryAction={<CreateButton />}
+            emptyState={<ProductEmpty />}
+            loadingSkeleton={<ProductListSkeleton />}
+            bulkActions={<BulkActionsToolbarChildren />}
+          >
+            <ProductDatagrid openSlideOver={openSlideOver} isSlideOverOpen={isOpen} />
+          </UnifiedListPageLayout>
         </List>
       </div>
       <ProductSlideOver
@@ -72,114 +83,74 @@ export const ProductList = () => {
 };
 
 /**
- * ProductListLayout - Handles loading, empty states, and datagrid rendering
+ * ProductDatagrid - Keyboard-navigable datagrid with slide-over integration
  */
-const ProductListLayout = ({
+const ProductDatagrid = ({
   openSlideOver,
   isSlideOverOpen,
 }: {
   openSlideOver: (id: number, mode: "view" | "edit") => void;
   isSlideOverOpen: boolean;
 }) => {
-  const { data, isPending, filterValues } = useListContext();
-
-  // Keyboard navigation for list rows
-  // Disabled when slide-over is open to prevent conflicts
   const { focusedIndex } = useListKeyboardNavigation({
     onSelect: (id) => openSlideOver(Number(id), "view"),
     enabled: !isSlideOverOpen,
   });
 
-  const hasFilters = filterValues && Object.keys(filterValues).length > 0;
-
-  // Show skeleton during initial load
-  if (isPending) {
-    return (
-      <StandardListLayout
-        resource="products"
-        filterComponent={<ProductListFilter />}
-        filterConfig={PRODUCT_FILTER_CONFIG}
-        sortFields={["name", "category", "status", "created_at"]}
-        searchPlaceholder="Search products..."
-        overflowActions={<ExportMenuItem />}
-      >
-        <ProductListSkeleton />
-      </StandardListLayout>
-    );
-  }
-
-  if (!data?.length && !hasFilters) {
-    return <ProductEmpty />;
-  }
-
   return (
-    <>
-      <StandardListLayout
-        resource="products"
-        filterComponent={<ProductListFilter />}
-        filterConfig={PRODUCT_FILTER_CONFIG}
-        sortFields={["name", "category", "status", "created_at"]}
-        searchPlaceholder="Search products..."
-        overflowActions={<ExportMenuItem />}
-      >
-        <PremiumDatagrid
-          onRowClick={(id) => openSlideOver(Number(id), "view")}
-          focusedIndex={focusedIndex}
-        >
-          {/* Column 1: Product Name - Primary identifier (sortable) - always visible */}
-          <TextField
-            source="name"
-            label={<ProductNameHeader />}
-            sortable
-            {...COLUMN_VISIBILITY.alwaysVisible}
-          />
+    <PremiumDatagrid
+      onRowClick={(id) => openSlideOver(Number(id), "view")}
+      focusedIndex={focusedIndex}
+    >
+      {/* Column 1: Product Name - Primary identifier (sortable) - always visible */}
+      <TextField
+        source="name"
+        label={<ProductNameHeader />}
+        sortable
+        {...COLUMN_VISIBILITY.alwaysVisible}
+      />
 
-          {/* Column 2: Category - Classification badge (sortable) - always visible */}
-          <FunctionField
-            label={<ProductCategoryHeader />}
-            sortBy="category"
-            render={(record: Product) => (
-              <FilterableBadge source="category" value={record.category}>
-                <CategoryBadge category={record.category} />
-              </FilterableBadge>
-            )}
-            {...COLUMN_VISIBILITY.alwaysVisible}
-          />
+      {/* Column 2: Category - Classification badge (sortable) - always visible */}
+      <FunctionField
+        label={<ProductCategoryHeader />}
+        sortBy="category"
+        render={(record: Product) => (
+          <FilterableBadge source="category" value={record.category}>
+            <CategoryBadge category={record.category} />
+          </FilterableBadge>
+        )}
+        {...COLUMN_VISIBILITY.alwaysVisible}
+      />
 
-          {/* Column 3: Status - Lifecycle badge (sortable) - always visible */}
-          <FunctionField
-            label={<ProductStatusHeader />}
-            sortBy="status"
-            render={(record: Product) => (
-              <FilterableBadge source="status" value={record.status}>
-                <StatusBadge status={record.status} />
-              </FilterableBadge>
-            )}
-            {...COLUMN_VISIBILITY.alwaysVisible}
-          />
+      {/* Column 3: Status - Lifecycle badge (sortable) - always visible */}
+      <FunctionField
+        label={<ProductStatusHeader />}
+        sortBy="status"
+        render={(record: Product) => (
+          <FilterableBadge source="status" value={record.status}>
+            <StatusBadge status={record.status} />
+          </FilterableBadge>
+        )}
+        {...COLUMN_VISIBILITY.alwaysVisible}
+      />
 
-          {/* Column 4: Principal - From summary view (sortable) - hidden on tablet/mobile */}
-          <TextField
-            source="principal_name"
-            label="Principal"
-            sortable
-            sortBy="principal_name"
-            {...COLUMN_VISIBILITY.desktopOnly}
-          />
+      {/* Column 4: Principal - From summary view (sortable) - hidden on tablet/mobile */}
+      <TextField
+        source="principal_name"
+        label="Principal"
+        sortable
+        sortBy="principal_name"
+        {...COLUMN_VISIBILITY.desktopOnly}
+      />
 
-          {/* Column 5: Certifications - Badges list (non-sortable) - hidden on tablet/mobile */}
-          <FunctionField
-            label="Certifications"
-            sortable={false}
-            render={(record: Product) => (
-              <CertificationBadges certifications={record.certifications} />
-            )}
-            {...COLUMN_VISIBILITY.desktopOnly}
-          />
-        </PremiumDatagrid>
-      </StandardListLayout>
-      <BulkActionsToolbar />
-    </>
+      {/* Column 5: Certifications - Badges list (non-sortable) - hidden on tablet/mobile */}
+      <FunctionField
+        label="Certifications"
+        sortable={false}
+        render={(record: Product) => <CertificationBadges certifications={record.certifications} />}
+        {...COLUMN_VISIBILITY.desktopOnly}
+      />
+    </PremiumDatagrid>
   );
 };
 

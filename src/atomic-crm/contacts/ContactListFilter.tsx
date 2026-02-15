@@ -10,7 +10,6 @@ import { StarredFilterToggle } from "../filters/StarredFilterToggle";
 import { DateRangeFilterButton } from "../filters/DateRangeFilterButton";
 import { getTagColorClass } from "../tags/tag-colors";
 import { OwnerFilterDropdown } from "@/components/ra-wrappers/OwnerFilterDropdown";
-import { FilterRailHidden } from "../filters/FilterLayoutModeContext";
 
 /**
  * ContactListFilter - Sidebar filter UI for Contacts list
@@ -28,9 +27,7 @@ export const ContactListFilter = () => {
   return (
     <div className="flex flex-col gap-4" data-tutorial="contact-filters">
       {/* Starred Quick Filter - TOP of sidebar */}
-      <FilterRailHidden>
-        <StarredFilterToggle entityType="contacts" />
-      </FilterRailHidden>
+      <StarredFilterToggle entityType="contacts" />
 
       {/* Collapsible Filter Sections */}
       <div className="flex flex-col gap-2">

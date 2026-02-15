@@ -69,13 +69,8 @@ export interface ListProps<RecordType extends RaRecord = RaRecord>
  * - List content scrolls within a constrained container
  * - Pagination stays fixed at bottom
  *
- * Height calculation: 100dvh - 140px accounts for:
- * - Header: ~56px (logo h-8 + py-3 padding)
- * - Layout padding: 16px top + 64px bottom (pb-16 for footer clearance)
- * - Safety margin: ~4px
- *
- * Using `dvh` (dynamic viewport height) for Safari mobile/iPad where
- * the address bar affects viewport height dynamically.
+ * Height is derived from the flex chain: Layout (h-dvh) -> main (flex-1 min-h-0)
+ * -> ListView (flex-1 min-h-0). No viewport calc hacks needed.
  */
 export const ListView = <RecordType extends RaRecord = RaRecord>(
   props: ListViewProps<RecordType>
@@ -92,7 +87,7 @@ export const ListView = <RecordType extends RaRecord = RaRecord>(
   const { data, isPending, filterValues } = useListContext();
 
   return (
-    <div className="flex h-[calc(100dvh-140px)] flex-col overflow-hidden">
+    <div className="flex flex-1 min-h-0 flex-col overflow-hidden">
       {/* Fixed header area - breadcrumb + toolbar */}
       <div className="shrink-0">
         <Breadcrumb>
@@ -124,7 +119,9 @@ export const ListView = <RecordType extends RaRecord = RaRecord>(
       {/* Content area - scrolls vertically for paginated lists, fills height for kanban */}
       <FilterContext.Provider value={filters}>
         <div className={cn("h-full min-h-0 flex-1 overflow-hidden", props.className)}>
-          {!isPending && data?.length === 0 ? renderEmptyState(filterValues, empty) : children}
+          {!isPending && data?.length === 0 && empty
+            ? renderEmptyState(filterValues, empty)
+            : children}
         </div>
 
         {/* Fixed pagination at bottom - only render if pagination is provided */}

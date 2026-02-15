@@ -1,4 +1,3 @@
-import { BulkActionsToolbar } from "@/components/ra-wrappers/bulk-actions-toolbar";
 import { BulkExportButton } from "@/components/ra-wrappers/bulk-export-button";
 import { BulkReassignButton } from "@/components/ra-wrappers/bulk-reassign-button";
 import { OrganizationBulkDeleteButton } from "./OrganizationBulkDeleteButton";
@@ -6,29 +5,25 @@ import { organizationKeys } from "../queryKeys";
 import type { Organization } from "../types";
 
 /**
- * OrganizationBulkActionsToolbar - Custom bulk actions for the organizations list
+ * OrganizationBulkButtons - Bulk action buttons for the Organizations list
  *
- * Extends the generic BulkActionsToolbar with organization-specific actions:
+ * Renders ONLY the action buttons (no toolbar wrapper).
+ * UnifiedListPageLayout wraps these in the shared BulkActionsToolbar.
+ *
+ * Actions:
  * - Reassign: Bulk reassign organizations to a different sales rep
  * - Export: Export selected organizations to CSV
  * - Delete: Soft delete selected organizations (blocked for orgs with child branches)
- *
- * Uses the floating card pattern from the base BulkActionsToolbar
- * which appears at the bottom of the screen when items are selected.
  */
-export const OrganizationBulkActionsToolbar = () => {
-  return (
-    <BulkActionsToolbar>
-      <BulkReassignButton<Organization>
-        resource="organizations"
-        queryKeys={organizationKeys}
-        itemDisplayName={(org) => org.name}
-        itemSubtitle={(org) => org.organization_type}
-      />
-      <BulkExportButton />
-      <OrganizationBulkDeleteButton />
-    </BulkActionsToolbar>
-  );
-};
-
-export default OrganizationBulkActionsToolbar;
+export const OrganizationBulkButtons = () => (
+  <>
+    <BulkReassignButton<Organization>
+      resource="organizations"
+      queryKeys={organizationKeys}
+      itemDisplayName={(org) => org.name}
+      itemSubtitle={(org) => org.organization_type}
+    />
+    <BulkExportButton />
+    <OrganizationBulkDeleteButton />
+  </>
+);

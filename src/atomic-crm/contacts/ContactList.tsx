@@ -1,12 +1,12 @@
 import React from "react";
-import { useGetIdentity, useListContext } from "ra-core";
+import { useGetIdentity } from "ra-core";
 import { Link } from "react-router-dom";
 import { differenceInDays, formatDistanceToNow } from "date-fns";
 
-import { ContactBulkActionsToolbar } from "./ContactBulkActionsToolbar";
+import { ContactBulkButtons } from "./ContactBulkActionsToolbar";
 import { List } from "@/components/ra-wrappers/list";
-import { FloatingCreateButton } from "@/components/ra-wrappers/FloatingCreateButton";
-import { StandardListLayout } from "@/components/layouts/StandardListLayout";
+import { CreateButton } from "@/components/ra-wrappers/create-button";
+import { UnifiedListPageLayout } from "@/components/layouts/UnifiedListPageLayout";
 import { ExportMenuItem } from "@/components/ra-wrappers/export-menu-item";
 import { PremiumDatagrid } from "@/components/ra-wrappers/PremiumDatagrid";
 import { FunctionField } from "react-admin";
@@ -14,10 +14,8 @@ import { useSlideOverState } from "@/hooks/useSlideOverState";
 import { useListKeyboardNavigation } from "@/hooks/useListKeyboardNavigation";
 import { ContactListSkeleton } from "@/components/ui/list-skeleton";
 import type { Contact } from "../types";
-import { useFilterCleanup } from "../hooks/useFilterCleanup";
 import { ContactEmpty } from "./ContactEmpty";
 import { ContactListFilter } from "./ContactListFilter";
-import { ListNoResults } from "@/components/ra-wrappers/ListNoResults";
 import { ContactSlideOver } from "./ContactSlideOver";
 import { Avatar } from "./Avatar";
 import { ContactStatusBadge } from "./ContactBadges";
@@ -111,14 +109,16 @@ const ContactStatusCell = React.memo(function ContactStatusCell({ record }: { re
   );
 });
 
+/**
+ * ContactList - Standard list page for Contact records
+ *
+ * Uses UnifiedListPageLayout for centralized empty-state branching,
+ * loading states, filter cleanup, and bulk actions.
+ */
 export const ContactList = () => {
   const { data: identity, isPending: isIdentityPending } = useGetIdentity();
   const { slideOverId, isOpen, mode, openSlideOver, closeSlideOver, toggleMode } =
     useSlideOverState();
-
-  // Clean up stale cached filters from localStorage
-  // Generic hook validates all filters against filterRegistry.ts
-  useFilterCleanup("contacts");
 
   if (isIdentityPending) {
     return <ContactListSkeleton />;
@@ -137,8 +137,21 @@ export const ContactList = () => {
           sort={{ field: "last_seen", order: "DESC" }}
           exporter={contactExporter}
         >
-          <ContactListLayout openSlideOver={openSlideOver} isSlideOverOpen={isOpen} />
-          <FloatingCreateButton />
+          <UnifiedListPageLayout
+            resource="contacts"
+            filterComponent={<ContactListFilter />}
+            filterConfig={CONTACT_FILTER_CONFIG}
+            sortFields={["first_name", "title", "last_seen"]}
+            searchPlaceholder="Search contacts..."
+            enableRecentSearches
+            overflowActions={<ExportMenuItem />}
+            primaryAction={<CreateButton />}
+            emptyState={<ContactEmpty />}
+            loadingSkeleton={<ContactListSkeleton />}
+            bulkActions={<ContactBulkButtons />}
+          >
+            <ContactDatagrid openSlideOver={openSlideOver} isSlideOverOpen={isOpen} />
+          </UnifiedListPageLayout>
         </List>
       </div>
       <ContactSlideOver
@@ -153,119 +166,65 @@ export const ContactList = () => {
   );
 };
 
-const ContactListLayout = ({
+/**
+ * ContactDatagrid - Keyboard-navigable datagrid with slide-over integration
+ */
+const ContactDatagrid = ({
   openSlideOver,
   isSlideOverOpen,
 }: {
   openSlideOver: (id: number, mode: "view" | "edit") => void;
   isSlideOverOpen: boolean;
 }) => {
-  const { data, isPending, filterValues } = useListContext();
-
-  // Keyboard navigation for list rows
-  // Disabled when slide-over is open to prevent conflicts
   const { focusedIndex } = useListKeyboardNavigation({
     onSelect: (id) => openSlideOver(Number(id), "view"),
     enabled: !isSlideOverOpen,
   });
 
-  const hasFilters = filterValues && Object.keys(filterValues).length > 0;
-
-  // Show skeleton during initial load (identity check happens in parent)
-  if (isPending) {
-    return (
-      <StandardListLayout
-        resource="contacts"
-        filterComponent={<ContactListFilter />}
-        filterConfig={CONTACT_FILTER_CONFIG}
-        sortFields={["first_name", "title", "last_seen"]}
-        searchPlaceholder="Search contacts..."
-        enableRecentSearches
-        overflowActions={<ExportMenuItem />}
-      >
-        <ContactListSkeleton />
-      </StandardListLayout>
-    );
-  }
-
-  if (!data?.length && !hasFilters) {
-    return <ContactEmpty />;
-  }
-
-  // Filtered empty state: filters are applied but no results match
-  if (!data?.length && hasFilters) {
-    return (
-      <StandardListLayout
-        resource="contacts"
-        filterComponent={<ContactListFilter />}
-        filterConfig={CONTACT_FILTER_CONFIG}
-        sortFields={["first_name", "title", "last_seen"]}
-        searchPlaceholder="Search contacts..."
-        enableRecentSearches
-        overflowActions={<ExportMenuItem />}
-      >
-        <ListNoResults />
-      </StandardListLayout>
-    );
-  }
-
   return (
-    <>
-      <StandardListLayout
-        resource="contacts"
-        filterComponent={<ContactListFilter />}
-        filterConfig={CONTACT_FILTER_CONFIG}
-        sortFields={["first_name", "title", "last_seen"]}
-        searchPlaceholder="Search contacts..."
-        enableRecentSearches
-        overflowActions={<ExportMenuItem />}
-      >
-        <PremiumDatagrid
-          onRowClick={(id) => openSlideOver(Number(id), "view")}
-          focusedIndex={focusedIndex}
-        >
-          {/* Col 1: Identity — Avatar + Name + Email */}
-          <FunctionField
-            label={<ContactNameHeader />}
-            sortBy="first_name"
-            cellClassName="max-w-[240px]"
-            render={(record: Contact) => <ContactIdentityCell record={record} />}
-          />
+    <PremiumDatagrid
+      onRowClick={(id) => openSlideOver(Number(id), "view")}
+      focusedIndex={focusedIndex}
+    >
+      {/* Col 1: Identity -- Avatar + Name + Email */}
+      <FunctionField
+        label={<ContactNameHeader />}
+        sortBy="first_name"
+        cellClassName="max-w-[240px]"
+        render={(record: Contact) => <ContactIdentityCell record={record} />}
+      />
 
-          {/* Col 2: Context — Title + Organization */}
-          <FunctionField
-            label="Role"
-            sortBy="title"
-            cellClassName="max-w-[160px]"
-            render={(record: Contact) => <ContactContextCell record={record} />}
-          />
+      {/* Col 2: Context -- Title + Organization */}
+      <FunctionField
+        label="Role"
+        sortBy="title"
+        cellClassName="max-w-[160px]"
+        render={(record: Contact) => <ContactContextCell record={record} />}
+      />
 
-          {/* Col 3: Tags — Colored chips (hidden on mobile) */}
-          <FunctionField
-            label="Tags"
-            sortable={false}
-            render={(record: Contact) => <ContactTagsCell record={record} />}
-            cellClassName="hidden md:table-cell max-w-[200px]"
-            headerClassName="hidden md:table-cell"
-          />
+      {/* Col 3: Tags -- Colored chips (hidden on mobile) */}
+      <FunctionField
+        label="Tags"
+        sortable={false}
+        render={(record: Contact) => <ContactTagsCell record={record} />}
+        cellClassName="hidden md:table-cell max-w-[200px]"
+        headerClassName="hidden md:table-cell"
+      />
 
-          {/* Col 4: Status — Badge (filterable) */}
-          <FunctionField
-            label={<ContactStatusHeader />}
-            sortable={false}
-            render={(record: Contact) => <ContactStatusCell record={record} />}
-          />
+      {/* Col 4: Status -- Badge (filterable) */}
+      <FunctionField
+        label={<ContactStatusHeader />}
+        sortable={false}
+        render={(record: Contact) => <ContactStatusCell record={record} />}
+      />
 
-          {/* Col 5: Last Seen — Relative date with color */}
-          <FunctionField
-            label="Last Seen"
-            sortBy="last_seen"
-            render={(record: Contact) => <ContactLastSeenCell record={record} />}
-          />
-        </PremiumDatagrid>
-      </StandardListLayout>
-      <ContactBulkActionsToolbar />
-    </>
+      {/* Col 5: Last Seen -- Relative date with color */}
+      <FunctionField
+        label="Last Seen"
+        sortBy="last_seen"
+        render={(record: Contact) => <ContactLastSeenCell record={record} />}
+      />
+    </PremiumDatagrid>
   );
 };
 

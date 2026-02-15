@@ -1,12 +1,5 @@
 import React from "react";
-import {
-  useGetIdentity,
-  useListContext,
-  useUpdate,
-  useNotify,
-  downloadCSV,
-  type Exporter,
-} from "ra-core";
+import { useGetIdentity, useUpdate, useNotify, downloadCSV, type Exporter } from "ra-core";
 import { useQueryClient } from "@tanstack/react-query";
 import jsonExport from "jsonexport/dist";
 
@@ -15,9 +8,9 @@ import { SnoozeBadge } from "@/components/ui/snooze-badge";
 import { TruncatedText } from "@/components/ui/truncated-text";
 import { List } from "@/components/ra-wrappers/list";
 import { ListPagination } from "@/components/ra-wrappers/list-pagination";
-import { StandardListLayout } from "@/components/layouts/StandardListLayout";
+import { UnifiedListPageLayout } from "@/components/layouts/UnifiedListPageLayout";
+import { BulkActionsToolbarChildren } from "@/components/ra-wrappers/bulk-actions-toolbar";
 import { PremiumDatagrid } from "@/components/ra-wrappers/PremiumDatagrid";
-import { BulkActionsToolbar } from "@/components/ra-wrappers/bulk-actions-toolbar";
 import { TextField } from "@/components/ra-wrappers/text-field";
 import { DateField } from "@/components/ra-wrappers/date-field";
 import { ReferenceField } from "@/components/ra-wrappers/reference-field";
@@ -26,9 +19,8 @@ import { PriorityBadge } from "@/components/ui/priority-badge";
 import { FilterableBadge } from "@/components/ra-wrappers/FilterableBadge";
 import { TaskListSkeleton } from "@/components/ui/list-skeleton";
 import { useSlideOverState } from "@/hooks/useSlideOverState";
-import { useFilterCleanup } from "../hooks/useFilterCleanup";
 import { useListKeyboardNavigation } from "@/hooks/useListKeyboardNavigation";
-import { FloatingCreateButton } from "@/components/ra-wrappers/FloatingCreateButton";
+import { CreateButton } from "@/components/ra-wrappers/create-button";
 import { COLUMN_VISIBILITY } from "../utils/listPatterns";
 import { TaskListFilter } from "./TaskListFilter";
 import { TaskSlideOver } from "./TaskSlideOver";
@@ -105,13 +97,14 @@ const TaskActionsCell = React.memo(function TaskActionsCell({
 /**
  * TaskList - Standard list page for Task records
  *
- * Follows ContactList reference pattern:
+ * Uses UnifiedListPageLayout for centralized empty-state branching,
+ * loading states, filter cleanup, and bulk actions.
+ *
+ * Features:
  * - Identity-aware rendering with skeleton loading
  * - Keyboard navigation with slide-over integration
  * - BulkActionsToolbar for selection operations
  * - Responsive columns using COLUMN_VISIBILITY semantic presets
- *
- * Special features:
  * - Inline completion checkbox (prevents row click propagation)
  * - Edit mode by default in slide-over (tasks are action items)
  */
@@ -119,9 +112,6 @@ export default function TaskList() {
   const { data: identity, isPending: isIdentityPending } = useGetIdentity();
   const { slideOverId, isOpen, mode, openSlideOver, closeSlideOver, toggleMode } =
     useSlideOverState();
-
-  // Clean up stale cached filters from localStorage
-  useFilterCleanup("tasks");
 
   if (isIdentityPending) {
     return <TaskListSkeleton />;
@@ -141,8 +131,20 @@ export default function TaskList() {
           exporter={exporter}
           pagination={<ListPagination rowsPerPageOptions={[25, 50, 100]} />}
         >
-          <TaskListLayout openSlideOver={openSlideOver} isSlideOverOpen={isOpen} />
-          <FloatingCreateButton />
+          <UnifiedListPageLayout
+            resource="tasks"
+            filterComponent={<TaskListFilter />}
+            filterConfig={TASK_FILTER_CONFIG}
+            sortFields={["title", "due_date", "priority", "type"]}
+            searchPlaceholder="Search tasks..."
+            overflowActions={<ExportMenuItem />}
+            primaryAction={<CreateButton />}
+            emptyState={<TaskEmpty />}
+            loadingSkeleton={<TaskListSkeleton />}
+            bulkActions={<BulkActionsToolbarChildren />}
+          >
+            <TaskDatagrid openSlideOver={openSlideOver} isSlideOverOpen={isOpen} />
+          </UnifiedListPageLayout>
         </List>
       </div>
 
@@ -159,16 +161,18 @@ export default function TaskList() {
 }
 
 /**
- * TaskListLayout - Handles loading, empty states, and datagrid rendering
+ * TaskDatagrid - Keyboard-navigable datagrid with slide-over integration
+ *
+ * Contains useUpdate/useNotify/useQueryClient hooks for the inline
+ * completion checkbox functionality.
  */
-const TaskListLayout = ({
+const TaskDatagrid = ({
   openSlideOver,
   isSlideOverOpen,
 }: {
   openSlideOver: (id: number, mode: "view" | "edit") => void;
   isSlideOverOpen: boolean;
 }) => {
-  const { data, isPending, filterValues } = useListContext();
   const [update] = useUpdate();
   const notify = useNotify();
   const queryClient = useQueryClient();
@@ -202,145 +206,102 @@ const TaskListLayout = ({
     }
   };
 
-  // Keyboard navigation for list rows
-  // Disabled when slide-over is open to prevent conflicts
   const { focusedIndex } = useListKeyboardNavigation({
     onSelect: (id) => openSlideOver(Number(id), "view"),
     enabled: !isSlideOverOpen,
   });
 
-  const hasFilters = filterValues && Object.keys(filterValues).length > 0;
-
-  // Show skeleton during initial load
-  if (isPending) {
-    return (
-      <StandardListLayout
-        resource="tasks"
-        filterComponent={<TaskListFilter />}
-        filterConfig={TASK_FILTER_CONFIG}
-        sortFields={["title", "due_date", "priority", "type"]}
-        searchPlaceholder="Search tasks..."
-        overflowActions={<ExportMenuItem />}
-      >
-        <TaskListSkeleton />
-      </StandardListLayout>
-    );
-  }
-
-  if (!data?.length && !hasFilters) {
-    return <TaskEmpty />;
-  }
-
   return (
-    <>
-      <StandardListLayout
-        resource="tasks"
-        filterComponent={<TaskListFilter />}
-        filterConfig={TASK_FILTER_CONFIG}
-        sortFields={["title", "due_date", "priority", "type"]}
-        searchPlaceholder="Search tasks..."
-        overflowActions={<ExportMenuItem />}
+    <PremiumDatagrid
+      onRowClick={(id) => openSlideOver(Number(id), "view")}
+      focusedIndex={focusedIndex}
+    >
+      {/* Column 1: Completion - Inline checkbox (non-sortable) - always visible */}
+      <FunctionField
+        label="Done"
+        sortable={false}
+        render={(record: Task) => (
+          <CompletionCheckbox task={record} onCompletionRequest={handleCompletionRequest} />
+        )}
+        {...COLUMN_VISIBILITY.alwaysVisible}
+      />
+
+      {/* Column 2: Title - Primary identifier (sortable) - always visible */}
+      <FunctionField
+        label={<TaskTitleHeader />}
+        sortBy="title"
+        render={(record: Task) => <TaskTitleCell record={record} />}
+        {...COLUMN_VISIBILITY.alwaysVisible}
+      />
+
+      {/* Column 3: Due Date - Time-sensitive field (sortable) - always visible */}
+      <DateField source="due_date" label="Due Date" sortable {...COLUMN_VISIBILITY.alwaysVisible} />
+
+      {/* Column 4: Priority - Visual indicator (sortable) - always visible */}
+      <FunctionField
+        label={<TaskPriorityHeader />}
+        sortBy="priority"
+        render={(record: Task) => <TaskPriorityCell record={record} />}
+        {...COLUMN_VISIBILITY.alwaysVisible}
+      />
+
+      {/* Column 5: Type - Classification badge (sortable) - hidden on tablet/mobile */}
+      <FunctionField
+        label={<TaskTypeHeader />}
+        sortBy="type"
+        render={(record: Task) => <TaskTypeCell record={record} />}
+        {...COLUMN_VISIBILITY.desktopOnly}
+      />
+
+      {/* Column 6: Assigned To - Sales reference (sortable) - hidden on tablet/mobile */}
+      <ReferenceField
+        source="sales_id"
+        reference="sales"
+        label="Assigned To"
+        link={false}
+        sortable
+        {...COLUMN_VISIBILITY.desktopOnly}
       >
-        <PremiumDatagrid
-          onRowClick={(id) => openSlideOver(Number(id), "view")}
-          focusedIndex={focusedIndex}
-        >
-          {/* Column 1: Completion - Inline checkbox (non-sortable) - always visible */}
-          <FunctionField
-            label="Done"
-            sortable={false}
-            render={(record: Task) => (
-              <CompletionCheckbox task={record} onCompletionRequest={handleCompletionRequest} />
-            )}
-            {...COLUMN_VISIBILITY.alwaysVisible}
-          />
+        <SaleName />
+      </ReferenceField>
 
-          {/* Column 2: Title - Primary identifier (sortable) - always visible */}
-          <FunctionField
-            label={<TaskTitleHeader />}
-            sortBy="title"
-            render={(record: Task) => <TaskTitleCell record={record} />}
-            {...COLUMN_VISIBILITY.alwaysVisible}
-          />
+      {/* Column 7: Contact - Contact reference (non-sortable) - hidden until large desktop */}
+      <ReferenceField
+        source="contact_id"
+        reference="contacts_summary"
+        label="Contact"
+        link="show"
+        sortable={false}
+        {...COLUMN_VISIBILITY.largeDesktopOnly}
+      >
+        <FunctionField
+          render={(record: { first_name?: string; last_name?: string }) => (
+            <TaskContactNameCell record={record} />
+          )}
+        />
+      </ReferenceField>
 
-          {/* Column 3: Due Date - Time-sensitive field (sortable) - always visible */}
-          <DateField
-            source="due_date"
-            label="Due Date"
-            sortable
-            {...COLUMN_VISIBILITY.alwaysVisible}
-          />
+      {/* Column 8: Opportunity - Opportunity reference (non-sortable) - hidden until large desktop */}
+      <ReferenceField
+        source="opportunity_id"
+        reference="opportunities"
+        label="Opportunity"
+        link="show"
+        sortable={false}
+        {...COLUMN_VISIBILITY.largeDesktopOnly}
+      >
+        <TextField source="name" />
+      </ReferenceField>
 
-          {/* Column 4: Priority - Visual indicator (sortable) - always visible */}
-          <FunctionField
-            label={<TaskPriorityHeader />}
-            sortBy="priority"
-            render={(record: Task) => <TaskPriorityCell record={record} />}
-            {...COLUMN_VISIBILITY.alwaysVisible}
-          />
-
-          {/* Column 5: Type - Classification badge (sortable) - hidden on tablet/mobile */}
-          <FunctionField
-            label={<TaskTypeHeader />}
-            sortBy="type"
-            render={(record: Task) => <TaskTypeCell record={record} />}
-            {...COLUMN_VISIBILITY.desktopOnly}
-          />
-
-          {/* Column 6: Assigned To - Sales reference (sortable) - hidden on tablet/mobile */}
-          <ReferenceField
-            source="sales_id"
-            reference="sales"
-            label="Assigned To"
-            link={false}
-            sortable
-            {...COLUMN_VISIBILITY.desktopOnly}
-          >
-            <SaleName />
-          </ReferenceField>
-
-          {/* Column 7: Contact - Contact reference (non-sortable) - hidden until large desktop */}
-          <ReferenceField
-            source="contact_id"
-            reference="contacts_summary"
-            label="Contact"
-            link="show"
-            sortable={false}
-            {...COLUMN_VISIBILITY.largeDesktopOnly}
-          >
-            <FunctionField
-              render={(record: { first_name?: string; last_name?: string }) => (
-                <TaskContactNameCell record={record} />
-              )}
-            />
-          </ReferenceField>
-
-          {/* Column 8: Opportunity - Opportunity reference (non-sortable) - hidden until large desktop */}
-          <ReferenceField
-            source="opportunity_id"
-            reference="opportunities"
-            label="Opportunity"
-            link="show"
-            sortable={false}
-            {...COLUMN_VISIBILITY.largeDesktopOnly}
-          >
-            <TextField source="name" />
-          </ReferenceField>
-
-          {/* Column 9: Actions - Row action menu (non-sortable) - always visible */}
-          <FunctionField
-            label=""
-            sortable={false}
-            cellClassName="w-16 text-right"
-            render={(record: Task) => (
-              <TaskActionsCell record={record} openSlideOver={openSlideOver} />
-            )}
-            {...COLUMN_VISIBILITY.alwaysVisible}
-          />
-        </PremiumDatagrid>
-      </StandardListLayout>
-      <BulkActionsToolbar />
-    </>
+      {/* Column 9: Actions - Row action menu (non-sortable) - always visible */}
+      <FunctionField
+        label=""
+        sortable={false}
+        cellClassName="w-16 text-right"
+        render={(record: Task) => <TaskActionsCell record={record} openSlideOver={openSlideOver} />}
+        {...COLUMN_VISIBILITY.alwaysVisible}
+      />
+    </PremiumDatagrid>
   );
 };
 

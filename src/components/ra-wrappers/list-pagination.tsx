@@ -29,7 +29,10 @@ export const ListPagination = ({
   const translate = useTranslate();
   const { hasPreviousPage, hasNextPage, page, perPage, setPerPage, total, setPage } =
     useListPaginationContext();
-  const { selectedIds } = useListContext();
+  const { selectedIds, isPending, data } = useListContext();
+
+  // Only dim on initial load — not during background refetch when data is visible
+  const isInitialLoading = isPending && (!data || data.length === 0);
 
   // Ensure current perPage is always in options (prevents empty dropdown when perPage isn't in default options)
   const effectiveOptions = rowsPerPageOptions.includes(perPage)
@@ -89,7 +92,11 @@ export const ListPagination = ({
   };
 
   return (
-    <div className={`flex items-center justify-between w-full ${className}`}>
+    <div
+      className={`flex items-center justify-between w-full ${className} ${isInitialLoading ? "opacity-50 pointer-events-none" : ""}`}
+      aria-busy={isInitialLoading || undefined}
+      aria-disabled={isInitialLoading || undefined}
+    >
       <div className="hidden md:flex items-center">
         {showExport && !selectedIds?.length && <ExportButton />}
       </div>

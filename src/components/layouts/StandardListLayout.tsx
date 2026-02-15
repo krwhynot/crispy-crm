@@ -54,6 +54,8 @@ interface StandardListLayoutProps {
   showFilterToggle?: boolean;
   /** Show the filter sidebar (default: true). Set false to hide sidebar entirely (e.g., Overview tab uses inline header instead) */
   showFilterSidebar?: boolean;
+  /** Primary action slot (e.g., CreateButton) - passed through to ListToolbar */
+  primaryAction?: ReactNode;
 }
 
 export function StandardListLayout({
@@ -70,10 +72,11 @@ export function StandardListLayout({
   overflowActions,
   showFilterToggle,
   showFilterSidebar = true,
+  primaryAction,
 }: StandardListLayoutProps) {
   const content = (
     <div
-      className={`flex h-full min-h-0 flex-1 flex-col ${showFilterSidebar ? "lg:grid lg:grid-cols-[auto_1fr]" : ""} gap-6`}
+      className={`flex h-full min-h-0 flex-1 flex-col ${showFilterSidebar ? "xl:grid xl:grid-cols-[auto_1fr]" : ""} gap-4`}
     >
       {showFilterSidebar && (
         <AdaptiveFilterContainer filterComponent={filterComponent} resource={resource} />
@@ -97,6 +100,7 @@ export function StandardListLayout({
             overflowActions={overflowActions}
             showFilterToggle={showFilterToggle}
             resource={resource}
+            primaryAction={primaryAction}
           />
         )}
 

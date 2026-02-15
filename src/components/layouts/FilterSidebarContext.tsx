@@ -25,6 +25,10 @@ interface FilterSidebarContextValue {
   setSheetOpen: (open: boolean) => void;
   /** Number of active user-facing filters (excludes system keys and search) */
   activeFilterCount: number;
+  /** Whether a ListToolbar is present (owns the filter trigger at <1280px) */
+  hasToolbar: boolean;
+  /** Called by ListToolbar on mount to claim filter trigger ownership */
+  setHasToolbar: (value: boolean) => void;
 }
 
 const FilterSidebarContext = createContext<FilterSidebarContextValue | null>(null);
@@ -64,6 +68,9 @@ export function FilterSidebarProvider({
   // Mobile sheet open state
   const [isSheetOpen, setSheetOpen] = useState(false);
 
+  // Whether a ListToolbar is mounted (owns the filter trigger at <1280px)
+  const [hasToolbar, setHasToolbar] = useState(false);
+
   // Active filter count — excludes system keys
   const activeFilterCount = useMemo(() => {
     if (!filterValues) return 0;
@@ -77,8 +84,10 @@ export function FilterSidebarProvider({
       isSheetOpen,
       setSheetOpen,
       activeFilterCount,
+      hasToolbar,
+      setHasToolbar,
     }),
-    [isCollapsed, toggleSidebar, isSheetOpen, activeFilterCount]
+    [isCollapsed, toggleSidebar, isSheetOpen, activeFilterCount, hasToolbar]
   );
 
   return <FilterSidebarContext.Provider value={value}>{children}</FilterSidebarContext.Provider>;

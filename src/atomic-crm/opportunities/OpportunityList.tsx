@@ -3,8 +3,8 @@ import { useSearchParams } from "react-router-dom";
 import { opportunityExporter } from "./opportunityExporter";
 import { List } from "@/components/ra-wrappers/list";
 import { ListPagination } from "@/components/ra-wrappers/list-pagination";
-import { OpportunitySpeedDial } from "./OpportunitySpeedDial";
-import { StandardListLayout } from "@/components/layouts/StandardListLayout";
+import { QuickAddButton } from "./QuickAddButton";
+import { UnifiedListPageLayout } from "@/components/layouts/UnifiedListPageLayout";
 import { ListSkeleton } from "@/components/ui/list-skeleton";
 
 import { useGetIdentity, useListContext } from "ra-core";
@@ -19,7 +19,6 @@ import { OpportunityViewSwitcher, type OpportunityView } from "./OpportunityView
 import { saveStagePreferences } from "../filters/opportunityStagePreferences";
 import { useSlideOverState } from "@/hooks/useSlideOverState";
 import { OpportunitySlideOver } from "./OpportunitySlideOver";
-import { useFilterCleanup } from "../hooks/useFilterCleanup";
 import { OpportunityListFilter } from "./OpportunityListFilter";
 import { OPPORTUNITY_FILTER_CONFIG } from "./opportunityFilterConfig";
 import { OpportunityListTutorial } from "./OpportunityListTutorial";
@@ -68,9 +67,6 @@ const OpportunityList = () => {
     }
   }, [urlView, searchParams, setSearchParams]);
 
-  // Clean up stale cached filters from localStorage
-  useFilterCleanup("opportunities");
-
   // Slide-over state
   const { slideOverId, isOpen, mode, openSlideOver, closeSlideOver, toggleMode } =
     useSlideOverState();
@@ -95,15 +91,41 @@ const OpportunityList = () => {
           exporter={opportunityExporter}
           pagination={<ListPagination rowsPerPageOptions={[10, 25, 50]} />}
         >
-          <OpportunityListLayout
-            view={view}
-            onViewChange={handleViewChange}
-            openSlideOver={openSlideOver}
-            isSlideOverOpen={isOpen}
-            slideOverId={slideOverId}
-            closeSlideOver={closeSlideOver}
-          />
-          <OpportunitySpeedDial />
+          <UnifiedListPageLayout
+            resource="opportunities"
+            filterComponent={<OpportunityListFilter />}
+            filterConfig={OPPORTUNITY_FILTER_CONFIG}
+            sortFields={["name", "stage", "priority", "estimated_close_date", "created_at"]}
+            searchPlaceholder="Search opportunities..."
+            enableRecentSearches
+            viewSwitcher={
+              <span data-tutorial="opp-view-switcher">
+                <OpportunityViewSwitcher view={view} onViewChange={handleViewChange} />
+              </span>
+            }
+            overflowActions={<ExportMenuItem />}
+            primaryAction={<QuickAddButton />}
+            emptyState={
+              <OpportunityEmpty>
+                <OpportunityArchivedList />
+              </OpportunityEmpty>
+            }
+            filteredEmptyState={
+              <>
+                <ListNoResults />
+                <OpportunityArchivedList />
+              </>
+            }
+            loadingSkeleton={<ListSkeleton rows={8} columns={5} />}
+          >
+            <OpportunityListViews
+              view={view}
+              openSlideOver={openSlideOver}
+              isSlideOverOpen={isOpen}
+              slideOverId={slideOverId}
+              closeSlideOver={closeSlideOver}
+            />
+          </UnifiedListPageLayout>
         </List>
       </div>
 
@@ -121,27 +143,25 @@ const OpportunityList = () => {
 };
 
 /**
- * OpportunityListLayout - Renders inside List context to access ListContext
- * Must be a child of <List> to use useListContext() for filter state
- * Note: Breadcrumb is handled by List wrapper (list.tsx) - no longer needed here
+ * OpportunityListViews - Renders the active view (kanban/list/campaign/principal)
+ * inside UnifiedListPageLayout. Handles stage filter persistence and archived list.
+ *
+ * CRITICAL: h-full + min-h-0 + overflow-hidden enables scroll in child components
  */
-const OpportunityListLayout = ({
+const OpportunityListViews = ({
   view,
-  onViewChange,
   openSlideOver,
   isSlideOverOpen,
   slideOverId,
   closeSlideOver,
 }: {
   view: OpportunityView;
-  onViewChange: (view: OpportunityView) => void;
   openSlideOver: (id: number, mode?: "view" | "edit") => void;
   isSlideOverOpen: boolean;
   slideOverId: number | null;
   closeSlideOver: () => void;
 }) => {
-  const { data, isPending, filterValues } = useListContext();
-  const hasFilters = filterValues && Object.keys(filterValues).length > 0;
+  const { filterValues } = useListContext();
 
   // Monitor stage filter changes and update localStorage preferences
   useEffect(() => {
@@ -150,110 +170,23 @@ const OpportunityListLayout = ({
     }
   }, [filterValues?.stage]);
 
-  // Show skeleton during loading
-  if (isPending) {
-    return (
-      <StandardListLayout
-        resource="opportunities"
-        filterComponent={<OpportunityListFilter />}
-        filterConfig={OPPORTUNITY_FILTER_CONFIG}
-        sortFields={["name", "stage", "priority", "estimated_close_date", "created_at"]}
-        searchPlaceholder="Search opportunities..."
-        enableRecentSearches
-        viewSwitcher={
-          <span data-tutorial="opp-view-switcher">
-            <OpportunityViewSwitcher view={view} onViewChange={onViewChange} />
-          </span>
-        }
-        overflowActions={<ExportMenuItem />}
-      >
-        <ListSkeleton rows={8} columns={5} />
-      </StandardListLayout>
-    );
-  }
-
-  // Empty state when no data and no filters applied
-  if (!data?.length && !hasFilters) {
-    return (
-      <StandardListLayout
-        resource="opportunities"
-        filterComponent={<OpportunityListFilter />}
-        filterConfig={OPPORTUNITY_FILTER_CONFIG}
-        sortFields={["name", "stage", "priority", "estimated_close_date", "created_at"]}
-        searchPlaceholder="Search opportunities..."
-        enableRecentSearches
-        viewSwitcher={
-          <span data-tutorial="opp-view-switcher">
-            <OpportunityViewSwitcher view={view} onViewChange={onViewChange} />
-          </span>
-        }
-        overflowActions={<ExportMenuItem />}
-      >
-        <OpportunityEmpty>
-          <OpportunityArchivedList />
-        </OpportunityEmpty>
-      </StandardListLayout>
-    );
-  }
-
-  // Filtered empty state: filters are applied but no results match
-  if (!data?.length && hasFilters) {
-    return (
-      <StandardListLayout
-        resource="opportunities"
-        filterComponent={<OpportunityListFilter />}
-        filterConfig={OPPORTUNITY_FILTER_CONFIG}
-        sortFields={["name", "stage", "priority", "estimated_close_date", "created_at"]}
-        searchPlaceholder="Search opportunities..."
-        enableRecentSearches
-        viewSwitcher={
-          <span data-tutorial="opp-view-switcher">
-            <OpportunityViewSwitcher view={view} onViewChange={onViewChange} />
-          </span>
-        }
-        overflowActions={<ExportMenuItem />}
-      >
-        <ListNoResults />
-        <OpportunityArchivedList />
-      </StandardListLayout>
-    );
-  }
-
-  // Note: Breadcrumb is now handled by the List component wrapper (list.tsx)
-  // Use flex column layout so kanban can fill remaining height
-  // CRITICAL: h-full + min-h-0 + overflow-hidden enables scroll in child components
   return (
-    <StandardListLayout
-      resource="opportunities"
-      filterComponent={<OpportunityListFilter />}
-      filterConfig={OPPORTUNITY_FILTER_CONFIG}
-      sortFields={["name", "stage", "priority", "estimated_close_date", "created_at"]}
-      searchPlaceholder="Search opportunities..."
-      enableRecentSearches
-      viewSwitcher={
-        <span data-tutorial="opp-view-switcher">
-          <OpportunityViewSwitcher view={view} onViewChange={onViewChange} />
-        </span>
-      }
-      overflowActions={<ExportMenuItem />}
-    >
-      <div className="flex h-full min-h-0 w-full flex-1 flex-col overflow-hidden">
-        {view === "kanban" ? (
-          <OpportunityListContent
-            openSlideOver={openSlideOver}
-            slideOverId={slideOverId}
-            closeSlideOver={closeSlideOver}
-          />
-        ) : view === "campaign" ? (
-          <CampaignGroupedList openSlideOver={openSlideOver} />
-        ) : view === "principal" ? (
-          <PrincipalGroupedList openSlideOver={openSlideOver} />
-        ) : (
-          <OpportunityRowListView openSlideOver={openSlideOver} isSlideOverOpen={isSlideOverOpen} />
-        )}
-        <OpportunityArchivedList />
-      </div>
-    </StandardListLayout>
+    <div className="flex h-full min-h-0 w-full flex-1 flex-col overflow-hidden">
+      {view === "kanban" ? (
+        <OpportunityListContent
+          openSlideOver={openSlideOver}
+          slideOverId={slideOverId}
+          closeSlideOver={closeSlideOver}
+        />
+      ) : view === "campaign" ? (
+        <CampaignGroupedList openSlideOver={openSlideOver} />
+      ) : view === "principal" ? (
+        <PrincipalGroupedList openSlideOver={openSlideOver} />
+      ) : (
+        <OpportunityRowListView openSlideOver={openSlideOver} isSlideOverOpen={isSlideOverOpen} />
+      )}
+      <OpportunityArchivedList />
+    </div>
   );
 };
 

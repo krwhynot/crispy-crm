@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import { useEffect, type ReactNode } from "react";
 import { ArrowUpDown, EllipsisVertical, SlidersHorizontal } from "lucide-react";
 import { useListSortContext, useTranslate, useTranslateLabel } from "ra-core";
 import { Button } from "@/components/ui/button";
@@ -33,6 +33,8 @@ export interface ListToolbarProps {
   showFilterToggle?: boolean;
   /** Resource name for ARIA labels */
   resource?: string;
+  /** Primary action slot (e.g., CreateButton) - renders between view switcher and overflow menu */
+  primaryAction?: ReactNode;
 }
 
 /**
@@ -53,7 +55,15 @@ export function ListToolbar({
   overflowActions,
   showFilterToggle = true,
   resource,
+  primaryAction,
 }: ListToolbarProps) {
+  const { setHasToolbar } = useFilterSidebarContext();
+
+  useEffect(() => {
+    setHasToolbar(true);
+    return () => setHasToolbar(false);
+  }, [setHasToolbar]);
+
   return (
     <div
       role="toolbar"
@@ -79,7 +89,10 @@ export function ListToolbar({
       {/* 4. View switcher slot */}
       {viewSwitcher}
 
-      {/* 5. Kebab overflow menu */}
+      {/* 5. Primary action slot (e.g., Create button) */}
+      {primaryAction}
+
+      {/* 6. Kebab overflow menu */}
       <OverflowMenu sortFields={sortFields} overflowActions={overflowActions} />
     </div>
   );
@@ -93,7 +106,7 @@ function FilterToggleButton() {
   const { isCollapsed, toggleSidebar, isSheetOpen, setSheetOpen, activeFilterCount } =
     useFilterSidebarContext();
   const breakpoint = useBreakpoint();
-  const isMobileSheet = breakpoint === "mobile" || breakpoint === "tablet-portrait";
+  const isMobileSheet = breakpoint !== "desktop" && breakpoint !== "laptop";
 
   const handleClick = () => {
     if (isMobileSheet) {

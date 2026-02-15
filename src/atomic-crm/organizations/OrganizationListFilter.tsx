@@ -17,7 +17,6 @@ import {
 } from "@/components/ui/accordion";
 import { OwnerFilterDropdown } from "@/components/ra-wrappers/OwnerFilterDropdown";
 import { OrganizationSavedQueries } from "./OrganizationSavedQueries";
-import { FilterRailHidden } from "../filters/FilterLayoutModeContext";
 import {
   ORGANIZATION_TYPE_CHOICES,
   ORG_TYPE_COLOR_MAP,
@@ -130,14 +129,10 @@ export const OrganizationListFilter = (): React.ReactElement => {
   return (
     <div className="flex flex-col gap-4" data-tutorial="org-filters">
       {/* Starred Quick Filter - TOP of sidebar */}
-      <FilterRailHidden>
-        <StarredFilterToggle entityType="organizations" />
-      </FilterRailHidden>
+      <StarredFilterToggle entityType="organizations" />
 
       {/* Quick Filter Presets */}
-      <FilterRailHidden>
-        <OrganizationSavedQueries />
-      </FilterRailHidden>
+      <OrganizationSavedQueries />
 
       {/* Collapsible Filter Sections */}
       <div className="flex flex-col gap-2">

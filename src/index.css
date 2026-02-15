@@ -116,8 +116,8 @@
   --spacing-top-offset: 60px; /* Reduced from 80px for better space usage */
 
   /* Desktop Data Density Tokens - NEW */
-  --row-height-compact: 32px; /* Compact row height for data tables */
-  --row-height-comfortable: 40px; /* Comfortable row height */
+  --row-height-compact: 48px; /* Compact row height for data tables */
+  --row-height-comfortable: 56px; /* Comfortable row height */
   --row-padding-desktop: 6px 12px; /* Row padding for desktop density */
   --hover-zone-padding: 4px; /* Padding for hover/focus zones */
   --action-button-size: 28px; /* Compact action button size */
@@ -440,9 +440,9 @@
   /* Note: height on tr is more reliable than min-height on td for enforcing row height */
   /* Performance: content-visibility skips rendering off-screen rows in long lists */
   .table-row-premium {
-    height: 56px;
+    height: var(--row-height-comfortable);
     content-visibility: auto;
-    contain-intrinsic-size: 0 56px;
+    contain-intrinsic-size: 0 var(--row-height-comfortable);
   }
 
   .table-row-premium td {
@@ -453,8 +453,8 @@
   /* Compact density variant — scoped to containers with data-density="compact" */
   /* Used by dashboard Pipeline table; does NOT affect global PremiumDatagrid tables */
   [data-density="compact"] .table-row-premium {
-    height: 48px;
-    contain-intrinsic-size: 0 48px;
+    height: var(--row-height-compact);
+    contain-intrinsic-size: 0 var(--row-height-compact);
   }
 
   [data-density="compact"] .table-row-premium td {
