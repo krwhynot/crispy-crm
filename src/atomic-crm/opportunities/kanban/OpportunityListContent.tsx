@@ -533,10 +533,10 @@ export const OpportunityListContent = ({
         onDragCancel={handleDragCancel}
         accessibility={{ announcements }}
       >
-        {/* Tighter layout: reduced padding p-3, smaller gap-3 between columns */}
-        {/* pb-5 ensures horizontal scrollbar isn't clipped by parent overflow-hidden containers */}
+        {/* Comfortable layout with space for sticky headers and drag affordance */}
+        {/* pb-6 ensures horizontal scrollbar isn't clipped by parent overflow-hidden containers */}
         <div
-          className="flex min-h-0 flex-1 gap-3 overflow-x-auto overflow-y-hidden p-3 pb-5 bg-muted rounded-2xl border border-border shadow-inner"
+          className="flex min-h-0 flex-1 gap-4 overflow-x-auto overflow-y-hidden rounded-2xl border border-border bg-muted/40 p-4 pb-6 shadow-inner"
           data-testid="kanban-board"
           data-tutorial="opp-kanban-board"
           role="region"

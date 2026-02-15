@@ -101,11 +101,13 @@ export const OpportunityCard = React.memo(function OpportunityCard({
       }}
       className={`
         bg-card rounded-lg border border-border border-l-4
-        p-2 space-y-0.5
-        hover:shadow-md
+        p-3 space-y-1.5
+        shadow-card-1 hover:shadow-card-2
         cursor-pointer
+        transition-[box-shadow,transform,background-color,border-color] duration-150 ease-out
+        hover:-translate-y-px
         ${isDragging && !isDragOverlay ? "opacity-50" : "opacity-100"}
-        ${isDragOverlay ? "shadow-xl" : ""}
+        ${isDragOverlay ? "shadow-card-3 scale-[1.01]" : ""}
       `}
       data-testid="opportunity-card"
       data-tutorial="opp-card"
@@ -133,7 +135,7 @@ export const OpportunityCard = React.memo(function OpportunityCard({
       </div>
 
       {/* Row 2: Distributor */}
-      <p className="text-sm text-muted-foreground truncate pl-10">
+      <p className="text-sm font-medium text-foreground/90 truncate pl-10">
         {record.distributor_organization_name || "No Distributor"}
       </p>
 

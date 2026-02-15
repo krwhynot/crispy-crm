@@ -596,7 +596,7 @@ describe("ContactList 5-column directory layout", () => {
     });
   });
 
-  test("does NOT render removed columns (standalone Avatar, Notes, Actions)", async () => {
+  test("does NOT render removed columns (standalone Avatar, Notes) and includes hover Actions", async () => {
     renderWithAdminContext(<ContactList />);
 
     await waitFor(() => {
@@ -604,8 +604,8 @@ describe("ContactList 5-column directory layout", () => {
       expect(screen.queryByTestId("function-field-")).not.toBeInTheDocument();
       // Notes column is gone
       expect(screen.queryByTestId("function-field-Notes")).not.toBeInTheDocument();
-      // Actions column is gone
-      expect(screen.queryByTestId("function-field-Actions")).not.toBeInTheDocument();
+      // Hover actions column is present in the refreshed list view
+      expect(screen.getByTestId("function-field-Actions")).toBeInTheDocument();
     });
   });
 

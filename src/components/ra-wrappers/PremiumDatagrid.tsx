@@ -1,7 +1,16 @@
 import { useCallback, useEffect } from "react";
 import type { DatagridProps } from "react-admin";
 import { Datagrid, DatagridConfigurable, useListContext } from "react-admin";
+import { useListDensityContext, type ListDensity } from "@/components/layouts/ListDensityContext";
 import { cn } from "@/lib/utils";
+
+function useSafeListDensityContext(): ListDensity {
+  try {
+    return useListDensityContext().density;
+  } catch {
+    return "comfortable";
+  }
+}
 
 /**
  * PremiumDatagrid - Enhanced Datagrid wrapper with premium hover effects
@@ -67,6 +76,14 @@ export interface PremiumDatagridProps extends Omit<DatagridProps, "rowClassName"
    * Can be a string or a function that receives (record, index) and returns a string.
    */
   rowClassName?: string | ((record: unknown, index: number) => string);
+
+  /**
+   * Keep datagrid table headers sticky while scrolling.
+   * Enabled by default for list readability.
+   *
+   * @default true
+   */
+  stickyHeader?: boolean;
 }
 
 /**
@@ -81,9 +98,11 @@ export function PremiumDatagrid({
   configurable = false,
   preferenceKey,
   rowClassName: externalRowClassName,
+  stickyHeader = true,
   ...props
 }: PremiumDatagridProps) {
   const { data } = useListContext();
+  const density = useSafeListDensityContext();
 
   // Stable row click handler using useCallback to prevent infinite re-renders
   // Only wraps onRowClick - props.rowClick is passed directly when onRowClick is not provided
@@ -158,7 +177,14 @@ export function PremiumDatagrid({
   };
 
   return (
-    <div className="flex-1 min-h-0 overflow-auto">
+    <div
+      className={cn(
+        "flex-1 min-h-0 overflow-auto overflow-x-auto overflow-y-auto",
+        stickyHeader && "sticky-header"
+      )}
+      data-sticky-header={stickyHeader ? "true" : "false"}
+      data-list-density={density}
+    >
       <DatagridComponent {...componentProps} />
     </div>
   );

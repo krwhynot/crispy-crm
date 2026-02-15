@@ -117,11 +117,23 @@
 
   /* Desktop Data Density Tokens - NEW */
   --row-height-compact: 48px; /* Compact row height for data tables */
-  --row-height-comfortable: 56px; /* Comfortable row height */
+  --row-height-comfortable: 64px; /* Comfortable row height */
   --row-padding-desktop: 6px 12px; /* Row padding for desktop density */
   --hover-zone-padding: 4px; /* Padding for hover/focus zones */
   --action-button-size: 28px; /* Compact action button size */
   --context-menu-width: 200px; /* Standard context menu width */
+
+  /* List layout semantics */
+  --list-shell-gap: var(--spacing-content);
+  --list-toolbar-gap: var(--spacing-content);
+  --list-toolbar-margin-bottom: var(--spacing-widget);
+  --list-sidebar-width: 18rem;
+  --list-main-card-padding: var(--spacing-widget-padding);
+  --list-filter-card-padding: var(--spacing-content);
+  --list-toolbar-control-height-mobile: 44px;
+  --list-toolbar-control-height-desktop: 36px;
+  --list-row-focus-ring-width: 2px;
+  --row-height-ipad: 52px;
 }
 
 @layer utilities {
@@ -204,6 +216,9 @@
   }
   .mb-widget {
     margin-bottom: var(--spacing-widget);
+  }
+  .mb-content {
+    margin-bottom: var(--spacing-content);
   }
 
   /* Shadow Elevation Utilities - Maps to 3-tier warm-tinted shadow system */
@@ -316,6 +331,24 @@
   }
   .border-error-subtle {
     border-color: color-mix(in oklch, var(--destructive) 20%, transparent);
+  }
+
+  .badge-status-cold {
+    background-color: var(--status-cold-bg);
+    color: var(--status-cold-fg);
+    border-color: color-mix(in oklch, var(--status-cold-fg) 20%, transparent);
+  }
+
+  .badge-status-active {
+    background-color: var(--status-active-bg);
+    color: var(--status-active-fg);
+    border-color: color-mix(in oklch, var(--status-active-fg) 20%, transparent);
+  }
+
+  .badge-status-discontinued {
+    background-color: var(--status-discontinued-bg);
+    color: var(--status-discontinued-fg);
+    border-color: color-mix(in oklch, var(--status-discontinued-fg) 20%, transparent);
   }
 
   /* ========================================
@@ -443,23 +476,104 @@
     height: var(--row-height-comfortable);
     content-visibility: auto;
     contain-intrinsic-size: 0 var(--row-height-comfortable);
+    border-left: 3px solid transparent;
+  }
+
+  /* Ensure React Admin row defaults do not override list density heights */
+  .RaDatagrid-table tbody .RaDatagrid-row {
+    height: var(--row-height-comfortable) !important;
+    min-height: var(--row-height-comfortable) !important;
   }
 
   .table-row-premium td {
-    @apply py-3;
+    @apply py-4;
     vertical-align: middle;
+    border-bottom: 1px solid var(--divider-subtle);
+  }
+
+  .RaDatagrid-table tbody .RaDatagrid-row > td {
+    padding-top: 1rem !important;
+    padding-bottom: 1rem !important;
+  }
+
+  /* iPad-first density: slightly denser rows for list-heavy tablet layouts */
+  @media (min-width: 768px) and (max-width: 1279px) {
+    .table-row-premium {
+      height: var(--row-height-ipad);
+      contain-intrinsic-size: 0 var(--row-height-ipad);
+    }
   }
 
   /* Compact density variant — scoped to containers with data-density="compact" */
   /* Used by dashboard Pipeline table; does NOT affect global PremiumDatagrid tables */
-  [data-density="compact"] .table-row-premium {
+  [data-density="compact"] .table-row-premium,
+  [data-list-density="compact"] .table-row-premium {
     height: var(--row-height-compact);
     contain-intrinsic-size: 0 var(--row-height-compact);
   }
 
-  [data-density="compact"] .table-row-premium td {
-    @apply py-2;
+  [data-density="compact"] .RaDatagrid-table tbody .RaDatagrid-row,
+  [data-list-density="compact"] .RaDatagrid-table tbody .RaDatagrid-row {
+    height: var(--row-height-compact) !important;
+    min-height: var(--row-height-compact) !important;
+  }
+
+  [data-density="compact"] .table-row-premium td,
+  [data-list-density="compact"] .table-row-premium td {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
     vertical-align: middle;
+  }
+
+  [data-density="compact"] .RaDatagrid-table tbody .RaDatagrid-row > td,
+  [data-list-density="compact"] .RaDatagrid-table tbody .RaDatagrid-row > td {
+    padding-top: 0.5rem !important;
+    padding-bottom: 0.5rem !important;
+  }
+
+  [data-density="comfortable"] .table-row-premium td,
+  [data-list-density="comfortable"] .table-row-premium td {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  }
+
+  [data-density="comfortable"] .RaDatagrid-table tbody .RaDatagrid-row > td,
+  [data-list-density="comfortable"] .RaDatagrid-table tbody .RaDatagrid-row > td {
+    padding-top: 1rem !important;
+    padding-bottom: 1rem !important;
+  }
+
+  .table-row-premium:hover {
+    border-left-color: color-mix(in oklch, var(--primary) 55%, transparent);
+    box-shadow: var(--elevation-1);
+  }
+
+  @media (min-width: 1024px) {
+    .RaDatagrid-row [data-row-actions],
+    .table-row-premium [data-row-actions] {
+      opacity: 0;
+      pointer-events: none;
+      transform: translateX(4px);
+      transition: opacity 150ms ease, transform 150ms ease;
+    }
+
+    .RaDatagrid-row:hover [data-row-actions],
+    .RaDatagrid-row:focus-within [data-row-actions],
+    .table-row-premium:hover [data-row-actions],
+    .table-row-premium:focus-within [data-row-actions] {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateX(0);
+    }
+  }
+
+  @media (max-width: 1023px) {
+    .RaDatagrid-row [data-row-actions],
+    .table-row-premium [data-row-actions] {
+      opacity: 1;
+      pointer-events: auto;
+      transform: none;
+    }
   }
 
   /* Standard card container */
@@ -475,6 +589,42 @@
   /* Sidebar filter panel */
   .filter-sidebar {
     @apply w-64 shrink-0 space-y-4;
+  }
+
+  /* Unified list shell primitives */
+  .list-page-shell {
+    @apply flex h-full min-h-0 min-w-0 flex-1;
+    gap: var(--list-shell-gap);
+  }
+
+  .list-toolbar {
+    @apply flex flex-wrap items-center shrink-0;
+    gap: var(--list-toolbar-gap);
+    margin-bottom: var(--list-toolbar-margin-bottom);
+  }
+
+  .list-page-main-card {
+    padding: var(--list-main-card-padding);
+  }
+
+  .list-filter-card {
+    padding: var(--list-filter-card-padding);
+  }
+
+  .list-bulk-actions {
+    @apply mb-widget sticky top-0 z-10 rounded-xl border border-border bg-card p-content shadow-sm;
+  }
+
+  .card-list-surface {
+    @apply rounded-xl border border-border shadow-sm gap-content;
+  }
+
+  .sticky-header table thead th {
+    position: sticky;
+    top: 0;
+    z-index: 6;
+    background: var(--card);
+    border-bottom: 1px solid var(--divider-subtle);
   }
 
   /* Filter sidebar scrollbar styling */
@@ -739,7 +889,7 @@
   --accent-clay-300: oklch(82% 0.06 72); /* #F4D4A8 - Very light clay */
 
   /* Foundation colors (semantic mappings) */
-  --background: oklch(97.5% 0.01 92); /* Paper cream - subtle warmth, improved card separation */
+  --background: oklch(97.5% 0.01 92); /* Warm beige app background */
   --foreground: oklch(20% 0.012 85); /* Slightly warmer dark text */
   --card: oklch(100% 0 0); /* Pure white - material layering principle */
   --card-foreground: var(--neutral-700); /* Card text */
@@ -767,7 +917,7 @@
   --warning: var(--warning-default);
 
   /* Borders and focus */
-  --border: var(--neutral-200); /* Borders */
+  --border: var(--neutral-200); /* Warm beige divider */
   --input: var(--neutral-300); /* Input borders - darker for better visibility */
   --ring: oklch(55% 0.095 142); /* #4D9900 - Brightened focus ring for visibility */
 
@@ -1009,11 +1159,19 @@
   --tag-border: oklch(0 0 0 / 0.2); /* 20% black for tag borders */
 
   /* Divider System - Internal separators */
-  --divider-subtle: oklch(96% 0.004 92); /* On white surfaces, internal dividers */
-  --divider-strong: oklch(94.5% 0.004 92); /* Section separators */
+  --divider-subtle: oklch(96% 0.004 92); /* Warm subtle 1px separators */
+  --divider-strong: oklch(94.5% 0.004 92); /* Warm section separators */
 
   /* Interactive Surface System - Hover/focus states */
-  --surface-interactive-hover: oklch(99% 0.006 92); /* Warm hover tint for interactive elements */
+  --surface-interactive-hover: oklch(99% 0.006 92); /* Warm hover tint */
+
+  /* Product lifecycle/status semantic tokens */
+  --status-cold-bg: oklch(94.5% 0.03 240);
+  --status-cold-fg: oklch(44% 0.08 240);
+  --status-active-bg: oklch(94.5% 0.04 150);
+  --status-active-fg: oklch(40% 0.1 150);
+  --status-discontinued-bg: oklch(94% 0.045 25);
+  --status-discontinued-fg: oklch(44% 0.11 25);
 
   /* Text Hierarchy - Improved contrast for widget titles and metrics */
   /* Zen Recommendation: Warm-tint all text for complete cohesion with paper cream background */
@@ -1403,10 +1561,13 @@ input[type="time"] {
   }
   html {
     scrollbar-gutter: stable;
+    height: 100%;
   }
   body {
     @apply bg-background text-foreground;
     font-family: var(--font-sans);
+    min-height: 100dvh;
+    overflow: hidden;
   }
 }
 

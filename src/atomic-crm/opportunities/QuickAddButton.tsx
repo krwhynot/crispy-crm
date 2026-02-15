@@ -25,7 +25,7 @@ export const QuickAddButton = () => {
     <>
       <AdminButton
         onClick={() => setOpen(true)}
-        variant="outline"
+        variant="default"
         size="default"
         className="min-h-[44px] min-w-[44px]" // Ensure touch target minimum
       >

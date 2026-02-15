@@ -11,6 +11,7 @@ import { ListPagination } from "@/components/ra-wrappers/list-pagination";
 import { UnifiedListPageLayout } from "@/components/layouts/UnifiedListPageLayout";
 import { BulkActionsToolbarChildren } from "@/components/ra-wrappers/bulk-actions-toolbar";
 import { PremiumDatagrid } from "@/components/ra-wrappers/PremiumDatagrid";
+import { RowHoverActions } from "@/components/ra-wrappers/RowHoverActions";
 import { TextField } from "@/components/ra-wrappers/text-field";
 import { DateField } from "@/components/ra-wrappers/date-field";
 import { ReferenceField } from "@/components/ra-wrappers/reference-field";
@@ -30,7 +31,6 @@ import { TASK_FILTER_CONFIG } from "./taskFilterConfig";
 import { PageTutorialTrigger } from "../tutorial";
 import { TaskTitleHeader, TaskPriorityHeader, TaskTypeHeader } from "./TasksDatagridHeader";
 import { ExportMenuItem } from "@/components/ra-wrappers/export-menu-item";
-import { TaskActionMenu } from "./TaskActionMenu";
 import { taskKeys, entityTimelineKeys } from "@/atomic-crm/queryKeys";
 import type { Task } from "./types";
 import type { Opportunity, Organization } from "../types";
@@ -85,11 +85,12 @@ const TaskActionsCell = React.memo(function TaskActionsCell({
   openSlideOver,
 }: TaskActionsCellProps) {
   return (
-    <TaskActionMenu
-      task={record}
-      onView={(id) => openSlideOver(id, "view")}
-      onEdit={(id) => openSlideOver(id, "edit")}
-      useInternalHandlers
+    <RowHoverActions
+      className="inline-flex items-center justify-end gap-1"
+      recordId={record.id}
+      resource="tasks"
+      onView={(id) => openSlideOver(Number(id), "view")}
+      onEdit={(id) => openSlideOver(Number(id), "edit")}
     />
   );
 });
@@ -138,7 +139,7 @@ export default function TaskList() {
             sortFields={["title", "due_date", "priority", "type"]}
             searchPlaceholder="Search tasks..."
             overflowActions={<ExportMenuItem />}
-            primaryAction={<CreateButton />}
+            primaryAction={<CreateButton variant="default" />}
             emptyState={<TaskEmpty />}
             loadingSkeleton={<TaskListSkeleton />}
             bulkActions={<BulkActionsToolbarChildren />}
@@ -223,7 +224,7 @@ const TaskDatagrid = ({
         render={(record: Task) => (
           <CompletionCheckbox task={record} onCompletionRequest={handleCompletionRequest} />
         )}
-        {...COLUMN_VISIBILITY.alwaysVisible}
+        {...COLUMN_VISIBILITY.always}
       />
 
       {/* Column 2: Title - Primary identifier (sortable) - always visible */}
@@ -231,18 +232,18 @@ const TaskDatagrid = ({
         label={<TaskTitleHeader />}
         sortBy="title"
         render={(record: Task) => <TaskTitleCell record={record} />}
-        {...COLUMN_VISIBILITY.alwaysVisible}
+        {...COLUMN_VISIBILITY.always}
       />
 
       {/* Column 3: Due Date - Time-sensitive field (sortable) - always visible */}
-      <DateField source="due_date" label="Due Date" sortable {...COLUMN_VISIBILITY.alwaysVisible} />
+      <DateField source="due_date" label="Due Date" sortable {...COLUMN_VISIBILITY.always} />
 
       {/* Column 4: Priority - Visual indicator (sortable) - always visible */}
       <FunctionField
         label={<TaskPriorityHeader />}
         sortBy="priority"
         render={(record: Task) => <TaskPriorityCell record={record} />}
-        {...COLUMN_VISIBILITY.alwaysVisible}
+        {...COLUMN_VISIBILITY.always}
       />
 
       {/* Column 5: Type - Classification badge (sortable) - hidden on tablet/mobile */}
@@ -250,7 +251,7 @@ const TaskDatagrid = ({
         label={<TaskTypeHeader />}
         sortBy="type"
         render={(record: Task) => <TaskTypeCell record={record} />}
-        {...COLUMN_VISIBILITY.desktopOnly}
+        {...COLUMN_VISIBILITY.ipadPlus}
       />
 
       {/* Column 6: Assigned To - Sales reference (sortable) - hidden on tablet/mobile */}
@@ -260,7 +261,7 @@ const TaskDatagrid = ({
         label="Assigned To"
         link={false}
         sortable
-        {...COLUMN_VISIBILITY.desktopOnly}
+        {...COLUMN_VISIBILITY.ipadPlus}
       >
         <SaleName />
       </ReferenceField>
@@ -272,7 +273,7 @@ const TaskDatagrid = ({
         label="Contact"
         link="show"
         sortable={false}
-        {...COLUMN_VISIBILITY.largeDesktopOnly}
+        {...COLUMN_VISIBILITY.desktopPlus}
       >
         <FunctionField
           render={(record: { first_name?: string; last_name?: string }) => (
@@ -288,18 +289,18 @@ const TaskDatagrid = ({
         label="Opportunity"
         link="show"
         sortable={false}
-        {...COLUMN_VISIBILITY.largeDesktopOnly}
+        {...COLUMN_VISIBILITY.desktopPlus}
       >
         <TextField source="name" />
       </ReferenceField>
 
       {/* Column 9: Actions - Row action menu (non-sortable) - always visible */}
       <FunctionField
-        label=""
+        label="Actions"
         sortable={false}
-        cellClassName="w-16 text-right"
+        cellClassName="w-[128px] text-right"
         render={(record: Task) => <TaskActionsCell record={record} openSlideOver={openSlideOver} />}
-        {...COLUMN_VISIBILITY.alwaysVisible}
+        {...COLUMN_VISIBILITY.always}
       />
     </PremiumDatagrid>
   );
@@ -414,3 +415,4 @@ const exporter: Exporter<Task> = async (records, fetchRelatedRecords) => {
     }
   );
 };
+

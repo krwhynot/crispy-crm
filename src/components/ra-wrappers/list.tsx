@@ -64,13 +64,10 @@ export interface ListProps<RecordType extends RaRecord = RaRecord>
 /**
  * ListView - Fixed page layout with scrollable list content
  *
- * Implements the fixed-page/scrollable-list pattern for iPad optimization:
+ * Implements the fixed-page/scrollable-list pattern:
  * - Header (breadcrumb, toolbar) stays fixed at top
  * - List content scrolls within a constrained container
  * - Pagination stays fixed at bottom
- *
- * Height is derived from the flex chain: Layout (h-dvh) -> main (flex-1 min-h-0)
- * -> ListView (flex-1 min-h-0). No viewport calc hacks needed.
  */
 export const ListView = <RecordType extends RaRecord = RaRecord>(
   props: ListViewProps<RecordType>
@@ -103,7 +100,7 @@ export const ListView = <RecordType extends RaRecord = RaRecord>(
 
         {actions !== false && (
           <FilterContext.Provider value={filters}>
-            <div className="flex justify-between items-center flex-wrap gap-2 my-2">
+            <div className="mb-widget flex flex-wrap items-center justify-between gap-content">
               <FilterForm />
               {actions ?? (
                 <div className="flex items-center gap-2">
@@ -118,7 +115,7 @@ export const ListView = <RecordType extends RaRecord = RaRecord>(
 
       {/* Content area - scrolls vertically for paginated lists, fills height for kanban */}
       <FilterContext.Provider value={filters}>
-        <div className={cn("h-full min-h-0 flex-1 overflow-hidden", props.className)}>
+        <div className={cn("h-full min-h-0 flex flex-1 flex-col overflow-hidden", props.className)}>
           {!isPending && data?.length === 0 && empty
             ? renderEmptyState(filterValues, empty)
             : children}
@@ -126,7 +123,7 @@ export const ListView = <RecordType extends RaRecord = RaRecord>(
 
         {/* Fixed pagination at bottom - only render if pagination is provided */}
         {pagination && (
-          <div className="shrink-0 border-t border-border bg-background py-2">{pagination}</div>
+          <div className="shrink-0 border-t border-border bg-background py-content">{pagination}</div>
         )}
       </FilterContext.Provider>
     </div>

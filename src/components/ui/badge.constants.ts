@@ -36,6 +36,12 @@ export const badgeVariants = cva(
           "border-transparent bg-tag-teal text-tag-teal-fg ring-tag-teal-fg/15 [a&]:hover:bg-tag-teal/90",
         "org-unknown":
           "border-transparent bg-tag-gray text-tag-gray-fg ring-tag-gray-fg/15 [a&]:hover:bg-tag-gray/90",
+        "status-cold":
+          "border badge-status-cold ring-0 [a&]:hover:opacity-90",
+        "status-active":
+          "border badge-status-active ring-0 [a&]:hover:opacity-90",
+        "status-discontinued":
+          "border badge-status-discontinued ring-0 [a&]:hover:opacity-90",
       },
     },
     defaultVariants: {

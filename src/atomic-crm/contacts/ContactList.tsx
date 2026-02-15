@@ -9,6 +9,7 @@ import { CreateButton } from "@/components/ra-wrappers/create-button";
 import { UnifiedListPageLayout } from "@/components/layouts/UnifiedListPageLayout";
 import { ExportMenuItem } from "@/components/ra-wrappers/export-menu-item";
 import { PremiumDatagrid } from "@/components/ra-wrappers/PremiumDatagrid";
+import { RowHoverActions } from "@/components/ra-wrappers/RowHoverActions";
 import { FunctionField } from "react-admin";
 import { useSlideOverState } from "@/hooks/useSlideOverState";
 import { useListKeyboardNavigation } from "@/hooks/useListKeyboardNavigation";
@@ -42,7 +43,7 @@ const ContactIdentityCell = React.memo(function ContactIdentityCell({
     <div className="flex items-center gap-2 min-w-0">
       <Avatar record={record} width={32} height={32} />
       <div className="flex flex-col gap-0.5 min-w-0">
-        <span className="font-medium text-sm truncate">
+        <span className="truncate text-[15px] font-semibold leading-tight">
           {formatFullName(record.first_name, record.last_name)}
         </span>
         <span className="text-xs text-muted-foreground truncate">{emails?.[0]?.value || "—"}</span>
@@ -145,7 +146,7 @@ export const ContactList = () => {
             searchPlaceholder="Search contacts..."
             enableRecentSearches
             overflowActions={<ExportMenuItem />}
-            primaryAction={<CreateButton />}
+            primaryAction={<CreateButton variant="default" />}
             emptyState={<ContactEmpty />}
             loadingSkeleton={<ContactListSkeleton />}
             bulkActions={<ContactBulkButtons />}
@@ -223,6 +224,21 @@ const ContactDatagrid = ({
         label="Last Seen"
         sortBy="last_seen"
         render={(record: Contact) => <ContactLastSeenCell record={record} />}
+      />
+
+      <FunctionField
+        label="Actions"
+        sortable={false}
+        cellClassName="w-[128px] text-right"
+        render={(record: Contact) => (
+          <RowHoverActions
+            className="inline-flex items-center gap-1 justify-end"
+            recordId={record.id}
+            resource="contacts"
+            onView={(id) => openSlideOver(Number(id), "view")}
+            onEdit={(id) => openSlideOver(Number(id), "edit")}
+          />
+        )}
       />
     </PremiumDatagrid>
   );

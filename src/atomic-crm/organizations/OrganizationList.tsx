@@ -7,6 +7,7 @@ import { OrganizationBulkButtons } from "./OrganizationBulkActionsToolbar";
 import { List } from "@/components/ra-wrappers/list";
 import { UnifiedListPageLayout } from "@/components/layouts/UnifiedListPageLayout";
 import { PremiumDatagrid } from "@/components/ra-wrappers/PremiumDatagrid";
+import { RowHoverActions } from "@/components/ra-wrappers/RowHoverActions";
 import { CreateButton } from "@/components/ra-wrappers/create-button";
 import { OrganizationListSkeleton } from "@/components/ui/list-skeleton";
 import { useSlideOverState } from "@/hooks/useSlideOverState";
@@ -66,7 +67,7 @@ const OrganizationNameCell = memo(function OrganizationNameCell({
 }) {
   return (
     <div className="flex items-center gap-1.5 min-w-0">
-      <span className="truncate">{record.name}</span>
+      <span className="truncate text-[15px] font-semibold leading-tight">{record.name}</span>
       <OrganizationHierarchyChips record={record} />
     </div>
   );
@@ -325,6 +326,21 @@ const OrganizationDatagrid = ({
             cellClassName="hidden md:table-cell"
             headerClassName="hidden md:table-cell"
           />
+
+          <FunctionField
+            label="Actions"
+            sortable={false}
+            cellClassName="w-[128px] text-right"
+            render={(record: OrganizationRecord) => (
+              <RowHoverActions
+                className="inline-flex items-center justify-end gap-1"
+                recordId={record.id}
+                resource="organizations"
+                onView={(id) => openSlideOver(Number(id), "view")}
+                onEdit={(id) => openSlideOver(Number(id), "edit")}
+              />
+            )}
+          />
         </PremiumDatagrid>
       )}
     </div>
@@ -370,7 +386,7 @@ export const OrganizationList = () => {
                 <ExportMenuItem />
               </>
             }
-            primaryAction={<CreateButton />}
+            primaryAction={<CreateButton variant="default" />}
             emptyState={<OrganizationEmpty />}
             loadingSkeleton={<OrganizationListSkeleton />}
             bulkActions={view === "list" ? <OrganizationBulkButtons /> : undefined}

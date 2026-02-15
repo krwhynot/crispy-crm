@@ -15,7 +15,7 @@ export const ProductDistributorList = () => (
       filterConfig={PRODUCT_DISTRIBUTOR_FILTER_CONFIG}
       sortFields={["created_at", "status", "valid_from"]}
       searchPlaceholder="Search product distributors..."
-      primaryAction={<CreateButton />}
+      primaryAction={<CreateButton variant="default" />}
     >
       <PremiumDatagrid rowClick="edit" bulkActionButtons={false}>
         {/* Use denormalized fields from summary view to eliminate N+1 queries */}

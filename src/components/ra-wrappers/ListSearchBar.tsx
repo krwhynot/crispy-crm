@@ -80,7 +80,7 @@ export function ListSearchBar({
   );
 
   return (
-    <div className="flex items-center gap-4">
+    <div className="flex items-center gap-content">
       {/* Search Input - optionally wrapped in Popover for recent searches */}
       {enableRecentSearches ? (
         <Popover
@@ -94,7 +94,7 @@ export function ListSearchBar({
           }}
         >
           <PopoverAnchor asChild>
-            <div className="w-full max-w-sm" onBlurCapture={handleBlur}>
+            <div className="w-full md:max-w-sm" onBlurCapture={handleBlur}>
               {searchInputContent}
             </div>
           </PopoverAnchor>
@@ -114,7 +114,7 @@ export function ListSearchBar({
           </PopoverContent>
         </Popover>
       ) : (
-        <div className="w-full max-w-sm">{searchInputContent}</div>
+        <div className="w-full md:max-w-sm">{searchInputContent}</div>
       )}
     </div>
   );

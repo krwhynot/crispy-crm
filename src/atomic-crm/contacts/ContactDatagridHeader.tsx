@@ -1,56 +1,14 @@
 /**
  * ContactDatagridHeader
  *
- * Provides filterable column header labels for the Contacts datagrid.
- * Uses FilterableColumnHeader components that integrate with React Admin's
- * filter state via useListContext.
- *
- * Column Configuration:
- * - Name: Text filter (debounced search on first_name)
- * - Status: Checkbox filter (multi-select from CONTACT_STATUS_CHOICES)
- * - Role, Organization, Avatar, Notes, Last Activity: No filter
- *
- * @example
- * ```tsx
- * <FunctionField
- *   label={<ContactNameHeader />}
- *   sortBy="first_name"
- *   render={(record) => formatFullName(record.first_name, record.last_name)}
- * />
- * ```
+ * Column labels for the Contacts datagrid.
+ * Filters are unified in the sidebar/sheet and chip bar.
  */
 
-import { FilterableColumnHeader } from "@/components/ra-wrappers/column-filters";
-import { CONTACT_STATUS_CHOICES } from "./constants";
-import { SEARCH_DEBOUNCE_MS } from "@/atomic-crm/constants";
-
-/**
- * Filterable header for Contact Name column
- * Uses text filter with debounced search on first_name field
- */
 export function ContactNameHeader() {
-  return (
-    <FilterableColumnHeader
-      source="first_name"
-      label="Name"
-      filterType="text"
-      placeholder="Search by name..."
-      debounceMs={SEARCH_DEBOUNCE_MS}
-    />
-  );
+  return "Name";
 }
 
-/**
- * Filterable header for Contact Status column
- * Uses checkbox filter with multi-select for engagement status
- */
 export function ContactStatusHeader() {
-  return (
-    <FilterableColumnHeader
-      source="status"
-      label="Status"
-      filterType="checkbox"
-      choices={[...CONTACT_STATUS_CHOICES]}
-    />
-  );
+  return "Status";
 }

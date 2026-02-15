@@ -2,9 +2,10 @@ import { useGetIdentity, useListContext } from "ra-core";
 import { List } from "@/components/ra-wrappers/list";
 import { UnifiedListPageLayout } from "@/components/layouts/UnifiedListPageLayout";
 import { PremiumDatagrid } from "@/components/ra-wrappers/PremiumDatagrid";
+import { RowHoverActions } from "@/components/ra-wrappers/RowHoverActions";
 import { Badge } from "@/components/ui/badge";
 import { SalesListSkeleton } from "@/components/ui/list-skeleton";
-import { useRecordContext, EmailField, TextField } from "react-admin";
+import { FunctionField, useRecordContext, EmailField, TextField } from "react-admin";
 import type { Sale } from "../types";
 import { useSlideOverState } from "@/hooks/useSlideOverState";
 import { useListKeyboardNavigation } from "@/hooks/useListKeyboardNavigation";
@@ -49,7 +50,7 @@ export default function SalesList() {
             filterConfig={SALES_FILTER_CONFIG}
             sortFields={["first_name", "last_name", "email"]}
             searchPlaceholder="Search team members..."
-            primaryAction={<CreateButton />}
+            primaryAction={<CreateButton variant="default" />}
             emptyState={<SalesEmpty />}
             loadingSkeleton={<SalesListSkeleton />}
           >
@@ -118,19 +119,34 @@ const SalesDatagrid = ({
       bulkActionButtons={false}
     >
       {/* Column 1: First Name - Primary identifier (sortable) - always visible */}
-      <TextField source="first_name" label="First Name" {...COLUMN_VISIBILITY.alwaysVisible} />
+      <TextField source="first_name" label="First Name" {...COLUMN_VISIBILITY.always} />
 
       {/* Column 2: Last Name - Secondary identifier (sortable) - always visible */}
-      <TextField source="last_name" label="Last Name" {...COLUMN_VISIBILITY.alwaysVisible} />
+      <TextField source="last_name" label="Last Name" {...COLUMN_VISIBILITY.always} />
 
       {/* Column 3: Email - Contact info (sortable) - hidden on tablet/mobile */}
-      <EmailField source="email" label="Email" {...COLUMN_VISIBILITY.desktopOnly} />
+      <EmailField source="email" label="Email" {...COLUMN_VISIBILITY.ipadPlus} />
 
       {/* Column 4: Role - Permission level badge (non-sortable) - always visible */}
-      <RoleBadgeField label="Role" {...COLUMN_VISIBILITY.alwaysVisible} />
+      <RoleBadgeField label="Role" {...COLUMN_VISIBILITY.always} />
 
       {/* Column 5: Status - Account status (non-sortable) - hidden on tablet/mobile */}
-      <StatusField label="Status" {...COLUMN_VISIBILITY.desktopOnly} />
+      <StatusField label="Status" {...COLUMN_VISIBILITY.ipadPlus} />
+
+      <FunctionField
+        label="Actions"
+        sortable={false}
+        cellClassName="w-[128px] text-right"
+        render={(record: Sale) => (
+          <RowHoverActions
+            className="inline-flex items-center justify-end gap-1"
+            recordId={record.id}
+            resource="sales"
+            onView={(id) => openSlideOver(Number(id), "view")}
+            onEdit={(id) => openSlideOver(Number(id), "edit")}
+          />
+        )}
+      />
     </PremiumDatagrid>
   );
 };
@@ -230,3 +246,4 @@ const StatusField = ({
     </div>
   );
 };
+

@@ -8,6 +8,7 @@ import { CreateButton } from "@/components/ra-wrappers/create-button";
 import { UnifiedListPageLayout } from "@/components/layouts/UnifiedListPageLayout";
 import { BulkActionsToolbarChildren } from "@/components/ra-wrappers/bulk-actions-toolbar";
 import { PremiumDatagrid } from "@/components/ra-wrappers/PremiumDatagrid";
+import { RowHoverActions } from "@/components/ra-wrappers/RowHoverActions";
 import { TextField } from "@/components/ra-wrappers/text-field";
 import { DateField } from "@/components/ra-wrappers/date-field";
 import { ReferenceField } from "@/components/ra-wrappers/reference-field";
@@ -133,7 +134,7 @@ export default function ActivityList() {
             sortFields={["type", "subject", "activity_date", "created_at"]}
             searchPlaceholder="Search activities..."
             overflowActions={<ExportMenuItem />}
-            primaryAction={<CreateButton />}
+            primaryAction={<CreateButton variant="default" />}
             emptyState={<ActivityEmpty />}
             loadingSkeleton={<ActivityListSkeleton />}
             bulkActions={<BulkActionsToolbarChildren />}
@@ -180,7 +181,7 @@ const ActivityDatagrid = ({
         label="Type"
         sortBy="type"
         render={(record: ActivityRecord) => <ActivityTypeCell record={record} />}
-        {...COLUMN_VISIBILITY.alwaysVisible}
+        {...COLUMN_VISIBILITY.always}
       />
 
       {/* Column 2: Subject - Primary identifier (sortable) - always visible */}
@@ -188,7 +189,7 @@ const ActivityDatagrid = ({
         source="subject"
         label="Subject"
         className="max-w-[300px] truncate"
-        {...COLUMN_VISIBILITY.alwaysVisible}
+        {...COLUMN_VISIBILITY.always}
       />
 
       {/* Column 3: Activity Date - Time field (sortable) - always visible */}
@@ -197,7 +198,7 @@ const ActivityDatagrid = ({
         label="Date"
         showTime={false}
         sortable
-        {...COLUMN_VISIBILITY.alwaysVisible}
+        {...COLUMN_VISIBILITY.always}
       />
 
       {/* Column 4: Sample Status - Only for sample activities (non-sortable) - hidden on tablet/mobile */}
@@ -205,7 +206,7 @@ const ActivityDatagrid = ({
         label="Sample Status"
         sortable={false}
         render={(record: ActivityRecord) => <ActivitySampleStatusCell record={record} />}
-        {...COLUMN_VISIBILITY.desktopOnly}
+        {...COLUMN_VISIBILITY.ipadPlus}
       />
 
       {/* Column 5: Sentiment - Feedback indicator (non-sortable) - hidden on tablet/mobile */}
@@ -213,7 +214,7 @@ const ActivityDatagrid = ({
         label="Sentiment"
         sortable={false}
         render={(record: ActivityRecord) => <ActivitySentimentCell record={record} />}
-        {...COLUMN_VISIBILITY.desktopOnly}
+        {...COLUMN_VISIBILITY.ipadPlus}
       />
 
       {/* Column 6: Organization - Reference field (sortable) - always visible */}
@@ -223,7 +224,7 @@ const ActivityDatagrid = ({
         label="Organization"
         link={false}
         sortable
-        {...COLUMN_VISIBILITY.alwaysVisible}
+        {...COLUMN_VISIBILITY.always}
       >
         <TextField source="name" />
       </ReferenceField>
@@ -235,7 +236,7 @@ const ActivityDatagrid = ({
         label="Opportunity"
         link={false}
         sortable={false}
-        {...COLUMN_VISIBILITY.desktopOnly}
+        {...COLUMN_VISIBILITY.ipadPlus}
       >
         <TextField source="name" />
       </ReferenceField>
@@ -247,10 +248,25 @@ const ActivityDatagrid = ({
         label="Created By"
         link={false}
         sortable={false}
-        {...COLUMN_VISIBILITY.desktopOnly}
+        {...COLUMN_VISIBILITY.ipadPlus}
       >
         <SaleName />
       </ReferenceField>
+
+      <FunctionField
+        label="Actions"
+        sortable={false}
+        cellClassName="w-[128px] text-right"
+        render={(record: ActivityRecord) => (
+          <RowHoverActions
+            className="inline-flex items-center justify-end gap-1"
+            recordId={record.id}
+            resource="activities"
+            onView={(id) => openSlideOver(Number(id), "view")}
+            onEdit={(id) => openSlideOver(Number(id), "edit")}
+          />
+        )}
+      />
     </PremiumDatagrid>
   );
 };
@@ -327,3 +343,4 @@ const exporter: Exporter<ActivityRecord> = async (records, fetchRelatedRecords) 
     }
   );
 };
+

@@ -6,6 +6,7 @@ import { CreateButton } from "@/components/ra-wrappers/create-button";
 import { BulkActionsToolbarChildren } from "@/components/ra-wrappers/bulk-actions-toolbar";
 import { UnifiedListPageLayout } from "@/components/layouts/UnifiedListPageLayout";
 import { PremiumDatagrid } from "@/components/ra-wrappers/PremiumDatagrid";
+import { RowHoverActions } from "@/components/ra-wrappers/RowHoverActions";
 import { ProductListSkeleton } from "@/components/ui/list-skeleton";
 import { useSlideOverState } from "@/hooks/useSlideOverState";
 import { useListKeyboardNavigation } from "@/hooks/useListKeyboardNavigation";
@@ -61,7 +62,7 @@ export const ProductList = () => {
             sortFields={["name", "category", "status", "created_at"]}
             searchPlaceholder="Search products..."
             overflowActions={<ExportMenuItem />}
-            primaryAction={<CreateButton />}
+            primaryAction={<CreateButton variant="default" />}
             emptyState={<ProductEmpty />}
             loadingSkeleton={<ProductListSkeleton />}
             bulkActions={<BulkActionsToolbarChildren />}
@@ -107,7 +108,8 @@ const ProductDatagrid = ({
         source="name"
         label={<ProductNameHeader />}
         sortable
-        {...COLUMN_VISIBILITY.alwaysVisible}
+        className="text-[15px] font-semibold leading-tight"
+        {...COLUMN_VISIBILITY.always}
       />
 
       {/* Column 2: Category - Classification badge (sortable) - always visible */}
@@ -119,7 +121,7 @@ const ProductDatagrid = ({
             <CategoryBadge category={record.category} />
           </FilterableBadge>
         )}
-        {...COLUMN_VISIBILITY.alwaysVisible}
+        {...COLUMN_VISIBILITY.always}
       />
 
       {/* Column 3: Status - Lifecycle badge (sortable) - always visible */}
@@ -131,7 +133,7 @@ const ProductDatagrid = ({
             <StatusBadge status={record.status} />
           </FilterableBadge>
         )}
-        {...COLUMN_VISIBILITY.alwaysVisible}
+        {...COLUMN_VISIBILITY.always}
       />
 
       {/* Column 4: Principal - From summary view (sortable) - hidden on tablet/mobile */}
@@ -140,7 +142,7 @@ const ProductDatagrid = ({
         label="Principal"
         sortable
         sortBy="principal_name"
-        {...COLUMN_VISIBILITY.desktopOnly}
+        {...COLUMN_VISIBILITY.ipadPlus}
       />
 
       {/* Column 5: Certifications - Badges list (non-sortable) - hidden on tablet/mobile */}
@@ -148,7 +150,22 @@ const ProductDatagrid = ({
         label="Certifications"
         sortable={false}
         render={(record: Product) => <CertificationBadges certifications={record.certifications} />}
-        {...COLUMN_VISIBILITY.desktopOnly}
+        {...COLUMN_VISIBILITY.ipadPlus}
+      />
+
+      <FunctionField
+        label="Actions"
+        sortable={false}
+        cellClassName="w-[128px] text-right"
+        render={(record: Product) => (
+          <RowHoverActions
+            className="inline-flex items-center justify-end gap-1"
+            recordId={record.id}
+            resource="products"
+            onView={(id) => openSlideOver(Number(id), "view")}
+            onEdit={(id) => openSlideOver(Number(id), "edit")}
+          />
+        )}
       />
     </PremiumDatagrid>
   );
@@ -165,23 +182,23 @@ function CategoryBadge({ category }: { category: string }) {
  * StatusBadge - Display product status with semantic colors
  */
 function StatusBadge({ status }: { status: string }) {
-  let variant: "default" | "secondary" | "destructive" | "outline" = "default";
+  const variantByStatus: Record<
+    string,
+    | "default"
+    | "secondary"
+    | "destructive"
+    | "outline"
+    | "status-cold"
+    | "status-active"
+    | "status-discontinued"
+  > = {
+    cold: "status-cold",
+    active: "status-active",
+    discontinued: "status-discontinued",
+    coming_soon: "secondary",
+  };
 
-  switch (status) {
-    case "active":
-      variant = "default";
-      break;
-    case "discontinued":
-      variant = "destructive";
-      break;
-    case "coming_soon":
-      variant = "secondary";
-      break;
-    default:
-      variant = "outline";
-  }
-
-  return <Badge variant={variant}>{formatSnakeCase(status)}</Badge>;
+  return <Badge variant={variantByStatus[status] ?? "outline"}>{formatSnakeCase(status)}</Badge>;
 }
 
 /**
@@ -219,3 +236,4 @@ function formatSnakeCase(value: string): string {
 }
 
 export default ProductList;
+

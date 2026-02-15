@@ -4,14 +4,6 @@ import userEvent from "@testing-library/user-event";
 import { renderWithAdminContext } from "@/tests/utils/render-admin";
 import ReportsPage from "./ReportsPage";
 
-// Mock useBreakpoint to return "desktop" — JSDOM has no real viewport
-vi.mock("@/hooks/useBreakpoint", () => ({
-  useBreakpoint: () => "desktop" as const,
-  useIsDesktop: () => true,
-  useIsLaptopOrLarger: () => true,
-  useIsMobileOrTablet: () => false,
-}));
-
 // Mock ra-core hooks (used by GlobalFilterBar)
 vi.mock("ra-core", async () => {
   // eslint-disable-next-line @typescript-eslint/consistent-type-imports -- typeof import() required in vi.mock factory
@@ -29,10 +21,22 @@ const mockSalesReps = [
   { id: 2, first_name: "Jane", last_name: "Doe" },
 ];
 
+const createMatchMedia = (isDockedSidebar: boolean) => (query: string): MediaQueryList => ({
+  matches: isDockedSidebar && query.includes("min-width: 1024px"),
+  media: query,
+  onchange: null,
+  addListener: vi.fn(),
+  removeListener: vi.fn(),
+  addEventListener: vi.fn(),
+  removeEventListener: vi.fn(),
+  dispatchEvent: vi.fn(),
+});
+
 describe("ReportsPage", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     vi.mocked(useGetList).mockReturnValue({ data: mockSalesReps, isPending: false });
+    window.matchMedia = vi.fn().mockImplementation(createMatchMedia(true));
   });
 
   it("renders page title", () => {

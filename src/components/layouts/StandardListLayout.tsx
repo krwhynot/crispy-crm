@@ -1,12 +1,11 @@
 import type { ReactNode } from "react";
-import { FilterChipBar } from "@/atomic-crm/filters/FilterChipBar";
 import type { ChipFilterConfig } from "@/atomic-crm/filters/filterConfigSchema";
-import { AdaptiveFilterContainer } from "./AdaptiveFilterContainer";
-import { FilterSidebarProvider } from "./FilterSidebarContext";
-import { ListToolbar } from "./ListToolbar";
+import { ListPageLayout } from "./ListPageLayout";
 
 /**
  * StandardListLayout - Unified layout for all resource list views
+ *
+ * @deprecated Use `ListPageLayout` for new list pages.
  *
  * Provides a standardized two-column layout with an adaptive filter sidebar,
  * optional unified toolbar, and main content area.
@@ -74,51 +73,23 @@ export function StandardListLayout({
   showFilterSidebar = true,
   primaryAction,
 }: StandardListLayoutProps) {
-  const content = (
-    <div
-      className={`flex h-full min-h-0 flex-1 flex-col ${showFilterSidebar ? "xl:grid xl:grid-cols-[auto_1fr]" : ""} gap-4`}
+  return (
+    <ListPageLayout
+      resource={resource}
+      filterComponent={filterComponent}
+      filterConfig={filterConfig}
+      wrapMainInCard={wrapMainInCard}
+      storageKey={storageKey}
+      sortFields={sortFields}
+      searchPlaceholder={searchPlaceholder}
+      enableRecentSearches={enableRecentSearches}
+      viewSwitcher={viewSwitcher}
+      overflowActions={overflowActions}
+      showFilterToggle={showFilterToggle}
+      showFilterSidebar={showFilterSidebar}
+      primaryAction={primaryAction}
     >
-      {showFilterSidebar && (
-        <AdaptiveFilterContainer filterComponent={filterComponent} resource={resource} />
-      )}
-
-      <div className="flex flex-col min-h-0 min-w-0 flex-1 overflow-hidden">
-        {/* Active filter chips - always visible above content when filters applied */}
-        {filterConfig && filterConfig.length > 0 && (
-          <div className="shrink-0">
-            <FilterChipBar filterConfig={filterConfig} />
-          </div>
-        )}
-
-        {/* Unified toolbar row - rendered when sortFields are provided */}
-        {sortFields && (
-          <ListToolbar
-            sortFields={sortFields}
-            searchPlaceholder={searchPlaceholder}
-            enableRecentSearches={enableRecentSearches}
-            viewSwitcher={viewSwitcher}
-            overflowActions={overflowActions}
-            showFilterToggle={showFilterToggle}
-            resource={resource}
-            primaryAction={primaryAction}
-          />
-        )}
-
-        <main
-          aria-label={`${resource} list`}
-          className="flex h-full min-h-0 min-w-0 lg:min-w-[600px] flex-col overflow-hidden flex-1"
-        >
-          {wrapMainInCard ? (
-            <div className="card-container flex h-full min-h-0 flex-1 flex-col overflow-hidden pb-2">
-              {children}
-            </div>
-          ) : (
-            <div className="flex h-full min-h-0 flex-1 flex-col overflow-hidden">{children}</div>
-          )}
-        </main>
-      </div>
-    </div>
+      {children}
+    </ListPageLayout>
   );
-
-  return <FilterSidebarProvider storageKey={storageKey}>{content}</FilterSidebarProvider>;
 }

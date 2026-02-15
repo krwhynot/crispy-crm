@@ -15,8 +15,9 @@ import {
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { ListSearchBar } from "@/components/ra-wrappers/ListSearchBar";
 import { SortButton } from "@/components/ra-wrappers/sort-button";
-import { useBreakpoint } from "@/hooks/useBreakpoint";
 import { useFilterSidebarContext } from "./FilterSidebarContext";
+import { useListDensityContext } from "./ListDensityContext";
+import { useListHasDockedFilters } from "./useListViewport";
 
 export interface ListToolbarProps {
   /** Sortable field names passed to SortButton */
@@ -31,21 +32,21 @@ export interface ListToolbarProps {
   overflowActions?: ReactNode;
   /** Show filter toggle button (default: true) */
   showFilterToggle?: boolean;
+  /** Show compact/comfortable density switch (default: true) */
+  showDensityToggle?: boolean;
   /** Resource name for ARIA labels */
   resource?: string;
-  /** Primary action slot (e.g., CreateButton) - renders between view switcher and overflow menu */
+  /** Primary action slot (e.g., CreateButton) */
   primaryAction?: ReactNode;
 }
 
 /**
  * ListToolbar - Unified toolbar row for list pages.
  *
- * Layout: [ Search ] [ Filters (n) ] [ Sort ] [ View Toggle ] [ ... ]
- *
- * Responsive:
- * - Desktop (≥1280px): All elements visible
- * - Tablet landscape (1024-1279px): SortButton renders in icon-only mode
- * - Mobile (<768px): SortButton hidden, sort options move to kebab menu
+ * Responsive behavior:
+ * - <768: search full row, sort inside overflow menu
+ * - 768-1023: compact controls, icon-only sort button
+ * - >=1024: full controls with labeled sort button
  */
 export function ListToolbar({
   sortFields,
@@ -54,6 +55,7 @@ export function ListToolbar({
   viewSwitcher,
   overflowActions,
   showFilterToggle = true,
+  showDensityToggle = true,
   resource,
   primaryAction,
 }: ListToolbarProps) {
@@ -64,79 +66,83 @@ export function ListToolbar({
     return () => setHasToolbar(false);
   }, [setHasToolbar]);
 
+  const showOverflowOnDesktop = Boolean(overflowActions);
+
   return (
     <div
       role="toolbar"
       aria-label={resource ? `${resource} list toolbar` : "List toolbar"}
-      className="flex flex-wrap items-center gap-2 gap-y-2 mb-3 shrink-0"
+      className="list-toolbar"
     >
-      {/* 1. Search - fills remaining space, full row on wrap */}
-      <div className="flex-1 min-w-0 basis-full xl:basis-auto order-1">
-        <ListSearchBar
-          placeholder={searchPlaceholder}
-          enableRecentSearches={enableRecentSearches}
-        />
+      <div className="order-1 basis-full min-w-0 lg:order-1 lg:basis-auto lg:flex-1 lg:min-w-[340px] lg:max-w-xl">
+        <div className="flex items-center gap-2">
+          <ListSearchBar
+            placeholder={searchPlaceholder}
+            enableRecentSearches={enableRecentSearches}
+          />
+          {showFilterToggle && <FilterToggleButton />}
+        </div>
       </div>
 
-      {/* 2. Filter toggle with badge */}
-      {showFilterToggle && (
-        <div className="order-2">
-          <FilterToggleButton />
-        </div>
-      )}
-
-      {/* 3. Sort dropdown - hidden below md, moves to kebab */}
-      <div className="hidden md:block order-3">
+      <div className="order-2 hidden shrink-0 lg:flex lg:flex-1 lg:justify-center">
         <SortButton fields={sortFields} />
       </div>
 
-      {/* 4. View switcher slot */}
-      {viewSwitcher && <div className="order-4">{viewSwitcher}</div>}
+      <div className="order-2 flex shrink-0 gap-2 lg:hidden">
+        <SortButton
+          fields={sortFields}
+          iconOnly
+          className="h-[var(--list-toolbar-control-height-mobile)] w-[var(--list-toolbar-control-height-mobile)]"
+        />
+      </div>
 
-      {/* 5. Primary action slot (e.g., Create button) */}
-      {primaryAction && <div className="order-5">{primaryAction}</div>}
-
-      {/* 6. Kebab overflow menu */}
-      <div className="order-6">
-        <OverflowMenu sortFields={sortFields} overflowActions={overflowActions} />
+      <div className="order-3 ml-auto flex shrink-0 items-center gap-2 lg:order-3">
+        {showDensityToggle && (
+          <div className="hidden md:block">
+            <DensityToggle />
+          </div>
+        )}
+        {viewSwitcher && <div className="shrink-0">{viewSwitcher}</div>}
+        {primaryAction && <div className="shrink-0">{primaryAction}</div>}
+        <div className={showOverflowOnDesktop ? "shrink-0" : "shrink-0 md:hidden"}>
+          <OverflowMenu sortFields={sortFields} overflowActions={overflowActions} />
+        </div>
       </div>
     </div>
   );
 }
 
-// ---------------------------------------------------------------------------
-// FilterToggleButton - Toggles sidebar (desktop) or opens sheet (mobile)
-// ---------------------------------------------------------------------------
-
 function FilterToggleButton() {
   const { isCollapsed, toggleSidebar, isSheetOpen, setSheetOpen, activeFilterCount } =
     useFilterSidebarContext();
-  const breakpoint = useBreakpoint();
-  const isMobileSheet = breakpoint !== "desktop" && breakpoint !== "laptop";
+  const hasDockedFilters = useListHasDockedFilters();
 
   const handleClick = () => {
-    if (isMobileSheet) {
-      setSheetOpen(true);
-    } else {
+    if (hasDockedFilters) {
       toggleSidebar();
+      return;
     }
+    setSheetOpen(true);
   };
 
-  const isExpanded = isMobileSheet ? isSheetOpen : !isCollapsed;
+  const isExpanded = hasDockedFilters ? !isCollapsed : isSheetOpen;
 
   return (
     <Tooltip>
       <TooltipTrigger asChild>
         <Button
           variant="outline"
-          size="icon"
+          size="sm"
           onClick={handleClick}
-          className="h-11 w-11 relative"
+          className="relative h-[var(--list-toolbar-control-height-mobile)] px-3 lg:h-[var(--list-toolbar-control-height-desktop)] lg:px-2"
           aria-label={`Filters${activeFilterCount > 0 ? ` (${activeFilterCount} active)` : ""}`}
           aria-expanded={isExpanded}
           aria-controls="filter-sidebar"
         >
           <SlidersHorizontal className="size-5" />
+          <span className="hidden whitespace-nowrap text-xs text-foreground lg:inline">
+            Filters{activeFilterCount > 0 ? ` (${activeFilterCount})` : ""}
+          </span>
           {activeFilterCount > 0 && (
             <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-[10px] font-medium text-primary-foreground">
               {activeFilterCount}
@@ -151,9 +157,34 @@ function FilterToggleButton() {
   );
 }
 
-// ---------------------------------------------------------------------------
-// OverflowMenu - Kebab menu with sort (mobile) + custom overflow actions
-// ---------------------------------------------------------------------------
+function DensityToggle() {
+  const { density, setDensity } = useListDensityContext();
+
+  return (
+    <div className="inline-flex rounded-md border border-border bg-background p-0.5">
+      <Button
+        type="button"
+        variant={density === "comfortable" ? "secondary" : "ghost"}
+        size="sm"
+        className="h-8 px-2 text-xs"
+        onClick={() => setDensity("comfortable")}
+        aria-pressed={density === "comfortable"}
+      >
+        Comfortable
+      </Button>
+      <Button
+        type="button"
+        variant={density === "compact" ? "secondary" : "ghost"}
+        size="sm"
+        className="h-8 px-2 text-xs"
+        onClick={() => setDensity("compact")}
+        aria-pressed={density === "compact"}
+      >
+        Compact
+      </Button>
+    </div>
+  );
+}
 
 function OverflowMenu({
   sortFields,
@@ -165,12 +196,16 @@ function OverflowMenu({
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="icon" className="h-11 w-11" aria-label="More actions">
+        <Button
+          variant="outline"
+          size="icon"
+          className="h-[var(--list-toolbar-control-height-mobile)] w-[var(--list-toolbar-control-height-mobile)] lg:h-[var(--list-toolbar-control-height-desktop)] lg:w-[var(--list-toolbar-control-height-desktop)]"
+          aria-label="More actions"
+        >
           <EllipsisVertical className="size-5" />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        {/* Sort submenu - only visible on mobile when SortButton is hidden */}
         <div className="md:hidden">
           <SortMenuSub fields={sortFields} />
           {overflowActions && <DropdownMenuSeparator />}
@@ -181,14 +216,21 @@ function OverflowMenu({
   );
 }
 
-// ---------------------------------------------------------------------------
-// SortMenuSub - Sort options as a submenu inside the kebab menu
-// ---------------------------------------------------------------------------
+function useSafeListSortContext() {
+  try {
+    return useListSortContext();
+  } catch {
+    return null;
+  }
+}
 
 function SortMenuSub({ fields }: { fields: string[] }) {
-  const { resource, sort, setSort } = useListSortContext();
+  const sortContext = useSafeListSortContext();
   const translate = useTranslate();
   const translateLabel = useTranslateLabel();
+
+  if (!sortContext) return null;
+  const { resource, sort, setSort } = sortContext;
 
   const handleChangeSort = (field: string) => {
     setSort({

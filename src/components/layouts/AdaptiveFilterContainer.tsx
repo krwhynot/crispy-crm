@@ -1,12 +1,12 @@
-import { type ReactNode } from "react";
-import { useListContext } from "ra-core";
+import { useContext, type ReactNode } from "react";
+import { ListContext } from "ra-core";
 import { PanelLeftClose, SlidersHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetFooter } from "@/components/ui/sheet";
-import { useBreakpoint } from "@/hooks/useBreakpoint";
 import { FilterLayoutModeProvider } from "@/atomic-crm/filters/FilterLayoutModeContext";
 import { useFilterSidebarContext } from "./FilterSidebarContext";
+import { useListHasDockedFilters } from "./useListViewport";
 
 interface AdaptiveFilterContainerProps {
   /** Filter sidebar content (e.g., ContactListFilter) */
@@ -17,20 +17,20 @@ interface AdaptiveFilterContainerProps {
 
 /**
  * AdaptiveFilterContainer - Renders filter content in the appropriate container
- * based on current viewport breakpoint.
+ * based on the iPad-first list breakpoint contract.
  *
  * Requires a FilterSidebarProvider ancestor for collapse/sheet state management.
  *
- * - Tier 1 (>=1280px, desktop/laptop): Expanded sidebar with collapse toggle
- * - Tier 2 (<1280px): Sheet modal (trigger hidden when ListToolbar owns it)
+ * - Docked mode (>=1024px / lg): Expanded sidebar with collapse toggle
+ * - Sheet mode (<1024px): Sheet modal (trigger hidden when ListToolbar owns it)
  */
 export function AdaptiveFilterContainer({
   filterComponent,
   resource,
 }: AdaptiveFilterContainerProps) {
-  const breakpoint = useBreakpoint();
+  const hasDockedFilters = useListHasDockedFilters();
 
-  if (breakpoint === "desktop" || breakpoint === "laptop") {
+  if (hasDockedFilters) {
     return (
       <FilterLayoutModeProvider value="full">
         <ExpandedSidebar filterComponent={filterComponent} resource={resource} />
@@ -38,7 +38,6 @@ export function AdaptiveFilterContainer({
     );
   }
 
-  // Tablet-landscape / tablet-portrait / mobile
   return (
     <FilterLayoutModeProvider value="sheet">
       <FilterSheetTrigger filterComponent={filterComponent} resource={resource} />
@@ -47,7 +46,7 @@ export function AdaptiveFilterContainer({
 }
 
 // ---------------------------------------------------------------------------
-// Tier 1: Expanded Sidebar (≥1280px)
+// Docked Sidebar (>=1024px)
 // ---------------------------------------------------------------------------
 
 function ExpandedSidebar({
@@ -57,52 +56,80 @@ function ExpandedSidebar({
   filterComponent: ReactNode;
   resource: string;
 }) {
-  const { isCollapsed, toggleSidebar } = useFilterSidebarContext();
+  const { isCollapsed, toggleSidebar, activeFilterCount } = useFilterSidebarContext();
+  const listContext = useContext(ListContext);
+
+  const handleClearAll = () => {
+    if (!listContext) {
+      return;
+    }
+    listContext.setFilters({}, listContext.displayedFilters);
+  };
 
   return (
-    <div
-      className={`hidden xl:block xl:sticky xl:top-0 xl:self-start ${isCollapsed ? "w-0" : "h-fit"}`}
-    >
-      {/* Filter sidebar with collapse animation */}
+    <div className={`sticky top-0 self-start ${isCollapsed ? "w-auto" : "h-fit"}`}>
+      {isCollapsed && (
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={toggleSidebar}
+          className="h-11 gap-2 border-dashed px-3"
+          aria-label="Show filters panel"
+        >
+          <SlidersHorizontal className="size-4" />
+          Show filters
+        </Button>
+      )}
       <aside
         id="filter-sidebar"
         aria-label={`Filter ${resource}`}
         className={`
           filter-sidebar transition-all duration-200 ease-out overflow-y-auto
-          ${isCollapsed ? "w-0 opacity-0 invisible overflow-hidden" : "w-72 opacity-100 max-h-[80dvh]"}
+          ${isCollapsed ? "w-0 opacity-0 invisible overflow-hidden" : "w-[var(--list-sidebar-width)] opacity-100 max-h-[80dvh]"}
         `}
         aria-hidden={isCollapsed}
       >
-        <div className="card-container p-2">
-          {/* Desktop collapse toggle inside sidebar */}
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-sm font-medium text-muted-foreground">Filters</span>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={toggleSidebar}
-                  className="h-11 w-11"
-                  aria-label="Hide filters"
-                >
-                  <PanelLeftClose className="size-5" />
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent side="right">Hide filters</TooltipContent>
-            </Tooltip>
+        <div className="card-container list-filter-card">
+          <div className="mb-content border-b border-border pb-2">
+            <div className="mb-2 flex items-center justify-between">
+              <span className="text-sm font-medium text-muted-foreground">
+                Filters{activeFilterCount > 0 ? ` (${activeFilterCount})` : ""}
+              </span>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={toggleSidebar}
+                    className="h-9 gap-1.5 px-2.5"
+                    aria-label="Hide filters"
+                  >
+                    <PanelLeftClose className="size-4" />
+                    Hide
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent side="right">Hide filters</TooltipContent>
+              </Tooltip>
+            </div>
+            <Button
+              variant="outline"
+              size="sm"
+              className="h-9 w-full"
+              onClick={handleClearAll}
+              disabled={activeFilterCount === 0}
+            >
+              Clear all
+            </Button>
           </div>
           {filterComponent}
         </div>
       </aside>
-
-      {/* When collapsed, toolbar FilterToggleButton handles re-expand — no floating button needed */}
     </div>
   );
 }
 
 // ---------------------------------------------------------------------------
-// Tier 2: Filter Sheet (<1280px)
+// Filter Sheet (<1024px)
 // ---------------------------------------------------------------------------
 
 function FilterSheetTrigger({
@@ -116,9 +143,8 @@ function FilterSheetTrigger({
 
   return (
     <>
-      {/* Standalone trigger - only when no ListToolbar provides its own */}
       {!hasToolbar && (
-        <div className="shrink-0 mb-2">
+        <div className="shrink-0 mb-widget">
           <Tooltip>
             <TooltipTrigger asChild>
               <Button
@@ -137,13 +163,12 @@ function FilterSheetTrigger({
         </div>
       )}
 
-      {/* Sheet always renders -- controlled by setSheetOpen from either toolbar or standalone button */}
       <Sheet open={isSheetOpen} onOpenChange={setSheetOpen}>
         <SheetContent side="left" aria-label={`Filter ${resource}`}>
           <SheetHeader>
             <SheetTitle>Filters</SheetTitle>
           </SheetHeader>
-          <div className="flex-1 overflow-y-auto px-4 py-2">{filterComponent}</div>
+          <div className="flex-1 overflow-y-auto p-content">{filterComponent}</div>
           <FilterSheetFooter onClose={() => setSheetOpen(false)} />
         </SheetContent>
       </Sheet>
@@ -153,20 +178,26 @@ function FilterSheetTrigger({
 
 /**
  * Sheet footer with "Clear all" and "Done" buttons.
- * Must be rendered inside a ListContext (child of <List>).
+ * Supports both list-context pages and non-list shell usage (e.g., Reports).
  */
 function FilterSheetFooter({ onClose }: { onClose: () => void }) {
-  const { setFilters, displayedFilters } = useListContext();
+  const listContext = useContext(ListContext);
 
   const handleClear = () => {
-    setFilters({}, displayedFilters);
+    if (!listContext) {
+      return;
+    }
+
+    listContext.setFilters({}, listContext.displayedFilters);
   };
 
   return (
-    <SheetFooter className="border-t bg-background p-4 flex flex-row gap-3 shrink-0">
-      <Button variant="outline" onClick={handleClear} className="flex-1 h-11">
-        Clear all
-      </Button>
+    <SheetFooter className="border-t bg-background p-content flex flex-row gap-content shrink-0">
+      {listContext && (
+        <Button variant="outline" onClick={handleClear} className="flex-1 h-11">
+          Clear all
+        </Button>
+      )}
       <Button onClick={onClose} className="flex-1 h-11">
         Done
       </Button>

@@ -6,10 +6,12 @@ import { useFormOptions } from "../../root/ConfigurationContext";
  */
 function getStatusBackgroundClass(status: string): string {
   const statusMap: Record<string, string> = {
-    cold: "bg-info-default",
-    warm: "bg-warning-default",
-    hot: "bg-error-default",
-    "in-contract": "bg-success-default",
+    cold: "bg-[var(--status-cold-fg)]",
+    active: "bg-[var(--status-active-fg)]",
+    discontinued: "bg-[var(--status-discontinued-fg)]",
+    warm: "bg-warning",
+    hot: "bg-destructive",
+    "in-contract": "bg-success",
   };
   return statusMap[status] || "bg-muted";
 }

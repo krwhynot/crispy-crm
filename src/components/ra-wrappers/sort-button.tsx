@@ -2,7 +2,6 @@ import * as React from "react";
 import { memo } from "react";
 import { ArrowUpDown, ChevronDown } from "lucide-react";
 import { shallowEqual, useListSortContext, useTranslate, useTranslateLabel } from "ra-core";
-import { useIsMobile } from "@/hooks/use-mobile";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -14,6 +13,14 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 
 type ButtonProps = React.ComponentProps<typeof Button>;
 
+function useSafeListSortContext() {
+  try {
+    return useListSortContext();
+  } catch {
+    return null;
+  }
+}
+
 const SortButtonComponent = (props: SortButtonProps) => {
   const {
     fields,
@@ -21,14 +28,17 @@ const SortButtonComponent = (props: SortButtonProps) => {
     icon = defaultIcon,
     resource: resourceProp,
     dataTutorial,
+    iconOnly = false,
     ...rest
   } = props;
-  const { resource: resourceFromContext, sort, setSort } = useListSortContext();
-  const resource = resourceProp || resourceFromContext;
+  const sortContext = useSafeListSortContext();
   const translate = useTranslate();
   const translateLabel = useTranslateLabel();
-  const isMobile = useIsMobile();
   const [open, setOpen] = React.useState(false);
+
+  if (!sortContext) return null;
+  const { resource: resourceFromContext, sort, setSort } = sortContext;
+  const resource = resourceProp || resourceFromContext;
 
   const handleChangeSort = (field: string) => {
     setSort({
@@ -54,7 +64,7 @@ const SortButtonComponent = (props: SortButtonProps) => {
 
   return (
     <DropdownMenu open={open} onOpenChange={setOpen}>
-      {isMobile ? (
+      {iconOnly ? (
         <TooltipProvider>
           <Tooltip>
             <DropdownMenuTrigger asChild>
@@ -104,7 +114,9 @@ const defaultIcon = <ArrowUpDown className="h-4 w-4" />;
 const inverseOrder = (sort: string) => (sort === "ASC" ? "DESC" : "ASC");
 
 const arePropsEqual = (prevProps: SortButtonProps, nextProps: SortButtonProps) =>
-  shallowEqual(prevProps.fields, nextProps.fields);
+  shallowEqual(prevProps.fields, nextProps.fields) &&
+  prevProps.iconOnly === nextProps.iconOnly &&
+  prevProps.resource === nextProps.resource;
 
 export interface SortButtonProps extends ButtonProps {
   fields: string[];
@@ -112,6 +124,7 @@ export interface SortButtonProps extends ButtonProps {
   label?: string;
   resource?: string;
   dataTutorial?: string;
+  iconOnly?: boolean;
 }
 
 export const SortButton = memo(SortButtonComponent, arePropsEqual);

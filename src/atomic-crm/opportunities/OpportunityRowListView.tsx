@@ -6,7 +6,7 @@ import { TextField } from "@/components/ra-wrappers/text-field";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import { EditButton } from "@/components/ra-wrappers/edit-button";
+import { RowHoverActions } from "@/components/ra-wrappers/RowHoverActions";
 import { formatDistance, format } from "date-fns";
 import { Building2, X } from "lucide-react";
 import { useUserRole } from "@/hooks/useUserRole";
@@ -217,7 +217,7 @@ export const OpportunityRowListView = ({
                     </div>
                   </div>
 
-                  {/* Right cluster: Stage, Priority, Close Date, Owner, Edit */}
+                  {/* Right cluster: Stage, Priority, Close Date, Owner, Actions */}
                   <div className="flex flex-wrap items-center gap-2 sm:gap-3 shrink-0 w-full sm:w-auto justify-start sm:justify-end">
                     {/* Stage Badge */}
                     <Badge
@@ -286,11 +286,15 @@ export const OpportunityRowListView = ({
                       </div>
                     )}
 
-                    {/* Edit Button - positioned above stretched link overlay (hidden for non-owners) */}
+                    {/* Hover actions - positioned above stretched link overlay (hidden for non-owners) */}
                     {canEdit && (
-                      <div className="relative z-10">
-                        <EditButton resource="opportunities" />
-                      </div>
+                      <RowHoverActions
+                        className="relative z-10 inline-flex items-center gap-1"
+                        recordId={opportunity.id}
+                        resource="opportunities"
+                        onView={(id) => openSlideOver(Number(id), "view")}
+                        onEdit={(id) => openSlideOver(Number(id), "edit")}
+                      />
                     )}
                   </div>
                 </div>

@@ -38,10 +38,10 @@ const NotificationsList = () => {
         wrapMainInCard={false}
         emptyState={<NotificationsEmpty />}
       >
-        <div className="flex flex-row gap-6 w-full min-w-0">
+        <div className="flex flex-row gap-section w-full min-w-0">
           <NotificationsListFilter />
           <div className="flex-1 flex flex-col min-h-0">
-            <Card className="bg-card border border-border shadow-sm rounded-xl p-2 flex-1 overflow-y-auto min-h-0">
+            <Card className="card-list-surface p-content flex-1 overflow-y-auto min-h-0">
               <NotificationsListContent />
             </Card>
           </div>
@@ -54,7 +54,7 @@ const NotificationsList = () => {
 const NotificationsListFilter = () => {
   return (
     <div className="w-52 min-w-52 order-first">
-      <Card className="bg-card border border-border shadow-sm rounded-xl p-4">
+      <Card className="card-list-surface p-content">
         <div className="flex flex-col gap-4">
           {/* Search */}
           <FilterLiveForm>
@@ -133,7 +133,7 @@ const NotificationRow = memo(function NotificationRow({
   return (
     <div
       className={cn(
-        "flex items-start gap-4 p-4 hover:bg-muted/30 transition-colors",
+        "flex items-start gap-content p-content hover:bg-muted/30 transition-colors",
         !notification.read && "bg-muted/20"
       )}
     >

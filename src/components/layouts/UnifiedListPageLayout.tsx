@@ -1,20 +1,6 @@
-import { useMemo, type ReactNode } from "react";
-import { useListContext } from "ra-core";
-import { StandardListLayout } from "./StandardListLayout";
+import type { ReactNode } from "react";
 import type { ChipFilterConfig } from "@/atomic-crm/filters/filterConfigSchema";
-import { useFilterCleanup } from "@/atomic-crm/hooks/useFilterCleanup";
-import { ListNoResults } from "@/components/ra-wrappers/ListNoResults";
-import { ListSkeleton } from "@/components/ui/list-skeleton";
-import { BulkActionsToolbar } from "@/components/ra-wrappers/bulk-actions-toolbar";
-
-/**
- * System filter keys excluded from empty-state detection.
- *
- * NOTE: 'q' (search) is NOT excluded -- a search with no results should show
- * filteredEmptyState, not emptyState. This is intentionally different from
- * FilterSidebarContext.SYSTEM_FILTER_KEYS which includes 'q'.
- */
-const EMPTY_STATE_SYSTEM_KEYS = new Set(["deleted_at", "deleted_at@is", "$or"]);
+import { ListPageLayout } from "./ListPageLayout";
 
 interface UnifiedListPageLayoutProps {
   // -- StandardListLayout pass-through --
@@ -52,6 +38,8 @@ interface UnifiedListPageLayoutProps {
 
 /**
  * UnifiedListPageLayout - Standardized list page wrapper
+ *
+ * @deprecated Use `ListPageLayout` for new list pages.
  *
  * Wraps StandardListLayout with centralized empty-state branching,
  * loading states, filter cleanup, and bulk actions. Eliminates
@@ -95,58 +83,27 @@ export function UnifiedListPageLayout({
   children,
   bulkActions,
 }: UnifiedListPageLayoutProps) {
-  // Absorbs useFilterCleanup from individual features
-  useFilterCleanup(resource);
-
-  const { data, isPending, filterValues } = useListContext();
-
-  // Auto-derive: when no filter sidebar, disable filter toggle button too
-  const effectiveShowFilterToggle = showFilterSidebar === false ? false : showFilterToggle;
-
-  // Determine if user has active filters (for empty-state branching)
-  const hasUserFilters = useMemo(() => {
-    if (!filterValues) return false;
-    return Object.keys(filterValues).some((key) => !EMPTY_STATE_SYSTEM_KEYS.has(key));
-  }, [filterValues]);
-
-  // State branching: loading > empty-no-filters > empty-with-filters > data
-  const renderContent = () => {
-    if (isPending) {
-      return loadingSkeleton ?? <ListSkeleton />;
-    }
-
-    if (!data?.length) {
-      if (hasUserFilters) {
-        return filteredEmptyState ?? <ListNoResults />;
-      }
-      if (emptyState) {
-        return emptyState;
-      }
-    }
-
-    return children;
-  };
-
   return (
-    <>
-      <StandardListLayout
-        resource={resource}
-        filterComponent={filterComponent ?? <></>}
-        filterConfig={filterConfig}
-        searchPlaceholder={searchPlaceholder}
-        enableRecentSearches={enableRecentSearches}
-        sortFields={sortFields}
-        viewSwitcher={viewSwitcher}
-        overflowActions={overflowActions}
-        showFilterToggle={effectiveShowFilterToggle}
-        showFilterSidebar={showFilterSidebar}
-        storageKey={storageKey}
-        wrapMainInCard={wrapMainInCard}
-        primaryAction={primaryAction}
-      >
-        {renderContent()}
-      </StandardListLayout>
-      {bulkActions && <BulkActionsToolbar>{bulkActions}</BulkActionsToolbar>}
-    </>
+    <ListPageLayout
+      resource={resource}
+      filterComponent={filterComponent}
+      filterConfig={filterConfig}
+      searchPlaceholder={searchPlaceholder}
+      enableRecentSearches={enableRecentSearches}
+      sortFields={sortFields}
+      viewSwitcher={viewSwitcher}
+      overflowActions={overflowActions}
+      showFilterToggle={showFilterToggle}
+      showFilterSidebar={showFilterSidebar}
+      storageKey={storageKey}
+      wrapMainInCard={wrapMainInCard}
+      primaryAction={primaryAction}
+      emptyState={emptyState}
+      filteredEmptyState={filteredEmptyState}
+      loadingSkeleton={loadingSkeleton}
+      bulkActions={bulkActions}
+    >
+      {children}
+    </ListPageLayout>
   );
 }

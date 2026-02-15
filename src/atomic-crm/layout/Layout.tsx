@@ -39,7 +39,7 @@ export const Layout = ({ children }: { children: ReactNode }) => {
         </a>
         <Header />
         <main
-          className="max-w-[1600px] w-full mx-auto pt-4 px-4 pb-16 flex-1 min-h-0 flex flex-col overflow-hidden [&>*]:flex-1 [&>*]:min-h-0 [&>*]:flex [&>*]:flex-col [&>*]:overflow-hidden"
+          className="max-w-[1600px] w-full mx-auto pt-widget px-content pb-16 flex-1 min-h-0 flex flex-col overflow-y-auto overflow-x-hidden [&>*]:flex-1 [&>*]:min-h-0 [&>*]:flex [&>*]:flex-col"
           id="main-content"
           tabIndex={-1}
         >
@@ -50,7 +50,7 @@ export const Layout = ({ children }: { children: ReactNode }) => {
           </ErrorBoundary>
         </main>
         <footer className="fixed bottom-0 left-0 right-0 border-t bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 z-10">
-          <div className="max-w-[1600px] mx-auto px-4 py-3">
+          <div className="max-w-[1600px] mx-auto px-content py-content">
             <div className="flex items-center justify-between text-xs text-foreground">
               <p>© {new Date().getFullYear()} MFB Master Food Brokers. All rights reserved.</p>
             </div>

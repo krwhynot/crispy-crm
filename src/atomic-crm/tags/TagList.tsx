@@ -25,7 +25,7 @@ export const TagList = () => {
         showFilterSidebar={false}
         sortFields={["name", "color"]}
         searchPlaceholder="Search tags..."
-        primaryAction={<CreateButton />}
+        primaryAction={<CreateButton variant="default" />}
       >
         <PremiumDatagrid rowClick="edit" bulkActionButtons={false}>
           {/* Name column - primary identifier */}

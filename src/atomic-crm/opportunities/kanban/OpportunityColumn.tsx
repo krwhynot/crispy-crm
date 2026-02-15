@@ -128,16 +128,16 @@ export const OpportunityColumn = React.memo(function OpportunityColumn({
       className={`
   flex flex-col pb-4 bg-card border border-border rounded-xl shadow-col-inner
   ${shadowConfig.rest} ${shadowConfig.hover}
-  transition-[box-shadow,border-color,ring-color,background-color] duration-200 ease-in-out px-2
+  transition-[box-shadow,border-color,ring-color,background-color,transform] duration-200 ease-in-out px-2
   min-w-[260px] max-w-[300px]
   md:min-w-[280px] md:max-w-[320px]
   lg:min-w-[300px] lg:max-w-[340px]
   h-full max-h-full overflow-y-auto overflow-x-hidden shrink-0
-  ${isOver ? "ring-2 ring-primary/50 bg-accent/20" : ""}
+  ${isOver ? "ring-2 ring-primary/50 bg-accent/20 scale-[1.01]" : ""}
 `}
       data-testid="kanban-column"
     >
-      <div className="flex items-center justify-between mb-2 pb-2 border-b border-border px-2 py-1.5">
+      <div className="sticky top-0 z-10 mb-2 flex items-center justify-between border-b border-border bg-card px-2 py-2">
         <div className="flex items-center gap-2">
           {onToggleCollapse && (
             <button
@@ -179,15 +179,16 @@ export const OpportunityColumn = React.memo(function OpportunityColumn({
               </div>
             </TooltipContent>
           </Tooltip>
-          <span className="text-sm text-muted-foreground">({metrics.count})</span>
+          <span className="text-sm text-muted-foreground">{metrics.count}</span>
         </div>
 
         {!isCollapsed && metrics.count > 0 && (
           <div className="flex items-center gap-3 text-xs text-muted-foreground">
+            <span title="Stage total count">Count {metrics.count}</span>
             <span title="Average days in this stage">~{metrics.avgDaysInStage}d</span>
             {metrics.stuckCount > 0 && (
               <span className="text-warning" title="Opportunities needing attention">
-                ⚠ {metrics.stuckCount}
+                ! {metrics.stuckCount}
               </span>
             )}
           </div>
@@ -212,3 +213,4 @@ export const OpportunityColumn = React.memo(function OpportunityColumn({
     </div>
   );
 }, arePropsEqual);
+

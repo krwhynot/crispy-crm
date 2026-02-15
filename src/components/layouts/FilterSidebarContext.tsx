@@ -8,11 +8,9 @@ import {
   type ReactNode,
 } from "react";
 import { ListContext } from "ra-core";
+import { countActiveUserFilters } from "./listFilterSemantics";
 
 const DEFAULT_STORAGE_KEY = "crm-filter-sidebar-collapsed";
-
-/** System filter keys excluded from the active filter count */
-const SYSTEM_FILTER_KEYS = new Set(["deleted_at", "deleted_at@is", "$or", "q"]);
 
 interface FilterSidebarContextValue {
   /** Whether the desktop sidebar is collapsed */
@@ -23,9 +21,9 @@ interface FilterSidebarContextValue {
   isSheetOpen: boolean;
   /** Open or close the mobile filter sheet */
   setSheetOpen: (open: boolean) => void;
-  /** Number of active user-facing filters (excludes system keys and search) */
+  /** Number of active user-facing filters (excludes only internal system keys) */
   activeFilterCount: number;
-  /** Whether a ListToolbar is present (owns the filter trigger at <1280px) */
+  /** Whether a ListToolbar is present (owns the filter trigger at <1024px) */
   hasToolbar: boolean;
   /** Called by ListToolbar on mount to claim filter trigger ownership */
   setHasToolbar: (value: boolean) => void;
@@ -68,14 +66,11 @@ export function FilterSidebarProvider({
   // Mobile sheet open state
   const [isSheetOpen, setSheetOpen] = useState(false);
 
-  // Whether a ListToolbar is mounted (owns the filter trigger at <1280px)
+  // Whether a ListToolbar is mounted (owns the filter trigger at <1024px)
   const [hasToolbar, setHasToolbar] = useState(false);
 
   // Active filter count — excludes system keys
-  const activeFilterCount = useMemo(() => {
-    if (!filterValues) return 0;
-    return Object.keys(filterValues).filter((key) => !SYSTEM_FILTER_KEYS.has(key)).length;
-  }, [filterValues]);
+  const activeFilterCount = useMemo(() => countActiveUserFilters(filterValues), [filterValues]);
 
   const value = useMemo<FilterSidebarContextValue>(
     () => ({

@@ -122,7 +122,7 @@ export function FilterChipBar<TContext = unknown>({
       aria-orientation="horizontal"
       onKeyDown={handleKeyDown}
       className={cn(
-        "flex items-center gap-2 px-4 py-2 bg-muted/50 border-b overflow-x-auto",
+        "flex items-center gap-2 border-b border-border/70 bg-background px-4 py-2.5 overflow-x-auto",
         className
       )}
     >
@@ -148,7 +148,7 @@ export function FilterChipBar<TContext = unknown>({
           variant="ghost"
           size="sm"
           onClick={clearAllFilters}
-          className="ml-auto whitespace-nowrap text-muted-foreground hover:text-foreground"
+          className="ml-auto h-9 whitespace-nowrap text-muted-foreground hover:text-foreground"
           aria-label={`Clear all ${activeCount} filters`}
         >
           Clear all
