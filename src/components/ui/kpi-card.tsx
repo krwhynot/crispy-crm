@@ -9,14 +9,14 @@ import { Info } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
 const kpiCardVariants = cva(
-  "relative overflow-hidden transition-all hover:shadow-md cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+  "paper-card relative overflow-hidden transition-all duration-150 ease-out focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
   {
     variants: {
       variant: {
-        default: "bg-card",
-        success: "border-success/50 bg-success/5",
-        warning: "border-warning/50 bg-warning/5",
-        destructive: "border-destructive/50 bg-destructive/5",
+        default: "",
+        success: "bg-success/5",
+        warning: "bg-warning/5",
+        destructive: "bg-destructive/5",
       },
     },
     defaultVariants: {
@@ -92,6 +92,13 @@ export function KPICard({
     destructive: "bg-destructive/10 text-destructive",
   };
 
+  const variantStripeStyles = {
+    default: "bg-primary",
+    success: "bg-success",
+    warning: "bg-warning",
+    destructive: "bg-destructive",
+  };
+
   const variantValueStyles = {
     default: "text-foreground",
     success: "text-success",
@@ -99,8 +106,10 @@ export function KPICard({
     destructive: "text-destructive",
   };
 
-  const iconStyle = variantIconStyles[variant ?? "default"];
-  const valueStyle = variantValueStyles[variant ?? "default"];
+  const activeVariant = variant ?? "default";
+  const iconStyle = variantIconStyles[activeVariant];
+  const valueStyle = variantValueStyles[activeVariant];
+  const stripeStyle = variantStripeStyles[activeVariant];
 
   return (
     <Card
@@ -116,17 +125,24 @@ export function KPICard({
       aria-label={isClickable ? `${title}: ${value}. Click to view details.` : undefined}
       data-tutorial={dataTutorial}
     >
-      <CardContent className="px-3 py-2">
+      <span
+        className={cn("absolute inset-y-0 left-0 w-1 opacity-80", stripeStyle)}
+        aria-hidden="true"
+      />
+      <CardContent className="px-3 py-3 pl-4">
         <div className="flex items-center gap-2">
           {Icon && (
             <div
-              className={cn("flex h-7 w-7 items-center justify-center rounded shrink-0", iconStyle)}
+              className={cn(
+                "flex h-8 w-8 items-center justify-center rounded-md shrink-0 border border-border/50",
+                iconStyle
+              )}
             >
               <Icon className="h-3.5 w-3.5" aria-hidden="true" />
             </div>
           )}
           <div className="flex-1 min-w-0">
-            <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide inline-flex items-center gap-1">
+            <span className="paper-kpi-title inline-flex items-center gap-1">
               {title}
               {infoTooltip && (
                 <Tooltip>
@@ -142,8 +158,14 @@ export function KPICard({
                 </Tooltip>
               )}
             </span>
+            <div className="paper-kpi-divider my-1.5" aria-hidden="true" />
             <div className="flex items-baseline gap-1.5">
-              <span className={cn("text-lg font-bold truncate leading-tight", valueStyle)}>
+              <span
+                className={cn(
+                  "truncate text-xl font-semibold leading-tight [font-family:var(--font-serif)]",
+                  valueStyle
+                )}
+              >
                 {value}
               </span>
               {trend && (

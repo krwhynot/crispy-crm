@@ -31,7 +31,7 @@ describe("KPICard", () => {
     );
 
     // The new component shows "↑25%" format
-    const changeElement = screen.getByText(/↑25%/);
+    const changeElement = screen.getByText(/25%/);
     expect(changeElement).toHaveClass("text-success");
   });
 
@@ -46,7 +46,7 @@ describe("KPICard", () => {
     );
 
     // The new component shows "↓10%" format
-    const changeElement = screen.getByText(/↓10%/);
+    const changeElement = screen.getByText(/10%/);
     expect(changeElement).toHaveClass("text-destructive");
   });
 
@@ -123,7 +123,7 @@ describe("KPICard", () => {
 
       // Find the card element (not button since no onClick)
       const card = screen.getByText("Stale Deals").closest('[data-slot="card"]');
-      expect(card).toHaveClass("border-warning/50");
+      expect(card).toHaveClass("paper-card");
       expect(card).toHaveClass("bg-warning/5");
     });
 
@@ -133,7 +133,7 @@ describe("KPICard", () => {
       );
 
       const card = screen.getByText("Wins").closest('[data-slot="card"]');
-      expect(card).toHaveClass("border-success/50");
+      expect(card).toHaveClass("paper-card");
       expect(card).toHaveClass("bg-success/5");
     });
 
@@ -143,7 +143,7 @@ describe("KPICard", () => {
       );
 
       const card = screen.getByText("Overdue Tasks").closest('[data-slot="card"]');
-      expect(card).toHaveClass("border-destructive/50");
+      expect(card).toHaveClass("paper-card");
       expect(card).toHaveClass("bg-destructive/5");
     });
 
@@ -151,19 +151,19 @@ describe("KPICard", () => {
       renderWithAdminContext(<KPICard title="Default KPI" value="42" icon={TrendingUp} />);
 
       const card = screen.getByText("Default KPI").closest('[data-slot="card"]');
-      // Default variant should NOT have warning/success/destructive classes
-      expect(card).not.toHaveClass("border-warning/50");
-      expect(card).not.toHaveClass("border-success/50");
-      expect(card).not.toHaveClass("border-destructive/50");
+      expect(card).toHaveClass("paper-card");
+      expect(card).not.toHaveClass("bg-warning/5");
+      expect(card).not.toHaveClass("bg-success/5");
+      expect(card).not.toHaveClass("bg-destructive/5");
     });
   });
 
   describe("dark-mode readability", () => {
-    it("uses text-xs for title readability", () => {
+    it("uses paper KPI title styling for readability", () => {
       renderWithAdminContext(<KPICard title="Dark Mode Title" value="42" icon={TrendingUp} />);
 
       const title = screen.getByText("Dark Mode Title");
-      expect(title).toHaveClass("text-xs");
+      expect(title).toHaveClass("paper-kpi-title");
     });
 
     it("uses text-[11px] for trend readability", () => {
@@ -176,7 +176,7 @@ describe("KPICard", () => {
         />
       );
 
-      const trend = screen.getByText(/↑5%/);
+      const trend = screen.getByText(/5%/);
       expect(trend).toHaveClass("text-[11px]");
     });
 

@@ -28,17 +28,18 @@ export function ActivityTrendChart({ data, onPointClick }: ActivityTrendChartPro
           id: "activities",
           label: "Activities",
           data: data.map((d) => d.count),
-          borderColor: colors.chart2,
-          backgroundColor: withOklchAlpha(colors.chart2, 0.125),
+          borderColor: colors.chart4,
+          backgroundColor: withOklchAlpha(colors.chart4, 0.14),
+          borderWidth: 2.5,
           fill: true,
           tension: 0.3,
-          pointRadius: 6,
-          pointHoverRadius: 8,
+          pointRadius: 4,
+          pointHoverRadius: 6,
           pointHitRadius: 12,
         },
       ],
     };
-  }, [data, colors.chart2]);
+  }, [data, colors.chart4]);
 
   const ariaLabel = useMemo(() => {
     const total = data.reduce((sum, d) => sum + d.count, 0);

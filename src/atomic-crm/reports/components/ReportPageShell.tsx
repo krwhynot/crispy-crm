@@ -24,7 +24,7 @@ export function ReportPageShell({
   children,
 }: ReportPageShellProps) {
   return (
-    <div className="p-content md:p-widget space-y-section">
+    <div className="paper-dashboard-surface p-content md:p-widget space-y-section rounded-xl">
       <Breadcrumb>
         <BreadcrumbItem>
           <Link to="/">Home</Link>
@@ -41,8 +41,14 @@ export function ReportPageShell({
       </Breadcrumb>
 
       <div className="flex items-center justify-between gap-content">
-        <h1 className="text-2xl md:text-3xl font-bold">{title}</h1>
+        <h1 className="text-2xl md:text-3xl font-semibold tracking-tight [font-family:var(--font-serif)]">
+          {title}
+        </h1>
         {actions && <div className="flex items-center gap-compact">{actions}</div>}
+      </div>
+
+      <div className="paper-section-rule" aria-hidden="true">
+        Reports &amp; Analytics
       </div>
 
       {/* Gap #4: Sticky context header — sits outside overflow-hidden containers

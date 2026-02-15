@@ -21,16 +21,18 @@ const mockSalesReps = [
   { id: 2, first_name: "Jane", last_name: "Doe" },
 ];
 
-const createMatchMedia = (isDockedSidebar: boolean) => (query: string): MediaQueryList => ({
-  matches: isDockedSidebar && query.includes("min-width: 1024px"),
-  media: query,
-  onchange: null,
-  addListener: vi.fn(),
-  removeListener: vi.fn(),
-  addEventListener: vi.fn(),
-  removeEventListener: vi.fn(),
-  dispatchEvent: vi.fn(),
-});
+const createMatchMedia =
+  (isDockedSidebar: boolean) =>
+  (query: string): MediaQueryList => ({
+    matches: isDockedSidebar && query.includes("min-width: 1024px"),
+    media: query,
+    onchange: null,
+    addListener: vi.fn(),
+    removeListener: vi.fn(),
+    addEventListener: vi.fn(),
+    removeEventListener: vi.fn(),
+    dispatchEvent: vi.fn(),
+  });
 
 describe("ReportsPage", () => {
   beforeEach(() => {
@@ -42,7 +44,9 @@ describe("ReportsPage", () => {
   it("renders page title", () => {
     renderWithAdminContext(<ReportsPage />);
 
-    expect(screen.getByText("Reports & Analytics")).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { level: 1, name: "Reports & Analytics" })
+    ).toBeInTheDocument();
   });
 
   it("renders all tabs", () => {

@@ -129,30 +129,18 @@ export default function ReportsPage() {
         storageKey="crm-report-sidebar-collapsed"
         showFilterSidebar={activeTab !== "overview"}
       >
-        <Tabs value={activeTab} onValueChange={handleTabChange}>
-          <TabsList className="grid w-full grid-cols-2 lg:grid-cols-4 h-auto bg-transparent p-0 border-b border-border rounded-none">
-            <TabsTrigger
-              value="overview"
-              className="h-11 rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none"
-            >
+        <Tabs value={activeTab} onValueChange={handleTabChange} className="space-y-widget">
+          <TabsList className="paper-tabs-list grid grid-cols-2 lg:grid-cols-4">
+            <TabsTrigger value="overview" className="paper-tabs-trigger">
               Overview
             </TabsTrigger>
-            <TabsTrigger
-              value="opportunities"
-              className="h-11 rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none"
-            >
+            <TabsTrigger value="opportunities" className="paper-tabs-trigger">
               Opportunities
             </TabsTrigger>
-            <TabsTrigger
-              value="weekly"
-              className="h-11 rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none"
-            >
+            <TabsTrigger value="weekly" className="paper-tabs-trigger">
               Weekly Activity
             </TabsTrigger>
-            <TabsTrigger
-              value="campaign"
-              className="h-11 rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none"
-            >
+            <TabsTrigger value="campaign" className="paper-tabs-trigger">
               Campaign
             </TabsTrigger>
           </TabsList>

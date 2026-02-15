@@ -79,8 +79,8 @@ const ContactTagsCell = React.memo(function ContactTagsCell({ record }: { record
 
 function getLastSeenColor(date: Date): string {
   const days = differenceInDays(new Date(), date);
-  if (days < 7) return "text-green-600 dark:text-green-400";
-  if (days < 30) return "text-amber-600 dark:text-amber-400";
+  if (days < 14) return "text-foreground";
+  if (days < 45) return "text-muted-foreground";
   return "text-muted-foreground";
 }
 
@@ -93,12 +93,19 @@ const ContactLastSeenCell = React.memo(function ContactLastSeenCell({
     return <span className="text-muted-foreground">Never</span>;
   }
   const date = new Date(record.last_seen as string);
+  const days = differenceInDays(new Date(), date);
   const relative = formatDistanceToNow(date, { addSuffix: true });
   const absolute = date.toLocaleDateString();
   return (
-    <span className={getLastSeenColor(date)} title={absolute}>
-      {relative}
-    </span>
+    <div className="inline-flex items-center gap-2" title={absolute}>
+      {days < 14 ? (
+        <span
+          aria-hidden
+          className="inline-block size-1.5 rounded-full bg-[color:var(--paper-last-seen-dot)]"
+        />
+      ) : null}
+      <span className={getLastSeenColor(date)}>{relative}</span>
+    </div>
   );
 });
 

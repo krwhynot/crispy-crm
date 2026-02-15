@@ -16,7 +16,7 @@ export interface CreateButtonProps {
 export const CreateButton = ({
   label,
   resource: targetResource,
-  variant = "outline",
+  variant = "default",
 }: CreateButtonProps) => {
   const resource = useResourceContext();
   const createPath = useCreatePath();

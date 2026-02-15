@@ -65,5 +65,16 @@ describe("ReportPageShell", () => {
     const shell = container.firstChild;
     expect(shell).toHaveClass("p-content");
     expect(shell).toHaveClass("md:p-widget");
+    expect(shell).toHaveClass("paper-dashboard-surface");
+  });
+
+  it("renders printed section divider", () => {
+    renderWithAdminContext(
+      <ReportPageShell title="Campaign Activity" breadcrumbs={[]}>
+        <div>Content</div>
+      </ReportPageShell>
+    );
+
+    expect(screen.getByText("Reports & Analytics")).toBeInTheDocument();
   });
 });

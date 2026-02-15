@@ -37,7 +37,7 @@ export function PrincipalDashboardV3() {
   // - Using dvh for Safari dynamic viewport (handles address bar)
   // - Total chrome: ~136px, using 140px for safety margin
   return (
-    <div className="flex h-[calc(100dvh-140px)] flex-col overflow-hidden">
+    <div className="paper-dashboard-surface flex h-[calc(100dvh-140px)] flex-col overflow-hidden rounded-xl p-3">
       {/* Main Content - fills calculated height, no internal header (Layout provides one) */}
       <main className="relative flex min-h-0 flex-1 flex-col gap-3">
         {/* KPI Summary Row - compact, shrinks to content */}

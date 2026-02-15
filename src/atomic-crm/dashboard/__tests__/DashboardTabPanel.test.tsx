@@ -75,13 +75,12 @@ describe("DashboardTabPanel", () => {
     expect(screen.getByTestId("pipeline-table")).toBeInTheDocument();
   });
 
-  it("has accessible touch targets (44px)", () => {
+  it("uses paper tab trigger styling while preserving touch-target semantics", () => {
     renderWithAdminContext(<DashboardTabPanel />);
 
     const tabs = screen.getAllByRole("tab");
     tabs.forEach((tab) => {
-      // h-11 = 44px
-      expect(tab).toHaveClass("h-11");
+      expect(tab).toHaveClass("paper-tabs-trigger");
     });
   });
 

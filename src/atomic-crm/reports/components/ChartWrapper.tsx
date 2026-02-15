@@ -12,12 +12,19 @@ interface ChartWrapperProps {
 
 export function ChartWrapper({ title, children, isLoading = false, className }: ChartWrapperProps) {
   return (
-    <Card className="min-w-0">
+    <Card className="paper-card min-w-0">
       <CardHeader>
-        <CardTitle className="text-base">{title}</CardTitle>
+        <CardTitle className="text-base font-semibold tracking-tight [font-family:var(--font-serif)]">
+          {title}
+        </CardTitle>
       </CardHeader>
       <CardContent>
-        <div className={cn("relative h-[260px] md:h-[280px] lg:h-[300px] w-full", className)}>
+        <div
+          className={cn(
+            "paper-inner-surface relative h-[260px] md:h-[280px] lg:h-[300px] w-full p-3",
+            className
+          )}
+        >
           {isLoading ? <Skeleton className="w-full h-full" /> : children}
         </div>
       </CardContent>

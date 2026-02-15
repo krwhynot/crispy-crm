@@ -48,7 +48,7 @@ export function createBaseChartOptions(_colors: ChartTheme["colors"], _font: Cha
   };
 }
 
-/** Standard axis configuration with dashed gridlines and consistent font */
+/** Standard axis configuration with subtle report-style gridlines */
 export function createAxisConfig(
   colors: ChartTheme["colors"],
   font: ChartTheme["font"],
@@ -59,8 +59,8 @@ export function createAxisConfig(
     grid: {
       display: opts?.display !== false,
       color: colors.gridline,
-      borderDash: [4, 4],
       drawBorder: false,
+      lineWidth: 1,
     },
     ticks: {
       color: colors.axisText,

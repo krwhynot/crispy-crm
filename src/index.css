@@ -13,6 +13,7 @@
   --font-sans:
     "Nunito", "Inter", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
     sans-serif;
+  --font-serif: "Lora", "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Georgia, serif;
 
   /* Data table optimized font size - 13px for high-density scanning */
   --text-table: 0.8125rem;
@@ -452,12 +453,13 @@
   /* IMPORTANT: Both classes need identical @apply statements (no @extend in PostCSS!) */
   .interactive-card,
   .table-row-premium {
-    @apply rounded-lg border border-transparent bg-card px-3 py-2;
+    @apply rounded-lg border border-transparent px-3 py-2;
+    background: var(--surface-paper-inner);
+    border-color: color-mix(in oklch, var(--paper-divider) 40%, transparent);
     transition: all var(--duration-normal) var(--ease-out-soft);
 
     /* Hover elevation - shadow lift with subtle translate for premium feel */
-    @apply hover:bg-muted/30 hover:border-border/50;
-    @apply motion-safe:hover:shadow-sm motion-safe:hover:-translate-y-px;
+    @apply motion-safe:hover:-translate-y-px;
 
     /* Cursor pointer for clickable rows */
     @apply cursor-pointer;
@@ -479,6 +481,12 @@
     border-left: 3px solid transparent;
   }
 
+  .interactive-card:hover,
+  .table-row-premium:hover {
+    background: var(--paper-row-hover-bg);
+    border-color: color-mix(in oklch, var(--paper-divider) 65%, transparent);
+  }
+
   /* Ensure React Admin row defaults do not override list density heights */
   .RaDatagrid-table tbody .RaDatagrid-row {
     height: var(--row-height-comfortable) !important;
@@ -488,7 +496,7 @@
   .table-row-premium td {
     @apply py-4;
     vertical-align: middle;
-    border-bottom: 1px solid var(--divider-subtle);
+    border-bottom: 1px solid color-mix(in oklch, var(--paper-divider) 72%, transparent);
   }
 
   .RaDatagrid-table tbody .RaDatagrid-row > td {
@@ -533,19 +541,24 @@
 
   [data-density="comfortable"] .table-row-premium td,
   [data-list-density="comfortable"] .table-row-premium td {
-    padding-top: 1rem;
-    padding-bottom: 1rem;
+    padding-top: 1.125rem;
+    padding-bottom: 1.125rem;
   }
 
   [data-density="comfortable"] .RaDatagrid-table tbody .RaDatagrid-row > td,
   [data-list-density="comfortable"] .RaDatagrid-table tbody .RaDatagrid-row > td {
-    padding-top: 1rem !important;
-    padding-bottom: 1rem !important;
+    padding-top: 1.125rem !important;
+    padding-bottom: 1.125rem !important;
   }
 
   .table-row-premium:hover {
-    border-left-color: color-mix(in oklch, var(--primary) 55%, transparent);
-    box-shadow: var(--elevation-1);
+    border-left-color: color-mix(in oklch, var(--paper-row-hover-accent) 72%, transparent);
+    box-shadow: var(--paper-row-hover-shadow);
+  }
+
+  .RaDatagrid-table tbody .RaDatagrid-row .RaDatagrid-checkbox {
+    @apply flex items-center justify-center;
+    min-height: 100%;
   }
 
   @media (min-width: 1024px) {
@@ -554,7 +567,9 @@
       opacity: 0;
       pointer-events: none;
       transform: translateX(4px);
-      transition: opacity 150ms ease, transform 150ms ease;
+      transition:
+        opacity 150ms ease,
+        transform 150ms ease;
     }
 
     .RaDatagrid-row:hover [data-row-actions],
@@ -578,7 +593,97 @@
 
   /* Standard card container */
   .card-container {
-    @apply bg-card border border-border shadow-sm rounded-xl p-6;
+    @apply rounded-[0.625rem] p-6;
+    background: var(--surface-paper-card);
+    border: 1px solid color-mix(in oklch, var(--paper-divider) 72%, var(--surface-paper-card));
+    box-shadow: var(--paper-shadow-1);
+  }
+
+  .paper-dashboard-surface {
+    background-color: var(--surface-paper-page);
+    position: relative;
+    isolation: isolate;
+  }
+
+  .paper-dashboard-surface::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: -1;
+    background-image:
+      radial-gradient(
+        circle at 18% 24%,
+        color-mix(in oklch, var(--paper-grain-ink) var(--paper-grain-density), transparent) 0.5px,
+        transparent 0.5px
+      ),
+      radial-gradient(
+        circle at 72% 58%,
+        color-mix(
+            in oklch,
+            var(--paper-grain-ink) calc(var(--paper-grain-density) * 0.7),
+            transparent
+          )
+          0.5px,
+        transparent 0.5px
+      );
+    background-size:
+      11px 11px,
+      13px 13px;
+    opacity: var(--paper-grain-opacity);
+  }
+
+  .paper-card {
+    background: var(--surface-paper-card);
+    border: 1px solid color-mix(in oklch, var(--paper-divider) 75%, var(--surface-paper-card));
+    border-radius: 0.625rem;
+    box-shadow: var(--paper-shadow-1);
+  }
+
+  .paper-inner-surface {
+    background: var(--surface-paper-inner);
+    border: 1px solid color-mix(in oklch, var(--paper-divider) 55%, transparent);
+    border-radius: 0.5rem;
+  }
+
+  .paper-section-rule {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: var(--text-subtle);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .paper-section-rule::before,
+  .paper-section-rule::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: var(--paper-divider);
+  }
+
+  .paper-tabs-list {
+    @apply h-11 w-full justify-start gap-1 bg-transparent p-0 rounded-none;
+    border-bottom: 1px solid var(--paper-divider);
+  }
+
+  .paper-tabs-trigger {
+    @apply h-11 rounded-none border-b-2 border-transparent bg-transparent px-4;
+    @apply text-xs font-semibold uppercase tracking-[0.12em] text-muted-foreground transition-colors;
+    @apply data-[state=active]:text-[color:var(--text-title)] data-[state=active]:border-[color:var(--brand-700)];
+    @apply data-[state=active]:bg-transparent data-[state=active]:shadow-none;
+  }
+
+  .paper-kpi-title {
+    @apply text-xs font-semibold uppercase tracking-[0.11em] text-muted-foreground;
+  }
+
+  .paper-kpi-divider {
+    height: 1px;
+    background: var(--paper-divider);
   }
 
   /* Create form card - higher elevation */
@@ -598,9 +703,10 @@
   }
 
   .list-toolbar {
-    @apply flex flex-wrap items-center shrink-0;
+    @apply flex flex-wrap items-end shrink-0;
     gap: var(--list-toolbar-gap);
     margin-bottom: var(--list-toolbar-margin-bottom);
+    padding-block: 0.25rem;
   }
 
   .list-page-main-card {
@@ -623,8 +729,13 @@
     position: sticky;
     top: 0;
     z-index: 6;
-    background: var(--card);
-    border-bottom: 1px solid var(--divider-subtle);
+    background: var(--surface-paper-card);
+    border-bottom: 1px solid color-mix(in oklch, var(--paper-divider) 78%, transparent);
+    color: var(--paper-header-foreground);
+    font-size: 0.78125rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
   }
 
   /* Filter sidebar scrollbar styling */
@@ -895,6 +1006,9 @@
   --card-foreground: var(--neutral-700); /* Card text */
   --popover: oklch(100% 0 0); /* Pure white popover surface */
   --popover-foreground: var(--neutral-700); /* Popover text */
+  --surface-paper-page: oklch(96% 0.012 88);
+  --surface-paper-card: oklch(98.7% 0.008 88);
+  --surface-paper-inner: oklch(100% 0 0);
 
   /* Interactive colors */
   --primary: var(--brand-500); /* Forest green for buttons - WCAG AAA compliant (10.8:1) */
@@ -1130,7 +1244,7 @@
   --chart-8-stroke: oklch(35% 0.012 85);
 
   /* Chart support tokens */
-  --chart-gridline: oklch(90% 0.01 92); /* Subtle paper cream gridlines */
+  --chart-gridline: oklch(88.5% 0.008 88); /* Financial report-style warm gridlines */
   --chart-axis-text: oklch(46% 0.018 85); /* Axis labels - neutral-600 for WCAG AA on white cards */
   --chart-disabled: oklch(78% 0.008 85); /* Disabled/muted data */
 
@@ -1161,6 +1275,20 @@
   /* Divider System - Internal separators */
   --divider-subtle: oklch(96% 0.004 92); /* Warm subtle 1px separators */
   --divider-strong: oklch(94.5% 0.004 92); /* Warm section separators */
+  --paper-divider: oklch(87% 0.012 88 / 0.42);
+  --paper-shadow-1:
+    0 1px 1px 0 oklch(28% 0.015 70 / 0.08), 0 8px 20px -16px oklch(28% 0.015 70 / 0.2);
+  --paper-shadow-2:
+    0 1px 2px 0 oklch(28% 0.016 70 / 0.1), 0 14px 24px -16px oklch(28% 0.016 70 / 0.24);
+  --paper-row-hover-bg: oklch(97.7% 0.01 88);
+  --paper-row-hover-accent: var(--brand-700);
+  --paper-row-hover-shadow:
+    0 1px 2px 0 oklch(28% 0.015 70 / 0.08), 0 8px 20px -16px oklch(28% 0.015 70 / 0.2);
+  --paper-header-foreground: oklch(30% 0.028 108);
+  --paper-last-seen-dot: oklch(40% 0.08 145);
+  --paper-grain-opacity: 0.026;
+  --paper-grain-density: 18%;
+  --paper-grain-ink: oklch(42% 0.02 82);
 
   /* Interactive Surface System - Hover/focus states */
   --surface-interactive-hover: oklch(99% 0.006 92); /* Warm hover tint */
@@ -1185,6 +1313,8 @@
   /* Avatar Micro-Elevation - Ring + shadow + highlight for depth */
   --avatar-shadow: 0 0 0 1px oklch(93% 0.004 92), 0 1px 2px 0 var(--shadow-ink) / 0.1;
   --avatar-highlight: inset 0 1px 0 0 oklch(100% 0 0 / 0.3);
+  --avatar-fallback-bg: oklch(91% 0.012 82);
+  --avatar-fallback-fg: oklch(33% 0.018 85);
 
   /* Dashboard Layout Tokens */
   --dashboard-tasks-width: 320px;
@@ -1292,6 +1422,9 @@
   --card-foreground: var(--neutral-900); /* Card text */
   --popover: var(--neutral-100); /* Popover surface */
   --popover-foreground: var(--neutral-900); /* Popover text */
+  --surface-paper-page: var(--background);
+  --surface-paper-card: var(--card);
+  --surface-paper-inner: var(--card);
 
   /* Interactive colors */
   --primary: var(--brand-700); /* Primary buttons - forest green */
@@ -1508,6 +1641,17 @@
   --shadow-card-1-hover: 0 3px 8px var(--shadow-ink-dark) / 0.45;
   --shadow-card-2-hover: 0 5px 14px var(--shadow-ink-dark) / 0.5;
   --shadow-card-3-hover: 0 7px 18px var(--shadow-ink-dark) / 0.55;
+  --paper-divider: oklch(38% 0.02 286 / 0.65);
+  --paper-shadow-1: var(--shadow-card-1);
+  --paper-shadow-2: var(--shadow-card-2);
+  --paper-row-hover-bg: color-mix(in oklch, var(--card) 88%, var(--brand-100));
+  --paper-row-hover-accent: var(--brand-500);
+  --paper-row-hover-shadow: var(--shadow-card-1);
+  --paper-header-foreground: var(--text-title);
+  --paper-last-seen-dot: var(--success-default);
+  --paper-grain-opacity: 0;
+  --paper-grain-density: 0%;
+  --paper-grain-ink: oklch(98% 0 0);
 
   /* Column shadows - dark mode with cool tinting */
   --shadow-col: 0 3px 10px var(--shadow-ink-dark) / 0.4;
@@ -1523,6 +1667,8 @@
   --text-title: oklch(95% 0.004 286); /* Headings - very light (13:1+ contrast) */
   --text-body: oklch(93% 0.005 285); /* Standard body text (11:1+ contrast) */
   --text-subtle: oklch(85% 0.007 285); /* Timestamps, metadata (7:1+ contrast) */
+  --avatar-fallback-bg: oklch(34% 0.015 285);
+  --avatar-fallback-fg: oklch(90% 0.008 285);
 }
 
 a,

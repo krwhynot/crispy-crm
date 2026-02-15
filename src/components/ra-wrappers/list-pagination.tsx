@@ -71,7 +71,7 @@ export const ListPagination = ({
         {showExport && !selectedIds?.length && <ExportButton />}
       </div>
 
-      <div className="ml-auto flex flex-wrap items-center justify-end gap-4">
+      <div className="ml-auto flex flex-wrap items-center justify-end gap-3">
         <div className="hidden items-center gap-2.5 md:flex">
           <span className="text-sm font-medium">
             {translate("ra.navigation.page_rows_per_page", { _: "Rows per page" })}
@@ -97,16 +97,16 @@ export const ListPagination = ({
           </Select>
         </div>
 
-        <span className="min-w-[110px] text-sm text-muted-foreground">
+        <span className="min-w-[110px] text-xs text-muted-foreground">
           {`${pageStart}-${pageEnd} of ${safeTotal}`}
         </span>
 
         <div className="flex items-center gap-2.5">
           <Button
             type="button"
-            variant="outline"
+            variant="ghost"
             size="sm"
-            className="h-9"
+            className="h-9 border [border-color:var(--paper-divider)] text-muted-foreground hover:bg-[color:var(--paper-row-hover-bg)] hover:text-foreground"
             disabled={!hasPreviousPage}
             onClick={() => setPage(Math.max(clampedPage - 1, 1))}
             aria-label={translate("ra.navigation.previous", { _: "Previous" })}
@@ -115,8 +115,8 @@ export const ListPagination = ({
             Prev
           </Button>
 
-          <div className="flex items-center gap-2 rounded-md border border-border/70 bg-background px-2 py-1">
-            <span className="text-xs text-muted-foreground">Page</span>
+          <div className="flex items-center gap-2 rounded-md border bg-[color:var(--surface-paper-inner)] px-2 py-1 [border-color:var(--paper-divider)]">
+            <span className="text-xs uppercase tracking-[0.08em] text-muted-foreground">Page</span>
             <Input
               value={pageInput}
               onChange={(event) => setPageInput(event.target.value)}
@@ -129,16 +129,16 @@ export const ListPagination = ({
               }}
               inputMode="numeric"
               aria-label="Page number"
-              className="h-8 w-14 text-center"
+              className="h-8 w-14 border-[color:var(--paper-divider)] text-center text-foreground"
             />
-            <span className="text-xs text-muted-foreground">of {totalPages}</span>
+            <span className="text-sm font-medium text-foreground">of {totalPages}</span>
           </div>
 
           <Button
             type="button"
-            variant="outline"
+            variant="ghost"
             size="sm"
-            className="h-9"
+            className="h-9 border [border-color:var(--paper-divider)] text-muted-foreground hover:bg-[color:var(--paper-row-hover-bg)] hover:text-foreground"
             disabled={!hasNextPage}
             onClick={() => setPage(Math.min(clampedPage + 1, totalPages))}
             aria-label={translate("ra.navigation.next", { _: "Next" })}
@@ -147,6 +147,7 @@ export const ListPagination = ({
             <ChevronRightIcon className="h-4 w-4" />
           </Button>
         </div>
+        <span className="text-sm text-foreground">{`Page ${clampedPage} of ${totalPages}`}</span>
       </div>
     </div>
   );

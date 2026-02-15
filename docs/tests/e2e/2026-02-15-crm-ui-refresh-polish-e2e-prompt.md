@@ -35,24 +35,73 @@ Expected:
 1. Stay on Contacts list in `Comfortable` mode.
 2. Verify row height/padding feels roomier than compact.
 3. Verify Name column has stronger hierarchy than metadata (name text visually larger/bolder than email).
-4. Toggle to `Compact` and back to `Comfortable`; verify spacing changes and preference persists on reload.
+4. Verify checkbox alignment is visually centered in each row.
+5. Toggle to `Compact` and back to `Comfortable`; verify spacing changes and preference persists on reload.
 
 Expected:
 - Comfortable rows clearly less dense than compact.
 - Name text has stronger visual priority.
+- Checkbox alignment appears centered.
 
-### 3) Pagination Footer Spacing
+### 3) Contacts List: Table Container Depth + Header Hierarchy
+
+1. On Contacts list, inspect the table wrapper surface against the page background.
+2. Verify table area reads as a raised ivory card (paper-on-desk layering), not a flat blend.
+3. Verify warm 1px border and subtle warm shadow are visible.
+4. Verify header row typography:
+   - uppercase labels
+   - tighter editorial scale (~12-13px)
+   - slight letter spacing
+   - darker olive/warm text tone
+   - subtle bottom divider
+
+Expected:
+- Table container has clear layered depth.
+- Header row feels editorial, not generic grid.
+
+### 4) Contacts List: Row Hover Tactility + Last Seen Tone
+
+1. Hover a data row on desktop.
+2. Verify row gets a soft warm hover background.
+3. Verify a subtle olive left accent stripe appears on hover.
+4. Verify hover has very subtle lift/shadow and feels smooth.
+5. Inspect `Last Seen` column values:
+   - recent values use neutral dark text with a subtle green dot
+   - tone is muted/professional (not neon bright green)
+
+Expected:
+- Hover state adds tactility without aggressive contrast.
+- `Last Seen` reads as premium/report style, not SaaS-bright.
+
+### 5) Pagination Footer Spacing + Visual Cohesion
 
 1. On Contacts list, inspect footer controls around `Prev`, `Page X of Y`, count text, and `Next`.
 2. Verify `Page` input group has clear spacing and does not feel cramped.
-3. Enter an invalid page (`999999`) and press Enter.
-4. Verify input clamps to valid max page and list updates without errors.
+3. Verify a faint divider above pagination clearly connects it to the table.
+4. Verify page number chrome is de-emphasized while `Page X of Y` remains readable.
+5. Verify nav buttons use reduced contrast while staying legible.
+6. Enter an invalid page (`999999`) and press Enter.
+7. Verify input clamps to valid max page and list updates without errors.
 
 Expected:
 - Footer controls are visually separated and readable.
+- Pagination area feels integrated with table card.
 - Page input clamping works.
 
-### 4) Filter Sidebar Collapse/Affordance
+### 6) Top Toolbar Refinement
+
+1. Stay on Contacts list toolbar (Search, Filters, Sort, Density, Create).
+2. Verify controls align on a common visual baseline.
+3. Verify toolbar has slightly roomier vertical padding than previous dense style.
+4. Verify density control appears as segmented control (Comfortable/Compact) with clear selected state.
+5. Verify `Create` button appears as deep forest green CTA (not bright/high-neon).
+
+Expected:
+- Toolbar feels intentional and balanced.
+- Density control behaves like segmented control.
+- Primary action color matches premium forest style.
+
+### 7) Filter Sidebar Collapse/Affordance
 
 1. In desktop Contacts list, collapse the filter sidebar.
 2. Verify a clear `Show filters` affordance appears when collapsed.
@@ -62,7 +111,16 @@ Expected:
 Expected:
 - Collapse/expand affordance is obvious in both states.
 
-### 5) Opportunities Kanban Polish
+### 8) Avatar Circle Tone
+
+1. On Contacts list, inspect avatar circles/fallback initials.
+2. Verify fallback background is warm light taupe (not cool generic gray).
+3. Verify subtle inner highlight/shadow gives intentional depth.
+
+Expected:
+- Avatar circles feel designed to match paper aesthetic.
+
+### 9) Opportunities Kanban Polish
 
 1. Open `{BASE_URL}/#/opportunities`.
 2. Switch to Kanban view if needed.
@@ -76,7 +134,7 @@ Expected:
 - Stage totals visible.
 - Drag-over feedback is clear and smooth.
 
-### 6) Regression Guardrails
+### 10) Regression Guardrails
 
 For all flows above:
 - Capture console errors/warnings.
@@ -90,7 +148,7 @@ For all flows above:
 Return:
 
 1. Overall status: `PASS` or `FAIL`
-2. Section-by-section results (1-6), each with:
+2. Section-by-section results (1-10), each with:
    - `PASS`/`FAIL`
    - one-line evidence
    - screenshot reference
