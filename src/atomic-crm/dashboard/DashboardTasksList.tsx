@@ -228,12 +228,12 @@ function CollapsibleSection({
 
 function TasksListSkeleton() {
   return (
-    <Card data-testid="dashboard-tasks-list-loading">
-      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
+    <Card data-testid="dashboard-tasks-list-loading" className="max-h-[520px] flex flex-col">
+      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3 shrink-0">
         <Skeleton className="h-5 w-24" />
         <Skeleton className="h-9 w-28" />
       </CardHeader>
-      <CardContent className="px-0 pt-0">
+      <CardContent className="px-0 pt-0 overflow-y-auto flex-1">
         {/* Fake section headers + rows */}
         {[1, 2, 3].map((section) => (
           <div key={section}>
@@ -373,9 +373,13 @@ export function DashboardTasksList() {
 
   // --- Main render ---
   return (
-    <Card data-tutorial="dashboard-tasks-list" data-testid="dashboard-tasks-list">
+    <Card
+      data-tutorial="dashboard-tasks-list"
+      data-testid="dashboard-tasks-list"
+      className="max-h-[520px] flex flex-col"
+    >
       {/* Header */}
-      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 shrink-0">
         <div className="flex items-center gap-2">
           <CardTitle className="text-base font-semibold">My Tasks</CardTitle>
           {overdueCount > 0 && (
@@ -398,7 +402,7 @@ export function DashboardTasksList() {
       </CardHeader>
 
       {/* Content */}
-      <CardContent className="px-0 pt-0">
+      <CardContent className="px-0 pt-0 overflow-y-auto flex-1">
         {/* Error state */}
         {error && <TasksErrorState message={error.message} />}
 

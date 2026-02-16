@@ -149,11 +149,11 @@ describe("PrincipalDashboardV4", () => {
     expect(Array.isArray(capturedTutorialProps.steps)).toBe(true);
   });
 
-  // 4. Layout structure — 2-column 12-grid
-  it("uses a 12-column grid layout", () => {
+  // 4. Layout structure — primary + secondary 12-column grid rows
+  it("uses primary and secondary 12-column grid rows", () => {
     const { container } = renderDashboard();
-    const grid = container.querySelector(".lg\\:grid-cols-12");
-    expect(grid).toBeInTheDocument();
+    const grids = container.querySelectorAll(".lg\\:grid-cols-12");
+    expect(grids.length).toBe(2);
   });
 
   // 5. Obsolete V3 artifacts absent

@@ -5,10 +5,10 @@ import { Skeleton } from "@/components/ui/skeleton";
 /**
  * Principal Dashboard V4 - Executive Overview Layout
  *
- * Two-column layout optimized for sales reps (iPad + desktop):
+ * Two-row layout optimized for sales reps (iPad + desktop):
  * - KPI strip (full width, 4-across on xl)
- * - Left (8/12 xl, 7/12 lg): Pipeline + Tasks
- * - Right (4/12 xl, 5/12 lg): Performance + Activity + Recently Viewed
+ * - Primary row (lg): Pipeline 8/12 | Tasks 4/12
+ * - Secondary row (lg): Performance | Activity | Recently Viewed (equal thirds)
  *
  * PERFORMANCE OPTIMIZATION (KPI Query Audit):
  * - CurrentSaleProvider caches salesId at dashboard level
@@ -37,15 +37,24 @@ function DashboardSkeleton() {
           ))}
         </div>
       </div>
-      {/* 2-column grid skeleton */}
+      {/* Primary row skeleton: Pipeline (8) | Tasks (4) */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
-        <div className="lg:col-span-7 xl:col-span-8 space-y-4">
-          <Skeleton className="h-96 rounded-lg" />
+        <div className="lg:col-span-8">
           <Skeleton className="h-96 rounded-lg" />
         </div>
-        <div className="lg:col-span-5 xl:col-span-4 space-y-4">
+        <div className="lg:col-span-4">
+          <Skeleton className="h-96 rounded-lg" />
+        </div>
+      </div>
+      {/* Secondary row skeleton: Performance | Activity | Recently Viewed */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 mt-4">
+        <div className="lg:col-span-4">
           <Skeleton className="h-48 rounded-lg" />
+        </div>
+        <div className="lg:col-span-4">
           <Skeleton className="h-48 rounded-lg" />
+        </div>
+        <div className="lg:col-span-4">
           <Skeleton className="h-[200px] rounded-lg" />
         </div>
       </div>
