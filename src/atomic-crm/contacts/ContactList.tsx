@@ -43,7 +43,7 @@ const ContactIdentityCell = React.memo(function ContactIdentityCell({
     <div className="flex items-center gap-2 min-w-0">
       <Avatar record={record} width={32} height={32} />
       <div className="flex flex-col gap-0.5 min-w-0">
-        <span className="truncate text-[15px] font-semibold leading-tight">
+        <span className="name-cell truncate text-[15px] font-semibold leading-tight">
           {formatFullName(record.first_name, record.last_name)}
         </span>
         <span className="text-xs text-muted-foreground truncate">{emails?.[0]?.value || "—"}</span>

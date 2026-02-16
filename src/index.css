@@ -479,6 +479,9 @@
     content-visibility: auto;
     contain-intrinsic-size: 0 var(--row-height-comfortable);
     border-left: 3px solid transparent;
+    border-radius: 0;
+    border-color: transparent;
+    border-left-color: transparent;
   }
 
   .interactive-card:hover,
@@ -496,7 +499,7 @@
   .table-row-premium td {
     @apply py-4;
     vertical-align: middle;
-    border-bottom: 1px solid color-mix(in oklch, var(--paper-divider) 72%, transparent);
+    border-bottom: 1px solid color-mix(in oklch, var(--paper-divider) 45%, transparent);
   }
 
   .RaDatagrid-table tbody .RaDatagrid-row > td {
@@ -556,6 +559,11 @@
     box-shadow: var(--paper-row-hover-shadow);
   }
 
+  .table-row-premium:hover .name-cell {
+    color: var(--text-metric);
+    transition: color 150ms ease;
+  }
+
   .RaDatagrid-table tbody .RaDatagrid-row .RaDatagrid-checkbox {
     @apply flex items-center justify-center;
     min-height: 100%;
@@ -593,9 +601,9 @@
 
   /* Standard card container */
   .card-container {
-    @apply rounded-[0.625rem] p-6;
+    @apply rounded-[0.75rem] p-6;
     background: var(--surface-paper-card);
-    border: 1px solid color-mix(in oklch, var(--paper-divider) 72%, var(--surface-paper-card));
+    border: 1px solid color-mix(in oklch, var(--paper-divider) 85%, var(--surface-paper-card));
     box-shadow: var(--paper-shadow-1);
   }
 
@@ -711,6 +719,8 @@
 
   .list-page-main-card {
     padding: var(--list-main-card-padding);
+    box-shadow: var(--paper-shadow-2);
+    border-radius: 0.75rem;
   }
 
   .list-filter-card {
@@ -730,11 +740,11 @@
     top: 0;
     z-index: 6;
     background: var(--surface-paper-card);
-    border-bottom: 1px solid color-mix(in oklch, var(--paper-divider) 78%, transparent);
+    border-bottom: 1px solid color-mix(in oklch, var(--paper-divider) 90%, transparent);
     color: var(--paper-header-foreground);
-    font-size: 0.78125rem;
+    font-size: 0.75rem;
     font-weight: 600;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
   }
 
@@ -1084,7 +1094,7 @@
   --tag-green-fg: oklch(20% 0.02 85);
   --tag-teal-bg: oklch(86% 0.05 200);
   --tag-teal-fg: oklch(20% 0.02 85);
-  --tag-blue-bg: oklch(85% 0.06 270);
+  --tag-blue-bg: oklch(87% 0.04 255);
   --tag-blue-fg: oklch(20% 0.02 85);
   --tag-purple-bg: oklch(87% 0.06 305);
   --tag-purple-fg: oklch(20% 0.02 85);
@@ -1276,6 +1286,7 @@
   --divider-subtle: oklch(96% 0.004 92); /* Warm subtle 1px separators */
   --divider-strong: oklch(94.5% 0.004 92); /* Warm section separators */
   --paper-divider: oklch(87% 0.012 88 / 0.42);
+  --paper-divider-soft: oklch(87% 0.012 88 / 0.25);
   --paper-shadow-1:
     0 1px 1px 0 oklch(28% 0.015 70 / 0.08), 0 8px 20px -16px oklch(28% 0.015 70 / 0.2);
   --paper-shadow-2:
@@ -1283,8 +1294,8 @@
   --paper-row-hover-bg: oklch(97.7% 0.01 88);
   --paper-row-hover-accent: var(--brand-700);
   --paper-row-hover-shadow:
-    0 1px 2px 0 oklch(28% 0.015 70 / 0.08), 0 8px 20px -16px oklch(28% 0.015 70 / 0.2);
-  --paper-header-foreground: oklch(30% 0.028 108);
+    0 1px 3px 0 oklch(28% 0.015 70 / 0.1), 0 10px 24px -14px oklch(28% 0.015 70 / 0.22);
+  --paper-header-foreground: oklch(28% 0.035 108);
   --paper-last-seen-dot: oklch(40% 0.08 145);
   --paper-grain-opacity: 0.026;
   --paper-grain-density: 18%;
@@ -1312,9 +1323,9 @@
 
   /* Avatar Micro-Elevation - Ring + shadow + highlight for depth */
   --avatar-shadow: 0 0 0 1px oklch(93% 0.004 92), 0 1px 2px 0 var(--shadow-ink) / 0.1;
-  --avatar-highlight: inset 0 1px 0 0 oklch(100% 0 0 / 0.3);
-  --avatar-fallback-bg: oklch(91% 0.012 82);
-  --avatar-fallback-fg: oklch(33% 0.018 85);
+  --avatar-highlight: inset 0 1px 0 0 oklch(100% 0 0 / 0.18);
+  --avatar-fallback-bg: oklch(89% 0.02 72);
+  --avatar-fallback-fg: oklch(28% 0.025 72);
 
   /* Dashboard Layout Tokens */
   --dashboard-tasks-width: 320px;
@@ -1502,7 +1513,7 @@
   --tag-green-fg: oklch(20% 0.02 85);
   --tag-teal-bg: oklch(86% 0.05 200);
   --tag-teal-fg: oklch(20% 0.02 85);
-  --tag-blue-bg: oklch(85% 0.06 270);
+  --tag-blue-bg: oklch(87% 0.04 255);
   --tag-blue-fg: oklch(20% 0.02 85);
   --tag-purple-bg: oklch(87% 0.06 305);
   --tag-purple-fg: oklch(20% 0.02 85);
@@ -1642,6 +1653,7 @@
   --shadow-card-2-hover: 0 5px 14px var(--shadow-ink-dark) / 0.5;
   --shadow-card-3-hover: 0 7px 18px var(--shadow-ink-dark) / 0.55;
   --paper-divider: oklch(38% 0.02 286 / 0.65);
+  --paper-divider-soft: oklch(100% 0 0 / 0.1);
   --paper-shadow-1: var(--shadow-card-1);
   --paper-shadow-2: var(--shadow-card-2);
   --paper-row-hover-bg: color-mix(in oklch, var(--card) 88%, var(--brand-100));

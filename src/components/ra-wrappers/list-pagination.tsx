@@ -106,7 +106,7 @@ export const ListPagination = ({
             type="button"
             variant="ghost"
             size="sm"
-            className="h-9 border [border-color:var(--paper-divider)] text-muted-foreground hover:bg-[color:var(--paper-row-hover-bg)] hover:text-foreground"
+            className="h-9 border [border-color:var(--paper-divider-soft)] text-muted-foreground hover:bg-[color:var(--paper-row-hover-bg)] hover:text-foreground"
             disabled={!hasPreviousPage}
             onClick={() => setPage(Math.max(clampedPage - 1, 1))}
             aria-label={translate("ra.navigation.previous", { _: "Previous" })}
@@ -115,7 +115,7 @@ export const ListPagination = ({
             Prev
           </Button>
 
-          <div className="flex items-center gap-2 rounded-md border bg-[color:var(--surface-paper-inner)] px-2 py-1 [border-color:var(--paper-divider)]">
+          <div className="flex items-center gap-2 rounded-md border bg-[color:var(--surface-paper-inner)] px-2 py-1 [border-color:var(--paper-divider-soft)]">
             <span className="text-xs uppercase tracking-[0.08em] text-muted-foreground">Page</span>
             <Input
               value={pageInput}
@@ -129,7 +129,7 @@ export const ListPagination = ({
               }}
               inputMode="numeric"
               aria-label="Page number"
-              className="h-8 w-14 border-[color:var(--paper-divider)] text-center text-foreground"
+              className="h-8 w-14 border-[color:var(--paper-divider-soft)] text-center text-foreground"
             />
             <span className="text-sm font-medium text-foreground">of {totalPages}</span>
           </div>
@@ -138,7 +138,7 @@ export const ListPagination = ({
             type="button"
             variant="ghost"
             size="sm"
-            className="h-9 border [border-color:var(--paper-divider)] text-muted-foreground hover:bg-[color:var(--paper-row-hover-bg)] hover:text-foreground"
+            className="h-9 border [border-color:var(--paper-divider-soft)] text-muted-foreground hover:bg-[color:var(--paper-row-hover-bg)] hover:text-foreground"
             disabled={!hasNextPage}
             onClick={() => setPage(Math.min(clampedPage + 1, totalPages))}
             aria-label={translate("ra.navigation.next", { _: "Next" })}
@@ -147,7 +147,6 @@ export const ListPagination = ({
             <ChevronRightIcon className="h-4 w-4" />
           </Button>
         </div>
-        <span className="text-sm text-foreground">{`Page ${clampedPage} of ${totalPages}`}</span>
       </div>
     </div>
   );

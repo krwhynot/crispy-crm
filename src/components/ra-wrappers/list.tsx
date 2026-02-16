@@ -123,7 +123,7 @@ export const ListView = <RecordType extends RaRecord = RaRecord>(
 
         {/* Fixed pagination at bottom - only render if pagination is provided */}
         {pagination && (
-          <div className="shrink-0 border-t bg-background py-content [border-color:var(--paper-divider)]">
+          <div className="shrink-0 border-t bg-[color:var(--surface-paper-card)] py-content [border-color:var(--paper-divider)]">
             {pagination}
           </div>
         )}

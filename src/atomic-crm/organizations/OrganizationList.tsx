@@ -67,7 +67,9 @@ const OrganizationNameCell = memo(function OrganizationNameCell({
 }) {
   return (
     <div className="flex items-center gap-1.5 min-w-0">
-      <span className="truncate text-[15px] font-semibold leading-tight">{record.name}</span>
+      <span className="name-cell truncate text-[15px] font-semibold leading-tight">
+        {record.name}
+      </span>
       <OrganizationHierarchyChips record={record} />
     </div>
   );
