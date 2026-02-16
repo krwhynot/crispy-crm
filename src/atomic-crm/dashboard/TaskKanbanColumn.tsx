@@ -36,22 +36,22 @@ const columnConfig: Record<
   }
 > = {
   overdue: {
-    accentColor: "border-destructive",
-    bgColor: "bg-destructive/5",
+    accentColor: "border-[var(--clay-base)]",
+    bgColor: "bg-[oklch(98%_0.01_32)]",
     emptyIcon: CheckCircle2,
     emptyText: "No overdue tasks",
     emptySubtext: "Great job staying on top of things!",
   },
   today: {
-    accentColor: "border-primary",
-    bgColor: "bg-primary/5",
+    accentColor: "border-[var(--olive-base)]",
+    bgColor: "bg-[oklch(98.5%_0.005_118)]",
     emptyIcon: CalendarClock,
     emptyText: "No tasks due today",
     emptySubtext: "Drag tasks here to focus on them today",
   },
   thisWeek: {
-    accentColor: "border-muted-foreground",
-    bgColor: "bg-muted/30",
+    accentColor: "border-muted-foreground/40",
+    bgColor: "bg-[oklch(98.5%_0.003_85)]",
     emptyIcon: CalendarPlus,
     emptyText: "No upcoming tasks",
     emptySubtext: "Plan your week by adding tasks here",
@@ -116,7 +116,7 @@ export const TaskKanbanColumn = React.memo(function TaskKanbanColumn({
   return (
     <div
       className={cn(
-        "flex flex-col rounded-xl border-t-4 bg-card",
+        "flex flex-col rounded-xl border-t-2 bg-card",
         "w-full lg:min-w-0 lg:flex-1",
         "shadow-sm",
         config.accentColor
@@ -133,7 +133,7 @@ export const TaskKanbanColumn = React.memo(function TaskKanbanColumn({
       <div
         ref={setNodeRef}
         className={cn(
-          "flex-1 p-3 space-y-2 overflow-y-auto",
+          "flex-1 p-4 space-y-3 overflow-y-auto",
           "min-h-[120px] transition-colors duration-200",
           isOver && config.bgColor
         )}

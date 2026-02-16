@@ -105,16 +105,31 @@
   --spacing-edge-ipad: 60px;
   --spacing-edge-mobile: 16px;
 
-  /* Vertical Rhythm - Desktop Data Density */
-  --spacing-section: 24px; /* Reduced from 32px - Between major sections */
-  --spacing-widget: 16px; /* Reduced from 24px - Between widgets */
-  --spacing-content: 12px; /* Reduced from 16px - Within content areas */
-  --spacing-compact: 8px; /* Reduced from 12px - Tight spacing for related items */
+  /* 8px-based spacing scale (executive vertical rhythm) */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 40px;
+  --space-8: 48px;
+  --space-9: 64px;
+  --space-10: 80px;
+
+  /* Vertical Rhythm - Desktop Data Density (aliased to scale) */
+  --spacing-section: var(--space-5); /* 24px - Between major sections */
+  --spacing-widget: var(--space-4); /* 16px - Between widgets */
+  --spacing-content: var(--space-3); /* 12px - Within content areas */
+  --spacing-compact: var(--space-2); /* 8px - Tight spacing for related items */
 
   /* Widget/Card Internals - Desktop Optimized */
   --spacing-widget-padding: 12px; /* Reduced from 20px for desktop density */
   --spacing-widget-min-height: 240px; /* Reduced from 280px for more rows */
   --spacing-top-offset: 60px; /* Reduced from 80px for better space usage */
+
+  /* Layout constraint */
+  --layout-max-width: 1400px;
 
   /* Desktop Data Density Tokens - NEW */
   --row-height-compact: 48px; /* Compact row height for data tables */
@@ -679,10 +694,10 @@
   }
 
   .paper-tabs-trigger {
-    @apply h-11 rounded-none border-b-2 border-transparent bg-transparent px-4;
-    @apply text-xs font-semibold uppercase tracking-[0.12em] text-muted-foreground transition-colors;
-    @apply data-[state=active]:text-[color:var(--text-title)] data-[state=active]:border-[color:var(--brand-700)];
-    @apply data-[state=active]:bg-transparent data-[state=active]:shadow-none;
+    @apply h-11 rounded-none border-b-2 border-transparent bg-transparent px-6;
+    @apply text-xs font-semibold uppercase tracking-[0.06em] text-muted-foreground transition-colors;
+    @apply data-[state=active]:text-[color:var(--text-title)] data-[state=active]:border-[color:var(--olive-base,var(--brand-700))];
+    @apply data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:font-bold;
   }
 
   .paper-kpi-title {
@@ -957,9 +972,9 @@
   --btn-shadow-rest: 0 1px 2px 0 oklch(30% 0.01 92 / 0.1);
   --btn-shadow-hover: 0 2px 4px -1px oklch(30% 0.01 92 / 0.15);
 
-  /* Badge refinement - hairline depth */
-  --badge-shadow: 0 1px 2px -1px oklch(30% 0.01 92 / 0.08);
-  --badge-ring-opacity: 0.08;
+  /* Badge refinement - quieter hairline depth */
+  --badge-shadow: 0 1px 2px -1px oklch(30% 0.01 92 / 0.05); /* Quieted from 0.08 */
+  --badge-ring-opacity: 0.05; /* Quieted from 0.08 */
 
   /* Input glow - elegant focus states */
   --input-shadow-rest: inset 0 1px 2px oklch(30% 0.01 92 / 0.04);
@@ -1033,7 +1048,7 @@
   /* Overlay/backdrop colors */
   --overlay: oklch(0 0 0 / 50%); /* Black 50% opacity for modals */
   --overlay-light: oklch(0 0 0 / 30%); /* Lighter overlay variant */
-  --destructive: oklch(58% 0.18 27); /* Slightly lighter terracotta for cream background */
+  --destructive: oklch(42% 0.12 32); /* Clay — WCAG 6.01:1 on white, 5.81:1 on cream */
   --destructive-foreground: oklch(99% 0 0); /* White text on destructive */
 
   /* Chart semantic aliases (map to *-default variants for useChartTheme hook) */
@@ -1045,16 +1060,23 @@
   --input: var(--neutral-300); /* Input borders - darker for better visibility */
   --ring: oklch(55% 0.095 142); /* #4D9900 - Brightened focus ring for visibility */
 
-  /* Success states (emerald green) - hue 155° to differentiate from forest green brand */
-  --success-subtle: oklch(92% 0.08 155);
-  --success-default: oklch(56% 0.115 155); /* #10B981 - Brighter emerald */
-  --success-strong: oklch(48% 0.12 155);
-  --success-bg: oklch(95% 0.05 155);
-  --success-border: oklch(78% 0.09 155);
-  --success-hover: oklch(60% 0.112 155);
-  --success-active: oklch(52% 0.117 155);
-  --success-disabled: oklch(72% 0.06 155);
+  /* Success states (olive) - hue 118° for executive restraint, max chroma 0.10 */
+  --success-subtle: oklch(92% 0.05 118);
+  --success-default: oklch(43% 0.1 118); /* WCAG ~5.43:1 on cream */
+  --success-strong: oklch(38% 0.08 118);
+  --success-bg: oklch(95% 0.03 118);
+  --success-border: oklch(78% 0.06 118);
+  --success-hover: oklch(47% 0.097 118);
+  --success-active: oklch(40% 0.1 118);
+  --success-disabled: oklch(72% 0.04 118);
   --success-foreground: oklch(100% 0 0); /* White text on success backgrounds */
+
+  /* Olive semantic tokens (KPI card tone system, kanban) */
+  --olive-base: oklch(40% 0.08 118);
+  --olive-surface: oklch(85% 0.03 118);
+  --olive-surface-light: oklch(92% 0.02 118);
+  --olive-text: oklch(34% 0.09 118);
+  --olive-trend: oklch(43% 0.1 118);
 
   /* Warning states (golden amber) - kept at warm hue 85° */
   --warning-foreground: oklch(20% 0.02 85); /* Dark text on warning backgrounds for contrast */
@@ -1077,20 +1099,30 @@
   --info-active: oklch(54% 0.067 200);
   --info-disabled: oklch(72% 0.04 200);
 
-  /* Error/Destructive extended (terracotta) - kept at hue 25° */
-  --error-subtle: oklch(92% 0.075 25);
-  --error-default: oklch(58% 0.13 25);
-  --error-strong: oklch(48% 0.135 25);
-  --error-bg: oklch(95% 0.055 25);
-  --error-border: oklch(80% 0.105 25);
-  --error-hover: oklch(62% 0.127 25);
-  --error-active: oklch(54% 0.132 25);
-  --error-disabled: oklch(72% 0.07 25);
+  /* Error/Destructive extended (clay) - hue 32°, chroma ≤0.14 */
+  --error-subtle: oklch(93% 0.02 32);
+  --error-default: oklch(42% 0.12 32);
+  --error-strong: oklch(38% 0.11 32);
+  --error-bg: oklch(95% 0.02 32);
+  --error-border: oklch(58% 0.14 32); /* WCAG 3.28:1 on white for non-text */
+  --error-hover: oklch(48% 0.12 32);
+  --error-active: oklch(38% 0.12 32);
+  --error-disabled: oklch(72% 0.04 32);
+
+  /* Clay semantic tokens (KPI card + kanban) */
+  --clay-base: oklch(45% 0.1 32);
+  --clay-surface: oklch(93% 0.02 32);
+  --clay-surface-dark: oklch(86% 0.04 32);
+  --clay-text: oklch(38% 0.11 32);
+
+  /* Executive supporting neutrals */
+  --divider-warm: oklch(86% 0.01 85);
+  --border-warm: oklch(82% 0.02 85);
 
   /* Tag colors - V2: More aggressive contrast for better readability */
   --tag-warm-bg: oklch(87% 0.07 80);
   --tag-warm-fg: oklch(20% 0.02 85);
-  --tag-green-bg: oklch(88% 0.06 155);
+  --tag-green-bg: oklch(88% 0.06 118); /* Olive-aligned (was hue 155) */
   --tag-green-fg: oklch(20% 0.02 85);
   --tag-teal-bg: oklch(86% 0.05 200);
   --tag-teal-fg: oklch(20% 0.02 85);
@@ -1285,8 +1317,8 @@
   /* Divider System - Internal separators */
   --divider-subtle: oklch(96% 0.004 92); /* Warm subtle 1px separators */
   --divider-strong: oklch(94.5% 0.004 92); /* Warm section separators */
-  --paper-divider: oklch(87% 0.012 88 / 0.42);
-  --paper-divider-soft: oklch(87% 0.012 88 / 0.25);
+  --paper-divider: oklch(87% 0.012 88 / 0.3); /* Lightened from 0.42 */
+  --paper-divider-soft: oklch(87% 0.012 88 / 0.18); /* Lightened from 0.25 */
   --paper-shadow-1:
     0 1px 1px 0 oklch(28% 0.015 70 / 0.08), 0 8px 20px -16px oklch(28% 0.015 70 / 0.2);
   --paper-shadow-2:
@@ -1296,7 +1328,9 @@
   --paper-row-hover-shadow:
     0 1px 3px 0 oklch(28% 0.015 70 / 0.1), 0 10px 24px -14px oklch(28% 0.015 70 / 0.22);
   --paper-header-foreground: oklch(28% 0.035 108);
-  --paper-last-seen-dot: oklch(40% 0.08 145);
+  --paper-last-seen-dot: var(
+    --olive-base
+  ); /* Was hardcoded hue 145, now aligned with olive system */
   --paper-grain-opacity: 0.026;
   --paper-grain-density: 18%;
   --paper-grain-ink: oklch(42% 0.02 82);
@@ -1424,7 +1458,7 @@
   --accent-clay-600-dark: oklch(70% 0.1 72); /* Medium-light clay */
   --accent-clay-500-dark: oklch(75% 0.095 72); /* Light clay */
 
-  --destructive-dark: oklch(70.4% 0.191 22.216); /* Foundational token for dark destructive */
+  --destructive-dark: oklch(68% 0.14 32); /* Clay — dark mode foundational token */
 
   /* Foundation colors (semantic mappings) */
   --background: var(--neutral-50); /* Dark background */
@@ -1448,7 +1482,7 @@
   --accent-foreground: oklch(12% 0.02 72); /* Very dark text for accessibility */
   --destructive: var(--destructive-dark);
   --destructive-foreground: oklch(
-    12% 0.02 25
+    12% 0.02 32
   ); /* Very dark text on destructive for accessibility */
 
   /* Overlay/backdrop colors - dark mode */
@@ -1464,16 +1498,23 @@
   --input: oklch(1 0 0 / 15%); /* Input borders */
   --ring: oklch(55% 0.095 142); /* Focus ring - same brightness as light mode */
 
-  /* Success states - dark mode (emerald hue 155° to differentiate from brand) */
-  --success-subtle: oklch(25% 0.08 155);
-  --success-default: oklch(55% 0.12 155);
-  --success-strong: oklch(65% 0.11 155);
-  --success-bg: oklch(20% 0.06 155);
-  --success-border: oklch(40% 0.1 155);
-  --success-hover: oklch(50% 0.13 155);
-  --success-active: oklch(60% 0.12 155);
-  --success-disabled: oklch(35% 0.05 155);
+  /* Success states - dark mode (olive hue 118°) */
+  --success-subtle: oklch(25% 0.06 118);
+  --success-default: oklch(58% 0.1 118);
+  --success-strong: oklch(68% 0.09 118);
+  --success-bg: oklch(20% 0.04 118);
+  --success-border: oklch(40% 0.08 118);
+  --success-hover: oklch(53% 0.1 118);
+  --success-active: oklch(63% 0.1 118);
+  --success-disabled: oklch(35% 0.04 118);
   --success-foreground: oklch(100% 0 0); /* White text on success backgrounds */
+
+  /* Olive semantic tokens - dark mode */
+  --olive-base: oklch(55% 0.08 118);
+  --olive-surface: oklch(25% 0.03 118);
+  --olive-surface-light: oklch(22% 0.02 118);
+  --olive-text: oklch(70% 0.08 118);
+  --olive-trend: oklch(58% 0.1 118);
 
   /* Warning states - dark mode */
   --warning-subtle: oklch(25% 0.09 85);
@@ -1495,21 +1536,31 @@
   --info-active: oklch(60% 0.12 200);
   --info-disabled: oklch(38% 0.05 200);
 
-  /* Error/Destructive extended - dark mode */
-  --error-subtle: oklch(27% 0.11 25);
-  --error-default: oklch(55% 0.145 25);
-  --error-strong: oklch(65% 0.14 25);
-  --error-bg: oklch(22% 0.08 25);
-  --error-border: oklch(43% 0.13 25);
-  --error-hover: oklch(50% 0.15 25);
-  --error-active: oklch(60% 0.143 25);
-  --error-disabled: oklch(40% 0.06 25);
+  /* Error/Destructive extended - dark mode (clay hue 32°) */
+  --error-subtle: oklch(27% 0.08 32);
+  --error-default: oklch(58% 0.12 32);
+  --error-strong: oklch(68% 0.11 32);
+  --error-bg: oklch(22% 0.05 32);
+  --error-border: oklch(43% 0.1 32);
+  --error-hover: oklch(53% 0.12 32);
+  --error-active: oklch(63% 0.12 32);
+  --error-disabled: oklch(40% 0.04 32);
+
+  /* Clay semantic tokens - dark mode */
+  --clay-base: oklch(60% 0.1 32);
+  --clay-surface: oklch(25% 0.02 32);
+  --clay-surface-dark: oklch(22% 0.03 32);
+  --clay-text: oklch(72% 0.1 32);
+
+  /* Executive supporting neutrals - dark mode */
+  --divider-warm: oklch(30% 0.01 85);
+  --border-warm: oklch(35% 0.02 85);
 
   /* Tag colors - dark mode: Mirrored from light mode for consistent readability */
   /* High-contrast tags that pop against dark backgrounds with dark text on light backgrounds */
   --tag-warm-bg: oklch(87% 0.07 80);
   --tag-warm-fg: oklch(20% 0.02 85);
-  --tag-green-bg: oklch(88% 0.06 155);
+  --tag-green-bg: oklch(88% 0.06 118); /* Olive-aligned (was hue 155) */
   --tag-green-fg: oklch(20% 0.02 85);
   --tag-teal-bg: oklch(86% 0.05 200);
   --tag-teal-fg: oklch(20% 0.02 85);
@@ -1660,7 +1711,7 @@
   --paper-row-hover-accent: var(--brand-500);
   --paper-row-hover-shadow: var(--shadow-card-1);
   --paper-header-foreground: var(--text-title);
-  --paper-last-seen-dot: var(--success-default);
+  --paper-last-seen-dot: var(--olive-base); /* Aligned with light mode */
   --paper-grain-opacity: 0;
   --paper-grain-density: 0%;
   --paper-grain-ink: oklch(98% 0 0);

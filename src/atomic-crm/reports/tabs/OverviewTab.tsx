@@ -444,7 +444,7 @@ export default function OverviewTab() {
             icon={Clock}
             subtitle="Deals exceeding stage thresholds"
             infoTooltip="Opportunities exceeding per-stage inactivity thresholds (7-21 days depending on stage)"
-            variant={kpis.staleDeals > 0 ? "warning" : "default"}
+            tone={kpis.staleDeals > 0 ? "warning" : "neutral"}
             onClick={handleStaleDealsClick}
           />
         </div>
