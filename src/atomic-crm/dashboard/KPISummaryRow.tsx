@@ -41,66 +41,72 @@ export function KPISummaryRow() {
   const { metrics, trends, loading } = useKPIMetrics();
 
   return (
-    <section
-      aria-label="Key Performance Indicators"
-      className="grid grid-cols-2 gap-2"
-      data-tutorial="dashboard-kpi-row"
-    >
-      {/* KPI #1: Open Opportunities (count, not $ value) */}
-      <KPICard
-        title="Open Opportunities"
-        value={formatKPIValue(metrics.openOpportunitiesCount)}
-        icon={Briefcase}
-        loading={loading}
-        tone="neutral"
-        emphasis="executiveCompact"
-        onClick={() => navigate(KPI_NAVIGATION.openOpportunities)}
-        data-tutorial="dashboard-kpi-open-opportunities"
-      />
+    <div className="paper-card px-2 py-2 xl:py-3 mb-4 border-b border-[var(--paper-divider)]">
+      <section
+        aria-label="Key Performance Indicators"
+        className="grid grid-cols-2 xl:grid-cols-4 gap-2 xl:gap-3"
+        data-tutorial="dashboard-kpi-row"
+      >
+        {/* KPI #1: Open Opportunities (count, not $ value) */}
+        <KPICard
+          title="Open Opportunities"
+          value={formatKPIValue(metrics.openOpportunitiesCount)}
+          icon={Briefcase}
+          loading={loading}
+          tone="neutral"
+          emphasis="executiveCompact"
+          className="border-0 shadow-none bg-transparent"
+          onClick={() => navigate(KPI_NAVIGATION.openOpportunities)}
+          data-tutorial="dashboard-kpi-open-opportunities"
+        />
 
-      {/* KPI #2: Overdue Tasks (clay accent when > 0) */}
-      <KPICard
-        title="Overdue Tasks"
-        value={formatKPIValue(metrics.overdueTasksCount)}
-        icon={AlertCircle}
-        loading={loading}
-        tone={
-          metrics.overdueTasksCount !== null && metrics.overdueTasksCount > 0
-            ? "critical"
-            : "neutral"
-        }
-        emphasis="executiveCompact"
-        onClick={() => navigate(KPI_NAVIGATION.overdueTasks)}
-        data-tutorial="dashboard-kpi-overdue-tasks"
-      />
+        {/* KPI #2: Overdue Tasks (clay accent when > 0) */}
+        <KPICard
+          title="Overdue Tasks"
+          value={formatKPIValue(metrics.overdueTasksCount)}
+          icon={AlertCircle}
+          loading={loading}
+          tone={
+            metrics.overdueTasksCount !== null && metrics.overdueTasksCount > 0
+              ? "critical"
+              : "neutral"
+          }
+          emphasis="executiveCompact"
+          className="border-0 shadow-none bg-transparent"
+          onClick={() => navigate(KPI_NAVIGATION.overdueTasks)}
+          data-tutorial="dashboard-kpi-overdue-tasks"
+        />
 
-      {/* KPI #3: Team Activities This Week */}
-      <KPICard
-        title="Team Activities"
-        value={formatKPIValue(metrics.activitiesThisWeek)}
-        icon={Activity}
-        loading={loading}
-        tone="neutral"
-        emphasis="executiveCompact"
-        subtitle={formatRecentActivitySubtitle(metrics.recentActivityCount)}
-        trend={trends.activitiesThisWeek ?? undefined}
-        onClick={() => navigate(KPI_NAVIGATION.activitiesThisWeek)}
-        data-tutorial="dashboard-kpi-activities"
-      />
+        {/* KPI #3: Team Activities This Week */}
+        <KPICard
+          title="Team Activities"
+          value={formatKPIValue(metrics.activitiesThisWeek)}
+          icon={Activity}
+          loading={loading}
+          tone="neutral"
+          emphasis="executiveCompact"
+          className="border-0 shadow-none bg-transparent"
+          subtitle={formatRecentActivitySubtitle(metrics.recentActivityCount)}
+          trend={trends.activitiesThisWeek ?? undefined}
+          onClick={() => navigate(KPI_NAVIGATION.activitiesThisWeek)}
+          data-tutorial="dashboard-kpi-activities"
+        />
 
-      {/* KPI #4: Stale Deals (warning when > 0) */}
-      <KPICard
-        title="Stale Deals"
-        value={formatKPIValue(metrics.staleDealsCount)}
-        icon={AlertTriangle}
-        loading={loading}
-        tone={
-          metrics.staleDealsCount !== null && metrics.staleDealsCount > 0 ? "warning" : "neutral"
-        }
-        emphasis="executiveCompact"
-        onClick={() => navigate(KPI_NAVIGATION.staleDeals)}
-        data-tutorial="dashboard-kpi-stale-deals"
-      />
-    </section>
+        {/* KPI #4: Stale Deals (warning when > 0) */}
+        <KPICard
+          title="Stale Deals"
+          value={formatKPIValue(metrics.staleDealsCount)}
+          icon={AlertTriangle}
+          loading={loading}
+          tone={
+            metrics.staleDealsCount !== null && metrics.staleDealsCount > 0 ? "warning" : "neutral"
+          }
+          emphasis="executiveCompact"
+          className="border-0 shadow-none bg-transparent"
+          onClick={() => navigate(KPI_NAVIGATION.staleDeals)}
+          data-tutorial="dashboard-kpi-stale-deals"
+        />
+      </section>
+    </div>
   );
 }

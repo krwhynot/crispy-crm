@@ -3,19 +3,12 @@ import { CurrentSaleProvider } from "./CurrentSaleContext";
 import { Skeleton } from "@/components/ui/skeleton";
 
 /**
- * Principal Dashboard V3
+ * Principal Dashboard V4 - Executive Overview Layout
  *
- * Two-column CSS Grid dashboard with Log Activity FAB:
- * - Left (40%): Pipeline by Principal (table view with momentum indicators)
- * - Right (60%): My Tasks (grouped by due date)
- * - FAB: Opens Sheet slide-over for activity logging
- *
- * Features:
- * - CSS Grid layout (grid-cols-1 lg:grid-cols-[2fr_3fr])
- * - Error boundary for graceful failure handling
- * - Lazy loading for code splitting
- * - Desktop-first design (lg: breakpoint at 1024px+)
- * - Draft persistence in localStorage for activity form
+ * Two-column layout optimized for sales reps (iPad + desktop):
+ * - KPI strip (full width, 4-across on xl)
+ * - Left (8/12 xl, 7/12 lg): Pipeline + Tasks
+ * - Right (4/12 xl, 5/12 lg): Performance + Activity + Recently Viewed
  *
  * PERFORMANCE OPTIMIZATION (KPI Query Audit):
  * - CurrentSaleProvider caches salesId at dashboard level
@@ -23,13 +16,7 @@ import { Skeleton } from "@/components/ui/skeleton";
  * - Expected: 4+ fewer database queries, ~100-200ms faster initial load
  */
 
-// Lazy-load the dashboard components for code splitting
-const PrincipalDashboardV3Lazy = lazy(() =>
-  import("./PrincipalDashboardV3").then((module) => ({
-    default: module.PrincipalDashboardV3,
-  }))
-);
-
+// Lazy-load the dashboard component for code splitting
 const PrincipalDashboardV4Lazy = lazy(() =>
   import("./PrincipalDashboardV4").then((module) => ({
     default: module.PrincipalDashboardV4,
@@ -37,29 +24,29 @@ const PrincipalDashboardV4Lazy = lazy(() =>
 );
 
 /**
- * Dashboard loading skeleton - matches V4 3-column grid layout
+ * Dashboard loading skeleton - matches V4 2-column executive overview layout
  */
 function DashboardSkeleton() {
   return (
     <div className="pb-6">
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-3">
-        {/* Left column: KPIs + Performance */}
-        <div className="lg:col-span-3 space-y-3">
-          <div className="grid grid-cols-2 gap-2">
-            {[1, 2, 3, 4].map((i) => (
-              <Skeleton key={i} className="h-[77px] rounded-lg" />
-            ))}
-          </div>
-          <Skeleton className="h-48 rounded-lg" />
+      {/* KPI strip skeleton */}
+      <div className="paper-card px-2 py-2 xl:py-3 mb-4 border-b border-[var(--paper-divider)]">
+        <div className="grid grid-cols-2 xl:grid-cols-4 gap-2 xl:gap-3">
+          {[1, 2, 3, 4].map((i) => (
+            <Skeleton key={i} className="h-[96px] rounded-lg" />
+          ))}
         </div>
-        {/* Center column: Pipeline + Activity */}
-        <div className="lg:col-span-6 space-y-3">
+      </div>
+      {/* 2-column grid skeleton */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
+        <div className="lg:col-span-7 xl:col-span-8 space-y-4">
           <Skeleton className="h-96 rounded-lg" />
-          <Skeleton className="h-48 rounded-lg" />
+          <Skeleton className="h-96 rounded-lg" />
         </div>
-        {/* Right column: Tasks */}
-        <div className="lg:col-span-3">
-          <Skeleton className="h-96 rounded-lg" />
+        <div className="lg:col-span-5 xl:col-span-4 space-y-4">
+          <Skeleton className="h-48 rounded-lg" />
+          <Skeleton className="h-48 rounded-lg" />
+          <Skeleton className="h-[200px] rounded-lg" />
         </div>
       </div>
     </div>
@@ -67,23 +54,9 @@ function DashboardSkeleton() {
 }
 
 /**
- * Wrapped dashboard with CurrentSaleProvider for performance optimization.
+ * V4 Dashboard with CurrentSaleProvider wrapper.
  * The provider caches the salesId query, preventing redundant lookups
  * from multiple child components (KPIs, Tasks, Pipeline, etc.).
- */
-function PrincipalDashboardV3WithProvider() {
-  return (
-    <CurrentSaleProvider>
-      <Suspense fallback={<DashboardSkeleton />}>
-        <PrincipalDashboardV3Lazy />
-      </Suspense>
-    </CurrentSaleProvider>
-  );
-}
-
-/**
- * V4 Dashboard with CurrentSaleProvider wrapper.
- * Same provider caching as V3 — all child components share salesId.
  */
 function PrincipalDashboardV4WithProvider() {
   return (
@@ -95,13 +68,12 @@ function PrincipalDashboardV4WithProvider() {
   );
 }
 
-// Public API exports - export the wrapped versions
-export { PrincipalDashboardV3WithProvider as PrincipalDashboardV3 };
+// Public API exports - export the wrapped version
 export { PrincipalDashboardV4WithProvider as PrincipalDashboardV4 };
 export { DashboardErrorBoundary } from "./DashboardErrorBoundary";
 export { CurrentSaleProvider } from "./CurrentSaleContext";
 
-// Note: Child components (PrincipalPipelineTable, TasksKanbanPanel)
+// Note: Child components (PrincipalPipelineTable, DashboardTasksList, etc.)
 // are internal implementation details and not exported from the public API.
 // They are imported directly within dashboard/ via relative paths.
 

@@ -1361,13 +1361,6 @@
   --avatar-fallback-bg: oklch(89% 0.02 72);
   --avatar-fallback-fg: oklch(28% 0.025 72);
 
-  /* Dashboard Layout Tokens */
-  --dashboard-tasks-width: 320px;
-  --dashboard-icon-rail-width: 48px;
-  --dashboard-tasks-drawer-width: 70%;
-  --dashboard-transition-duration: 200ms;
-  --dashboard-transition-easing: ease-out;
-
   /*
    * Usage Guide:
    *

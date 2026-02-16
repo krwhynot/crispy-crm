@@ -26,7 +26,7 @@ export const DASHBOARD_TUTORIAL_STEPS_V4: DriveStep[] = [
     },
   },
 
-  // === Row 1, Left: KPI Summary Row ===
+  // === KPI Strip (full width) ===
 
   // 2. KPI overview
   {
@@ -35,7 +35,7 @@ export const DASHBOARD_TUTORIAL_STEPS_V4: DriveStep[] = [
       title: "Key Metrics at a Glance",
       description:
         "These four cards show your most important metrics: Open Opportunities, Overdue Tasks, Team Activities, and Stale Deals. Click any card to see the filtered list.",
-      side: "right",
+      side: "bottom",
       align: "center",
     },
   },
@@ -84,7 +84,7 @@ export const DASHBOARD_TUTORIAL_STEPS_V4: DriveStep[] = [
     },
   },
 
-  // === Row 1, Center: Pipeline Table ===
+  // === Left Column: Pipeline + Tasks ===
 
   // 7. Pipeline table
   {
@@ -93,12 +93,10 @@ export const DASHBOARD_TUTORIAL_STEPS_V4: DriveStep[] = [
       title: "Pipeline by Principal",
       description:
         "Each row shows a principal with their pipeline count, weekly activity, and momentum indicator. Click any row to drill down into specific opportunities.",
-      side: "left",
+      side: "right",
       align: "center",
     },
   },
-
-  // === Row 1, Right: Tasks List ===
 
   // 8. My Tasks
   {
@@ -107,12 +105,12 @@ export const DASHBOARD_TUTORIAL_STEPS_V4: DriveStep[] = [
       title: "My Tasks",
       description:
         "Your personal task list organized by urgency: Overdue, Today, and This Week. Check tasks off, postpone them, or click to view details.",
-      side: "left",
+      side: "right",
       align: "center",
     },
   },
 
-  // === Row 2, Left: Performance ===
+  // === Right Column: Performance + Activity + Recently Viewed ===
 
   // 9. My Performance
   {
@@ -121,12 +119,10 @@ export const DASHBOARD_TUTORIAL_STEPS_V4: DriveStep[] = [
       title: "My Performance",
       description:
         "Your personal metrics: activities logged, deals moved, tasks completed, and open opportunities — with trend arrows vs. last week.",
-      side: "right",
+      side: "left",
       align: "center",
     },
   },
-
-  // === Row 2, Center: Activity Feed ===
 
   // 10. Team Activity
   {
@@ -135,12 +131,24 @@ export const DASHBOARD_TUTORIAL_STEPS_V4: DriveStep[] = [
       title: "Team Activity",
       description:
         "A live feed of recent team activities. See what your colleagues are working on and stay in sync.",
-      side: "top",
+      side: "left",
       align: "center",
     },
   },
 
-  // 11. Outro (no element target)
+  // 11. Recently Viewed
+  {
+    element: '[data-tutorial="dashboard-recent-items-widget"]',
+    popover: {
+      title: "Recently Viewed",
+      description:
+        "Quick access to records you've recently visited — contacts, organizations, and opportunities. Click any item to jump back to it.",
+      side: "left",
+      align: "center",
+    },
+  },
+
+  // 12. Outro (no element target)
   {
     popover: {
       title: "You're Ready!",

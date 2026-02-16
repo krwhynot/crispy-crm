@@ -10,66 +10,62 @@ const PrincipalPipelineTable = lazy(() => import("./PrincipalPipelineTable"));
 const DashboardTasksList = lazy(() => import("./DashboardTasksList"));
 const CompactActivityWidget = lazy(() => import("./CompactActivityWidget"));
 const CompactPerformanceWidget = lazy(() => import("./CompactPerformanceWidget"));
+const RecentItemsWidget = lazy(() =>
+  import("./RecentItemsWidget").then((m) => ({ default: m.RecentItemsWidget }))
+);
 
 /**
- * PrincipalDashboardV4 - 3-Column Scrollable Layout
+ * PrincipalDashboardV4 - Executive Overview Layout
  *
- * Replaces the tabbed layout with a single-page 3-column grid.
+ * Single-page 2-column layout optimized for sales reps on iPad + desktop.
  * Page scrolls naturally — no trapped scroll containers.
  *
- * Desktop (lg: 1024px+):
- *   Left (3/12): KPIs (2x2) + Performance
- *   Center (6/12): Pipeline Table + Activity Feed
- *   Right (3/12): Tasks List (sticky)
+ * KPI strip (full width, horizontal 4-across on xl, 2x2 on smaller):
+ *   Open Opportunities | Overdue Tasks | Team Activities | Stale Deals
+ *
+ * Desktop (xl: 1280px+): Left 8/12 | Right 4/12
+ * iPad (lg: 1024px+): Left 7/12 | Right 5/12
+ *
+ * Left column: Pipeline (primary) + Tasks (below)
+ * Right column: Performance + Activity + Recently Viewed
  *
  * Mobile (<1024px, single column):
- *   DOM order = visual order = focus order (no CSS order-* tricks):
- *   1. KPIs → 2. Pipeline → 3. Tasks → 4. Activity → 5. Performance
- *
- * Scroll model:
- * - Page scrolls naturally (pipeline, activity, KPIs in page flow)
- * - Tasks column: sticky with internal scroll within bounded height
- * - No other component has internal scroll
+ *   KPIs → Pipeline → Tasks → Performance → Activity → Recently Viewed
  */
 export function PrincipalDashboardV4() {
   return (
-    <div className="pb-8">
-      <main className="grid grid-cols-1 lg:grid-cols-12 gap-4">
-        {/* 1. KPIs — mobile: 1st, desktop: left col row 1 */}
-        <div className="lg:col-span-3 lg:col-start-1 lg:row-start-1">
-          <KPISummaryRow />
-        </div>
+    <div className="pb-6">
+      {/* KPI strip — full width above the 2-column grid */}
+      <KPISummaryRow />
 
-        {/* 2. Pipeline — mobile: 2nd, desktop: center col row 1 */}
-        <Card className="lg:col-span-6 lg:col-start-4 lg:row-start-1">
-          <Suspense fallback={<Skeleton className="h-96 rounded-lg" />}>
-            <PrincipalPipelineTable />
-          </Suspense>
-        </Card>
-
-        {/* 3. Tasks — mobile: 3rd, desktop: right col row 1, sticky */}
-        <div className="lg:col-span-3 lg:col-start-10 lg:row-start-1 lg:sticky lg:top-4 lg:self-start lg:max-h-[calc(100dvh-5rem)] lg:overflow-y-auto">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
+        {/* Left column: Pipeline + Tasks */}
+        <div className="lg:col-span-7 xl:col-span-8 space-y-4">
+          <Card>
+            <Suspense fallback={<Skeleton className="h-96 rounded-lg" />}>
+              <PrincipalPipelineTable />
+            </Suspense>
+          </Card>
           <Suspense fallback={<Skeleton className="h-96 rounded-lg" />}>
             <DashboardTasksList />
           </Suspense>
         </div>
 
-        {/* 4. Activity — mobile: 4th, desktop: center col row 2 */}
-        <div className="lg:col-span-6 lg:col-start-4 lg:row-start-2">
-          <Suspense fallback={<Skeleton className="h-48 rounded-lg" />}>
-            <CompactActivityWidget />
-          </Suspense>
-        </div>
-
-        {/* 5. Performance — mobile: 5th, desktop: left col row 2 */}
-        <div className="lg:col-span-3 lg:col-start-1 lg:row-start-2">
+        {/* Right column: Performance + Activity + Recently Viewed */}
+        <div className="lg:col-span-5 xl:col-span-4 space-y-4">
           <Suspense fallback={<Skeleton className="h-48 rounded-lg" />}>
             <CompactPerformanceWidget />
           </Suspense>
+          <Suspense fallback={<Skeleton className="h-48 rounded-lg" />}>
+            <CompactActivityWidget />
+          </Suspense>
+          <Suspense fallback={<Skeleton className="h-[200px] rounded-lg" />}>
+            <RecentItemsWidget compact />
+          </Suspense>
         </div>
-      </main>
+      </div>
 
-      {/* Tutorial button — pass V4 steps explicitly (V3 rollback safe) */}
+      {/* Tutorial button */}
       <DashboardTutorial steps={DASHBOARD_TUTORIAL_STEPS_V4} />
     </div>
   );

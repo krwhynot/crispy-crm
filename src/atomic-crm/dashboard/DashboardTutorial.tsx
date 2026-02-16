@@ -4,10 +4,8 @@ import { driver, type Driver, type DriveStep } from "driver.js";
 import "driver.js/dist/driver.css";
 import { AdminButton } from "@/components/admin/AdminButton";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
-import { DASHBOARD_TUTORIAL_STEPS } from "./dashboardTutorialSteps";
-
 interface DashboardTutorialProps {
-  /** Tutorial steps to use. Defaults to V3 steps for rollback safety. */
+  /** Tutorial steps to use. */
   steps?: DriveStep[];
 }
 
@@ -20,7 +18,7 @@ interface DashboardTutorialProps {
  * - No TutorialProvider context dependency
  * - No progress persistence
  * - Covers all dashboard sections via Driver.js tour
- * - Accepts optional `steps` prop — V3 gets default, V4 passes explicit steps
+ * - Accepts optional `steps` prop for tutorial configuration
  *
  * Follows the same pattern as ContactFormTutorial.tsx
  */
@@ -58,7 +56,7 @@ export function DashboardTutorial({ steps }: DashboardTutorialProps) {
       nextBtnText: "Next →",
       prevBtnText: "← Back",
       doneBtnText: "Done ✓",
-      steps: steps ?? DASHBOARD_TUTORIAL_STEPS,
+      steps: steps ?? [],
       onDestroyStarted: () => {
         // Cleanup on close
         setIsActive(false);
