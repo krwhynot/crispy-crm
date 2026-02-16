@@ -1,5 +1,4 @@
 import { useNavigate } from "react-router-dom";
-import { AlertCircle, Activity, Briefcase, AlertTriangle } from "lucide-react";
 import { KPICard } from "@/components/ui/kpi-card";
 import { useKPIMetrics } from "./useKPIMetrics";
 
@@ -41,21 +40,19 @@ export function KPISummaryRow() {
   const { metrics, trends, loading } = useKPIMetrics();
 
   return (
-    <div className="paper-card px-2 py-2 xl:py-3 mb-4 border-b border-[var(--paper-divider)]">
+    <div className="mb-3 border-t border-b border-[var(--divider-warm)] py-1 bg-transparent">
       <section
         aria-label="Key Performance Indicators"
-        className="grid grid-cols-2 xl:grid-cols-4 gap-2 xl:gap-3"
+        className="grid grid-cols-2 xl:grid-cols-4 gap-0"
         data-tutorial="dashboard-kpi-row"
       >
         {/* KPI #1: Open Opportunities (count, not $ value) */}
         <KPICard
           title="Open Opportunities"
           value={formatKPIValue(metrics.openOpportunitiesCount)}
-          icon={Briefcase}
           loading={loading}
           tone="neutral"
-          emphasis="executiveCompact"
-          className="border-0 shadow-none bg-transparent"
+          emphasis="executiveBand"
           onClick={() => navigate(KPI_NAVIGATION.openOpportunities)}
           data-tutorial="dashboard-kpi-open-opportunities"
         />
@@ -64,15 +61,14 @@ export function KPISummaryRow() {
         <KPICard
           title="Overdue Tasks"
           value={formatKPIValue(metrics.overdueTasksCount)}
-          icon={AlertCircle}
           loading={loading}
           tone={
             metrics.overdueTasksCount !== null && metrics.overdueTasksCount > 0
               ? "critical"
               : "neutral"
           }
-          emphasis="executiveCompact"
-          className="border-0 shadow-none bg-transparent"
+          emphasis="executiveBand"
+          className="border-l border-[var(--divider-warm)]/40"
           onClick={() => navigate(KPI_NAVIGATION.overdueTasks)}
           data-tutorial="dashboard-kpi-overdue-tasks"
         />
@@ -81,11 +77,10 @@ export function KPISummaryRow() {
         <KPICard
           title="Team Activities"
           value={formatKPIValue(metrics.activitiesThisWeek)}
-          icon={Activity}
           loading={loading}
           tone="neutral"
-          emphasis="executiveCompact"
-          className="border-0 shadow-none bg-transparent"
+          emphasis="executiveBand"
+          className="border-t xl:border-t-0 xl:border-l border-[var(--divider-warm)]/40"
           subtitle={formatRecentActivitySubtitle(metrics.recentActivityCount)}
           trend={trends.activitiesThisWeek ?? undefined}
           onClick={() => navigate(KPI_NAVIGATION.activitiesThisWeek)}
@@ -96,13 +91,12 @@ export function KPISummaryRow() {
         <KPICard
           title="Stale Deals"
           value={formatKPIValue(metrics.staleDealsCount)}
-          icon={AlertTriangle}
           loading={loading}
           tone={
             metrics.staleDealsCount !== null && metrics.staleDealsCount > 0 ? "warning" : "neutral"
           }
-          emphasis="executiveCompact"
-          className="border-0 shadow-none bg-transparent"
+          emphasis="executiveBand"
+          className="border-t border-l xl:border-t-0 border-[var(--divider-warm)]/40"
           onClick={() => navigate(KPI_NAVIGATION.staleDeals)}
           data-tutorial="dashboard-kpi-stale-deals"
         />

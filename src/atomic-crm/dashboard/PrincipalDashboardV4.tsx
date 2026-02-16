@@ -34,13 +34,13 @@ const RecentItemsWidget = lazy(() =>
  */
 export function PrincipalDashboardV4() {
   return (
-    <div className="pb-6">
+    <div className="pb-4">
       {/* KPI strip — full width above the 2-column grid */}
       <KPISummaryRow />
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-3">
         {/* Left column: Pipeline + Tasks */}
-        <div className="lg:col-span-7 xl:col-span-8 space-y-4">
+        <div className="lg:col-span-7 xl:col-span-8 space-y-3">
           <Card>
             <Suspense fallback={<Skeleton className="h-96 rounded-lg" />}>
               <PrincipalPipelineTable />
@@ -52,7 +52,7 @@ export function PrincipalDashboardV4() {
         </div>
 
         {/* Right column: Performance + Activity + Recently Viewed */}
-        <div className="lg:col-span-5 xl:col-span-4 space-y-4">
+        <div className="lg:col-span-5 xl:col-span-4 space-y-3">
           <Suspense fallback={<Skeleton className="h-48 rounded-lg" />}>
             <CompactPerformanceWidget />
           </Suspense>
