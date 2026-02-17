@@ -1,4 +1,4 @@
-import { Eye, Pencil, Trash2 } from "lucide-react";
+import { Eye, Pencil, Trash2, EllipsisVertical } from "lucide-react";
 import {
   useCreatePath,
   useDelete,
@@ -8,7 +8,14 @@ import {
   useResourceContext,
 } from "ra-core";
 import { Link } from "react-router-dom";
-import { AdminButton } from "@/components/admin/AdminButton";
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 interface RowHoverActionsProps {
   recordId?: number | string;
@@ -40,7 +47,6 @@ export function RowHoverActions({
     return null;
   }
 
-  const viewPath = createPath({ resource, type: "show", id });
   const editPath = createPath({ resource, type: "edit", id });
 
   const handleDelete = async () => {
@@ -71,59 +77,55 @@ export function RowHoverActions({
       onKeyDown={(event) => event.stopPropagation()}
       data-row-actions
     >
-      {onView ? (
-        <AdminButton
-          type="button"
-          variant="ghost"
-          size="icon"
-          className="h-8 w-8"
-          onClick={() => onView(id)}
-          aria-label="View"
-        >
-          <Eye className="h-4 w-4" />
-        </AdminButton>
-      ) : (
-        <Link
-          to={viewPath}
-          aria-label="View"
-          className="inline-flex h-8 w-8 items-center justify-center rounded-md border border-border bg-background hover:bg-muted"
-        >
-          <Eye className="h-4 w-4" />
-        </Link>
-      )}
-
+      {/* Always-visible Edit button */}
       {onEdit ? (
-        <AdminButton
+        <Button
           type="button"
           variant="ghost"
           size="icon"
-          className="h-8 w-8"
+          className="h-9 w-9 touch-target-44"
           onClick={() => onEdit(id)}
           aria-label="Edit"
         >
           <Pencil className="h-4 w-4" />
-        </AdminButton>
+        </Button>
       ) : (
-        <Link
-          to={editPath}
-          aria-label="Edit"
-          className="inline-flex h-8 w-8 items-center justify-center rounded-md border border-border bg-background hover:bg-muted"
-        >
-          <Pencil className="h-4 w-4" />
-        </Link>
+        <Button variant="ghost" size="icon" className="h-9 w-9 touch-target-44" asChild>
+          <Link to={editPath} aria-label="Edit">
+            <Pencil className="h-4 w-4" />
+          </Link>
+        </Button>
       )}
 
-      <AdminButton
-        type="button"
-        variant="ghost"
-        size="icon"
-        className="h-8 w-8 text-destructive hover:text-destructive"
-        onClick={handleDelete}
-        aria-label="Delete"
-        isLoading={isDeleting}
-      >
-        {!isDeleting && <Trash2 className="h-4 w-4" />}
-      </AdminButton>
+      {/* Overflow menu with View + Delete */}
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon"
+            className="h-9 w-9 touch-target-44"
+            aria-label="More actions"
+          >
+            <EllipsisVertical className="h-4 w-4" />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end">
+          <DropdownMenuItem onClick={() => onView?.(id)} disabled={!onView}>
+            <Eye className="mr-2 h-4 w-4" />
+            View
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem
+            onClick={handleDelete}
+            disabled={isDeleting}
+            className="text-destructive focus:text-destructive"
+          >
+            <Trash2 className="mr-2 h-4 w-4" />
+            {isDeleting ? "Deleting..." : "Delete"}
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
     </div>
   );
 }

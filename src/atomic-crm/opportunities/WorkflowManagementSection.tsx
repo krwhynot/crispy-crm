@@ -130,7 +130,7 @@ export const WorkflowManagementSection: React.FC = () => {
 
         {/* Tags Section */}
         <div className="space-y-2">
-          <div className="flex items-center gap-2 text-xs text-muted-foreground uppercase tracking-wide">
+          <div className="flex items-center gap-2 paper-micro-label">
             <TagIcon className="w-3.5 h-3.5" />
             <span>Tags</span>
           </div>
@@ -179,7 +179,7 @@ export const WorkflowManagementSection: React.FC = () => {
 
         {/* Next Action Section */}
         <div className="space-y-2">
-          <div className="flex items-center gap-2 text-xs text-muted-foreground uppercase tracking-wide">
+          <div className="flex items-center gap-2 paper-micro-label">
             <Target className="w-3.5 h-3.5" />
             <span>Next Action</span>
           </div>
@@ -194,7 +194,7 @@ export const WorkflowManagementSection: React.FC = () => {
 
         {/* Next Action Date Section */}
         <div className="space-y-2">
-          <div className="flex items-center gap-2 text-xs text-muted-foreground uppercase tracking-wide">
+          <div className="flex items-center gap-2 paper-micro-label">
             <Calendar className="w-3.5 h-3.5" />
             <span>Next Action Date</span>
             {isNextActionOverdue && (
@@ -220,7 +220,7 @@ export const WorkflowManagementSection: React.FC = () => {
                 variant="ghost"
                 className="w-full justify-between p-0 h-auto hover:bg-transparent"
               >
-                <div className="flex items-center gap-2 text-xs text-muted-foreground uppercase tracking-wide">
+                <div className="flex items-center gap-2 paper-micro-label">
                   <FileText className="w-3.5 h-3.5" />
                   <span>Decision Criteria</span>
                 </div>

@@ -19,9 +19,8 @@ describe("Desktop spacing tokens", () => {
     expect(cssContent).toMatch(/--spacing-widget-min-height:\s*240px/); // from 280px
     expect(cssContent).toMatch(/--spacing-top-offset:\s*60px/); // from 80px
 
-    // New desktop data density tokens
-    expect(cssContent).toMatch(/--row-height-compact:\s*32px/);
-    expect(cssContent).toMatch(/--row-height-comfortable:\s*40px/);
+    // Fixed row height (single density)
+    expect(cssContent).toMatch(/--row-height:\s*58px/);
     expect(cssContent).toMatch(/--row-padding-desktop:\s*6px\s*12px/);
     expect(cssContent).toMatch(/--hover-zone-padding:\s*4px/);
     expect(cssContent).toMatch(/--action-button-size:\s*28px/);

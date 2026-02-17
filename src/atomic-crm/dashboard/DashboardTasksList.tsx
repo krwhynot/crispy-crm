@@ -28,7 +28,6 @@ interface SectionConfig {
   label: string;
   accentClass: string;
   countVariant: "destructive" | "default" | "secondary";
-  borderClass: string;
 }
 
 const SECTIONS: SectionConfig[] = [
@@ -37,21 +36,18 @@ const SECTIONS: SectionConfig[] = [
     label: "Overdue",
     accentClass: "text-destructive",
     countVariant: "destructive",
-    borderClass: "border-t-2 border-destructive/60",
   },
   {
     key: "today",
     label: "Today",
     accentClass: "text-primary",
     countVariant: "default",
-    borderClass: "border-t-2 border-primary/60",
   },
   {
     key: "thisWeek",
     label: "This Week",
     accentClass: "text-muted-foreground",
     countVariant: "secondary",
-    borderClass: "border-t-2 border-muted-foreground/30",
   },
 ];
 
@@ -166,7 +162,7 @@ function CollapsibleSection({
   const hiddenCount = tasks.length - SECTION_PREVIEW_LIMIT;
 
   return (
-    <div data-testid={`tasks-section-${config.key}`} className={config.borderClass}>
+    <div data-testid={`tasks-section-${config.key}`}>
       {/* Section header toggle */}
       <button
         type="button"
@@ -228,12 +224,12 @@ function CollapsibleSection({
 
 function TasksListSkeleton() {
   return (
-    <Card data-testid="dashboard-tasks-list-loading" className="max-h-[520px] flex flex-col">
-      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3 shrink-0">
+    <Card data-testid="dashboard-tasks-list-loading">
+      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
         <Skeleton className="h-5 w-24" />
         <Skeleton className="h-9 w-28" />
       </CardHeader>
-      <CardContent className="px-0 pt-0 overflow-y-auto flex-1">
+      <CardContent className="px-0 pt-0">
         {/* Fake section headers + rows */}
         {[1, 2, 3].map((section) => (
           <div key={section}>
@@ -264,7 +260,7 @@ function TasksListSkeleton() {
 
 function TasksEmptyState() {
   return (
-    <div className="flex flex-col items-center justify-center py-8 px-4 text-center">
+    <div className="flex flex-col items-center justify-center py-12 px-4 text-center">
       <ClipboardList className="h-10 w-10 text-muted-foreground/50 mb-3" aria-hidden="true" />
       <p className="text-sm font-medium text-muted-foreground">No tasks to show</p>
       <p className="text-xs text-muted-foreground/70 mt-1 mb-4">Create a task to get started</p>
@@ -373,13 +369,9 @@ export function DashboardTasksList() {
 
   // --- Main render ---
   return (
-    <Card
-      data-tutorial="dashboard-tasks-list"
-      data-testid="dashboard-tasks-list"
-      className="max-h-[520px] flex flex-col"
-    >
+    <Card data-tutorial="dashboard-tasks-list" data-testid="dashboard-tasks-list">
       {/* Header */}
-      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 shrink-0">
+      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
         <div className="flex items-center gap-2">
           <CardTitle className="text-base font-semibold">My Tasks</CardTitle>
           {overdueCount > 0 && (
@@ -402,7 +394,7 @@ export function DashboardTasksList() {
       </CardHeader>
 
       {/* Content */}
-      <CardContent className="px-0 pt-0 overflow-y-auto flex-1">
+      <CardContent className="px-0 pt-0">
         {/* Error state */}
         {error && <TasksErrorState message={error.message} />}
 

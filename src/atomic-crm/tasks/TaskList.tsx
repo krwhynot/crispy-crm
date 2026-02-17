@@ -298,7 +298,7 @@ const TaskDatagrid = ({
       <FunctionField
         label="Actions"
         sortable={false}
-        cellClassName="w-[128px] text-right"
+        cellClassName="w-[72px] sm:w-[88px] text-right"
         render={(record: Task) => <TaskActionsCell record={record} openSlideOver={openSlideOver} />}
         {...COLUMN_VISIBILITY.always}
       />
@@ -415,4 +415,3 @@ const exporter: Exporter<Task> = async (records, fetchRelatedRecords) => {
     }
   );
 };
-

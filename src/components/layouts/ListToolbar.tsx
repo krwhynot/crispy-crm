@@ -12,12 +12,10 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { ListSearchBar } from "@/components/ra-wrappers/ListSearchBar";
 import { SortButton } from "@/components/ra-wrappers/sort-button";
 import { useFilterSidebarContext } from "./FilterSidebarContext";
-import { useListDensityContext } from "./ListDensityContext";
 import { useListHasDockedFilters } from "./useListViewport";
 
 export interface ListToolbarProps {
@@ -33,8 +31,6 @@ export interface ListToolbarProps {
   overflowActions?: ReactNode;
   /** Show filter toggle button (default: true) */
   showFilterToggle?: boolean;
-  /** Show compact/comfortable density switch (default: true) */
-  showDensityToggle?: boolean;
   /** Resource name for ARIA labels */
   resource?: string;
   /** Primary action slot (e.g., CreateButton) */
@@ -56,7 +52,6 @@ export function ListToolbar({
   viewSwitcher,
   overflowActions,
   showFilterToggle = true,
-  showDensityToggle = true,
   resource,
   primaryAction,
 }: ListToolbarProps) {
@@ -98,11 +93,6 @@ export function ListToolbar({
       </div>
 
       <div className="order-3 ml-auto flex shrink-0 items-end gap-2 lg:order-3">
-        {showDensityToggle && (
-          <div className="hidden md:flex md:items-end">
-            <DensityToggle />
-          </div>
-        )}
         {viewSwitcher && <div className="shrink-0">{viewSwitcher}</div>}
         {primaryAction && <div className="shrink-0">{primaryAction}</div>}
         <div className={showOverflowOnDesktop ? "shrink-0" : "shrink-0 md:hidden"}>
@@ -155,41 +145,6 @@ function FilterToggleButton() {
         {activeFilterCount > 0 ? `Filters (${activeFilterCount} active)` : "Filters"}
       </TooltipContent>
     </Tooltip>
-  );
-}
-
-function DensityToggle() {
-  const { density, setDensity } = useListDensityContext();
-
-  return (
-    <ToggleGroup
-      type="single"
-      value={density}
-      onValueChange={(value) => {
-        if (value === "comfortable" || value === "compact") {
-          setDensity(value);
-        }
-      }}
-      variant="outline"
-      size="sm"
-      aria-label="List density"
-      className="inline-flex h-[var(--list-toolbar-control-height-desktop)] items-center gap-0 rounded-md border [border-color:var(--paper-divider)] bg-[color:var(--surface-paper-inner)] p-0.5"
-    >
-      <ToggleGroupItem
-        value="comfortable"
-        className="h-8 rounded-sm px-2 text-xs data-[state=on]:bg-[color:var(--surface-paper-card)] data-[state=on]:text-foreground"
-        aria-label="Comfortable density"
-      >
-        Comfortable
-      </ToggleGroupItem>
-      <ToggleGroupItem
-        value="compact"
-        className="h-8 rounded-sm px-2 text-xs data-[state=on]:bg-[color:var(--surface-paper-card)] data-[state=on]:text-foreground"
-        aria-label="Compact density"
-      >
-        Compact
-      </ToggleGroupItem>
-    </ToggleGroup>
   );
 }
 

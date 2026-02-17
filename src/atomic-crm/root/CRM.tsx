@@ -10,7 +10,7 @@ import { ROUTES } from "@/constants/routes";
 // This leverages the existing lazy loading in each resource.tsx file
 import organizations from "../organizations/resource";
 import contacts from "../contacts/resource";
-import { DashboardErrorBoundary, PrincipalDashboardV4 } from "../dashboard";
+import { DashboardErrorBoundary, PrincipalDashboardV3 } from "../dashboard";
 import opportunities from "../opportunities/resource";
 import products from "../products/resource";
 import productDistributors from "../productDistributors/productDistributorsConfig";
@@ -215,7 +215,7 @@ export const CRM = ({
         i18nProvider={i18nProvider}
         dashboard={() => (
           <DashboardErrorBoundary>
-            <PrincipalDashboardV4 />
+            <PrincipalDashboardV3 />
           </DashboardErrorBoundary>
         )}
         requireAuth

@@ -148,7 +148,7 @@ export function CompactActivityWidget() {
   const { activities, loading, error } = useTeamActivities(5);
 
   return (
-    <Card className="flex flex-col max-h-[280px]" data-tutorial="dashboard-compact-activity">
+    <Card className="flex flex-col" data-tutorial="dashboard-compact-activity">
       <CardHeader className="py-2 px-3 shrink-0 flex-row items-center justify-between">
         <CardTitle className="text-sm font-medium">Team Activity</CardTitle>
         <Link
@@ -158,7 +158,7 @@ export function CompactActivityWidget() {
           View All
         </Link>
       </CardHeader>
-      <CardContent className="flex-1 overflow-y-auto p-0">
+      <CardContent className="flex-1 overflow-hidden p-0">
         {loading ? (
           <CompactActivitySkeleton />
         ) : error ? (
@@ -171,7 +171,7 @@ export function CompactActivityWidget() {
             <p className="text-sm text-muted-foreground">No recent activity.</p>
           </div>
         ) : (
-          <div className="divide-y divide-border">
+          <div className="divide-y divide-border/30">
             {activities.slice(0, 4).map((activity) => (
               <CompactActivityItem key={activity.id} activity={activity} />
             ))}

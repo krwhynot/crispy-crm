@@ -49,18 +49,6 @@ vi.mock("../CompactPerformanceWidget", () => ({
   ),
 }));
 
-vi.mock("../RecentItemsWidget", () => ({
-  RecentItemsWidget: ({ compact }: { compact?: boolean }) => (
-    <div
-      data-testid="recent-items-widget"
-      data-tutorial="dashboard-recent-items-widget"
-      data-compact={compact}
-    >
-      RecentItems
-    </div>
-  ),
-}));
-
 // Capture tutorial props to verify V4 steps are passed
 let capturedTutorialProps: Record<string, unknown> = {};
 vi.mock("../DashboardTutorial", () => ({
@@ -85,10 +73,6 @@ vi.mock("../dashboardTutorialStepsV4", () => ({
       element: '[data-tutorial="dashboard-compact-activity"]',
       popover: { title: "Activity" },
     },
-    {
-      element: '[data-tutorial="dashboard-recent-items-widget"]',
-      popover: { title: "Recently Viewed" },
-    },
     { popover: { title: "Done" } },
   ],
 }));
@@ -103,15 +87,19 @@ function renderDashboard() {
 // ---------- Tests ----------
 
 describe("PrincipalDashboardV4", () => {
-  // 1. Renders all 6 key sections
+  // 1. Renders all 5 key sections
   it("renders KPISummaryRow", () => {
     renderDashboard();
     expect(screen.getByTestId("kpi-summary-row")).toBeInTheDocument();
   });
 
-  it("renders PrincipalPipelineTable", () => {
+  it("renders PrincipalPipelineTable inside a Card", () => {
     renderDashboard();
-    expect(screen.getByTestId("pipeline-table")).toBeInTheDocument();
+    const pipeline = screen.getByTestId("pipeline-table");
+    expect(pipeline).toBeInTheDocument();
+    // The pipeline stub should be wrapped in a Card (rendered as a div with Card classes)
+    const cardParent = pipeline.closest(".lg\\:col-span-6");
+    expect(cardParent).not.toBeNull();
   });
 
   it("renders DashboardTasksList", () => {
@@ -129,13 +117,6 @@ describe("PrincipalDashboardV4", () => {
     expect(screen.getByTestId("compact-performance")).toBeInTheDocument();
   });
 
-  it("renders RecentItemsWidget with compact prop", () => {
-    renderDashboard();
-    const recentItems = screen.getByTestId("recent-items-widget");
-    expect(recentItems).toBeInTheDocument();
-    expect(recentItems).toHaveAttribute("data-compact", "true");
-  });
-
   // 2. Renders tutorial
   it("renders DashboardTutorial", () => {
     renderDashboard();
@@ -149,27 +130,34 @@ describe("PrincipalDashboardV4", () => {
     expect(Array.isArray(capturedTutorialProps.steps)).toBe(true);
   });
 
-  // 4. Layout structure — primary + secondary 12-column grid rows
-  it("uses primary and secondary 12-column grid rows", () => {
+  // 4. Layout structure
+  it("uses a 12-column grid layout", () => {
     const { container } = renderDashboard();
-    const grids = container.querySelectorAll(".lg\\:grid-cols-12");
-    expect(grids.length).toBe(2);
+    const main = container.querySelector("main");
+    expect(main).toBeInTheDocument();
+    expect(main?.classList.contains("lg:grid-cols-12")).toBe(true);
   });
 
-  // 5. Obsolete V3 artifacts absent
+  // 5. Obsolete V3/V4 artifacts absent
   it("does not render obsolete tab or widget-row artifacts", () => {
     const { container } = renderDashboard();
     expect(container.querySelector('[data-tutorial="dashboard-tabs"]')).toBeNull();
     expect(container.querySelector('[data-tutorial="dashboard-widget-row"]')).toBeNull();
   });
 
-  // 6. TaskCompleteSheet dead code removed
+  // 6. RecentItemsWidget intentionally dropped
+  it("does not render RecentItemsWidget", () => {
+    renderDashboard();
+    expect(screen.queryByTestId("recent-items-widget")).not.toBeInTheDocument();
+  });
+
+  // 7. TaskCompleteSheet dead code removed
   it("does not render TaskCompleteSheet", () => {
     renderDashboard();
     expect(screen.queryByTestId("task-complete-sheet")).not.toBeInTheDocument();
   });
 
-  // 7. Tutorial selector integrity
+  // 8. Tutorial selector integrity
   it("has matching DOM elements for all V4 tutorial steps with element selectors", () => {
     renderDashboard();
     const steps = capturedTutorialProps.steps as Array<{ element?: string }>;

@@ -14,13 +14,13 @@ export const buttonVariants = cva(
       variant: {
         // Default: subtle shadow elevation on hover (1px lift)
         default:
-          "bg-primary text-primary-foreground shadow-[var(--btn-shadow-rest)] hover:bg-primary/90 hover:shadow-[var(--btn-shadow-hover)] motion-safe:hover:-translate-y-px active:bg-primary/80 active:shadow-none active:translate-y-0",
+          "bg-primary text-primary-foreground shadow-[var(--btn-shadow-rest)] hover:bg-primary/90 hover:shadow-[var(--btn-shadow-hover)] active:bg-primary/80 active:shadow-none",
         destructive:
-          "bg-destructive text-destructive-foreground shadow-[var(--btn-shadow-rest)] hover:bg-destructive/90 hover:shadow-[var(--btn-shadow-hover)] motion-safe:hover:-translate-y-px active:bg-destructive/80 active:shadow-none active:translate-y-0",
+          "bg-destructive text-destructive-foreground shadow-[var(--btn-shadow-rest)] hover:bg-destructive/90 hover:shadow-[var(--btn-shadow-hover)] active:bg-destructive/80 active:shadow-none",
         outline:
-          "border bg-background shadow-[var(--btn-shadow-rest)] hover:bg-accent hover:text-accent-foreground hover:shadow-[var(--btn-shadow-hover)] motion-safe:hover:-translate-y-px active:bg-accent/80 active:shadow-none active:translate-y-0",
+          "border bg-background shadow-[var(--btn-shadow-rest)] hover:bg-accent hover:text-accent-foreground hover:shadow-[var(--btn-shadow-hover)] active:bg-accent/80 active:shadow-none",
         secondary:
-          "bg-secondary text-secondary-foreground shadow-[var(--btn-shadow-rest)] hover:bg-secondary/80 hover:shadow-[var(--btn-shadow-hover)] motion-safe:hover:-translate-y-px active:bg-secondary/70 active:shadow-none active:translate-y-0",
+          "border border-input bg-background text-foreground shadow-[var(--btn-shadow-rest)] hover:bg-accent hover:text-accent-foreground hover:shadow-[var(--btn-shadow-hover)] active:bg-accent/80 active:shadow-none",
         ghost: "hover:bg-accent hover:text-accent-foreground active:bg-accent/80",
         link: "text-primary underline-offset-4 hover:underline active:text-primary/80",
       },

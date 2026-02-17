@@ -37,7 +37,7 @@ function RelatedEntityCard({
           <Icon className="size-5 text-muted-foreground mt-0.5 shrink-0" />
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2">
-              <span className="text-xs text-muted-foreground uppercase tracking-wide">{label}</span>
+              <span className="paper-micro-label">{label}</span>
               {badge && (
                 <Badge variant={badge.variant || "outline"} className="text-xs">
                   {badge.label}

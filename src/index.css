@@ -129,11 +129,10 @@
   --spacing-top-offset: 60px; /* Reduced from 80px for better space usage */
 
   /* Layout constraint */
-  --layout-max-width: 1400px;
+  --layout-max-width: 1536px;
 
-  /* Desktop Data Density Tokens - NEW */
-  --row-height-compact: 48px; /* Compact row height for data tables */
-  --row-height-comfortable: 64px; /* Comfortable row height */
+  /* Fixed row height - single density */
+  --row-height: 58px;
   --row-padding-desktop: 6px 12px; /* Row padding for desktop density */
   --hover-zone-padding: 4px; /* Padding for hover/focus zones */
   --action-button-size: 28px; /* Compact action button size */
@@ -149,7 +148,6 @@
   --list-toolbar-control-height-mobile: 44px;
   --list-toolbar-control-height-desktop: 36px;
   --list-row-focus-ring-width: 2px;
-  --row-height-ipad: 52px;
 }
 
 @layer utilities {
@@ -473,8 +471,7 @@
     border-color: color-mix(in oklch, var(--paper-divider) 40%, transparent);
     transition: all var(--duration-normal) var(--ease-out-soft);
 
-    /* Hover elevation - shadow lift with subtle translate for premium feel */
-    @apply motion-safe:hover:-translate-y-px;
+    /* Hover: background + border change only (no physical lift) */
 
     /* Cursor pointer for clickable rows */
     @apply cursor-pointer;
@@ -490,87 +487,43 @@
   /* Note: height on tr is more reliable than min-height on td for enforcing row height */
   /* Performance: content-visibility skips rendering off-screen rows in long lists */
   .table-row-premium {
-    height: var(--row-height-comfortable);
+    height: var(--row-height);
     content-visibility: auto;
-    contain-intrinsic-size: 0 var(--row-height-comfortable);
+    contain-intrinsic-size: 0 var(--row-height);
     border-left: 3px solid transparent;
+    border-bottom: 1px solid color-mix(in oklch, var(--paper-divider) 15%, transparent);
     border-radius: 0;
-    border-color: transparent;
-    border-left-color: transparent;
   }
 
-  .interactive-card:hover,
-  .table-row-premium:hover {
+  .interactive-card:hover {
     background: var(--paper-row-hover-bg);
     border-color: color-mix(in oklch, var(--paper-divider) 65%, transparent);
   }
 
+  .table-row-premium:hover {
+    background: var(--paper-row-hover-bg);
+  }
+
   /* Ensure React Admin row defaults do not override list density heights */
   .RaDatagrid-table tbody .RaDatagrid-row {
-    height: var(--row-height-comfortable) !important;
-    min-height: var(--row-height-comfortable) !important;
+    height: var(--row-height) !important;
+    min-height: var(--row-height) !important;
   }
 
   .table-row-premium td {
-    @apply py-4;
+    @apply py-3;
     vertical-align: middle;
-    border-bottom: 1px solid color-mix(in oklch, var(--paper-divider) 45%, transparent);
+    border-bottom: none;
   }
 
   .RaDatagrid-table tbody .RaDatagrid-row > td {
-    padding-top: 1rem !important;
-    padding-bottom: 1rem !important;
-  }
-
-  /* iPad-first density: slightly denser rows for list-heavy tablet layouts */
-  @media (min-width: 768px) and (max-width: 1279px) {
-    .table-row-premium {
-      height: var(--row-height-ipad);
-      contain-intrinsic-size: 0 var(--row-height-ipad);
-    }
-  }
-
-  /* Compact density variant — scoped to containers with data-density="compact" */
-  /* Used by dashboard Pipeline table; does NOT affect global PremiumDatagrid tables */
-  [data-density="compact"] .table-row-premium,
-  [data-list-density="compact"] .table-row-premium {
-    height: var(--row-height-compact);
-    contain-intrinsic-size: 0 var(--row-height-compact);
-  }
-
-  [data-density="compact"] .RaDatagrid-table tbody .RaDatagrid-row,
-  [data-list-density="compact"] .RaDatagrid-table tbody .RaDatagrid-row {
-    height: var(--row-height-compact) !important;
-    min-height: var(--row-height-compact) !important;
-  }
-
-  [data-density="compact"] .table-row-premium td,
-  [data-list-density="compact"] .table-row-premium td {
-    padding-top: 0.5rem;
-    padding-bottom: 0.5rem;
-    vertical-align: middle;
-  }
-
-  [data-density="compact"] .RaDatagrid-table tbody .RaDatagrid-row > td,
-  [data-list-density="compact"] .RaDatagrid-table tbody .RaDatagrid-row > td {
-    padding-top: 0.5rem !important;
-    padding-bottom: 0.5rem !important;
-  }
-
-  [data-density="comfortable"] .table-row-premium td,
-  [data-list-density="comfortable"] .table-row-premium td {
-    padding-top: 1.125rem;
-    padding-bottom: 1.125rem;
-  }
-
-  [data-density="comfortable"] .RaDatagrid-table tbody .RaDatagrid-row > td,
-  [data-list-density="comfortable"] .RaDatagrid-table tbody .RaDatagrid-row > td {
-    padding-top: 1.125rem !important;
-    padding-bottom: 1.125rem !important;
+    padding-top: 0.75rem !important;
+    padding-bottom: 0.75rem !important;
   }
 
   .table-row-premium:hover {
     border-left-color: color-mix(in oklch, var(--paper-row-hover-accent) 72%, transparent);
+    border-bottom-color: color-mix(in oklch, var(--paper-divider) 30%, transparent);
     box-shadow: var(--paper-row-hover-shadow);
   }
 
@@ -584,34 +537,11 @@
     min-height: 100%;
   }
 
-  @media (min-width: 1024px) {
-    .RaDatagrid-row [data-row-actions],
-    .table-row-premium [data-row-actions] {
-      opacity: 0;
-      pointer-events: none;
-      transform: translateX(4px);
-      transition:
-        opacity 150ms ease,
-        transform 150ms ease;
-    }
-
-    .RaDatagrid-row:hover [data-row-actions],
-    .RaDatagrid-row:focus-within [data-row-actions],
-    .table-row-premium:hover [data-row-actions],
-    .table-row-premium:focus-within [data-row-actions] {
-      opacity: 1;
-      pointer-events: auto;
-      transform: translateX(0);
-    }
-  }
-
-  @media (max-width: 1023px) {
-    .RaDatagrid-row [data-row-actions],
-    .table-row-premium [data-row-actions] {
-      opacity: 1;
-      pointer-events: auto;
-      transform: none;
-    }
+  /* Row actions - always visible */
+  .RaDatagrid-row [data-row-actions],
+  .table-row-premium [data-row-actions] {
+    opacity: 1;
+    pointer-events: auto;
   }
 
   /* Standard card container */
@@ -658,7 +588,7 @@
 
   .paper-card {
     background: var(--surface-paper-card);
-    border: 1px solid color-mix(in oklch, var(--paper-divider) 75%, var(--surface-paper-card));
+    border: 1px solid color-mix(in oklch, var(--paper-divider) 50%, var(--surface-paper-card));
     border-radius: 0.625rem;
     box-shadow: var(--paper-shadow-1);
   }
@@ -667,6 +597,11 @@
     background: var(--surface-paper-inner);
     border: 1px solid color-mix(in oklch, var(--paper-divider) 55%, transparent);
     border-radius: 0.5rem;
+  }
+
+  .paper-micro-label {
+    @apply text-xs font-medium text-muted-foreground;
+    letter-spacing: 0.02em;
   }
 
   .paper-section-rule {
@@ -690,18 +625,18 @@
 
   .paper-tabs-list {
     @apply h-11 w-full justify-start gap-1 bg-transparent p-0 rounded-none;
-    border-bottom: 1px solid var(--paper-divider);
+    border-bottom: 1px solid color-mix(in oklch, var(--paper-divider) 50%, transparent);
   }
 
   .paper-tabs-trigger {
     @apply h-11 rounded-none border-b-2 border-transparent bg-transparent px-6;
     @apply text-xs font-semibold uppercase tracking-[0.06em] text-muted-foreground transition-colors;
-    @apply data-[state=active]:text-[color:var(--text-title)] data-[state=active]:border-[color:var(--olive-base,var(--brand-700))];
+    @apply data-[state=active]:text-[color:var(--text-title)] data-[state=active]:border-[color:color-mix(in_oklch,var(--olive-base,var(--brand-700))_70%,transparent)];
     @apply data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:font-bold;
   }
 
   .paper-kpi-title {
-    @apply text-xs font-semibold uppercase tracking-[0.11em] text-muted-foreground;
+    @apply text-xs font-semibold uppercase tracking-[0.06em] text-muted-foreground;
   }
 
   .paper-kpi-divider {
@@ -759,7 +694,7 @@
     color: var(--paper-header-foreground);
     font-size: 0.75rem;
     font-weight: 600;
-    letter-spacing: 0.12em;
+    letter-spacing: 0.06em;
     text-transform: uppercase;
   }
 
@@ -802,11 +737,9 @@
   .card-interactive:hover {
     box-shadow: var(--elevation-2);
     border-color: var(--stroke-card-hover);
-    transform: translateY(-1px);
   }
 
   .card-interactive:active {
-    transform: translateY(0);
     box-shadow: var(--elevation-1);
   }
 
@@ -991,7 +924,7 @@
   /* Micro-interaction timing - natural deceleration */
   --duration-fast: 100ms;
   --duration-normal: 150ms;
-  --duration-slow: 200ms;
+  --duration-slow: 150ms;
   --ease-out-soft: cubic-bezier(0.25, 0.1, 0.25, 1);
 
   /* Core Neutrals - OKLCH format with paper cream undertone (hue 92° for consistency) */
@@ -1026,7 +959,7 @@
 
   /* Foundation colors (semantic mappings) */
   --background: oklch(97.5% 0.01 92); /* Warm beige app background */
-  --foreground: oklch(20% 0.012 85); /* Slightly warmer dark text */
+  --foreground: oklch(18% 0.008 85); /* Darkened primary text */
   --card: oklch(100% 0 0); /* Pure white - material layering principle */
   --card-foreground: var(--neutral-700); /* Card text */
   --popover: oklch(100% 0 0); /* Pure white popover surface */
@@ -1119,33 +1052,33 @@
   --divider-warm: oklch(86% 0.01 85);
   --border-warm: oklch(82% 0.02 85);
 
-  /* Tag colors - V2: More aggressive contrast for better readability */
-  --tag-warm-bg: oklch(87% 0.07 80);
-  --tag-warm-fg: oklch(20% 0.02 85);
-  --tag-green-bg: oklch(88% 0.06 118); /* Olive-aligned (was hue 155) */
-  --tag-green-fg: oklch(20% 0.02 85);
-  --tag-teal-bg: oklch(86% 0.05 200);
-  --tag-teal-fg: oklch(20% 0.02 85);
-  --tag-blue-bg: oklch(87% 0.04 255);
-  --tag-blue-fg: oklch(20% 0.02 85);
-  --tag-purple-bg: oklch(87% 0.06 305);
-  --tag-purple-fg: oklch(20% 0.02 85);
-  --tag-yellow-bg: oklch(92% 0.1 110);
-  --tag-yellow-fg: oklch(20% 0.02 85);
-  --tag-gray-bg: oklch(90% 0.015 85);
-  --tag-gray-fg: oklch(20% 0.02 85);
-  --tag-pink-bg: oklch(89% 0.07 15);
-  --tag-pink-fg: oklch(20% 0.02 85);
+  /* Tag colors - V3: Softened chroma (~25% reduction) for executive tone */
+  --tag-warm-bg: oklch(88% 0.05 80);
+  --tag-warm-fg: oklch(22% 0.02 85);
+  --tag-green-bg: oklch(89% 0.045 118); /* Olive-aligned */
+  --tag-green-fg: oklch(22% 0.02 85);
+  --tag-teal-bg: oklch(87% 0.038 200);
+  --tag-teal-fg: oklch(22% 0.02 85);
+  --tag-blue-bg: oklch(88% 0.03 255);
+  --tag-blue-fg: oklch(22% 0.02 85);
+  --tag-purple-bg: oklch(88% 0.045 305);
+  --tag-purple-fg: oklch(22% 0.02 85);
+  --tag-yellow-bg: oklch(93% 0.075 110);
+  --tag-yellow-fg: oklch(22% 0.02 85);
+  --tag-gray-bg: oklch(91% 0.01 85);
+  --tag-gray-fg: oklch(22% 0.02 85);
+  --tag-pink-bg: oklch(90% 0.05 15);
+  --tag-pink-fg: oklch(22% 0.02 85);
 
-  /* Earth-tone tags with stronger saturation */
-  --tag-clay-bg: oklch(85% 0.075 50);
-  --tag-clay-fg: oklch(20% 0.02 85);
-  --tag-sage-bg: oklch(87% 0.05 120);
-  --tag-sage-fg: oklch(20% 0.02 85);
-  --tag-amber-bg: oklch(90% 0.08 85);
-  --tag-amber-fg: oklch(20% 0.02 85);
-  --tag-cocoa-bg: oklch(83% 0.06 75);
-  --tag-cocoa-fg: oklch(20% 0.02 85);
+  /* Earth-tone tags — softened chroma */
+  --tag-clay-bg: oklch(86% 0.055 50);
+  --tag-clay-fg: oklch(22% 0.02 85);
+  --tag-sage-bg: oklch(88% 0.038 120);
+  --tag-sage-fg: oklch(22% 0.02 85);
+  --tag-amber-bg: oklch(91% 0.06 85);
+  --tag-amber-fg: oklch(22% 0.02 85);
+  --tag-cocoa-bg: oklch(84% 0.045 75);
+  --tag-cocoa-fg: oklch(22% 0.02 85);
 
   /* ========================================
      PIPELINE STAGE COLORS
@@ -1338,13 +1271,13 @@
   /* Interactive Surface System - Hover/focus states */
   --surface-interactive-hover: oklch(99% 0.006 92); /* Warm hover tint */
 
-  /* Product lifecycle/status semantic tokens */
-  --status-cold-bg: oklch(94.5% 0.03 240);
-  --status-cold-fg: oklch(44% 0.08 240);
-  --status-active-bg: oklch(94.5% 0.04 150);
-  --status-active-fg: oklch(40% 0.1 150);
-  --status-discontinued-bg: oklch(94% 0.045 25);
-  --status-discontinued-fg: oklch(44% 0.11 25);
+  /* Product lifecycle/status semantic tokens — softened chroma */
+  --status-cold-bg: oklch(95.5% 0.02 240);
+  --status-cold-fg: oklch(45% 0.06 240);
+  --status-active-bg: oklch(95.5% 0.025 150);
+  --status-active-fg: oklch(42% 0.07 150);
+  --status-discontinued-bg: oklch(95% 0.03 25);
+  --status-discontinued-fg: oklch(45% 0.08 25);
 
   /* Text Hierarchy - Improved contrast for widget titles and metrics */
   /* Zen Recommendation: Warm-tint all text for complete cohesion with paper cream background */
@@ -1360,6 +1293,13 @@
   --avatar-highlight: inset 0 1px 0 0 oklch(100% 0 0 / 0.18);
   --avatar-fallback-bg: oklch(89% 0.02 72);
   --avatar-fallback-fg: oklch(28% 0.025 72);
+
+  /* Dashboard Layout Tokens */
+  --dashboard-tasks-width: 320px;
+  --dashboard-icon-rail-width: 48px;
+  --dashboard-tasks-drawer-width: 70%;
+  --dashboard-transition-duration: 150ms;
+  --dashboard-transition-easing: ease-out;
 
   /*
    * Usage Guide:
@@ -1545,38 +1485,46 @@
   --clay-surface-dark: oklch(22% 0.03 32);
   --clay-text: oklch(72% 0.1 32);
 
+  /* Status badges — dark mode (legible on dark surfaces, same hues as light) */
+  --status-cold-bg: oklch(25% 0.04 240);
+  --status-cold-fg: oklch(72% 0.07 240);
+  --status-active-bg: oklch(25% 0.05 150);
+  --status-active-fg: oklch(72% 0.08 150);
+  --status-discontinued-bg: oklch(28% 0.05 25);
+  --status-discontinued-fg: oklch(72% 0.09 25);
+
   /* Executive supporting neutrals - dark mode */
   --divider-warm: oklch(30% 0.01 85);
   --border-warm: oklch(35% 0.02 85);
 
-  /* Tag colors - dark mode: Mirrored from light mode for consistent readability */
-  /* High-contrast tags that pop against dark backgrounds with dark text on light backgrounds */
-  --tag-warm-bg: oklch(87% 0.07 80);
-  --tag-warm-fg: oklch(20% 0.02 85);
-  --tag-green-bg: oklch(88% 0.06 118); /* Olive-aligned (was hue 155) */
-  --tag-green-fg: oklch(20% 0.02 85);
-  --tag-teal-bg: oklch(86% 0.05 200);
-  --tag-teal-fg: oklch(20% 0.02 85);
-  --tag-blue-bg: oklch(87% 0.04 255);
-  --tag-blue-fg: oklch(20% 0.02 85);
-  --tag-purple-bg: oklch(87% 0.06 305);
-  --tag-purple-fg: oklch(20% 0.02 85);
-  --tag-yellow-bg: oklch(92% 0.1 110);
-  --tag-yellow-fg: oklch(20% 0.02 85);
-  --tag-gray-bg: oklch(90% 0.015 85);
-  --tag-gray-fg: oklch(20% 0.02 85);
-  --tag-pink-bg: oklch(89% 0.07 15);
-  --tag-pink-fg: oklch(20% 0.02 85);
+  /* Tag colors - dark mode: Mirrored from light mode V3 (softened chroma) */
+  /* Light badges on dark surfaces — same values as light mode */
+  --tag-warm-bg: oklch(88% 0.05 80);
+  --tag-warm-fg: oklch(22% 0.02 85);
+  --tag-green-bg: oklch(89% 0.045 118); /* Olive-aligned */
+  --tag-green-fg: oklch(22% 0.02 85);
+  --tag-teal-bg: oklch(87% 0.038 200);
+  --tag-teal-fg: oklch(22% 0.02 85);
+  --tag-blue-bg: oklch(88% 0.03 255);
+  --tag-blue-fg: oklch(22% 0.02 85);
+  --tag-purple-bg: oklch(88% 0.045 305);
+  --tag-purple-fg: oklch(22% 0.02 85);
+  --tag-yellow-bg: oklch(93% 0.075 110);
+  --tag-yellow-fg: oklch(22% 0.02 85);
+  --tag-gray-bg: oklch(91% 0.01 85);
+  --tag-gray-fg: oklch(22% 0.02 85);
+  --tag-pink-bg: oklch(90% 0.05 15);
+  --tag-pink-fg: oklch(22% 0.02 85);
 
-  /* Earth-tone tags - dark mode mirrored from light mode */
-  --tag-clay-bg: oklch(85% 0.075 50);
-  --tag-clay-fg: oklch(20% 0.02 85);
-  --tag-sage-bg: oklch(87% 0.05 120);
-  --tag-sage-fg: oklch(20% 0.02 85);
-  --tag-amber-bg: oklch(90% 0.08 85);
-  --tag-amber-fg: oklch(20% 0.02 85);
-  --tag-cocoa-bg: oklch(83% 0.06 75);
-  --tag-cocoa-fg: oklch(20% 0.02 85);
+  /* Earth-tone tags — dark mode mirrored (softened chroma) */
+  --tag-clay-bg: oklch(86% 0.055 50);
+  --tag-clay-fg: oklch(22% 0.02 85);
+  --tag-sage-bg: oklch(88% 0.038 120);
+  --tag-sage-fg: oklch(22% 0.02 85);
+  --tag-amber-bg: oklch(91% 0.06 85);
+  --tag-amber-fg: oklch(22% 0.02 85);
+  --tag-cocoa-bg: oklch(84% 0.045 75);
+  --tag-cocoa-fg: oklch(22% 0.02 85);
 
   /* Pipeline Stage Colors - Dark Mode */
   /* Stage tokens use semantic refs which auto-update for dark mode */
@@ -1867,7 +1815,7 @@ input[type="time"] {
 
 /* Smooth transitions for overlay */
 .driver-overlay {
-  transition: opacity 0.2s ease-in-out;
+  transition: opacity 150ms ease-in-out;
 }
 
 /* Tutorial button touch targets - 44px minimum for iPad accessibility */

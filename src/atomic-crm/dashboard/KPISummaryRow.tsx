@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import { AlertCircle, Activity, Briefcase, AlertTriangle } from "lucide-react";
 import { KPICard } from "@/components/ui/kpi-card";
 import { useKPIMetrics } from "./useKPIMetrics";
 
@@ -40,67 +41,66 @@ export function KPISummaryRow() {
   const { metrics, trends, loading } = useKPIMetrics();
 
   return (
-    <div className="mb-3 border-t border-b border-[var(--divider-warm)] py-1 bg-transparent">
-      <section
-        aria-label="Key Performance Indicators"
-        className="grid grid-cols-2 xl:grid-cols-4 gap-0"
-        data-tutorial="dashboard-kpi-row"
-      >
-        {/* KPI #1: Open Opportunities (count, not $ value) */}
-        <KPICard
-          title="Open Opportunities"
-          value={formatKPIValue(metrics.openOpportunitiesCount)}
-          loading={loading}
-          tone="neutral"
-          emphasis="executiveBand"
-          onClick={() => navigate(KPI_NAVIGATION.openOpportunities)}
-          data-tutorial="dashboard-kpi-open-opportunities"
-        />
+    <section
+      aria-label="Key Performance Indicators"
+      className="grid grid-cols-2 gap-2"
+      data-tutorial="dashboard-kpi-row"
+    >
+      {/* KPI #1: Open Opportunities (count, not $ value) */}
+      <KPICard
+        title="Open Opportunities"
+        value={formatKPIValue(metrics.openOpportunitiesCount)}
+        icon={Briefcase}
+        loading={loading}
+        tone="neutral"
+        emphasis="executiveCompact"
+        onClick={() => navigate(KPI_NAVIGATION.openOpportunities)}
+        data-tutorial="dashboard-kpi-open-opportunities"
+      />
 
-        {/* KPI #2: Overdue Tasks (clay accent when > 0) */}
-        <KPICard
-          title="Overdue Tasks"
-          value={formatKPIValue(metrics.overdueTasksCount)}
-          loading={loading}
-          tone={
-            metrics.overdueTasksCount !== null && metrics.overdueTasksCount > 0
-              ? "critical"
-              : "neutral"
-          }
-          emphasis="executiveBand"
-          className="border-l border-[var(--divider-warm)]/40"
-          onClick={() => navigate(KPI_NAVIGATION.overdueTasks)}
-          data-tutorial="dashboard-kpi-overdue-tasks"
-        />
+      {/* KPI #2: Overdue Tasks (clay accent when > 0) */}
+      <KPICard
+        title="Overdue Tasks"
+        value={formatKPIValue(metrics.overdueTasksCount)}
+        icon={AlertCircle}
+        loading={loading}
+        tone={
+          metrics.overdueTasksCount !== null && metrics.overdueTasksCount > 0
+            ? "critical"
+            : "neutral"
+        }
+        emphasis="executiveCompact"
+        onClick={() => navigate(KPI_NAVIGATION.overdueTasks)}
+        data-tutorial="dashboard-kpi-overdue-tasks"
+      />
 
-        {/* KPI #3: Team Activities This Week */}
-        <KPICard
-          title="Team Activities"
-          value={formatKPIValue(metrics.activitiesThisWeek)}
-          loading={loading}
-          tone="neutral"
-          emphasis="executiveBand"
-          className="border-t xl:border-t-0 xl:border-l border-[var(--divider-warm)]/40"
-          subtitle={formatRecentActivitySubtitle(metrics.recentActivityCount)}
-          trend={trends.activitiesThisWeek ?? undefined}
-          onClick={() => navigate(KPI_NAVIGATION.activitiesThisWeek)}
-          data-tutorial="dashboard-kpi-activities"
-        />
+      {/* KPI #3: Team Activities This Week */}
+      <KPICard
+        title="Team Activities"
+        value={formatKPIValue(metrics.activitiesThisWeek)}
+        icon={Activity}
+        loading={loading}
+        tone="neutral"
+        emphasis="executiveCompact"
+        subtitle={formatRecentActivitySubtitle(metrics.recentActivityCount)}
+        trend={trends.activitiesThisWeek ?? undefined}
+        onClick={() => navigate(KPI_NAVIGATION.activitiesThisWeek)}
+        data-tutorial="dashboard-kpi-activities"
+      />
 
-        {/* KPI #4: Stale Deals (warning when > 0) */}
-        <KPICard
-          title="Stale Deals"
-          value={formatKPIValue(metrics.staleDealsCount)}
-          loading={loading}
-          tone={
-            metrics.staleDealsCount !== null && metrics.staleDealsCount > 0 ? "warning" : "neutral"
-          }
-          emphasis="executiveBand"
-          className="border-t border-l xl:border-t-0 border-[var(--divider-warm)]/40"
-          onClick={() => navigate(KPI_NAVIGATION.staleDeals)}
-          data-tutorial="dashboard-kpi-stale-deals"
-        />
-      </section>
-    </div>
+      {/* KPI #4: Stale Deals (warning when > 0) */}
+      <KPICard
+        title="Stale Deals"
+        value={formatKPIValue(metrics.staleDealsCount)}
+        icon={AlertTriangle}
+        loading={loading}
+        tone={
+          metrics.staleDealsCount !== null && metrics.staleDealsCount > 0 ? "warning" : "neutral"
+        }
+        emphasis="executiveCompact"
+        onClick={() => navigate(KPI_NAVIGATION.staleDeals)}
+        data-tutorial="dashboard-kpi-stale-deals"
+      />
+    </section>
   );
 }

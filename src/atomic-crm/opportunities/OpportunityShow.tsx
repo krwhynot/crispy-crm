@@ -114,9 +114,7 @@ const OpportunityShowContent = () => {
 
                 <div className="flex gap-8 mb-4">
                   <div className={`flex flex-col ${DETAIL_FIELD_MIN_WIDTH}`}>
-                    <span className="text-xs text-muted-foreground tracking-wide uppercase">
-                      Expected closing date
-                    </span>
+                    <span className="paper-micro-label">Expected closing date</span>
                     <div className="flex items-center gap-2">
                       <span className="text-sm">
                         {parseDateSafely(record.estimated_close_date)
@@ -147,18 +145,14 @@ const OpportunityShowContent = () => {
                   </div>
 
                   <div className={`flex flex-col ${DETAIL_FIELD_MIN_WIDTH}`}>
-                    <span className="text-xs text-muted-foreground tracking-wide uppercase">
-                      Stage
-                    </span>
+                    <span className="paper-micro-label">Stage</span>
                     <span className="text-sm">
                       {findOpportunityLabel(opportunityStageChoices, record.stage)}
                     </span>
                   </div>
 
                   <div className={`flex flex-col ${DETAIL_FIELD_MIN_WIDTH}`}>
-                    <span className="text-xs text-muted-foreground tracking-wide uppercase">
-                      Priority
-                    </span>
+                    <span className="paper-micro-label">Priority</span>
                     <Badge
                       variant={
                         record.priority === "critical"
@@ -186,9 +180,7 @@ const OpportunityShowContent = () => {
                   <div className="flex gap-8 mb-4">
                     {record.opportunity_owner_id && (
                       <div className={`flex flex-col ${DETAIL_FIELD_MIN_WIDTH}`}>
-                        <span className="text-xs text-muted-foreground tracking-wide uppercase">
-                          Opportunity Owner
-                        </span>
+                        <span className="paper-micro-label">Opportunity Owner</span>
                         <div className="flex items-center gap-2">
                           <ReferenceField
                             source="opportunity_owner_id"
@@ -208,9 +200,7 @@ const OpportunityShowContent = () => {
 
                     {record.account_manager_id && (
                       <div className={`flex flex-col ${DETAIL_FIELD_MIN_WIDTH}`}>
-                        <span className="text-xs text-muted-foreground tracking-wide uppercase">
-                          Account Manager
-                        </span>
+                        <span className="paper-micro-label">Account Manager</span>
                         <ReferenceField
                           source="account_manager_id"
                           reference="sales"
@@ -221,9 +211,7 @@ const OpportunityShowContent = () => {
 
                     {record.lead_source && (
                       <div className={`flex flex-col ${DETAIL_FIELD_MIN_WIDTH}`}>
-                        <span className="text-xs text-muted-foreground tracking-wide uppercase">
-                          Lead Source
-                        </span>
+                        <span className="paper-micro-label">Lead Source</span>
                         <span className="text-sm">
                           {record.lead_source
                             .replace(/_/g, " ")
@@ -237,9 +225,7 @@ const OpportunityShowContent = () => {
                 {!!record.contact_ids?.length && (
                   <div className="mb-4">
                     <div className="flex flex-col">
-                      <span className="text-xs text-muted-foreground tracking-wide uppercase mb-2">
-                        Contacts
-                      </span>
+                      <span className="paper-micro-label mb-2">Contacts</span>
                       <ReferenceArrayField source="contact_ids" reference="contacts_summary">
                         <ContactList />
                       </ReferenceArrayField>
@@ -250,9 +236,7 @@ const OpportunityShowContent = () => {
                 {/* Created Date and Creator */}
                 <div className="flex gap-8 mb-4">
                   <div className={`flex flex-col ${DETAIL_FIELD_MIN_WIDTH}`}>
-                    <span className="text-xs text-muted-foreground tracking-wide uppercase">
-                      Created
-                    </span>
+                    <span className="paper-micro-label">Created</span>
                     <span className="text-sm">
                       {parseDateSafely(record.created_at)
                         ? format(parseDateSafely(record.created_at)!, "PPp")
@@ -268,9 +252,7 @@ const OpportunityShowContent = () => {
 
                   {record.created_by && (
                     <div className={`flex flex-col ${DETAIL_FIELD_MIN_WIDTH}`}>
-                      <span className="text-xs text-muted-foreground tracking-wide uppercase">
-                        Created By
-                      </span>
+                      <span className="paper-micro-label">Created By</span>
                       <div className="flex items-center gap-2">
                         <ReferenceField source="created_by" reference="sales" link={false}>
                           <SaleAvatar size="sm" />
@@ -283,18 +265,14 @@ const OpportunityShowContent = () => {
 
                 {record.description && (
                   <div className="mb-4 whitespace-pre-line">
-                    <span className="text-xs text-muted-foreground tracking-wide uppercase mb-2 block">
-                      Description
-                    </span>
+                    <span className="paper-micro-label mb-2 block">Description</span>
                     <p className="text-sm leading-6">{record.description}</p>
                   </div>
                 )}
 
                 <div className="mb-4">
                   <div className="flex flex-col">
-                    <span className="text-xs text-muted-foreground tracking-wide uppercase mb-2">
-                      Products
-                    </span>
+                    <span className="paper-micro-label mb-2">Products</span>
                     <ProductsTable products={record.products || []} />
                   </div>
                 </div>

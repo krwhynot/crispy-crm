@@ -1,16 +1,7 @@
 import { useCallback, useEffect } from "react";
 import type { DatagridProps } from "react-admin";
 import { Datagrid, DatagridConfigurable, useListContext } from "react-admin";
-import { useListDensityContext, type ListDensity } from "@/components/layouts/ListDensityContext";
 import { cn } from "@/lib/utils";
-
-function useSafeListDensityContext(): ListDensity {
-  try {
-    return useListDensityContext().density;
-  } catch {
-    return "comfortable";
-  }
-}
 
 /**
  * PremiumDatagrid - Enhanced Datagrid wrapper with premium hover effects
@@ -102,7 +93,6 @@ export function PremiumDatagrid({
   ...props
 }: PremiumDatagridProps) {
   const { data } = useListContext();
-  const density = useSafeListDensityContext();
 
   // Stable row click handler using useCallback to prevent infinite re-renders
   // Only wraps onRowClick - props.rowClick is passed directly when onRowClick is not provided
@@ -183,7 +173,6 @@ export function PremiumDatagrid({
         stickyHeader && "sticky-header"
       )}
       data-sticky-header={stickyHeader ? "true" : "false"}
-      data-list-density={density}
     >
       <DatagridComponent {...componentProps} />
     </div>

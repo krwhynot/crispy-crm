@@ -210,6 +210,7 @@ export const OrganizationCreateFormFooter = ({
           />
           <SaveButton
             type="button"
+            variant="secondary"
             label={buttonLabel("Save & Add Another")}
             alwaysEnable={!isButtonDisabled}
             disabled={isButtonDisabled}

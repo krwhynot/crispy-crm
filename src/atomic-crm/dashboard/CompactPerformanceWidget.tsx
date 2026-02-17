@@ -34,7 +34,7 @@ const COMPACT_METRIC_CONFIG: Record<PerformanceMetricType, { icon: LucideIcon; l
 };
 
 /**
- * Navigation URLs for each metric
+ * Navigation URLs for each metric, matching KPI_NAVIGATION from MyPerformanceWidget
  */
 const PERFORMANCE_NAVIGATION: Record<PerformanceMetricType, string> = {
   activitiesThisWeek: "/reports",
@@ -81,7 +81,7 @@ function CompactMetricItem({ type, metric, onClick }: CompactMetricItemProps) {
 
   return (
     <div
-      className="flex items-center gap-2 rounded-md p-1 min-h-[44px] cursor-pointer hover:bg-muted/50 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1"
+      className="flex items-center gap-3 rounded-md p-1.5 min-h-[44px] cursor-pointer hover:bg-muted/50 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1"
       role="button"
       tabIndex={0}
       onClick={onClick}
@@ -162,9 +162,9 @@ export function CompactPerformanceWidget() {
           My Performance
         </CardTitle>
       </CardHeader>
-      <CardContent className="flex-1 px-2 pb-2">
+      <CardContent className="flex-1 px-3 pb-3">
         <div
-          className="grid grid-cols-2 gap-2"
+          className="grid grid-cols-2 gap-3"
           role="region"
           aria-label="Personal performance metrics"
         >
@@ -179,7 +179,7 @@ export function CompactPerformanceWidget() {
                 />
               ))}
         </div>
-        <p className="text-xs text-muted-foreground mt-1 text-center">vs. last week</p>
+        <p className="text-xs text-muted-foreground mt-2 text-center">vs. last week</p>
       </CardContent>
     </Card>
   );

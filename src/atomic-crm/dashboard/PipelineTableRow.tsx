@@ -1,11 +1,34 @@
 import { memo } from "react";
 import { TableCell, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
+import { TrendingUp, TrendingDown, Minus, AlertCircle, AlertTriangle } from "lucide-react";
 import type { PrincipalPipelineRow, Momentum } from "./types";
 
 interface PipelineTableRowProps {
   row: PrincipalPipelineRow;
   onRowClick: (row: PrincipalPipelineRow) => void;
+}
+
+/**
+ * Renders the momentum indicator icon based on pipeline health state.
+ *
+ * Icon mapping (from healthiest to most critical):
+ * - increasing: green up arrow - actively engaged, growing pipeline
+ * - steady: gray minus - stable but not growing
+ * - decreasing: amber down arrow - attention needed
+ * - stale: red alert - critical, needs immediate action
+ */
+function MomentumIcon({ momentum }: { momentum: Momentum }) {
+  switch (momentum) {
+    case "increasing":
+      return <TrendingUp className="h-4 w-4 text-success" />;
+    case "decreasing":
+      return <TrendingDown className="h-4 w-4 text-warning" />;
+    case "steady":
+      return <Minus className="h-4 w-4 text-foreground/60" />;
+    case "stale":
+      return <AlertCircle className="h-4 w-4 text-destructive" />;
+  }
 }
 
 /**
@@ -49,7 +72,7 @@ export const PipelineTableRow = memo(function PipelineTableRow({
 
   return (
     <TableRow
-      className="h-9 table-row-premium cursor-pointer relative hover:bg-[var(--divider-warm)]/10"
+      className="table-row-premium cursor-pointer relative"
       onClick={() => onRowClick(row)}
       onKeyDown={handleKeyDown}
       tabIndex={0}
@@ -57,7 +80,7 @@ export const PipelineTableRow = memo(function PipelineTableRow({
       aria-label={`View opportunities for ${row.name}. Pipeline momentum: ${row.momentum}`}
     >
       {/* Principal name with decay indicator */}
-      <TableCell className="font-medium relative px-3 py-1.5">
+      <TableCell className="font-medium relative">
         <div
           className={`absolute left-0 top-0 bottom-0 w-1.5 ${getDecayIndicatorColor(row.momentum)}`}
           aria-hidden="true"
@@ -66,33 +89,21 @@ export const PipelineTableRow = memo(function PipelineTableRow({
       </TableCell>
 
       {/* Pipeline count */}
-      <TableCell className="text-right px-3 py-1.5">
+      <TableCell className="text-right">
         <div className="font-semibold">{row.totalPipeline}</div>
       </TableCell>
 
-      {/* This week activity with inline trend arrow */}
-      <TableCell className="text-center px-3 py-1.5">
-        <div className="inline-flex items-center gap-0.5">
-          {row.activeThisWeek > 0 ? (
-            <Badge variant="success">{row.activeThisWeek}</Badge>
-          ) : (
-            <span className="text-muted-foreground">-</span>
-          )}
-          {row.activeThisWeek > row.activeLastWeek && (
-            <span className="text-xs text-[color:var(--olive-base)]" aria-label="Trending up">
-              &#x25B2;
-            </span>
-          )}
-          {row.activeThisWeek < row.activeLastWeek && (
-            <span className="text-xs text-[color:var(--clay-base)]" aria-label="Trending down">
-              &#x25BC;
-            </span>
-          )}
-        </div>
+      {/* This week activity */}
+      <TableCell className="text-center">
+        {row.activeThisWeek > 0 ? (
+          <Badge variant="success">{row.activeThisWeek}</Badge>
+        ) : (
+          <span className="text-muted-foreground">-</span>
+        )}
       </TableCell>
 
       {/* Last week activity - hidden on mobile to save space */}
-      <TableCell className="text-center hidden lg:table-cell px-3 py-1.5">
+      <TableCell className="text-center hidden lg:table-cell">
         {row.activeLastWeek > 0 ? (
           <Badge variant="secondary">{row.activeLastWeek}</Badge>
         ) : (
@@ -100,11 +111,42 @@ export const PipelineTableRow = memo(function PipelineTableRow({
         )}
       </TableCell>
 
-      {/* Subtle chevron indicator */}
-      <TableCell className="w-8 text-right px-2 py-1.5">
-        <span className="text-muted-foreground/50 text-sm" aria-hidden="true">
-          &rsaquo;
-        </span>
+      {/* Momentum indicator */}
+      <TableCell>
+        <div className="flex items-center gap-1">
+          <MomentumIcon momentum={row.momentum} />
+          <span className="text-sm capitalize">{row.momentum}</span>
+        </div>
+      </TableCell>
+
+      {/* Completed tasks (last 30 days) - hidden on mobile */}
+      <TableCell className="text-center hidden lg:table-cell">
+        {row.completedTasks30d > 0 ? (
+          <div className="flex flex-col items-center">
+            <span className="font-semibold">{row.completedTasks30d}</span>
+            {row.totalTasks30d > 0 && (
+              <span className="text-xs text-muted-foreground">
+                {Math.round((row.completedTasks30d / row.totalTasks30d) * 100)}%
+              </span>
+            )}
+          </div>
+        ) : (
+          <span className="text-muted-foreground">-</span>
+        )}
+      </TableCell>
+
+      {/* Next action - truncate with tooltip for long text */}
+      <TableCell className="max-w-[200px] lg:max-w-[280px]">
+        {row.nextAction ? (
+          <span className="text-sm text-foreground block truncate" title={row.nextAction}>
+            {row.nextAction}
+          </span>
+        ) : (
+          <span className="text-sm text-warning font-medium inline-flex items-center gap-1">
+            <AlertTriangle className="h-3.5 w-3.5" aria-hidden="true" />
+            No action scheduled
+          </span>
+        )}
       </TableCell>
     </TableRow>
   );

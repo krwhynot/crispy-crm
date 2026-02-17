@@ -1,12 +1,21 @@
 import { useState, useCallback, lazy, Suspense, useTransition } from "react";
 import { cn } from "@/lib/utils";
+import { Badge } from "@/components/ui/badge";
+import { AdminButton } from "@/components/admin/AdminButton";
 import { Table, TableBody, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { Switch } from "@/components/ui/switch";
 import { Skeleton } from "@/components/ui/skeleton";
-import { ArrowUpDown, ArrowUp, ArrowDown, Search } from "lucide-react";
+import { Filter, ArrowUpDown, ArrowUp, ArrowDown, Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import type { PrincipalPipelineRow } from "./types";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
+import type { PrincipalPipelineRow, Momentum } from "./types";
 import { usePrincipalPipeline } from "./usePrincipalPipeline";
 import { usePipelineTableState, type SortField } from "./usePipelineTableState";
 import { PipelineTableRow } from "./PipelineTableRow";
@@ -44,6 +53,8 @@ export function PrincipalPipelineTable() {
   const {
     searchQuery,
     setSearchQuery,
+    momentumFilters,
+    toggleMomentumFilter,
     handleSort,
     sortedData,
     sortField,
@@ -76,7 +87,7 @@ export function PrincipalPipelineTable() {
   // Loading state - matches production layout structure
   if (loading) {
     return (
-      <div className="flex flex-col p-3">
+      <div className="flex flex-col p-4">
         {/* Header skeleton matching production header */}
         <div className="border-b border-border pb-3">
           <div className="flex items-start justify-between">
@@ -95,23 +106,24 @@ export function PrincipalPipelineTable() {
         {/* Table skeleton with header and rows */}
         <div className="pt-2">
           {/* Table header */}
-          <div className="flex gap-4 px-2 py-2.5 border-b border-[var(--paper-divider)]">
+          <div className="flex gap-4 px-2 py-3 border-b border-border">
             <Skeleton className="h-4 w-32" />
             <Skeleton className="h-4 w-16 ml-auto" />
             <Skeleton className="h-4 w-20" />
             <Skeleton className="h-4 w-20 hidden lg:block" />
+            <Skeleton className="h-4 w-24" />
+            <Skeleton className="h-4 w-32" />
           </div>
           {/* Table rows */}
           <div className="space-y-1 pt-1">
             {[1, 2, 3, 4, 5].map((i) => (
-              <div
-                key={i}
-                className="flex items-center gap-4 px-2 py-2.5 border-b border-[var(--paper-divider)]"
-              >
+              <div key={i} className="flex items-center gap-4 px-2 py-3 border-b border-border/50">
                 <Skeleton className="h-4 w-28" />
                 <Skeleton className="h-5 w-8 ml-auto" />
                 <Skeleton className="h-5 w-8" />
                 <Skeleton className="h-5 w-8 hidden lg:block" />
+                <Skeleton className="h-4 w-20" />
+                <Skeleton className="h-4 w-36" />
               </div>
             ))}
           </div>
@@ -133,11 +145,7 @@ export function PrincipalPipelineTable() {
   }
 
   return (
-    <div
-      className="flex flex-col p-3"
-      data-density="compact"
-      data-tutorial="dashboard-pipeline-table"
-    >
+    <div className="flex flex-col p-4" data-tutorial="dashboard-pipeline-table">
       {/* Header with title and filters */}
       <div className="border-b border-border pb-3">
         <div className="flex flex-wrap items-start justify-between gap-y-2">
@@ -172,6 +180,10 @@ export function PrincipalPipelineTable() {
                 My Principals Only
               </label>
             </div>
+            <MomentumFilterDropdown
+              momentumFilters={momentumFilters}
+              toggleMomentumFilter={toggleMomentumFilter}
+            />
           </div>
         </div>
       </div>
@@ -179,7 +191,14 @@ export function PrincipalPipelineTable() {
       {/* Table - scroll container for sticky headers */}
       <div className={cn("pt-2 transition-opacity", isPending && "opacity-50")}>
         {sortedData?.length === 0 ? (
-          <EmptyState searchQuery={searchQuery} onClearSearch={() => setSearchQuery("")} />
+          <EmptyState
+            searchQuery={searchQuery}
+            hasActiveFilters={momentumFilters.size > 0}
+            onClearFilters={() => {
+              setSearchQuery("");
+              momentumFilters.forEach((m) => toggleMomentumFilter(m));
+            }}
+          />
         ) : (
           <Table>
             <TableHeader className="sticky top-0 z-10 bg-background shadow-sm">
@@ -222,7 +241,27 @@ export function PrincipalPipelineTable() {
                   align="center"
                   className="hidden lg:table-cell"
                 />
-                <TableHead className="w-8" aria-hidden="true" />
+                <SortableTableHead
+                  field="momentum"
+                  label="Momentum"
+                  tooltip="Based on activity trend over 14 days"
+                  currentSortField={sortField}
+                  onSort={handleSort}
+                  getAriaSortValue={getAriaSortValue}
+                  renderSortIcon={renderSortIcon}
+                />
+                <SortableTableHead
+                  field="completedTasks30d"
+                  label="Completed"
+                  tooltip="Tasks completed in last 30 days"
+                  currentSortField={sortField}
+                  onSort={handleSort}
+                  getAriaSortValue={getAriaSortValue}
+                  renderSortIcon={renderSortIcon}
+                  align="center"
+                  className="hidden lg:table-cell"
+                />
+                <TableHead className="max-w-[200px] lg:max-w-[280px]">Next Action</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -294,7 +333,7 @@ function SortableTableHead({
 
   return (
     <TableHead
-      className={`cursor-pointer select-none hover:bg-muted/50 px-3 py-2.5 ${alignClass} ${className}`}
+      className={`cursor-pointer select-none hover:bg-muted/50 ${alignClass} ${className}`}
       onClick={() => onSort(field)}
       aria-sort={getAriaSortValue(field)}
     >
@@ -306,32 +345,78 @@ function SortableTableHead({
   );
 }
 
-interface EmptyStateProps {
-  searchQuery: string;
-  onClearSearch: () => void;
+interface MomentumFilterDropdownProps {
+  momentumFilters: Set<Momentum>;
+  toggleMomentumFilter: (momentum: Momentum) => void;
 }
 
-function EmptyState({ searchQuery, onClearSearch }: EmptyStateProps) {
-  const hasSearch = searchQuery.length > 0;
+function MomentumFilterDropdown({
+  momentumFilters,
+  toggleMomentumFilter,
+}: MomentumFilterDropdownProps) {
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <AdminButton variant="outline" size="sm">
+          <Filter className="mr-2 h-4 w-4" />
+          Filters
+          {momentumFilters.size > 0 && (
+            <Badge variant="secondary" className="ml-1 h-5 px-1.5">
+              {momentumFilters.size}
+            </Badge>
+          )}
+        </AdminButton>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end" className="w-64">
+        <div className="p-2">
+          <p className="mb-2 text-sm font-medium">Filter by Momentum</p>
+          <div className="space-y-2">
+            {(["increasing", "steady", "decreasing", "stale"] as const).map((momentum) => (
+              <div key={momentum} className="flex items-center gap-2">
+                <Checkbox
+                  id={`momentum-${momentum}`}
+                  checked={momentumFilters.has(momentum)}
+                  onCheckedChange={() => toggleMomentumFilter(momentum)}
+                />
+                <Label htmlFor={`momentum-${momentum}`} className="text-sm capitalize">
+                  {momentum}
+                </Label>
+              </div>
+            ))}
+          </div>
+        </div>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+}
+
+interface EmptyStateProps {
+  searchQuery: string;
+  hasActiveFilters: boolean;
+  onClearFilters: () => void;
+}
+
+function EmptyState({ searchQuery, hasActiveFilters, onClearFilters }: EmptyStateProps) {
+  const hasFilters = searchQuery.length > 0 || hasActiveFilters;
 
   return (
-    <div className="flex min-h-[200px] items-center justify-center py-12">
+    <div className="flex min-h-[300px] items-center justify-center py-12">
       <div className="text-center">
         <p className="text-muted-foreground">
-          {hasSearch ? "No principals match your search" : "No principals found"}
+          {hasFilters ? "No principals match your filters" : "No principals found"}
         </p>
         <p className="mt-1 text-sm text-muted-foreground">
-          {hasSearch
-            ? "Try broadening your search"
+          {hasFilters
+            ? "Try broadening your search or removing filters"
             : "Create opportunities linked to organizations to see them here"}
         </p>
-        {hasSearch && (
+        {hasFilters && (
           <button
             type="button"
-            onClick={onClearSearch}
+            onClick={onClearFilters}
             className="mt-3 text-sm font-medium text-primary hover:text-primary/80 transition-colors"
           >
-            Clear search
+            Clear all filters
           </button>
         )}
       </div>

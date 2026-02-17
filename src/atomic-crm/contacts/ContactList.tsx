@@ -236,7 +236,7 @@ const ContactDatagrid = ({
       <FunctionField
         label="Actions"
         sortable={false}
-        cellClassName="w-[128px] text-right"
+        cellClassName="w-[72px] sm:w-[88px] text-right"
         render={(record: Contact) => (
           <RowHoverActions
             className="inline-flex items-center gap-1 justify-end"

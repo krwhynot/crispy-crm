@@ -17,7 +17,6 @@ import { ListSkeleton } from "@/components/ui/list-skeleton";
 import { cn } from "@/lib/utils";
 import { AdaptiveFilterContainer } from "./AdaptiveFilterContainer";
 import { FilterSidebarProvider } from "./FilterSidebarContext";
-import { ListDensityProvider, useListDensityContext } from "./ListDensityContext";
 import { ListToolbar } from "./ListToolbar";
 import { hasActiveUserFilters } from "./listFilterSemantics";
 
@@ -31,7 +30,6 @@ export interface ListPageLayoutProps {
   viewSwitcher?: ReactNode;
   overflowActions?: ReactNode;
   showFilterToggle?: boolean;
-  showDensityToggle?: boolean;
   showFilterSidebar?: boolean;
   storageKey?: string;
   wrapMainInCard?: boolean;
@@ -53,7 +51,6 @@ export function ListPageLayout({
   viewSwitcher,
   overflowActions,
   showFilterToggle,
-  showDensityToggle = true,
   showFilterSidebar = true,
   storageKey,
   wrapMainInCard = true,
@@ -68,28 +65,25 @@ export function ListPageLayout({
 
   return (
     <FilterSidebarProvider storageKey={storageKey}>
-      <ListDensityProvider>
-        <ListPageLayoutContent
-          resource={resource}
-          filterComponent={filterComponent}
-          filterConfig={filterConfig}
-          searchPlaceholder={searchPlaceholder}
-          enableRecentSearches={enableRecentSearches}
-          sortFields={sortFields}
-          viewSwitcher={viewSwitcher}
-          overflowActions={overflowActions}
-          showFilterToggle={showFilterToggle}
-          showDensityToggle={showDensityToggle}
-          showFilterSidebar={showFilterSidebar}
-          wrapMainInCard={wrapMainInCard}
-          primaryAction={primaryAction}
-          emptyState={emptyState}
-          filteredEmptyState={filteredEmptyState}
-          loadingSkeleton={loadingSkeleton}
-          children={children}
-          bulkActions={bulkActions}
-        />
-      </ListDensityProvider>
+      <ListPageLayoutContent
+        resource={resource}
+        filterComponent={filterComponent}
+        filterConfig={filterConfig}
+        searchPlaceholder={searchPlaceholder}
+        enableRecentSearches={enableRecentSearches}
+        sortFields={sortFields}
+        viewSwitcher={viewSwitcher}
+        overflowActions={overflowActions}
+        showFilterToggle={showFilterToggle}
+        showFilterSidebar={showFilterSidebar}
+        wrapMainInCard={wrapMainInCard}
+        primaryAction={primaryAction}
+        emptyState={emptyState}
+        filteredEmptyState={filteredEmptyState}
+        loadingSkeleton={loadingSkeleton}
+        children={children}
+        bulkActions={bulkActions}
+      />
     </FilterSidebarProvider>
   );
 }
@@ -104,7 +98,6 @@ function ListPageLayoutContent({
   viewSwitcher,
   overflowActions,
   showFilterToggle,
-  showDensityToggle,
   showFilterSidebar,
   wrapMainInCard,
   primaryAction,
@@ -114,7 +107,6 @@ function ListPageLayoutContent({
   children,
   bulkActions,
 }: ListPageLayoutProps) {
-  const { density } = useListDensityContext();
   const contextFromProvider = useContext(ListContext);
   const listContext = useSafeListContext() ?? contextFromProvider;
   const data = listContext?.data;
@@ -164,7 +156,6 @@ function ListPageLayoutContent({
             viewSwitcher={viewSwitcher}
             overflowActions={overflowActions}
             showFilterToggle={shouldRenderFilterToggle}
-            showDensityToggle={showDensityToggle}
             resource={resource}
             primaryAction={primaryAction}
           />
@@ -179,7 +170,6 @@ function ListPageLayoutContent({
         <main
           aria-label={`${resource} list`}
           className="flex h-full min-h-0 min-w-0 flex-1 flex-col overflow-hidden"
-          data-density={density}
         >
           {wrapMainInCard ? (
             <div className="card-container list-page-main-card flex h-full min-h-0 flex-1 flex-col overflow-y-auto overflow-x-hidden">

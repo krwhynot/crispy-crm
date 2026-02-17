@@ -26,14 +26,12 @@ const kpiCardVariants = cva(
         default: "",
         executive: "",
         executiveCompact: "",
-        executiveBand: "",
       },
       interactive: {
         true: "cursor-pointer hover:shadow-md focus-visible:ring-[var(--clay-base)]",
         false: "cursor-default",
       },
     },
-    compoundVariants: [],
     defaultVariants: {
       tone: "neutral",
       emphasis: "default",
@@ -47,9 +45,9 @@ const kpiCardVariants = cva(
 // ---------------------------------------------------------------------------
 
 const toneIconStyles: Record<NonNullable<KPICardTone>, string> = {
-  neutral: "bg-primary/10 text-primary",
+  neutral: "bg-primary/7 text-primary",
   positive: "bg-[var(--olive-surface)] text-[color:var(--olive-text)]",
-  warning: "bg-warning/10 text-warning",
+  warning: "bg-warning/7 text-warning",
   critical: "bg-[var(--clay-surface)] text-[color:var(--clay-text)]",
 };
 
@@ -136,23 +134,7 @@ export function KPICard({
   // Resolve interactive: explicit prop wins, then auto-detect from onClick
   const isInteractive = interactiveProp ?? Boolean(onClick);
 
-  const isExecutiveBand = emphasis === "executiveBand";
-
   if (loading) {
-    // Band: flat skeleton with no Card wrapper — just label + value placeholders
-    if (isExecutiveBand) {
-      return (
-        <div
-          className={cn("py-1.5 px-3 xl:px-4", className)}
-          aria-busy="true"
-          aria-label={`Loading ${title}`}
-          data-tutorial={dataTutorial}
-        >
-          <Skeleton className="h-2.5 w-16 mb-1 rounded-sm" />
-          <Skeleton className="h-5 xl:h-6 w-10 rounded-sm" />
-        </div>
-      );
-    }
     return (
       <Card
         className={cn(
@@ -189,87 +171,6 @@ export function KPICard({
 
   const isExecutive = emphasis === "executive";
   const isExecutiveCompact = emphasis === "executiveCompact";
-
-  // Status dot for band variant: tone-colored dot next to title (warning/critical only)
-  const bandStatusDot =
-    isExecutiveBand && (resolvedTone === "warning" || resolvedTone === "critical") ? (
-      <span
-        className={cn(
-          "inline-block h-1.5 w-1.5 rounded-full shrink-0",
-          resolvedTone === "warning" && "bg-warning",
-          resolvedTone === "critical" && "bg-[var(--clay-text)]"
-        )}
-        aria-hidden="true"
-      />
-    ) : null;
-
-  // ---------------------------------------------------------------------------
-  // Band variant: plain div — no Card/CardContent overhead
-  // ---------------------------------------------------------------------------
-  if (isExecutiveBand) {
-    return (
-      <div
-        className={cn(
-          "relative py-1.5 px-3 xl:px-4 bg-transparent transition-colors duration-150",
-          isInteractive && "cursor-pointer hover:bg-[var(--divider-warm)]/10",
-          "focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1",
-          className
-        )}
-        onClick={onClick}
-        onKeyDown={handleKeyDown}
-        tabIndex={isInteractive ? 0 : undefined}
-        role={isInteractive ? "button" : undefined}
-        aria-label={isInteractive ? `${title}: ${value}. Click to view details.` : undefined}
-        data-tutorial={dataTutorial}
-      >
-        <span className="text-[11px] font-medium uppercase tracking-[0.08em] text-muted-foreground/80 inline-flex items-center gap-1.5">
-          {title}
-          {bandStatusDot}
-        </span>
-        <div className="flex items-baseline gap-1.5 mt-0.5">
-          <span
-            className={cn(
-              "truncate font-medium [font-family:var(--font-serif)] text-xl xl:text-2xl leading-[1.15] tracking-[-0.02em]",
-              valueStyle
-            )}
-          >
-            {value}
-          </span>
-          {trend && (
-            <span
-              className={cn(
-                "text-[11px] font-medium",
-                trend.direction === "up" && "text-[color:var(--olive-trend)]",
-                trend.direction === "down" && "text-[color:var(--clay-text)]",
-                trend.direction === "neutral" && "text-muted-foreground"
-              )}
-            >
-              {trend.direction === "up"
-                ? "\u2191"
-                : trend.direction === "down"
-                  ? "\u2193"
-                  : "\u2192"}
-              {trend.value === 0 && trend.direction === "neutral"
-                ? ""
-                : `${Math.abs(trend.value)}%`}
-            </span>
-          )}
-          {comparisonLabel && (
-            <span className="text-[10px] text-muted-foreground/70">{comparisonLabel}</span>
-          )}
-        </div>
-        {subtitle && (
-          <p className="text-[10px] text-muted-foreground/70 truncate leading-tight mt-0.5">
-            {subtitle}
-          </p>
-        )}
-      </div>
-    );
-  }
-
-  // ---------------------------------------------------------------------------
-  // Standard card variants: default, executive, executiveCompact
-  // ---------------------------------------------------------------------------
   return (
     <Card
       className={cn(
@@ -337,7 +238,7 @@ export function KPICard({
                   isExecutive
                     ? "text-[40px] leading-[1.1]"
                     : isExecutiveCompact
-                      ? "text-[34px] leading-[1.1]"
+                      ? "text-[38px] leading-[1.1]"
                       : "text-xl leading-tight",
                   valueStyle
                 )}

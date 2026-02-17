@@ -66,11 +66,18 @@ const OrganizationNameCell = memo(function OrganizationNameCell({
   record: OrganizationRecord;
 }) {
   return (
-    <div className="flex items-center gap-1.5 min-w-0">
-      <span className="name-cell truncate text-[15px] font-semibold leading-tight">
-        {record.name}
+    <div className="flex flex-col gap-0.5 min-w-0">
+      <div className="flex items-center gap-1.5 min-w-0">
+        <span className="name-cell truncate text-[15px] font-semibold leading-tight">
+          {record.name}
+        </span>
+        <OrganizationHierarchyChips record={record} />
+      </div>
+      <span className="text-xs text-muted-foreground truncate">
+        {record.city && record.state
+          ? `${record.city}, ${record.state}`
+          : record.city || record.state || "\u2014"}
       </span>
-      <OrganizationHierarchyChips record={record} />
     </div>
   );
 });
@@ -332,7 +339,7 @@ const OrganizationDatagrid = ({
           <FunctionField
             label="Actions"
             sortable={false}
-            cellClassName="w-[128px] text-right"
+            cellClassName="w-[72px] sm:w-[88px] text-right"
             render={(record: OrganizationRecord) => (
               <RowHoverActions
                 className="inline-flex items-center justify-end gap-1"

@@ -136,7 +136,7 @@ const SalesDatagrid = ({
       <FunctionField
         label="Actions"
         sortable={false}
-        cellClassName="w-[128px] text-right"
+        cellClassName="w-[72px] sm:w-[88px] text-right"
         render={(record: Sale) => (
           <RowHoverActions
             className="inline-flex items-center justify-end gap-1"
@@ -246,4 +246,3 @@ const StatusField = ({
     </div>
   );
 };
-
