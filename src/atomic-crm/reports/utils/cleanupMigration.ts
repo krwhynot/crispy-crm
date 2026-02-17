@@ -8,9 +8,11 @@
 
 import { devLog } from "@/lib/devLogger";
 
+const MIGRATION_VERSION = "v2";
+
 export function cleanupOldReportKeys(): void {
-  // Skip if migration already completed
-  if (localStorage.getItem("reports.migration.completed") === "true") {
+  // Skip if migration already completed at current version
+  if (localStorage.getItem("reports.migration.completed") === MIGRATION_VERSION) {
     return;
   }
 
@@ -19,6 +21,8 @@ export function cleanupOldReportKeys(): void {
     "reports.weekly.filters",
     "reports.campaign.filters",
     "report-view-preference",
+    // v2: sidebar collapse state orphaned after parameter bar migration
+    "crm-report-sidebar-collapsed",
   ];
 
   oldKeys.forEach((key) => {
@@ -26,7 +30,7 @@ export function cleanupOldReportKeys(): void {
   });
 
   // Mark migration as complete
-  localStorage.setItem("reports.migration.completed", "true");
+  localStorage.setItem("reports.migration.completed", MIGRATION_VERSION);
 
   if (process.env.NODE_ENV === "development") {
     devLog("Reports Migration", "Cleaned up old localStorage keys");

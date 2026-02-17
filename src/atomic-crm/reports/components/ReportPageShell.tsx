@@ -11,8 +11,8 @@ interface ReportPageShellProps {
   title: string;
   breadcrumbs: BreadcrumbEntry[];
   actions?: ReactNode;
-  /** Inline filter header rendered between title row and children (e.g., ReportContextHeader) */
-  contextHeader?: ReactNode;
+  /** Shared filter controls rendered between section rule and tab content (e.g., ReportParameterBar) */
+  filterBar?: ReactNode;
   children: ReactNode;
 }
 
@@ -20,7 +20,7 @@ export function ReportPageShell({
   title,
   breadcrumbs,
   actions,
-  contextHeader,
+  filterBar,
   children,
 }: ReportPageShellProps) {
   return (
@@ -51,13 +51,7 @@ export function ReportPageShell({
         Reports &amp; Analytics
       </div>
 
-      {/* Gap #4: Sticky context header — sits outside overflow-hidden containers
-          so position:sticky works against the document viewport */}
-      {contextHeader && (
-        <div className="sticky top-0 z-10 bg-background/95 backdrop-blur-sm border-b border-border/50 -mx-4 px-4 py-2">
-          {contextHeader}
-        </div>
-      )}
+      {filterBar && <div className="py-2">{filterBar}</div>}
 
       <div className="space-y-widget">{children}</div>
     </div>

@@ -5,11 +5,9 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Suspense, lazy, useCallback, useEffect, useState } from "react";
 import { Link2, Check } from "lucide-react";
 import { AdminButton } from "@/components/admin/AdminButton";
-import { StandardListLayout } from "@/components/layouts/StandardListLayout";
 import { cleanupOldReportKeys } from "./utils/cleanupMigration";
 import { ReportPageShell } from "./components/ReportPageShell";
-import { ReportContextHeader } from "./components/ReportContextHeader";
-import { ReportFilterSidebar } from "./filters/ReportFilterSidebar";
+import { ReportParameterBar } from "./components/ReportParameterBar";
 import {
   buildShareUrl,
   OVERVIEW_DEFAULTS,
@@ -99,7 +97,7 @@ export default function ReportsPage() {
     <ReportPageShell
       title="Reports & Analytics"
       breadcrumbs={breadcrumbs}
-      contextHeader={<ReportContextHeader activeTab={activeTab} />}
+      filterBar={<ReportParameterBar activeTab={activeTab} />}
       actions={
         <AdminButton
           variant="outline"
@@ -122,56 +120,48 @@ export default function ReportsPage() {
         </AdminButton>
       }
     >
-      <StandardListLayout
-        resource="reports"
-        filterComponent={<ReportFilterSidebar activeTab={activeTab} />}
-        wrapMainInCard={false}
-        storageKey="crm-report-sidebar-collapsed"
-        showFilterSidebar={activeTab !== "overview"}
-      >
-        <Tabs value={activeTab} onValueChange={handleTabChange} className="space-y-widget">
-          <TabsList className="paper-tabs-list grid grid-cols-2 lg:grid-cols-4">
-            <TabsTrigger value="overview" className="paper-tabs-trigger">
-              Overview
-            </TabsTrigger>
-            <TabsTrigger value="opportunities" className="paper-tabs-trigger">
-              Opportunities
-            </TabsTrigger>
-            <TabsTrigger value="weekly" className="paper-tabs-trigger">
-              Weekly Activity
-            </TabsTrigger>
-            <TabsTrigger value="campaign" className="paper-tabs-trigger">
-              Campaign
-            </TabsTrigger>
-          </TabsList>
+      <Tabs value={activeTab} onValueChange={handleTabChange} className="flex flex-col gap-0">
+        <TabsList className="paper-tabs-list grid grid-cols-2 lg:grid-cols-4">
+          <TabsTrigger value="overview" className="paper-tabs-trigger">
+            Overview
+          </TabsTrigger>
+          <TabsTrigger value="opportunities" className="paper-tabs-trigger">
+            Opportunities
+          </TabsTrigger>
+          <TabsTrigger value="weekly" className="paper-tabs-trigger">
+            Weekly Activity
+          </TabsTrigger>
+          <TabsTrigger value="campaign" className="paper-tabs-trigger">
+            Campaign
+          </TabsTrigger>
+        </TabsList>
 
-          <div className="mt-widget">
-            <TabsContent value="overview" className="mt-0">
-              <Suspense fallback={<TabSkeleton />}>
-                <OverviewTab />
-              </Suspense>
-            </TabsContent>
+        <div className="pt-section">
+          <TabsContent value="overview" className="mt-0">
+            <Suspense fallback={<TabSkeleton />}>
+              <OverviewTab />
+            </Suspense>
+          </TabsContent>
 
-            <TabsContent value="opportunities" className="mt-0">
-              <Suspense fallback={<TabSkeleton />}>
-                <OpportunitiesTab />
-              </Suspense>
-            </TabsContent>
+          <TabsContent value="opportunities" className="mt-0">
+            <Suspense fallback={<TabSkeleton />}>
+              <OpportunitiesTab />
+            </Suspense>
+          </TabsContent>
 
-            <TabsContent value="weekly" className="mt-0">
-              <Suspense fallback={<TabSkeleton />}>
-                <WeeklyActivityTab />
-              </Suspense>
-            </TabsContent>
+          <TabsContent value="weekly" className="mt-0">
+            <Suspense fallback={<TabSkeleton />}>
+              <WeeklyActivityTab />
+            </Suspense>
+          </TabsContent>
 
-            <TabsContent value="campaign" className="mt-0">
-              <Suspense fallback={<TabSkeleton />}>
-                <CampaignActivityTab />
-              </Suspense>
-            </TabsContent>
-          </div>
-        </Tabs>
-      </StandardListLayout>
+          <TabsContent value="campaign" className="mt-0">
+            <Suspense fallback={<TabSkeleton />}>
+              <CampaignActivityTab />
+            </Suspense>
+          </TabsContent>
+        </div>
+      </Tabs>
     </ReportPageShell>
   );
 }

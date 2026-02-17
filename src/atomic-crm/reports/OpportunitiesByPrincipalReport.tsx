@@ -1,11 +1,10 @@
 import { useState, useMemo, useEffect, useRef } from "react";
 import { useGetList, useNotify } from "ra-core";
 import { useNavigate } from "react-router-dom";
-import { format } from "date-fns";
 import { TrendingUp, Building2, BarChart3, Download } from "lucide-react";
 import { KPICard } from "@/components/ui/kpi-card";
 import { AdminButton } from "@/components/admin/AdminButton";
-import { AppliedFiltersBar, EmptyState } from "./components";
+import { EmptyState } from "./components";
 import {
   useReportData,
   useReportFilterState,
@@ -38,7 +37,7 @@ export default function OpportunitiesByPrincipalReport() {
   const navigate = useNavigate();
   const notify = useNotify();
 
-  const [filterState, updateFilters, resetFilters] = useReportFilterState<OpportunitiesFilterState>(
+  const [filterState] = useReportFilterState<OpportunitiesFilterState>(
     "reports.opportunities",
     OPPORTUNITIES_DEFAULTS
   );
@@ -193,64 +192,6 @@ export default function OpportunitiesByPrincipalReport() {
     navigate(`/opportunities/${oppId}/show`);
   };
 
-  // Build applied filters for AppliedFiltersBar
-  const appliedFilters = useMemo(() => {
-    const result: Array<{ label: string; value: string; onRemove: () => void }> = [];
-
-    if (filterState.principal_organization_id) {
-      result.push({
-        label: "Principal",
-        value: "Selected",
-        onRemove: () => updateFilters({ principal_organization_id: null }),
-      });
-    }
-
-    if (filterState.stage.length > 0) {
-      result.push({
-        label: "Stage",
-        value: `${filterState.stage.length} selected`,
-        onRemove: () => updateFilters({ stage: [] }),
-      });
-    }
-
-    if (filterState.opportunity_owner_id) {
-      result.push({
-        label: "Sales Rep",
-        value: "Selected",
-        onRemove: () => updateFilters({ opportunity_owner_id: null }),
-      });
-    }
-
-    if (filterState.startDate) {
-      result.push({
-        label: "Start Date",
-        value: format(new Date(filterState.startDate), "MMM dd, yyyy"),
-        onRemove: () => updateFilters({ startDate: null }),
-      });
-    }
-
-    if (filterState.endDate) {
-      result.push({
-        label: "End Date",
-        value: format(new Date(filterState.endDate), "MMM dd, yyyy"),
-        onRemove: () => updateFilters({ endDate: null }),
-      });
-    }
-
-    return result;
-  }, [filterState, updateFilters]);
-
-  const hasActiveFilters =
-    filterState.principal_organization_id ||
-    filterState.stage.length > 0 ||
-    filterState.opportunity_owner_id ||
-    filterState.startDate ||
-    filterState.endDate;
-
-  const handleResetAllFilters = () => {
-    resetFilters();
-  };
-
   const hasOpportunityData = (opportunities?.length ?? 0) > 0;
   const isFirstLoad = opportunitiesLoading && !hasOpportunityData;
   const isRefreshing = opportunitiesLoading && hasOpportunityData;
@@ -274,12 +215,7 @@ export default function OpportunitiesByPrincipalReport() {
         </div>
       )}
 
-      <div className="flex items-center justify-between gap-2">
-        <AppliedFiltersBar
-          filters={appliedFilters}
-          onResetAll={handleResetAllFilters}
-          hasActiveFilters={hasActiveFilters}
-        />
+      <div className="flex items-center justify-end gap-2">
         <AdminButton
           variant="outline"
           size="sm"

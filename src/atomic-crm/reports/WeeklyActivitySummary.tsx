@@ -11,7 +11,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { pluralize } from "@/lib/utils/pluralize";
 import { sanitizeCsvValue } from "@/atomic-crm/utils/csvUploadValidator";
-import { AppliedFiltersBar, EmptyState } from "./components";
+import { EmptyState } from "./components";
 import { useReportData, useReportFilterState, type WeeklyFilterState } from "./hooks";
 import { LOW_ACTIVITY_THRESHOLD } from "@/atomic-crm/constants/appConstants";
 import type { ActivityRecord } from "../types";
@@ -61,10 +61,7 @@ export default function WeeklyActivitySummary() {
   const { data: identity } = useGetIdentity();
   const notify = useNotify();
   const weeklyDefaults: WeeklyFilterState = getWeekRange();
-  const [filterState, _updateFilters, resetFilters] = useReportFilterState<WeeklyFilterState>(
-    "reports.weekly",
-    weeklyDefaults
-  );
+  const [filterState] = useReportFilterState<WeeklyFilterState>("reports.weekly", weeklyDefaults);
   const dateRange = useMemo(
     () => ({ start: filterState.start, end: filterState.end }),
     [filterState.start, filterState.end]
@@ -90,36 +87,6 @@ export default function WeeklyActivitySummary() {
     dateRange: stableDateRange,
     dateField: "activity_date",
   });
-
-  // Applied filters for filter bar
-  const appliedFilters = useMemo(() => {
-    const result: Array<{ label: string; value: string; onRemove: () => void }> = [];
-
-    // Week filter (always show current date range)
-    result.push({
-      label: "Week",
-      value: `${dateRange.start} to ${dateRange.end}`,
-      onRemove: () => {
-        resetFilters();
-      },
-    });
-
-    return result;
-  }, [dateRange.start, dateRange.end, resetFilters]);
-
-  // Check if we're viewing current week (not a non-default filter)
-  const isCurrentWeek = useMemo(() => {
-    const currentWeek = getWeekRange();
-    const currentStart = currentWeek.start;
-    const currentEnd = currentWeek.end;
-    return dateRange.start === currentStart && dateRange.end === currentEnd;
-  }, [dateRange.start, dateRange.end]);
-
-  const hasActiveFilters = !isCurrentWeek;
-
-  const handleResetAllFilters = () => {
-    resetFilters();
-  };
 
   // Group activities by rep -> principal -> type
   const reportData = useMemo(() => {
@@ -275,12 +242,7 @@ export default function WeeklyActivitySummary() {
         </div>
       )}
 
-      <div className="flex items-center justify-between gap-2">
-        <AppliedFiltersBar
-          filters={appliedFilters}
-          onResetAll={handleResetAllFilters}
-          hasActiveFilters={hasActiveFilters}
-        />
+      <div className="flex items-center justify-end gap-2">
         <AdminButton
           variant="outline"
           size="sm"

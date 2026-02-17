@@ -73,16 +73,16 @@ describe("ReportsPage", () => {
     expect(tabList).toHaveClass("lg:grid-cols-4");
   });
 
-  it("hides filter sidebar on Overview tab (uses inline context header instead)", () => {
+  it("shows parameter bar with Overview controls on Overview tab", () => {
     renderWithAdminContext(<ReportsPage />);
 
-    // Overview tab uses ReportContextHeader instead of sidebar
+    // No sidebar anywhere
     expect(screen.queryByLabelText("Filter reports")).not.toBeInTheDocument();
-    // Context header with Overview filters should be present
-    expect(screen.getByRole("toolbar", { name: "Overview filters" })).toBeInTheDocument();
+    // Parameter bar with Overview controls should be present
+    expect(screen.getByRole("toolbar", { name: "Overview report parameters" })).toBeInTheDocument();
   });
 
-  it("shows filter sidebar on non-Overview tabs", async () => {
+  it("shows parameter bar with tab-specific controls on non-Overview tabs", async () => {
     const user = userEvent.setup();
     renderWithAdminContext(<ReportsPage />);
 
@@ -90,8 +90,12 @@ describe("ReportsPage", () => {
     const oppsTab = screen.getByRole("tab", { name: /^opportunities$/i });
     await user.click(oppsTab);
 
-    // Sidebar should now be visible for non-overview tabs
-    expect(screen.getByLabelText("Filter reports")).toBeInTheDocument();
+    // No sidebar anywhere
+    expect(screen.queryByLabelText("Filter reports")).not.toBeInTheDocument();
+    // Parameter bar with Opportunities controls should be present
+    expect(
+      screen.getByRole("toolbar", { name: "Opportunities report parameters" })
+    ).toBeInTheDocument();
   });
 
   it("uses Skeleton for tab loading states", () => {

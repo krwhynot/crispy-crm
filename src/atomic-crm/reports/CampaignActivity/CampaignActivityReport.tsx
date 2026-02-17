@@ -5,9 +5,9 @@ import { StaleLeadsView } from "./StaleLeadsView";
 import { useCampaignActivityData } from "./useCampaignActivityData";
 import { useCampaignActivityExport } from "./useCampaignActivityExport";
 import { INTERACTION_TYPE_OPTIONS } from "@/atomic-crm/validation/activities";
-import { AppliedFiltersBar, KPICard } from "@/atomic-crm/reports/components";
+import { KPICard } from "@/atomic-crm/reports/components";
 import { AdminButton } from "@/components/admin/AdminButton";
-import { CAMPAIGN_DATE_PRESETS } from "@/atomic-crm/reports/constants";
+
 import { EmptyState } from "@/components/ui/empty-state";
 import { Activity, CheckCircle, Building2, Target, BarChart3, Download } from "lucide-react";
 import { useReportFilterState, CAMPAIGN_DEFAULTS, type CampaignFilterState } from "../hooks";
@@ -41,7 +41,7 @@ interface CampaignActivityGroup {
 export default function CampaignActivityReport() {
   const [expandedTypes, setExpandedTypes] = useState<Set<string>>(new Set());
 
-  const [filterState, updateFilters, resetFilters] = useReportFilterState<CampaignFilterState>(
+  const [filterState, updateFilters] = useReportFilterState<CampaignFilterState>(
     "reports.campaign",
     CAMPAIGN_DEFAULTS
   );
@@ -75,8 +75,6 @@ export default function CampaignActivityReport() {
 
   const selectedCampaign =
     filterState.selectedCampaign || campaignOptions[0]?.name || "Grand Rapids Trade Show";
-  const selectedActivityTypes = filterState.selectedActivityTypes;
-  const selectedSalesRep = filterState.selectedSalesRep;
   const showStaleLeads = filterState.showStaleLeads;
 
   React.useEffect(() => {
@@ -203,78 +201,6 @@ export default function CampaignActivityReport() {
     setExpandedTypes(newExpanded);
   };
 
-  const clearFilters = () => {
-    resetFilters();
-  };
-
-  const hasActiveFilters =
-    filterState.datePreset !== "allTime" ||
-    selectedActivityTypes.length < INTERACTION_TYPE_OPTIONS.length ||
-    selectedSalesRep !== null ||
-    showStaleLeads;
-
-  const appliedFilters = useMemo(() => {
-    const result: Array<{ label: string; value: string; onRemove: () => void }> = [];
-
-    result.push({
-      label: "Campaign",
-      value: selectedCampaign,
-      onRemove: () => {},
-    });
-
-    if (filterState.datePreset !== "allTime") {
-      const dateLabel =
-        filterState.datePreset === "custom" && filterState.startDate && filterState.endDate
-          ? `${filterState.startDate} to ${filterState.endDate}`
-          : (CAMPAIGN_DATE_PRESETS.find((p) => p.value === filterState.datePreset)?.label ??
-            filterState.datePreset);
-      result.push({
-        label: "Date Range",
-        value: dateLabel,
-        onRemove: () => updateFilters({ datePreset: "allTime", startDate: null, endDate: null }),
-      });
-    }
-
-    if (selectedActivityTypes.length < INTERACTION_TYPE_OPTIONS.length) {
-      result.push({
-        label: "Activity Types",
-        value: `${selectedActivityTypes.length} selected`,
-        onRemove: () =>
-          updateFilters({
-            selectedActivityTypes: INTERACTION_TYPE_OPTIONS.map((opt) => opt.value),
-          }),
-      });
-    }
-
-    if (selectedSalesRep !== null) {
-      result.push({
-        label: "Sales Rep",
-        value: salesMap.get(selectedSalesRep) || `Rep ${selectedSalesRep}`,
-        onRemove: () => updateFilters({ selectedSalesRep: null }),
-      });
-    }
-
-    if (showStaleLeads) {
-      result.push({
-        label: "View",
-        value: "Stale Leads Only",
-        onRemove: () => updateFilters({ showStaleLeads: false }),
-      });
-    }
-
-    return result;
-  }, [
-    selectedCampaign,
-    filterState.datePreset,
-    filterState.startDate,
-    filterState.endDate,
-    selectedActivityTypes,
-    selectedSalesRep,
-    showStaleLeads,
-    salesMap,
-    updateFilters,
-  ]);
-
   const handleExport = () => {
     if (showStaleLeads) {
       exportStaleLeads(staleOpportunities);
@@ -300,13 +226,8 @@ export default function CampaignActivityReport() {
         </div>
       )}
 
-      {/* Applied Filters Bar + Export */}
-      <div className="flex items-center justify-between gap-2">
-        <AppliedFiltersBar
-          filters={appliedFilters}
-          onResetAll={clearFilters}
-          hasActiveFilters={hasActiveFilters}
-        />
+      {/* Export */}
+      <div className="flex items-center justify-end gap-2">
         <AdminButton
           variant="outline"
           size="sm"
@@ -400,20 +321,8 @@ export default function CampaignActivityReport() {
         !activitiesError && (
           <EmptyState
             title="No Campaign Activities"
-            description={
-              hasActiveFilters
-                ? "Try adjusting your filters to see more results."
-                : "Activities will appear here once your team starts engaging with leads."
-            }
+            description="Try adjusting your filters above to see more results, or activities will appear here once your team starts engaging with leads."
             icon={Activity}
-            action={
-              hasActiveFilters
-                ? {
-                    label: "Clear Filters",
-                    onClick: clearFilters,
-                  }
-                : undefined
-            }
           />
         )
       )}

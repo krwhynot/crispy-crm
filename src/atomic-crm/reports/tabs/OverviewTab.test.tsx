@@ -103,19 +103,19 @@ describe("OverviewTab", () => {
     expect(screen.getByText("Rep Performance")).toBeInTheDocument();
   });
 
-  it("renders AppliedFiltersBar (filters moved to sidebar)", async () => {
+  it("renders KPI cards without inline filter controls", async () => {
     renderWithAdminContext(<OverviewTab />, {
       dataProvider: {
         getList: createMockGetList(),
       },
     });
 
-    // TabFilterBar has been removed; filters are now in the sidebar.
-    // The tab still renders AppliedFiltersBar and KPI cards.
+    // Filter controls are in the ReportParameterBar above the tabs.
+    // The tab content renders KPI cards and charts only.
     await waitFor(() => {
       expect(screen.getByText("Open Opportunities")).toBeInTheDocument();
     });
-    // Date Range / Sales Rep selects are no longer rendered inline in the tab
+    // Date Range / Sales Rep selects are not rendered inline in the tab
     expect(screen.queryByLabelText(/date range/i)).not.toBeInTheDocument();
   });
 

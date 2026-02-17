@@ -476,76 +476,9 @@ describe("CampaignActivityReport", () => {
   });
 
   describe("Filter Combinations", () => {
-    // Note: TabFilterBar, ActivityTypesPopover, and StaleLeadsToggle have been
-    // moved to the sidebar (ReportFilterSidebar). These tests now verify that
-    // inline filter controls are NOT rendered in the report body, and that
-    // the AppliedFiltersBar and Export button are present instead.
-
-    it("does not render inline date range select (moved to sidebar)", async () => {
-      const { useGetList } = await import("ra-core");
-
-      vi.mocked(useGetList).mockReturnValue(
-        mockUseGetListReturn<TestActivity>({
-          data: [],
-          total: 0,
-          isPending: false,
-          isLoading: false,
-          error: null,
-          refetch: vi.fn(),
-        })
-      );
-
-      renderWithAdminContext(<CampaignActivityReport />);
-
-      await waitFor(() => {
-        // Date Range select is no longer inline -- it lives in the sidebar
-        expect(screen.queryByLabelText("Date Range")).not.toBeInTheDocument();
-      });
-    });
-
-    it("does not render inline activity types popover (moved to sidebar)", async () => {
-      const { useGetList } = await import("ra-core");
-
-      vi.mocked(useGetList).mockReturnValue(
-        mockUseGetListReturn<TestActivity>({
-          data: [],
-          total: 0,
-          isPending: false,
-          isLoading: false,
-          error: null,
-          refetch: vi.fn(),
-        })
-      );
-
-      renderWithAdminContext(<CampaignActivityReport />);
-
-      await waitFor(() => {
-        // ActivityTypesPopover is no longer inline
-        expect(screen.queryByText(/Activity Types \(/)).not.toBeInTheDocument();
-      });
-    });
-
-    it("does not render inline sales rep select (moved to sidebar)", async () => {
-      const { useGetList } = await import("ra-core");
-
-      vi.mocked(useGetList).mockReturnValue(
-        mockUseGetListReturn<TestActivity>({
-          data: [],
-          total: 0,
-          isPending: false,
-          isLoading: false,
-          error: null,
-          refetch: vi.fn(),
-        })
-      );
-
-      renderWithAdminContext(<CampaignActivityReport />);
-
-      await waitFor(() => {
-        // Sales Rep select is no longer inline
-        expect(screen.queryByLabelText("Sales Rep")).not.toBeInTheDocument();
-      });
-    });
+    // Note: Filter controls (Date Range, Activity Types, Sales Rep, Stale Leads)
+    // now live in the ReportParameterBar above the tabs. The report body only
+    // contains the Export button and data display.
 
     it("renders Export CSV button", async () => {
       const { useGetList } = await import("ra-core");
@@ -1016,7 +949,9 @@ describe("CampaignActivityReport", () => {
       await waitFor(() => {
         expect(screen.getByText("No Campaign Activities")).toBeInTheDocument();
         expect(
-          screen.getByText("Activities will appear here once your team starts engaging with leads.")
+          screen.getByText(
+            "Try adjusting your filters above to see more results, or activities will appear here once your team starts engaging with leads."
+          )
         ).toBeInTheDocument();
       });
     });
