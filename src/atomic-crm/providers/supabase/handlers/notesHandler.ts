@@ -4,15 +4,16 @@
  * Factory for creating handlers for contact_notes, opportunity_notes, and organization_notes.
  * All note types share identical composition:
  * 1. Base provider → Raw Supabase operations
- * 2. withLifecycleCallbacks → Soft delete only
- * 3. withValidation → Zod schema validation
- * 4. withErrorLogging → Structured error handling + Sentry
+ * 2. withValidation → Zod schema validation
+ * 3. withSkipDelete → Intercepts delete to prevent hard DELETE on soft-delete resources
+ * 4. withLifecycleCallbacks → Soft delete only
+ * 5. withErrorLogging → Structured error handling + Sentry
  *
  * Engineering Constitution: DRY - one factory, three handlers
  */
 
 import { withLifecycleCallbacks, type DataProvider } from "react-admin";
-import { withErrorLogging, withValidation } from "../wrappers";
+import { withErrorLogging, withValidation, withSkipDelete } from "../wrappers";
 import {
   contactNotesCallbacks,
   opportunityNotesCallbacks,
@@ -23,7 +24,7 @@ import {
  * Create a fully composed DataProvider for contact_notes
  *
  * Composition order (innermost to outermost):
- * baseProvider → withValidation → withLifecycleCallbacks → withErrorLogging
+ * baseProvider → withValidation → withSkipDelete → withLifecycleCallbacks → withErrorLogging
  *
  * CRITICAL: Validation runs FIRST on raw data, THEN lifecycle callbacks strip
  * computed fields before DB write.
@@ -33,7 +34,7 @@ import {
  */
 export function createContactNotesHandler(baseProvider: DataProvider): DataProvider {
   return withErrorLogging(
-    withLifecycleCallbacks(withValidation(baseProvider), [contactNotesCallbacks])
+    withLifecycleCallbacks(withSkipDelete(withValidation(baseProvider)), [contactNotesCallbacks])
   );
 }
 
@@ -41,7 +42,7 @@ export function createContactNotesHandler(baseProvider: DataProvider): DataProvi
  * Create a fully composed DataProvider for opportunity_notes
  *
  * Composition order (innermost to outermost):
- * baseProvider → withValidation → withLifecycleCallbacks → withErrorLogging
+ * baseProvider → withValidation → withSkipDelete → withLifecycleCallbacks → withErrorLogging
  *
  * CRITICAL: Validation runs FIRST on raw data, THEN lifecycle callbacks strip
  * computed fields before DB write.
@@ -51,7 +52,9 @@ export function createContactNotesHandler(baseProvider: DataProvider): DataProvi
  */
 export function createOpportunityNotesHandler(baseProvider: DataProvider): DataProvider {
   return withErrorLogging(
-    withLifecycleCallbacks(withValidation(baseProvider), [opportunityNotesCallbacks])
+    withLifecycleCallbacks(withSkipDelete(withValidation(baseProvider)), [
+      opportunityNotesCallbacks,
+    ])
   );
 }
 
@@ -59,7 +62,7 @@ export function createOpportunityNotesHandler(baseProvider: DataProvider): DataP
  * Create a fully composed DataProvider for organization_notes
  *
  * Composition order (innermost to outermost):
- * baseProvider → withValidation → withLifecycleCallbacks → withErrorLogging
+ * baseProvider → withValidation → withSkipDelete → withLifecycleCallbacks → withErrorLogging
  *
  * CRITICAL: Validation runs FIRST on raw data, THEN lifecycle callbacks strip
  * computed fields before DB write.
@@ -69,6 +72,8 @@ export function createOpportunityNotesHandler(baseProvider: DataProvider): DataP
  */
 export function createOrganizationNotesHandler(baseProvider: DataProvider): DataProvider {
   return withErrorLogging(
-    withLifecycleCallbacks(withValidation(baseProvider), [organizationNotesCallbacks])
+    withLifecycleCallbacks(withSkipDelete(withValidation(baseProvider)), [
+      organizationNotesCallbacks,
+    ])
   );
 }

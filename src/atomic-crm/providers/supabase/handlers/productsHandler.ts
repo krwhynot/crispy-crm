@@ -31,7 +31,7 @@ import {
   type GetManyReferenceParams,
   type UpdateManyParams,
 } from "react-admin";
-import { withErrorLogging, withValidation } from "../wrappers";
+import { withErrorLogging, withValidation, withSkipDelete } from "../wrappers";
 import { productsCallbacks } from "../callbacks";
 import {
   productWithDistributorsSchema,
@@ -316,6 +316,8 @@ export function createProductsHandler(baseProvider: DataProvider): DataProvider 
    * This ensures ALL custom logic is protected by error logging.
    */
   return withErrorLogging(
-    withLifecycleCallbacks(withValidation(customProductsHandler), [productsCallbacks])
+    withLifecycleCallbacks(withSkipDelete(withValidation(customProductsHandler)), [
+      productsCallbacks,
+    ])
   );
 }

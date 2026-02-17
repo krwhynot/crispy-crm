@@ -83,8 +83,18 @@ export const contactBaseSchema = z.strictObject({
 
   // Contact information - ContactPersonalInformationInputs
   // JSONB arrays in database: email and phone
-  email: z.array(emailAndTypeSchema).max(10, "Maximum 10 email addresses").default([]),
-  phone: z.array(phoneNumberAndTypeSchema).max(10, "Maximum 10 phone numbers").default([]),
+  email: z
+    .array(emailAndTypeSchema)
+    .max(10, "Maximum 10 email addresses")
+    .nullable()
+    .transform((val) => val ?? [])
+    .default([]),
+  phone: z
+    .array(phoneNumberAndTypeSchema)
+    .max(10, "Maximum 10 phone numbers")
+    .nullable()
+    .transform((val) => val ?? [])
+    .default([]),
 
   // Professional information - ContactPositionInputs
   title: z.string().trim().max(100).optional().nullable(),
@@ -148,7 +158,12 @@ export const contactBaseSchema = z.strictObject({
   // Classification fields - exist in DB
   // FIX [EDIT-001]: tags are BIGINT[] foreign keys to tags table (not strings)
   // TagsListEdit.tsx confirms: record.tags.includes(tag.id) where tag.id is number
-  tags: z.array(z.coerce.number()).max(50, "Maximum 50 tags").default([]),
+  tags: z
+    .array(z.coerce.number())
+    .max(50, "Maximum 50 tags")
+    .nullable()
+    .transform((val) => val ?? [])
+    .default([]),
   status: z.string().trim().max(50).optional().nullable(),
 
   // System fields (readonly, set by triggers)

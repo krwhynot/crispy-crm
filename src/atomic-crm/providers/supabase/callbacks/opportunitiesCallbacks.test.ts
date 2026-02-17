@@ -97,7 +97,7 @@ describe("opportunitiesCallbacks", () => {
     it("should NOT create activity when stage changes (handled by DB trigger)", async () => {
       const params = {
         id: 1,
-        data: { stage: "demo_scheduled" },
+        data: { stage: "feedback_logged" },
         previousData: {
           id: 1,
           stage: "sample_visit_offered",
@@ -131,7 +131,7 @@ describe("opportunitiesCallbacks", () => {
     it("should pass through update params unchanged", async () => {
       const params = {
         id: 1,
-        data: { stage: "demo_scheduled" },
+        data: { stage: "feedback_logged" },
         previousData: {
           id: 1,
           stage: "sample_visit_offered",

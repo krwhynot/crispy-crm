@@ -1,29 +1,24 @@
 /**
- * useDuplicateOrgCheck - Hook for soft duplicate organization detection
+ * useDuplicateOrgCheck - Hook for hard duplicate organization detection
  *
- * Provides a way to check for potential duplicate organizations before saving,
- * with the ability to bypass the warning if the user confirms.
- *
- * This implements a "soft warning" pattern instead of hard validation blocking:
- * - Check is performed on save attempt
- * - If duplicate found, returns the duplicate org info
- * - User can confirm to proceed anyway via the confirmation dialog
- * - Once bypassed, the same name won't trigger the warning again
+ * Provides a way to check for potential duplicate organizations before saving.
+ * If a duplicate is detected, the user must either view the existing organization
+ * or change the name -- there is no bypass path.
  *
  * @example
  * ```tsx
- * const { checkForDuplicate, duplicateOrg, clearDuplicate, bypassDuplicate } = useDuplicateOrgCheck();
+ * const { checkForDuplicate, duplicateOrg, clearDuplicate } = useDuplicateOrgCheck();
  *
  * // In save handler:
  * const duplicate = await checkForDuplicate(name, currentOrgId);
  * if (duplicate) {
- *   // Show confirmation dialog
- *   return; // Don't save yet
+ *   // Show blocking dialog - user must change name or view existing
+ *   return; // Don't save
  * }
- * // No duplicate or already bypassed - proceed with save
+ * // No duplicate - proceed with save
  * ```
  */
-import { useState, useCallback, useRef } from "react";
+import { useState, useCallback } from "react";
 import { useDataProvider, useNotify } from "ra-core";
 import { logger } from "@/lib/logger";
 import type { Company } from "../types";
@@ -34,7 +29,7 @@ interface DuplicateOrgInfo {
 }
 
 interface UseDuplicateOrgCheckResult {
-  /** Check if a name has duplicates. Returns the duplicate org if found (and not bypassed). */
+  /** Check if a name has duplicates. Returns the duplicate org if found. */
   checkForDuplicate: (
     name: string,
     currentOrgId?: string | number
@@ -43,8 +38,6 @@ interface UseDuplicateOrgCheckResult {
   duplicateOrg: DuplicateOrgInfo | null;
   /** Clear the duplicate warning (user chose to change name) */
   clearDuplicate: () => void;
-  /** Mark the duplicate as bypassed (user confirmed to proceed anyway) */
-  bypassDuplicate: () => void;
   /** Whether a duplicate check is in progress */
   isChecking: boolean;
 }
@@ -55,20 +48,10 @@ export function useDuplicateOrgCheck(): UseDuplicateOrgCheckResult {
   const [duplicateOrg, setDuplicateOrg] = useState<DuplicateOrgInfo | null>(null);
   const [isChecking, setIsChecking] = useState(false);
 
-  // Track bypassed names (lowercase for case-insensitive comparison)
-  const bypassedNamesRef = useRef<Set<string>>(new Set());
-
   const checkForDuplicate = useCallback(
     async (name: string, currentOrgId?: string | number): Promise<DuplicateOrgInfo | null> => {
       // Empty names handled by required validation
       if (!name || name.trim().length === 0) {
-        return null;
-      }
-
-      const normalizedName = name.trim().toLowerCase();
-
-      // Check if this name was already bypassed
-      if (bypassedNamesRef.current.has(normalizedName)) {
         return null;
       }
 
@@ -120,19 +103,10 @@ export function useDuplicateOrgCheck(): UseDuplicateOrgCheckResult {
     setDuplicateOrg(null);
   }, []);
 
-  const bypassDuplicate = useCallback(() => {
-    if (duplicateOrg) {
-      // Add to bypassed set so it won't warn again
-      bypassedNamesRef.current.add(duplicateOrg.name.toLowerCase());
-    }
-    setDuplicateOrg(null);
-  }, [duplicateOrg]);
-
   return {
     checkForDuplicate,
     duplicateOrg,
     clearDuplicate,
-    bypassDuplicate,
     isChecking,
   };
 }

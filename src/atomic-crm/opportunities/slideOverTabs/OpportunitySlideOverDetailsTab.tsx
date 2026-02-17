@@ -81,6 +81,7 @@ export function OpportunitySlideOverDetailsTab({
             previousData: record,
           },
           {
+            returnPromise: true,
             onSuccess: async () => {
               setServerError(null); // Clear server errors on success
               notify(notificationMessages.updated("Opportunity"), { type: "success" });

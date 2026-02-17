@@ -220,6 +220,7 @@ export const SampleStatusBadge = memo(function SampleStatusBadge({
           previousData: { sample_status: status },
         },
         {
+          returnPromise: true,
           onSuccess: () => {
             // Invalidate activity cache to refresh timeline
             // Use granular detail key for specific activity
@@ -265,6 +266,7 @@ export const SampleStatusBadge = memo(function SampleStatusBadge({
             previousData: { sample_status: status },
           },
           {
+            returnPromise: true,
             onSuccess: () => {
               // Invalidate activity cache to refresh timeline
               // Use granular detail key for specific activity

@@ -183,19 +183,27 @@ const TaskDatagrid = ({
     try {
       if (checked) {
         // Complete task directly
-        await update("tasks", {
-          id: task.id,
-          data: { completed: true, completed_at: new Date().toISOString() },
-          previousData: task,
-        });
+        await update(
+          "tasks",
+          {
+            id: task.id,
+            data: { completed: true, completed_at: new Date().toISOString() },
+            previousData: task,
+          },
+          { returnPromise: true }
+        );
         notify("Task completed", { type: "success" });
       } else {
         // Reopen task
-        await update("tasks", {
-          id: task.id,
-          data: { completed: false, completed_at: null },
-          previousData: task,
-        });
+        await update(
+          "tasks",
+          {
+            id: task.id,
+            data: { completed: false, completed_at: null },
+            previousData: task,
+          },
+          { returnPromise: true }
+        );
         notify("Task reopened", { type: "success" });
       }
       queryClient.invalidateQueries({ queryKey: taskKeys.lists() });

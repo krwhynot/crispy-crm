@@ -74,16 +74,20 @@ export function OpportunityCardActions({ opportunityId, onDelete }: OpportunityC
       setIsClosing(true);
       try {
         await Promise.all([
-          update("opportunities", {
-            id: opportunityId,
-            data: {
-              stage: closeTargetStage,
-              win_reason: data.win_reason,
-              loss_reason: data.loss_reason,
-              close_reason_notes: data.close_reason_notes,
+          update(
+            "opportunities",
+            {
+              id: opportunityId,
+              data: {
+                stage: closeTargetStage,
+                win_reason: data.win_reason,
+                loss_reason: data.loss_reason,
+                close_reason_notes: data.close_reason_notes,
+              },
+              previousData: record || {},
             },
-            previousData: record || {},
-          }),
+            { returnPromise: true }
+          ),
           dataProvider.create("activities", {
             data: {
               activity_type: "activity",
@@ -142,7 +146,11 @@ export function OpportunityCardActions({ opportunityId, onDelete }: OpportunityC
   const handleConfirmDelete = useCallback(async () => {
     setShowDeleteDialog(false);
     try {
-      await deleteOne("opportunities", { id: opportunityId, previousData: {} });
+      await deleteOne(
+        "opportunities",
+        { id: opportunityId, previousData: {} },
+        { returnPromise: true }
+      );
       notify(notificationMessages.deleted("Opportunity"), { type: "success" });
       if (onDelete) {
         onDelete(opportunityId);

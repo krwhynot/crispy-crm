@@ -1,4 +1,4 @@
-import { useMemo, useRef } from "react";
+import { useMemo } from "react";
 import { EditBase, Form, useRecordContext, useRefresh } from "ra-core";
 import { useSafeNotify } from "../hooks/useSafeNotify";
 import { useQueryClient } from "@tanstack/react-query";
@@ -28,11 +28,6 @@ const OpportunityEdit = () => {
       actions={false}
       redirect="show"
       mutationMode="pessimistic"
-      transform={(data: Opportunity) => {
-        // WF-H1-004: Inject previous_stage for stage transition validation
-        // React Admin doesn't track field history, so we get initial value from form component
-        return data;
-      }}
       mutationOptions={{
         onSuccess: () => {
           queryClient.invalidateQueries({ queryKey: opportunityKeys.lists() });
@@ -61,21 +56,12 @@ const OpportunityEdit = () => {
 const OpportunityEditForm = () => {
   const record = useRecordContext<Opportunity>();
 
-  // WF-H1-004: Capture initial stage for transition validation
-  // This ref persists the original stage value across re-renders
-  const initialStageRef = useRef<string | null>(null);
-
   // Guard against null record during initial render - useMemo must be called unconditionally
   // per React hooks rules, so we handle null inside the callback
   const defaultValues = useMemo(() => {
     if (!record) return {};
 
-    // Capture initial stage on first load
-    if (initialStageRef.current === null && record.stage) {
-      initialStageRef.current = record.stage;
-    }
-
-    return opportunitySchema.partial().parse(record);
+    return opportunitySchema.partial().passthrough().parse(record);
   }, [record]);
 
   // Wait for record to load before rendering form
@@ -88,17 +74,6 @@ const OpportunityEditForm = () => {
         defaultValues={defaultValues}
         mode="onBlur"
         resolver={createFormResolver(opportunitySchema)}
-        transform={(data: Opportunity) => {
-          // WF-H1-004: Inject previous_stage for validation
-          // Only include if stage field is present in the update
-          if (data.stage && initialStageRef.current) {
-            return {
-              ...data,
-              previous_stage: initialStageRef.current,
-            };
-          }
-          return data;
-        }}
       >
         <SectionCard contentClassName="pt-6">
           <EditHeader />

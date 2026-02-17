@@ -1,0 +1,5 @@
+{
+  "$schema": "./mutation-allowlist.schema.json",
+  "description": "Approved fire-and-forget mutation exceptions. Each entry must have owner, created_at, expires_at, and ticket_id. Expired entries fail CI.",
+  "exceptions": []
+}

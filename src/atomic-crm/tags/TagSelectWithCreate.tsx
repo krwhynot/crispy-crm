@@ -29,6 +29,7 @@ export function TagSelectWithCreate({ source, label }: TagSelectWithCreateProps)
       "tags",
       { data },
       {
+        returnPromise: true,
         onSuccess: () => {
           success(notificationMessages.created("Tag"));
           setDialogOpen(false);

@@ -145,12 +145,12 @@ export function DashboardTabPanel() {
   return (
     <Card className="paper-card flex min-h-0 flex-1 flex-col gap-0 overflow-hidden">
       <Tabs defaultValue="tasks" className="flex min-h-0 flex-1 flex-col gap-0">
-        <div className="shrink-0 border-b px-4 py-3 [border-color:color-mix(in_oklch,var(--paper-divider)_50%,transparent)]">
+        <div className="shrink-0 border-b px-3 py-2 [border-color:color-mix(in_oklch,var(--paper-divider)_50%,transparent)]">
           <TabsList className="paper-tabs-list overflow-x-auto" data-tutorial="dashboard-tabs">
             {/* Pipeline Tab - 44px touch target */}
             <TabsTrigger
               value="pipeline"
-              className="paper-tabs-trigger min-w-[120px] gap-2"
+              className="paper-tabs-trigger gap-1.5"
               data-tutorial="dashboard-tab-pipeline"
             >
               <LayoutGrid className="h-4 w-4" />
@@ -160,7 +160,7 @@ export function DashboardTabPanel() {
             {/* My Tasks Tab */}
             <TabsTrigger
               value="tasks"
-              className="paper-tabs-trigger min-w-[120px] gap-2"
+              className="paper-tabs-trigger gap-1.5"
               data-tutorial="dashboard-tab-tasks"
             >
               <CheckSquare className="h-4 w-4" />
@@ -175,7 +175,7 @@ export function DashboardTabPanel() {
             {/* Performance Tab */}
             <TabsTrigger
               value="performance"
-              className="paper-tabs-trigger min-w-[120px] gap-2"
+              className="paper-tabs-trigger gap-1.5"
               data-tutorial="dashboard-tab-performance"
             >
               <TrendingUp className="h-4 w-4" />
@@ -185,7 +185,7 @@ export function DashboardTabPanel() {
             {/* Team Activity Tab */}
             <TabsTrigger
               value="activity"
-              className="paper-tabs-trigger min-w-[120px] gap-2"
+              className="paper-tabs-trigger gap-1.5"
               data-tutorial="dashboard-tab-activity"
             >
               <Users className="h-4 w-4" />
@@ -195,7 +195,7 @@ export function DashboardTabPanel() {
             {/* Recently Viewed Tab */}
             <TabsTrigger
               value="recent"
-              className="paper-tabs-trigger min-w-[120px] gap-2"
+              className="paper-tabs-trigger gap-1.5"
               data-tutorial="dashboard-tab-recent"
             >
               <Clock className="h-4 w-4" />

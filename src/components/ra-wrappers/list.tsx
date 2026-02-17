@@ -20,6 +20,7 @@ import { ExportButton } from "@/components/ra-wrappers/export-button";
 import { ListPagination } from "@/components/ra-wrappers/list-pagination";
 import { FilterForm } from "@/components/ra-wrappers/filter-form";
 import { ListNoResults } from "@/components/ra-wrappers/ListNoResults";
+import { useFilterCleanup } from "@/atomic-crm/hooks/useFilterCleanup";
 
 export const List = <RecordType extends RaRecord = RaRecord>(props: ListProps<RecordType>) => {
   const {
@@ -37,6 +38,13 @@ export const List = <RecordType extends RaRecord = RaRecord>(props: ListProps<Re
     storeKey,
     ...rest
   } = props;
+
+  // Clean stale filters/sort from localStorage BEFORE ListBase mounts.
+  // ListBase → useListParams → useStore reads from localStorage on init;
+  // if stale values are present, they cause PostgREST 400 errors or UI crashes.
+  const resourceFromContext = useResourceContext();
+  const resolvedResource = resource ?? resourceFromContext;
+  useFilterCleanup(resolvedResource ?? "");
 
   return (
     <ListBase<RecordType>

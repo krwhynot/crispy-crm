@@ -236,6 +236,7 @@ export function UserDisableReassignDialog({
         "sales",
         { id: user.id, data: { disabled: true }, previousData: user },
         {
+          returnPromise: true,
           onSuccess: () => {
             // Invalidate sales cache to update user lists
             queryClient.invalidateQueries({ queryKey: saleKeys.all });
@@ -353,6 +354,7 @@ export function UserDisableReassignDialog({
         "sales",
         { id: user.id, data: { disabled: true }, previousData: user },
         {
+          returnPromise: true,
           onSuccess: () => {
             // Invalidate ALL affected resource caches to prevent stale data
             // This ensures all components showing this data update immediately

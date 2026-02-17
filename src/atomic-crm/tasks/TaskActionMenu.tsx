@@ -80,11 +80,15 @@ export function TaskActionMenu({
       newSnoozeDate.setDate(newSnoozeDate.getDate() + days);
       newSnoozeDate.setHours(23, 59, 59, 999);
 
-      await update("tasks", {
-        id: taskId,
-        data: { snooze_until: newSnoozeDate.toISOString() },
-        previousData: task,
-      });
+      await update(
+        "tasks",
+        {
+          id: taskId,
+          data: { snooze_until: newSnoozeDate.toISOString() },
+          previousData: task,
+        },
+        { returnPromise: true }
+      );
 
       queryClient.invalidateQueries({ queryKey: taskKeys.lists() });
       queryClient.invalidateQueries({ queryKey: entityTimelineKeys.lists() });
@@ -105,7 +109,7 @@ export function TaskActionMenu({
   const handleDeleteInternal = async () => {
     setIsDeleting(true);
     try {
-      await deleteOne("tasks", { id: taskId, previousData: task });
+      await deleteOne("tasks", { id: taskId, previousData: task }, { returnPromise: true });
       queryClient.invalidateQueries({ queryKey: taskKeys.lists() });
       queryClient.invalidateQueries({ queryKey: entityTimelineKeys.lists() });
       notify(notificationMessages.deleted("Task"), { type: "success" });

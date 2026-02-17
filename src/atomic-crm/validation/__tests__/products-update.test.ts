@@ -26,17 +26,20 @@ describe("Product Update Validation", () => {
       expect(result.success).toBe(true);
     });
 
-    it("should strip unrecognized keys instead of rejecting", () => {
+    it("should passthrough unrecognized keys (lifecycle callbacks strip before DB write)", () => {
       const dataWithExtra = {
         name: "Test",
         principal_id: 1,
         category: "beverages",
-        extra_field: "should be stripped",
+        extra_field: "passed through for callback stripping",
       };
       const result = productUpdateSchema.safeParse(dataWithExtra);
       expect(result.success).toBe(true);
       if (result.success) {
-        expect((result.data as Record<string, unknown>).extra_field).toBeUndefined();
+        // passthrough allows extra keys — callbacks strip computed/view fields before write
+        expect((result.data as Record<string, unknown>).extra_field).toBe(
+          "passed through for callback stripping"
+        );
       }
     });
 

@@ -1,13 +1,12 @@
 /**
  * Tests for DuplicateOrgWarningDialog component
  *
- * Verifies the soft duplicate warning dialog behavior:
+ * Verifies the hard duplicate block dialog behavior:
  * - Renders when open with duplicate name
  * - Does not render when closed
  * - Calls onViewExisting when "View Existing" clicked
  * - Calls onCancel when "Change Name" clicked
- * - Calls onProceed when "Create Anyway" clicked
- * - Shows loading state when isLoading is true
+ * - No bypass/"Create Anyway" path exists
  */
 import { screen } from "@testing-library/react";
 import { renderWithAdminContext } from "@/tests/utils/render-admin";
@@ -21,9 +20,7 @@ describe("DuplicateOrgWarningDialog", () => {
     duplicateName: "Acme Corp",
     duplicateOrgId: 123,
     onCancel: vi.fn(),
-    onProceed: vi.fn(),
     onViewExisting: vi.fn(),
-    isLoading: false,
   };
 
   it("renders when open is true", () => {
@@ -60,39 +57,18 @@ describe("DuplicateOrgWarningDialog", () => {
     expect(onCancel).toHaveBeenCalled();
   });
 
-  it("calls onProceed when 'Create Anyway' button is clicked", async () => {
-    const user = userEvent.setup();
-    const onProceed = vi.fn();
-
-    renderWithAdminContext(<DuplicateOrgWarningDialog {...defaultProps} onProceed={onProceed} />);
-
-    await user.click(screen.getByRole("button", { name: /Create Anyway/i }));
-
-    expect(onProceed).toHaveBeenCalledTimes(1);
-  });
-
-  it("shows 'Creating...' when isLoading is true", () => {
-    renderWithAdminContext(<DuplicateOrgWarningDialog {...defaultProps} isLoading={true} />);
-
-    expect(screen.getByRole("button", { name: /Creating.../i })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /Creating.../i })).toBeDisabled();
-  });
-
-  it("disables 'Create Anyway' button when loading", () => {
-    renderWithAdminContext(<DuplicateOrgWarningDialog {...defaultProps} isLoading={true} />);
-
-    const proceedButton = screen.getByRole("button", { name: /Creating.../i });
-    expect(proceedButton).toBeDisabled();
-  });
-
   it("shows the explanation text about options", () => {
     renderWithAdminContext(<DuplicateOrgWarningDialog {...defaultProps} />);
 
     expect(
-      screen.getByText(
-        /Would you like to view the existing organization, change the name, or proceed anyway/i
-      )
+      screen.getByText(/Would you like to view the existing organization or change the name/i)
     ).toBeInTheDocument();
+  });
+
+  it("does not offer a 'Create Anyway' bypass option", () => {
+    renderWithAdminContext(<DuplicateOrgWarningDialog {...defaultProps} />);
+
+    expect(screen.queryByRole("button", { name: /Create Anyway/i })).not.toBeInTheDocument();
   });
 
   it("renders 'View Existing' button when onViewExisting and duplicateOrgId are provided", () => {

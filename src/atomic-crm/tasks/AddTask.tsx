@@ -69,11 +69,15 @@ export const AddTask = ({
         return;
       }
 
-      await update("contacts", {
-        id: contact.data.id,
-        data: { last_seen: new Date().toISOString() },
-        previousData: contact.data,
-      });
+      await update(
+        "contacts",
+        {
+          id: contact.data.id,
+          data: { last_seen: new Date().toISOString() },
+          previousData: contact.data,
+        },
+        { returnPromise: true }
+      );
 
       notify("Task added");
     } catch (error: unknown) {

@@ -1,245 +1,41 @@
-# Code Quality Standards
+﻿# Code Quality Overlay
 
-Enforces production cleanliness, type safety, and accessibility baselines.
+Scope: production cleanliness, type safety hygiene, React Admin resolver discipline, and accessibility enforcement for application code.
 
-## Production Noise Prevention
+## Applies
 
-**Baseline:** 0 in production code (Verified Jan 2026)
-**Target:** Maintain 0 console statements in production code
-**Current Status:** Track with `grep -rn "console\.(log|warn|error|info|debug)(" src/ --include="*.ts" --include="*.tsx" --exclude-dir=tests --exclude="*.test.ts" --exclude="*.test.tsx" --exclude="logger.ts" --exclude="devLogger.ts" | wc -l`
+- `CORE-002`, `CORE-003`, `CORE-004`, `CORE-014`, `CORE-015`, `CORE-016`, `CORE-017`, `CORE-018`, `CORE-019`, `CORE-021`, `CORE-022`
 
-### Banned Patterns
+## Overlay Notes
 
-DO NOT:
-- `console.log()` - Debug artifacts left in production
-- `console.error()` - Bypasses error tracking systems
-- `console.warn()` - No structured logging
-- `console.info()` - Not integrated with observability
-- `console.debug()` - Use proper debug logger
+- Quality checks in this file are references to canonical core constraints; no duplicate normative text lives here.
+- Use `DOM-*` rules for schema/type specifics and `UI-*` rules for tier/wrapper implementation details.
 
-### Allowed Exceptions
-
-- **Test files:** `*.test.ts`, `*.test.tsx`, `__tests__/` directories
-- **Logging infrastructure:** `logger.ts`, `devLogger.ts`
-- **Build scripts:** `scripts/`, `*.config.ts`
-- **Documentation:** `*.md`, JSDoc comments (not executable)
-
-### Replacement Patterns
-
-WRONG:
-```typescript
-// Production noise - no context, not tracked, clutters console
-console.log('User logged in:', userId);
-console.error('Failed to fetch contacts:', error);
-console.warn('Deprecated field used:', fieldName);
-```
-
-RIGHT:
-```typescript
-// Structured logging with context
-import { logger } from '@/lib/logger';
-
-logger.info('User logged in', { userId, timestamp: Date.now() });
-logger.error('Failed to fetch contacts', {
-  error: error instanceof Error ? error.message : String(error),
-  operation: 'getList',
-  resource: 'contacts'
-});
-logger.warn('Deprecated field used', {
-  fieldName,
-  migration: 'Use new_field instead'
-});
-```
-
-## Type Safety Baseline
-
-**Baseline:** 0 uses of `: any` across ALL code (Cleaned Jan 2026) ✅
-**Target:** 0 (Strict Enforcement — Zero Tolerance)
-**Current Status:**
-```bash
-# Verify zero any in CODE (excludes JSDoc/comments) (expect: 0)
-rg ": any|as any|any\[\]|Promise<any>" src/ --type ts \
-  | grep -v " \* \| \*/\|:\s*//" \
-  | wc -l
-```
-Note: JSDoc comments that mention `: any` (e.g., "replaces `as any` casts") are not violations — they document what the utility replaces.
-
-### Banned Patterns (ALL code — production AND tests)
-
-DO NOT:
-- `: any` - Disables all type checking. Use `unknown`, `Record<string, unknown>`, or `Partial<T>`
-- `as any` - Bypasses type safety completely. Use type guards or typed factories
-- `as unknown as T` - Signals broken types (fix root cause). Exception: with a runtime type guard (see `segmentsHandler.ts`) or `// Type: partial mock` in tests
-- `any[]` - Untyped arrays. Use `unknown[]` or `Array<T>`
-- `Promise<any>` - Use `Promise<unknown>` or `Promise<T>`
-
-### Type-Safe Alternatives
-
-| Instead of | Use |
-|------------|-----|
-| `(props: any)` | Inline type: `({ children }: { children: React.ReactNode })` |
-| `{...} as any` (RA hook mock) | Typed factory: `mockUseGetListReturn<T>()` from `src/tests/utils/typed-mocks.ts` |
-| `(param: any)` in mock | `Record<string, unknown>` or specific interface |
-| `(item: any)` in callback | Infer type from context or define local interface |
-| `let error: any` | `let error: unknown` with type narrowing |
-
-### Type Safety Checklist
-
-- [x] No `: any` types in production (use generic constraints, unknown with guards)
-- [x] No `as any` casts in production (use type guards)
-- [x] `as unknown as T` only with runtime guards (`segmentsHandler.ts` pattern)
-- [x] API boundaries use Zod schemas with `z.infer`
-- [x] Test mocks use typed factories from `src/tests/utils/typed-mocks.ts`
-- [x] Zero `any` in test files (cleaned Jan 2026)
-
-## Form Standards (React Admin)
-
-Enforces strict type safety in form implementations to prevent `as any` casting and Type Variance errors.
-
-### Resolver Pattern
-
-DO:
-- Use the Adapter: `import { createFormResolver } from "@/lib/zodErrorFormatting"`
-- Wrap Schemas: `resolver={createFormResolver(mySchema)}`
-
-DON'T:
-- Direct Usage: `resolver={zodResolver(mySchema)}` (Causes generic type mismatch)
-- Type Casting: `resolver={zodResolver(mySchema) as any}` (Violates Type Safety rules)
-
-## Storage Hygiene
-
-Ensures file uploads and bucket interactions are secure and performant.
-
-DO:
-- **Centralized Config:** Define max file sizes and allowed types in `src/config/storage.ts`.
-- **Sanitization:** Sanitize filenames before upload (remove special chars, spaces) to prevent URL encoding issues.
-- **Error Codes:** Handle specific storage errors (e.g., "Quota Exceeded") explicitly, do not just `catch (e)`.
-
-DON'T:
-- **Hardcoded Buckets:** Never use string literals like `"avatars"` in components. Use constants (`STORAGE_BUCKETS.AVATARS`).
-- **Magic Numbers:** No `if (file.size > 5000000)`. Use `MAX_FILE_SIZE_BYTES`.
-
-## Accessibility Requirements
-
-**Baseline:** 743 ARIA attributes (good foundation)
-**Standards:** WCAG 2.1 AA compliance
-**Touch Targets:** >= 44px (Tailwind `h-11`, `w-11`)
-
-### Required Patterns
-
-DO:
-- `aria-invalid="true"` on error fields
-- `aria-required="true"` on required form fields
-- `aria-describedby` linking to error messages
-- `<label htmlFor={id}>` associating labels to inputs
-- `role="alert"` on error containers
-- `aria-live="polite"` regions for form status announcements
-- Focus management (modals, slide-overs, and validation failures)
-- Semantic colors (no hardcoded hex)
-- Minimum touch target size
-
-### Framework-Specific: Radix UI & React Admin
-
-**Dialog/Modal Landmarks (Radix UI):**
-- Every `<DialogContent>` MUST contain a `<DialogTitle>` — Radix fires a console warning if missing
-- Every `<AlertDialogContent>` MUST contain an `<AlertDialogTitle>`
-- Every `<DrawerContent>` MUST contain a `<DrawerTitle>` (Vaul uses Radix Dialog internally)
-- If no visible title is appropriate, use `className="sr-only"` to hide it visually while keeping it accessible:
+## Canonical Risk Stub (Resolver)
 
 ```tsx
-// Visually hidden but accessible to screen readers
-<DialogHeader className="sr-only">
-  <DialogTitle>Search commands</DialogTitle>
-</DialogHeader>
+// Avoid this in React Admin forms
+resolver={zodResolver(mySchema)}
+
+// Required pattern
+resolver={createFormResolver(mySchema)}
 ```
 
-**Datagrid Accessibility (React Admin):**
-- Use `PremiumDatagrid` wrapper instead of raw `Datagrid` — prevents prop leak warnings and ensures consistent keyboard navigation
-- Verify: `grep -r "import.*Datagrid.*from.*react-admin" src/ --include="*.tsx" | grep -v PremiumDatagrid.tsx` (expect: 0 results)
+## Command IDs
 
-WRONG:
-```typescript
-// Missing ARIA, hardcoded color, small target
-<input className="border-[#E11D48]" />
-<div className="text-red-500">Error occurred</div>
-<button className="h-8 w-8">X</button>
-```
+- Pre-commit gate: `CMD-001`, `CMD-002`, `CMD-003`, `CMD-004`, `CMD-005`
+- Datagrid audit: `CMD-007`
 
-RIGHT:
-```typescript
-// ARIA attributes, semantic colors, proper sizing
-<input
-  aria-invalid={!!error}
-  aria-describedby={error ? 'email-error' : undefined}
-  className="border-destructive"
-/>
-{error && (
-  <div id="email-error" role="alert" className="text-destructive">
-    {error.message}
-  </div>
-)}
-<button className="h-11 w-11 focus-visible:ring-2">
-  <X className="h-4 w-4" />
-</button>
-```
+## Checklist IDs
 
-### Form Validation Focus Management
-
-On form submit failure, focus the first invalid field:
-
-```typescript
-const { handleSubmit, setFocus } = useForm();
-
-const onSubmit = handleSubmit(
-  (data) => { /* success */ },
-  (errors) => {
-    const firstError = Object.keys(errors)[0];
-    if (firstError) setFocus(firstError);
-  }
-);
-```
-
-### Live Validation Feedback
-
-Announce form status to screen readers:
-
-```tsx
-<div aria-live="polite" aria-atomic="true" className="sr-only">
-  {isSubmitting && "Validating form..."}
-  {isSubmitSuccessful && "Form submitted successfully"}
-  {Object.keys(errors).length > 0 &&
-    `Form has ${Object.keys(errors).length} errors`}
-</div>
-```
-
-## Pre-Commit Verification
-
-Run BEFORE committing to catch quality regressions early.
-
-### Quick Check Commands
-
-```bash
-# 1. Console statements (expect: 0)
-grep -rn "console\.(log|warn|error|info|debug)(" src/ \
-  --include="*.ts" --include="*.tsx" \
-  --exclude-dir=tests \
-  --exclude="*.test.ts" \
-  --exclude="*.test.tsx" \
-  --exclude="logger.ts" \
-  --exclude="devLogger.ts" \
-  | wc -l
-
-# 2. Any types — ZERO TOLERANCE (expect: 0 across ALL code)
-rg ": any|as any|any\[\]|Promise<any>" src/ --type ts \
-  | grep -v " \* \| \*/\|:\s*//" \
-  | wc -l
-
-# 3. TypeScript errors (expect: 0 errors)
-npx tsc --noEmit
-
-# 4. Form Resolver Violations (expect: 0)
-grep -r "zodResolver" src/ --exclude="zodErrorFormatting.ts"
-
-# 5. Linting (expect: clean)
-npm run lint
-```
+- `CORE-002`
+- `CORE-003`
+- `CORE-004`
+- `CORE-014`
+- `CORE-015`
+- `CORE-016`
+- `CORE-017`
+- `CORE-018`
+- `CORE-019`
+- `CORE-021`
+- `CORE-022`

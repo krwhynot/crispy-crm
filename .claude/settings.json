@@ -110,7 +110,5 @@
     "type": "command",
     "command": "node .claude/statusline.js"
   },
-  "enabledPlugins": {
-    "typescript-lsp@claude-plugins-official": true
-  }
+  "enabledPlugins": {}
 }

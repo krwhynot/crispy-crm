@@ -64,7 +64,12 @@ export const Confirm = (props: ConfirmProps) => {
               })}
             </DialogDescription>
           ) : (
-            content
+            <>
+              <DialogDescription className="sr-only">
+                {typeof title === "string" ? title : "Confirmation dialog"}
+              </DialogDescription>
+              {content}
+            </>
           )}
         </DialogHeader>
         <DialogFooter>

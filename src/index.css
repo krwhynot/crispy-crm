@@ -629,8 +629,8 @@
   }
 
   .paper-tabs-trigger {
-    @apply h-11 rounded-none border-b-2 border-transparent bg-transparent px-6;
-    @apply text-xs font-semibold uppercase tracking-[0.06em] text-muted-foreground transition-colors;
+    @apply h-11 rounded-none border-b-2 border-transparent bg-transparent px-3;
+    @apply text-xs font-semibold uppercase tracking-[0.04em] text-muted-foreground transition-colors;
     @apply data-[state=active]:text-[color:var(--text-title)] data-[state=active]:border-[color:color-mix(in_oklch,var(--olive-base,var(--brand-700))_70%,transparent)];
     @apply data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:font-bold;
   }
@@ -642,6 +642,34 @@
   .paper-kpi-divider {
     height: 1px;
     background: var(--paper-divider);
+  }
+
+  /* Report filter controls — elevated "executive" select styling */
+  .report-filter-trigger {
+    background: var(--surface-paper-card);
+    border: 1px solid color-mix(in oklch, var(--paper-divider) 40%, transparent);
+    box-shadow: var(--elevation-1);
+    padding-inline: 1rem;
+    font-weight: 500;
+    transition:
+      background 150ms,
+      border-color 150ms;
+  }
+  .report-filter-trigger:hover {
+    background: var(--surface-paper-inner);
+  }
+  .report-filter-trigger[data-state="open"] {
+    background: var(--surface-paper-inner);
+  }
+
+  .report-filter-content {
+    background: var(--surface-paper-card);
+    box-shadow: var(--elevation-2);
+    border-radius: 0.75rem;
+    border: 1px solid color-mix(in oklch, var(--paper-divider) 40%, transparent);
+  }
+  .report-filter-content [data-slot="select-item"]:focus {
+    background: var(--surface-paper-inner);
   }
 
   /* Create form card - higher elevation */

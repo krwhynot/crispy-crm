@@ -49,6 +49,7 @@ export const baseNoteSchema = z.strictObject({
   // Timestamps (automatically managed by database)
   created_at: z.string().max(50).optional(),
   updated_at: z.string().max(50).optional(),
+  deleted_at: z.string().max(50).optional().nullable(),
 });
 
 /**

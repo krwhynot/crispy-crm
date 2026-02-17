@@ -45,6 +45,7 @@ export function ProductExceptionsSection({
         "product_distributor_authorizations",
         { id: removeException.id },
         {
+          returnPromise: true,
           onSuccess: () => {
             notify(`Removed exception for ${productName}`, { type: "success" });
             // Invalidate React Query cache for authorization data

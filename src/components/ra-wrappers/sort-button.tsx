@@ -40,17 +40,22 @@ const SortButtonComponent = (props: SortButtonProps) => {
   const { resource: resourceFromContext, sort, setSort } = sortContext;
   const resource = resourceProp || resourceFromContext;
 
+  // Guard against stale/invalid sort field from RA store.
+  // useFilterCleanup fixes localStorage synchronously, but RA's in-memory
+  // store may still hold the stale value during the first render.
+  const sortField = typeof sort.field === "string" ? sort.field : fields[0];
+
   const handleChangeSort = (field: string) => {
     setSort({
       field,
-      order: field === sort.field ? inverseOrder(sort.order) : "ASC",
+      order: field === sortField ? inverseOrder(sort.order) : "ASC",
     });
     setOpen(false);
   };
 
   const fieldLabel = translateLabel({
     resource,
-    source: sort.field,
+    source: sortField,
   });
   const buttonLabel = translate(label, {
     field: fieldLabel,
@@ -101,7 +106,7 @@ const SortButtonComponent = (props: SortButtonProps) => {
               resource,
               source: field,
             })}{" "}
-            {translate(`ra.sort.${sort.field === field ? inverseOrder(sort.order) : "ASC"}`)}
+            {translate(`ra.sort.${sortField === field ? inverseOrder(sort.order) : "ASC"}`)}
           </DropdownMenuItem>
         ))}
       </DropdownMenuContent>

@@ -32,6 +32,10 @@ import { createResourceCallbacks, type ResourceCallbacks } from "./createResourc
 import type { Opportunity } from "../../../types";
 import { supabase } from "../supabase";
 import { logger } from "@/lib/logger";
+import {
+  isValidOpportunityStageTransition,
+  type OpportunityStageValue,
+} from "@/atomic-crm/validation/opportunities";
 
 /**
  * Type-safe computed fields that exist on the Opportunity type
@@ -313,6 +317,19 @@ async function opportunitiesBeforeUpdate(
 
   // Check if stage changed
   if (previousData?.stage && data.stage && previousData.stage !== data.stage) {
+    // WF-H1-004: Authoritative stage transition validation (provider is source of truth)
+    // Uses previousData from React Admin (populated by EditBase from current record)
+    if (
+      !isValidOpportunityStageTransition(
+        previousData.stage as OpportunityStageValue,
+        data.stage as OpportunityStageValue
+      )
+    ) {
+      throw new Error(
+        `Invalid stage transition from "${previousData.stage}" to "${data.stage}". Opportunities must progress through pipeline stages in order.`
+      );
+    }
+
     // Validate stage transition prerequisites (fail-fast)
     validateStageTransition(data.stage, data);
     // NOTE: Activity logging removed - DB trigger handles stage change logging
@@ -343,6 +360,10 @@ async function opportunitiesBeforeSave(
 
   // Strip computed fields - conditionally strip UPDATE_ONLY_STRIP_FIELDS for updates
   let processed = stripComputedFields(data, isUpdate);
+
+  // Strip previous_stage - virtual field used only for transition validation
+  // Ensures it never reaches the database even if injected by old clients
+  delete processed.previous_stage;
 
   // Strip empty contact_ids for stage-only updates (Kanban drag-drop)
   // Detection: stage is present AND this is an update (has id) AND name is NOT present

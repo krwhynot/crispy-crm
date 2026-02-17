@@ -109,19 +109,24 @@ const NotificationRow = memo(function NotificationRow({
   const queryClient = useQueryClient();
 
   const markAsRead = async () => {
-    await update(
-      "notifications",
-      { id: notification.id, data: { read: true } },
-      {
-        onSuccess: () => {
-          notify("Notification marked as read", { type: "success" });
-          queryClient.invalidateQueries({ queryKey: notificationKeys.all });
-        },
-        onError: () => {
-          notify("Error marking notification as read", { type: "error" });
-        },
-      }
-    );
+    try {
+      await update(
+        "notifications",
+        { id: notification.id, data: { read: true } },
+        {
+          returnPromise: true,
+          onSuccess: () => {
+            notify("Notification marked as read", { type: "success" });
+            queryClient.invalidateQueries({ queryKey: notificationKeys.all });
+          },
+          onError: () => {
+            notify("Error marking notification as read", { type: "error" });
+          },
+        }
+      );
+    } catch {
+      notify("Error marking notification as read", { type: "error" });
+    }
   };
 
   const timeAgo = formatDistanceToNow(parseDateSafely(notification.created_at) ?? new Date(), {

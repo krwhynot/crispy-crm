@@ -31,19 +31,19 @@ export const OrganizationTagsListEdit = () => {
   });
   const { data: tags, isPending: isPendingRecordTags } = useGetMany<Tag>(
     "tags",
-    { ids: record?.tags },
+    { ids: record?.tags ?? [] },
     { enabled: record && record.tags && record.tags.length > 0 }
   );
   const [update] = useUpdate<Organization>();
 
   const unselectedTags =
-    allTags && record && allTags.filter((tag) => !record.tags.includes(tag.id));
+    allTags && record && allTags.filter((tag) => !(record.tags ?? []).includes(tag.id));
 
   const handleTagAdd = (id: Identifier) => {
     if (!record) {
       throw new Error("No organization record found");
     }
-    const tags = [...record.tags, id];
+    const tags = [...(record.tags ?? []), id];
     update(
       "organizations",
       {
@@ -52,6 +52,7 @@ export const OrganizationTagsListEdit = () => {
         previousData: record,
       },
       {
+        returnPromise: true,
         onSuccess: () => {
           // SS-06 FIX: Invalidate caches after tag add
           queryClient.invalidateQueries({ queryKey: organizationKeys.detail(record.id) });
@@ -65,7 +66,7 @@ export const OrganizationTagsListEdit = () => {
     if (!record) {
       throw new Error("No organization record found");
     }
-    const tags = record.tags.filter((tagId) => tagId !== id);
+    const tags = (record.tags ?? []).filter((tagId) => tagId !== id);
     await update(
       "organizations",
       {
@@ -74,6 +75,7 @@ export const OrganizationTagsListEdit = () => {
         previousData: record,
       },
       {
+        returnPromise: true,
         onSuccess: () => {
           // SS-06 FIX: Invalidate caches after tag removal
           queryClient.invalidateQueries({ queryKey: organizationKeys.detail(record.id) });
@@ -101,10 +103,11 @@ export const OrganizationTagsListEdit = () => {
         "organizations",
         {
           id: record.id,
-          data: { tags: [...record.tags, tag.id] },
+          data: { tags: [...(record.tags ?? []), tag.id] },
           previousData: record,
         },
         {
+          returnPromise: true,
           onSuccess: () => {
             setOpen(false);
             // SS-06 FIX: Invalidate caches after creating and adding new tag

@@ -68,6 +68,7 @@ export function LinkOpportunityModal({
           },
         },
         {
+          returnPromise: true,
           onSuccess: async () => {
             // Invalidate caches for both parent resources (granular invalidation)
             queryClient.invalidateQueries({

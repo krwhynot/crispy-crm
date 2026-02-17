@@ -58,7 +58,7 @@ export function RowHoverActions({
       if (onDelete) {
         await onDelete(id);
       } else {
-        await deleteOne(resource, { id, previousData: record ?? {} });
+        await deleteOne(resource, { id, previousData: record ?? {} }, { returnPromise: true });
       }
       notify("Record deleted", { type: "success" });
       refresh();

@@ -1,11 +1,11 @@
 /**
  * Tests for useDuplicateOrgCheck hook
  *
- * Verifies the soft duplicate checking behavior:
+ * Verifies the hard duplicate checking behavior:
  * - Returns null when no duplicate found
  * - Returns duplicate info when duplicate exists
  * - Excludes current org in edit mode
- * - Bypassed duplicates don't trigger again
+ * - Clears duplicate state on user action
  * - Handles API errors gracefully
  */
 import { renderHook, act } from "@testing-library/react";
@@ -96,9 +96,9 @@ describe("useDuplicateOrgCheck", () => {
     expect(result.current.duplicateOrg).toBeNull();
   });
 
-  it("bypassed names do not trigger warning again", async () => {
+  it("always detects duplicates on repeated checks for the same name", async () => {
     mockGetList.mockResolvedValue({
-      data: [{ id: "111", name: "Bypassed Company" }],
+      data: [{ id: "111", name: "Repeated Company" }],
     });
 
     const { result } = renderHook(() => useDuplicateOrgCheck());
@@ -106,20 +106,20 @@ describe("useDuplicateOrgCheck", () => {
     // First check - should find duplicate
     let duplicate: DuplicateResult = null;
     await act(async () => {
-      duplicate = await result.current.checkForDuplicate("Bypassed Company");
+      duplicate = await result.current.checkForDuplicate("Repeated Company");
     });
     expect(duplicate).not.toBeNull();
 
-    // Bypass the duplicate
+    // Clear the duplicate (user chose to change name)
     act(() => {
-      result.current.bypassDuplicate();
+      result.current.clearDuplicate();
     });
 
-    // Second check - should NOT find duplicate (bypassed)
+    // Second check with same name - should still find duplicate (no bypass)
     await act(async () => {
-      duplicate = await result.current.checkForDuplicate("Bypassed Company");
+      duplicate = await result.current.checkForDuplicate("Repeated Company");
     });
-    expect(duplicate).toBeNull();
+    expect(duplicate).not.toBeNull();
   });
 
   it("handles empty/whitespace names gracefully", async () => {
@@ -171,37 +171,5 @@ describe("useDuplicateOrgCheck", () => {
 
     // isChecking should be false after completion
     expect(result.current.isChecking).toBe(false);
-  });
-
-  it("performs case-insensitive bypass matching", async () => {
-    // First call returns a duplicate
-    mockGetList.mockResolvedValueOnce({
-      data: [{ id: "222", name: "Case Test Company" }],
-    });
-
-    const { result } = renderHook(() => useDuplicateOrgCheck());
-
-    // First check with original case - should find duplicate
-    let duplicate: DuplicateResult = null;
-    await act(async () => {
-      duplicate = await result.current.checkForDuplicate("Case Test Company");
-    });
-    expect(duplicate).not.toBeNull();
-
-    // Bypass the duplicate
-    act(() => {
-      result.current.bypassDuplicate();
-    });
-
-    // Second call would normally return the same duplicate
-    mockGetList.mockResolvedValueOnce({
-      data: [{ id: "222", name: "Case Test Company" }],
-    });
-
-    // Check with different case - should be bypassed (not hit API due to bypass cache)
-    await act(async () => {
-      duplicate = await result.current.checkForDuplicate("CASE TEST COMPANY");
-    });
-    expect(duplicate).toBeNull();
   });
 });

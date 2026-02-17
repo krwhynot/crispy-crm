@@ -20,6 +20,7 @@ export function TagEditModal({ tag, open, onClose, onSuccess }: TagEditModalProp
       "tags",
       { id: tag.id, data, previousData: tag },
       {
+        returnPromise: true,
         onSuccess: async (updatedTag) => {
           // STATE-1 FIX: Invalidate tag caches to refresh lists
           await queryClient.invalidateQueries({ queryKey: tagKeys.all });

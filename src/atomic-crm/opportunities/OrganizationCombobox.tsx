@@ -10,6 +10,8 @@ import { Popover, PopoverContent, PopoverAnchor } from "@/components/ui/popover"
 import { organizationKeys } from "@/atomic-crm/queryKeys";
 import { PLAYBOOK_CATEGORY_IDS } from "@/atomic-crm/validation/segments";
 import { notificationMessages } from "@/atomic-crm/constants/notificationMessages";
+import { useDuplicateOrgCheck } from "@/atomic-crm/organizations/useDuplicateOrgCheck";
+import { DuplicateOrgWarningDialog } from "@/atomic-crm/organizations/DuplicateOrgWarningDialog";
 
 interface InlineCreateOrganizationProps {
   name: string;
@@ -23,6 +25,7 @@ function InlineCreateOrganization({ name, onCreated, onCancel }: InlineCreateOrg
   const dataProvider = useDataProvider();
   const notify = useNotify();
   const queryClient = useQueryClient();
+  const { checkForDuplicate, duplicateOrg, clearDuplicate } = useDuplicateOrgCheck();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -30,6 +33,10 @@ function InlineCreateOrganization({ name, onCreated, onCancel }: InlineCreateOrg
       notify("Organization name is required", { type: "error" });
       return;
     }
+
+    const duplicate = await checkForDuplicate(inputName.trim());
+    if (duplicate) return;
+
     setIsPending(true);
     try {
       const result = await dataProvider.create("organizations", {
@@ -43,7 +50,7 @@ function InlineCreateOrganization({ name, onCreated, onCancel }: InlineCreateOrg
       queryClient.invalidateQueries({ queryKey: organizationKeys.lists() });
       notify(notificationMessages.created("Organization"), { type: "success" });
       onCreated(result.data as { id: number; name: string });
-    } catch {
+    } catch (_error: unknown) {
       notify("Failed to create organization", { type: "error" });
     } finally {
       setIsPending(false);
@@ -51,39 +58,54 @@ function InlineCreateOrganization({ name, onCreated, onCancel }: InlineCreateOrg
   };
 
   return (
-    <Popover open={true} onOpenChange={(isOpen) => !isOpen && onCancel()}>
-      <PopoverAnchor />
-      <PopoverContent className="w-72 p-3" align="start">
-        <form onSubmit={handleSubmit} className="space-y-3">
-          <p className="font-medium text-sm">Create Organization</p>
-          <div className="space-y-1">
-            <Label htmlFor="inline-org-name">Name</Label>
-            <Input
-              id="inline-org-name"
-              value={inputName}
-              onChange={(e) => setInputName(e.target.value)}
-              className="h-11"
-              // eslint-disable-next-line jsx-a11y/no-autofocus -- Popover context, autoFocus is appropriate
-              autoFocus
-            />
-          </div>
-          <div className="flex justify-end gap-2">
-            <AdminButton
-              type="button"
-              variant="outline"
-              size="sm"
-              onClick={onCancel}
-              className="h-11"
-            >
-              Cancel
-            </AdminButton>
-            <AdminButton type="submit" size="sm" disabled={isPending} className="h-11">
-              Create
-            </AdminButton>
-          </div>
-        </form>
-      </PopoverContent>
-    </Popover>
+    <>
+      <Popover
+        open={!duplicateOrg}
+        onOpenChange={(isOpen) => !isOpen && !duplicateOrg && onCancel()}
+      >
+        <PopoverAnchor />
+        <PopoverContent className="w-72 p-3" align="start">
+          <form onSubmit={handleSubmit} className="space-y-3">
+            <p className="font-medium text-sm">Create Organization</p>
+            <div className="space-y-1">
+              <Label htmlFor="inline-org-name">Name</Label>
+              <Input
+                id="inline-org-name"
+                value={inputName}
+                onChange={(e) => setInputName(e.target.value)}
+                className="h-11"
+                // eslint-disable-next-line jsx-a11y/no-autofocus -- Popover context, autoFocus is appropriate
+                autoFocus
+              />
+            </div>
+            <div className="flex justify-end gap-2">
+              <AdminButton
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={onCancel}
+                className="h-11"
+              >
+                Cancel
+              </AdminButton>
+              <AdminButton type="submit" size="sm" disabled={isPending} className="h-11">
+                Create
+              </AdminButton>
+            </div>
+          </form>
+        </PopoverContent>
+      </Popover>
+      {duplicateOrg && (
+        <DuplicateOrgWarningDialog
+          open={!!duplicateOrg}
+          duplicateName={duplicateOrg.name}
+          onCancel={() => {
+            clearDuplicate();
+            onCancel();
+          }}
+        />
+      )}
+    </>
   );
 }
 
@@ -112,7 +134,14 @@ export function OrganizationCombobox({
       setShowCreatePopover(true);
     } else {
       const selectedOption = options.find((opt) => opt.value === selectedValue);
-      onChange(selectedValue ? Number(selectedValue) : undefined, selectedOption?.label);
+      if (!selectedOption && selectedValue) {
+        // Combobox creatable mode passes raw text (not __create__ prefixed)
+        // when the user selects the "Create ..." item — treat as create request
+        setSearchValue(selectedValue);
+        setShowCreatePopover(true);
+      } else {
+        onChange(selectedValue ? Number(selectedValue) : undefined, selectedOption?.label);
+      }
     }
   };
 

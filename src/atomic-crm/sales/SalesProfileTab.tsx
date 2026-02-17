@@ -101,6 +101,7 @@ export function SalesProfileTab({
         "sales",
         { id: record.id, data: formData, previousData: record },
         {
+          returnPromise: true,
           onSuccess: () => {
             notify(notificationMessages.updated("Profile"), { type: "success" });
             if (onModeToggle) onModeToggle(); // Switch back to view mode

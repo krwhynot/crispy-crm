@@ -193,11 +193,12 @@ function SortMenuSub({ fields }: { fields: string[] }) {
 
   if (!sortContext) return null;
   const { resource, sort, setSort } = sortContext;
+  const sortField = typeof sort.field === "string" ? sort.field : fields[0];
 
   const handleChangeSort = (field: string) => {
     setSort({
       field,
-      order: field === sort.field ? inverseOrder(sort.order) : "ASC",
+      order: field === sortField ? inverseOrder(sort.order) : "ASC",
     });
   };
 
@@ -211,7 +212,7 @@ function SortMenuSub({ fields }: { fields: string[] }) {
         {fields.map((field) => (
           <DropdownMenuItem key={field} onSelect={() => handleChangeSort(field)}>
             {translateLabel({ resource, source: field })}{" "}
-            {translate(`ra.sort.${sort.field === field ? inverseOrder(sort.order) : "ASC"}`)}
+            {translate(`ra.sort.${sortField === field ? inverseOrder(sort.order) : "ASC"}`)}
           </DropdownMenuItem>
         ))}
       </DropdownMenuSubContent>

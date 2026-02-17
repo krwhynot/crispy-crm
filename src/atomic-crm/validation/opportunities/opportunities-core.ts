@@ -107,7 +107,7 @@ export const opportunityProductSchema = z
   .nullable();
 
 // Base schema - validates only fields that have UI inputs in OpportunityInputs.tsx
-const opportunityBaseSchema = z.strictObject({
+export const opportunityBaseSchema = z.strictObject({
   // System fields
   id: z.union([z.string(), z.number()]).optional(),
   created_at: z.string().max(50).optional(),
@@ -158,6 +158,8 @@ const opportunityBaseSchema = z.strictObject({
   contact_ids: z
     .array(z.coerce.number().int().positive())
     .max(100, "Maximum 100 contacts")
+    .nullable()
+    .transform((val) => val ?? [])
     .optional()
     .default([]),
 
@@ -184,6 +186,8 @@ const opportunityBaseSchema = z.strictObject({
   tags: z
     .array(z.string().trim().max(50, "Tag must be 50 characters or less"))
     .max(20, "Maximum 20 tags allowed")
+    .nullable()
+    .transform((val) => val ?? [])
     .optional()
     .default([]),
   next_action: z

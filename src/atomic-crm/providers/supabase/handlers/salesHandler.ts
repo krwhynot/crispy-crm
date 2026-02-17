@@ -4,8 +4,9 @@
  * Composes all infrastructure pieces for the sales resource:
  * 1. customHandler → Sales-specific logic (update via Edge Function)
  * 2. withValidation → Zod schema validation
- * 3. withLifecycleCallbacks → Soft delete, computed field stripping
- * 4. withErrorLogging → Structured error handling + Sentry (OUTERMOST)
+ * 3. withSkipDelete → Intercepts delete to prevent hard DELETE on soft-delete resources
+ * 4. withLifecycleCallbacks → Soft delete, computed field stripping
+ * 5. withErrorLogging → Structured error handling + Sentry (OUTERMOST)
  *
  * CRITICAL FIX (2025-01): Custom update method is now defined INSIDE the wrapper
  * chain, not outside. This ensures withErrorLogging catches and reports all errors
@@ -20,7 +21,7 @@
  */
 
 import { withLifecycleCallbacks, type DataProvider } from "react-admin";
-import { withErrorLogging, withValidation } from "../wrappers";
+import { withErrorLogging, withValidation, withSkipDelete } from "../wrappers";
 import { salesCallbacks } from "../callbacks/salesCallbacks";
 import { SalesService } from "../../../services/sales.service";
 
@@ -43,7 +44,7 @@ type DataProviderWithInvoke = DataProvider & {
  * Create a fully composed DataProvider for sales
  *
  * Composition order (innermost to outermost):
- * customHandler → withValidation → withLifecycleCallbacks → withErrorLogging
+ * customHandler → withValidation → withSkipDelete → withLifecycleCallbacks → withErrorLogging
  *
  * CRITICAL: Custom logic is defined INSIDE the wrapper chain so that:
  * - withErrorLogging catches and logs ALL errors (including from SalesService)
@@ -89,10 +90,13 @@ export function createSalesHandler(baseProvider: DataProviderWithInvoke): DataPr
    * Order (innermost to outermost):
    * 1. customHandler - Our sales-specific logic
    * 2. withValidation - Zod schema validation at API boundary
-   * 3. withLifecycleCallbacks - Before/after hooks for soft delete
-   * 4. withErrorLogging - Structured error logging (catches ALL errors)
+   * 3. withSkipDelete - Intercepts hard deletes on soft-delete resources
+   * 4. withLifecycleCallbacks - Before/after hooks for soft delete
+   * 5. withErrorLogging - Structured error logging (catches ALL errors)
    *
    * This ensures ALL custom logic is protected by error logging.
    */
-  return withErrorLogging(withLifecycleCallbacks(withValidation(customHandler), [salesCallbacks]));
+  return withErrorLogging(
+    withLifecycleCallbacks(withSkipDelete(withValidation(customHandler)), [salesCallbacks])
+  );
 }

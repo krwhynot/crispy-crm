@@ -173,6 +173,7 @@ export function SalesPermissionsTab({
         "sales",
         { id: record.id, data: formData, previousData: record },
         {
+          returnPromise: true,
           onSuccess: () => {
             // If role changed, invalidate cache so user sees new permissions immediately
             if (formData.role !== record.role) {
