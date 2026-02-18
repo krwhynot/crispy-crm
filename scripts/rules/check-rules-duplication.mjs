@@ -49,7 +49,7 @@ for (const [normalized, entries] of byNormalizedText.entries()) {
 if (duplicateGroups.length > 0) {
   console.error("Rules duplication check FAILED");
   for (const group of duplicateGroups) {
-    console.error(`- duplicated statement: \"${group.normalized}\"`);
+    console.error(`- duplicated statement: "${group.normalized}"`);
     for (const entry of group.entries) {
       console.error(`  - ${entry.ruleId} at ${entry.file}:${entry.line} -> ${entry.text}`);
     }
