@@ -154,7 +154,7 @@ export function withValidation<T extends DataProvider>(
     return provider.update<RecordType>(resource, params);
   };
 
-  // Wrap getList with filter validation
+  // Wrap getList with filter and sort validation
   wrappedProvider.getList = async <RecordType extends RaRecord = RaRecord>(
     resource: string,
     params: GetListParams
@@ -163,6 +163,16 @@ export function withValidation<T extends DataProvider>(
     const processedParams = { ...params };
     if (processedParams.filter && Object.keys(processedParams.filter).length > 0) {
       processedParams.filter = validationService.validateFilters(resource, processedParams.filter);
+    }
+
+    // Validate sort field — strips invalid sort so handler default applies
+    if (processedParams.sort?.field) {
+      const validatedSort = validationService.validateSort(resource, processedParams.sort);
+      if (!validatedSort) {
+        const { sort: _removed, ...restParams } = processedParams;
+        return provider.getList<RecordType>(resource, restParams as GetListParams);
+      }
+      processedParams.sort = validatedSort;
     }
 
     return provider.getList<RecordType>(resource, processedParams);

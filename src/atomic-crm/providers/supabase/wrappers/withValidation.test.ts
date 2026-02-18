@@ -22,6 +22,7 @@ vi.mock("../services", () => ({
     validate: vi.fn(),
     hasValidation: vi.fn(),
     validateFilters: vi.fn((_resource, filters) => filters),
+    validateSort: vi.fn((_resource, sort) => sort),
   })),
 }));
 
@@ -31,6 +32,7 @@ describe("withValidation", () => {
     validate: ReturnType<typeof vi.fn>;
     hasValidation: ReturnType<typeof vi.fn>;
     validateFilters: ReturnType<typeof vi.fn>;
+    validateSort: ReturnType<typeof vi.fn>;
   };
 
   beforeEach(() => {
@@ -52,6 +54,7 @@ describe("withValidation", () => {
       validate: vi.fn(),
       hasValidation: vi.fn().mockReturnValue(true),
       validateFilters: vi.fn((_resource, filters) => filters),
+      validateSort: vi.fn((_resource, sort) => sort),
     };
 
     // Override the mock implementation for this test
@@ -228,6 +231,60 @@ describe("withValidation", () => {
 
       // Provider should NOT be called if validation fails
       expect(mockProvider.getList).not.toHaveBeenCalled();
+    });
+  });
+
+  describe("sort validation", () => {
+    it("should pass valid sort field through to provider", async () => {
+      const sort = { field: "last_seen", order: "DESC" };
+      mockValidationService.validateSort.mockReturnValue(sort);
+
+      const wrappedProvider = withValidation(mockProvider);
+
+      await wrappedProvider.getList("contacts", {
+        pagination: { page: 1, perPage: 10 },
+        sort,
+        filter: {},
+      });
+
+      expect(mockValidationService.validateSort).toHaveBeenCalledWith("contacts", sort);
+      expect(mockProvider.getList).toHaveBeenCalledWith(
+        "contacts",
+        expect.objectContaining({ sort })
+      );
+    });
+
+    it("should strip invalid sort field and omit from provider call", async () => {
+      mockValidationService.validateSort.mockReturnValue(undefined);
+
+      const wrappedProvider = withValidation(mockProvider);
+
+      await wrappedProvider.getList("contacts", {
+        pagination: { page: 1, perPage: 10 },
+        sort: { field: "nonexistent_column", order: "ASC" },
+        filter: {},
+      });
+
+      expect(mockValidationService.validateSort).toHaveBeenCalledWith("contacts", {
+        field: "nonexistent_column",
+        order: "ASC",
+      });
+
+      // Provider should be called without the sort param
+      const providerCall = vi.mocked(mockProvider.getList).mock.calls[0];
+      expect(providerCall[1]).not.toHaveProperty("sort");
+    });
+
+    it("should not call validateSort when no sort provided", async () => {
+      const wrappedProvider = withValidation(mockProvider);
+
+      await wrappedProvider.getList("contacts", {
+        pagination: { page: 1, perPage: 10 },
+        sort: { field: "", order: "ASC" },
+        filter: {},
+      });
+
+      expect(mockValidationService.validateSort).not.toHaveBeenCalled();
     });
   });
 
