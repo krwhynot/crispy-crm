@@ -8,6 +8,8 @@ The discovery system generates codebase intelligence for Claude Code. It extract
 scripts/discover/
 ├── index.ts ─────────────── Main orchestrator (CLI, incremental, full modes)
 ├── watch.ts ─────────────── File watcher → triggers incremental updates
+├── check-staleness.ts ───── CI staleness detection (exit 0=fresh, 1=stale)
+├── generate-viz.ts ──────── Mermaid/Graphviz generation from call-graph data
 │
 ├── extractors/ ───────────── AST-based metadata extraction
 │   ├── components.ts         React components (hooks, imports, roles)
@@ -19,6 +21,7 @@ scripts/discover/
 │   └── validation-services.ts Validation service functions
 │
 ├── embeddings/ ───────────── Semantic search infrastructure
+│   ├── index.ts              Barrel export for embeddings module
 │   ├── ollama.ts             Embedding generation (768-dim vectors)
 │   ├── lancedb.ts            Vector storage and similarity search
 │   ├── indexer.ts            Full re-index pipeline
@@ -27,10 +30,14 @@ scripts/discover/
 │   └── search-cli.ts         Semantic code search CLI
 │
 ├── scip/ ─────────────────── Symbol intelligence (go-to-def, find-refs)
+│   ├── index.ts              Barrel export for SCIP module
 │   ├── generate.ts           Run scip-typescript indexer
 │   ├── parser.ts             Parse SCIP protobuf format
 │   ├── query.ts              Query symbols and references
-│   └── populate.ts           Populate SQLite FTS index
+│   ├── query.test.ts         SCIP query utility tests
+│   ├── populate.ts           Populate SQLite FTS index
+│   ├── schema.sql            SQLite FTS5 trigram schema definition
+│   └── verify.ts             Go-to-def/find-refs verification script
 │
 └── utils/ ────────────────── Shared infrastructure
     ├── output.ts             Envelope format, atomic writes, staleness

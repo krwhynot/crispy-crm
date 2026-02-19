@@ -90,17 +90,35 @@ export const NoteCreate = ({
 
   // Form defaults from Zod schema (Constitution #5)
   const formDefaults = {
-    ...baseNoteSchema.partial().parse({}),
+    ...noteFormSchema.partial().parse({}),
+    date: getCurrentDate(),
   };
 
   return (
     <CreateBase resource={resource} redirect={false}>
-      <Form defaultValues={formDefaults}>
+      <Form
+        defaultValues={formDefaults}
+        mode="onBlur"
+        resolver={createFormResolver(noteFormSchema)}
+      >
         <div className="space-y-3">
           <NoteFormContent reference={reference} record={record} />
         </div>
       </Form>
     </CreateBase>
+  );
+};
+
+// NoteFormContent includes FormErrorSummary for error display
+const NoteFormContent = ({ reference, record }) => {
+  const { errors } = useFormState();
+
+  return (
+    <>
+      <FormErrorSummary errors={errors} />
+      <NoteInputs />
+      <NoteCreateButton reference={reference} record={record} />
+    </>
   );
 };
 ```
@@ -130,21 +148,32 @@ import { getCurrentDate } from "@/atomic-crm/validation/notes";
 
 ### Side Effect: Contact `last_seen` Update
 
+Uses `try/catch` with `returnPromise: true` to handle errors from the side-effect update. If the note was saved but `last_seen` fails, the user sees a warning rather than silent failure.
+
 ```tsx
-const handleSuccess = () => {
-  reset(baseNoteSchema.partial().parse({}), { keepValues: false });
-  refetch();
+const handleSuccess = async () => {
+  reset(noteFormSchema.partial().parse({}), { keepValues: false });
 
-  // Only update last_seen for contacts
-  if (reference === "contacts") {
-    update(reference, {
-      id: record.id,
-      data: { last_seen: new Date().toISOString() },
-      previousData: record,
-    });
+  // Only update last_seen for contacts (opportunities don't have last_seen)
+  try {
+    if (reference === "contacts") {
+      await update(
+        reference,
+        {
+          id: record.id,
+          data: { last_seen: new Date().toISOString() },
+          previousData: record,
+        },
+        { returnPromise: true }
+      );
+    }
+
+    refetch();
+    notify("Note added");
+  } catch {
+    notify("Note added, but failed to update contact last seen", { type: "warning" });
+    refetch();
   }
-
-  notify("Note added");
 };
 ```
 
@@ -252,30 +281,26 @@ NotesIterator requires `ReferenceManyField` wrapper to provide list context:
 </TabsContent>
 ```
 
-### SlideOver Tab Pattern
+### SlideOver / Right Panel Pattern
 
 ```tsx
-// src/atomic-crm/contacts/slideOverTabs/ContactNotesTab.tsx
+// src/atomic-crm/contacts/ContactRightPanel.tsx (notes section)
 
-export function ContactNotesTab({ record, mode: _mode }: ContactNotesTabProps) {
-  return (
-    <RecordContextProvider value={record}>
-      <div className="space-y-4" data-tutorial="contact-notes-section">
-        <ReferenceManyField
-          target="contact_id"
-          reference="contact_notes"
-          sort={{ field: "created_at", order: "DESC" }}
-          empty={false}  // Prevent hiding content when no notes
-        >
-          <NotesIterator reference="contacts" showEmptyState />
-        </ReferenceManyField>
-      </div>
-    </RecordContextProvider>
-  );
-}
+{/* Notes (contact_notes) - always visible in both modes */}
+<div className="space-y-4">
+  <h3 className="text-sm font-medium text-muted-foreground">Notes</h3>
+  <ReferenceManyField
+    target="contact_id"
+    reference="contact_notes"
+    sort={{ field: "created_at", order: "DESC" }}
+    empty={false}
+  >
+    <NotesIterator reference="contacts" showEmptyState />
+  </ReferenceManyField>
+</div>
 ```
 
-**When to use**: Displaying notes lists in entity detail views or slide-over panels.
+**When to use**: Displaying notes lists in entity detail views or slide-over panels. Notes are rendered inline via `NotesIterator` within the parent panel component, not as a separate tab file.
 
 ---
 
@@ -304,35 +329,37 @@ export const NoteInputs = () => {
       {/* Toggle for optional fields */}
       {!displayMore && (
         <div className="flex justify-end items-center gap-2">
-          <Button
+          <AdminButton
             variant="link"
             size="sm"
             onClick={() => {
               setDisplayMore(!displayMore);
               setValue("date", getCurrentDate());  // Pre-fill on expand
             }}
-            className="text-sm text-muted-foreground underline"
+            className="text-sm text-muted-foreground underline hover:no-underline p-0 h-auto cursor-pointer"
           >
             Show options
-          </Button>
+          </AdminButton>
           <span className="text-sm text-muted-foreground">
             (change date/time)
           </span>
         </div>
       )}
 
-      {/* Expandable date picker */}
+      {/* Expandable datetime input (TextInput with type="datetime-local") */}
       <div
         className={cn(
-          "space-y-3 mt-3 overflow-hidden transition-transform",
-          !displayMore ? "scale-y-0 max-h-0" : "scale-y-100"
+          "space-y-3 mt-3 overflow-hidden transition-transform ease-in-out duration-300 origin-top",
+          !displayMore ? "scale-y-0 max-h-0 h-0" : "scale-y-100"
         )}
       >
-        <DateInput
+        <TextInput
           source="date"
           label="Date & Time"
           helperText={false}
-          // Defaults come from Zod schema (Constitution #5)
+          type="datetime-local"
+          className="text-primary"
+          // defaultValue removed per Constitution #5 - defaults come from Zod schema via form-level defaultValues
         />
       </div>
     </div>
@@ -447,9 +474,12 @@ export const organizationNoteSchema = baseNoteSchema.extend({
 
 ```tsx
 // Used in NoteCreate.tsx
-const formDefaults = baseNoteSchema.partial().parse({});
-// Returns: { text: undefined, date: undefined, ... }
-// Zod provides safe empty state for form initialization
+const formDefaults = {
+  ...noteFormSchema.partial().parse({}),
+  date: getCurrentDate(),
+};
+// noteFormSchema is the form-level schema (relaxed sales_id requirement)
+// getCurrentDate() pre-fills the date field
 ```
 
 **When to use**: Date formatting, validation, and form initialization.
@@ -503,14 +533,44 @@ export const Note = ({
           added a note
         </div>
 
-        {/* Hover actions */}
+        {/* Hover actions with Tooltips */}
         <span className={`${isHover ? "visible" : "invisible"}`}>
-          <Button onClick={handleEnterEditMode} aria-label="Edit note">
-            <Edit className="size-4" />
-          </Button>
-          <Button onClick={handleDelete} aria-label="Delete note">
-            <Trash2 className="size-4" />
-          </Button>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <AdminButton
+                  variant="ghost"
+                  size="icon"
+                  onClick={handleEnterEditMode}
+                  className="cursor-pointer"
+                  aria-label="Edit note"
+                >
+                  <Edit className="size-4" />
+                </AdminButton>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Edit note</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <AdminButton
+                  variant="ghost"
+                  size="icon"
+                  onClick={handleDelete}
+                  className="cursor-pointer"
+                  aria-label="Delete note"
+                >
+                  <Trash2 className="size-4" />
+                </AdminButton>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Delete note</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
         </span>
 
         <div className="flex-1"></div>
@@ -562,77 +622,111 @@ const [deleteNote] = useDelete(
 
 Ensure related caches are refreshed after creating, updating, or deleting notes.
 
+### NoteCreate: Uses `refetch()` from `useListContext()`
+
+NoteCreate does **not** use `useQueryClient` directly. Instead it calls `refetch()` from `useListContext()`, which refreshes the parent `ReferenceManyField` data. The `last_seen` update is handled via `useUpdate` with `returnPromise: true` (see Pattern A).
+
 ```tsx
-// src/atomic-crm/notes/NoteCreate.tsx
-import { useQueryClient } from "@tanstack/react-query";
-import { noteKeys } from "../queryKeys";
+// src/atomic-crm/notes/NoteCreate.tsx - NoteCreateButton
+const { refetch } = useListContext();
 
-const handleSuccess = () => {
-  const queryClient = useQueryClient();
+const handleSuccess = async () => {
+  reset(noteFormSchema.partial().parse({}), { keepValues: false });
 
-  reset(baseNoteSchema.partial().parse({}), { keepValues: false });
-  refetch();
-
-  // Invalidate note caches for this resource
-  queryClient.invalidateQueries({ queryKey: noteKeys.all });
-
-  // Only update last_seen for contacts
-  if (reference === "contacts") {
-    update(reference, {
-      id: record.id,
-      data: { last_seen: new Date().toISOString() },
-      previousData: record,
-    });
+  try {
+    if (reference === "contacts") {
+      await update(reference, { ... }, { returnPromise: true });
+    }
+    refetch();  // Refresh the ReferenceManyField list
+    notify("Note added");
+  } catch {
+    notify("Note added, but failed to update contact last seen", { type: "warning" });
+    refetch();
   }
-
-  notify("Note added");
 };
 ```
 
+### Note.tsx: Targeted `invalidateParentCache()` via `useQueryClient`
+
+Note.tsx uses `useQueryClient` with per-entity key factories for targeted cache invalidation. Each note type invalidates only its specific parent entity detail and note list -- not all entities of all types.
+
 ```tsx
-// src/atomic-crm/notes/Note.tsx - Delete with cache invalidation
+// src/atomic-crm/notes/Note.tsx
+import { useQueryClient } from "@tanstack/react-query";
+import {
+  contactKeys, opportunityKeys, organizationKeys,
+  contactNoteKeys, opportunityNoteKeys, organizationNoteKeys,
+} from "../queryKeys";
+
+const queryClient = useQueryClient();
+
+const invalidateParentCache = useCallback(() => {
+  switch (resource) {
+    case "contactNotes": {
+      const contactNote = note as ContactNote;
+      queryClient.invalidateQueries({ queryKey: contactKeys.detail(contactNote.contact_id) });
+      queryClient.invalidateQueries({ queryKey: contactNoteKeys.all });
+      break;
+    }
+    case "opportunityNotes": {
+      const oppNote = note as OpportunityNote;
+      queryClient.invalidateQueries({ queryKey: opportunityKeys.detail(oppNote.opportunity_id) });
+      queryClient.invalidateQueries({ queryKey: opportunityNoteKeys.all });
+      break;
+    }
+    case "organizationNotes": {
+      const orgNote = note as OrganizationNote;
+      queryClient.invalidateQueries({ queryKey: organizationKeys.detail(orgNote.organization_id) });
+      queryClient.invalidateQueries({ queryKey: organizationNoteKeys.all });
+      break;
+    }
+  }
+}, [resource, note, queryClient]);
+```
+
+```tsx
+// Delete with targeted cache invalidation
 const [deleteNote] = useDelete(
   resource,
   { id: note.id, previousData: note },
   {
     mutationMode: "undoable",
     onSuccess: () => {
-      // Invalidate caches after successful delete
-      queryClient.invalidateQueries({ queryKey: noteKeys.all });
-      notify("Note deleted", { type: "info", undoable: true });
+      notify(notificationMessages.deleted("Note"), { type: "info", undoable: true });
+      invalidateParentCache();
     },
   }
 );
 ```
 
-**Query Key Factory Pattern:**
+**Query Key Factories (from `src/atomic-crm/queryKeys.ts`):**
+
+Note keys use the shared `createKeys` factory. There is **no** top-level `noteKeys.all` -- each entity type has its own key factory:
+
 ```tsx
 // src/atomic-crm/queryKeys.ts
-export const noteKeys = {
-  all: ["notes"] as const,
-  contactNotes: {
-    all: ["contact_notes"] as const,
-    list: (contactId: number) => ["contact_notes", "list", contactId] as const,
-  },
-  opportunityNotes: {
-    all: ["opportunity_notes"] as const,
-    list: (oppId: number) => ["opportunity_notes", "list", oppId] as const,
-  },
-  organizationNotes: {
-    all: ["organization_notes"] as const,
-    list: (orgId: number) => ["organization_notes", "list", orgId] as const,
-  },
-};
+const createKeys = <T extends string>(resource: T) => ({
+  all: [resource] as const,
+  lists: () => [resource, "list"] as const,
+  list: (filters?: Record<string, unknown>) => [resource, "list", filters] as const,
+  details: () => [resource, "detail"] as const,
+  detail: (id: number | string) => [resource, "detail", id] as const,
+});
+
+export const contactNoteKeys = createKeys("contact_notes");
+export const opportunityNoteKeys = createKeys("opportunity_notes");
+export const organizationNoteKeys = createKeys("organization_notes");
 ```
 
 **When to use**: After any note create, update, or delete operation to ensure UI reflects current data.
 
 **Key points:**
-- `noteKeys.all` invalidates all note-related queries across all entity types
-- Specific keys like `noteKeys.contactNotes.list(contactId)` for targeted invalidation
+- NoteCreate uses `refetch()` from `useListContext()` (no `useQueryClient`)
+- Note.tsx uses per-entity key factories (`contactNoteKeys`, `opportunityNoteKeys`, `organizationNoteKeys`) for targeted invalidation
+- `invalidateParentCache()` invalidates both the parent entity detail and the note type list
+- There is no unified `noteKeys.all` -- invalidation is always targeted per entity type
 - Use `mutationOptions.onSuccess` for create/update operations
 - Use `useDelete` options `onSuccess` for delete operations
-- Prevents stale note counts and outdated note lists
 
 **Example:** `src/atomic-crm/notes/NoteCreate.tsx`, `src/atomic-crm/notes/Note.tsx`
 
@@ -719,6 +813,20 @@ const NoteInputs = () => {
 
 ---
 
+## File Reference
+
+| File | Purpose | Key Patterns |
+|------|---------|--------------|
+| `NoteCreate.tsx` | Inline note creation form | A, G |
+| `Note.tsx` | Single note display, inline editing, delete | F, G |
+| `NoteInputs.tsx` | Shared form inputs (text, datetime) | C |
+| `NotesList.tsx` | List renderer from ListContext | B |
+| `NotesIterator.tsx` | Composition wrapper (NoteCreate + NotesList) | B |
+| `utils.ts` | Local date utilities (`getCurrentDate`, `formatNoteDate`) | E |
+| `index.ts` | Barrel exports (NoteCreate, NotesList, NotesIterator) | - |
+
+---
+
 ## Migration Checklist
 
 When extending notes to a new entity type (e.g., `principals`):
@@ -745,10 +853,10 @@ When extending notes to a new entity type (e.g., `principals`):
 - [ ] Add `PrincipalNote` to union type in Note component props
 - [ ] Update `reference` union type to include `"principals"`
 
-### 5. SlideOver Tab Component
+### 5. Entity Right Panel / SlideOver Integration
 
-- [ ] Create `src/atomic-crm/principals/slideOverTabs/PrincipalNotesTab.tsx`
-- [ ] Follow ContactNotesTab pattern
+- [ ] Add a notes section to the principal's right panel component (follow `ContactRightPanel.tsx` pattern)
+- [ ] Use `NotesIterator` inline rather than a separate tab file
 
 ### 6. Entity Detail View
 

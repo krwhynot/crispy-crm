@@ -21,7 +21,10 @@ Reusable React hooks for state management, UI interactions, and data fetching. E
 │  │                │                │                  │ │
 │  │ • useFavorites │ • useSlideOver │ • useIsMobile    │ │
 │  │ • useOrgDesc.. │ • useKeyboard  │ • useBreakpoint  │ │
-│  │ • useTeam...   │ • useUnsaved.. │ • usePermissions │ │
+│  │ • useTeam...   │   Shortcuts    │ • usePermissions │ │
+│  │ • useBulkExp.. │ • useUnsaved.. │ • useCityState.. │ │
+│  │                │ • useInAppUn.. │ • useListKeyNv.. │ │
+│  │                │ • useDialogErr │ • useSupportCr.. │ │
 │  └────────┬───────┴────────┬───────┴──────┬───────────┘ │
 └───────────┼────────────────┼──────────────┼─────────────┘
             │                │              │
@@ -36,9 +39,19 @@ Reusable React hooks for state management, UI interactions, and data fetching. E
 ```
 
 **Categories:**
-- **Data Hooks:** Wrap React Admin hooks for fetching/mutating data (`useFavorites`, `useOrganizationDescendants`, `useTeamMembers`)
-- **State Hooks:** Manage complex UI state with URL sync, browser history, keyboard listeners (`useSlideOverState`, `useKeyboardShortcuts`, `useUnsavedChangesWarning`)
-- **Utility Hooks:** Environment detection, permissions, responsive breakpoints (`useIsMobile`, `useBreakpoint`, `usePermissions`)
+- **Data Hooks:** Wrap React Admin hooks for fetching/mutating data (`useFavorites`, `useOrganizationDescendants`, `useTeamMembers`, `useBulkExport`)
+- **State Hooks:** Manage complex UI state with URL sync, browser history, keyboard listeners (`useSlideOverState`, `useKeyboardShortcuts`, `useUnsavedChangesWarning`, `useInAppUnsavedChanges`, `useDialogError`)
+- **Utility Hooks:** Environment detection, permissions, responsive breakpoints (`useIsMobile`, `useBreakpoint`, `usePermissions`, `useCityStateMapping`, `useListKeyboardNavigation`, `useSupportCreateSuggestion`)
+- **Re-exported Hooks:** Hooks co-located here but primarily consumed by specific wrappers (`saved-queries.tsx`, `simple-form-iterator-context.tsx`)
+
+### Unsaved Changes: Two Complementary Hooks
+
+| Hook | Scope | Mechanism |
+|------|-------|-----------|
+| `useUnsavedChangesWarning` | Browser `beforeunload` events (closing tab, refreshing) | `window.addEventListener("beforeunload", ...)` |
+| `useInAppUnsavedChanges` | In-app navigation (clicking away, tab switches within app) | Tracks `dirtyFields` + shows confirmation dialog via `showWarning` state |
+
+Both require React Hook Form context. Use them together for complete coverage.
 
 ## Pattern 1: Query-Based Data Hooks (Optimistic Updates)
 

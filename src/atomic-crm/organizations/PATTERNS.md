@@ -7,23 +7,26 @@ Standard patterns for organization management in Crispy CRM. This module handles
 ```
 Organizations Module (index.tsx, resource.tsx)
 ├── List View (OrganizationList.tsx)
-│   ├── OrganizationListFilter
+│   ├── UnifiedListPageLayout
+│   │   ├── OrganizationListFilter
+│   │   ├── OrganizationViewSwitcher [Pattern J] (list/card toggle)
+│   │   ├── OrganizationImportMenuItem [Pattern C] (overflow menu)
+│   │   └── OrganizationBulkButtons [Pattern F] (bare buttons, no toolbar wrapper)
+│   │       ├── BulkReassignButton (shared ra-wrapper)
+│   │       ├── BulkExportButton (shared ra-wrapper)
+│   │       └── OrganizationBulkDeleteButton
 │   ├── OrganizationDatagridHeader (filterable columns)
-│   ├── PremiumDatagrid
-│   │   └── OrganizationTypeBadge, PriorityBadge [Pattern E]
-│   ├── OrganizationBulkActionsToolbar [Pattern F]
-│   │   ├── BulkReassignButton (shared ra-wrapper)
-│   │   ├── BulkExportButton (shared ra-wrapper)
-│   │   └── OrganizationBulkDeleteButton
-│   └── OrganizationImportButton [Pattern C]
+│   ├── PremiumDatagrid (list view)
+│   │   └── OrganizationTypeBadge, PriorityBadge, SegmentBadge [Pattern E]
+│   └── OrganizationCardGrid (card view) [Pattern J]
+│       └── OrganizationCard
 │
 ├── Create View (OrganizationCreate.tsx)
 │   ├── OrganizationInputs
 │   │   ├── OrganizationCompactForm
-│   │   │   ├── OrganizationAddressSection [Pattern H]
-│   │   │   ├── OrganizationStatusSection [Pattern H]
 │   │   │   ├── OrganizationHierarchySection [Pattern A]
 │   │   │   └── PrincipalAwareTypeInput [Pattern I]
+│   │   │   (OrganizationStatusSection exists but hidden per user feedback)
 │   │   └── useDuplicateOrgCheck [Pattern B]
 │   └── DuplicateOrgWarningDialog [Pattern B]
 │
@@ -31,15 +34,21 @@ Organizations Module (index.tsx, resource.tsx)
 │   └── (same form structure as Create)
 │
 ├── Slide-Over Detail (OrganizationSlideOver.tsx)
-│   ├── OrganizationDetailsTab (editable)
-│   ├── AuthorizationsTab [Pattern D] (distributor only)
-│   ├── OrganizationContactsTab
-│   ├── OrganizationOpportunitiesTab
-│   ├── ActivitiesTab
-│   └── OrganizationNotesTab
+│   └── ResourceSlideOver (two-column layout)
+│       ├── Left Tabs:
+│       │   ├── slideOverTabs/OrganizationActivitiesTab
+│       │   ├── AuthorizationsTab [Pattern D] (distributor only)
+│       │   ├── slideOverTabs/OrganizationContactsTab
+│       │   └── slideOverTabs/OrganizationOpportunitiesTab
+│       └── Right Panel (always visible):
+│           └── slideOverTabs/OrganizationRightPanel
+│               ├── Organization details (view/edit mode)
+│               ├── Notes (ReferenceManyField)
+│               └── BranchLocationsSection
 │
 └── Inline Creation
-    └── QuickCreatePopover [Pattern G]
+    ├── QuickCreatePopover [Pattern G]
+    └── QuickCreateOrganizationRA [Pattern G] (React Admin autocomplete context)
 ```
 
 ---
@@ -109,53 +118,54 @@ export const OrganizationHierarchySection = () => {
 
 ## Pattern B: Duplicate Detection Workflow
 
-Soft warning pattern that allows override instead of hard validation blocking.
+Hard blocking duplicate check -- if a duplicate is detected, the user must change the name or view the existing organization. There is no bypass path.
 
 ```tsx
 // src/atomic-crm/organizations/useDuplicateOrgCheck.ts
 export function useDuplicateOrgCheck(): UseDuplicateOrgCheckResult {
   const dataProvider = useDataProvider();
+  const notify = useNotify();
   const [duplicateOrg, setDuplicateOrg] = useState<DuplicateOrgInfo | null>(null);
-
-  // Track bypassed names (lowercase for case-insensitive comparison)
-  const bypassedNamesRef = useRef<Set<string>>(new Set());
+  const [isChecking, setIsChecking] = useState(false);
 
   const checkForDuplicate = useCallback(
-    async (name: string, currentOrgId?: string | number) => {
-      const normalizedName = name.trim().toLowerCase();
+    async (name: string, currentOrgId?: string | number): Promise<DuplicateOrgInfo | null> => {
+      if (!name || name.trim().length === 0) return null;
 
-      // Check if this name was already bypassed
-      if (bypassedNamesRef.current.has(normalizedName)) {
+      setIsChecking(true);
+      try {
+        // Case-insensitive search via ilike
+        const { data } = await dataProvider.getList<Company>("organizations", {
+          filter: { "name@ilike": name.trim() },
+          pagination: { page: 1, perPage: 10 },
+          sort: { field: "id", order: "ASC" },
+        });
+
+        // Filter out current record (for edit mode)
+        const duplicates = data.filter((org) => String(org.id) !== String(currentOrgId));
+
+        if (duplicates.length > 0) {
+          const duplicate = { id: duplicates[0].id, name: duplicates[0].name };
+          setDuplicateOrg(duplicate);
+          return duplicate;
+        }
         return null;
+      } catch (error: unknown) {
+        logger.error("Failed to check for duplicate organization", error, { ... });
+        notify("Unable to check for duplicate organizations. Please try again.", { type: "warning" });
+        return null;
+      } finally {
+        setIsChecking(false);
       }
-
-      // Search for organizations with same name (case-insensitive via ilike)
-      const { data } = await dataProvider.getList<Company>("organizations", {
-        filter: { "name@ilike": name.trim() },
-        pagination: { page: 1, perPage: 10 },
-      });
-
-      // Filter out current record (for edit mode)
-      const duplicates = data.filter((org) => String(org.id) !== String(currentOrgId));
-
-      if (duplicates.length > 0) {
-        const duplicate = { id: duplicates[0].id, name: duplicates[0].name };
-        setDuplicateOrg(duplicate);
-        return duplicate;
-      }
-      return null;
     },
-    [dataProvider]
+    [dataProvider, notify]
   );
 
-  const bypassDuplicate = useCallback(() => {
-    if (duplicateOrg) {
-      bypassedNamesRef.current.add(duplicateOrg.name.toLowerCase());
-    }
+  const clearDuplicate = useCallback(() => {
     setDuplicateOrg(null);
-  }, [duplicateOrg]);
+  }, []);
 
-  return { checkForDuplicate, duplicateOrg, clearDuplicate, bypassDuplicate, isChecking };
+  return { checkForDuplicate, duplicateOrg, clearDuplicate, isChecking };
 }
 ```
 
@@ -166,22 +176,21 @@ User enters name → Save clicked → checkForDuplicate()
                                         ↓
                               [Duplicate found?]
                                ↓ Yes         ↓ No
-                      Show warning dialog    Save record
+                      Show blocking dialog   Save record
                                ↓
-              [User choice: Cancel | Proceed | View existing]
-                  ↓              ↓                ↓
-              Clear name   bypassDuplicate()   Navigate
-                              ↓
-                         Save record
+              [User choice: Change name | View existing]
+                  ↓                           ↓
+           clearDuplicate()              Navigate to org
+           (user edits name)
 ```
 
 ### When to Use
 
-- **Create forms** where duplicates are possible but shouldn't block
-- **Import workflows** where users may intentionally create variants
-- **Fast data entry** where validation friction hurts adoption
+- **Create forms** where duplicates must be prevented
+- **Quick-create popovers** (Pattern G integrates `useDuplicateOrgCheck`)
+- **Import workflows** for pre-save validation
 
-**Key design decision:** Soft warning allows user override. Once bypassed, same name won't trigger warning again in the session.
+**Key design decision:** Hard blocking prevents accidental duplicates. The user must change the name or view the existing record -- there is no bypass/override path.
 
 ---
 
@@ -419,28 +428,63 @@ export const PriorityBadge = memo(function PriorityBadge({ priority }) {
 
 | Priority | Badge Variant | Meaning |
 |----------|---------------|---------|
-| A | `default` | Brand primary - high importance |
-| B | `secondary` | Standard emphasis |
-| C | `outline` | Routine |
-| D | `outline` | Minimal (+ text-muted-foreground) |
+| A | `destructive` | Red - urgent attention |
+| B | `default` | Primary green |
+| C | `secondary` | Muted |
+| D | `outline` | Minimal emphasis |
+
+### SegmentBadge
+
+Displays segment name with color derived from `getSegmentColor()` in `constants.ts`.
+
+```tsx
+// src/atomic-crm/organizations/OrganizationBadges.tsx
+export const SegmentBadge = memo(function SegmentBadge({ segmentId, segmentName }) {
+  if (!segmentName) {
+    return <span className="text-muted-foreground text-xs">—</span>;
+  }
+  const colorClass = getSegmentColor(segmentId);
+  return (
+    <Badge className={`text-xs px-2 py-1 max-w-[130px] truncate ${colorClass}`} title={segmentName}>
+      {segmentName}
+    </Badge>
+  );
+});
+```
+
+**Segment Color Strategy (`getSegmentColor` in `constants.ts`):**
+
+| Category | Color | Notes |
+|----------|-------|-------|
+| Major Broadline | `tag-blue` | Playbook segment (by UUID lookup) |
+| Specialty\Regional | `tag-green` | Playbook segment |
+| Management Company | `tag-cocoa` | Playbook segment |
+| GPO | `tag-amber` | Playbook segment |
+| University | `tag-clay` | Playbook segment |
+| Restaurant Group | `tag-pink` | Playbook segment |
+| Chain Restaurant | `tag-yellow` | Playbook segment |
+| Hotel & Aviation | `tag-gray` | Playbook segment |
+| Unknown | `tag-gray` | Default fallback |
+| (any operator segment) | `tag-gray` | 16+ operator segments default to gray |
 
 ### When to Use
 
 - **List views** for quick visual scanning
 - **Slide-over headers** for context
-- **Filter chips** showing active filters
+- **Card view** for organization summary cards
+- **Filter chips** showing active filters (via `FilterableBadge` wrapper)
 
-**Key design decision:** Uses `memo()` to prevent re-renders when parent changes.
+**Key design decision:** Uses `memo()` to prevent re-renders when parent changes. `SegmentBadge` is wrapped in `FilterableBadge` in the list view to provide 44px touch targets (WCAG AA).
 
 ---
 
-## Pattern F: Bulk Actions Toolbar
+## Pattern F: Bulk Action Buttons
 
-Floating toolbar with organization-specific bulk actions using shared wrapper components.
+Bare action buttons rendered inside `UnifiedListPageLayout`'s shared `BulkActionsToolbar`. The component renders only the buttons -- the toolbar wrapper is provided by the layout.
 
 ```tsx
 // src/atomic-crm/organizations/OrganizationBulkActionsToolbar.tsx
-import { BulkActionsToolbar } from "@/components/ra-wrappers/bulk-actions-toolbar";
+// NOTE: File still named OrganizationBulkActionsToolbar.tsx but exports OrganizationBulkButtons
 import { BulkExportButton } from "@/components/ra-wrappers/bulk-export-button";
 import { BulkReassignButton } from "@/components/ra-wrappers/bulk-reassign-button";
 import { OrganizationBulkDeleteButton } from "./OrganizationBulkDeleteButton";
@@ -448,30 +492,26 @@ import { organizationKeys } from "../queryKeys";
 import type { Organization } from "../types";
 
 /**
- * OrganizationBulkActionsToolbar - Custom bulk actions for the organizations list
+ * OrganizationBulkButtons - Bulk action buttons for the Organizations list
  *
- * Extends the generic BulkActionsToolbar with organization-specific actions:
- * - Reassign: Bulk reassign organizations to a different sales rep
- * - Export: Export selected organizations to CSV
- * - Delete: Soft delete selected organizations (blocked for orgs with child branches)
- *
- * Uses the floating card pattern from the base BulkActionsToolbar
- * which appears at the bottom of the screen when items are selected.
+ * Renders ONLY the action buttons (no toolbar wrapper).
+ * UnifiedListPageLayout wraps these in the shared BulkActionsToolbar.
  */
-export const OrganizationBulkActionsToolbar = () => {
-  return (
-    <BulkActionsToolbar>
-      <BulkReassignButton<Organization>
-        resource="organizations"
-        queryKeys={organizationKeys}
-        itemDisplayName={(org) => org.name}
-        itemSubtitle={(org) => org.organization_type}
-      />
-      <BulkExportButton />
-      <OrganizationBulkDeleteButton />
-    </BulkActionsToolbar>
-  );
-};
+export const OrganizationBulkButtons = () => (
+  <>
+    <BulkReassignButton<Organization>
+      resource="organizations"
+      queryKeys={organizationKeys}
+      itemDisplayName={(org) => org.name}
+      itemSubtitle={(org) => org.organization_type}
+    />
+    <BulkExportButton />
+    <OrganizationBulkDeleteButton />
+  </>
+);
+
+// Usage in OrganizationList.tsx:
+// <UnifiedListPageLayout bulkActions={view === "list" ? <OrganizationBulkButtons /> : undefined}>
 ```
 
 ### Bulk Actions Available
@@ -515,63 +555,63 @@ The generic `BulkReassignButton` from `@/components/ra-wrappers/bulk-reassign-bu
 
 ## Pattern G: Quick Create Popover
 
-Lightweight inline creation with two paths.
+Lightweight inline creation with two paths and two exported components. Uses `createFormResolver` (CORE-018 compliant), an extracted `useQuickCreateOrg` hook for shared logic, and `QuickCreateFormFields` for the form body. Integrates `useDuplicateOrgCheck` (Pattern B) to block duplicate creation.
+
+### Architecture
+
+```
+QuickCreatePopover.tsx
+├── useQuickCreateOrg (shared hook)
+│   ├── useForm + createFormResolver(organizationQuickCreateSchema)
+│   ├── useDuplicateOrgCheck (Pattern B)
+│   ├── handleSubmit (full form)
+│   └── handleQuickCreate (name-only fast path)
+├── QuickCreateFormFields (shared sub-component)
+│   ├── Name input (with aria-invalid, aria-describedby)
+│   ├── OrganizationTypeSelect (useWatch isolate)
+│   ├── PrioritySelect (useWatch isolate)
+│   ├── City / State inputs
+│   └── showDetails prop controls field visibility
+├── QuickCreatePopover (standalone popover)
+│   └── DuplicateOrgWarningDialog
+└── QuickCreateOrganizationRA (React Admin autocomplete context)
+    ├── useCreateSuggestionContext() for filter/onCreate/onCancel
+    ├── minimalMode prop (name-only form, no details)
+    └── DuplicateOrgWarningDialog
+```
 
 ```tsx
 // src/atomic-crm/organizations/QuickCreatePopover.tsx
-const quickCreateSchema = z.object({
-  name: z.string().trim().min(1).max(255),
-  organization_type: z.enum(["customer", "prospect", "principal", "distributor"]),
-  priority: z.enum(["A", "B", "C", "D"]).default("C"),
-  city: z.string().max(100).optional(),
-  state: z.string().max(50).optional(),
-});
 
-export function QuickCreatePopover({ name, organizationType, onCreated, onCancel, children }) {
-  const methods = useForm<QuickCreateInput>({
-    resolver: zodResolver(quickCreateSchema),
-    defaultValues: { name, organization_type: organizationType, priority: "C" },
+// Shared hook -- form setup + creation logic + duplicate checking
+function useQuickCreateOrg({ name, organizationType, onSuccess, logContext }) {
+  const { checkForDuplicate, duplicateOrg, clearDuplicate } = useDuplicateOrgCheck();
+
+  const methods = useForm<OrganizationQuickCreateInput>({
+    resolver: createFormResolver(organizationQuickCreateSchema),  // CORE-018 compliant
+    defaultValues: { name, organization_type: organizationType, priority: "C", segment_id: PLAYBOOK_CATEGORY_IDS.Unknown },
   });
 
-  // Full form submission
-  const handleSubmit = methods.handleSubmit(async (data) => {
-    const result = await dataProvider.create("organizations", {
-      data: { ...data, segment_id: PLAYBOOK_CATEGORY_IDS.Unknown },
-    });
-    onCreated(result.data);
-  });
-
-  // Fast path - just the name
-  const handleQuickCreate = async () => {
-    const result = await dataProvider.create("organizations", {
-      data: {
-        name,
-        organization_type: organizationType,
-        priority: "C",
-        segment_id: PLAYBOOK_CATEGORY_IDS.Unknown,
-      },
-    });
-    onCreated(result.data);
+  const createOrg = async (data: OrganizationQuickCreateInput) => {
+    const duplicate = await checkForDuplicate(data.name);
+    if (duplicate) return;  // Blocked -- DuplicateOrgWarningDialog shown
+    // ... create via dataProvider, invalidate cache, notify
   };
 
-  return (
-    <Popover open={open}>
-      <PopoverContent className="w-80 p-4">
-        <form onSubmit={handleSubmit} className="space-y-3">
-          {/* Name, Type, Priority, City, State fields */}
-          <div className="flex justify-between pt-2">
-            <AdminButton type="button" variant="ghost" onClick={handleQuickCreate}>
-              Just use name
-            </AdminButton>
-            <div className="flex gap-2">
-              <AdminButton type="button" variant="outline" onClick={onCancel}>Cancel</AdminButton>
-              <AdminButton type="submit">Create</AdminButton>
-            </div>
-          </div>
-        </form>
-      </PopoverContent>
-    </Popover>
-  );
+  return { methods, isPending, handleSubmit, handleQuickCreate, duplicateOrg, clearDuplicate };
+}
+
+// Standalone popover (used from custom autocomplete inputs)
+export function QuickCreatePopover({ name, organizationType, onCreated, onCancel, children }) {
+  const { methods, isPending, handleSubmit, handleQuickCreate, duplicateOrg, clearDuplicate } =
+    useQuickCreateOrg({ name, organizationType, onSuccess: onCreated });
+  // ... Popover with QuickCreateFormFields + DuplicateOrgWarningDialog
+}
+
+// React Admin autocomplete integration (used with useCreateSuggestionContext)
+export function QuickCreateOrganizationRA({ organizationType = "customer", minimalMode = false }) {
+  const { filter, onCreate, onCancel } = useCreateSuggestionContext();
+  // ... same useQuickCreateOrg hook, minimalMode hides detail fields
 }
 ```
 
@@ -579,27 +619,39 @@ export function QuickCreatePopover({ name, organizationType, onCreated, onCancel
 
 | Path | Button | Fields Used | Use Case |
 |------|--------|-------------|----------|
-| Fast | "Just use name" | name, type, priority (default C) | Quick data entry, will edit later |
-| Full | "Create" | All form fields | Complete record with details |
+| Fast | "Just use name" | name, type, priority (default C), segment (Unknown) | Quick data entry, will edit later |
+| Full | "Create" | All form fields (name, type, priority, city, state, segment) | Complete record with details |
+
+### Two Exported Components
+
+| Component | Context | Use Case |
+|-----------|---------|----------|
+| `QuickCreatePopover` | Standalone with `PopoverTrigger` | Custom autocomplete, manual trigger |
+| `QuickCreateOrganizationRA` | `useCreateSuggestionContext()` | React Admin `AutocompleteInput` create suggestion |
 
 ### When to Use
 
-- **Autocomplete "not found"** scenarios
-- **Reference field quick-add** without leaving form
+- **Autocomplete "not found"** scenarios (via `QuickCreateOrganizationRA`)
+- **Reference field quick-add** without leaving form (via `QuickCreatePopover`)
 - **Data import follow-up** for missing references
 
-**Key design decision:** Two buttons serve different user intents - speed vs completeness.
+**Key design decision:** Two buttons serve different user intents -- speed vs completeness. Duplicate checking (Pattern B) blocks creation if a match is found. `useQuickCreateOrg` hook is shared between both exported components to avoid logic duplication.
 
 ---
 
 ## Pattern H: Status & Address Sections
 
 Reusable form sections with consistent layout. Each section is in its own well-named file for maintainability:
-- `OrganizationStatusSection.tsx` - Status and payment fields
-- `OrganizationAddressSection.tsx` - Shipping address fields
+- `OrganizationStatusSection.tsx` - Status and payment fields (**currently hidden** in `OrganizationCompactForm` per user feedback; defaults: `status='active'`)
+- `OrganizationAddressSection.tsx` - Shipping address fields (uses `shipping_*` prefixed field names)
+
+> **Note on field naming:** `OrganizationAddressSection` uses `shipping_street`, `shipping_city`, `shipping_state`, `shipping_postal_code` (prefixed). The main `OrganizationCompactForm` has its own inline Location section using non-prefixed fields: `address`, `city`, `state`, `postal_code`. These are distinct database columns serving different purposes.
 
 ```tsx
 // src/atomic-crm/organizations/OrganizationStatusSection.tsx
+// NOTE: This component exists but is NOT imported by OrganizationCompactForm.
+// Hidden per user feedback. The compact form comments it out:
+//   {/* Status & Payment fields hidden per user feedback - defaults: status='active' */}
 export const OrganizationStatusSection = () => {
   return (
     <FormSection title="Status & Payment">
@@ -629,6 +681,7 @@ export const OrganizationStatusSection = () => {
 };
 
 // src/atomic-crm/organizations/OrganizationAddressSection.tsx
+// Uses shipping_* prefixed fields (distinct from main form's non-prefixed address fields)
 export const OrganizationAddressSection = () => {
   return (
     <CollapsibleSection title="Address">
@@ -643,10 +696,10 @@ export const OrganizationAddressSection = () => {
           <FormFieldWrapper name="shipping_state">
             <StateComboboxInput source="shipping_state" label="State" />
           </FormFieldWrapper>
-          <FormFieldWrapper name="shipping_postal_code">
-            <TextInput source="shipping_postal_code" label="ZIP Code" helperText={false} />
-          </FormFieldWrapper>
         </CompactFormRow>
+        <FormFieldWrapper name="shipping_postal_code">
+          <TextInput source="shipping_postal_code" label="ZIP Code" helperText={false} />
+        </FormFieldWrapper>
       </div>
     </CollapsibleSection>
   );
@@ -756,6 +809,69 @@ User changes type from "principal" → "customer"
 
 ---
 
+## Pattern J: Card/List View Switching
+
+Toggle between datagrid (list) and card grid views with localStorage persistence.
+
+### Components
+
+| Component | Purpose |
+|-----------|---------|
+| `OrganizationViewSwitcher` | `ToggleGroup` with list/card icons (44px touch targets) |
+| `OrganizationCardGrid` | Responsive CSS grid consuming `useListContext<OrganizationRecord>()` |
+| `OrganizationCard` | Individual card with avatar, badges, hierarchy chips, counts |
+
+```tsx
+// src/atomic-crm/organizations/OrganizationViewSwitcher.tsx
+export type OrganizationView = "list" | "card";
+
+export const OrganizationViewSwitcher = ({ view, onViewChange }) => {
+  return (
+    <ToggleGroup type="single" value={view} onValueChange={(v) => v && onViewChange(v)}>
+      <ToggleGroupItem value="list" aria-label="List view" className="h-11 w-11">
+        <List className="h-4 w-4" />
+      </ToggleGroupItem>
+      <ToggleGroupItem value="card" aria-label="Card view" className="h-11 w-11">
+        <LayoutGrid className="h-4 w-4" />
+      </ToggleGroupItem>
+    </ToggleGroup>
+  );
+};
+```
+
+### localStorage Persistence
+
+```tsx
+// In OrganizationList.tsx
+const ORGANIZATION_VIEW_KEY = "organization.view.preference";
+
+const getViewPreference = (): OrganizationView => {
+  const saved = localStorage.getItem(ORGANIZATION_VIEW_KEY);
+  return saved === "list" || saved === "card" ? saved : "list";
+};
+
+const [view, setView] = useState<OrganizationView>(getViewPreference);
+const handleViewChange = (newView: OrganizationView) => {
+  setView(newView);
+  localStorage.setItem(ORGANIZATION_VIEW_KEY, newView);
+};
+```
+
+### Layout Integration
+
+The view switcher is passed to `UnifiedListPageLayout` via the `viewSwitcher` prop. The `OrganizationDatagrid` component conditionally renders either `PremiumDatagrid` (list) or `OrganizationCardGrid` (card) based on the current view. Bulk actions are disabled in card view (`bulkActions={view === "list" ? <OrganizationBulkButtons /> : undefined}`).
+
+### Card Grid Layout
+
+`OrganizationCardGrid` uses a responsive CSS grid: `grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4`. Each `OrganizationCard` is keyboard-accessible (`role="button"`, `tabIndex={0}`, Enter/Space handlers) and displays: avatar, name, hierarchy chips, type badge, segment badge, priority badge, state, contact count, and opportunity count.
+
+### When to Use
+
+- **Organization list page** for user preference between dense table and visual cards
+- **Extend to other resources** by creating resource-specific ViewSwitcher + CardGrid + Card
+
+---
+
 ## Pattern Comparison Tables
 
 ### Bulk Reassign vs Individual Edit
@@ -772,19 +888,21 @@ User changes type from "principal" → "customer"
 
 | Aspect | Quick Create Popover | Full Create Form |
 |--------|---------------------|------------------|
-| **Fields** | 5 essential fields | All organization fields |
+| **Fields** | 5 essential fields + segment | All organization fields |
 | **Navigation** | Stays on current page | New page/route |
-| **Duplicate check** | No | Yes (Pattern B) |
+| **Duplicate check** | Yes (Pattern B via useQuickCreateOrg) | Yes (Pattern B) |
+| **Resolver** | `createFormResolver` (CORE-018) | `createFormResolver` (CORE-018) |
 | **Use case** | Reference field quick-add | Primary data entry |
 
-### Soft Warning vs Hard Validation
+### Hard Duplicate Check vs Zod Schema Validation
 
-| Aspect | Soft Warning (Pattern B) | Hard Validation |
-|--------|-------------------------|-----------------|
-| **User experience** | Can override with confirmation | Must fix before save |
-| **Implementation** | Dialog + bypass tracking | Zod schema rejection |
-| **Use case** | Possible duplicates | Required fields, format errors |
-| **Data quality** | Relies on user judgment | Enforced by system |
+| Aspect | Hard Duplicate Check (Pattern B) | Zod Schema Validation |
+|--------|----------------------------------|----------------------|
+| **User experience** | Blocking dialog -- must change name or view existing | Inline field errors, must fix before save |
+| **Implementation** | `useDuplicateOrgCheck` + `DuplicateOrgWarningDialog` | `createFormResolver(schema)` |
+| **Bypass** | None -- no override path | None -- schema enforced |
+| **Use case** | Preventing duplicate organizations | Required fields, format, type constraints |
+| **Data quality** | Enforced by system | Enforced by system |
 
 ---
 
@@ -848,7 +966,23 @@ const dataProvider = useDataProvider();
 const { data } = await dataProvider.getList("organizations", { ... });
 ```
 
-### 5. Batch API Without Cancellation
+### 5. Using zodResolver Directly (CORE-018 Violation)
+
+```tsx
+// WRONG - Direct zodResolver bypasses centralized error formatting
+import { zodResolver } from "@hookform/resolvers/zod";
+const methods = useForm({
+  resolver: zodResolver(mySchema),
+});
+
+// CORRECT - Use createFormResolver for consistent error messages
+import { createFormResolver } from "@/lib/zodErrorFormatting";
+const methods = useForm({
+  resolver: createFormResolver(mySchema),
+});
+```
+
+### 6. Batch API Without Cancellation
 
 ```tsx
 // WRONG - No way to cancel mid-operation
@@ -902,8 +1036,94 @@ const abortControllerRef = useRef<AbortController | null>(null);
 ### Adding a New Bulk Action
 
 1. [ ] Follow Pattern F structure (AbortController, partial success)
-2. [ ] Add button to `OrganizationBulkActionsToolbar`
+2. [ ] Add button to `OrganizationBulkButtons` (in `OrganizationBulkActionsToolbar.tsx`)
 3. [ ] Include preview of affected records
 4. [ ] Add confirmation dialog
 5. [ ] Add cancellation support
 6. [ ] Test partial failure scenarios
+
+---
+
+## File Reference
+
+| File | Pattern | Purpose |
+|------|---------|---------|
+| `index.tsx` | -- | Resource registration and exports |
+| `resource.tsx` | -- | React Admin resource definition |
+| `constants.ts` | A, E, H | Type choices, color maps, segment colors, scope choices |
+| `types.ts` | -- | TypeScript interfaces (OrganizationRecord, etc.) |
+| **List** | | |
+| `OrganizationList.tsx` | F, J | List page with view switching, exporter, bulk actions |
+| `OrganizationListFilter.tsx` | -- | Filter sidebar/bar for list view |
+| `OrganizationDatagridHeader.tsx` | -- | Filterable column headers |
+| `OrganizationViewSwitcher.tsx` | J | List/card toggle with localStorage persistence |
+| `OrganizationCardGrid.tsx` | J | Responsive card grid using `useListContext` |
+| `OrganizationCard.tsx` | J | Individual organization card (avatar, badges, counts) |
+| `OrganizationEmpty.tsx` | -- | Empty state for list with no data |
+| `organizationColumnConfig.ts` | -- | Column configuration for datagrid |
+| `organizationFilterConfig.ts` | -- | Filter configuration for UnifiedListPageLayout |
+| `OrganizationBulkActionsToolbar.tsx` | F | Exports `OrganizationBulkButtons` (bare buttons) |
+| `OrganizationBulkDeleteButton.tsx` | F | Soft delete with child-branch validation |
+| **Create/Edit** | | |
+| `OrganizationCreate.tsx` | B | Create form with duplicate check |
+| `OrganizationEdit.tsx` | -- | Edit form (same structure as Create) |
+| `OrganizationInputs.tsx` | -- | Shared form input wrappers |
+| `OrganizationCompactForm.tsx` | A, H, I | Main form with sections |
+| `OrganizationCreateFormFooter.tsx` | -- | Create form footer actions |
+| **Form Sections** | | |
+| `OrganizationHierarchySection.tsx` | A | Parent/branch hierarchy inputs |
+| `OrganizationStatusSection.tsx` | H | Status & payment (currently hidden in compact form) |
+| `OrganizationAddressSection.tsx` | H | Shipping address (`shipping_*` prefix fields) |
+| `PrincipalAwareTypeInput.tsx` | I | Type select with product dependency check |
+| `PrincipalChangeWarning.tsx` | I | Warning dialog for principal type change |
+| `ParentOrganizationInput.tsx` | A | Self-referential parent org autocomplete |
+| `ParentOrganizationSection.tsx` | A | Wrapper section for parent org input |
+| `ProductExceptionsSection.tsx` | D | Product-level authorization overrides |
+| **Badges** | | |
+| `OrganizationBadges.tsx` | E | OrganizationTypeBadge, PriorityBadge, SegmentBadge |
+| `OrganizationHierarchyChips.tsx` | A | HQ/Branch/Parent chips in list and card |
+| `OrganizationHierarchyBreadcrumb.tsx` | A | Breadcrumb navigation for slide-over header |
+| **Slide-Over** | | |
+| `OrganizationSlideOver.tsx` | D | ResourceSlideOver with two-column layout |
+| `slideOverTabs/index.ts` | -- | Barrel exports for slide-over tabs |
+| `slideOverTabs/OrganizationRightPanel.tsx` | -- | Right panel: details (view/edit) + notes |
+| `slideOverTabs/OrganizationActivitiesTab.tsx` | -- | Activities tab content |
+| `slideOverTabs/OrganizationContactsTab.tsx` | -- | Contacts tab content |
+| `slideOverTabs/OrganizationOpportunitiesTab.tsx` | -- | Opportunities tab content |
+| `AuthorizationsTab.tsx` | D | Distributor-only authorizations tab |
+| `AuthorizationCard.tsx` | D | Individual authorization display card |
+| `AddPrincipalDialog.tsx` | D | Dialog to add principal authorization |
+| `RemoveConfirmDialog.tsx` | D | Confirmation dialog for authorization removal |
+| `AuthorizationsEmptyState.tsx` | D | Empty state for authorizations tab |
+| **Inline Creation** | | |
+| `QuickCreatePopover.tsx` | G | Standalone popover + RA autocomplete variants |
+| `DuplicateOrgWarningDialog.tsx` | B | Blocking dialog for duplicate detection |
+| `useDuplicateOrgCheck.ts` | B | Hook for hard duplicate checking |
+| `AutocompleteOrganizationInput.tsx` | G | Organization autocomplete with quick-create |
+| **Import/Export** | | |
+| `OrganizationImportMenuItem.tsx` | C | Overflow menu item triggering import dialog |
+| `OrganizationImportDialog.tsx` | C | Import wizard dialog |
+| `OrganizationImportButton.tsx` | C | Legacy standalone import button |
+| `OrganizationImportPreview.tsx` | C | Preview step in import pipeline |
+| `OrganizationImportResult.tsx` | C | Result summary after import |
+| `organizationImport.logic.ts` | C | Pure business logic (duplicate detect, transforms) |
+| `useOrganizationImport.tsx` | C | Main import orchestration hook |
+| `useOrganizationImportExecution.ts` | C | Batch creation execution |
+| `useOrganizationImportMapper.ts` | C | Column mapping logic |
+| `useOrganizationImportParser.ts` | C | CSV parsing logic |
+| `useOrganizationImportPreview.ts` | C | Preview state management |
+| `useOrganizationImportUpload.ts` | C | File upload handling |
+| `csvConstants.ts` | C | CSV column definitions |
+| `organizationColumnAliases.ts` | C | Column name aliases for import |
+| **Supporting UI** | | |
+| `OrganizationAside.tsx` | -- | Aside panel (used in Show view) |
+| `OrganizationAvatar.tsx` | J | Avatar component for card view |
+| `OrganizationTagsList.tsx` | -- | Read-only tags display |
+| `OrganizationTagsListEdit.tsx` | -- | Editable tags display (slide-over edit mode) |
+| `OrganizationShow.tsx` | -- | Show view |
+| `OrganizationSavedQueries.tsx` | -- | Saved filter queries |
+| `BranchLocationsSection.tsx` | A | Branch locations display in slide-over |
+| `ContactListCells.tsx` | -- | Contact cell renderers |
+| **Other** | | |
+| `authorization-types.ts` | D | TypeScript types for authorizations |
+| `hooks/` | -- | Organization-specific hooks directory |

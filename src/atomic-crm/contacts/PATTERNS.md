@@ -19,15 +19,22 @@ ContactCompactForm (smart defaults + email parsing)
     |
 contactBaseSchema (Zod validation)
 
-ContactSlideOver (40vw detail panel)
+ContactSlideOver (40vw detail panel, uses ResourceSlideOver wrapper)
     |
-+-- ContactDetailsTab (view/edit mode, TagsListEdit inline)
-+-- ActivitiesTab (timeline + quick-log)
-+-- ContactNotesTab (notes)
++-- Left tabs:
+|     +-- ActivitiesTab (timeline + quick-log)
++-- Right panel (ContactRightPanel):
+      +-- View mode: ContactViewSections (identity, org, contact info, tags, notes)
+      +-- Edit mode: ContactInputs form with FormProgressProvider
+      +-- Notes (ReferenceManyField -> NotesIterator, always visible)
+      +-- Tasks (ReferenceManyField -> TasksIterator, always visible)
 
 ContactShow (full page view)
     |
-+-- OpportunitiesTab (junction table + link modal)
++-- ContactAside (sidebar: personal info, position, tags, notes, tasks)
++-- ActivitiesTab (timeline + quick-log)
++-- OpportunitiesTab (junction table + link modal + suggested opps)
++-- ContactAdditionalDetails (professional details, org & territory, notes)
 
 Badge System
 +-- ContactStatusBadge (cold/warm/hot/in-contract)
@@ -194,21 +201,49 @@ Smart defaults derived from Zod schema with sales context awareness.
 ```tsx
 // src/atomic-crm/contacts/ContactCreate.tsx
 
+import { createFormResolver } from "@/lib/zodErrorFormatting";
+import { FormProgressProvider, FormProgressBar } from "@/components/ra-wrappers/form";
+import { CreateFormFooter } from "@/atomic-crm/components";
+import { ContactFormTutorial } from "./ContactFormTutorial";
 import { contactBaseSchema } from "../validation/contacts";
 
 // Generate defaults from schema truth
-// Per Engineering Constitution #5: FORM STATE DERIVED FROM TRUTH
-const formDefaults = {
+// Per Constitution #5: FORM STATE DERIVED FROM TRUTH
+const formDefaults = useMemo(() => ({
   ...contactBaseSchema.partial().parse({}),
   sales_id: defaults.sales_id,  // Smart default: current user's sales_id
-};
+  email: [{ type: "work", value: "" }],
+  phone: [{ type: "work", value: "" }],
+}), [defaults.sales_id]);
 
 return (
-  <CreateBase redirect="list">
-    <Form defaultValues={formDefaults} mode="onBlur">
-      <ContactInputs />
-    </Form>
+  <CreateBase redirect={redirect} transform={transformData}>
+    <FormProgressProvider initialProgress={10}>
+      <FormProgressBar schema={contactBaseSchema} className="mb-6" />
+      <Form
+        defaultValues={formDefaults}
+        mode="onBlur"
+        resolver={createFormResolver(contactBaseSchema)}
+      >
+        <ContactFormContent redirect={redirect} />
+      </Form>
+    </FormProgressProvider>
+    <ContactFormTutorial />
   </CreateBase>
+);
+
+// ContactFormContent is a separate component containing:
+const ContactFormContent = ({ redirect }) => (
+  <>
+    <ContactInputs />
+    <CreateFormFooter
+      resourceName="contact"
+      redirectPath="/contacts"
+      redirect={redirect}
+      tutorialAttribute="contact-save-btn"
+      preserveFields={["organization_id", "sales_id"]}
+    />
+  </>
 );
 ```
 
@@ -217,15 +252,20 @@ return (
 ```tsx
 // src/atomic-crm/contacts/ContactCompactForm.tsx
 
+import { ucFirst, extractEmailLocalPart } from "@/atomic-crm/utils";
+
 const handleEmailChange = (email: string) => {
   const { first_name, last_name } = getValues();
   // Only auto-fill if name fields are empty
   if (first_name || last_name || !email) return;
 
   // Extract name from email: john.doe@company.com -> John Doe
-  const [first, last] = email.split("@")[0].split(".");
-  setValue("first_name", first.charAt(0).toUpperCase() + first.slice(1));
-  setValue("last_name", last ? last.charAt(0).toUpperCase() + last.slice(1) : "");
+  const localPart = extractEmailLocalPart(email);
+  if (!localPart) return;
+  const [first, last] = localPart.split(".");
+  if (!first) return;
+  setValue("first_name", ucFirst(first));
+  setValue("last_name", last ? ucFirst(last) : "");
 };
 
 const handleEmailPaste: React.ClipboardEventHandler<...> = (e) => {
@@ -244,21 +284,24 @@ const handleEmailBlur = (e: React.FocusEvent<...>) => {
 ```tsx
 // src/atomic-crm/contacts/ContactCompactForm.tsx
 
-<ArrayInput source="email" label="Email addresses *" helperText="At least one email required">
-  <SimpleFormIterator inline disableReordering disableClear>
-    <TextInput
-      source="value"
-      placeholder="name@company.com"
-      onPaste={handleEmailPaste}
-      onBlur={handleEmailBlur}
+import { EmailArrayField, PhoneArrayField } from "@/components/domain/forms";
+
+// Email and phone array fields are extracted to shared domain components.
+// ContactCompactForm wires them with paste/blur handlers for auto-population:
+
+<CollapsibleSection title="Contact Methods">
+  <FormFieldWrapper name="email">
+    <EmailArrayField
+      onEmailPaste={handleEmailPaste}
+      onEmailBlur={handleEmailBlur}
+      disabled={disabled}
     />
-    <SelectInput
-      source="type"
-      choices={[{ id: "work" }, { id: "home" }, { id: "other" }]}
-      defaultValue="work"
-    />
-  </SimpleFormIterator>
-</ArrayInput>
+  </FormFieldWrapper>
+
+  <FormFieldWrapper name="phone">
+    <PhoneArrayField disabled={disabled} />
+  </FormFieldWrapper>
+</CollapsibleSection>
 ```
 
 **Key points:**
@@ -297,99 +340,92 @@ interface LinkOpportunityModalProps {
 ```tsx
 // src/atomic-crm/contacts/LinkOpportunityModal.tsx
 
+import { useCreate, useNotify, useDataProvider } from "react-admin";
+import { useQueryClient } from "@tanstack/react-query";
+import {
+  activityKeys, opportunityKeys, contactKeys,
+  opportunityContactKeys, entityTimelineKeys,
+} from "@/atomic-crm/queryKeys";
+
 export function LinkOpportunityModal({
-  open,
-  contactName,
-  contactId,
-  linkedOpportunityIds,
-  onClose,
-  onSuccess,
+  open, contactName, contactId, linkedOpportunityIds, onClose, onSuccess,
 }: LinkOpportunityModalProps) {
   const [create, { isLoading }] = useCreate();
   const notify = useNotify();
+  const dataProvider = useDataProvider();
+  const queryClient = useQueryClient();
 
   const handleLink = async (data: LinkOpportunityFormData) => {
     if (!data.opportunity_id) return;
 
     // Prevent duplicates before API call
     if (linkedOpportunityIds.includes(data.opportunity_id)) {
-      notify("This contact is already linked to that opportunity", {
-        type: "warning",
-      });
+      notify("This contact is already linked to that opportunity", { type: "warning" });
       return;
     }
 
     try {
       await create(
         "opportunity_contacts",  // Junction table
+        { data: { opportunity_id: data.opportunity_id, contact_id: contactId } },
         {
-          data: {
-            opportunity_id: data.opportunity_id,
-            contact_id: contactId,
-          },
-        },
-        {
-          onSuccess: () => {
+          returnPromise: true,
+          onSuccess: async () => {
+            // Granular cache invalidation for both parent resources
+            queryClient.invalidateQueries({ queryKey: opportunityKeys.detail(data.opportunity_id!) });
+            queryClient.invalidateQueries({ queryKey: contactKeys.detail(contactId) });
+            queryClient.invalidateQueries({ queryKey: opportunityContactKeys.all });
+
             notify("Opportunity linked successfully", { type: "success" });
             onSuccess();
             onClose();
+
+            // Log activity after successful link (non-blocking)
+            try {
+              const { data: opportunity } = await dataProvider.getOne<Opportunity>(
+                "opportunities", { id: data.opportunity_id! }
+              );
+              await dataProvider.create("activities", {
+                data: {
+                  activity_type: "activity",
+                  type: "note",
+                  subject: `Contact linked: ${contactName}`,
+                  activity_date: new Date().toISOString(),
+                  opportunity_id: opportunity.id,
+                  organization_id: opportunity.customer_organization_id,
+                },
+              });
+              queryClient.invalidateQueries({ queryKey: activityKeys.lists() });
+              queryClient.invalidateQueries({ queryKey: entityTimelineKeys.lists() });
+            } catch (activityError) {
+              logger.error("Failed to log contact link activity", activityError, { ... });
+            }
           },
-          onError: (error: unknown) => {
-            const errorMessage = error instanceof Error ? error.message : "Failed to link opportunity";
-            notify(errorMessage, { type: "error" });
-          },
+          onError: (error: unknown) => { ... },
         }
       );
-    } catch {
-      notify("Failed to link opportunity. Please try again.", { type: "error" });
-    }
+    } catch { ... }
   };
 
-  return (
-    <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className="max-w-2xl">
-        <DialogHeader>
-          <DialogTitle>Link Opportunity to {contactName}</DialogTitle>
-          <DialogDescription>
-            Search for an opportunity to associate with this contact.
-          </DialogDescription>
-        </DialogHeader>
-
-        <Form onSubmit={handleLink} className="space-y-4">
-          <ReferenceInput source="opportunity_id" reference="opportunities">
-            <AutocompleteInput
-              filterToQuery={(searchText: string) => ({ name: searchText })}
-              optionText={(opp: Opportunity) =>
-                opp ? `${opp.name} - ${opp.customer_organization_name || ""} (${opp.stage})` : ""
-              }
-              label="Search opportunities"
-            />
-          </ReferenceInput>
-
-          <DialogFooter>
-            <AdminButton type="button" variant="outline" onClick={onClose}>
-              Cancel
-            </AdminButton>
-            <AdminButton type="submit" disabled={isLoading}>
-              {isLoading ? "Linking..." : "Link Opportunity"}
-            </AdminButton>
-          </DialogFooter>
-        </Form>
-      </DialogContent>
-    </Dialog>
-  );
+  // ... Dialog JSX with AdminButton (see actual source for full template)
 }
 ```
 
-### Three-Step Junction Fetch (OpportunitiesTab)
+### Multi-Step Junction Fetch (OpportunitiesTab)
 
 ```tsx
 // src/atomic-crm/contacts/OpportunitiesTab.tsx
 
+import { PremiumDatagrid } from "@/components/ra-wrappers/PremiumDatagrid";
+import { ListContextProvider } from "react-admin";
+import { StageBadgeWithHealth } from "./StageBadgeWithHealth";
+import { SuggestedOpportunityCard } from "./SuggestedOpportunityCard";
+import { UnlinkConfirmDialog } from "./UnlinkConfirmDialog";
+
 // Step 1: Fetch junction records
 const { data: junctionRecords } = useGetList(
   "opportunity_contacts",
-  { filter: { contact_id: contact?.id }, pagination: { page: 1, perPage: 100 } }
+  { filter: { contact_id: contact?.id }, pagination: { page: 1, perPage: DEFAULT_PAGE_SIZE } }
 );
 
 // Step 2: Extract opportunity IDs
@@ -401,15 +437,41 @@ const { data: opportunities } = useGetMany(
   { ids: opportunityIds },
   { enabled: opportunityIds.length > 0 }
 );
+
+// Step 4: Fetch suggested opportunities from contact's organization
+const { data: orgOpportunities } = useGetList(
+  "opportunities",
+  { filter: { customer_organization_id: contact?.organization_id } },
+  { enabled: !!contact?.organization_id && (!junctionRecords || junctionRecords.length === 0) }
+);
+
+// handleQuickLink: creates junction + logs activity + invalidates caches
+const handleQuickLink = async (opportunity: Opportunity) => {
+  await create("opportunity_contacts", { data: { ... } }, {
+    returnPromise: true,
+    onSuccess: async () => {
+      // ... activity logging + cache invalidation (activityKeys, entityTimelineKeys)
+    },
+  });
+};
+
+// Rendering uses ListContextProvider + PremiumDatagrid with StageBadgeWithHealth
+// Empty states show SuggestedOpportunityCard components for quick linking
+// Unlink uses UnlinkConfirmDialog
 ```
 
 **Key points:**
 - Pass `linkedOpportunityIds` to prevent duplicate links client-side
 - Context-aware messaging shows contact name in title
-- Three-step fetch pattern for junction tables: junctions -> IDs -> details
+- Four-step fetch: junctions -> IDs -> details -> suggested opps from org
 - `useGetMany` only fetches when IDs are available
+- `SuggestedOpportunityCard` enables quick-linking from org opportunities
+- Activity logging after link (non-blocking, with error handling)
+- `PremiumDatagrid` with `ListContextProvider` for linked opportunities display
+- `UnlinkConfirmDialog` for safe unlinking with confirmation
+- `StageBadgeWithHealth` for visual stage + health status rendering
 
-**Example:** `src/atomic-crm/contacts/LinkOpportunityModal.tsx`, `OpportunitiesTab.tsx`
+**Example:** `src/atomic-crm/contacts/LinkOpportunityModal.tsx`, `OpportunitiesTab.tsx`, `SuggestedOpportunityCard.tsx`, `UnlinkConfirmDialog.tsx`
 
 ---
 
@@ -614,22 +676,27 @@ export const TagsListEdit = () => {
 
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="outline" size="sm" className="h-11 px-3">
+          <AdminButton variant="outline" size="sm" className="h-11 px-3 cursor-pointer">
             <Plus className="h-4 w-4 mr-1" />
             Add tag
-          </Button>
+          </AdminButton>
         </DropdownMenuTrigger>
         <DropdownMenuContent>
           {unselectedTags?.map((tag) => (
             <DropdownMenuItem key={tag.id} onClick={() => handleTagAdd(tag.id)}>
-              <Badge className={cn("text-xs font-normal", getTagColorClass(tag.color))}>
+              <Badge
+                variant="secondary"
+                className={cn("text-xs font-normal", getTagColorClass(tag.color))}
+              >
                 {tag.name}
               </Badge>
             </DropdownMenuItem>
           ))}
-          <DropdownMenuItem onClick={() => setOpen(true)}>
-            <Edit className="h-3 w-3 mr-2" />
-            Create new tag
+          <DropdownMenuItem onClick={openTagCreateDialog}>
+            <AdminButton variant="ghost" size="sm" className="w-full justify-start p-0 cursor-pointer">
+              <Edit className="h-3 w-3 mr-2" />
+              Create new tag
+            </AdminButton>
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
@@ -685,25 +752,32 @@ import { UnifiedTimeline } from "../timeline";
 
 interface ActivitiesTabProps {
   contactId: string | number;
+  organizationId?: string | number;
 }
 
-export const ActivitiesTab = ({ contactId }: ActivitiesTabProps) => {
+export const ActivitiesTab = ({ contactId, organizationId }: ActivitiesTabProps) => {
   // Convert contactId to number (handles both string and number)
   const numericContactId = typeof contactId === "string" ? parseInt(contactId, 10) : contactId;
+  const numericOrganizationId = organizationId
+    ? typeof organizationId === "string"
+      ? parseInt(organizationId, 10)
+      : organizationId
+    : undefined;
 
-  return <UnifiedTimeline contactId={numericContactId} />;
+  return <UnifiedTimeline contactId={numericContactId} organizationId={numericOrganizationId} />;
 };
 ```
 
 **Key points:**
 - Delegates all timeline logic to `UnifiedTimeline` component (DRY principle)
 - `UnifiedTimeline` handles activity fetching, display, quick-log dialog, and refetching
-- Handles both string and number contactId types for flexibility
+- Handles both string and number contactId/organizationId types for flexibility
+- Optional `organizationId` enables filtering activities by organization context
 - Simple wrapper enables easy customization if needed in the future
 
 **Related components:**
 - `UnifiedTimeline` (`src/atomic-crm/timeline/UnifiedTimeline.tsx`) - Shared timeline component
-- Used in both `ContactEdit` slide-over and potentially other entity views
+- Used in ContactSlideOver (with `organizationId` from record) and ContactShow
 
 **Example:** `src/atomic-crm/contacts/ActivitiesTab.tsx`
 
@@ -720,6 +794,8 @@ Visual indicators for status, role, and influence with semantic colors.
 ```tsx
 // src/atomic-crm/contacts/ContactBadges.tsx
 
+import { ucFirst } from "@/atomic-crm/utils";
+
 export type ContactStatus = "cold" | "warm" | "hot" | "in-contract";
 
 export const ContactStatusBadge = memo(function ContactStatusBadge({ status }: ContactStatusBadgeProps) {
@@ -735,7 +811,7 @@ export const ContactStatusBadge = memo(function ContactStatusBadge({ status }: C
   };
 
   const { label, className } = config[status] || {
-    label: status.charAt(0).toUpperCase() + status.slice(1),
+    label: ucFirst(status),
     className: "tag-gray",
   };
 
@@ -771,7 +847,7 @@ export const RoleBadge = memo(function RoleBadge({ role }: RoleBadgeProps) {
   };
 
   const { label, className } = config[role] || {
-    label: role.split("_").map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(" "),
+    label: role.split("_").map(ucFirst).join(" "),
     className: "tag-gray",
   };
 
@@ -799,8 +875,8 @@ export const InfluenceBadge = memo(function InfluenceBadge({ influence }: Influe
   };
 
   const { label, variant } = config[normalizedInfluence] || {
-    label: typeof influence === "number" ? `Level ${influence}` : influence,
-    variant: "outline",
+    label: typeof influence === "number" ? `Level ${influence}` : ucFirst(influence),
+    variant: "outline" as BadgeVariant,
   };
 
   return <Badge variant={variant} className="text-xs px-2 py-1">{label}</Badge>;
@@ -885,7 +961,7 @@ export interface WizardStateImporting {
   rowOffset: number;
 }
 export interface WizardStateComplete { step: "complete"; result: ImportResult; }
-export interface WizardStateError { step: "error"; error: Error; previousStep: string; }
+export interface WizardStateError { step: "error"; error: Error; previousStep: Exclude<WizardStep, "error">; }
 
 export type WizardState =
   | WizardStateIdle
@@ -900,7 +976,7 @@ export type WizardState =
 ### Pure Reducer with Exhaustive Handling
 
 ```tsx
-// src/atomic-crm/contacts/useImportWizard.ts
+// src/atomic-crm/contacts/reducers/importWizardReducer.ts
 
 export function importWizardReducer(state: WizardState, action: WizardAction): WizardState {
   // Handle RESET action from any state
@@ -932,7 +1008,7 @@ export function importWizardReducer(state: WizardState, action: WizardAction): W
 ### State-Specific Reducer Example
 
 ```tsx
-// src/atomic-crm/contacts/useImportWizard.ts
+// src/atomic-crm/contacts/reducers/importWizardReducer.ts
 
 function reduceIdleState(state: WizardStateIdle, action: WizardAction): WizardState {
   switch (action.type) {
@@ -955,6 +1031,9 @@ function reduceIdleState(state: WizardStateIdle, action: WizardAction): WizardSt
 
 ```tsx
 // src/atomic-crm/contacts/useImportWizard.ts
+
+import { importWizardReducer, createInitialState } from "./reducers/importWizardReducer";
+import { createWizardActions } from "./actions/importWizardActions";
 
 export function useImportWizard() {
   const [state, dispatch] = useReducer(importWizardReducer, undefined, createInitialState);
@@ -998,8 +1077,11 @@ export function useImportWizard() {
 - Invalid transitions return unchanged state (same reference)
 - `assertNever()` ensures TypeScript exhaustiveness checking
 - AbortController enables safe cancellation of async operations
+- Reducer extracted to `reducers/importWizardReducer.ts` for separation of concerns
+- Action creators extracted to `actions/importWizardActions.ts` with full JSDoc
+- `previousStep` on error state uses `Exclude<WizardStep, "error">` for type safety
 
-**Example:** `src/atomic-crm/contacts/useImportWizard.ts`, `useImportWizard.types.ts`
+**Example:** `src/atomic-crm/contacts/useImportWizard.ts`, `useImportWizard.types.ts`, `reducers/importWizardReducer.ts`, `actions/importWizardActions.ts`
 
 ---
 
@@ -1151,7 +1233,7 @@ When adding new contact features:
 - [ ] Add to `ContactImportSchema` type if importable
 - [ ] Add database migration in `supabase/migrations/`
 - [ ] Add form input in `ContactCompactForm.tsx`
-- [ ] Add display in `ContactDetailsTab.tsx`
+- [ ] Add display in `ContactRightPanel.tsx` (view sections) or `ContactAside.tsx`
 - [ ] Verify with `npx tsc --noEmit`
 - [ ] Test import with CSV containing new field
 
@@ -1189,11 +1271,27 @@ When adding new contact features:
 
 | Pattern | Primary Files |
 |---------|--------------|
-| A: Import Pipeline | `contactImport.logic.ts`, `csvProcessor.ts`, `columnAliases.ts` |
-| B: Form Defaults | `ContactCompactForm.tsx`, `ContactCreate.tsx`, `ContactEdit.tsx` |
-| C: Contact Linking | `LinkOpportunityModal.tsx`, `OpportunitiesTab.tsx` |
+| A: Import Pipeline | `contactImport.logic.ts`, `csvProcessor.ts`, `columnAliases.ts`, `ContactImportButton.tsx`, `ContactImportDialog.tsx` |
+| B: Form Defaults | `ContactCompactForm.tsx`, `ContactCreate.tsx`, `ContactEdit.tsx`, `ContactInputs.tsx`, `ContactAdditionalDetails.tsx`, `ContactFormTutorial.tsx` |
+| C: Contact Linking | `LinkOpportunityModal.tsx`, `OpportunitiesTab.tsx`, `SuggestedOpportunityCard.tsx`, `UnlinkConfirmDialog.tsx`, `StageBadgeWithHealth.tsx` |
 | D: Field Mapping | `useColumnMapping.ts`, `columnAliases.ts` |
 | E: Tags System | `TagsListEdit.tsx`, `TagChip.tsx`, `tag-colors.ts` |
 | F: Activity Tab | `ActivitiesTab.tsx` |
 | G: Contact Badges | `ContactBadges.tsx` |
-| H: Wizard State | `useImportWizard.ts`, `useImportWizard.types.ts` |
+| H: Wizard State | `useImportWizard.ts`, `useImportWizard.types.ts`, `reducers/importWizardReducer.ts`, `actions/importWizardActions.ts` |
+
+### Additional Key Files
+
+| File | Purpose |
+|------|---------|
+| `ContactList.tsx` | List page with `PremiumDatagrid`, `UnifiedListPageLayout`, slide-over integration |
+| `ContactListFilter.tsx` | Filter panel for contact list |
+| `ContactDatagridHeader.tsx` | Custom datagrid header component |
+| `ContactBulkActionsToolbar.tsx` | Bulk action buttons for contact list |
+| `ContactSlideOver.tsx` | Slide-over panel using `ResourceSlideOver` wrapper with two-column layout |
+| `ContactRightPanel.tsx` | Right panel for slide-over: view/edit sections, notes, tasks |
+| `ContactAside.tsx` | Sidebar for ContactShow: personal info, position, tags, notes, tasks |
+| `ContactAdditionalDetails.tsx` | Collapsible form sections: professional details, org & territory, notes |
+| `contactColumnConfig.ts` | Column configuration for contact list datagrid |
+| `contactFilterConfig.ts` | Filter configuration for contact list |
+| `contactExporter.ts` | Export logic for contact data |

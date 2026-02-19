@@ -27,9 +27,25 @@ Standard patterns for utility functions in Crispy CRM.
 │    extension for TypeScript compatibility with Lucide imports only.        │
 │                                                                             │
 │  ┌──────────────────────────┐    ┌──────────────────────────────────────┐  │
-│  │  List Configuration      │    │  Avatar Processing                   │  │
-│  │  └─ listPatterns.ts      │    │  └─ avatar.utils.ts                  │  │
-│  └──────────────────────────┘    └──────────────────────────────────────┘  │
+│  │  Error Handling          │    │  Date/Trend                          │  │
+│  │  ├─ errorMessages.ts     │    │  ├─ dateUtils.ts                     │  │
+│  │  └─ extractProvider      │    │  └─ trendCalculation.ts              │  │
+│  │    ValidationMessage.ts  │    └──────────────────────────────────────┘  │
+│  └──────────────────────────┘                                              │
+│                                                                             │
+│  ┌──────────────────────────┐    ┌──────────────────────────────────────┐  │
+│  │  Form/Navigation         │    │  List Configuration                  │  │
+│  │  ├─ autocompleteDefaults │    │  └─ listPatterns.ts                  │  │
+│  │  ├─ getContextAware      │    └──────────────────────────────────────┘  │
+│  │  │   Redirect.ts         │                                              │
+│  │  ├─ getRequiredFields.ts │    ┌──────────────────────────────────────┐  │
+│  │  └─ useNotifyWithRetry   │    │  Avatar Processing                   │  │
+│  │      .tsx                │    │  ├─ avatar.utils.ts                  │  │
+│  └──────────────────────────┘    │  └─ avatar/                          │  │
+│                                  │     ├─ index.ts                      │  │
+│                                  │     ├─ fetchWithTimeout.ts           │  │
+│                                  │     └─ unsupportedDomains.const.ts   │  │
+│                                  └──────────────────────────────────────┘  │
 │                                                                             │
 └─────────────────────────────────────────────────────────────────────────────┘
 
@@ -134,6 +150,39 @@ export function ucFirst(str: string): string {
 ```
 
 **When to use**: Formatting relative time strings, display labels, any case normalization where only the first character needs capitalization.
+
+### formatCurrency (Number to Currency String)
+
+Use for displaying monetary values:
+
+```tsx
+import { formatCurrency } from "@/atomic-crm/utils";
+
+// Default: USD, no decimals
+formatCurrency(1500)           // "$1,500"
+formatCurrency(null)           // "--"
+formatCurrency(1234.56, { maximumFractionDigits: 2 })  // "$1,234.56"
+formatCurrency(1000, { currency: "EUR", locale: "de-DE" })  // "1.000 EUR"
+```
+
+From `formatters.ts:88-112`:
+```typescript
+export function formatCurrency(
+  amount: number | null | undefined,
+  options?: {
+    currency?: string;
+    locale?: string;
+    minimumFractionDigits?: number;
+    maximumFractionDigits?: number;
+  }
+): string {
+  if (amount == null || isNaN(amount)) return EMPTY_PLACEHOLDER;
+  const { currency = "USD", locale = "en-US", minimumFractionDigits = 0, maximumFractionDigits = 0 } = options ?? {};
+  return new Intl.NumberFormat(locale, { style: "currency", currency, minimumFractionDigits, maximumFractionDigits }).format(amount);
+}
+```
+
+**When to use**: Opportunity values, revenue displays, financial reports, any monetary amount.
 
 ### formatFieldLabel (Snake Case to Title Case)
 
@@ -722,6 +771,13 @@ import { DEFAULT_PER_PAGE, SORT_FIELDS } from "@/atomic-crm/utils";
 
 For generating avatars from email addresses and organization websites.
 
+The avatar subsystem has two layers:
+- `avatar.utils.ts` -- High-level avatar resolution strategies (Gravatar, favicon, etc.)
+- `avatar/` subdirectory -- Low-level utilities:
+  - `avatar/index.ts` -- Barrel re-export
+  - `avatar/fetchWithTimeout.ts` -- Timeout-aware fetch for avatar probing
+  - `avatar/unsupportedDomains.const.ts` -- Domains known to block favicon requests
+
 ### Contact Avatar
 
 ```tsx
@@ -910,6 +966,7 @@ When adding a new CRM utility:
 | Capitalize first letter | A | `ucFirst` |
 | Snake_case to Title Case | A | `formatFieldLabel` |
 | Extract name initials | A | `getInitials` |
+| Format currency value | A | `formatCurrency` from `formatters` |
 | Activity type icon | B | `getActivityIcon` |
 | CSV export flattening | C | `flattenEmailsForExport` |
 | Duplicate detection types | D | `type SimilarOpportunity` (functions in PostgreSQL) |

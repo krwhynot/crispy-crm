@@ -64,18 +64,26 @@ export interface AppBranding {
 
 ## Pattern B: Context + Hook Pattern
 
-Every context exports three things: the Context, Provider, and a consumption hook.
+Every context exports the Context and Provider. The consumption hook lives in a **separate file** for clean separation.
 
 ```tsx
 // src/atomic-crm/contexts/AppBrandingContext.tsx
+// Exports: AppBrandingContext, AppBrandingProvider, type AppBranding
 
 // 1. Create context with default value
 export const AppBrandingContext = createContext<AppBranding>(defaultAppBranding);
 
 // 2. Create Provider component (see Pattern C for implementation)
 export const AppBrandingProvider = ({ children, ...props }) => { /* ... */ };
+```
 
-// 3. Export typed hook for consumption
+```tsx
+// src/atomic-crm/contexts/useAppBranding.ts (separate file)
+// Hook lives in its own file, not co-exported from the context file
+
+import { useContext } from "react";
+import { AppBrandingContext } from "./AppBrandingContext";
+
 export const useAppBranding = () => useContext(AppBrandingContext);
 ```
 
@@ -84,7 +92,6 @@ export const useAppBranding = () => useContext(AppBrandingContext);
 // src/atomic-crm/layout/Header.tsx
 // Preferred: Use alias import for cleaner paths
 import { useAppBranding } from "@/atomic-crm/contexts";
-// Legacy: import { useAppBranding } from "../root/ConfigurationContext";
 
 const Header = () => {
   const { darkModeLogo, lightModeLogo, title } = useAppBranding();
@@ -218,33 +225,45 @@ const defaultPipelineConfig: PipelineConfig = {
 
 ## Barrel Exports
 
-All contexts are re-exported from `index.ts` for clean imports.
+All contexts are re-exported from `index.ts` for clean imports. Note that hooks are imported from their **separate files** (not from the context files).
 
 ```tsx
 // src/atomic-crm/contexts/index.ts
 export {
   AppBrandingContext,
   AppBrandingProvider,
-  useAppBranding,
   type AppBranding,
   type AppBrandingProviderProps,
 } from "./AppBrandingContext";
+export { useAppBranding } from "./useAppBranding";
 
 export {
   PipelineConfigContext,
   PipelineConfigProvider,
-  usePipelineConfig,
   type PipelineConfig,
   type PipelineConfigProviderProps,
 } from "./PipelineConfigContext";
+export { usePipelineConfig } from "./usePipelineConfig";
 
 export {
   FormOptionsContext,
   FormOptionsProvider,
-  useFormOptions,
   type FormOptions,
   type FormOptionsProviderProps,
 } from "./FormOptionsContext";
+export { useFormOptions } from "./useFormOptions";
+```
+
+**File layout:**
+```
+src/atomic-crm/contexts/
+├── index.ts                    # Barrel re-export
+├── AppBrandingContext.tsx       # Context + Provider
+├── useAppBranding.ts           # Hook (separate file)
+├── PipelineConfigContext.tsx    # Context + Provider
+├── usePipelineConfig.ts        # Hook (separate file)
+├── FormOptionsContext.tsx       # Context + Provider
+└── useFormOptions.ts           # Hook (separate file)
 ```
 
 **Consumer imports**:

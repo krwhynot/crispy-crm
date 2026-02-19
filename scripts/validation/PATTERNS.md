@@ -677,7 +677,7 @@ When adding a new validator to the framework:
 | `required-fields.js` | 641 | Missing field detection per entity | ✅ Implemented |
 | `unique-constraints.js` | 481 | Duplicate detection, conflict identification | ✅ Implemented |
 | `test-validation-framework.js` | 71 | Module verification test harness | ✅ Implemented |
-| `pre-migration-validation.sql` | ~530 | Database-level validation queries | 🚧 Planned (not yet implemented) |
-| `capture-current-state.sql` | ~620 | Snapshot for rollback comparison | 🚧 Planned (not yet implemented) |
-
-**Note**: SQL-based validators (`pre-migration-validation.sql`, `capture-current-state.sql`) are planned infrastructure but not yet implemented. Current validation uses JavaScript validators with Supabase SDK.
+| `pre-migration-validation.sql` | 581 | Database-level validation queries | ✅ Implemented |
+| `capture-current-state.sql` | 701 | Snapshot for rollback comparison | ✅ Implemented |
+| `TASK_5_1A_SUMMARY.md` | - | Task 5.1a implementation summary | ✅ Documentation |
+| `VALIDATION_FRAMEWORK_SUMMARY.md` | - | Framework overview documentation | ✅ Documentation |

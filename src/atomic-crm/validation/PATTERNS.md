@@ -54,12 +54,25 @@ src/atomic-crm/validation/
 │   ├── contacts-communication.ts # Email, phone sub-schemas
 │   ├── contacts-department.ts    # Department/role schemas
 │   ├── contacts-import.ts        # Import/CSV schemas
-│   ├── contacts-quick-create.ts  # Quick-create form
-│   └── contacts-relations.ts     # Junction table schemas
+│   └── contacts-quick-create.ts  # Quick-create form
+│
+├── activities/                   # Modularized (was single file)
+│   ├── index.ts                  # Barrel re-export
+│   ├── schemas.ts                # Base and operation schemas
+│   ├── types.ts                  # Type exports via z.infer
+│   ├── constants.ts              # Activity-related constants
+│   ├── transforms.ts             # Activity data transforms
+│   └── validation.ts             # Validation functions
+├── activities.ts                 # Re-export shim (delegates to activities/)
+│
+├── shared/                       # Shared sub-schemas
+│   └── ra-file.ts                # React Admin file input schema
 │
 ├── organizations.ts              # Single file (under 500 lines)
+├── organizationFormConfig.ts     # Form variant configs (245 lines)
+├── ui-props.ts                   # Test-only SlideOver/Tab/List prop schemas
+├── filters.ts                    # Filter value and list params schemas
 ├── products.ts
-├── activities.ts
 ├── sales.ts
 ├── notes.ts
 ├── tags.ts
@@ -679,6 +692,8 @@ const isLinkedinUrl = z.string()
 
 For Edge Function and database RPC validation with registry lookup.
 
+> **Note:** `rpc.ts` is test-only documentation -- its header states "do not import into production handler code". The schemas serve as living documentation tested in `src/tests/validation/rpc.test.ts`.
+
 ```tsx
 // src/atomic-crm/validation/rpc.ts
 
@@ -729,6 +744,11 @@ export const RPC_SCHEMAS = {
   sync_opportunity_with_products: syncOpportunityWithProductsParamsSchema,
   check_authorization: checkAuthorizationParamsSchema,
   check_authorization_batch: checkAuthorizationBatchParamsSchema,
+  log_activity_with_task: logActivityWithTaskParamsSchema,
+  check_similar_opportunities: checkSimilarOpportunitiesParamsSchema,
+  get_campaign_report_stats: getCampaignReportStatsParamsSchema,
+  get_stale_opportunities: getStaleOpportunitiesParamsSchema,
+  get_organization_descendants: getOrganizationDescendantsParamsSchema,
 } as const;
 
 export type RPCFunctionName = keyof typeof RPC_SCHEMAS;
@@ -820,31 +840,28 @@ export const updateOpportunitySchema = opportunityBaseSchema
 
 For formatting ZodError into React Admin's expected format.
 
+> **Preferred:** Use the centralized `zodErrorToReactAdminError()` utility from `utils.ts` instead of inline error formatting. This function also maps technical Zod messages to user-friendly text via `getFriendlyErrorMessage()`.
+
 ```tsx
-// src/atomic-crm/validation/products.ts
+// src/atomic-crm/validation/utils.ts (centralized utility)
+
+import { zodErrorToReactAdminError } from "./utils";
 
 export async function validateProductForm(data: unknown): Promise<void> {
-  // Use safeParse for consistent error handling
-  const result = productSchema.safeParse(data);
-
-  if (!result.success) {
-    // Format validation errors for React Admin
-    const formattedErrors: Record<string, string> = {};
-    result.error.issues.forEach((err) => {
-      const path = err.path.join(".");
-      formattedErrors[path] = err.message;
-    });
-
-    // React Admin expects { message, body: { errors } }
-    throw {
-      message: "Validation failed",
-      body: { errors: formattedErrors },
-    };
+  try {
+    productSchema.parse(data);
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      throw zodErrorToReactAdminError(error);
+      // Returns: { message: "Validation failed", body: { errors: { "email": "Please enter a valid email address." } } }
+    }
+    throw error;
   }
 }
 ```
 
 ```tsx
+// Legacy inline pattern (still used in some files, prefer zodErrorToReactAdminError)
 // src/atomic-crm/validation/opportunities.ts
 
 export async function validateOpportunityForm(data: unknown): Promise<void> {
@@ -871,6 +888,8 @@ export async function validateOpportunityForm(data: unknown): Promise<void> {
 **When to use**: All validation functions called from unifiedDataProvider.
 
 **Key points:**
+- **Prefer `zodErrorToReactAdminError()`** from `utils.ts` for centralized, user-friendly error formatting
+- `zodErrorToReactAdminError()` internally uses `getFriendlyErrorMessage()` for human-readable messages
 - Async function signature for consistency with data provider
 - `.safeParse()` or try/catch with `.parse()` - both work
 - Path joined with `.` for nested field errors: `email.0.value`

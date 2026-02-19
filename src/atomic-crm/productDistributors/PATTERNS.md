@@ -84,33 +84,43 @@ Foreign keys are **editable during Create** but **read-only during Edit**. You c
 
 ### B1: Editable FKs (Create Form)
 
-Use `ReferenceInput` + `AutocompleteInput` for searchable foreign key selection.
+Use `ReferenceInput` + `AutocompleteInput` with centralized autocomplete helpers for searchable foreign key selection.
 
 ```tsx
 // src/atomic-crm/productDistributors/ProductDistributorCreate.tsx
+import {
+  getAutocompleteProps,
+  getQSearchAutocompleteProps,
+} from "@/atomic-crm/utils/autocompleteDefaults";
 
 <ReferenceInput source="product_id" reference="products" isRequired>
   <AutocompleteInput
+    {...getAutocompleteProps("name")}
     optionText="name"
     label="Product *"
-    filterToQuery={(q) => ({ "name@ilike": `%${q}%` })}
     helperText="Select the product"
   />
 </ReferenceInput>
 
-<ReferenceInput source="distributor_id" reference="organizations" isRequired>
+<ReferenceInput
+  source="distributor_id"
+  reference="organizations"
+  filter={{ organization_type: "distributor" }}
+  isRequired
+>
   <AutocompleteInput
+    {...getQSearchAutocompleteProps()}
     optionText="name"
     label="Distributor *"
-    filterToQuery={(q) => ({ "name@ilike": `%${q}%`, organization_type: "distributor" })}
     helperText="Select the distributor"
   />
 </ReferenceInput>
 ```
 
 **Key points:**
-- `filterToQuery` enables server-side search with PostgREST syntax
-- **Filter by type**: `organization_type: "distributor"` narrows organizations to only distributors
+- `getAutocompleteProps("name")` provides standardized `filterToQuery` for name-based search
+- `getQSearchAutocompleteProps()` provides standardized `filterToQuery` for q-search endpoints
+- **Filter by type**: `filter={{ organization_type: "distributor" }}` on `ReferenceInput` narrows to distributors only
 - Both FKs are `isRequired` since they form the composite key
 
 ### B2: Read-Only FKs (Edit Form)
@@ -210,37 +220,31 @@ const ProductDistributorFormContent = () => {
 };
 ```
 
-### C3: Attribute Fields
+### C3: Attribute Fields (ProductDistributorInputs.tsx)
+
+Shared inputs extracted to `ProductDistributorInputs.tsx` for reuse in both Create and Edit forms. Uses `DateInput` (not `TextInput type="date"`) and spreads choices array for mutability.
 
 ```tsx
-// src/atomic-crm/productDistributors/ProductDistributorCreate.tsx
+// src/atomic-crm/productDistributors/ProductDistributorInputs.tsx
 
 <TextInput
   source="vendor_item_number"
   label="DOT Number (Vendor Item #)"
   helperText="e.g., USF# 4587291, Sysco# 1092847"
-  fullWidth
 />
 
 <SelectInput
   source="status"
   label="Status"
-  choices={PRODUCT_DISTRIBUTOR_STATUS_CHOICES}
+  choices={[...PRODUCT_DISTRIBUTOR_STATUS_CHOICES]}
   helperText={false}
 />
 
-<TextInput source="valid_from" label="Valid From" type="date" helperText={false} />
+<DateInput source="valid_from" label="Valid From" helperText={false} />
 
-<TextInput source="valid_to" label="Valid To" type="date" helperText="Leave empty if ongoing" />
+<DateInput source="valid_to" label="Valid To" helperText="Leave empty if ongoing" />
 
-<TextInput
-  source="notes"
-  label="Notes"
-  multiline
-  rows={3}
-  fullWidth
-  helperText={false}
-/>
+<TextInput source="notes" label="Notes" multiline rows={3} helperText={false} />
 ```
 
 **When to use**: Any junction table with relationship attributes beyond just the two FKs.
@@ -249,76 +253,83 @@ const ProductDistributorFormContent = () => {
 
 ## Pattern D: Junction List View
 
-Display both linked entities with filters for each FK.
+Display both linked entities using `UnifiedListPageLayout` with sidebar filters and denormalized summary view columns (per DB-001).
 
-### D1: Dual Reference Filters
+### D1: Sidebar Filter + FilterChipBar
+
+Filters are defined in a separate `ProductDistributorListFilter.tsx` component using `FilterSidebar` and `ToggleFilterButton`. A companion `productDistributorFilterConfig.ts` drives the `FilterChipBar` above the datagrid.
 
 ```tsx
-// src/atomic-crm/productDistributors/ProductDistributorList.tsx
+// src/atomic-crm/productDistributors/ProductDistributorListFilter.tsx
 
-const productDistributorFilters = [
-  <TextInput
-    key="vendor_item_number"
-    source="vendor_item_number@ilike"
-    label="DOT Number"
-    alwaysOn
-    placeholder="Search DOT numbers..."
-  />,
-  <SelectInput
-    key="status"
-    source="status"
-    label="Status"
-    choices={PRODUCT_DISTRIBUTOR_STATUS_CHOICES}
-    emptyText="All statuses"
-  />,
-  <ReferenceInput key="product_id" source="product_id" reference="products">
-    <AutocompleteInput
-      optionText="name"
-      label="Product"
-      filterToQuery={(q) => ({ "name@ilike": `%${q}%` })}
-    />
-  </ReferenceInput>,
-  <ReferenceInput key="distributor_id" source="distributor_id" reference="organizations">
-    <AutocompleteInput
-      optionText="name"
-      label="Distributor"
-      filterToQuery={(q) => ({ "name@ilike": `%${q}%`, organization_type: "distributor" })}
-    />
-  </ReferenceInput>,
-];
+export const ProductDistributorListFilter = () => {
+  useListContext();
+
+  return (
+    <FilterSidebar searchPlaceholder="Search by DOT number...">
+      <FilterCategory label="Status" icon={<CircleDot className="h-4 w-4" />}>
+        {PRODUCT_DISTRIBUTOR_STATUS_CHOICES.map((choice) => (
+          <ToggleFilterButton
+            key={choice.id}
+            className="w-full justify-between"
+            label={choice.name}
+            value={{ status: choice.id }}
+          />
+        ))}
+      </FilterCategory>
+    </FilterSidebar>
+  );
+};
 ```
 
-### D2: Datagrid with Reference Columns
+```tsx
+// src/atomic-crm/productDistributors/productDistributorFilterConfig.ts
+
+export const PRODUCT_DISTRIBUTOR_FILTER_CONFIG = validateFilterConfig([
+  { key: "status", label: "Status", type: "select", choices: PD_STATUS_CHOICES },
+  { key: "product_id", label: "Product", type: "reference", reference: "products" },
+  { key: "distributor_id", label: "Distributor", type: "reference", reference: "organizations" },
+]);
+```
+
+### D2: PremiumDatagrid with Denormalized Columns
+
+Uses `PremiumDatagrid` (not raw `Datagrid`) and denormalized `TextField` columns from the summary view instead of `ReferenceField` (eliminates N+1 queries per DB-001).
 
 ```tsx
 // src/atomic-crm/productDistributors/ProductDistributorList.tsx
 
 export const ProductDistributorList = () => (
-  <List
-    filters={productDistributorFilters}
-    sort={{ field: "created_at", order: "DESC" }}
-    perPage={25}
-  >
-    <Datagrid rowClick="edit" bulkActionButtons={false}>
-      <ReferenceField source="product_id" reference="products" label="Product">
-        <TextField source="name" />
-      </ReferenceField>
-      <ReferenceField source="distributor_id" reference="organizations" label="Distributor">
-        <TextField source="name" />
-      </ReferenceField>
-      <TextField source="vendor_item_number" label="DOT Number" />
-      <SelectField source="status" choices={PRODUCT_DISTRIBUTOR_STATUS_CHOICES} />
-      <DateField source="valid_from" label="Valid From" />
-      <DateField source="valid_to" label="Valid To" emptyText="-" />
-    </Datagrid>
+  <List title={false} actions={false} perPage={25} sort={{ field: "created_at", order: "DESC" }}>
+    <UnifiedListPageLayout
+      resource="product_distributors"
+      filterComponent={<ProductDistributorListFilter />}
+      filterConfig={PRODUCT_DISTRIBUTOR_FILTER_CONFIG}
+      sortFields={["created_at", "status", "valid_from"]}
+      searchPlaceholder="Search product distributors..."
+      primaryAction={<CreateButton variant="default" />}
+    >
+      <PremiumDatagrid rowClick="edit" bulkActionButtons={false}>
+        {/* Denormalized fields from summary view (DB-001) - no ReferenceField needed */}
+        <TextField source="product_name" label="Product" />
+        <TextField source="distributor_name" label="Distributor" />
+        <TextField source="vendor_item_number" label="DOT Number" />
+        <SelectField source="status" choices={PRODUCT_DISTRIBUTOR_STATUS_CHOICES} />
+        <DateField source="valid_from" label="Valid From" />
+        <DateField source="valid_to" label="Valid To" emptyText="-" />
+      </PremiumDatagrid>
+    </UnifiedListPageLayout>
   </List>
 );
 ```
 
 **Key points:**
-- `bulkActionButtons={false}` — Bulk delete on junction tables is risky
-- Both FK columns use `ReferenceField` to resolve names
+- `actions={false}` on `<List>` -- `UnifiedListPageLayout` handles actions/search/filters
+- `PremiumDatagrid` (not raw `Datagrid`) per CORE-016
+- Uses `TextField source="product_name"` / `TextField source="distributor_name"` from summary view (denormalized, eliminates N+1 queries per DB-001)
+- `bulkActionButtons={false}` -- bulk delete on junction tables is risky
 - `emptyText="-"` for nullable dates provides clear empty state
+- `primaryAction={<CreateButton variant="default" />}` replaces `FloatingCreateButton`
 
 **When to use**: Any junction table list view.
 
@@ -326,52 +337,103 @@ export const ProductDistributorList = () => (
 
 ## Pattern E: Resource Configuration
 
-Lazy loading with error boundaries for junction table resources.
+Lazy loading with error boundaries, `React.Suspense` fallback, and a separate config file for react-refresh compatibility.
+
+### resource.tsx (Component Definitions)
 
 ```tsx
 // src/atomic-crm/productDistributors/resource.tsx
 
 import * as React from "react";
-import { Package } from "lucide-react";
 import { ResourceErrorBoundary } from "@/components/ResourceErrorBoundary";
+import { Loading } from "@/components/ra-wrappers/loading";
 
 const ProductDistributorListLazy = React.lazy(() => import("./ProductDistributorList"));
 const ProductDistributorEditLazy = React.lazy(() => import("./ProductDistributorEdit"));
 const ProductDistributorCreateLazy = React.lazy(() => import("./ProductDistributorCreate"));
+const ProductDistributorShowLazy = React.lazy(() => import("./ProductDistributorShow"));
 
 export const ProductDistributorListView = () => (
   <ResourceErrorBoundary resource="product_distributors" page="list">
-    <ProductDistributorListLazy />
+    <React.Suspense fallback={<Loading />}>
+      <ProductDistributorListLazy />
+    </React.Suspense>
   </ResourceErrorBoundary>
 );
 
 export const ProductDistributorCreateView = () => (
   <ResourceErrorBoundary resource="product_distributors" page="create">
-    <ProductDistributorCreateLazy />
+    <React.Suspense fallback={<Loading />}>
+      <ProductDistributorCreateLazy />
+    </React.Suspense>
   </ResourceErrorBoundary>
 );
 
 export const ProductDistributorEditView = () => (
   <ResourceErrorBoundary resource="product_distributors" page="edit">
-    <ProductDistributorEditLazy />
+    <React.Suspense fallback={<Loading />}>
+      <ProductDistributorEditLazy />
+    </React.Suspense>
   </ResourceErrorBoundary>
 );
 
-const productDistributors = {
+export const ProductDistributorShowView = () => (
+  <ResourceErrorBoundary resource="product_distributors" page="show">
+    <React.Suspense fallback={<Loading />}>
+      <ProductDistributorShowLazy />
+    </React.Suspense>
+  </ResourceErrorBoundary>
+);
+```
+
+### productDistributorsConfig.ts (Resource Config)
+
+Separated from component definitions to satisfy `react-refresh/only-export-components` lint rule.
+
+```tsx
+// src/atomic-crm/productDistributors/productDistributorsConfig.ts
+
+import { Package } from "lucide-react";
+import {
+  ProductDistributorListView,
+  ProductDistributorCreateView,
+  ProductDistributorEditView,
+  ProductDistributorShowView,
+} from "./resource";
+
+const productDistributorsConfig = {
   list: ProductDistributorListView,
   edit: ProductDistributorEditView,
   create: ProductDistributorCreateView,
+  show: ProductDistributorShowView,
   icon: Package,
   options: { label: "DOT Numbers" },
 };
 
-export default productDistributors;
+export default productDistributorsConfig;
+```
+
+### index.tsx (Barrel Exports)
+
+```tsx
+// src/atomic-crm/productDistributors/index.tsx
+export { default } from "./productDistributorsConfig";
+export {
+  ProductDistributorList,
+  ProductDistributorEdit,
+  ProductDistributorCreate,
+  ProductDistributorShow,
+} from "./resource";
+export { ProductDistributorInputs } from "./ProductDistributorInputs";
 ```
 
 **Key points:**
 - `React.lazy()` enables code splitting per view
+- `React.Suspense` wraps each lazy component with `<Loading />` fallback
 - `ResourceErrorBoundary` catches render errors with recovery UI
 - `options.label` overrides default pluralization for better UX
+- Resource config is in a separate `productDistributorsConfig.ts` for react-refresh compatibility
+- `ProductDistributorShowView` provides a read-only detail page
 
 **When to use**: All resources, not just junction tables.
 
@@ -487,6 +549,24 @@ export const createProductDistributorSchema = productDistributorSchema.required(
 
 ---
 
+## File Reference
+
+| File | Purpose | Key Patterns |
+|------|---------|--------------|
+| `resource.tsx` | Lazy loading + error boundary + Suspense wrappers | E |
+| `productDistributorsConfig.ts` | React Admin resource config (separate for react-refresh) | E |
+| `index.tsx` | Barrel exports | E |
+| `ProductDistributorList.tsx` | List view with UnifiedListPageLayout + PremiumDatagrid | D |
+| `ProductDistributorCreate.tsx` | Create form with editable FK references | B1, C |
+| `ProductDistributorEdit.tsx` | Edit form with read-only FK display | B2, C |
+| `ProductDistributorShow.tsx` | Read-only detail view | E |
+| `ProductDistributorInputs.tsx` | Shared attribute inputs (DOT#, status, dates, notes) | C3 |
+| `ProductDistributorListFilter.tsx` | Sidebar filter UI (status toggles) | D1 |
+| `productDistributorFilterConfig.ts` | Filter metadata for FilterChipBar | D1 |
+| `constants.ts` | Status choices and type | - |
+
+---
+
 ## Migration Checklist
 
 When creating a new junction table UI:
@@ -508,15 +588,20 @@ When creating a new junction table UI:
 - [ ] Export status type
 
 ### UI Components
-- [ ] Create `List.tsx` with two `ReferenceField` columns and filters
-- [ ] Create `Create.tsx` with two editable `ReferenceInput` fields
-- [ ] Create `Edit.tsx` with two read-only `ReferenceField` displays
+- [ ] Create `List.tsx` with `UnifiedListPageLayout` + `PremiumDatagrid` and denormalized columns
+- [ ] Create `Create.tsx` with editable `ReferenceInput` + `getAutocompleteProps`/`getQSearchAutocompleteProps`
+- [ ] Create `Edit.tsx` with read-only `ReferenceField` displays
+- [ ] Create `Show.tsx` for read-only detail view
+- [ ] Create shared `Inputs.tsx` with `DateInput`, `SelectInput`, `TextInput`
 - [ ] Add `FormErrorSummary` with field labels
+- [ ] Create `ListFilter.tsx` with `FilterSidebar` + `ToggleFilterButton`
+- [ ] Create `filterConfig.ts` with `validateFilterConfig()`
 
 ### Resource Configuration
-- [ ] Create `resource.tsx` with lazy loading
+- [ ] Create `resource.tsx` with lazy loading + `React.Suspense fallback={<Loading />}`
 - [ ] Wrap each view with `ResourceErrorBoundary`
-- [ ] Configure icon and label in default export
+- [ ] Create separate config file (`*Config.ts`) for react-refresh compatibility
+- [ ] Configure icon and label in config export
 
 ### Registration
 - [ ] Register resource in App.tsx resources array

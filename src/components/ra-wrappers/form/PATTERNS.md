@@ -31,24 +31,39 @@ Form Primitives (FormField, FormControl, FormError)
 
 ```
 src/components/ra-wrappers/form/
-├── form-primitives.tsx           # Core form building blocks
+├── index.ts                      # Barrel export for form components
+├── form-primitives.tsx           # Core form building blocks (includes SaveButton)
 ├── FormFieldWrapper.tsx          # Progress tracking + validation UI
 ├── FormSection.tsx               # Section layout with title/description
+├── FormSectionWithProgress.tsx   # Section layout with integrated progress tracking
 ├── CollapsibleSection.tsx        # Expandable section with a11y
 ├── AccordionSection.tsx          # Multi-section accordion layout
+├── accordion.tsx                 # Low-level accordion primitives (Radix-based)
 ├── FormGrid.tsx                  # Responsive grid layout
-├── FormProgressProvider.tsx      # Progress tracking context
-├── FormProgressBar.tsx           # Visual progress indicator
-├── SaveButton.tsx                # Primary save action (in form-primitives.tsx)
-├── SaveButtonGroup.tsx           # Save with dropdown options
+├── FormProgressContext.ts        # React context definition for progress state
+├── formProgressTypes.ts          # TypeScript types for progress tracking
+├── formProgressUtils.ts          # Utility functions for progress calculation
+├── FormProgressProvider.tsx      # Progress tracking context provider
+├── FormProgressBar.tsx           # Visual progress indicator bar
 ├── FormActions.tsx               # Action button row layout
+├── SaveButtonGroup.tsx           # Save with dropdown options
+├── CompactFormRow.tsx            # Condensed single-row form layout
+├── CompactFormFieldWithButton.tsx # Input + inline action button layout
+├── ButtonPlaceholder.tsx         # Placeholder maintaining button spacing
+├── FormLoadingSkeleton.tsx       # Skeleton loading state for forms
 ├── FormWizard.tsx                # Multi-step form container
+├── WizardContext.ts              # React context definition for wizard state
+├── wizard-types.ts               # TypeScript types for wizard configuration
+├── wizardUtils.ts                # Utility functions for wizard navigation
 ├── WizardStep.tsx                # Individual wizard step panel
 ├── WizardNavigation.tsx          # Step navigation controls
 ├── StepIndicator.tsx             # Step progress visualization
 ├── useFormShortcuts.ts           # Keyboard shortcuts hook
 └── __tests__/                    # Comprehensive test coverage
 ```
+
+> **Note:** `SaveButton` is defined inside `form-primitives.tsx`, not as a separate file.
+> It is re-exported from the barrel (`index.ts`).
 
 **Import Pattern:**
 ```tsx

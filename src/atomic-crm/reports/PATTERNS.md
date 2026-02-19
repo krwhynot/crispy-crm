@@ -2,1108 +2,873 @@
 
 Standard patterns for business intelligence, analytics, and reporting in Crispy CRM.
 
-## Component & Data Flow Architecture
+## Architecture Overview
 
 ```
-ReportsPage (Entry Point)
-├── ReportPageShell (Layout wrapper with breadcrumbs)
-│   └── StandardListLayout (wrapMainInCard=false, storageKey="crm-report-sidebar-collapsed")
-│       ├── <aside> ReportFilterSidebar (switches per active tab)
-│       │   ├── OverviewFilterSidebar (Date Range, Sales Rep)
-│       │   ├── OpportunitiesFilterSidebar (Principal, Stage, Owner, Date Range)
-│       │   ├── WeeklyFilterSidebar (Date Range)
-│       │   ├── CampaignFilterSidebar (Campaign, Date Range, Sales Rep, Activity Types, Options)
-│       │   └── "Clear filters" reset button (when hasActiveFilters)
-│       └── <main> Tab Container
-│           ├── OverviewTab
-│           │   ├── KPICard × 4 (Dashboard metrics)
-│           │   ├── ChartWrapper (Pipeline)
-│           │   │   └── PipelineChart (Doughnut)
-│           │   ├── ChartWrapper (Activity Trends)
-│           │   │   └── ActivityTrendChart (Line)
-│           │   └── ChartWrapper (Rep Performance)
-│           │       └── RepPerformanceChart (Bar)
-│           ├── CampaignActivityTab
-│           │   ├── AppliedFiltersBar (Active filter chips)
-│           │   ├── ActivityTypeCard × N (Grouped metrics)
-│           │   └── StaleLeadsView (Conditional on flag)
-│           ├── OpportunitiesTab
-│           │   └── PrincipalGroupCard × N (Collapsible groups)
-│           └── WeeklyActivityTab
-│               └── WeeklyActivitySummary (Time-based metrics)
-│
-└── Data Hooks Layer
-    ├── useReportData<T> (Generic data fetcher) ◄──────────┐
-    │   └── useDataProvider (React Admin) ◄─ Single Entry  │
-    ├── useCampaignActivityData                            │
-    │   ├── useReportData (activities)                     │
-    │   ├── useQuery (RPC: get_campaign_report_stats)      │
-    │   ├── useQuery (RPC: get_stale_opportunities)        │
-    │   └── useGetList (sales reps)                        │
-    ├── useCampaignActivityMetrics                         │
-    │   └── useMemo (Client-side aggregation)              │
-    └── useCampaignActivityExport                          │
-        └── jsonExport → downloadCSV                       │
-                                                            │
-                  ┌─────────────────────────────────────────┘
-                  │ All data flows through unifiedDataProvider
-                  │ Zod validation at RPC boundaries
-                  │ Fail-fast error handling (no retry)
-                  └─────────────────────────────────────────
+ReportsPage (Entry Point, URL-driven tab selection)
+|
++-- ReportPageShell (Layout: breadcrumbs, title, section rule, filterBar slot, actions)
+|   |
+|   +-- filterBar slot ---------> ReportParameterBar (switches inner bar by activeTab)
+|   |                              +-- OverviewParameterBar      (Period, Owner)
+|   |                              +-- OpportunitiesParameterBar (Principal, Stage, Owner, DateRange)
+|   |                              +-- WeeklyParameterBar        (Start, End)
+|   |                              +-- CampaignParameterBar      (Campaign, DateRange, Rep, Types, StaleToggle)
+|   |
+|   +-- actions slot ------------> "Copy Link" button (builds shareable URL from store state)
+|   |
+|   +-- children slot -----------> Tabs (Radix)
+|       +-- TabsList (4 tabs: Overview, Opportunities, Weekly, Campaign)
+|       +-- TabsContent (lazy-loaded via React.lazy + Suspense)
+|           |
+|           +-- OverviewTab (default export, lazy)
+|           |   +-- KeyInsightsStrip (auto-generated contextual summaries)
+|           |   +-- KPICard x4 (Open Opportunities, Team Activities, Stale Leads, Stale Deals)
+|           |   +-- ChartWrapper > PipelineChart (horizontal bar)
+|           |   +-- ChartWrapper > ActivityTrendChart (line)
+|           |   +-- ChartWrapper > TopPrincipalsChart (horizontal bar)
+|           |   +-- ChartWrapper > RepPerformanceChart (grouped bar)
+|           |
+|           +-- OpportunitiesTab (lazy wrapper)
+|           |   +-- OpportunitiesByPrincipalReport
+|           |       +-- KPICard x3 (Total Opps, Principals, Avg per Principal)
+|           |       +-- PrincipalGroupCard xN (collapsible, with opportunity table)
+|           |
+|           +-- WeeklyActivityTab (lazy wrapper)
+|           |   +-- WeeklyActivitySummary
+|           |       +-- KPICard x3 (Total Activities, Active Reps, Avg per Rep)
+|           |       +-- RepActivityCard xN (collapsible, with principal/type matrix table)
+|           |
+|           +-- CampaignActivityTab (lazy wrapper)
+|               +-- CampaignActivityReport
+|                   +-- KPICard x4 (Total Activities, Orgs Contacted, Coverage Rate, Avg per Lead)
+|                   +-- ActivityTypeCard xN (collapsible, with activity detail table)
+|                   +-- StaleLeadsView (conditional on showStaleLeads toggle)
+|
++-- Data Hooks Layer
+    +-- useReportFilterState (store-backed persistence + URL seeding)
+    +-- useReportData<T> (generic data fetcher via dataProvider)
+    +-- useCampaignActivityData (composite: RPC + activities + sales reps + stale opps)
+    +-- useCampaignFilterOptions (light RPC for filter metadata, deduped with above)
+    +-- useCampaignActivityMetrics (client-side grouping + staleness calculation)
+    +-- useCampaignActivityExport (CSV export: activities + stale leads)
+    +-- useChartTheme (CSS variable resolution for Chart.js)
+    +-- useScrollFadeRight (horizontal overflow fade indicator)
 ```
 
 ---
 
-## Pattern A: Generic Report Data Hook (useReportData)
+## Data Flow
 
-Centralized data access for reports with standardized filtering and pagination.
+```
+URL ?tab=X&filters=JSON
+         |
+         v
+useReportFilterState (seeds store from URL once, then clears URL params)
+         |
+         v
+React Admin useStore("reports.<tab>") -- localStorage-backed persistence
+         |
+    +----+----+
+    |         |
+    v         v
+Tab Content   ReportParameterBar
+(reads store, (reads/writes store
+ owns URL     via useStore directly,
+ seeding)     NOT useReportFilterState)
+    |
+    v
+useReportData / useGetList / useQuery (RPC)
+    |
+    v
+unifiedDataProvider (Supabase) -- single entry point, Zod validated
+    |
+    v
+Client-side aggregation (useMemo) -- grouping, percentages, trends
+    |
+    v
+Presentation (KPICard, ChartWrapper, tables, empty states)
+```
+
+**Critical rule**: Only tab content components call `useReportFilterState` (which seeds from URL on mount). The `ReportParameterBar` uses `useStore` directly to read/write filter state, avoiding double-seeding side effects.
+
+---
+
+## Pattern A: Store-Backed Filter Persistence (useReportFilterState)
+
+### Problem
+
+Report filters must survive tab switches, page navigation, and browser refreshes. Users also need shareable URLs that reproduce filter state.
+
+### Solution
+
+`useReportFilterState` wraps React Admin's `useStore()` (localStorage-backed) with two additions: (1) URL seeding on mount, (2) a `buildShareUrl` helper that serializes non-default filter values into the URL.
+
+### Implementation
 
 ```tsx
-// hooks/useReportData.ts
-interface UseReportDataOptions {
-  dateRange?: { start: Date | null; end: Date | null };
-  salesRepId?: string | null;
-  additionalFilters?: Record<string, unknown>;
-  dateField?: string; // Default: "created_at"
-}
+// hooks/useReportFilterState.ts:88-132
+export function useReportFilterState<T extends FilterState>(
+  storeKey: string,
+  defaults: T
+): [T, (update: Partial<T>) => void, () => void] {
+  const [stored, setStored] = useStore<T>(storeKey, defaults);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const seededRef = useRef(false);
 
+  // On mount: seed store from URL params if present, then clear filter params
+  useEffect(() => {
+    if (seededRef.current) return;
+    seededRef.current = true;
+
+    const filterParam = searchParams.get("filters");
+    if (!filterParam) return;
+
+    const parsed = JSON.parse(decodeURIComponent(filterParam)) as Partial<T>;
+    setStored({ ...stored, ...parsed });
+
+    // Clean filter params from URL, preserve tab param
+    const tab = searchParams.get("tab");
+    const cleaned = new URLSearchParams();
+    if (tab) cleaned.set("tab", tab);
+    setSearchParams(cleaned, { replace: true });
+  }, []);
+
+  const update = useCallback(
+    (partial: Partial<T>) => setStored({ ...stored, ...partial }),
+    [stored, setStored]
+  );
+
+  const reset = useCallback(() => setStored(defaults), [defaults, setStored]);
+
+  return [stored, update, reset];
+}
+```
+
+**Store keys**: `reports.overview`, `reports.opportunities`, `reports.weekly`, `reports.campaign`
+
+**Filter state types** (hooks/useReportFilterState.ts:19-73):
+- `OverviewFilterState`: `{ datePreset, salesRepId }`
+- `OpportunitiesFilterState`: `{ principal_organization_id, stage[], opportunity_owner_id, startDate, endDate }`
+- `WeeklyFilterState`: `{ start, end }`
+- `CampaignFilterState`: `{ selectedCampaign, datePreset, startDate, endDate, selectedActivityTypes[], selectedSalesRep, showStaleLeads }`
+
+---
+
+## Pattern B: Horizontal Parameter Bar (ReportParameterBar)
+
+### Problem
+
+Each report tab has different filter parameters. The parameter bar must switch controls based on the active tab while sharing a consistent horizontal layout.
+
+### Solution
+
+`ReportParameterBar` is a switch component that renders a tab-specific inner bar. Each inner bar reads/writes its tab's store key via `useStore` directly (not `useReportFilterState`) to avoid double URL-seeding.
+
+### Implementation
+
+```tsx
+// components/ReportParameterBar.tsx:60-73
+export function ReportParameterBar({ activeTab }: ReportParameterBarProps) {
+  switch (activeTab) {
+    case "overview":      return <OverviewParameterBar />;
+    case "opportunities": return <OpportunitiesParameterBar />;
+    case "weekly":        return <WeeklyParameterBar />;
+    case "campaign":      return <CampaignParameterBar />;
+    default:              return null;
+  }
+}
+```
+
+Each inner bar follows the same structure:
+1. `useStore<TabFilterState>("reports.<tab>", DEFAULTS)` for state
+2. `useCallback` update helper for partial state merges
+3. `role="toolbar"` with `aria-label` on the container div
+4. `h-11` minimum touch targets on all controls
+5. `paper-micro-label` for control labels above each field
+
+**Filter control types used**:
+- `Select` (Radix) -- for single-value dropdowns (Period, Owner, Principal, Campaign)
+- `CheckboxPopoverFilter` -- for multi-select (Stage, Activity Types)
+- `DateRangePopoverFilter` -- for date range pickers (collapsed into a single trigger)
+- `Switch` -- for boolean toggles (Stale Leads)
+- `<input type="date">` -- for raw date inputs (Weekly start/end)
+
+---
+
+## Pattern C: Generic Report Data Hook (useReportData)
+
+### Problem
+
+Reports need consistent data access through the provider layer with standardized filtering, pagination, and error handling.
+
+### Solution
+
+`useReportData<T>` centralizes all report data fetching through `useDataProvider()`. It constructs filters from primitives to prevent render loops, uses a large pagination limit (1000) for client-side aggregation, and exposes truncation warnings.
+
+### Implementation
+
+```tsx
+// hooks/useReportData.ts:59-169
 export function useReportData<T extends RaRecord>(
   resource: string,
   options: UseReportDataOptions = {}
 ): UseReportDataResult<T> {
   const dataProvider = useDataProvider();
-  const [refetchTrigger, setRefetchTrigger] = useState(0);
 
   // CRITICAL: Extract primitive values to prevent render loops
-  // Objects compared by reference cause infinite loops when parent creates new refs
   const dateStartStr = dateRange?.start?.toISOString() ?? null;
   const dateEndStr = dateRange?.end?.toISOString() ?? null;
-  const additionalFiltersStr = JSON.stringify(additionalFilters ?? {});
 
-  // Memoize filter object using primitive dependencies only
   const filter = useMemo(() => {
     const baseFilter: Record<string, unknown> = additionalFilters ? { ...additionalFilters } : {};
-
     if (dateStartStr) baseFilter[`${dateField}@gte`] = dateStartStr;
     if (dateEndStr) baseFilter[`${dateField}@lte`] = dateEndStr;
     if (salesRepId) baseFilter.sales_id = salesRepId;
-
     return baseFilter;
-  }, [additionalFiltersStr, dateStartStr, dateEndStr, salesRepId, dateField, additionalFilters]);
+  }, [dateStartStr, dateEndStr, salesRepId, dateField, additionalFilters, secondarySalesSource]);
 
   useEffect(() => {
     let cancelled = false;
-    setIsLoading(true);
-    setError(null);
-
-    dataProvider
-      .getList<T>(resource, {
-        // Large pagination for report aggregation (PERF-001)
-        // Reports need complete datasets for grouping, totals, percentages, charts
-        // Current scale: 6 reps, 9 principals, ~500 opportunities - within limit
-        // Migration path at 1000+ records: Edge Function server-side aggregation
-        pagination: { page: 1, perPage: 1000 },
-        sort: { field: "id", order: "DESC" },
-        filter,
-      })
-      .then((result) => {
-        if (!cancelled) {
-          if (result.data.length >= 1000) {
-            logger.warn(`${resource}: Retrieved ${result.data.length} records (at pagination limit). Data may be truncated.`, { feature: "useReportData", resource });
-          }
-          setData(result.data);
-          setIsLoading(false);
-        }
-      })
-      .catch((err: Error) => {
-        if (!cancelled) {
-          setError(err);
-          setIsLoading(false);
-          logger.error(`Failed to fetch ${resource}`, err, { feature: "useReportData", resource });
-        }
-      });
-
+    dataProvider.getList<T>(resource, {
+      pagination: { page: 1, perPage: 1000 },
+      sort: { field: "id", order: "DESC" },
+      filter,
+    }).then(result => {
+      if (!cancelled) {
+        setData(result.data);
+        setTotal(result.total ?? result.data.length);
+        setIsTruncated((result.total ?? result.data.length) > 1000);
+      }
+    });
     return () => { cancelled = true; };
   }, [dataProvider, resource, filter, refetchTrigger]);
-
-  const refetch = useCallback(() => {
-    setRefetchTrigger((n) => n + 1);
-  }, []);
-
-  return { data, isLoading, error, refetch };
+  // ...
 }
 ```
 
-**When to use**: All report data fetching. Standardizes date filtering, sales rep filtering, and pagination limits across reports.
-
-**Key points:**
-- **Single Entry Point**: Uses `useDataProvider` (Constitution compliant, not direct Supabase)
-- **Primitive Dependencies**: `toISOString()` and `JSON.stringify()` prevent render loops
-- **Large Pagination**: 1000 records for client-side aggregation (scalable to Edge Functions)
-- **Fail-Fast**: No retry logic, errors surface immediately
-- **Cancellation**: `cancelled` flag prevents state updates on unmounted components
-- **Generic Constraint**: `T extends RaRecord` maintains type safety
-
-**Example:** `src/atomic-crm/reports/hooks/useReportData.ts`
+**Key design decisions**:
+- 1000-record pagination limit (current scale: ~500 opportunities, 6 reps, 9 principals)
+- `isTruncated` flag warns consumers when data exceeds limit
+- `cancelled` flag prevents state updates on unmounted components
+- Fail-fast: no retry logic, errors surface immediately
+- Migration path: Edge Function server-side aggregation when data exceeds 1000 records
 
 ---
 
-## Pattern B: Chart Theme System (CSS Variable Integration)
+## Pattern D: Lazy-Loaded Tab Content
 
-Design system integration for charts using semantic colors from CSS variables.
+### Problem
+
+Loading all four report tabs upfront increases initial bundle size and blocks rendering with data fetches for non-visible tabs.
+
+### Solution
+
+Each tab wrapper uses `React.lazy()` + `Suspense` with a `TabSkeleton` fallback. The tab content module is a default export, allowing dynamic import splitting.
+
+### Implementation
 
 ```tsx
-// hooks/useChartTheme.ts
-interface ChartTheme {
-  colors: {
-    primary: string;
-    brand700: string;
-    brand600: string;
-    success: string;
-    warning: string;
-    destructive: string;
-    muted: string;
-  };
-  font: { family: string; size: number };
-}
+// ReportsPage.tsx:22-25
+const OverviewTab = lazy(() => import("./tabs/OverviewTab"));
+const OpportunitiesTab = lazy(() => import("./tabs/OpportunitiesTab"));
+const WeeklyActivityTab = lazy(() => import("./tabs/WeeklyActivityTab"));
+const CampaignActivityTab = lazy(() => import("./tabs/CampaignActivityTab"));
 
+// ReportsPage.tsx:140-163
+<TabsContent value="overview" className="mt-0">
+  <Suspense fallback={<TabSkeleton />}>
+    <OverviewTab />
+  </Suspense>
+</TabsContent>
+```
+
+Tab wrappers (`tabs/*.tsx`) also use a secondary `React.lazy()` for the actual report component, providing tab-specific skeleton shapes:
+
+```tsx
+// tabs/OpportunitiesTab.tsx:4
+const OpportunitiesByPrincipalReport = lazy(() => import("../OpportunitiesByPrincipalReport"));
+```
+
+**Loading state hierarchy**: `TabSkeleton` (page-level) -> tab-specific skeleton -> `isFirstLoad` skeleton within each report component.
+
+---
+
+## Pattern E: Chart Theme System (useChartTheme)
+
+### Problem
+
+Chart.js renders to `<canvas>` and cannot use CSS `var()` references. Charts must read resolved CSS custom property values and update when the theme (light/dark) changes.
+
+### Solution
+
+`useChartTheme` reads computed CSS properties from `:root`, fails fast if any semantic variable is missing, and re-runs when `resolvedTheme` changes.
+
+### Implementation
+
+```tsx
+// hooks/useChartTheme.ts:89-143
 export function useChartTheme(): ChartTheme {
+  const { resolvedTheme } = useTheme();
   const [theme, setTheme] = useState<ChartTheme>(DEFAULT_THEME);
 
   useEffect(() => {
-    const root = document.documentElement;
-    const computedStyles = getComputedStyle(root);
+    const computedStyles = getComputedStyle(document.documentElement);
 
-    // Fail-fast error for missing CSS variables (Constitution #1 + #8)
     const getCssVar = (varName: string): string => {
       const value = computedStyles.getPropertyValue(`--${varName}`).trim();
-      if (!value) {
-        throw new Error(
-          `[ChartTheme] CSS custom property "--${varName}" is not defined. ` +
-          `Ensure design system is loaded before rendering charts. ` +
-          `Constitution #8: Never use hex fallback colors.`
-        );
-      }
+      if (!value) throwMissingCssVarError(`--${varName}`);
       return value;
     };
 
     setTheme({
       colors: {
         primary: getCssVar("primary"),
-        brand700: getCssVar("brand-700"),
-        brand600: getCssVar("brand-600"),
-        success: getCssVar("success"),
-        warning: getCssVar("warning"),
-        destructive: getCssVar("destructive"),
-        muted: getCssVar("muted"),
+        chart1: getCssVar("chart-1"),
+        chart2: getCssVar("chart-2"),
+        // ... 8 chart palette colors + semantic colors
       },
       font: {
         family: computedStyles.getPropertyValue("--font-sans").trim() || "system-ui",
         size: 12,
       },
     });
-  }, []);
+  }, [resolvedTheme]);
 
   return theme;
 }
 ```
 
-```tsx
-// charts/PipelineChart.tsx - Chart component using theme
-export function PipelineChart({ data }: PipelineChartProps) {
-  const { colors, font } = useChartTheme();
+Charts use shared utility functions from `charts/chartUtils.ts`:
+- `createBaseChartOptions()` -- responsive, no aspect ratio, standard padding
+- `createAxisConfig()` -- gridline colors, tick fonts from theme
+- `withOklchAlpha()` -- adds alpha channel to OKLCH color strings for canvas rendering
+- `truncateLabel()` -- shortens axis labels with ellipsis
 
-  const chartData = useMemo(() => ({
-    labels: data.map((d) => d.stage),
-    datasets: [{
-      id: "pipeline-stages",
-      data: data.map((d) => d.count),
-      backgroundColor: [
-        colors.primary,      // Semantic colors from design system
-        colors.brand700,
-        colors.brand600,
-        colors.success,
-        colors.warning,
-        colors.muted,
-      ],
-      borderWidth: 0,
-    }],
-  }), [data, colors]);
-
-  const options = useMemo(() => ({
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: {
-      legend: {
-        position: "right" as const,
-        labels: {
-          font: { family: font.family, size: 14 },
-          padding: 16,
-        },
-      },
-      tooltip: {
-        callbacks: {
-          label: (context) => {
-            const total = context.dataset.data.reduce((a, b) => a + b, 0);
-            const percentage = ((context.parsed / total) * 100).toFixed(1);
-            return `${context.label}: ${context.parsed} (${percentage}%)`;
-          },
-        },
-      },
-    },
-  }), [font]);
-
-  return (
-    <Doughnut
-      data={chartData}
-      options={options}
-      datasetIdKey="id"
-      aria-label={ariaLabel}
-      role="img"
-    />
-  );
-}
-```
-
-**When to use**: All Chart.js components. Ensures charts match design system colors and respond to theme changes.
-
-**Key points:**
-- **No Hex Codes**: Constitution #8 enforced via fail-fast error
-- **CSS Custom Properties**: Read from `:root` via `getComputedStyle`
-- **Fail-Fast**: Throws if CSS vars missing (prevents silent fallback)
-- **Memoization**: `useMemo` on `chartData` and `options` prevents recalculation
-- **A11y**: `aria-label` with data summary, `role="img"`
-- **Chart.js Setup**: Import `./chartSetup` registers required components globally
-
-**Example:** `src/atomic-crm/reports/hooks/useChartTheme.ts`
+**Chart.js registration**: `charts/chartSetup.ts` registers all required elements globally. Each chart file imports it as a side effect.
 
 ---
 
-## Pattern C: ChartWrapper with Loading Skeleton
+## Pattern F: Composite Data Hook (useCampaignActivityData)
 
-Consistent card layout for all charts with loading states.
+### Problem
 
-```tsx
-// components/ChartWrapper.tsx
-interface ChartWrapperProps {
-  title: string;
-  children: ReactNode;
-  isLoading?: boolean;
-}
+The Campaign Activity report combines multiple data sources: aggregated campaign stats (RPC), filtered activities (list), sales rep lookup, and conditional stale opportunities (RPC).
 
-export function ChartWrapper({ title, children, isLoading = false }: ChartWrapperProps) {
-  return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="text-base">{title}</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div className="relative h-[300px] w-full">
-          {isLoading ? <Skeleton className="w-full h-full" /> : children}
-        </div>
-      </CardContent>
-    </Card>
-  );
-}
-```
+### Solution
+
+`useCampaignActivityData` orchestrates multiple queries with React Query deduplication, conditional fetching, and efficient ID-based lookups.
+
+### Implementation
 
 ```tsx
-// Usage in OverviewTab.tsx
-<ChartWrapper title="Pipeline by Stage" isLoading={isLoading}>
-  <PipelineChart data={pipelineData} />
-</ChartWrapper>
-
-<ChartWrapper title="Activity Trends" isLoading={isLoading}>
-  <ActivityTrendChart data={trendData} />
-</ChartWrapper>
-```
-
-**When to use**: All chart components. Provides consistent height, title positioning, and loading states.
-
-**Key points:**
-- **Fixed Height**: `h-[300px]` ensures consistent layout during loading
-- **Semantic Spacing**: Uses design system card structure
-- **Loading State**: Skeleton matches chart container dimensions
-- **Responsive**: Chart.js `responsive: true` fills container
-- **Title Size**: `text-base` for hierarchy (reports use `text-3xl` for page title)
-
-**Example:** `src/atomic-crm/reports/components/ChartWrapper.tsx`
-
----
-
-## Pattern D: Composite Data Hook (useCampaignActivityData)
-
-Combines multiple data sources with efficient RPC calls for aggregated metrics.
-
-```tsx
-// CampaignActivity/useCampaignActivityData.ts
+// CampaignActivity/useCampaignActivityData.ts:42-166
 export function useCampaignActivityData(options: UseCampaignActivityDataOptions) {
-  const { selectedCampaign, dateRange, selectedActivityTypes, selectedSalesRep, showStaleLeads } = options;
   const dataProvider = useDataProvider() as ExtendedDataProvider;
 
-  // RPC call for aggregated stats (campaign list, sales rep counts, activity type counts)
-  const { data: reportStats, isPending: reportStatsPending } = useQuery({
+  // RPC for aggregated stats (campaign list, rep counts, type counts)
+  const { data: reportStats } = useQuery({
     queryKey: reportKeys.campaignStats(selectedCampaign),
-    queryFn: () =>
-      dataProvider.rpc<GetCampaignReportStatsResponse>("get_campaign_report_stats", {
-        p_campaign: selectedCampaign || null,
-      }),
-    staleTime: 5 * 60 * 1000, // 5 minutes (dashboard-level metrics)
+    queryFn: () => dataProvider.rpc<GetCampaignReportStatsResponse>(
+      "get_campaign_report_stats", { p_campaign: selectedCampaign || null }
+    ),
+    staleTime: 5 * 60 * 1000, // 5 minutes
   });
 
-  // Build filter with selected types (if not "all types" selected)
-  const activitiesFilter = useMemo(() => ({
-    "opportunities.campaign": selectedCampaign,
-    "opportunities.deleted_at@is": null,
-    ...(selectedActivityTypes.length > 0 &&
-      selectedActivityTypes.length < allActivityTypes.length && {
-        type: selectedActivityTypes,
-      }),
-    ...(selectedSalesRep !== null && { created_by: selectedSalesRep }),
-  }), [selectedCampaign, selectedActivityTypes, selectedSalesRep, allActivityTypes.length]);
+  // Activity details via generic hook
+  const { data: activities } = useReportData<CampaignActivity>("activities", {
+    dateRange: activitiesDateRange,
+    additionalFilters: activitiesFilter,
+  });
 
-  // Generic hook for activity details
-  const { data: activities, isLoading: activitiesLoading, error: activitiesError } =
-    useReportData<CampaignActivity>("activities", {
-      dateRange: activitiesDateRange,
-      additionalFilters: activitiesFilter,
-      dateField: "created_at",
-    });
-
-  // Fetch sales reps ONLY for owner IDs in activities (reduces query size)
+  // Sales reps -- only fetch IDs present in activities
   const ownerIds = useMemo(
-    () => Array.from(new Set((activities || []).map((a) => a.created_by).filter(Boolean))),
+    () => Array.from(new Set(activities.map(a => a.created_by).filter(Boolean))),
     [activities]
   );
-
-  const { data: salesReps = [] } = useGetList<Sale>("sales", {
+  const { data: salesReps } = useGetList<Sale>("sales", {
     filter: ownerIds.length > 0 ? { id: ownerIds } : undefined,
-    pagination: { page: 1, perPage: 100 },
   });
 
-  // Build salesMap for O(1) lookup
-  const salesMap = useMemo(
-    () => new Map((salesReps || []).map((s) => [s.id, `${s.first_name} ${s.last_name}`])),
-    [salesReps]
-  );
-
-  // RPC call for stale opportunities (conditional on flag)
-  const { data: staleOpportunities = [], isPending: staleOpportunitiesLoading } = useQuery({
+  // Stale opportunities -- conditional on showStaleLeads flag
+  const { data: staleOpportunities } = useQuery({
     queryKey: reportKeys.staleOpportunities(selectedCampaign, dateRange, selectedSalesRep),
-    queryFn: () =>
-      dataProvider.rpc<GetStaleOpportunitiesResponse>("get_stale_opportunities", {
-        p_campaign: selectedCampaign,
-        p_start_date: dateRange?.start ? new Date(dateRange.start).toISOString() : null,
-        p_end_date: dateRange?.end ? new Date(dateRange.end).toISOString() : null,
-        p_sales_rep_id: selectedSalesRep,
-      }),
+    queryFn: () => dataProvider.rpc<GetStaleOpportunitiesResponse>(
+      "get_stale_opportunities", { /* params */ }
+    ),
     enabled: showStaleLeads && !!selectedCampaign,
-    staleTime: 2 * 60 * 1000, // Shorter stale time for volatile data
+    staleTime: 2 * 60 * 1000, // 2 minutes (volatile data)
   });
-
-  return {
-    activities,
-    activitiesError,
-    salesMap,
-    campaignOptions: reportStats?.campaign_options ?? [],
-    salesRepOptions: reportStats?.sales_rep_options ?? [],
-    activityTypeCounts: new Map(Object.entries(reportStats?.activity_type_counts ?? {})),
-    totalCampaignActivitiesCount,
-    totalCampaignOpportunities,
-    isLoadingCampaigns: reportStatsPending,
-    isLoadingActivities: activitiesLoading,
-    staleOpportunities,
-    isLoadingStaleOpportunities: staleOpportunitiesLoading,
-  };
 }
 ```
 
-**When to use**: Complex reports combining multiple data sources (RPC for aggregates + detail queries). Reduces round trips via RPC calls.
-
-**Key points:**
-- **RPC for Aggregates**: `get_campaign_report_stats` returns counts in single call
-- **Conditional Queries**: `enabled` flag prevents unnecessary stale opportunity RPC
-- **Owner ID Filtering**: Only fetch sales reps for IDs present in activities
-- **O(1) Lookup**: `salesMap` (Map) for fast name resolution
-- **Memoized Filters**: Prevents recalculating filter object on every render
-- **Stale Time Strategy**: 5 min for stats, 2 min for volatile stale data
-
-**Example:** `src/atomic-crm/reports/CampaignActivity/useCampaignActivityData.ts`
+**Query deduplication**: `useCampaignFilterOptions` shares the same `reportKeys.campaignStats` query key, so the RPC is called once even when both the parameter bar and tab content are mounted.
 
 ---
 
-## Pattern E: Client-Side Metrics Aggregation (useCampaignActivityMetrics)
+## Pattern G: CSV Export with Sanitization
 
-Transforms raw data into grouped metrics with business logic (staleness calculation).
+### Problem
 
-```tsx
-// CampaignActivity/useCampaignActivityMetrics.ts
-export function useCampaignActivityMetrics(
-  activities: CampaignActivity[],
-  allOpportunities: CampaignOpportunity[],
-  allCampaignActivities: CampaignActivity[],
-  selectedCampaign: string,
-  showStaleLeads: boolean
-) {
-  // Group activities by type with org-level analysis
-  const activityGroups = useMemo(() => {
-    if (activities.length === 0) return [];
+Reports need CSV export with proper date formatting and CSV formula injection prevention.
 
-    const grouped = new Map<string, CampaignActivityGroup>();
-    const totalActivities = activities.length;
+### Solution
 
-    activities.forEach((activity) => {
-      const type = activity.type || "Unknown";
+Export hooks use `sanitizeCsvValue()` from `csvUploadValidator` on all user-generated content, `jsonexport` for CSV generation, and React Admin's `downloadCSV` for file download.
 
-      if (!grouped.has(type)) {
-        grouped.set(type, {
-          type,
-          activities: [],
-          totalCount: 0,
-          uniqueOrgs: 0,
-          percentage: 0,
-          mostActiveOrg: "",
-          mostActiveCount: 0,
-        });
-      }
+### Implementation
 
-      const group = grouped.get(type)!;
-      group.activities.push(activity);
-      group.totalCount += 1;
-    });
+Three export patterns exist in the codebase:
 
-    // Calculate org-level metrics per activity type
-    const result = Array.from(grouped.values()).map((group) => {
-      const orgCounts = new Map<number, { name: string; count: number }>();
+| Report | Hook/Function | Filename Pattern |
+|--------|---------------|------------------|
+| Campaign Activities | `useCampaignActivityExport.exportActivities` | `campaign-activity-{slug}-{date}` |
+| Campaign Stale Leads | `useCampaignActivityExport.exportStaleLeads` | `campaign-stale-leads-{slug}-{date}` |
+| Opportunities | `exportOpportunitiesReport()` | `opportunities-by-principal-{date}` |
+| Weekly Activity | inline in `WeeklyActivitySummary` | `weekly-activity-{start}-to-{end}` |
 
-      group.activities.forEach((activity) => {
-        const orgId = activity.organization_id;
-        if (!orgCounts.has(orgId)) {
-          orgCounts.set(orgId, {
-            name: activity.organization_name || `Organization ${orgId}`,
-            count: 0,
-          });
-        }
-        orgCounts.get(orgId)!.count += 1;
-      });
-
-      const uniqueOrgs = orgCounts.size;
-      const sortedOrgs = Array.from(orgCounts.entries()).sort((a, b) => b[1].count - a[1].count);
-      const [, mostActiveData] = sortedOrgs[0] || [null, { name: "N/A", count: 0 }];
-
-      return {
-        ...group,
-        uniqueOrgs,
-        percentage: Math.round((group.totalCount / totalActivities) * 100),
-        mostActiveOrg: mostActiveData.name,
-        mostActiveCount: mostActiveData.count,
-      };
-    });
-
-    return result.sort((a, b) => b.totalCount - a.totalCount);
-  }, [activities]);
-
-  // Stale opportunities calculation (per-stage thresholds)
-  const staleOpportunities = useMemo(() => {
-    if (!showStaleLeads || !allOpportunities) return [];
-
-    const opportunitiesForCampaign = allOpportunities.filter(
-      (o) => o.campaign === selectedCampaign
-    );
-    const now = new Date();
-
-    return opportunitiesForCampaign
-      .filter((opp) => {
-        if (!opp.stage) {
-          logger.error(`[DATA INTEGRITY] Opportunity ID ${opp.id} has no stage. Excluding from metrics.`, undefined, { feature: "CampaignActivityMetrics", opportunityId: opp.id });
-          return false;
-        }
-        return true;
-      })
-      .map((opp) => {
-        const lastActivityDate = getLastActivityForOpportunity(opp.id, allCampaignActivities);
-        const lastActivityDateObj = lastActivityDate ? parseDateSafely(lastActivityDate) : null;
-        const daysInactive = lastActivityDateObj
-          ? Math.floor((now.getTime() - lastActivityDateObj.getTime()) / (1000 * 60 * 60 * 24))
-          : 999999; // Never contacted
-
-        const stage = opp.stage as string;
-        const stageThreshold = getStaleThreshold(stage);
-
-        return {
-          ...opp,
-          lastActivityDate,
-          daysInactive,
-          stageThreshold,
-          isStale: isOpportunityStale(stage, lastActivityDate, now),
-        };
-      })
-      .filter((opp) => opp.isStale && opp.stageThreshold !== undefined)
-      .sort((a, b) => {
-        const aOverage = a.daysInactive - (a.stageThreshold || 0);
-        const bOverage = b.daysInactive - (b.staleThreshold || 0);
-        return bOverage - aOverage; // Most overdue first
-      });
-  }, [showStaleLeads, allOpportunities, selectedCampaign, allCampaignActivities]);
-
-  // Summary metrics
-  const totalActivities = activities.length;
-  const uniqueOrgs = new Set(activities.map((a) => a.organization_id)).size;
-  const totalOpportunities = allOpportunities.filter((opp) => opp.campaign === selectedCampaign).length || 1;
-  const coverageRate = totalOpportunities > 0 ? Math.round((uniqueOrgs / totalOpportunities) * 100) : 0;
-  const avgActivitiesPerLead = totalOpportunities > 0 ? (totalActivities / totalOpportunities).toFixed(1) : "0.0";
-
-  return {
-    activityGroups,
-    staleOpportunities,
-    totalActivities,
-    uniqueOrgs,
-    coverageRate,
-    avgActivitiesPerLead,
-  };
-}
-```
-
-**When to use**: Reports requiring client-side grouping, percentages, or business rule calculations (staleness thresholds vary by stage).
-
-**Key points:**
-- **Map-Based Grouping**: O(n) grouping via `Map<type, group>`
-- **Nested Aggregation**: Org counts within activity type groups
-- **Business Logic**: Per-stage staleness thresholds (`getStaleThreshold`)
-- **Data Integrity**: Logs and excludes records with missing required fields
-- **Sorting**: Most active types first, most overdue opportunities first
-- **Defensive**: `|| 1` prevents division by zero
-
-**Example:** `src/atomic-crm/reports/CampaignActivity/useCampaignActivityMetrics.ts`
+All exports follow the same contract:
+1. Guard empty data with early return + user notification
+2. Map records to flat export rows with `sanitizeCsvValue()` on strings
+3. Format dates as `yyyy-MM-dd`
+4. Slugify names for filenames (lowercase, hyphens, no special chars)
+5. `jsonExport` callback with error logging + `downloadCSV`
 
 ---
 
-## Pattern F: CSV Export with Sanitization (useCampaignActivityExport)
+## Pattern H: ReportPageShell Layout
 
-Formatted CSV export with proper date handling and injection prevention.
+### Problem
 
-```tsx
-// CampaignActivity/useCampaignActivityExport.ts
-export function useCampaignActivityExport(selectedCampaign: string, salesMap: Map<number, string>) {
-  const notify = useNotify();
+Reports need consistent page structure with breadcrumbs, title, section rule, a slot for the parameter bar, and actions.
 
-  const exportActivities = useCallback(
-    (activityGroups: CampaignActivityGroup[], activities: CampaignActivity[]) => {
-      if (activityGroups.length === 0 || activities.length === 0) {
-        notify("No activities to export", { type: "warning" });
-        return;
-      }
+### Solution
 
-      // Flatten groups to rows with calculated fields
-      const exportData = activityGroups.flatMap((group) =>
-        group.activities.map((activity) => {
-          const createdAtDate = parseDateSafely(activity.created_at);
-          const daysSinceActivity = createdAtDate
-            ? Math.floor((Date.now() - createdAtDate.getTime()) / (1000 * 60 * 60 * 24))
-            : 0;
+`ReportPageShell` provides a composable layout with named slots for `filterBar`, `actions`, and `children`.
 
-          return {
-            campaign: sanitizeCsvValue(selectedCampaign),
-            activity_type: sanitizeCsvValue(activity.type),
-            activity_category: sanitizeCsvValue(activity.type),
-            subject: sanitizeCsvValue(activity.subject),
-            organization: sanitizeCsvValue(activity.organization_name),
-            contact_name: sanitizeCsvValue(activity.contact_name || ""),
-            date: createdAtDate ? format(createdAtDate, "yyyy-MM-dd") : "",
-            sales_rep: sanitizeCsvValue(salesMap.get(activity.created_by!) || "Unassigned"),
-            days_since_activity: daysSinceActivity,
-            opportunity_name: sanitizeCsvValue(activity.opportunity_name || ""),
-          };
-        })
-      );
-
-      jsonExport(exportData, (err, csv) => {
-        if (err) {
-          logger.error("Export activities error", err, { feature: "CampaignActivityExport" });
-          notify("Export failed. Please try again.", { type: "error" });
-          return;
-        }
-
-        // Slugify campaign name for filename
-        const campaignSlug = selectedCampaign
-          .toLowerCase()
-          .replace(/\s+/g, "-")
-          .replace(/[^\w-]/g, "");
-        const dateStr = format(new Date(), "yyyy-MM-dd");
-        downloadCSV(csv, `campaign-activity-${campaignSlug}-${dateStr}`);
-        notify(`${exportData.length} activities exported successfully`, { type: "success" });
-      });
-    },
-    [selectedCampaign, salesMap, notify]
-  );
-
-  const exportStaleLeads = useCallback(
-    (staleOpportunities: StaleOpportunity[]) => {
-      if (staleOpportunities.length === 0) {
-        notify("No stale leads to export", { type: "warning" });
-        return;
-      }
-
-      const exportData = staleOpportunities.map((opp) => {
-        const lastActivityDateObj = opp.lastActivityDate ? parseDateSafely(opp.lastActivityDate) : null;
-        return {
-          campaign: sanitizeCsvValue(selectedCampaign),
-          opportunity_name: sanitizeCsvValue(opp.name),
-          organization: sanitizeCsvValue(opp.customer_organization_name || ""),
-          last_activity_date: lastActivityDateObj ? format(lastActivityDateObj, "yyyy-MM-dd") : "Never",
-          days_inactive: opp.daysInactive >= 999999 ? "Never contacted" : opp.daysInactive.toString(),
-          notes: "", // Empty column for manual note-taking
-        };
-      });
-
-      // Same export pattern
-    },
-    [selectedCampaign, notify]
-  );
-
-  return { exportStaleLeads, exportActivities };
-}
-```
-
-**When to use**: All CSV export operations. Prevents formula injection and ensures consistent date formatting.
-
-**Key points:**
-- **Sanitization**: `sanitizeCsvValue` from `csvUploadValidator` prevents `=`, `+`, `-` injection
-- **Date Formatting**: `format(date, "yyyy-MM-dd")` for ISO dates, not timestamps
-- **Slugification**: Campaign name → valid filename (lowercase, hyphens, no special chars)
-- **Flatmap**: Nested groups → flat rows for CSV export
-- **Calculated Fields**: `days_since_activity`, `days_inactive` computed at export time
-- **Empty Notes Column**: Placeholder for manual follow-up notes
-- **Error Handling**: Fail-fast with user notification, structured logging
-
-**Example:** `src/atomic-crm/reports/CampaignActivity/useCampaignActivityExport.ts`
-
----
-
-## Pattern G: Sidebar + Tab Layout (FilterSidebar | Tabs > AppliedFiltersBar > Content)
-
-Reports use `StandardListLayout` with a collapsible left sidebar for filters, matching the pattern used by all other list pages (Contacts, Organizations, Opportunities).
+### Implementation
 
 ```tsx
-// ReportsPage.tsx — page-level structure
-<ReportPageShell title="Reports" breadcrumbs={...} actions={<CopyLinkButton />}>
-  <StandardListLayout
-    resource="reports"
-    filterComponent={<ReportFilterSidebar activeTab={activeTab} />}
-    wrapMainInCard={false}
-    storageKey="crm-report-sidebar-collapsed"
-  >
-    <Tabs value={activeTab} onValueChange={handleTabChange}>
-      <TabsList>...</TabsList>
-      <TabsContent>...</TabsContent>
-    </Tabs>
-  </StandardListLayout>
-</ReportPageShell>
-
-// Each tab's content area retains AppliedFiltersBar + Export CSV + report content
-<>
-  <AppliedFiltersBar
-    filters={appliedFilters}
-    onResetAll={resetFilters}
-    hasActiveFilters={hasActiveFilters}
-  />
-  <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
-    <KPICard ... />
-  </div>
-</>
-```
-
-**When to use**: All report tabs. Sidebar handles filter controls; tab content handles data display.
-
-**Key points:**
-- **Sidebar per tab**: `ReportFilterSidebar` switches content based on `activeTab` — each tab has its own sidebar component using `FilterCategory` sections
-- **Single URL-seeding owner**: Only tab content calls `useReportFilterState` (URL seeding). Sidebar uses `useStore` directly to avoid double-seeding
-- **Filter chips**: `AppliedFiltersBar` remains in each tab's content area with individual and bulk removal
-- **Export CSV**: Inline button in each tab's content area (moved from deleted `TabFilterBar`)
-- **Reset button**: "Clear filters" button at the bottom of the sidebar when any filter deviates from defaults
-- **Separate localStorage key**: `"crm-report-sidebar-collapsed"` decouples sidebar state from list pages
-
----
-
-## Pattern H: ReportPageShell with Breadcrumbs
-
-Enhanced layout with breadcrumb navigation and design system spacing tokens.
-
-```tsx
-// components/ReportPageShell.tsx
-interface Breadcrumb {
-  label: string;
-  href?: string; // Optional for current page
-}
-
-interface ReportPageShellProps {
-  title: string;
-  breadcrumbs: Breadcrumb[];
-  actions?: ReactNode;
-  children: ReactNode;
-}
-
-export function ReportPageShell({ title, breadcrumbs, actions, children }: ReportPageShellProps) {
+// components/ReportPageShell.tsx:19-59
+export function ReportPageShell({ title, breadcrumbs, actions, filterBar, children }: ReportPageShellProps) {
   return (
-    <div className="p-content lg:p-widget space-y-section">
-      {breadcrumbs.length > 0 && (
-        <nav aria-label="Breadcrumb" className="flex items-center gap-1 text-sm">
-          {breadcrumbs.map((crumb, index) => (
-            <span key={crumb.label} className="flex items-center gap-1">
-              {index > 0 && (
-                <ChevronRight className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
-              )}
-              {crumb.href ? (
-                <Link
-                  to={crumb.href}
-                  className="text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  {crumb.label}
-                </Link>
-              ) : (
-                <span className="text-foreground font-medium">{crumb.label}</span>
-              )}
-            </span>
-          ))}
-        </nav>
-      )}
+    <div className="paper-dashboard-surface p-content md:p-widget space-y-section rounded-xl">
+      <Breadcrumb>
+        <BreadcrumbItem><Link to="/">Home</Link></BreadcrumbItem>
+        {breadcrumbs.map(crumb => /* ... */)}
+      </Breadcrumb>
 
       <div className="flex items-center justify-between gap-content">
-        <h1 className="text-3xl font-bold">{title}</h1>
+        <h1 className="text-2xl md:text-3xl font-semibold ...">{title}</h1>
         {actions && <div className="flex items-center gap-compact">{actions}</div>}
       </div>
 
-      <div className="space-y-section">{children}</div>
+      <div className="paper-section-rule" aria-hidden="true">Reports &amp; Analytics</div>
+
+      {filterBar && <div className="py-2">{filterBar}</div>}
+
+      <div className="space-y-widget">{children}</div>
     </div>
   );
 }
 ```
 
-```tsx
-// Usage
-<ReportPageShell
-  title="Opportunities by Principal"
-  breadcrumbs={[
-    { label: "Reports", href: "/reports" },
-    { label: "Opportunities" }, // Current page - no href
-  ]}
-  actions={<Button onClick={handleExport}>Export</Button>}
->
-  <FilterToolbar />
-  <OpportunitiesTable />
-</ReportPageShell>
-```
-
-**When to use**: Report pages requiring breadcrumb navigation or design system spacing tokens.
-
-**Key points:**
-- **Design System Spacing**: `p-content`, `p-widget`, `space-y-section`, `gap-content`, `gap-compact`
-- **Breadcrumb A11y**: `aria-label="Breadcrumb"`, `aria-hidden` on separator icons
-- **Current Page**: No `href` on current page breadcrumb, styled with `font-medium`
-- **Responsive Padding**: `p-content` on mobile, `lg:p-widget` on desktop
-- **Semantic Links**: React Router `Link` with hover states
-
-**Example:** `src/atomic-crm/reports/components/ReportPageShell.tsx`
+**Visual stacking order**: Breadcrumbs -> Title + Actions -> Section Rule -> Filter Bar -> Tab Content
 
 ---
 
-## Pattern Comparison Tables
+## Pattern I: Collapsible Group Cards
 
-### Data Fetching Approaches
+### Problem
 
-| Approach | Pattern | When to Use | Stale Time |
-|----------|---------|-------------|------------|
-| **Generic Hook** | A (useReportData) | Standard list fetching with filters | 5 min |
-| **Composite Hook** | D (useCampaignActivityData) | Multiple sources + RPC aggregates | 2-5 min |
-| **Client Aggregation** | E (useCampaignActivityMetrics) | Grouping, percentages, business rules | N/A (derived) |
-| **Direct RPC** | useQuery + dataProvider.rpc | Server-side aggregation only | 2-5 min |
+Reports with grouped data (by principal, by rep, by activity type) need expandable/collapsible sections with auto-expansion of top items on initial load.
 
-### Chart Types & Use Cases
+### Solution
 
-| Chart Type | Pattern | Data Shape | Best For |
-|------------|---------|------------|----------|
-| **Doughnut** | PipelineChart | `{ stage: string, count: number }[]` | Stage distribution, percentages |
-| **Line** | ActivityTrendChart | `{ date: string, count: number }[]` | Time series, trends over time |
-| **Bar** | RepPerformanceChart | `{ name: string, value: number }[]` | Comparisons, rankings |
-| **Horizontal Bar** | TopPrincipalsChart | `{ name: string, value: number }[]` | Long labels, top N lists |
+A `useRef`-guarded one-time effect auto-expands the top N groups on first data load. `Set<string>` tracks expanded state. Each card header is a `<button>` with `aria-expanded` and `aria-controls`.
 
-### Export Strategies
+### Implementation
 
-| Aspect | Activities Export | Stale Leads Export |
-|--------|------------------|-------------------|
-| **Data Source** | Filtered activities | Calculated stale opportunities |
-| **Flattening** | `flatMap` (groups → rows) | `map` (already flat) |
-| **Calculated Fields** | `days_since_activity` | `days_inactive`, "Never contacted" |
-| **Filename Pattern** | `campaign-activity-{slug}-{date}` | `campaign-stale-leads-{slug}-{date}` |
-| **Empty Columns** | None | `notes` (for manual follow-up) |
+```tsx
+// OpportunitiesByPrincipalReport.tsx:157-165
+const hasInitializedRef = useRef(false);
+useEffect(() => {
+  if (!hasInitializedRef.current && principalGroups.length > 0) {
+    hasInitializedRef.current = true;
+    const initialExpanded = new Set(principalGroups.slice(0, 3).map(g => g.principalId || "null"));
+    setExpandedPrincipals(initialExpanded);
+  }
+}, [principalGroups]);
+```
+
+Used in three places:
+- `OpportunitiesByPrincipalReport` -- top 3 principals auto-expanded
+- `WeeklyActivitySummary` -- top 2 reps auto-expanded
+- `CampaignActivityReport` -- top 3 activity types auto-expanded
+
+---
+
+## Pattern J: Shareable URL Generation
+
+### Problem
+
+Users need to share report views with specific filter configurations via URL.
+
+### Solution
+
+`buildShareUrl()` serializes only non-default filter values into a `?tab=X&filters=JSON` URL. On the receiving end, `useReportFilterState` detects the `filters` param, seeds the store, and clears it from the URL.
+
+### Implementation
+
+```tsx
+// hooks/useReportFilterState.ts:142-171
+export function buildShareUrl<T extends FilterState>(tab: string, filters: T, defaults: T): string {
+  const base = `${window.location.origin}${window.location.pathname}`;
+  const params = new URLSearchParams();
+  params.set("tab", tab);
+
+  // Only include non-default values to keep URL clean
+  const nonDefaults: Record<string, unknown> = {};
+  for (const key of Object.keys(filters)) {
+    if (JSON.stringify(filters[key]) !== JSON.stringify(defaults[key])) {
+      nonDefaults[key] = filters[key];
+    }
+  }
+
+  if (Object.keys(nonDefaults).length > 0) {
+    params.set("filters", encodeURIComponent(JSON.stringify(nonDefaults)));
+  }
+
+  return `${base}?${params.toString()}`;
+}
+```
+
+The "Copy Link" button in `ReportsPage` reads all four tab stores and calls `buildShareUrl` for the active tab.
+
+---
+
+## Pattern K: Date Preset Resolution
+
+### Problem
+
+The Overview tab stores a preset name (e.g., `"last30"`) but data hooks need concrete `Date` objects.
+
+### Solution
+
+`resolvePreset()` maps preset strings to `{ start: Date, end: Date }` using `date-fns`. Returns `null` for unknown presets (meaning "no date filtering").
+
+### Implementation
+
+```tsx
+// utils/resolvePreset.ts:31-60
+export function resolvePreset(preset: string): ResolvedDateRange | null {
+  const now = new Date();
+  switch (preset) {
+    case "today":     return { start: startOfDay(now), end: now };
+    case "yesterday": return { start: startOfDay(subDays(now, 1)), end: endOfDay(subDays(now, 1)) };
+    case "last7":     return { start: subDays(now, 7), end: now };
+    case "last30":    return { start: subDays(now, 30), end: now };
+    case "thisMonth": return { start: startOfMonth(now), end: now };
+    case "lastMonth": return { start: startOfMonth(subMonths(now, 1)), end: endOfMonth(subMonths(now, 1)) };
+    // ...
+    default:          return null;
+  }
+}
+```
+
+**Preset catalogs** (constants.ts):
+- `DATE_PRESETS`: today, yesterday, last7, last30, thisMonth, lastMonth (Overview)
+- `CAMPAIGN_DATE_PRESETS`: allTime, last7, last30, thisMonth, custom (Campaign)
+
+---
+
+## Filter Component Library
+
+### CheckboxPopoverFilter
+
+Multi-select filter rendered as a popover with checkboxes. Trigger shows "N selected" / "All" / "None" / single item label.
+
+```
+components/CheckboxPopoverFilter.tsx
+Props: label, options[], selected[], onChange, showSelectAll?, triggerWidth?, ariaLabel?
+Used by: OpportunitiesParameterBar (Stage), CampaignParameterBar (Activity Types)
+```
+
+### DateRangePopoverFilter
+
+Date range picker collapsed into a single trigger. Shows "All time" when both dates null, or "Mar 01 - Mar 31" formatted range.
+
+```
+components/DateRangePopoverFilter.tsx
+Props: label, startDate, endDate, onStartChange, onEndChange, triggerWidth?, startId?, endId?
+Used by: OpportunitiesParameterBar (Date Range), CampaignParameterBar (Custom Range)
+```
+
+### FilterChip
+
+Removable tag showing an active filter with keyboard-accessible remove button.
+
+```
+components/FilterChip.tsx
+Props: label, value, onRemove
+Uses: role="listitem", 44px touch targets, keyboard Enter/Space support
+```
+
+### KeyInsightsStrip
+
+Auto-generated contextual summaries displayed above KPI cards. Derives up to 3 insights from pipeline data, rep performance, and stale deal counts.
+
+```
+components/KeyInsightsStrip.tsx
+Props: pipelineData, repPerformanceData, staleDeals, isLoading
+Insights: dominant pipeline stage, most active rep, stale deal warning
+Used by: OverviewTab
+```
+
+### KPIDrillDown
+
+Sheet (slide-over) panel for detailed KPI exploration. Uses Radix Sheet component with proper `SheetTitle` and `SheetDescription` landmarks.
+
+```
+components/KPIDrillDown.tsx
+Props: open, onClose, title, description?, children
+```
+
+### ChartWrapper
+
+Consistent card layout for charts with loading skeleton states and responsive height.
+
+```
+components/ChartWrapper.tsx
+Props: title, children, isLoading?, className?
+Height: h-[260px] md:h-[280px] lg:h-[300px]
+Used by: OverviewTab (4 charts)
+```
+
+---
+
+## Chart Types
+
+| Component | Type | Library | Data Shape | Used In |
+|-----------|------|---------|------------|---------|
+| PipelineChart | Horizontal Bar | react-chartjs-2 `<Bar>` | `{ stage, count }[]` | OverviewTab |
+| ActivityTrendChart | Line (filled) | react-chartjs-2 `<Line>` | `{ date, count }[]` | OverviewTab |
+| TopPrincipalsChart | Horizontal Bar | react-chartjs-2 `<Bar>` | `{ name, count, id? }[]` | OverviewTab |
+| RepPerformanceChart | Grouped Bar | react-chartjs-2 `<Bar>` | `{ name, activities, opportunities, id? }[]` | OverviewTab |
+
+All charts:
+- Use `useChartTheme()` for colors and fonts
+- Memoize `chartData` and `options` via `useMemo`
+- Include `aria-label` with data summary and `role="img"`
+- Guard empty data with a centered "No data available" message
+- Support click handlers for drilldown navigation
+- Show drilldown links below the chart (max 5-7 items)
+- Import `./chartSetup` for Chart.js component registration
 
 ---
 
 ## Anti-Patterns
 
-### ❌ Hardcoded Chart Colors
+### Do not use useReportFilterState in ReportParameterBar
 
 ```tsx
-// WRONG: Hex codes violate Constitution #8
-const chartData = {
-  datasets: [{
-    backgroundColor: [
-      "#3B82F6", // Blue
-      "#EF4444", // Red
-      "#10B981", // Green
-    ],
-  }],
-};
+// WRONG: Double URL-seeding when both parameter bar and tab content use this
+const [state, update] = useReportFilterState("reports.overview", OVERVIEW_DEFAULTS);
 
-// CORRECT: Use semantic colors from theme hook
-const { colors } = useChartTheme();
-const chartData = {
-  datasets: [{
-    backgroundColor: [
-      colors.primary,
-      colors.destructive,
-      colors.success,
-    ],
-  }],
-};
+// CORRECT: Parameter bar uses useStore directly
+const [state, setState] = useStore<OverviewFilterState>("reports.overview", OVERVIEW_DEFAULTS);
 ```
 
-**Why it matters:** Hardcoded colors break when design system changes (light/dark mode, rebrand). Semantic colors update automatically.
+**Why**: `useReportFilterState` seeds from URL params on mount. If both the parameter bar and the tab content call it, the URL params get consumed twice, potentially causing race conditions.
 
-### ❌ Direct Supabase RPC Calls
+### Do not use object references as useMemo/useEffect dependencies
 
 ```tsx
-// WRONG: Bypasses data provider validation
-import { supabase } from "@/lib/supabase";
+// WRONG: dateRange is a new object on every render -> infinite re-fetch loop
+const filter = useMemo(() => ({ start: dateRange.start }), [dateRange]);
 
-const { data } = await supabase.rpc("get_campaign_stats", { p_campaign: "Q1 2025" });
+// CORRECT: Extract primitives
+const startStr = dateRange?.start?.toISOString() ?? null;
+const filter = useMemo(() => ({ start: startStr }), [startStr]);
+```
+
+**Why**: Objects compared by reference. Parent re-renders create new object references, triggering infinite re-fetches in `useReportData`.
+
+### Do not use hardcoded colors in charts
+
+```tsx
+// WRONG: Hex codes violate semantic color rules
+backgroundColor: ["#3B82F6", "#EF4444"]
+
+// CORRECT: Use chart palette from theme
+const { colors } = useChartTheme();
+backgroundColor: [colors.chart1, colors.chart2]
+```
+
+**Why**: Hardcoded colors break light/dark mode switching and design system updates.
+
+### Do not bypass the data provider for RPC calls
+
+```tsx
+// WRONG: Direct Supabase import
+import { supabase } from "@/lib/supabase";
+const { data } = await supabase.rpc("get_campaign_report_stats", { ... });
 
 // CORRECT: Use data provider extension
 const dataProvider = useDataProvider() as ExtendedDataProvider;
-const data = await dataProvider.rpc<GetCampaignStatsResponse>(
-  "get_campaign_stats",
-  { p_campaign: "Q1 2025" }
-);
+const data = await dataProvider.rpc<GetCampaignReportStatsResponse>("get_campaign_report_stats", { ... });
 ```
 
-**Why it matters:** Direct calls skip Zod validation at RPC boundary, error logging, and TypeScript type inference.
+**Why**: Direct calls skip Zod validation, error logging, and type inference at the RPC boundary.
 
-### ❌ Object Dependencies in useMemo/useEffect
-
-```tsx
-// WRONG: dateRange object reference changes every render → infinite loop
-const filter = useMemo(() => ({
-  start: dateRange?.start,
-  end: dateRange?.end,
-}), [dateRange]); // ⚠️ New object reference every time parent renders
-
-// CORRECT: Extract primitive values as dependencies
-const startStr = dateRange?.start?.toISOString() ?? null;
-const endStr = dateRange?.end?.toISOString() ?? null;
-
-const filter = useMemo(() => ({
-  start: startStr,
-  end: endStr,
-}), [startStr, endStr]); // ✅ Primitive strings - stable references
-```
-
-**Why it matters:** Objects compared by reference. Parent creating new `dateRange` objects on each render causes infinite re-fetching.
-
-### ❌ Uncontrolled Export Data
+### Do not export unsanitized CSV data
 
 ```tsx
-// WRONG: Exporting raw database values with potential injection
-const exportData = activities.map((a) => ({
-  subject: a.subject, // Could contain "=SUM(A1:A10)" formula injection
-  notes: a.notes,
-}));
+// WRONG: Formula injection risk
+exportData.push({ subject: activity.subject });
 
 // CORRECT: Sanitize all user-generated content
-const exportData = activities.map((a) => ({
-  subject: sanitizeCsvValue(a.subject),
-  notes: sanitizeCsvValue(a.notes),
-}));
+exportData.push({ subject: sanitizeCsvValue(activity.subject) });
 ```
 
-**Why it matters:** CSV formula injection allows malicious users to execute code when file opened in Excel. `sanitizeCsvValue` strips `=`, `+`, `-` prefixes.
+**Why**: CSV formula injection (`=SUM(...)`, `+CMD(...)`) allows code execution when opened in Excel.
 
-### ❌ Missing Chart Empty States
+### Do not render charts without empty state guards
 
 ```tsx
-// WRONG: Chart crashes when data is empty array
-<Doughnut data={chartData} options={options} />
+// WRONG: Chart.js errors or NaN% tooltips on empty data
+return <Bar data={chartData} options={options} />;
 
-// CORRECT: Guard empty state with message
+// CORRECT: Guard empty state
 if (data.length === 0) {
-  return (
-    <div className="flex items-center justify-center h-full text-muted-foreground">
-      No pipeline data available
-    </div>
-  );
+  return <div className="flex items-center justify-center h-full text-muted-foreground">
+    No data available
+  </div>;
 }
-
-return <Doughnut data={chartData} options={options} />;
+return <Bar data={chartData} options={options} />;
 ```
 
-**Why it matters:** Empty datasets cause Chart.js errors or render 100% slices with "NaN%" tooltips. Explicit empty state improves UX.
+---
+
+## File Reference
+
+### Entry Point
+- `ReportsPage.tsx` -- Tab routing, lazy imports, share URL, cleanup migration
+
+### Layout & Shell
+- `components/ReportPageShell.tsx` -- Breadcrumb + title + filterBar slot + children
+- `components/ReportParameterBar.tsx` -- Horizontal parameter bar (switches by tab)
+
+### Tab Wrappers
+- `tabs/OverviewTab.tsx` -- KPIs, charts, insights (default export)
+- `tabs/OpportunitiesTab.tsx` -- Lazy wrapper for OpportunitiesByPrincipalReport
+- `tabs/WeeklyActivityTab.tsx` -- Lazy wrapper for WeeklyActivitySummary
+- `tabs/CampaignActivityTab.tsx` -- Lazy wrapper for CampaignActivityReport
+
+### Report Components
+- `OpportunitiesByPrincipalReport.tsx` -- Grouped opportunities by principal
+- `WeeklyActivitySummary.tsx` -- Rep/principal activity matrix
+- `CampaignActivity/CampaignActivityReport.tsx` -- Campaign activity breakdown
+- `CampaignActivity/ActivityTypeCard.tsx` -- Expandable activity type group
+- `CampaignActivity/StaleLeadsView.tsx` -- Stale opportunities table
+- `opportunities-by-principal/components/PrincipalGroupCard.tsx` -- Expandable principal group
+
+### Shared Components
+- `components/CheckboxPopoverFilter.tsx` -- Multi-select popover
+- `components/DateRangePopoverFilter.tsx` -- Date range popover
+- `components/FilterChip.tsx` -- Removable filter tag
+- `components/KeyInsightsStrip.tsx` -- Auto-generated insights
+- `components/KPIDrillDown.tsx` -- Sheet panel for KPI exploration
+- `components/ChartWrapper.tsx` -- Chart card with loading skeleton
+- `components/index.ts` -- Barrel exports (includes re-exports of KPICard, EmptyState)
+
+### Hooks
+- `hooks/useReportFilterState.ts` -- Store persistence + URL seeding + share URL builder
+- `hooks/useReportData.ts` -- Generic report data fetcher
+- `hooks/useChartTheme.ts` -- CSS variable resolution for Chart.js
+- `hooks/useScrollFadeRight.ts` -- Horizontal overflow fade indicator
+- `hooks/index.ts` -- Barrel exports
+
+### Campaign-Specific Hooks
+- `CampaignActivity/useCampaignActivityData.ts` -- Composite data (RPC + activities + sales + stale)
+- `CampaignActivity/useCampaignFilterOptions.ts` -- Light RPC for filter metadata
+- `CampaignActivity/useCampaignActivityMetrics.ts` -- Client-side grouping + staleness
+- `CampaignActivity/useCampaignActivityExport.ts` -- CSV export (activities + stale leads)
+
+### Charts
+- `charts/chartSetup.ts` -- Chart.js component registration
+- `charts/chartUtils.ts` -- Shared chart utilities (axis config, label truncation, OKLCH alpha)
+- `charts/PipelineChart.tsx` -- Horizontal bar (pipeline by stage)
+- `charts/ActivityTrendChart.tsx` -- Line chart (activity over time)
+- `charts/TopPrincipalsChart.tsx` -- Horizontal bar (top 5 principals)
+- `charts/RepPerformanceChart.tsx` -- Grouped bar (activities + opportunities per rep)
+
+### Utilities
+- `utils/resolvePreset.ts` -- Date preset string to concrete Date range
+- `utils/cleanupMigration.ts` -- Removes orphaned localStorage keys from previous architecture
+
+### Constants & Types
+- `constants.ts` -- `DATE_PRESETS`, `CAMPAIGN_DATE_PRESETS`
+- `types.ts` -- `Sale`, `Activity`, `ActivityGroup`
 
 ---
 
-## Migration Checklist: Adding New Reports
+## Migration Checklist: Adding a New Report Tab
 
-When adding a new report page:
+1. [ ] **Define filter state type and defaults** in `hooks/useReportFilterState.ts`
+   - Add interface `NewTabFilterState`
+   - Add `NEWTAB_DEFAULTS` constant
+   - Add to `FilterState` union type
+   - Export from `hooks/index.ts`
 
-1. [ ] **Create report component** following naming convention
+2. [ ] **Add store key** in `ReportsPage.tsx`
    ```tsx
-   // src/atomic-crm/reports/MyReport.tsx or tabs/MyReportTab.tsx
-   export function MyReport() { /* ... */ }
+   const [newTabFilters] = useStore<NewTabFilterState>("reports.newtab", NEWTAB_DEFAULTS);
    ```
 
-2. [ ] **Use ReportPageShell** for page-level structure, **sidebar filters (via ReportFilterSidebar) + AppliedFiltersBar** for tab content
+3. [ ] **Add parameter bar section** in `components/ReportParameterBar.tsx`
+   - Add `case "newtab": return <NewTabParameterBar />;`
+   - Use `useStore` directly (not `useReportFilterState`)
+   - Follow `role="toolbar"` and `h-11` patterns
+
+4. [ ] **Create tab content component** as default export
    ```tsx
-   <ReportPageShell
-     title="My Report"
-     breadcrumbs={[{ label: "Reports", href: "/reports" }, { label: "My Report" }]}
-   >
-     {/* Report content */}
-   </ReportPageShell>
+   // MyNewReport.tsx
+   export default function MyNewReport() { /* ... */ }
    ```
 
-3. [ ] **Create dedicated data hook** following useReportData pattern
+5. [ ] **Create tab wrapper** in `tabs/NewTab.tsx`
    ```tsx
-   // hooks/useMyReportData.ts
-   export function useMyReportData(filters: MyFilters) {
-     const { data, isLoading } = useReportData<MyEntity>("my_resource", {
-       dateRange: filters.dateRange,
-       additionalFilters: { /* ... */ },
-     });
-     return { data, isLoading };
+   const MyNewReport = lazy(() => import("../MyNewReport"));
+   export default function NewTab() {
+     return <Suspense fallback={<Skeleton />}><MyNewReport /></Suspense>;
    }
    ```
 
-4. [ ] **Wrap charts in ChartWrapper** with loading states
-   ```tsx
-   <ChartWrapper title="My Chart" isLoading={isLoading}>
-     <MyChart data={chartData} />
-   </ChartWrapper>
-   ```
+6. [ ] **Register in ReportsPage.tsx**
+   - Add lazy import
+   - Add `TabsTrigger` and `TabsContent`
+   - Add to `filterMap` for share URL
+   - Add to `tabLabels` for breadcrumbs
 
-5. [ ] **Implement CSV export** with sanitization
-   ```tsx
-   const exportData = data.map((row) => ({
-     field1: sanitizeCsvValue(row.field1),
-     field2: format(parseDateSafely(row.date), "yyyy-MM-dd"),
-   }));
-   jsonExport(exportData, (err, csv) => {
-     if (err) { /* handle error */ }
-     downloadCSV(csv, `my-report-${format(new Date(), "yyyy-MM-dd")}`);
-   });
-   ```
+7. [ ] **Use useReportData** for data fetching (not direct Supabase)
+   - Extract primitive dependencies for filter memos
+   - Handle `isFirstLoad` vs `isRefreshing` states
 
-6. [ ] **Use semantic colors** via useChartTheme hook
-   ```tsx
-   const { colors, font } = useChartTheme();
-   // Use colors.primary, colors.success, etc.
-   ```
+8. [ ] **Wrap charts in ChartWrapper** with `isLoading` prop
 
-7. [ ] **Add empty state handling** for charts and tables
-   ```tsx
-   if (data.length === 0) {
-     return <EmptyState message="No data available for selected filters" />;
-   }
-   ```
+9. [ ] **Add CSV export** with `sanitizeCsvValue` on all string fields
 
-8. [ ] **Memoize expensive calculations** with useMemo
-   ```tsx
-   const groupedData = useMemo(() => {
-     // Expensive grouping logic
-   }, [data]);
-   ```
+10. [ ] **Handle empty/error states**
+    - `EmptyState` component for no data
+    - Error banner for failed fetches
+    - `isFirstLoad` skeleton for initial load
 
-9. [ ] **Add to report navigation** (tabs or routes)
-   ```tsx
-   // In ReportsPage.tsx
-   <TabsList>
-     <TabsTrigger value="my-report">My Report</TabsTrigger>
-   </TabsList>
-   ```
+11. [ ] **Update cleanupMigration.ts** if adding new localStorage keys that replace old ones
 
-10. [ ] **Test with edge cases**
-    - [ ] Empty dataset
-    - [ ] Single record
-    - [ ] 1000+ records (pagination limit)
-    - [ ] Missing optional fields
-    - [ ] Date range filtering
-
----
-
-## Performance Optimization Checklist
-
-### Query Optimization
-
-- [ ] **Use RPC for aggregates** instead of client-side calculation
-  - Example: `get_campaign_report_stats` returns counts, not full datasets
-- [ ] **Filter early** via `additionalFilters` in useReportData
-  - Don't fetch all records then filter client-side
-- [ ] **Fetch only needed IDs** for lookups
-  - Example: `ownerIds` extracted from activities, then fetch only those sales reps
-- [ ] **Use Map for O(1) lookups** instead of `find()` in loops
-  - Example: `salesMap.get(id)` vs `salesReps.find(s => s.id === id)`
-
-### Render Optimization
-
-- [ ] **Memoize chart data and options** with useMemo
-  - Prevent Chart.js recalculation on every render
-- [ ] **Extract primitive dependencies** for hooks
-  - Use `.toISOString()`, `JSON.stringify()` instead of object references
-- [ ] **Use conditional queries** with `enabled` flag
-  - Don't fetch stale opportunities until user toggles "Show Stale Leads"
-
-### Bundle Optimization
-
-- [ ] **Lazy load chart components** if heavy
-  - Chart.js + plugins can be 50KB+ gzipped
-- [ ] **Import only needed Chart.js components** in chartSetup.ts
-  - Don't import `Filler`, `RadarElement` if not used
-
----
-
-## Accessibility Standards for Reports
-
-### Chart Accessibility
-
-- [ ] **Add aria-label with data summary**
-  ```tsx
-  aria-label={`Pipeline chart showing ${total} opportunities across ${stages.length} stages`}
-  ```
-- [ ] **Set role="img"** on chart canvas
-- [ ] **Provide data table alternative** for screen readers (optional)
-  ```tsx
-  <details className="sr-only">
-    <summary>Pipeline data table</summary>
-    <table>{/* Accessible table with same data */}</table>
-  </details>
-  ```
-
-### Filter Accessibility
-
-- [ ] **Label all form controls** explicitly
-  ```tsx
-  <label htmlFor="campaign-select">Campaign</label>
-  <select id="campaign-select">{/* options */}</select>
-  ```
-- [ ] **Associate errors with inputs** via aria-describedby
-  ```tsx
-  <input aria-describedby={error ? "date-error" : undefined} />
-  {error && <div id="date-error" role="alert">{error}</div>}
-  ```
-
-### Table Accessibility
-
-- [ ] **Use semantic table elements** (`<thead>`, `<tbody>`, `<th scope="col">`)
-- [ ] **Sort indicators** visible to screen readers
-  ```tsx
-  <th aria-sort={sortDirection === "ascending" ? "ascending" : "descending"}>
-    Name <ArrowUp aria-hidden="true" />
-  </th>
-  ```
+12. [ ] **Test edge cases**
+    - Empty dataset
+    - Single record
+    - 1000+ records (pagination limit / truncation warning)
+    - Missing optional fields
+    - Share URL round-trip (generate -> open -> verify filters applied)
