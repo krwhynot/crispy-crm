@@ -41,7 +41,7 @@ describe("CSS Variables", () => {
         const allVars: Map<string, number[]> = new Map();
 
         themeBlocks.forEach((block, blockIndex) => {
-          const vars = extractCSSVariables(block, /\{([^}]+)\}/);
+          const vars = [...new Set(extractCSSVariables(block, /\{([^}]+)\}/))];
           vars.forEach((varName) => {
             const existing = allVars.get(varName) || [];
             existing.push(blockIndex);
