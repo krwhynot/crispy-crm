@@ -16,8 +16,9 @@
 
 BEGIN;
 
--- We test 26 tables for RLS enabled status
-SELECT plan(26);
+-- We test 23 tables for RLS enabled status
+-- (tasks_deprecated, tutorial_progress, migration_history removed: tables absent from canonical schema)
+SELECT plan(23);
 
 -- ============================================================================
 -- HELPER: Check if RLS is enabled on a table
@@ -95,10 +96,7 @@ SELECT ok(
     'RLS should be enabled on tags table'
 );
 
-SELECT ok(
-    (SELECT relrowsecurity FROM pg_class WHERE relname = 'tasks_deprecated' AND relnamespace = 'public'::regnamespace),
-    'RLS should be enabled on tasks_deprecated table'
-);
+-- NOTE: tasks_deprecated removed — table absent from canonical schema
 
 -- Notification and audit tables
 SELECT ok(
@@ -111,11 +109,7 @@ SELECT ok(
     'RLS should be enabled on audit_trail table'
 );
 
--- Tutorial and user preference tables
-SELECT ok(
-    (SELECT relrowsecurity FROM pg_class WHERE relname = 'tutorial_progress' AND relnamespace = 'public'::regnamespace),
-    'RLS should be enabled on tutorial_progress table'
-);
+-- NOTE: tutorial_progress removed — table absent from canonical schema
 
 SELECT ok(
     (SELECT relrowsecurity FROM pg_class WHERE relname = 'user_favorites' AND relnamespace = 'public'::regnamespace),
@@ -153,11 +147,7 @@ SELECT ok(
     'RLS should be enabled on dashboard_snapshots table'
 );
 
--- Migration tracking (also needs RLS for admin-only access)
-SELECT ok(
-    (SELECT relrowsecurity FROM pg_class WHERE relname = 'migration_history' AND relnamespace = 'public'::regnamespace),
-    'RLS should be enabled on migration_history table'
-);
+-- NOTE: migration_history removed — table absent from canonical schema
 
 SELECT * FROM finish();
 ROLLBACK;

@@ -240,12 +240,13 @@ SELECT results_eq(
   'Rep1 can only see their own contact note (role-based access)'
 );
 
--- Test 14: Anonymous users cannot access contact_notes
+-- Test 14: Anonymous users cannot access contact_notes (no table grants for anon)
 SET LOCAL ROLE anon;
 
-SELECT is_empty(
+SELECT throws_ok(
   $$ SELECT id FROM public.contact_notes WHERE id = 888801 $$,
-  'Anonymous user cannot access contact_notes (authentication required)'
+  'permission denied for table contact_notes',
+  'Anonymous user is denied access to contact_notes (no table grants)'
 );
 
 
