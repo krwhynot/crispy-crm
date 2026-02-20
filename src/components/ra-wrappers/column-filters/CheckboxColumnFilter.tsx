@@ -124,6 +124,9 @@ export function CheckboxColumnFilter({
         <Button
           variant="ghost"
           size="sm"
+          onPointerDown={(e) => e.stopPropagation()}
+          onClick={(e) => e.stopPropagation()}
+          onKeyDown={(e) => e.stopPropagation()}
           className={cn(
             "h-11 w-11 p-0",
             "relative",

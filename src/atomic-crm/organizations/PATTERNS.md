@@ -1060,7 +1060,6 @@ const abortControllerRef = useRef<AbortController | null>(null);
 | `OrganizationCardGrid.tsx` | J | Responsive card grid using `useListContext` |
 | `OrganizationCard.tsx` | J | Individual organization card (avatar, badges, counts) |
 | `OrganizationEmpty.tsx` | -- | Empty state for list with no data |
-| `organizationColumnConfig.ts` | -- | Column configuration for datagrid |
 | `organizationFilterConfig.ts` | -- | Filter configuration for UnifiedListPageLayout |
 | `OrganizationBulkActionsToolbar.tsx` | F | Exports `OrganizationBulkButtons` (bare buttons) |
 | `OrganizationBulkDeleteButton.tsx` | F | Soft delete with child-branch validation |

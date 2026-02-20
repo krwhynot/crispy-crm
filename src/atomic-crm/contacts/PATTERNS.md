@@ -1292,6 +1292,5 @@ When adding new contact features:
 | `ContactRightPanel.tsx` | Right panel for slide-over: view/edit sections, notes, tasks |
 | `ContactAside.tsx` | Sidebar for ContactShow: personal info, position, tags, notes, tasks |
 | `ContactAdditionalDetails.tsx` | Collapsible form sections: professional details, org & territory, notes |
-| `contactColumnConfig.ts` | Column configuration for contact list datagrid |
 | `contactFilterConfig.ts` | Filter configuration for contact list |
 | `contactExporter.ts` | Export logic for contact data |

@@ -942,7 +942,6 @@ Add to this PATTERNS.md if new type has special handling.
 | Quick Add | `AddTask.tsx` | Dialog-based create from Contact views |
 | List Page | `TaskList.tsx` | UnifiedListPageLayout + PremiumDatagrid |
 | Empty State | `TaskEmpty.tsx` | EmptyState with Create button |
-| Column Config | `tasksColumnConfig.ts` | Header component registry |
 | Datagrid Headers | `TasksDatagridHeader.tsx` | Column label components |
 | URL Helpers | `taskRoutes.ts` | Slide-over path builders + hash navigation |
 | Resource Config | `resource.tsx` | Lazy-loaded views + recordRepresentation |
@@ -975,6 +974,5 @@ Add to this PATTERNS.md if new type has special handling.
 | `TaskHierarchyBreadcrumb.tsx` | 95 | `TaskHierarchyBreadcrumb` | Breadcrumb: Opportunity/Organization > Task (links to parent slide-over) |
 | `taskFilterConfig.ts` | 99 | `TASK_FILTER_CONFIG` | 8 filter entries: due_date range/overdue, id, completed, priority, type, sales_id |
 | `taskRoutes.ts` | 32 | `getTaskSlideOverPath`, `getTaskViewPath`, `getTaskEditPath`, `navigateToTaskSlideOver` | Hash-router URL builders for slide-over deep-linking |
-| `tasksColumnConfig.ts` | 18 | `TaskColumnHeaders` | Maps header components from `TasksDatagridHeader` |
 | `TasksDatagridHeader.tsx` | 18 | `TaskTitleHeader`, `TaskPriorityHeader`, `TaskTypeHeader` | Column label components for datagrid |
 | `hooks/index.ts` | 2 | (empty barrel) | Reserved for future task-specific hooks |

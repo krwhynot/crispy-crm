@@ -7,17 +7,7 @@
  */
 
 import { validateFilterConfig } from "../filters/filterConfigSchema";
-
-/**
- * Priority choices for tasks
- * Defined inline as TaskListFilter.tsx does not import from a constants file
- */
-const PRIORITY_CHOICES = [
-  { id: "low", name: "Low" },
-  { id: "medium", name: "Medium" },
-  { id: "high", name: "High" },
-  { id: "critical", name: "Critical" },
-];
+import { TASK_PRIORITY_CHOICES } from "./constants";
 
 /**
  * Dynamic task type choices callback
@@ -81,7 +71,7 @@ export const TASK_FILTER_CONFIG = validateFilterConfig([
     key: "priority",
     label: "Priority",
     type: "multiselect",
-    choices: PRIORITY_CHOICES,
+    choices: TASK_PRIORITY_CHOICES,
   },
   {
     key: "type",

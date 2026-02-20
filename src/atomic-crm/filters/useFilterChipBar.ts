@@ -181,11 +181,13 @@ export function useFilterChipBar<TContext = unknown>(
       }
 
       // DYNAMIC @ilike HANDLING: TextColumnFilter generates ${source}@ilike keys
-      // Handle these dynamically without requiring explicit config entries
+      // Handle these dynamically, using configured label when available
       if (key.endsWith("@ilike")) {
         const source = key.replace("@ilike", "");
-        // Humanize: first_name -> "First name", name -> "Name"
-        const humanizedSource = source.charAt(0).toUpperCase() + source.slice(1).replace(/_/g, " ");
+        // Use configured label for the base field if available, otherwise humanize
+        const baseConfig = filterConfig.find((c) => c.key === source);
+        const categoryLabel =
+          baseConfig?.label ?? source.charAt(0).toUpperCase() + source.slice(1).replace(/_/g, " ");
         // Strip wildcards from value: %John% -> John
         const displayValue = String(value).replace(/^%|%$/g, "");
 
@@ -193,7 +195,7 @@ export function useFilterChipBar<TContext = unknown>(
           key,
           value: value as string,
           label: displayValue,
-          category: `${humanizedSource} contains`,
+          category: `${categoryLabel} contains`,
         });
         return; // Skip normal processing
       }

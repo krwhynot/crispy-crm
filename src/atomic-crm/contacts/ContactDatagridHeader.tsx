@@ -1,14 +1,24 @@
 /**
  * ContactDatagridHeader
  *
- * Column labels for the Contacts datagrid.
- * Filters are unified in the sidebar/sheet and chip bar.
+ * Column headers for the Contacts datagrid with integrated filters.
+ * Text and checkbox filters are embedded in column headers via FilterableColumnHeader.
  */
 
+import { FilterableColumnHeader } from "@/components/ra-wrappers/column-filters";
+import { CONTACT_STATUS_CHOICES } from "./constants";
+
 export function ContactNameHeader() {
-  return "Name";
+  return <FilterableColumnHeader source="first_name" label="Name" filterType="text" />;
 }
 
 export function ContactStatusHeader() {
-  return "Status";
+  return (
+    <FilterableColumnHeader
+      source="status"
+      label="Status"
+      filterType="checkbox"
+      choices={[...CONTACT_STATUS_CHOICES]}
+    />
+  );
 }

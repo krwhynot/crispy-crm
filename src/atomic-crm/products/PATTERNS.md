@@ -1249,7 +1249,6 @@ When adding a new product feature or migrating from another pattern:
 | `ProductDistributorInput.tsx` | Dynamic distributor DOT-number inputs | C |
 | `ProductListFilter.tsx` | Sidebar filter panel with cached principal list | G |
 | `productFilterConfig.ts` | Filter config schema (status, category, principal) | G |
-| `productsColumnConfig.ts` | Column header re-exports for lint compliance | A |
 | `ProductsDatagridHeader.tsx` | Column label components for datagrid headers | A |
 | `ProductEmpty.tsx` | Empty-state component (no products) | F |
 | `ProductFormTutorial.tsx` | Driver.js tutorial for create form | D |

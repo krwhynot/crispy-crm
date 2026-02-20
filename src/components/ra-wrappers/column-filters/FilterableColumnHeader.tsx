@@ -78,22 +78,27 @@ export function FilterableColumnHeader({
 }: FilterableColumnHeaderProps) {
   const { filterValues } = useListContext();
 
-  // Determine if filter is active
+  // Resolve the correct filter key based on filter type
+  // TextColumnFilter writes to `${source}@ilike`, checkbox writes to `source`
+  const filterValue = React.useMemo(() => {
+    if (filterType === "text") {
+      return filterValues?.[`${source}@ilike`];
+    }
+    return filterValues?.[source];
+  }, [filterValues, source, filterType]);
+
   const isFilterActive = React.useMemo(() => {
-    const filterValue = filterValues?.[source];
     if (filterValue === undefined || filterValue === null) return false;
     if (typeof filterValue === "string") return filterValue.trim() !== "";
     if (Array.isArray(filterValue)) return filterValue.length > 0;
     return true;
-  }, [filterValues, source]);
+  }, [filterValue]);
 
-  // Get active filter count for badge
   const activeFilterCount = React.useMemo(() => {
-    const filterValue = filterValues?.[source];
     if (Array.isArray(filterValue)) return filterValue.length;
     if (filterValue !== undefined && filterValue !== null && filterValue !== "") return 1;
     return 0;
-  }, [filterValues, source]);
+  }, [filterValue]);
 
   // Render nothing extra if no filter type
   if (filterType === "none") {
@@ -135,6 +140,9 @@ export function FilterableColumnHeader({
           <Button
             variant="ghost"
             size="sm"
+            onPointerDown={(e) => e.stopPropagation()}
+            onClick={(e) => e.stopPropagation()}
+            onKeyDown={(e) => e.stopPropagation()}
             className={cn(
               "h-11 w-11 p-0",
               "relative",

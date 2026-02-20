@@ -7,6 +7,17 @@ import { logger } from "@/lib/logger";
 import { listParamsSchema } from "../validation/filters";
 
 /**
+ * Text-filter fields that use @ilike operator per resource.
+ * Used to migrate legacy bare keys (e.g., "name") to @ilike format.
+ */
+const TEXT_FILTER_FIELDS: Record<string, string[]> = {
+  contacts: ["first_name"],
+  organizations: ["name"],
+  products: ["name"],
+  tasks: ["title"],
+};
+
+/**
  * Default sort fields for each resource when stale sort is detected
  * Falls back to "id" if resource not in map
  */
@@ -71,6 +82,35 @@ function cleanStaleListParams(resource: string): boolean {
       }
       if (modified) {
         params.filter = cleanedFilter;
+      }
+    }
+
+    // Migrate legacy bare text-filter keys to @ilike format.
+    // Old localStorage may have bare keys (e.g., "name") for fields that now use
+    // TextColumnFilter which writes to "${source}@ilike" keys.
+    const textFields = TEXT_FILTER_FIELDS[resource];
+    if (textFields && params.filter) {
+      for (const field of textFields) {
+        const ilikeKey = `${field}@ilike`;
+        const bareValue = params.filter[field];
+        if (bareValue !== undefined && params.filter[ilikeKey] === undefined) {
+          const strValue = typeof bareValue === "string" ? bareValue : String(bareValue);
+          // Collapse boundary %s, then wrap once
+          const stripped = strValue.replace(/^%+|%+$/g, "").trim();
+          if (stripped === "") {
+            // Empty value — remove the key entirely (matches TextColumnFilter clear semantics)
+            delete params.filter[field];
+            modified = true;
+          } else {
+            params.filter[ilikeKey] = `%${stripped}%`;
+            delete params.filter[field];
+            modified = true;
+          }
+        } else if (bareValue !== undefined && params.filter[ilikeKey] !== undefined) {
+          // Both exist — keep @ilike (current format), drop bare key
+          delete params.filter[field];
+          modified = true;
+        }
       }
     }
 
