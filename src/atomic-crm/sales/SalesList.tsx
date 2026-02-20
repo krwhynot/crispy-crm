@@ -10,6 +10,7 @@ import type { Sale } from "../types";
 import { useSlideOverState } from "@/hooks/useSlideOverState";
 import { useListKeyboardNavigation } from "@/hooks/useListKeyboardNavigation";
 import { CreateButton } from "@/components/ra-wrappers/create-button";
+import { ListPagination } from "@/components/ra-wrappers/list-pagination";
 import { COLUMN_VISIBILITY } from "../utils/listPatterns";
 import { SalesSlideOver } from "./SalesSlideOver";
 import { SALES_FILTER_CONFIG } from "./salesFilterConfig";
@@ -43,6 +44,7 @@ export default function SalesList() {
           actions={false}
           sort={{ field: "first_name", order: "ASC" }}
           filterDefaultValues={{ disabled: false }}
+          pagination={<ListPagination showExport />}
         >
           <UnifiedListPageLayout
             resource="sales"

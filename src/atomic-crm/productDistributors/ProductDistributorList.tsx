@@ -3,12 +3,19 @@ import { List } from "@/components/ra-wrappers/list";
 import { PremiumDatagrid } from "@/components/ra-wrappers/PremiumDatagrid";
 import { UnifiedListPageLayout } from "@/components/layouts/UnifiedListPageLayout";
 import { CreateButton } from "@/components/ra-wrappers/create-button";
+import { ListPagination } from "@/components/ra-wrappers/list-pagination";
 import { PRODUCT_DISTRIBUTOR_STATUS_CHOICES } from "./constants";
 import { ProductDistributorListFilter } from "./ProductDistributorListFilter";
 import { PRODUCT_DISTRIBUTOR_FILTER_CONFIG } from "./productDistributorFilterConfig";
 
 export const ProductDistributorList = () => (
-  <List title={false} actions={false} perPage={25} sort={{ field: "created_at", order: "DESC" }}>
+  <List
+    title={false}
+    actions={false}
+    perPage={25}
+    sort={{ field: "created_at", order: "DESC" }}
+    pagination={<ListPagination showExport />}
+  >
     <UnifiedListPageLayout
       resource="product_distributors"
       filterComponent={<ProductDistributorListFilter />}

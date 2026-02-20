@@ -5,6 +5,7 @@ import { useListContext, useUpdate, useNotify } from "ra-core";
 import { useQueryClient } from "@tanstack/react-query";
 
 import { List } from "@/components/ra-wrappers/list";
+import { ListPagination } from "@/components/ra-wrappers/list-pagination";
 import { UnifiedListPageLayout } from "@/components/layouts/UnifiedListPageLayout";
 import { Card } from "@/components/ui/card";
 import { FilterLiveForm } from "ra-core";
@@ -30,7 +31,13 @@ interface Notification {
 
 const NotificationsList = () => {
   return (
-    <List title={false} actions={false} perPage={20} sort={{ field: "created_at", order: "DESC" }}>
+    <List
+      title={false}
+      actions={false}
+      perPage={20}
+      sort={{ field: "created_at", order: "DESC" }}
+      pagination={<ListPagination showExport />}
+    >
       <UnifiedListPageLayout
         resource="notifications"
         showFilterSidebar={false}

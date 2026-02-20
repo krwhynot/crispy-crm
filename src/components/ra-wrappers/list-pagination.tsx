@@ -15,7 +15,7 @@ import {
 export const ListPagination = ({
   rowsPerPageOptions = [5, 10, 25, 50],
   className,
-  showExport = true,
+  showExport = false,
 }: {
   rowsPerPageOptions?: number[];
   className?: string;
@@ -67,9 +67,11 @@ export const ListPagination = ({
       aria-busy={isInitialLoading || undefined}
       aria-disabled={isInitialLoading || undefined}
     >
-      <div className="hidden items-center md:flex">
-        {showExport && !selectedIds?.length && <ExportButton />}
-      </div>
+      {showExport && !selectedIds?.length && (
+        <div className="hidden items-center md:flex">
+          <ExportButton />
+        </div>
+      )}
 
       <div className="ml-auto flex flex-wrap items-center justify-end gap-3">
         <div className="hidden items-center gap-2.5 md:flex">
