@@ -28,6 +28,7 @@ import {
 } from "../validation/activities";
 import type { Opportunity, Contact } from "../types";
 import { DEFAULT_PAGE_SIZE } from "@/atomic-crm/constants/appConstants";
+import { isClosedStage } from "./constants/stage-enums";
 
 interface ActivityNoteFormProps {
   opportunity: Opportunity;
@@ -229,11 +230,13 @@ export const ActivityNoteForm = ({ opportunity, onSuccess }: ActivityNoteFormPro
                   <SelectValue placeholder="Select stage" />
                 </SelectTrigger>
                 <SelectContent>
-                  {opportunityStages.map((stage) => (
-                    <SelectItem key={stage.value} value={stage.value}>
-                      {stage.label}
-                    </SelectItem>
-                  ))}
+                  {opportunityStages
+                    .filter((stage) => !isClosedStage(stage.value))
+                    .map((stage) => (
+                      <SelectItem key={stage.value} value={stage.value}>
+                        {stage.label}
+                      </SelectItem>
+                    ))}
                 </SelectContent>
               </Select>
             )}

@@ -1,5 +1,9 @@
 import { describe, it, expect } from "vitest";
-import { createOpportunitySchema, quickCreateOpportunitySchema } from "../opportunities-operations";
+import {
+  createOpportunitySchema,
+  quickCreateOpportunitySchema,
+  isValidOpportunityStageTransition,
+} from "../opportunities-operations";
 
 describe("createOpportunitySchema - WF-C1-001", () => {
   it("should NOT have a silent status default - status must be explicit", () => {
@@ -63,5 +67,39 @@ describe("quickCreateOpportunitySchema - WF-C1-003", () => {
       // Priority should NOT be auto-filled by Zod
       expect(result.data).not.toHaveProperty("priority");
     }
+  });
+});
+
+describe("Stage transition policy - any-stage jump", () => {
+  it("allows active → non-adjacent active: new_lead → demo_scheduled", () => {
+    expect(isValidOpportunityStageTransition("new_lead", "demo_scheduled")).toBe(true);
+  });
+
+  it("allows active → adjacent active: new_lead → initial_outreach", () => {
+    expect(isValidOpportunityStageTransition("new_lead", "initial_outreach")).toBe(true);
+  });
+
+  it("allows active → closed_won: demo_scheduled → closed_won", () => {
+    expect(isValidOpportunityStageTransition("demo_scheduled", "closed_won")).toBe(true);
+  });
+
+  it("allows active → closed_lost: new_lead → closed_lost", () => {
+    expect(isValidOpportunityStageTransition("new_lead", "closed_lost")).toBe(true);
+  });
+
+  it("allows reopen from won to any active: closed_won → new_lead", () => {
+    expect(isValidOpportunityStageTransition("closed_won", "new_lead")).toBe(true);
+  });
+
+  it("allows reopen from lost to any active: closed_lost → feedback_logged", () => {
+    expect(isValidOpportunityStageTransition("closed_lost", "feedback_logged")).toBe(true);
+  });
+
+  it("rejects closed → closed: closed_won → closed_lost", () => {
+    expect(isValidOpportunityStageTransition("closed_won", "closed_lost")).toBe(false);
+  });
+
+  it("rejects same stage: new_lead → new_lead", () => {
+    expect(isValidOpportunityStageTransition("new_lead", "new_lead")).toBe(false);
   });
 });

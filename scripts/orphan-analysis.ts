@@ -41,12 +41,6 @@ interface ForeignKey {
   references_column: string;
 }
 
-interface _TableInfo {
-  table_name: string;
-  has_soft_delete: boolean;
-  row_count: number;
-}
-
 interface OrphanedRecord {
   table_name: string;
   foreign_key_column: string;
@@ -107,29 +101,6 @@ async function executeQuery<T>(client: pkg.Client, name: string, sql: string): P
 async function getRowCount(client: pkg.Client, tableName: string): Promise<number> {
   // Use format() for safe identifier quoting
   const sql = `SELECT count(*)::int as cnt FROM ${client.escapeIdentifier(tableName)}`;
-  try {
-    const result = await client.query(sql);
-    return result.rows[0]?.cnt || 0;
-  } catch {
-    return 0;
-  }
-}
-
-async function _checkNullForeignKeys(
-  client: pkg.Client,
-  table: string,
-  fkColumn: string,
-  hasSoftDelete: boolean
-): Promise<number> {
-  // Safe identifier quoting for dynamic SQL
-  const tableId = client.escapeIdentifier(table);
-  const columnId = client.escapeIdentifier(fkColumn);
-
-  let sql = `SELECT count(*)::int as cnt FROM ${tableId} WHERE ${columnId} IS NULL`;
-  if (hasSoftDelete) {
-    sql += ` AND deleted_at IS NULL`;
-  }
-
   try {
     const result = await client.query(sql);
     return result.rows[0]?.cnt || 0;

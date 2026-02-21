@@ -54,12 +54,17 @@ ON CONFLICT (name) DO UPDATE SET
   updated_at = NOW();
 
 -- ============================================================================
--- PREREQUISITE: Additional principal organizations (90006-90010)
--- Base seed only creates 90001-90005. We add 5 more for variety.
+-- PREREQUISITE: Principal organizations (90001-90010)
+-- All 10 principals created here. Names align with v_principal_names arrays below.
 -- ============================================================================
 INSERT INTO organizations (id, name, organization_type, city, state, priority, created_at, updated_at)
 OVERRIDING SYSTEM VALUE
 VALUES
+  (90001, 'Midwest Foods Inc', 'principal'::organization_type, 'Chicago', 'IL', 'A', NOW(), NOW()),
+  (90002, 'Great Lakes Provisions', 'principal'::organization_type, 'Detroit', 'MI', 'A', NOW(), NOW()),
+  (90003, 'Heartland Food Co', 'principal'::organization_type, 'Des Moines', 'IA', 'B', NOW(), NOW()),
+  (90004, 'Michigan Specialty Foods', 'principal'::organization_type, 'Grand Rapids', 'MI', 'B', NOW(), NOW()),
+  (90005, 'North Star Provisions', 'principal'::organization_type, 'Minneapolis', 'MN', 'A', NOW(), NOW()),
   (90006, 'Better Balance Foods', 'principal'::organization_type, 'Portland', 'OR', 'A', NOW(), NOW()),
   (90007, 'Hazelnut Growers Co-op', 'principal'::organization_type, 'Salem', 'OR', 'B', NOW(), NOW()),
   (90008, 'Kaufhold''s Bakery Supply', 'principal'::organization_type, 'Milwaukee', 'WI', 'A', NOW(), NOW()),
@@ -158,7 +163,7 @@ DECLARE
 
   -- Principal org IDs (5 base + 5 added above)
   v_principal_ids BIGINT[] := ARRAY[90001, 90002, 90003, 90004, 90005, 90006, 90007, 90008, 90009, 90010];
-  v_principal_names TEXT[] := ARRAY['Midwest Foods', 'Great Lakes', 'Heartland', 'Michigan Specialty', 'North Star', 'Better Balance', 'Hazelnut Growers', 'Kaufhold''s', 'Market Square', 'SWAP'];
+  v_principal_names TEXT[] := ARRAY['Midwest Foods Inc', 'Great Lakes', 'Heartland', 'Michigan Specialty', 'North Star', 'Better Balance', 'Hazelnut Growers', 'Kaufhold''s', 'Market Square', 'SWAP'];
 
   -- Customer org IDs (first 60 non-principal, non-deleted orgs for variety)
   v_customer_ids BIGINT[];
@@ -369,12 +374,7 @@ BEGIN
     AND organization_type = 'distributor'
     AND deleted_at IS NULL;
 
-  -- Update principals with the Principal/Manufacturer segment
-  UPDATE organizations SET
-    segment_id = '22222222-2222-4222-8222-000000000010'  -- Principal/Manufacturer
-  WHERE segment_id = '22222222-2222-4222-8222-000000000009'
-    AND organization_type = 'principal'
-    AND deleted_at IS NULL;
+  -- Principals keep their current segment (no dedicated Principal/Manufacturer segment exists)
 
   RAISE NOTICE 'Backfilled segments: % orgs no longer on Unknown',
     (SELECT COUNT(*) FROM organizations

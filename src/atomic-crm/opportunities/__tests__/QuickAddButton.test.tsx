@@ -38,7 +38,7 @@ describe("QuickAddButton", () => {
   it("has correct variant and size", () => {
     renderWithAdminContext(<QuickAddButton />, { wrapper: TestWrapper });
     const button = screen.getByRole("button");
-    expect(button).toHaveClass("bg-background"); // outline variant includes bg-background
+    expect(button).toHaveClass("bg-primary"); // default variant includes bg-primary
   });
 
   it("opens dialog when clicked", () => {

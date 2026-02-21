@@ -3,7 +3,7 @@
  * Depends on: stage-enums
  */
 
-import { STAGE } from "./stage-enums";
+import { STAGE, isClosedStage } from "./stage-enums";
 import type { OpportunityStageValue } from "./stage-enums";
 
 // ============================================================================
@@ -178,28 +178,11 @@ export function getOpportunityStageLabel(stageValue: string): string {
 }
 
 /**
- * Get the Tailwind background class for an opportunity stage
- * @deprecated Use getOpportunityStageClasses() for full class set
- */
-export function getOpportunityStageBgClass(stageValue: string): string {
-  const stage = OPPORTUNITY_STAGES.find((s) => s.value === stageValue);
-  return stage?.bgClass || "bg-muted";
-}
-
-/**
  * Get the Tailwind border class for an opportunity stage
  */
 export function getOpportunityStageBorderClass(stageValue: string): string {
   const stage = OPPORTUNITY_STAGES.find((s) => s.value === stageValue);
   return stage?.borderClass || "border-border";
-}
-
-/**
- * Get the Tailwind text class for an opportunity stage
- */
-export function getOpportunityStageTextClass(stageValue: string): string {
-  const stage = OPPORTUNITY_STAGES.find((s) => s.value === stageValue);
-  return stage?.textClass || "text-foreground";
 }
 
 /**
@@ -287,3 +270,11 @@ export const OPPORTUNITY_STAGES_LEGACY = OPPORTUNITY_STAGES.map((stage) => ({
   value: stage.value,
   label: stage.label,
 }));
+
+/**
+ * Active (non-closed) stages for SelectInput choices.
+ * Use in forms where closed stages require modal routing (close reason/date capture).
+ */
+export const ACTIVE_STAGE_CHOICES = OPPORTUNITY_STAGE_CHOICES.filter(
+  (stage) => !isClosedStage(stage.id)
+);

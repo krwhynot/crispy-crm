@@ -263,6 +263,7 @@ export const OpportunityListContent = ({
           win_reason: data.win_reason,
           loss_reason: data.loss_reason,
           close_reason_notes: data.close_reason_notes,
+          actual_close_date: data.actual_close_date,
         }
       );
 

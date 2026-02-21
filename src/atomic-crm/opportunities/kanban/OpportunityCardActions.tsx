@@ -1,13 +1,6 @@
 import React, { useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-  useUpdate,
-  useDelete,
-  useNotify,
-  useRefresh,
-  useRecordContext,
-  useDataProvider,
-} from "react-admin";
+import { useUpdate, useDelete, useNotify, useRefresh, useRecordContext } from "react-admin";
 import { useQueryClient } from "@tanstack/react-query";
 import { MoreVertical, Eye, Pencil, Trophy, XCircle, Trash2 } from "lucide-react";
 import {
@@ -34,7 +27,6 @@ export function OpportunityCardActions({ opportunityId, onDelete }: OpportunityC
   const navigate = useNavigate();
   const [update] = useUpdate();
   const [deleteOne] = useDelete();
-  const dataProvider = useDataProvider();
   const notify = useNotify();
   const refresh = useRefresh();
   const queryClient = useQueryClient();
@@ -73,31 +65,22 @@ export function OpportunityCardActions({ opportunityId, onDelete }: OpportunityC
     async (data: CloseOpportunityInput) => {
       setIsClosing(true);
       try {
-        await Promise.all([
-          update(
-            "opportunities",
-            {
-              id: opportunityId,
-              data: {
-                stage: closeTargetStage,
-                win_reason: data.win_reason,
-                loss_reason: data.loss_reason,
-                close_reason_notes: data.close_reason_notes,
-              },
-              previousData: record || {},
-            },
-            { returnPromise: true }
-          ),
-          dataProvider.create("activities", {
+        // DB trigger log_opportunity_stage_change handles activity logging
+        await update(
+          "opportunities",
+          {
+            id: opportunityId,
             data: {
-              activity_type: "activity",
-              type: "note",
-              subject: `Opportunity ${closeTargetStage === STAGE.CLOSED_WON ? "won" : "lost"}`,
-              opportunity_id: opportunityId,
-              organization_id: record?.customer_organization_id,
+              stage: closeTargetStage,
+              win_reason: data.win_reason,
+              loss_reason: data.loss_reason,
+              close_reason_notes: data.close_reason_notes,
+              actual_close_date: data.actual_close_date,
             },
-          }),
-        ]);
+            previousData: record || {},
+          },
+          { returnPromise: true }
+        );
 
         // Invalidate granular opportunity caches
         // 1. Specific opportunity detail (this card's data)
@@ -127,7 +110,7 @@ export function OpportunityCardActions({ opportunityId, onDelete }: OpportunityC
         setIsClosing(false);
       }
     },
-    [opportunityId, closeTargetStage, update, dataProvider, notify, refresh, queryClient, record]
+    [opportunityId, closeTargetStage, update, notify, refresh, queryClient, record]
   );
 
   /**

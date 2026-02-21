@@ -88,14 +88,3 @@ export const getOpportunityRowClassName = (record: OpportunityRowData): string =
     isHot && ROW_STYLE_CLASSES.hotLead
   );
 };
-
-/**
- * Type-safe wrapper for use with PremiumDatagrid rowClassName prop
- */
-export const opportunityRowClassName = (record: unknown, _index: number): string => {
-  // Type guard - ensure record has expected shape
-  if (!record || typeof record !== "object") return "";
-
-  const opp = record as OpportunityRowData;
-  return getOpportunityRowClassName(opp);
-};

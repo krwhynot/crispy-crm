@@ -27,6 +27,12 @@ import {
 } from "@/atomic-crm/validation/opportunities";
 import { STAGE } from "@/atomic-crm/opportunities/constants";
 
+/** Create a Date at midnight UTC for the user's local date. Safe for PostgreSQL `date` columns. */
+function localTodayUTC(): Date {
+  const now = new Date();
+  return new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate()));
+}
+
 /**
  * Props for CloseOpportunityModal
  */
@@ -88,6 +94,7 @@ export const CloseOpportunityModal = ({
   const defaultValues = closeOpportunityBaseSchema.partial().parse({
     id: opportunityId,
     stage: targetStage,
+    actual_close_date: localTodayUTC(),
   });
 
   const form = useForm<CloseOpportunityInput>({
@@ -127,6 +134,7 @@ export const CloseOpportunityModal = ({
         win_reason: null,
         loss_reason: null,
         close_reason_notes: null,
+        actual_close_date: localTodayUTC(),
       });
     }
   }, [open, opportunityId, targetStage, reset]);
@@ -160,6 +168,8 @@ export const CloseOpportunityModal = ({
       <DialogContent
         className="w-full max-w-md sm:w-[calc(100%-2rem)]"
         aria-describedby="close-opportunity-description"
+        onClickCapture={(e) => e.stopPropagation()}
+        onPointerDownCapture={(e) => e.stopPropagation()}
       >
         <DialogHeader className="gap-3">
           {/* Icon and title based on win/loss */}
@@ -186,7 +196,13 @@ export const CloseOpportunityModal = ({
         </DialogHeader>
 
         <FormProvider {...form}>
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 pt-2">
+          <form
+            onSubmit={(e) => {
+              e.stopPropagation();
+              handleSubmit(onSubmit)(e);
+            }}
+            className="space-y-4 pt-2"
+          >
             {/* Win/Loss Reason SelectInput - P7: react-admin SelectInput */}
             {isWin ? (
               <SelectInput

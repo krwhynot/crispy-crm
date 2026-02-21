@@ -19,35 +19,34 @@ import { zodErrorToReactAdminError } from "../utils";
 // STAGE TRANSITION VALIDATION (WF-H1-004)
 // ============================================================================
 /**
- * Valid stage transitions map (pipeline flow enforcement)
+ * Stage transition policy (any-stage jump enforcement)
  *
- * Opportunities must progress through pipeline stages in order.
- * Can drop to closed_lost from any active stage (business reality).
- * Terminal states (closed_won, closed_lost) have no valid transitions.
+ * Policy:
+ * - Active stages can jump to any other active stage (forward or back).
+ * - Active stages can transition to closed_won or closed_lost.
+ * - Closed stages can reopen to any active stage.
+ * - Closed → closed is disallowed (must reopen first).
+ * - Same-stage transitions are disallowed.
  *
- * Example violation: new_lead → closed_won (skips required stages)
- * Example valid: new_lead → initial_outreach → closed_lost
- */
-export const VALID_STAGE_TRANSITIONS: Record<OpportunityStageValue, OpportunityStageValue[]> = {
-  new_lead: ["initial_outreach", "closed_lost"],
-  initial_outreach: ["sample_visit_offered", "closed_lost"],
-  sample_visit_offered: ["feedback_logged", "closed_lost"],
-  feedback_logged: ["demo_scheduled", "closed_lost"],
-  demo_scheduled: ["closed_won", "closed_lost"],
-  closed_won: [], // Terminal state
-  closed_lost: [], // Terminal state
-};
-
-/**
- * Check if a stage transition is valid according to pipeline rules.
- * Exported for reuse in provider callbacks and UI components.
+ * Example violation: closed_won → closed_lost (closed-to-closed)
+ * Example valid: new_lead → demo_scheduled (active-to-active jump)
  */
 export function isValidOpportunityStageTransition(
   previousStage: OpportunityStageValue,
   nextStage: OpportunityStageValue
 ): boolean {
-  const validTransitions = VALID_STAGE_TRANSITIONS[previousStage];
-  return validTransitions.includes(nextStage);
+  // Same stage is a no-op, not a valid transition
+  if (previousStage === nextStage) return false;
+
+  const fromClosed = CLOSED_STAGES.includes(previousStage as (typeof CLOSED_STAGES)[number]);
+  const toClosed = CLOSED_STAGES.includes(nextStage as (typeof CLOSED_STAGES)[number]);
+
+  // Closed → closed is disallowed (must reopen to active first)
+  if (fromClosed && toClosed) return false;
+
+  // Everything else is allowed:
+  // active → active, active → closed, closed → active
+  return true;
 }
 
 // ============================================================================
@@ -237,7 +236,7 @@ export const updateOpportunitySchema = opportunityBaseSchema
 
     // WF-H1-004: Track previous stage for transition validation
     // Provided by form logic when stage field changes
-    // Used to enforce linear pipeline progression
+    // Used to enforce stage transition policy
     previous_stage: opportunityStageSchema.optional(),
   })
   .required({
@@ -246,8 +245,8 @@ export const updateOpportunitySchema = opportunityBaseSchema
   // ============================================================================
   // STAGE TRANSITION VALIDATION (WF-H1-004)
   // ============================================================================
-  // Enforces linear pipeline progression - prevents jumping stages
-  // Example: new_lead → closed_won is INVALID (skips required intermediate stages)
+  // Enforces stage transition policy - prevents invalid transitions
+  // Example: closed_won → closed_lost is INVALID (must reopen to active first)
   .refine(
     (data) => {
       // Skip validation if stage not changing
@@ -256,15 +255,12 @@ export const updateOpportunitySchema = opportunityBaseSchema
       // Skip validation if no previous stage context (creation or first update)
       if (!data.previous_stage) return true;
 
-      // Get valid transitions from previous stage
-      const validTransitions = VALID_STAGE_TRANSITIONS[data.previous_stage];
-
-      // Check if new stage is in the allowed list
-      return validTransitions.includes(data.stage);
+      // Validate transition using policy function
+      return isValidOpportunityStageTransition(data.previous_stage, data.stage);
     },
     {
       message:
-        "Invalid stage transition. Opportunities must progress through pipeline stages in order.",
+        "Invalid stage transition. Allowed: active stages can jump to any other stage; closed stages can reopen to any active stage.",
       path: ["stage"],
     }
   )

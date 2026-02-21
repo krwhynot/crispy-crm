@@ -144,6 +144,132 @@ describe("opportunitiesCallbacks", () => {
       // beforeUpdate should return params unchanged (no client-side activity creation)
       expect(result).toEqual(params);
     });
+
+    it("allows multi-stage active jump: demo_scheduled → new_lead", async () => {
+      const params = {
+        id: 1,
+        data: { stage: "new_lead" },
+        previousData: {
+          id: 1,
+          stage: "demo_scheduled",
+        } as RaRecord,
+      };
+
+      const result = await opportunitiesCallbacks.beforeUpdate!(params, mockDataProvider);
+      expect(result).toBeDefined();
+    });
+
+    it("rejects closed → closed: closed_won → closed_lost", async () => {
+      const params = {
+        id: 1,
+        data: { stage: "closed_lost" },
+        previousData: {
+          id: 1,
+          stage: "closed_won",
+        } as RaRecord,
+      };
+
+      await expect(opportunitiesCallbacks.beforeUpdate!(params, mockDataProvider)).rejects.toThrow(
+        "Invalid stage transition"
+      );
+    });
+
+    it("clears close metadata on reopen from closed_won", async () => {
+      const params = {
+        id: 1,
+        data: { stage: "demo_scheduled" },
+        previousData: {
+          id: 1,
+          stage: "closed_won",
+          win_reason: "relationship",
+          loss_reason: null,
+          close_reason_notes: "Great deal",
+          actual_close_date: "2026-01-15",
+        } as RaRecord,
+      };
+
+      const result = await opportunitiesCallbacks.beforeUpdate!(params, mockDataProvider);
+      expect(result.data.win_reason).toBeNull();
+      expect(result.data.loss_reason).toBeNull();
+      expect(result.data.close_reason_notes).toBeNull();
+      expect(result.data.actual_close_date).toBeNull();
+    });
+
+    it("clears close metadata on reopen from closed_lost to any active stage", async () => {
+      const params = {
+        id: 1,
+        data: { stage: "new_lead" },
+        previousData: {
+          id: 1,
+          stage: "closed_lost",
+          win_reason: null,
+          loss_reason: "price",
+          close_reason_notes: "Too expensive",
+          actual_close_date: "2026-01-15",
+        } as RaRecord,
+      };
+
+      const result = await opportunitiesCallbacks.beforeUpdate!(params, mockDataProvider);
+      expect(result.data.win_reason).toBeNull();
+      expect(result.data.loss_reason).toBeNull();
+      expect(result.data.close_reason_notes).toBeNull();
+      expect(result.data.actual_close_date).toBeNull();
+    });
+
+    it("fetches authoritative stage via getOne when previousData.stage missing", async () => {
+      (mockDataProvider.getOne as ReturnType<typeof vi.fn>).mockResolvedValue({
+        data: { id: 1, stage: "feedback_logged" },
+      });
+
+      const params = {
+        id: 1,
+        data: { stage: "sample_visit_offered" },
+        previousData: { id: 1 } as RaRecord, // no stage
+      };
+
+      const result = await opportunitiesCallbacks.beforeUpdate!(params, mockDataProvider);
+      expect(result).toBeDefined();
+      expect(mockDataProvider.getOne).toHaveBeenCalledWith("opportunities", { id: 1 });
+    });
+
+    it("throws stable user-safe error when getOne fails", async () => {
+      (mockDataProvider.getOne as ReturnType<typeof vi.fn>).mockRejectedValue(
+        new Error("Network error")
+      );
+
+      const params = {
+        id: 1,
+        data: { stage: "sample_visit_offered" },
+        previousData: { id: 1 } as RaRecord, // no stage, triggers getOne
+      };
+
+      await expect(opportunitiesCallbacks.beforeUpdate!(params, mockDataProvider)).rejects.toThrow(
+        "Cannot validate stage transition: unable to verify current opportunity state"
+      );
+    });
+
+    it("throws when current stage is completely unknown", async () => {
+      const params = {
+        id: undefined as unknown as number,
+        data: { stage: "initial_outreach" },
+        previousData: {} as RaRecord, // no stage, no id for getOne
+      };
+
+      await expect(opportunitiesCallbacks.beforeUpdate!(params, mockDataProvider)).rejects.toThrow(
+        "Cannot change stage: current stage unknown"
+      );
+    });
+
+    it("skips validation for non-stage updates", async () => {
+      const params = {
+        id: 1,
+        data: { name: "Updated Name" },
+        previousData: { id: 1, stage: "prospecting" } as RaRecord,
+      };
+
+      const result = await opportunitiesCallbacks.beforeUpdate!(params, mockDataProvider);
+      expect(result).toEqual(params);
+    });
   });
 
   describe("beforeGetList - filter cleaning", () => {
@@ -286,6 +412,22 @@ describe("opportunitiesCallbacks", () => {
       expect(result.probability).toBe(25);
       expect(result.principal_organization_id).toBe(123);
       expect(result.contact_ids).toEqual([1, 2, 3]);
+    });
+
+    it("should NOT strip actual_close_date (regression guard)", async () => {
+      const data = {
+        name: "Closing Deal",
+        stage: "closed_won",
+        actual_close_date: "2026-01-15",
+      };
+
+      const result = await opportunitiesCallbacks.beforeSave!(
+        data,
+        mockDataProvider,
+        "opportunities"
+      );
+
+      expect(result.actual_close_date).toBe("2026-01-15");
     });
   });
 

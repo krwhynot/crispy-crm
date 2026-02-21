@@ -200,7 +200,7 @@ BEGIN
     SELECT id INTO v_sales_id FROM sales WHERE email = 'admin@test.com' LIMIT 1;
 
     -- Contact Note 1
-    INSERT INTO "contactNotes" (contact_id, text, sales_id, date, created_at, updated_at)
+    INSERT INTO contact_notes (contact_id, text, sales_id, date, created_at, updated_at)
     VALUES (
         10001,
         'Met at Grand Rapids Food Show 2025. Very interested in new BBQ line.',
@@ -211,7 +211,7 @@ BEGIN
     );
 
     -- Contact Note 2
-    INSERT INTO "contactNotes" (contact_id, text, sales_id, date, created_at, updated_at)
+    INSERT INTO contact_notes (contact_id, text, sales_id, date, created_at, updated_at)
     VALUES (
         10001,
         'Follow-up call scheduled. Marcus wants to try samples in new summer menu.',
@@ -250,7 +250,7 @@ DECLARE
 BEGIN
     SELECT id INTO v_sales_id FROM sales WHERE email = 'admin@test.com' LIMIT 1;
 
-    INSERT INTO opportunities (id, name, description, stage, status, priority, customer_organization_id, principal_organization_id, distributor_organization_id, estimated_close_date, actual_close_date, lead_source, opportunity_owner_id, created_by, created_at, updated_at)
+    INSERT INTO opportunities (id, name, description, stage, status, priority, customer_organization_id, principal_organization_id, distributor_organization_id, estimated_close_date, actual_close_date, lead_source, opportunity_owner_id, created_by, win_reason, created_at, updated_at)
     OVERRIDING SYSTEM VALUE
     VALUES (
         10001,
@@ -267,6 +267,7 @@ BEGIN
         'trade_show',
         v_sales_id,
         v_sales_id,
+        'product_quality',
         NOW() - INTERVAL '75 days',
         NOW() - INTERVAL '5 days'
     ) ON CONFLICT (id) DO UPDATE SET
@@ -282,6 +283,7 @@ BEGIN
         actual_close_date = EXCLUDED.actual_close_date,
         lead_source = EXCLUDED.lead_source,
         opportunity_owner_id = EXCLUDED.opportunity_owner_id,
+        win_reason = EXCLUDED.win_reason,
         updated_at = NOW();
 END $$;
 
@@ -483,84 +485,74 @@ BEGIN
     SELECT id INTO v_sales_id FROM sales WHERE email = 'admin@test.com' LIMIT 1;
 
     -- Task 1: Send sample kit (COMPLETED)
-    INSERT INTO tasks (title, description, due_date, completed, completed_at, priority, contact_id, opportunity_id, sales_id, type, created_at, updated_at)
+    INSERT INTO activities (activity_type, type, subject, description, due_date, completed, completed_at, priority, contact_id, opportunity_id, sales_id, created_by, created_at, updated_at)
     VALUES (
+        'task', 'follow_up',
         'Send sample kit',
         'Prepare and ship sample kit with BBQ Classic and Chipotle Sauce',
         (NOW() - INTERVAL '65 days')::date,
         true,
         NOW() - INTERVAL '60 days',
         'high',
-        10001,
-        10001,
-        v_sales_id,
-        'Follow-up',
+        10001, 10001, v_sales_id, v_sales_id,
         NOW() - INTERVAL '70 days',
         NOW() - INTERVAL '60 days'
     );
 
     -- Task 2: Schedule demo visit (COMPLETED)
-    INSERT INTO tasks (title, description, due_date, completed, completed_at, priority, contact_id, opportunity_id, sales_id, type, created_at, updated_at)
+    INSERT INTO activities (activity_type, type, subject, description, due_date, completed, completed_at, priority, contact_id, opportunity_id, sales_id, created_by, created_at, updated_at)
     VALUES (
+        'task', 'meeting',
         'Schedule demo visit',
         'Coordinate on-site demo with Marcus at Riverfront Grill kitchen',
         (NOW() - INTERVAL '35 days')::date,
         true,
         NOW() - INTERVAL '30 days',
         'high',
-        10001,
-        10001,
-        v_sales_id,
-        'Meeting',
+        10001, 10001, v_sales_id, v_sales_id,
         NOW() - INTERVAL '45 days',
         NOW() - INTERVAL '30 days'
     );
 
     -- Task 3: Send pricing proposal (COMPLETED)
-    INSERT INTO tasks (title, description, due_date, completed, completed_at, priority, contact_id, opportunity_id, sales_id, type, created_at, updated_at)
+    INSERT INTO activities (activity_type, type, subject, description, due_date, completed, completed_at, priority, contact_id, opportunity_id, sales_id, created_by, created_at, updated_at)
     VALUES (
+        'task', 'proposal',
         'Send pricing proposal',
         'Prepare and send detailed pricing proposal with volume discounts',
         (NOW() - INTERVAL '22 days')::date,
         true,
         NOW() - INTERVAL '20 days',
         'medium',
-        10001,
-        10001,
-        v_sales_id,
-        'Proposal',
+        10001, 10001, v_sales_id, v_sales_id,
         NOW() - INTERVAL '30 days',
         NOW() - INTERVAL '20 days'
     );
 
     -- Task 4: Q2 check-in call (PENDING - future)
-    INSERT INTO tasks (title, description, due_date, completed, priority, contact_id, opportunity_id, sales_id, type, created_at, updated_at)
+    INSERT INTO activities (activity_type, type, subject, description, due_date, completed, priority, contact_id, opportunity_id, sales_id, created_by, created_at, updated_at)
     VALUES (
+        'task', 'call',
         'Q2 check-in call',
         'Quarterly check-in to discuss reorder volume and satisfaction',
         (NOW() + INTERVAL '30 days')::date,
         false,
         'medium',
-        10001,
-        10001,
-        v_sales_id,
-        'Call',
+        10001, 10001, v_sales_id, v_sales_id,
         NOW() - INTERVAL '5 days',
         NOW() - INTERVAL '5 days'
     );
 
     -- Task 5: Discuss expanded product line (PENDING - future)
-    INSERT INTO tasks (title, description, due_date, completed, priority, contact_id, opportunity_id, sales_id, type, created_at, updated_at)
+    INSERT INTO activities (activity_type, type, subject, description, due_date, completed, priority, contact_id, opportunity_id, sales_id, created_by, created_at, updated_at)
     VALUES (
+        'task', 'meeting',
         'Discuss expanded product line',
         'Present Honey Mustard and Ranch Dressing options for fall menu',
         (NOW() + INTERVAL '60 days')::date,
         false,
         'low',
-        10001,
-        10001,
-        v_sales_id,
-        'Meeting',
+        10001, 10001, v_sales_id, v_sales_id,
         NOW() - INTERVAL '5 days',
         NOW() - INTERVAL '5 days'
     );
@@ -577,7 +569,7 @@ BEGIN
     SELECT id INTO v_sales_id FROM sales WHERE email = 'admin@test.com' LIMIT 1;
 
     -- Note 1
-    INSERT INTO "opportunityNotes" (opportunity_id, text, sales_id, date, created_at, updated_at)
+    INSERT INTO opportunity_notes (opportunity_id, text, sales_id, date, created_at, updated_at)
     VALUES (
         10001,
         'Marcus loved the BBQ sauce. Wants to feature it prominently on their new summer menu alongside pulled pork sandwiches.',
@@ -588,7 +580,7 @@ BEGIN
     );
 
     -- Note 2
-    INSERT INTO "opportunityNotes" (opportunity_id, text, sales_id, date, created_at, updated_at)
+    INSERT INTO opportunity_notes (opportunity_id, text, sales_id, date, created_at, updated_at)
     VALUES (
         10001,
         'Metro Foodservice confirmed they can handle the volume. Good regional coverage in western Michigan.',
@@ -599,7 +591,7 @@ BEGIN
     );
 
     -- Note 3
-    INSERT INTO "opportunityNotes" (opportunity_id, text, sales_id, date, created_at, updated_at)
+    INSERT INTO opportunity_notes (opportunity_id, text, sales_id, date, created_at, updated_at)
     VALUES (
         10001,
         'Deal closed! Initial order 50 cases (30 BBQ Classic, 20 Chipotle). Reorder expected monthly based on summer volume projections.',
@@ -621,7 +613,7 @@ BEGIN
     SELECT id INTO v_sales_id FROM sales WHERE email = 'admin@test.com' LIMIT 1;
 
     -- Note for Acme (Principal)
-    INSERT INTO "organizationNotes" (organization_id, text, sales_id, date, created_at, updated_at)
+    INSERT INTO organization_notes (organization_id, text, sales_id, date, created_at, updated_at)
     VALUES (
         10001,
         'Premium condiment manufacturer based in Chicago. Strong presence in Midwest market. Key products include BBQ sauces, hot sauces, and spice blends.',
@@ -632,7 +624,7 @@ BEGIN
     );
 
     -- Note for Riverfront (Customer)
-    INSERT INTO "organizationNotes" (organization_id, text, sales_id, date, created_at, updated_at)
+    INSERT INTO organization_notes (organization_id, text, sales_id, date, created_at, updated_at)
     VALUES (
         10003,
         'Popular waterfront restaurant in Kalamazoo. High volume during summer season (May-September). Known for BBQ and American cuisine.',
@@ -653,10 +645,9 @@ SELECT setval('products_id_seq', GREATEST((SELECT COALESCE(MAX(id), 0) FROM prod
 SELECT setval('opportunities_id_seq', GREATEST((SELECT COALESCE(MAX(id), 0) FROM opportunities), 10010), true);
 SELECT setval('tags_id_seq', GREATEST((SELECT COALESCE(MAX(id), 0) FROM tags), 10), true);
 SELECT setval('activities_id_seq', GREATEST((SELECT COALESCE(MAX(id), 0) FROM activities), 10020), true);
-SELECT setval('tasks_id_seq', GREATEST((SELECT COALESCE(MAX(id), 0) FROM tasks), 10010), true);
-SELECT setval('"contactNotes_id_seq"', GREATEST((SELECT COALESCE(MAX(id), 0) FROM "contactNotes"), 10010), true);
-SELECT setval('"opportunityNotes_id_seq"', GREATEST((SELECT COALESCE(MAX(id), 0) FROM "opportunityNotes"), 10010), true);
-SELECT setval('"organizationNotes_id_seq"', GREATEST((SELECT COALESCE(MAX(id), 0) FROM "organizationNotes"), 10010), true);
+SELECT setval('"contactNotes_id_seq"', GREATEST((SELECT COALESCE(MAX(id), 0) FROM contact_notes), 10010), true);
+SELECT setval('"opportunityNotes_id_seq"', GREATEST((SELECT COALESCE(MAX(id), 0) FROM opportunity_notes), 10010), true);
+SELECT setval('"organizationNotes_id_seq"', GREATEST((SELECT COALESCE(MAX(id), 0) FROM organization_notes), 10010), true);
 
 -- ============================================================================
 -- PHASE 17: Verification
@@ -690,13 +681,13 @@ BEGIN
     -- Count activities for this opportunity
     SELECT COUNT(*) INTO v_activity_count FROM activities WHERE opportunity_id = 10001 OR (contact_id = 10001 AND opportunity_id IS NULL);
 
-    -- Count tasks for this opportunity
-    SELECT COUNT(*) INTO v_task_count FROM tasks WHERE opportunity_id = 10001;
+    -- Count tasks for this opportunity (STI: tasks are activities with activity_type='task')
+    SELECT COUNT(*) INTO v_task_count FROM activities WHERE activity_type = 'task' AND opportunity_id = 10001;
 
     -- Count notes
-    SELECT COUNT(*) INTO v_contact_note_count FROM "contactNotes" WHERE contact_id = 10001;
-    SELECT COUNT(*) INTO v_opp_note_count FROM "opportunityNotes" WHERE opportunity_id = 10001;
-    SELECT COUNT(*) INTO v_org_note_count FROM "organizationNotes" WHERE organization_id IN (10001, 10003);
+    SELECT COUNT(*) INTO v_contact_note_count FROM contact_notes WHERE contact_id = 10001;
+    SELECT COUNT(*) INTO v_opp_note_count FROM opportunity_notes WHERE opportunity_id = 10001;
+    SELECT COUNT(*) INTO v_org_note_count FROM organization_notes WHERE organization_id IN (10001, 10003);
 
     -- Count tags
     SELECT COUNT(*) INTO v_tag_count FROM tags WHERE id BETWEEN 1 AND 5;
@@ -709,7 +700,7 @@ BEGIN
     RAISE NOTICE 'Products created: % (expected: 6)', v_product_count;
     RAISE NOTICE 'Contact created: % (expected: 1)', v_contact_count;
     RAISE NOTICE 'Opportunity stage: % (expected: closed_won)', v_opp_stage;
-    RAISE NOTICE 'Activities created: % (expected: 8)', v_activity_count;
+    RAISE NOTICE 'Activities created: % (expected: 13+ incl. tasks via STI)', v_activity_count;
     RAISE NOTICE 'Tasks created: % (expected: 5)', v_task_count;
     RAISE NOTICE 'Contact notes: % (expected: 2)', v_contact_note_count;
     RAISE NOTICE 'Opportunity notes: % (expected: 3)', v_opp_note_count;
@@ -745,7 +736,7 @@ COMMIT;
 --     dist.name as distributor,
 --     c.name as contact,
 --     (SELECT COUNT(*) FROM activities WHERE opportunity_id = o.id) as activities,
---     (SELECT COUNT(*) FROM tasks WHERE opportunity_id = o.id) as tasks
+--     (SELECT COUNT(*) FROM activities WHERE activity_type = 'task' AND opportunity_id = o.id) as tasks
 -- FROM opportunities o
 -- JOIN organizations cust ON o.customer_organization_id = cust.id
 -- JOIN organizations prin ON o.principal_organization_id = prin.id

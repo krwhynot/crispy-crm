@@ -24,7 +24,8 @@ import { ContactOrgMismatchWarning } from "./ContactOrgMismatchWarning";
 import { DistributorAuthorizationWarning } from "./DistributorAuthorizationWarning";
 import { NamingConventionHelp } from "./NamingConventionHelp";
 import { useAutoGenerateName } from "./useAutoGenerateName";
-import { OPPORTUNITY_STAGE_CHOICES } from "./constants";
+import { OPPORTUNITY_STAGE_CHOICES, ACTIVE_STAGE_CHOICES } from "./constants";
+import { isClosedStage } from "./constants/stage-enums";
 import { saleOptionRenderer } from "../utils/saleOptionRenderer";
 import { enableGetChoices } from "../utils/autocompleteDefaults";
 import { LeadSourceInput } from "./LeadSourceInput";
@@ -47,6 +48,15 @@ export const OpportunityCompactForm = ({ mode = "create" }: OpportunityCompactFo
   const refresh = useRefresh();
   const { regenerate, isLoading, canGenerate } = useAutoGenerateName(mode);
   const record = useRecordContext<Opportunity>();
+
+  // Dynamic stage choices: active stages by default, plus current closed stage when editing a closed record.
+  // Explicitly excludes the opposite closed stage to prevent closed→closed transitions via the form.
+  const stageChoices = useMemo(() => {
+    if (record?.stage && isClosedStage(record.stage)) {
+      return OPPORTUNITY_STAGE_CHOICES.filter((c) => !isClosedStage(c.id) || c.id === record.stage);
+    }
+    return ACTIVE_STAGE_CHOICES;
+  }, [record?.stage]);
 
   const customerOrganizationId = useWatch({ name: "customer_organization_id" });
   const principalOrganizationId = useWatch({ name: "principal_organization_id" });
@@ -177,12 +187,7 @@ export const OpportunityCompactForm = ({ mode = "create" }: OpportunityCompactFo
         {/* Row 3: Stage | Priority | Close Date */}
         <CompactFormRow columns="md:grid-cols-3">
           <div data-tutorial="opp-stage">
-            <SelectInput
-              source="stage"
-              label="Stage *"
-              choices={OPPORTUNITY_STAGE_CHOICES}
-              helperText={false}
-            />
+            <SelectInput source="stage" label="Stage *" choices={stageChoices} helperText={false} />
           </div>
           <div data-tutorial="opp-priority">
             <SelectInput
