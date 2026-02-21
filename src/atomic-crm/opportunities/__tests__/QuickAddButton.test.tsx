@@ -32,7 +32,7 @@ describe("QuickAddButton", () => {
     // Button contains both emoji and text
     const button = screen.getByRole("button");
     expect(button).toBeInTheDocument();
-    expect(button).toHaveTextContent("⚡ Quick Add");
+    expect(button).toHaveTextContent("Quick Add");
   });
 
   it("has correct variant and size", () => {

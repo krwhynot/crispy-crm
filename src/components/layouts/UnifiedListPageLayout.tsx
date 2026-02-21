@@ -27,6 +27,9 @@ interface UnifiedListPageLayoutProps {
   filteredEmptyState?: ReactNode;
   /** Renders during isPending. Defaults to generic <ListSkeleton />. */
   loadingSkeleton?: ReactNode;
+  /** Default filter values to restore on "Clear all" (e.g., { disabled: false } for Sales) */
+  defaultFilters?: Record<string, unknown>;
+  showPageTitle?: boolean;
 
   // -- Content --
   children: ReactNode;
@@ -80,6 +83,8 @@ export function UnifiedListPageLayout({
   emptyState,
   filteredEmptyState,
   loadingSkeleton,
+  defaultFilters,
+  showPageTitle,
   children,
   bulkActions,
 }: UnifiedListPageLayoutProps) {
@@ -101,6 +106,8 @@ export function UnifiedListPageLayout({
       emptyState={emptyState}
       filteredEmptyState={filteredEmptyState}
       loadingSkeleton={loadingSkeleton}
+      defaultFilters={defaultFilters}
+      showPageTitle={showPageTitle}
       bulkActions={bulkActions}
     >
       {children}

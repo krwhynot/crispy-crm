@@ -228,7 +228,7 @@ export function PrincipalPipelineTable() {
                   onSort={handleSort}
                   getAriaSortValue={getAriaSortValue}
                   renderSortIcon={renderSortIcon}
-                  align="center"
+                  align="right"
                 />
                 <SortableTableHead
                   field="activeLastWeek"
@@ -238,7 +238,7 @@ export function PrincipalPipelineTable() {
                   onSort={handleSort}
                   getAriaSortValue={getAriaSortValue}
                   renderSortIcon={renderSortIcon}
-                  align="center"
+                  align="right"
                   className="hidden lg:table-cell"
                 />
                 <SortableTableHead
@@ -258,7 +258,7 @@ export function PrincipalPipelineTable() {
                   onSort={handleSort}
                   getAriaSortValue={getAriaSortValue}
                   renderSortIcon={renderSortIcon}
-                  align="center"
+                  align="right"
                   className="hidden lg:table-cell"
                 />
                 <TableHead className="max-w-[200px] lg:max-w-[280px]">Next Action</TableHead>

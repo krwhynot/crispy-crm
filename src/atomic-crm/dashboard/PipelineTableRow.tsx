@@ -94,7 +94,7 @@ export const PipelineTableRow = memo(function PipelineTableRow({
       </TableCell>
 
       {/* This week activity */}
-      <TableCell className="text-center">
+      <TableCell className="text-right">
         {row.activeThisWeek > 0 ? (
           <Badge variant="success">{row.activeThisWeek}</Badge>
         ) : (
@@ -103,7 +103,7 @@ export const PipelineTableRow = memo(function PipelineTableRow({
       </TableCell>
 
       {/* Last week activity - hidden on mobile to save space */}
-      <TableCell className="text-center hidden lg:table-cell">
+      <TableCell className="text-right hidden lg:table-cell">
         {row.activeLastWeek > 0 ? (
           <Badge variant="secondary">{row.activeLastWeek}</Badge>
         ) : (
@@ -120,9 +120,9 @@ export const PipelineTableRow = memo(function PipelineTableRow({
       </TableCell>
 
       {/* Completed tasks (last 30 days) - hidden on mobile */}
-      <TableCell className="text-center hidden lg:table-cell">
+      <TableCell className="text-right hidden lg:table-cell">
         {row.completedTasks30d > 0 ? (
-          <div className="flex flex-col items-center">
+          <div className="flex flex-col items-end">
             <span className="font-semibold">{row.completedTasks30d}</span>
             {row.totalTasks30d > 0 && (
               <span className="text-xs text-muted-foreground">

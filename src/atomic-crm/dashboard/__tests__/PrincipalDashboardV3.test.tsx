@@ -46,6 +46,11 @@ function renderDashboard() {
 // ---------- Tests ----------
 
 describe("PrincipalDashboardV3", () => {
+  it("renders Dashboard page heading", () => {
+    renderDashboard();
+    expect(screen.getByRole("heading", { level: 1, name: "Dashboard" })).toBeInTheDocument();
+  });
+
   it("renders a vertical flex-col layout with a main element", () => {
     const { container } = renderDashboard();
 

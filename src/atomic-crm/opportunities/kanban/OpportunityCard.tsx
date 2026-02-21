@@ -3,6 +3,7 @@ import { useRecordContext } from "react-admin";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { GripVertical } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 import { OpportunityCardActions } from "./OpportunityCardActions";
 import { StageStatusDot } from "./StageStatusDot";
 import { getStageStatus } from "../constants";
@@ -151,6 +152,22 @@ export const OpportunityCard = React.memo(function OpportunityCard({
           daysSinceLastActivity={daysSinceLastActivity}
           daysInStage={daysInStage}
         />
+        {record.priority && (
+          <Badge
+            variant={
+              record.priority === "critical"
+                ? "destructive"
+                : record.priority === "high"
+                  ? "default"
+                  : record.priority === "medium"
+                    ? "secondary"
+                    : "outline"
+            }
+            className="text-[10px]"
+          >
+            {record.priority}
+          </Badge>
+        )}
         {stageStatus === "expired" && (
           <span className="text-[10px] bg-destructive/10 text-destructive px-1.5 py-0.5 rounded font-medium">
             Past due

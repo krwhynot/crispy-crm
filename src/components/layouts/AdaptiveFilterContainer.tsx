@@ -6,6 +6,7 @@ import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetFooter } from "@/components/ui/sheet";
 import { FilterLayoutModeProvider } from "@/atomic-crm/filters/FilterLayoutModeContext";
 import { useFilterSidebarContext } from "./FilterSidebarContext";
+import { resetListFilters } from "./listFilterReset";
 import { useListHasDockedFilters } from "./useListViewport";
 
 interface AdaptiveFilterContainerProps {
@@ -13,6 +14,8 @@ interface AdaptiveFilterContainerProps {
   filterComponent: ReactNode;
   /** Resource name for accessibility labels */
   resource: string;
+  /** Default filter values to restore on "Clear all" */
+  defaultFilters?: Record<string, unknown>;
 }
 
 /**
@@ -27,20 +30,29 @@ interface AdaptiveFilterContainerProps {
 export function AdaptiveFilterContainer({
   filterComponent,
   resource,
+  defaultFilters,
 }: AdaptiveFilterContainerProps) {
   const hasDockedFilters = useListHasDockedFilters();
 
   if (hasDockedFilters) {
     return (
       <FilterLayoutModeProvider value="full">
-        <ExpandedSidebar filterComponent={filterComponent} resource={resource} />
+        <ExpandedSidebar
+          filterComponent={filterComponent}
+          resource={resource}
+          defaultFilters={defaultFilters}
+        />
       </FilterLayoutModeProvider>
     );
   }
 
   return (
     <FilterLayoutModeProvider value="sheet">
-      <FilterSheetTrigger filterComponent={filterComponent} resource={resource} />
+      <FilterSheetTrigger
+        filterComponent={filterComponent}
+        resource={resource}
+        defaultFilters={defaultFilters}
+      />
     </FilterLayoutModeProvider>
   );
 }
@@ -52,9 +64,11 @@ export function AdaptiveFilterContainer({
 function ExpandedSidebar({
   filterComponent,
   resource,
+  defaultFilters,
 }: {
   filterComponent: ReactNode;
   resource: string;
+  defaultFilters?: Record<string, unknown>;
 }) {
   const { isCollapsed, toggleSidebar, activeFilterCount } = useFilterSidebarContext();
   const listContext = useContext(ListContext);
@@ -63,7 +77,12 @@ function ExpandedSidebar({
     if (!listContext) {
       return;
     }
-    listContext.setFilters({}, listContext.displayedFilters);
+    resetListFilters(
+      listContext.setFilters,
+      listContext.displayedFilters,
+      defaultFilters,
+      listContext.filterValues
+    );
   };
 
   return (
@@ -135,9 +154,11 @@ function ExpandedSidebar({
 function FilterSheetTrigger({
   filterComponent,
   resource,
+  defaultFilters,
 }: {
   filterComponent: ReactNode;
   resource: string;
+  defaultFilters?: Record<string, unknown>;
 }) {
   const { isSheetOpen, setSheetOpen, hasToolbar } = useFilterSidebarContext();
 
@@ -169,7 +190,7 @@ function FilterSheetTrigger({
             <SheetTitle>Filters</SheetTitle>
           </SheetHeader>
           <div className="flex-1 overflow-y-auto p-content">{filterComponent}</div>
-          <FilterSheetFooter onClose={() => setSheetOpen(false)} />
+          <FilterSheetFooter onClose={() => setSheetOpen(false)} defaultFilters={defaultFilters} />
         </SheetContent>
       </Sheet>
     </>
@@ -180,7 +201,13 @@ function FilterSheetTrigger({
  * Sheet footer with "Clear all" and "Done" buttons.
  * Supports both list-context pages and non-list shell usage (e.g., Reports).
  */
-function FilterSheetFooter({ onClose }: { onClose: () => void }) {
+function FilterSheetFooter({
+  onClose,
+  defaultFilters,
+}: {
+  onClose: () => void;
+  defaultFilters?: Record<string, unknown>;
+}) {
   const listContext = useContext(ListContext);
 
   const handleClear = () => {
@@ -188,7 +215,12 @@ function FilterSheetFooter({ onClose }: { onClose: () => void }) {
       return;
     }
 
-    listContext.setFilters({}, listContext.displayedFilters);
+    resetListFilters(
+      listContext.setFilters,
+      listContext.displayedFilters,
+      defaultFilters,
+      listContext.filterValues
+    );
   };
 
   return (

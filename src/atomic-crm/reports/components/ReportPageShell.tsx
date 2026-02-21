@@ -41,14 +41,8 @@ export function ReportPageShell({
       </Breadcrumb>
 
       <div className="flex items-center justify-between gap-content">
-        <h1 className="text-2xl md:text-3xl font-semibold tracking-tight [font-family:var(--font-serif)]">
-          {title}
-        </h1>
+        <h1 className="text-lg font-semibold">{title}</h1>
         {actions && <div className="flex items-center gap-compact">{actions}</div>}
-      </div>
-
-      <div className="paper-section-rule" aria-hidden="true">
-        Reports &amp; Analytics
       </div>
 
       {filterBar && <div className="py-2">{filterBar}</div>}

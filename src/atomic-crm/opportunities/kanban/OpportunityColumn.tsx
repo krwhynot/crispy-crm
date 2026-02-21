@@ -213,4 +213,3 @@ export const OpportunityColumn = React.memo(function OpportunityColumn({
     </div>
   );
 }, arePropsEqual);
-

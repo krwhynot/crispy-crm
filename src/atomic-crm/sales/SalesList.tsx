@@ -55,6 +55,7 @@ export default function SalesList() {
             primaryAction={<CreateButton variant="default" />}
             emptyState={<SalesEmpty />}
             loadingSkeleton={<SalesListSkeleton />}
+            defaultFilters={{ disabled: false }}
           >
             <SalesDatagrid openSlideOver={openSlideOver} isSlideOverOpen={isOpen} />
           </UnifiedListPageLayout>

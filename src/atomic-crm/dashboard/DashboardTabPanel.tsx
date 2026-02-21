@@ -195,7 +195,7 @@ export function DashboardTabPanel() {
             {/* Recently Viewed Tab */}
             <TabsTrigger
               value="recent"
-              className="paper-tabs-trigger gap-1.5"
+              className="paper-tabs-trigger gap-1.5 ml-auto opacity-60 data-[state=active]:opacity-100"
               data-tutorial="dashboard-tab-recent"
             >
               <Clock className="h-4 w-4" />

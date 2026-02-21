@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Eye, Pencil, Trash2, EllipsisVertical } from "lucide-react";
 import {
   useCreatePath,
@@ -42,6 +43,7 @@ export function RowHoverActions({
   const notify = useNotify();
   const refresh = useRefresh();
   const [deleteOne, { isPending: isDeleting }] = useDelete();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   if (id == null || !resource) {
     return null;
@@ -76,6 +78,7 @@ export function RowHoverActions({
       onMouseDown={(event) => event.stopPropagation()}
       onKeyDown={(event) => event.stopPropagation()}
       data-row-actions
+      data-open={isMenuOpen || undefined}
     >
       {/* Always-visible Edit button */}
       {onEdit ? (
@@ -98,7 +101,7 @@ export function RowHoverActions({
       )}
 
       {/* Overflow menu with View + Delete */}
-      <DropdownMenu>
+      <DropdownMenu onOpenChange={setIsMenuOpen}>
         <DropdownMenuTrigger asChild>
           <Button
             type="button"

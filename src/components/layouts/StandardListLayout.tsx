@@ -55,6 +55,9 @@ interface StandardListLayoutProps {
   showFilterSidebar?: boolean;
   /** Primary action slot (e.g., CreateButton) - passed through to ListToolbar */
   primaryAction?: ReactNode;
+  /** Default filter values to restore on "Clear all" (e.g., { disabled: false } for Sales) */
+  defaultFilters?: Record<string, unknown>;
+  showPageTitle?: boolean;
 }
 
 export function StandardListLayout({
@@ -72,6 +75,8 @@ export function StandardListLayout({
   showFilterToggle,
   showFilterSidebar = true,
   primaryAction,
+  defaultFilters,
+  showPageTitle,
 }: StandardListLayoutProps) {
   return (
     <ListPageLayout
@@ -88,6 +93,8 @@ export function StandardListLayout({
       showFilterToggle={showFilterToggle}
       showFilterSidebar={showFilterSidebar}
       primaryAction={primaryAction}
+      defaultFilters={defaultFilters}
+      showPageTitle={showPageTitle}
     >
       {children}
     </ListPageLayout>

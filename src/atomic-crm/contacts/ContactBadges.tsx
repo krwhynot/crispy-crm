@@ -100,7 +100,7 @@ export const ContactStatusBadge = memo(function ContactStatusBadge({
 }: ContactStatusBadgeProps) {
   // Handle null/undefined status gracefully - return placeholder
   if (!status) {
-    return <Badge className="text-xs px-2 py-1 tag-gray">--</Badge>;
+    return <Badge className="text-xs py-1 tag-gray">--</Badge>;
   }
 
   const config: Record<string, { label: string; className: string }> = {
@@ -115,7 +115,7 @@ export const ContactStatusBadge = memo(function ContactStatusBadge({
     className: "tag-gray",
   };
 
-  return <Badge className={`text-xs px-2 py-1 ${className}`}>{label}</Badge>;
+  return <Badge className={`text-xs py-1 ${className}`}>{label}</Badge>;
 });
 
 ContactStatusBadge.displayName = "ContactStatusBadge";
@@ -153,7 +153,7 @@ export const RoleBadge = memo(function RoleBadge({ role }: RoleBadgeProps) {
     className: "tag-gray",
   };
 
-  return <Badge className={`text-xs px-2 py-1 ${className}`}>{label}</Badge>;
+  return <Badge className={`text-xs py-1 ${className}`}>{label}</Badge>;
 });
 
 RoleBadge.displayName = "RoleBadge";
@@ -194,7 +194,7 @@ export const InfluenceBadge = memo(function InfluenceBadge({ influence }: Influe
   };
 
   return (
-    <Badge variant={variant} className="text-xs px-2 py-1">
+    <Badge variant={variant} className="text-xs py-1">
       {label}
     </Badge>
   );

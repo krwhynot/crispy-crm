@@ -18,11 +18,10 @@ import {
   AlertCircle,
   Trophy,
 } from "lucide-react";
-import { FilterLiveForm, useGetIdentity, useGetList, useListContext } from "ra-core";
+import { useGetIdentity, useGetList, useListContext } from "ra-core";
 import { addDays } from "date-fns";
 
 import { ToggleFilterButton } from "@/components/ra-wrappers/toggle-filter-button";
-import { SearchInput } from "@/components/ra-wrappers/search-input";
 import { FilterCategory } from "../filters/FilterCategory";
 import { OPPORTUNITY_STAGES, STAGE, priorityChoices } from "./constants";
 import { OwnerFilterDropdown } from "@/components/ra-wrappers/OwnerFilterDropdown";
@@ -162,11 +161,6 @@ export const OpportunityListFilter = () => {
 
   return (
     <div className="flex flex-col gap-4" data-tutorial="opp-filters">
-      {/* Search - Always visible */}
-      <FilterLiveForm>
-        <SearchInput source="q" placeholder="Search opportunities..." />
-      </FilterLiveForm>
-
       {/* Collapsible Filter Sections */}
       <div className="flex flex-col gap-2">
         <FilterCategory

@@ -17,6 +17,7 @@ import { ListSkeleton } from "@/components/ui/list-skeleton";
 import { cn } from "@/lib/utils";
 import { AdaptiveFilterContainer } from "./AdaptiveFilterContainer";
 import { FilterSidebarProvider } from "./FilterSidebarContext";
+import { ListPageHeader } from "./ListPageHeader";
 import { ListToolbar } from "./ListToolbar";
 import { hasActiveUserFilters } from "./listFilterSemantics";
 
@@ -37,6 +38,9 @@ export interface ListPageLayoutProps {
   emptyState?: ReactNode;
   filteredEmptyState?: ReactNode;
   loadingSkeleton?: ReactNode;
+  /** Default filter values to restore on "Clear all" (e.g., { disabled: false } for Sales) */
+  defaultFilters?: Record<string, unknown>;
+  showPageTitle?: boolean;
   children: ReactNode;
   bulkActions?: ReactNode;
 }
@@ -58,6 +62,8 @@ export function ListPageLayout({
   emptyState,
   filteredEmptyState,
   loadingSkeleton,
+  defaultFilters,
+  showPageTitle,
   children,
   bulkActions,
 }: ListPageLayoutProps) {
@@ -81,6 +87,8 @@ export function ListPageLayout({
         emptyState={emptyState}
         filteredEmptyState={filteredEmptyState}
         loadingSkeleton={loadingSkeleton}
+        defaultFilters={defaultFilters}
+        showPageTitle={showPageTitle}
         children={children}
         bulkActions={bulkActions}
       />
@@ -104,6 +112,8 @@ function ListPageLayoutContent({
   emptyState,
   filteredEmptyState,
   loadingSkeleton,
+  defaultFilters,
+  showPageTitle,
   children,
   bulkActions,
 }: ListPageLayoutProps) {
@@ -138,10 +148,18 @@ function ListPageLayoutContent({
       )}
     >
       {shouldRenderSidebar && filterComponent && (
-        <AdaptiveFilterContainer filterComponent={filterComponent} resource={resource} />
+        <AdaptiveFilterContainer
+          filterComponent={filterComponent}
+          resource={resource}
+          defaultFilters={defaultFilters}
+        />
       )}
 
       <div className="flex h-full min-h-0 min-w-0 flex-1 flex-col overflow-hidden">
+        {hasListContext && showPageTitle !== false && (
+          <ListPageHeader resource={resource} total={listContext?.total} isPending={isPending} />
+        )}
+
         {hasListContext && filterConfig && filterConfig.length > 0 && (
           <div className="shrink-0">
             <FilterChipBar filterConfig={filterConfig} />
@@ -158,6 +176,7 @@ function ListPageLayoutContent({
             showFilterToggle={shouldRenderFilterToggle}
             resource={resource}
             primaryAction={primaryAction}
+            defaultFilters={defaultFilters}
           />
         )}
 

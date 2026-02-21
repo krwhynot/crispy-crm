@@ -9,7 +9,7 @@ export const badgeVariants = cva(
   // Base badge styles with subtle depth
   // Added: shadow-[var(--badge-shadow)] for subtle elevation
   // Added: ring-1 ring-inset ring-black/[0.08] for hairline border
-  "inline-flex items-center justify-center rounded-[5px] border px-2.5 py-0.5 text-xs font-medium w-fit whitespace-nowrap shrink-0 [&>svg]:size-3 gap-2 [&>svg]:pointer-events-none shadow-[var(--badge-shadow)] ring-1 ring-inset ring-black/[0.05] dark:ring-white/[0.05] focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/30 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive transition-colors duration-150 overflow-hidden",
+  "inline-flex items-center justify-center rounded-[5px] border px-2 py-0.5 text-xs font-medium w-fit whitespace-nowrap shrink-0 [&>svg]:size-3 gap-2 [&>svg]:pointer-events-none shadow-[var(--badge-shadow)] ring-1 ring-inset ring-black/[0.05] dark:ring-white/[0.05] focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/30 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive transition-colors duration-150 overflow-hidden",
   {
     variants: {
       variant: {

@@ -1,6 +1,6 @@
 import { useEffect, type ReactNode } from "react";
-import { ArrowUpDown, EllipsisVertical, SlidersHorizontal } from "lucide-react";
-import { useListSortContext, useTranslate, useTranslateLabel } from "ra-core";
+import { ArrowUpDown, EllipsisVertical, SlidersHorizontal, X } from "lucide-react";
+import { useListContext, useListSortContext, useTranslate, useTranslateLabel } from "ra-core";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -16,6 +16,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip
 import { ListSearchBar } from "@/components/ra-wrappers/ListSearchBar";
 import { SortButton } from "@/components/ra-wrappers/sort-button";
 import { useFilterSidebarContext } from "./FilterSidebarContext";
+import { resetListFilters } from "./listFilterReset";
 import { useListHasDockedFilters } from "./useListViewport";
 
 export interface ListToolbarProps {
@@ -35,6 +36,8 @@ export interface ListToolbarProps {
   resource?: string;
   /** Primary action slot (e.g., CreateButton) */
   primaryAction?: ReactNode;
+  /** Default filter values to restore on "Clear all" */
+  defaultFilters?: Record<string, unknown>;
 }
 
 /**
@@ -54,6 +57,7 @@ export function ListToolbar({
   showFilterToggle = true,
   resource,
   primaryAction,
+  defaultFilters,
 }: ListToolbarProps) {
   const { setHasToolbar } = useFilterSidebarContext();
 
@@ -77,6 +81,7 @@ export function ListToolbar({
             enableRecentSearches={enableRecentSearches}
           />
           {showFilterToggle && <FilterToggleButton />}
+          <ActiveFilterPill defaultFilters={defaultFilters} />
         </div>
       </div>
 
@@ -145,6 +150,52 @@ function FilterToggleButton() {
         {activeFilterCount > 0 ? `Filters (${activeFilterCount} active)` : "Filters"}
       </TooltipContent>
     </Tooltip>
+  );
+}
+
+function ActiveFilterPill({ defaultFilters }: { defaultFilters?: Record<string, unknown> }) {
+  const { activeFilterCount } = useFilterSidebarContext();
+
+  let filterValues: Record<string, unknown> | undefined;
+  let displayedFilters: unknown;
+  let setFilters:
+    | ((filters: Record<string, unknown>, displayedFilters?: unknown) => void)
+    | undefined;
+
+  try {
+    const ctx = useListContext();
+    filterValues = ctx.filterValues;
+    displayedFilters = ctx.displayedFilters;
+    setFilters = ctx.setFilters;
+  } catch {
+    return null;
+  }
+
+  if (activeFilterCount === 0) return null;
+
+  const handleClear = () => {
+    if (!setFilters) return;
+    resetListFilters(setFilters, displayedFilters, defaultFilters, filterValues);
+  };
+
+  return (
+    <div
+      role="status"
+      aria-live="polite"
+      className="flex items-center gap-1.5 rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary"
+    >
+      <span>
+        {activeFilterCount} active {activeFilterCount === 1 ? "filter" : "filters"}
+      </span>
+      <button
+        type="button"
+        onClick={handleClear}
+        className="inline-flex items-center justify-center rounded-full p-0.5 hover:bg-primary/20 touch-target-44"
+        aria-label="Clear all filters"
+      >
+        <X className="h-3.5 w-3.5" />
+      </button>
+    </div>
   );
 }
 

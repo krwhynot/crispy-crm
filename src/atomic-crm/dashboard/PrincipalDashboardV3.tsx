@@ -35,7 +35,8 @@ export function PrincipalDashboardV3() {
   // - Total chrome: ~136px, using 140px for safety margin
   return (
     <div className="paper-dashboard-surface flex h-[calc(100dvh-140px)] flex-col overflow-hidden rounded-xl p-3">
-      {/* Main Content - fills calculated height, no internal header (Layout provides one) */}
+      <h1 className="text-lg font-semibold shrink-0">Dashboard</h1>
+      {/* Main Content - fills calculated height */}
       <main className="relative flex min-h-0 flex-1 flex-col gap-3">
         {/* Tabbed interface - fills ALL remaining height */}
         <DashboardTabPanel />

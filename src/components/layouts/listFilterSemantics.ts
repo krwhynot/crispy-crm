@@ -20,7 +20,9 @@ function hasMeaningfulValue(value: unknown): boolean {
   return true;
 }
 
-export function getActiveUserFilterKeys(filterValues: Record<string, unknown> | undefined): string[] {
+export function getActiveUserFilterKeys(
+  filterValues: Record<string, unknown> | undefined
+): string[] {
   if (!filterValues) {
     return [];
   }
