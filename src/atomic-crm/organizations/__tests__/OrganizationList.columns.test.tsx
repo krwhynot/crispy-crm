@@ -103,7 +103,7 @@ vi.mock("react-admin", async () => {
         {label || source}
       </span>
     ),
-    FunctionField: ({ label, sortBy, sortable }: MockFieldProps) => {
+    FunctionField: ({ label, sortBy, sortable, textAlign }: MockFieldProps) => {
       let labelText = "";
       if (typeof label === "string") {
         labelText = label;
@@ -117,6 +117,7 @@ vi.mock("react-admin", async () => {
           data-testid={`function-field-${labelText}`}
           data-sortable={sortBy ? "true" : sortable === false ? "false" : "unknown"}
           data-sort-by={sortBy || ""}
+          data-text-align={textAlign || ""}
         >
           {label}
         </div>
@@ -164,7 +165,12 @@ vi.mock("@/components/ra-wrappers/PremiumDatagrid", () => ({
     onRowClick,
     configurable,
     preferenceKey,
-  }: MockLayoutProps & { configurable?: boolean; preferenceKey?: string }) => {
+    rowClassName,
+  }: MockLayoutProps & {
+    configurable?: boolean;
+    preferenceKey?: string;
+    rowClassName?: string | ((record: unknown, index: number) => string);
+  }) => {
     sortableColumns.length = 0;
 
     const processChild = (child: React.ReactNode) => {
@@ -195,6 +201,7 @@ vi.mock("@/components/ra-wrappers/PremiumDatagrid", () => ({
         data-testid="premium-datagrid"
         data-configurable={configurable ? "true" : "false"}
         data-preference-key={preferenceKey || ""}
+        data-row-class-fn={typeof rowClassName === "function" ? "true" : "false"}
         className="table-row-premium"
       >
         {children}
@@ -541,6 +548,33 @@ describe("OrganizationList column sorting configuration", () => {
     await waitFor(() => {
       const opportunitiesField = screen.getByTestId("function-field-Opps");
       expect(opportunitiesField).toHaveAttribute("data-sortable", "false");
+    });
+  });
+
+  test("Contacts column is right-aligned", async () => {
+    renderWithAdminContext(<OrganizationList />);
+
+    await waitFor(() => {
+      const contactsField = screen.getByTestId("function-field-Contacts");
+      expect(contactsField).toHaveAttribute("data-text-align", "right");
+    });
+  });
+
+  test("Opportunities column is right-aligned", async () => {
+    renderWithAdminContext(<OrganizationList />);
+
+    await waitFor(() => {
+      const oppsField = screen.getByTestId("function-field-Opps");
+      expect(oppsField).toHaveAttribute("data-text-align", "right");
+    });
+  });
+
+  test("PremiumDatagrid receives rowClassName function for zebra striping", async () => {
+    renderWithAdminContext(<OrganizationList />);
+
+    await waitFor(() => {
+      const datagrid = screen.getByTestId("premium-datagrid");
+      expect(datagrid).toHaveAttribute("data-row-class-fn", "true");
     });
   });
 });

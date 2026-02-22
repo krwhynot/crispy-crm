@@ -772,6 +772,32 @@
     color: inherit;
   }
 
+  /* --- Organization list: taller rows for readability --- */
+  .list-page-shell .organization-list-row {
+    height: 52px;
+    contain-intrinsic-size: 0 52px;
+  }
+  .list-page-shell .RaDatagrid-table tbody .RaDatagrid-row.organization-list-row {
+    height: 52px !important;
+    min-height: 52px !important;
+  }
+  .list-page-shell .organization-list-row > td {
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+  }
+  .list-page-shell .RaDatagrid-table tbody .RaDatagrid-row.organization-list-row > td {
+    padding-top: 0.75rem !important;
+    padding-bottom: 0.75rem !important;
+  }
+
+  /* Organization list: zebra striping for scanability */
+  .list-page-shell .organization-list-row-zebra {
+    background: color-mix(in oklch, var(--muted) 25%, transparent);
+  }
+  .list-page-shell .organization-list-row-zebra:hover {
+    background: color-mix(in oklch, var(--muted) 50%, transparent);
+  }
+
   /* Distinct header row */
   .list-page-shell .sticky-header table thead th {
     background: var(--muted);

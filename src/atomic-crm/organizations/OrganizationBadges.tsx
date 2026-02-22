@@ -66,9 +66,10 @@ OrganizationTypeBadge.displayName = "OrganizationTypeBadge";
 export const PriorityBadge = memo(function PriorityBadge({ priority }: PriorityBadgeProps) {
   const variant = PRIORITY_VARIANT_MAP[priority as PriorityLevel] || "default";
   const label = PRIORITY_CHOICES.find((p) => p.id === priority)?.name || priority;
+  const isMuted = priority === "D";
 
   return (
-    <Badge variant={variant} className="text-xs py-1">
+    <Badge variant={variant} className={`text-xs py-1${isMuted ? " text-muted-foreground" : ""}`}>
       {label}
     </Badge>
   );

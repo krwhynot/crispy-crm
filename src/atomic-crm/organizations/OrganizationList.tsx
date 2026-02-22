@@ -14,7 +14,7 @@ import { useSlideOverState } from "@/hooks/useSlideOverState";
 import { useListKeyboardNavigation } from "@/hooks/useListKeyboardNavigation";
 import { OrganizationListFilter } from "./OrganizationListFilter";
 import { OrganizationSlideOver } from "./OrganizationSlideOver";
-import { OrganizationTypeBadge, PriorityBadge, SegmentBadge } from "./OrganizationBadges";
+import { OrganizationTypeBadge, PriorityBadge } from "./OrganizationBadges";
 import { OrganizationEmpty } from "./OrganizationEmpty";
 import { OrganizationHierarchyChips } from "./OrganizationHierarchyChips";
 import { FilterableBadge } from "@/components/ra-wrappers/FilterableBadge";
@@ -68,12 +68,16 @@ const OrganizationNameCell = memo(function OrganizationNameCell({
   return (
     <div className="flex flex-col gap-0.5 min-w-0">
       <div className="flex items-center gap-1.5 min-w-0">
-        <span className="name-cell truncate text-[15px] font-semibold leading-tight">
+        <span className="name-cell truncate text-base font-semibold leading-tight">
           {record.name}
         </span>
-        <OrganizationHierarchyChips record={record} />
+        <OrganizationHierarchyChips
+          record={record}
+          parentClassName="lg:hidden"
+          parentDisplayMode="listCompact"
+        />
       </div>
-      <span className="text-xs text-muted-foreground truncate">
+      <span className="text-[13px] text-muted-foreground truncate leading-snug">
         {record.city && record.state
           ? `${record.city}, ${record.state}`
           : record.city || record.state || "\u2014"}
@@ -108,15 +112,22 @@ const OrganizationPriorityCell = memo(function OrganizationPriorityCell({
   );
 });
 
-/** OrganizationSegmentCell - Renders segment badge with FilterableBadge wrapper for 44px touch targets */
+/** OrganizationSegmentCell - Renders segment as muted plain text with FilterableBadge wrapper */
 const OrganizationSegmentCell = memo(function OrganizationSegmentCell({
   record,
 }: {
   record: OrganizationRecord;
 }) {
+  const segmentName = record.segment_name;
   return (
     <FilterableBadge source="segment_id" value={record.segment_id}>
-      <SegmentBadge segmentId={record.segment_id} segmentName={record.segment_name} />
+      {segmentName ? (
+        <span className="text-sm text-muted-foreground truncate max-w-[160px]" title={segmentName}>
+          {segmentName}
+        </span>
+      ) : (
+        <span className="text-muted-foreground text-xs">{"\u2014"}</span>
+      )}
     </FilterableBadge>
   );
 });
@@ -127,7 +138,7 @@ const OrganizationContactsCell = memo(function OrganizationContactsCell({
 }: {
   record: OrganizationRecord;
 }) {
-  return <>{record.nb_contacts || 0}</>;
+  return <span className="tabular-nums text-muted-foreground">{record.nb_contacts || 0}</span>;
 });
 
 /** OrganizationOpportunitiesCell - Renders opportunities count metric */
@@ -136,7 +147,7 @@ const OrganizationOpportunitiesCell = memo(function OrganizationOpportunitiesCel
 }: {
   record: OrganizationRecord;
 }) {
-  return <>{record.nb_opportunities || 0}</>;
+  return <span className="tabular-nums text-muted-foreground">{record.nb_opportunities || 0}</span>;
 });
 
 const exporter: Exporter<OrganizationRecord> = async (records, fetchRelatedRecords) => {
@@ -254,6 +265,9 @@ const OrganizationDatagrid = ({
         <PremiumDatagrid
           onRowClick={(id) => openSlideOver(Number(id), "view")}
           focusedIndex={focusedIndex}
+          rowClassName={(_record: unknown, index: number) =>
+            `organization-list-row${index % 2 === 1 ? " organization-list-row-zebra" : ""}`
+          }
         >
           {/* Column 1: Name - Primary identifier with hierarchy chips (sortable) - always visible */}
           <FunctionField
@@ -294,7 +308,7 @@ const OrganizationDatagrid = ({
             source="state"
             label={<OrganizationStateHeader />}
             sortable
-            cellClassName="hidden lg:table-cell w-[60px]"
+            cellClassName="hidden lg:table-cell w-[60px] text-muted-foreground"
             headerClassName="hidden lg:table-cell"
           />
 
@@ -308,7 +322,7 @@ const OrganizationDatagrid = ({
                 {record.parent_organization_name || "-"}
               </span>
             )}
-            cellClassName="hidden lg:table-cell max-w-[140px]"
+            cellClassName="hidden lg:table-cell w-[120px] max-w-[120px]"
             headerClassName="hidden lg:table-cell"
           />
 
@@ -318,7 +332,7 @@ const OrganizationDatagrid = ({
             label="Contacts"
             sortable={false}
             render={(record: OrganizationRecord) => <OrganizationContactsCell record={record} />}
-            textAlign="center"
+            textAlign="right"
             cellClassName="hidden md:table-cell"
             headerClassName="hidden md:table-cell"
           />
@@ -331,7 +345,7 @@ const OrganizationDatagrid = ({
             render={(record: OrganizationRecord) => (
               <OrganizationOpportunitiesCell record={record} />
             )}
-            textAlign="center"
+            textAlign="right"
             cellClassName="hidden md:table-cell"
             headerClassName="hidden md:table-cell"
           />

@@ -78,6 +78,22 @@ describe("PriorityBadge", () => {
 
     expect(container.textContent).toContain("D - Low");
   });
+
+  test("D priority badge has text-muted-foreground for lowest emphasis", () => {
+    const { container } = renderWithAdminContext(<PriorityBadge priority="D" />);
+
+    const badge = container.querySelector("[class*='text-muted-foreground']");
+    expect(badge).toBeInTheDocument();
+  });
+
+  test("A, B, C priority badges do NOT have text-muted-foreground", () => {
+    for (const priority of ["A", "B", "C"]) {
+      const { container } = renderWithAdminContext(<PriorityBadge priority={priority} />);
+
+      const badge = container.querySelector("[class*='text-muted-foreground']");
+      expect(badge).not.toBeInTheDocument();
+    }
+  });
 });
 
 describe("SegmentBadge", () => {

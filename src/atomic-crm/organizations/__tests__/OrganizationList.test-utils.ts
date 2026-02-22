@@ -21,6 +21,7 @@ export interface MockFieldProps extends MockChildrenProps {
   sortable?: boolean;
   label?: string;
   sortBy?: string;
+  textAlign?: string;
 }
 
 export interface MockLayoutProps extends MockChildrenProps {
