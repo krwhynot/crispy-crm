@@ -10,6 +10,7 @@
 import { useCallback, useRef } from "react";
 import { AdminButton } from "@/components/admin/AdminButton";
 import { cn } from "@/lib/utils";
+import { useOptionalFilterSidebarContext } from "@/components/layouts/FilterSidebarContext";
 import type { ChipFilterConfig } from "./filterConfigSchema";
 import { useFilterChipBar } from "./useFilterChipBar";
 import { FilterChip } from "./FilterChip";
@@ -35,10 +36,10 @@ interface FilterChipBarProps<TContext = unknown> {
  *
  * @example
  * ```tsx
- * <StandardListLayout filterComponent={<MyFilter />}>
+ * <ListPageLayout filterComponent={<MyFilter />}>
  *   <FilterChipBar filterConfig={MY_FILTER_CONFIG} />
  *   <PremiumDatagrid>...</PremiumDatagrid>
- * </StandardListLayout>
+ * </ListPageLayout>
  * ```
  */
 export function FilterChipBar<TContext = unknown>({
@@ -56,8 +57,12 @@ export function FilterChipBar<TContext = unknown>({
     );
   }
 
+  const sidebarContext = useOptionalFilterSidebarContext();
+  const orSource = sidebarContext?.orSource ?? null;
+  const setOrSource = sidebarContext?.setOrSource ?? undefined;
+
   const { chips, removeFilter, clearAllFilters, hasActiveFilters, activeCount } =
-    useFilterChipBar<TContext>(filterConfig, context);
+    useFilterChipBar<TContext>(filterConfig, context, orSource, setOrSource);
 
   /**
    * Memoized callback for removing individual filters.

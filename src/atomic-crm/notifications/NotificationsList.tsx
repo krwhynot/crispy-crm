@@ -6,7 +6,7 @@ import { useQueryClient } from "@tanstack/react-query";
 
 import { List } from "@/components/ra-wrappers/list";
 import { ListPagination } from "@/components/ra-wrappers/list-pagination";
-import { UnifiedListPageLayout } from "@/components/layouts/UnifiedListPageLayout";
+import { ListPageLayout } from "@/components/layouts/ListPageLayout";
 import { Card } from "@/components/ui/card";
 import { FilterLiveForm } from "ra-core";
 import { SearchInput } from "@/components/ra-wrappers/search-input";
@@ -38,7 +38,7 @@ const NotificationsList = () => {
       sort={{ field: "created_at", order: "DESC" }}
       pagination={<ListPagination showExport />}
     >
-      <UnifiedListPageLayout
+      <ListPageLayout
         resource="notifications"
         showFilterSidebar={false}
         showFilterToggle={false}
@@ -53,7 +53,7 @@ const NotificationsList = () => {
             </Card>
           </div>
         </div>
-      </UnifiedListPageLayout>
+      </ListPageLayout>
     </List>
   );
 };

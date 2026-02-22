@@ -5,7 +5,7 @@ import { downloadCSV, useGetIdentity, useListContext } from "ra-core";
 import { TextField, FunctionField } from "react-admin";
 import { OrganizationBulkButtons } from "./OrganizationBulkActionsToolbar";
 import { List } from "@/components/ra-wrappers/list";
-import { UnifiedListPageLayout } from "@/components/layouts/UnifiedListPageLayout";
+import { ListPageLayout } from "@/components/layouts/ListPageLayout";
 import { PremiumDatagrid } from "@/components/ra-wrappers/PremiumDatagrid";
 import { RowHoverActions } from "@/components/ra-wrappers/RowHoverActions";
 import { CreateButton } from "@/components/ra-wrappers/create-button";
@@ -215,10 +215,10 @@ const exporter: Exporter<OrganizationRecord> = async (records, fetchRelatedRecor
 };
 
 /**
- * OrganizationDatagrid - Content component rendered inside UnifiedListPageLayout
+ * OrganizationDatagrid - Content component rendered inside ListPageLayout
  *
  * Handles keyboard navigation, view switching (card vs list), and column rendering.
- * Empty-state branching (loading, empty, filtered-empty) is handled by UnifiedListPageLayout.
+ * Empty-state branching (loading, empty, filtered-empty) is handled by ListPageLayout.
  */
 const OrganizationDatagrid = ({
   openSlideOver,
@@ -381,7 +381,7 @@ export const OrganizationList = () => {
           sort={SORT_BY_UPDATED_DESC}
           exporter={exporter}
         >
-          <UnifiedListPageLayout
+          <ListPageLayout
             resource="organizations"
             filterComponent={<OrganizationListFilter />}
             filterConfig={ORGANIZATION_FILTER_CONFIG}
@@ -405,7 +405,7 @@ export const OrganizationList = () => {
               isSlideOverOpen={isOpen}
               view={view}
             />
-          </UnifiedListPageLayout>
+          </ListPageLayout>
         </List>
       </div>
       <OrganizationSlideOver

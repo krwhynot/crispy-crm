@@ -44,11 +44,6 @@ interface MockDatagridColumnProps {
   source?: string;
 }
 
-interface MockLayoutProps {
-  children?: React.ReactNode;
-  filterComponent?: React.ReactNode;
-}
-
 interface MockBadgeProps {
   children?: React.ReactNode;
   variant?: string;
@@ -60,7 +55,7 @@ interface MockFilterableBadgeProps {
   value?: string;
 }
 
-// Shared mock state for UnifiedListPageLayout (vi.hoisted runs before vi.mock factories)
+// Shared mock state for ListPageLayout (vi.hoisted runs before vi.mock factories)
 const mockListState = vi.hoisted(() => ({
   data: [] as Record<string, unknown>[],
   isPending: false,
@@ -306,23 +301,13 @@ vi.mock("../ProductsDatagridHeader", () => ({
   ProductStatusHeader: () => <span data-testid="product-status-header">Status</span>,
 }));
 
-// Mock StandardListLayout (used internally by UnifiedListPageLayout)
-vi.mock("@/components/layouts/StandardListLayout", () => ({
-  StandardListLayout: ({ children, filterComponent }: MockLayoutProps) => (
-    <div data-testid="standard-list-layout">
-      <div data-testid="filter-sidebar">{filterComponent}</div>
-      <div data-testid="list-content">{children}</div>
-    </div>
-  ),
-}));
-
-// Mock UnifiedListPageLayout - replicates state-branching logic from real component
+// Mock ListPageLayout - replicates state-branching logic from real component
 // Reads from mockListState (shared via vi.hoisted) instead of calling useListContext
-vi.mock("@/components/layouts/UnifiedListPageLayout", () => {
+vi.mock("@/components/layouts/ListPageLayout", () => {
   const EMPTY_STATE_SYSTEM_KEYS = new Set(["deleted_at", "deleted_at@is", "$or"]);
 
   return {
-    UnifiedListPageLayout: ({
+    ListPageLayout: ({
       children,
       filterComponent,
       emptyState,
@@ -501,7 +486,7 @@ describe("ProductList", () => {
       isPending: false,
     });
 
-    // Sync shared mock state for UnifiedListPageLayout
+    // Sync shared mock state for ListPageLayout
     mockListState.data = defaultListContext.data;
     mockListState.isPending = defaultListContext.isPending;
     mockListState.filterValues = defaultListContext.filterValues;
@@ -543,7 +528,7 @@ describe("ProductList", () => {
     });
   });
 
-  test("renders with StandardListLayout and filter sidebar", async () => {
+  test("renders with ListPageLayout and filter sidebar", async () => {
     renderWithAdminContext(<ProductList />);
 
     await waitFor(() => {
@@ -590,7 +575,7 @@ describe("ProductList", () => {
     renderWithAdminContext(<ProductList />);
 
     await waitFor(() => {
-      // With UnifiedListPageLayout, filtered empty shows ListNoResults instead of datagrid
+      // With ListPageLayout, filtered empty shows ListNoResults instead of datagrid
       expect(screen.queryByTestId("premium-datagrid")).not.toBeInTheDocument();
       expect(screen.getByTestId("list-no-results")).toBeInTheDocument();
     });
@@ -651,7 +636,7 @@ describe("ProductList 5-column structure", () => {
       hasPreviousPage: false,
     });
 
-    // Sync shared mock state for UnifiedListPageLayout
+    // Sync shared mock state for ListPageLayout
     mockListState.data = columnTestData;
     mockListState.isPending = false;
     mockListState.filterValues = {};
@@ -734,7 +719,7 @@ describe("ProductList column sorting configuration", () => {
       hasPreviousPage: false,
     });
 
-    // Sync shared mock state for UnifiedListPageLayout
+    // Sync shared mock state for ListPageLayout
     mockListState.data = sortingTestData;
     mockListState.isPending = false;
     mockListState.filterValues = {};
@@ -845,7 +830,7 @@ describe("ProductList badge components", () => {
       hasPreviousPage: false,
     });
 
-    // Sync shared mock state for UnifiedListPageLayout
+    // Sync shared mock state for ListPageLayout
     mockListState.data = badgeTestData;
     mockListState.isPending = false;
     mockListState.filterValues = {};

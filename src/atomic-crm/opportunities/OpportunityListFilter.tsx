@@ -12,7 +12,6 @@ import {
   Flag,
   Layers,
   Megaphone,
-  Zap,
   User,
   Calendar,
   AlertCircle,
@@ -23,6 +22,9 @@ import { addDays } from "date-fns";
 
 import { ToggleFilterButton } from "@/components/ra-wrappers/toggle-filter-button";
 import { FilterCategory } from "../filters/FilterCategory";
+import { FilterSidebar } from "../filters/FilterSidebar";
+import { QuickFilterGroup } from "../filters/QuickFilterGroup";
+import { usePresetFilter } from "../filters/usePresetFilter";
 import { OPPORTUNITY_STAGES, STAGE, priorityChoices } from "./constants";
 import { OwnerFilterDropdown } from "@/components/ra-wrappers/OwnerFilterDropdown";
 import { DEFAULT_PAGE_SIZE } from "@/atomic-crm/constants/appConstants";
@@ -30,6 +32,7 @@ import { DEFAULT_PAGE_SIZE } from "@/atomic-crm/constants/appConstants";
 export const OpportunityListFilter = () => {
   const { data: identity } = useGetIdentity();
   const { filterValues, setFilters } = useListContext();
+  const { isPresetActive, handlePresetClick } = usePresetFilter();
 
   // PERF: Fetch all relevant organizations in a single query instead of two sequential calls
   // Previously: 2 separate useGetList calls (principals + customers) = 2 network requests
@@ -131,248 +134,214 @@ export const OpportunityListFilter = () => {
   const today = new Date();
   const thirtyDaysFromNow = addDays(today, 30);
 
-  const handlePresetClick = (filters: Record<string, unknown>) => {
-    if (isPresetActive(filters)) {
-      // Toggle OFF: remove preset keys from current filters
-      const next = { ...filterValues };
-      for (const key of Object.keys(filters)) {
-        delete next[key];
-      }
-      setFilters(next);
-    } else {
-      // Toggle ON: merge preset into current filters
-      setFilters({ ...filterValues, ...filters });
-    }
-  };
-
-  const isPresetActive = (presetFilters: Record<string, unknown>): boolean => {
-    return Object.entries(presetFilters).every(([key, value]) => {
-      const currentValue = filterValues?.[key];
-      if (key === "$or" && Array.isArray(value) && Array.isArray(currentValue)) {
-        // Deep compare $or arrays (both are arrays of {field: value} objects)
-        return JSON.stringify(value) === JSON.stringify(currentValue);
-      }
-      if (Array.isArray(value) && Array.isArray(currentValue)) {
-        return value.every((v) => currentValue.includes(v));
-      }
-      return currentValue === value;
-    });
-  };
-
   return (
-    <div className="flex flex-col gap-4" data-tutorial="opp-filters">
+    <FilterSidebar showSearch={false} data-tutorial="opp-filters">
+      {/* Quick Filter Presets */}
+      <QuickFilterGroup label="Quick Filters" data-tutorial="opp-quick-filters">
+        <AdminButton
+          type="button"
+          variant={
+            isPresetActive({
+              $or: [{ opportunity_owner_id: identity?.id }, { account_manager_id: identity?.id }],
+            })
+              ? "default"
+              : "outline"
+          }
+          size="sm"
+          onClick={() =>
+            handlePresetClick({
+              $or: [{ opportunity_owner_id: identity?.id }, { account_manager_id: identity?.id }],
+            })
+          }
+          className="w-full justify-start"
+          title="Opportunities I manage"
+        >
+          <User className="w-3.5 h-3.5 mr-2" />
+          My Opportunities
+        </AdminButton>
+
+        <AdminButton
+          type="button"
+          variant={
+            isPresetActive({
+              estimated_close_date_gte: today.toISOString().split("T")[0],
+              estimated_close_date_lte: thirtyDaysFromNow.toISOString().split("T")[0],
+            })
+              ? "default"
+              : "outline"
+          }
+          size="sm"
+          onClick={() =>
+            handlePresetClick({
+              estimated_close_date_gte: today.toISOString().split("T")[0],
+              estimated_close_date_lte: thirtyDaysFromNow.toISOString().split("T")[0],
+            })
+          }
+          className="w-full justify-start"
+          title="Opportunities with expected close date within 30 days"
+        >
+          <Calendar className="w-3.5 h-3.5 mr-2" />
+          Closing This Month
+        </AdminButton>
+
+        <AdminButton
+          type="button"
+          variant={isPresetActive({ priority: ["high", "critical"] }) ? "default" : "outline"}
+          size="sm"
+          onClick={() => handlePresetClick({ priority: ["high", "critical"] })}
+          className="w-full justify-start"
+          title="Critical and high priority opportunities"
+        >
+          <AlertCircle className="w-3.5 h-3.5 mr-2" />
+          High Priority
+        </AdminButton>
+
+        <AdminButton
+          type="button"
+          variant={
+            isPresetActive({ next_action_date_lte: today.toISOString().split("T")[0] })
+              ? "default"
+              : "outline"
+          }
+          size="sm"
+          onClick={() =>
+            handlePresetClick({ next_action_date_lte: today.toISOString().split("T")[0] })
+          }
+          className="w-full justify-start"
+          title="Opportunities with overdue or upcoming actions"
+        >
+          <Flag className="w-3.5 h-3.5 mr-2" />
+          Needs Action
+        </AdminButton>
+
+        <AdminButton
+          type="button"
+          variant={
+            isPresetActive({
+              stage: STAGE.CLOSED_WON,
+              updated_at_gte: addDays(today, -30).toISOString().split("T")[0],
+            })
+              ? "default"
+              : "outline"
+          }
+          size="sm"
+          onClick={() =>
+            handlePresetClick({
+              stage: STAGE.CLOSED_WON,
+              updated_at_gte: addDays(today, -30).toISOString().split("T")[0],
+            })
+          }
+          className="w-full justify-start"
+          title="Opportunities closed won in the last 30 days"
+        >
+          <Trophy className="w-3.5 h-3.5 mr-2" />
+          Recent Wins
+        </AdminButton>
+      </QuickFilterGroup>
+
       {/* Collapsible Filter Sections */}
-      <div className="flex flex-col gap-2">
-        <FilterCategory
-          label="Quick Filters"
-          icon={<Zap className="h-4 w-4" />}
-          defaultExpanded
-          data-tutorial="opp-quick-filters"
-        >
-          <AdminButton
-            type="button"
-            variant={
-              isPresetActive({
-                $or: [{ opportunity_owner_id: identity?.id }, { account_manager_id: identity?.id }],
-              })
-                ? "default"
-                : "outline"
-            }
-            size="sm"
-            onClick={() =>
-              handlePresetClick({
-                $or: [{ opportunity_owner_id: identity?.id }, { account_manager_id: identity?.id }],
-              })
-            }
-            className="w-full justify-start"
-            title="Opportunities I manage"
+      <FilterCategory
+        label="Stage"
+        icon={<Layers className="h-4 w-4" />}
+        data-tutorial="opp-stage-filters"
+      >
+        {OPPORTUNITY_STAGES.map((stage) => (
+          <ToggleFilterButton
+            multiselect
+            className="w-full justify-between"
+            key={stage.value}
+            label={stage.label}
+            value={{ stage: stage.value }}
+          />
+        ))}
+      </FilterCategory>
+
+      <FilterCategory label="Priority" icon={<Flag className="h-4 w-4" />}>
+        {priorityChoices.map((priority) => (
+          <ToggleFilterButton
+            multiselect
+            className="w-full justify-between"
+            key={priority.id}
+            label={priority.name}
+            value={{ priority: priority.id }}
+          />
+        ))}
+      </FilterCategory>
+
+      <FilterCategory label="Principal" icon={<Building2 className="h-4 w-4" />}>
+        <Select value={currentPrincipalFilter} onValueChange={handlePrincipalChange}>
+          <SelectTrigger
+            className="w-full min-h-11 bg-background border-border text-foreground"
+            aria-label="Filter by principal"
           >
-            <User className="w-3.5 h-3.5 mr-2" />
-            My Opportunities
-          </AdminButton>
-
-          <AdminButton
-            type="button"
-            variant={
-              isPresetActive({
-                estimated_close_date_gte: today.toISOString().split("T")[0],
-                estimated_close_date_lte: thirtyDaysFromNow.toISOString().split("T")[0],
-              })
-                ? "default"
-                : "outline"
-            }
-            size="sm"
-            onClick={() =>
-              handlePresetClick({
-                estimated_close_date_gte: today.toISOString().split("T")[0],
-                estimated_close_date_lte: thirtyDaysFromNow.toISOString().split("T")[0],
-              })
-            }
-            className="w-full justify-start"
-            title="Opportunities with expected close date within 30 days"
-          >
-            <Calendar className="w-3.5 h-3.5 mr-2" />
-            Closing This Month
-          </AdminButton>
-
-          <AdminButton
-            type="button"
-            variant={isPresetActive({ priority: ["high", "critical"] }) ? "default" : "outline"}
-            size="sm"
-            onClick={() => handlePresetClick({ priority: ["high", "critical"] })}
-            className="w-full justify-start"
-            title="Critical and high priority opportunities"
-          >
-            <AlertCircle className="w-3.5 h-3.5 mr-2" />
-            High Priority
-          </AdminButton>
-
-          <AdminButton
-            type="button"
-            variant={
-              isPresetActive({ next_action_date_lte: today.toISOString().split("T")[0] })
-                ? "default"
-                : "outline"
-            }
-            size="sm"
-            onClick={() =>
-              handlePresetClick({ next_action_date_lte: today.toISOString().split("T")[0] })
-            }
-            className="w-full justify-start"
-            title="Opportunities with overdue or upcoming actions"
-          >
-            <Flag className="w-3.5 h-3.5 mr-2" />
-            Needs Action
-          </AdminButton>
-
-          <AdminButton
-            type="button"
-            variant={
-              isPresetActive({
-                stage: STAGE.CLOSED_WON,
-                updated_at_gte: addDays(today, -30).toISOString().split("T")[0],
-              })
-                ? "default"
-                : "outline"
-            }
-            size="sm"
-            onClick={() =>
-              handlePresetClick({
-                stage: STAGE.CLOSED_WON,
-                updated_at_gte: addDays(today, -30).toISOString().split("T")[0],
-              })
-            }
-            className="w-full justify-start"
-            title="Opportunities closed won in the last 30 days"
-          >
-            <Trophy className="w-3.5 h-3.5 mr-2" />
-            Recent Wins
-          </AdminButton>
-        </FilterCategory>
-
-        <FilterCategory
-          label="Stage"
-          icon={<Layers className="h-4 w-4" />}
-          data-tutorial="opp-stage-filters"
-        >
-          {OPPORTUNITY_STAGES.map((stage) => (
-            <ToggleFilterButton
-              multiselect
-              className="w-full justify-between"
-              key={stage.value}
-              label={stage.label}
-              value={{ stage: stage.value }}
-            />
-          ))}
-        </FilterCategory>
-
-        <FilterCategory label="Priority" icon={<Flag className="h-4 w-4" />}>
-          {priorityChoices.map((priority) => (
-            <ToggleFilterButton
-              multiselect
-              className="w-full justify-between"
-              key={priority.id}
-              label={priority.name}
-              value={{ priority: priority.id }}
-            />
-          ))}
-        </FilterCategory>
-
-        <FilterCategory label="Principal" icon={<Building2 className="h-4 w-4" />}>
-          <Select value={currentPrincipalFilter} onValueChange={handlePrincipalChange}>
-            <SelectTrigger
-              className="w-full min-h-11 bg-background border-border text-foreground"
-              aria-label="Filter by principal"
-            >
-              <SelectValue placeholder="All Principals" />
-            </SelectTrigger>
-            <SelectContent className="max-h-60">
-              <SelectItem value="all" className="min-h-11">
-                <span className="text-muted-foreground">All Principals</span>
+            <SelectValue placeholder="All Principals" />
+          </SelectTrigger>
+          <SelectContent className="max-h-60">
+            <SelectItem value="all" className="min-h-11">
+              <span className="text-muted-foreground">All Principals</span>
+            </SelectItem>
+            {principalsData?.map((org) => (
+              <SelectItem key={org.id} value={String(org.id)} className="min-h-11">
+                <span className="truncate" title={org.name}>
+                  {org.name}
+                </span>
               </SelectItem>
-              {principalsData?.map((org) => (
-                <SelectItem key={org.id} value={String(org.id)} className="min-h-11">
-                  <span className="truncate" title={org.name}>
-                    {org.name}
-                  </span>
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </FilterCategory>
+            ))}
+          </SelectContent>
+        </Select>
+      </FilterCategory>
 
-        <FilterCategory label="Customer" icon={<Building2 className="h-4 w-4" />}>
-          <Select value={currentCustomerFilter} onValueChange={handleCustomerChange}>
-            <SelectTrigger
-              className="w-full min-h-11 bg-background border-border text-foreground"
-              aria-label="Filter by customer"
-            >
-              <SelectValue placeholder="All Customers" />
-            </SelectTrigger>
-            <SelectContent className="max-h-60">
-              <SelectItem value="all" className="min-h-11">
-                <span className="text-muted-foreground">All Customers</span>
+      <FilterCategory label="Customer" icon={<Building2 className="h-4 w-4" />}>
+        <Select value={currentCustomerFilter} onValueChange={handleCustomerChange}>
+          <SelectTrigger
+            className="w-full min-h-11 bg-background border-border text-foreground"
+            aria-label="Filter by customer"
+          >
+            <SelectValue placeholder="All Customers" />
+          </SelectTrigger>
+          <SelectContent className="max-h-60">
+            <SelectItem value="all" className="min-h-11">
+              <span className="text-muted-foreground">All Customers</span>
+            </SelectItem>
+            {customersData?.map((org) => (
+              <SelectItem key={org.id} value={String(org.id)} className="min-h-11">
+                <span className="truncate" title={org.name}>
+                  {org.name}
+                </span>
               </SelectItem>
-              {customersData?.map((org) => (
-                <SelectItem key={org.id} value={String(org.id)} className="min-h-11">
-                  <span className="truncate" title={org.name}>
-                    {org.name}
-                  </span>
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </FilterCategory>
+            ))}
+          </SelectContent>
+        </Select>
+      </FilterCategory>
 
-        <FilterCategory label="Campaign" icon={<Megaphone className="h-4 w-4" />}>
-          <Select value={currentCampaignFilter} onValueChange={handleCampaignChange}>
-            <SelectTrigger
-              className="w-full min-h-11 bg-background border-border text-foreground"
-              aria-label="Filter by campaign"
-            >
-              <SelectValue placeholder="All Campaigns" />
-            </SelectTrigger>
-            <SelectContent className="max-h-60">
-              <SelectItem value="all" className="min-h-11">
-                <span className="text-muted-foreground">All Campaigns</span>
+      <FilterCategory label="Campaign" icon={<Megaphone className="h-4 w-4" />}>
+        <Select value={currentCampaignFilter} onValueChange={handleCampaignChange}>
+          <SelectTrigger
+            className="w-full min-h-11 bg-background border-border text-foreground"
+            aria-label="Filter by campaign"
+          >
+            <SelectValue placeholder="All Campaigns" />
+          </SelectTrigger>
+          <SelectContent className="max-h-60">
+            <SelectItem value="all" className="min-h-11">
+              <span className="text-muted-foreground">All Campaigns</span>
+            </SelectItem>
+            {campaigns.map((campaign) => (
+              <SelectItem key={campaign} value={campaign} className="min-h-11">
+                <span className="truncate" title={campaign}>
+                  {campaign}
+                </span>
               </SelectItem>
-              {campaigns.map((campaign) => (
-                <SelectItem key={campaign} value={campaign} className="min-h-11">
-                  <span className="truncate" title={campaign}>
-                    {campaign}
-                  </span>
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </FilterCategory>
+            ))}
+          </SelectContent>
+        </Select>
+      </FilterCategory>
 
-        <OwnerFilterDropdown
-          source="opportunity_owner_id"
-          secondarySource="account_manager_id"
-          label="Owner"
-        />
-      </div>
-    </div>
+      <OwnerFilterDropdown
+        source="opportunity_owner_id"
+        secondarySource="account_manager_id"
+        label="Owner"
+      />
+    </FilterSidebar>
   );
 };

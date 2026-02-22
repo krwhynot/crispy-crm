@@ -1,6 +1,6 @@
 import { useGetIdentity, useListContext } from "ra-core";
 import { List } from "@/components/ra-wrappers/list";
-import { UnifiedListPageLayout } from "@/components/layouts/UnifiedListPageLayout";
+import { ListPageLayout } from "@/components/layouts/ListPageLayout";
 import { PremiumDatagrid } from "@/components/ra-wrappers/PremiumDatagrid";
 import { RowHoverActions } from "@/components/ra-wrappers/RowHoverActions";
 import { Badge } from "@/components/ui/badge";
@@ -19,7 +19,7 @@ import { SalesListFilter } from "./SalesListFilter";
 /**
  * SalesList - Standard list page for Sales (User) records
  *
- * Follows UnifiedListPageLayout pattern:
+ * Follows ListPageLayout pattern:
  * - Identity-aware rendering with skeleton loading
  * - Keyboard navigation with slide-over integration
  * - Responsive columns using COLUMN_VISIBILITY semantic presets
@@ -46,7 +46,7 @@ export default function SalesList() {
           filterDefaultValues={{ disabled: false }}
           pagination={<ListPagination showExport />}
         >
-          <UnifiedListPageLayout
+          <ListPageLayout
             resource="sales"
             filterComponent={<SalesListFilter />}
             filterConfig={SALES_FILTER_CONFIG}
@@ -58,7 +58,7 @@ export default function SalesList() {
             defaultFilters={{ disabled: false }}
           >
             <SalesDatagrid openSlideOver={openSlideOver} isSlideOverOpen={isOpen} />
-          </UnifiedListPageLayout>
+          </ListPageLayout>
         </List>
       </div>
 
@@ -86,10 +86,10 @@ const SalesEmpty = () => (
 );
 
 /**
- * SalesDatagrid - Content component rendered inside UnifiedListPageLayout
+ * SalesDatagrid - Content component rendered inside ListPageLayout
  *
  * Handles keyboard navigation and column rendering.
- * Empty-state branching is handled by UnifiedListPageLayout.
+ * Empty-state branching is handled by ListPageLayout.
  */
 const SalesDatagrid = ({
   openSlideOver,

@@ -9,7 +9,7 @@ import type { Contact } from "../types";
  * ContactBulkButtons - Bulk action buttons for the Contacts list
  *
  * Renders ONLY the action buttons (no toolbar wrapper).
- * UnifiedListPageLayout wraps these in the shared BulkActionsToolbar.
+ * ListPageLayout wraps these in the shared BulkActionsToolbar.
  *
  * Actions:
  * - Reassign: Bulk reassign contacts to a different sales rep

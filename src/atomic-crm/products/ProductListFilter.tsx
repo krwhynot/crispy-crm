@@ -3,6 +3,7 @@ import { useGetList } from "ra-core";
 
 import { ToggleFilterButton } from "@/components/ra-wrappers/toggle-filter-button";
 import { FilterCategory } from "../filters/FilterCategory";
+import { FilterSidebar } from "../filters/FilterSidebar";
 import type { Organization } from "../types";
 import { DEFAULT_PAGE_SIZE } from "@/atomic-crm/constants/appConstants";
 
@@ -24,7 +25,7 @@ export const ProductListFilter = () => {
   );
 
   return (
-    <div className="flex flex-col gap-4">
+    <FilterSidebar showSearch={false}>
       {principals && principals.length > 0 && (
         <FilterCategory icon={<Building2 className="h-4 w-4" />} label="Principal/Supplier">
           {principals.map((principal) => (
@@ -37,6 +38,6 @@ export const ProductListFilter = () => {
           ))}
         </FilterCategory>
       )}
-    </div>
+    </FilterSidebar>
   );
 };

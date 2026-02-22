@@ -39,3 +39,20 @@ export function countActiveUserFilters(filterValues: Record<string, unknown> | u
 export function hasActiveUserFilters(filterValues: Record<string, unknown> | undefined): boolean {
   return countActiveUserFilters(filterValues) > 0;
 }
+
+export function countActiveUserFiltersWithOrSource(
+  filterValues: Record<string, unknown> | undefined,
+  orSource: "preset" | "owner" | null
+): number {
+  const base = countActiveUserFilters(filterValues);
+  const hasOr = Array.isArray(filterValues?.$or) && (filterValues.$or as unknown[]).length > 0;
+  const orBonus = orSource === "preset" && hasOr ? 1 : 0;
+  return base + orBonus;
+}
+
+export function hasActiveUserFiltersWithOrSource(
+  filterValues: Record<string, unknown> | undefined,
+  orSource: "preset" | "owner" | null
+): boolean {
+  return countActiveUserFiltersWithOrSource(filterValues, orSource) > 0;
+}

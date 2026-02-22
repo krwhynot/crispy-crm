@@ -4,7 +4,7 @@ import { opportunityExporter } from "./opportunityExporter";
 import { List } from "@/components/ra-wrappers/list";
 import { ListPagination } from "@/components/ra-wrappers/list-pagination";
 import { QuickAddButton } from "./QuickAddButton";
-import { UnifiedListPageLayout } from "@/components/layouts/UnifiedListPageLayout";
+import { ListPageLayout } from "@/components/layouts/ListPageLayout";
 import { ListSkeleton } from "@/components/ui/list-skeleton";
 
 import { useGetIdentity, useListContext } from "ra-core";
@@ -91,7 +91,7 @@ const OpportunityList = () => {
           exporter={opportunityExporter}
           pagination={<ListPagination rowsPerPageOptions={[10, 25, 50]} />}
         >
-          <UnifiedListPageLayout
+          <ListPageLayout
             resource="opportunities"
             filterComponent={<OpportunityListFilter />}
             filterConfig={OPPORTUNITY_FILTER_CONFIG}
@@ -125,7 +125,7 @@ const OpportunityList = () => {
               slideOverId={slideOverId}
               closeSlideOver={closeSlideOver}
             />
-          </UnifiedListPageLayout>
+          </ListPageLayout>
         </List>
       </div>
 
@@ -144,7 +144,7 @@ const OpportunityList = () => {
 
 /**
  * OpportunityListViews - Renders the active view (kanban/list/campaign/principal)
- * inside UnifiedListPageLayout. Handles stage filter persistence and archived list.
+ * inside ListPageLayout. Handles stage filter persistence and archived list.
  *
  * CRITICAL: h-full + min-h-0 + overflow-hidden enables scroll in child components
  */

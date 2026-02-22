@@ -37,12 +37,18 @@ export const ToggleFilterButton = ({
 
   return (
     <Button
-      variant={isSelected ? "secondary" : "ghost"}
+      variant="ghost"
       onClick={handleClick}
+      aria-pressed={isSelected}
       className={cn(
         "cursor-pointer",
         "flex flex-row items-center gap-2 px-2.5",
         "min-w-0", // Allow text truncation
+        "h-11", // 44px rhythm override
+        "border-l-[3px]",
+        isSelected
+          ? "border-l-primary bg-primary/8 font-medium text-foreground"
+          : "border-l-transparent text-muted-foreground hover:text-foreground",
         className
       )}
       size={size}
@@ -52,9 +58,9 @@ export const ToggleFilterButton = ({
       </span>
       {isSelected &&
         (multiselect ? (
-          <Check className="h-4 w-4 opacity-50" />
+          <Check className="h-4 w-4 opacity-80 text-primary" />
         ) : (
-          <CircleX className="opacity-50" />
+          <CircleX className="opacity-60" />
         ))}
     </Button>
   );

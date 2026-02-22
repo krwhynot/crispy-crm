@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useCanAccess } from "ra-core";
-import { Zap } from "lucide-react";
+import { Plus } from "lucide-react";
 import { AdminButton } from "@/components/admin/AdminButton";
 import { QuickAddDialog } from "./QuickAddDialog";
 
@@ -28,9 +28,8 @@ export const QuickAddButton = () => {
         onClick={() => setOpen(true)}
         variant="default"
         size="default"
-        className="min-h-[44px] min-w-[44px]" // Ensure touch target minimum
       >
-        <Zap className="h-4 w-4" aria-hidden="true" /> Quick Add
+        <Plus aria-hidden="true" /> Add Opportunity
       </AdminButton>
       <QuickAddDialog open={open} onOpenChange={setOpen} />
     </>

@@ -11,6 +11,7 @@ import { Switch } from "@/components/ui/switch";
 import { useUserRole } from "@/hooks/useUserRole";
 import { useTeamMembers } from "@/hooks/useTeamMembers";
 import { useGetIdentity, useListFilterContext } from "ra-core";
+import { useOptionalFilterSidebarContext } from "@/components/layouts/FilterSidebarContext";
 
 interface OwnerFilterDropdownProps {
   source: string;
@@ -41,6 +42,9 @@ export const OwnerFilterDropdown = ({
   const { isRep } = useUserRole();
   const { teamMembers } = useTeamMembers();
 
+  const sidebarContext = useOptionalFilterSidebarContext();
+  const setOrSource = sidebarContext?.setOrSource;
+
   const currentUserId = identity?.id;
 
   // Detect if "my items" is active (check both direct source and $or)
@@ -63,9 +67,13 @@ export const OwnerFilterDropdown = ({
       // Turning ON
       if (secondarySource) {
         newFilterValues.$or = [{ [source]: currentUserId }, { [secondarySource]: currentUserId }];
+        setOrSource?.("owner");
       } else {
         newFilterValues[source] = currentUserId;
       }
+    } else {
+      // Turning OFF -- $or removed
+      setOrSource?.(null);
     }
     setFilters(newFilterValues, displayedFilters);
   };
@@ -78,14 +86,18 @@ export const OwnerFilterDropdown = ({
     if (value === "mine") {
       if (secondarySource) {
         newFilterValues.$or = [{ [source]: currentUserId }, { [secondarySource]: currentUserId }];
+        setOrSource?.("owner");
       } else {
         newFilterValues[source] = currentUserId;
       }
     } else if (value !== "all") {
       // Specific team member -- direct source only
       newFilterValues[source] = value;
+      setOrSource?.(null);
+    } else {
+      // "all" -- we already deleted both keys
+      setOrSource?.(null);
     }
-    // "all" -- we already deleted both keys
 
     setFilters(newFilterValues, displayedFilters);
   };

@@ -8,7 +8,7 @@ import { SnoozeBadge } from "@/components/ui/snooze-badge";
 import { TruncatedText } from "@/components/ui/truncated-text";
 import { List } from "@/components/ra-wrappers/list";
 import { ListPagination } from "@/components/ra-wrappers/list-pagination";
-import { UnifiedListPageLayout } from "@/components/layouts/UnifiedListPageLayout";
+import { ListPageLayout } from "@/components/layouts/ListPageLayout";
 import { BulkActionsToolbarChildren } from "@/components/ra-wrappers/bulk-actions-toolbar";
 import { PremiumDatagrid } from "@/components/ra-wrappers/PremiumDatagrid";
 import { RowHoverActions } from "@/components/ra-wrappers/RowHoverActions";
@@ -98,7 +98,7 @@ const TaskActionsCell = React.memo(function TaskActionsCell({
 /**
  * TaskList - Standard list page for Task records
  *
- * Uses UnifiedListPageLayout for centralized empty-state branching,
+ * Uses ListPageLayout for centralized empty-state branching,
  * loading states, filter cleanup, and bulk actions.
  *
  * Features:
@@ -132,7 +132,7 @@ export default function TaskList() {
           exporter={exporter}
           pagination={<ListPagination rowsPerPageOptions={[25, 50, 100]} />}
         >
-          <UnifiedListPageLayout
+          <ListPageLayout
             resource="tasks"
             filterComponent={<TaskListFilter />}
             filterConfig={TASK_FILTER_CONFIG}
@@ -145,7 +145,7 @@ export default function TaskList() {
             bulkActions={<BulkActionsToolbarChildren />}
           >
             <TaskDatagrid openSlideOver={openSlideOver} isSlideOverOpen={isOpen} />
-          </UnifiedListPageLayout>
+          </ListPageLayout>
         </List>
       </div>
 

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-const LIST_DOCKED_QUERY = "(min-width: 1024px)";
+const LIST_DOCKED_QUERY = "(min-width: 1280px)";
 
 function getDockedMatch(): boolean {
   if (typeof window === "undefined") {

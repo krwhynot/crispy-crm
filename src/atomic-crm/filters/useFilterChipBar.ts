@@ -49,8 +49,11 @@ export interface UseFilterChipBarReturn {
 }
 
 /**
- * System filters that should never show as chips.
- * Includes soft-delete variants used by various lists.
+ * System filters preserved during "Clear all". $or is always preserved here
+ * (conditional clearing based on orSource happens in clearAllFilters).
+ *
+ * Chip bar never renders $or as a visual chip regardless of orSource.
+ * The header/badge count includes preset-$or via countActiveUserFiltersWithOrSource.
  *
  * NOTE: 'q' (search) is NOT excluded - we show search chips for user clarity
  */
@@ -77,7 +80,9 @@ const SYSTEM_FILTERS = new Set(["deleted_at", "deleted_at@is", "$or"]);
  */
 export function useFilterChipBar<TContext = unknown>(
   filterConfig: ChipFilterConfig[],
-  context?: TContext
+  context?: TContext,
+  orSource?: "preset" | "owner" | null,
+  setOrSource?: (source: null) => void
 ): UseFilterChipBarReturn {
   const { filterValues, setFilters, displayedFilters } = useListContext();
 
@@ -423,12 +428,15 @@ export function useFilterChipBar<TContext = unknown>(
   );
 
   const clearAllFilters = useCallback(() => {
-    // Preserve system filters when clearing
     const preserved = Object.fromEntries(
-      Object.entries(filterValues).filter(([key]) => SYSTEM_FILTERS.has(key))
+      Object.entries(filterValues).filter(([key]) => {
+        if (key === "$or") return orSource !== "preset";
+        return SYSTEM_FILTERS.has(key);
+      })
     );
     setFilters(preserved, displayedFilters);
-  }, [filterValues, setFilters, displayedFilters]);
+    if (orSource === "preset") setOrSource?.(null);
+  }, [filterValues, setFilters, displayedFilters, orSource, setOrSource]);
 
   const activeCount = chips.length;
   const hasActiveFilters = activeCount > 0;

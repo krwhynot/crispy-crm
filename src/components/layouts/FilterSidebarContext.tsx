@@ -8,7 +8,7 @@ import {
   type ReactNode,
 } from "react";
 import { ListContext } from "ra-core";
-import { countActiveUserFilters } from "./listFilterSemantics";
+import { countActiveUserFiltersWithOrSource } from "./listFilterSemantics";
 
 const DEFAULT_STORAGE_KEY = "crm-filter-sidebar-collapsed";
 
@@ -27,6 +27,10 @@ interface FilterSidebarContextValue {
   hasToolbar: boolean;
   /** Called by ListToolbar on mount to claim filter trigger ownership */
   setHasToolbar: (value: boolean) => void;
+  /** Tracks who set the current $or filter: "preset" (quick filters), "owner" (OwnerFilterDropdown), or null (unknown/URL-restored) */
+  orSource: "preset" | "owner" | null;
+  /** Set the $or filter origin */
+  setOrSource: (source: "preset" | "owner" | null) => void;
 }
 
 const FilterSidebarContext = createContext<FilterSidebarContextValue | null>(null);
@@ -69,8 +73,26 @@ export function FilterSidebarProvider({
   // Whether a ListToolbar is mounted (owns the filter trigger at <1024px)
   const [hasToolbar, setHasToolbar] = useState(false);
 
-  // Active filter count — excludes system keys
-  const activeFilterCount = useMemo(() => countActiveUserFilters(filterValues), [filterValues]);
+  // orSource tracks WHO set the current $or filter: "preset" (quick filters),
+  // "owner" (OwnerFilterDropdown), or null (unknown -- e.g. URL-restored).
+  // null is treated as "owner" (safe default): URL-restored preset $or won't
+  // count toward active filters, won't be cleared by "Clear all", and won't
+  // trigger filtered-empty-state. This is intentional -- sidecar metadata is
+  // session-only and cannot survive page refresh.
+  const [orSource, setOrSource] = useState<"preset" | "owner" | null>(null);
+
+  // Sync effect: prevent stale sidecar when $or is externally removed
+  useEffect(() => {
+    if (!filterValues?.$or && orSource !== null) {
+      setOrSource(null);
+    }
+  }, [filterValues?.$or, orSource]);
+
+  // Active filter count — excludes system keys, counts preset $or as user filter
+  const activeFilterCount = useMemo(
+    () => countActiveUserFiltersWithOrSource(filterValues, orSource),
+    [filterValues, orSource]
+  );
 
   const value = useMemo<FilterSidebarContextValue>(
     () => ({
@@ -81,8 +103,10 @@ export function FilterSidebarProvider({
       activeFilterCount,
       hasToolbar,
       setHasToolbar,
+      orSource,
+      setOrSource,
     }),
-    [isCollapsed, toggleSidebar, isSheetOpen, activeFilterCount, hasToolbar]
+    [isCollapsed, toggleSidebar, isSheetOpen, activeFilterCount, hasToolbar, orSource]
   );
 
   return <FilterSidebarContext.Provider value={value}>{children}</FilterSidebarContext.Provider>;
@@ -94,4 +118,9 @@ export function useFilterSidebarContext(): FilterSidebarContextValue {
     throw new Error("useFilterSidebarContext must be used within a FilterSidebarProvider");
   }
   return context;
+}
+
+/** Non-throwing version for components that may render outside FilterSidebarProvider */
+export function useOptionalFilterSidebarContext(): FilterSidebarContextValue | null {
+  return useContext(FilterSidebarContext);
 }

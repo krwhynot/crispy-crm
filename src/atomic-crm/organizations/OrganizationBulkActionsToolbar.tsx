@@ -8,7 +8,7 @@ import type { Organization } from "../types";
  * OrganizationBulkButtons - Bulk action buttons for the Organizations list
  *
  * Renders ONLY the action buttons (no toolbar wrapper).
- * UnifiedListPageLayout wraps these in the shared BulkActionsToolbar.
+ * ListPageLayout wraps these in the shared BulkActionsToolbar.
  *
  * Actions:
  * - Reassign: Bulk reassign organizations to a different sales rep

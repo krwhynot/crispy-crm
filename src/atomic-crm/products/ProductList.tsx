@@ -4,7 +4,7 @@ import { List } from "@/components/ra-wrappers/list";
 import { TextField } from "@/components/ra-wrappers/text-field";
 import { CreateButton } from "@/components/ra-wrappers/create-button";
 import { BulkActionsToolbarChildren } from "@/components/ra-wrappers/bulk-actions-toolbar";
-import { UnifiedListPageLayout } from "@/components/layouts/UnifiedListPageLayout";
+import { ListPageLayout } from "@/components/layouts/ListPageLayout";
 import { PremiumDatagrid } from "@/components/ra-wrappers/PremiumDatagrid";
 import { RowHoverActions } from "@/components/ra-wrappers/RowHoverActions";
 import { ProductListSkeleton } from "@/components/ui/list-skeleton";
@@ -30,7 +30,7 @@ import type { Product } from "../types";
 /**
  * ProductList - Standard list page for Product records
  *
- * Uses UnifiedListPageLayout for centralized empty-state branching,
+ * Uses ListPageLayout for centralized empty-state branching,
  * loading states, filter cleanup, and bulk actions.
  *
  * Features:
@@ -55,7 +55,7 @@ export const ProductList = () => {
     <>
       <div data-tutorial="products-list">
         <List title={false} actions={false} perPage={25} sort={{ field: "name", order: "ASC" }}>
-          <UnifiedListPageLayout
+          <ListPageLayout
             resource="products"
             filterComponent={<ProductListFilter />}
             filterConfig={PRODUCT_FILTER_CONFIG}
@@ -68,7 +68,7 @@ export const ProductList = () => {
             bulkActions={<BulkActionsToolbarChildren />}
           >
             <ProductDatagrid openSlideOver={openSlideOver} isSlideOverOpen={isOpen} />
-          </UnifiedListPageLayout>
+          </ListPageLayout>
         </List>
       </div>
       <ProductSlideOver

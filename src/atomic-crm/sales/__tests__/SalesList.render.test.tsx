@@ -3,7 +3,7 @@
  *
  * Verifies that SalesList renders without throwing errors.
  * SalesList uses useGetIdentity for identity-aware rendering
- * and UnifiedListPageLayout for the standard list pattern.
+ * and ListPageLayout for the standard list pattern.
  */
 
 import { describe, test, expect, vi, beforeEach } from "vitest";
@@ -103,8 +103,8 @@ vi.mock("@/components/ra-wrappers/list", () => ({
   ),
 }));
 
-vi.mock("@/components/layouts/UnifiedListPageLayout", () => ({
-  UnifiedListPageLayout: ({
+vi.mock("@/components/layouts/ListPageLayout", () => ({
+  ListPageLayout: ({
     children,
     filterComponent,
   }: {
@@ -159,7 +159,7 @@ vi.mock("../SalesListFilter", () => ({
   SalesListFilter: () => <div data-testid="sales-list-filter" />,
 }));
 
-// Mock FilterChipBar if used by UnifiedListPageLayout internals
+// Mock FilterChipBar if used by ListPageLayout internals
 vi.mock("../../filters", () => ({
   FilterChipBar: () => <div data-testid="filter-chip-bar" />,
 }));

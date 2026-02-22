@@ -13,7 +13,7 @@ interface ListSearchBarProps {
   /** Enable recent searches dropdown (default: false for backward compatibility) */
   enableRecentSearches?: boolean;
   /**
-   * @deprecated Filter chips are now rendered by StandardListLayout via filterConfig prop.
+   * @deprecated Filter chips are now rendered by ListPageLayout via filterConfig prop.
    * This prop is ignored and will be removed in a future version.
    */
   filterConfig?: unknown[];
@@ -26,7 +26,7 @@ interface ListSearchBarProps {
  * - Global search input
  * - Recent searches dropdown (optional, enabled via prop)
  *
- * Note: Filter chips (FilterChipBar) are now rendered by StandardListLayout
+ * Note: Filter chips (FilterChipBar) are now rendered by ListPageLayout
  * via the `filterConfig` prop, not by this component.
  *
  * @example

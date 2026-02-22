@@ -65,14 +65,14 @@ function ExpandedCategory({
           e.stopPropagation();
           setIsExpanded(!isExpanded);
         }}
-        className="flex flex-row items-center justify-between w-full text-left min-h-12 px-2 hover:bg-muted rounded-md transition-colors group cursor-pointer"
+        className="flex flex-row items-center justify-between w-full text-left min-h-11 px-2 hover:bg-muted rounded-md transition-colors group cursor-pointer"
         aria-expanded={isExpanded}
       >
         <div className="flex flex-row items-center gap-2">
-          <div className="text-muted-foreground group-hover:text-foreground transition-colors">
+          <div className="text-muted-foreground opacity-70 group-hover:text-foreground transition-colors">
             {icon}
           </div>
-          <h3 className="font-semibold text-sm text-foreground">
+          <h3 className="font-medium text-sm text-foreground">
             <Translate i18nKey={label} />
           </h3>
           {hasActiveFilters && <div className="h-2 w-2 rounded-full bg-accent" />}
@@ -85,7 +85,7 @@ function ExpandedCategory({
         />
       </button>
       {isExpanded && (
-        <div className="flex flex-col items-start gap-2 pl-7 mt-2 mb-2">{children}</div>
+        <div className="flex flex-col items-start gap-1.5 pl-6 mt-1.5 mb-1">{children}</div>
       )}
     </div>
   );

@@ -12,6 +12,7 @@
 import { useListContext } from "ra-core";
 import { ToggleFilterButton } from "@/components/ra-wrappers/toggle-filter-button";
 import { FilterCategory } from "../filters/FilterCategory";
+import { FilterSidebar } from "../filters/FilterSidebar";
 import { Users, Eye } from "lucide-react";
 
 export const SalesListFilter = () => {
@@ -19,7 +20,7 @@ export const SalesListFilter = () => {
   useListContext();
 
   return (
-    <div className="flex flex-col gap-4" data-tutorial="sales-filters">
+    <FilterSidebar showSearch={false} data-tutorial="sales-filters">
       {/* Role Filter - Multiselect (Admin, Manager, Rep) */}
       <FilterCategory label="Role" icon={<Users className="h-4 w-4" />}>
         <ToggleFilterButton
@@ -56,6 +57,6 @@ export const SalesListFilter = () => {
         />
         {/* Clearing both shows all users */}
       </FilterCategory>
-    </div>
+    </FilterSidebar>
   );
 };

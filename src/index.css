@@ -142,7 +142,8 @@
   --list-shell-gap: var(--spacing-content);
   --list-toolbar-gap: var(--spacing-content);
   --list-toolbar-margin-bottom: var(--spacing-widget);
-  --list-sidebar-width: 18rem;
+  --list-sidebar-width: 16rem;
+  --list-sidebar-collapsed-width: 60px;
   --list-main-card-padding: var(--spacing-widget-padding);
   --list-filter-card-padding: var(--spacing-content);
   --list-toolbar-control-height-mobile: 44px;
@@ -711,6 +712,7 @@
   .list-page-shell {
     @apply flex h-full min-h-0 min-w-0 flex-1;
     gap: var(--list-shell-gap);
+    column-gap: 0; /* Flush sidebar-to-main for attached-panel feel */
   }
 
   /* Excel-style list overrides — scoped to list pages only */
@@ -727,9 +729,13 @@
     box-shadow: 0 1px 2px 0 oklch(0% 0 0 / 0.05);
   }
 
-  /* Filter sidebar card — inherit neutralized .card-container styles */
+  /* Filter sidebar — drawer treatment: flush panel, not floating card */
   .list-page-shell .list-filter-card {
-    background: var(--surface-paper-inner);
+    background: transparent;
+    border: none;
+    border-right: 1px solid var(--border);
+    border-radius: 0;
+    box-shadow: none;
   }
 
   /* Compact tier: overrides --row-height to 44px for list pages (touch-safe, WCAG AA) */
@@ -791,6 +797,7 @@
 
   .list-filter-card {
     padding: var(--list-filter-card-padding);
+    /* Drawer overrides (bg, border, radius, shadow) are scoped under .list-page-shell */
   }
 
   .list-bulk-actions {

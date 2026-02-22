@@ -29,10 +29,10 @@ const TestWrapper = ({ children }: { children: React.ReactNode }) => {
 describe("QuickAddButton", () => {
   it("renders button with correct text", () => {
     renderWithAdminContext(<QuickAddButton />, { wrapper: TestWrapper });
-    // Button contains both emoji and text
+    // Button contains icon and text
     const button = screen.getByRole("button");
     expect(button).toBeInTheDocument();
-    expect(button).toHaveTextContent("Quick Add");
+    expect(button).toHaveTextContent("Add Opportunity");
   });
 
   it("has correct variant and size", () => {
@@ -53,13 +53,12 @@ describe("QuickAddButton", () => {
 
     // Dialog should now be visible with new title
     expect(screen.getByRole("dialog")).toBeInTheDocument();
-    expect(screen.getByText("Quick Add Opportunity")).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Add Opportunity" })).toBeInTheDocument();
   });
 
-  it("ensures minimum touch target size", () => {
+  it("uses default create-button sizing", () => {
     renderWithAdminContext(<QuickAddButton />, { wrapper: TestWrapper });
     const button = screen.getByRole("button");
-    expect(button).toHaveClass("min-h-[44px]");
-    expect(button).toHaveClass("min-w-[44px]");
+    expect(button).toHaveClass("h-12");
   });
 });

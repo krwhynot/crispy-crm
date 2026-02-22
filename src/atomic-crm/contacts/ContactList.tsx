@@ -6,7 +6,7 @@ import { differenceInDays, formatDistanceToNow } from "date-fns";
 import { ContactBulkButtons } from "./ContactBulkActionsToolbar";
 import { List } from "@/components/ra-wrappers/list";
 import { CreateButton } from "@/components/ra-wrappers/create-button";
-import { UnifiedListPageLayout } from "@/components/layouts/UnifiedListPageLayout";
+import { ListPageLayout } from "@/components/layouts/ListPageLayout";
 import { ExportMenuItem } from "@/components/ra-wrappers/export-menu-item";
 import { PremiumDatagrid } from "@/components/ra-wrappers/PremiumDatagrid";
 import { RowHoverActions } from "@/components/ra-wrappers/RowHoverActions";
@@ -120,7 +120,7 @@ const ContactStatusCell = React.memo(function ContactStatusCell({ record }: { re
 /**
  * ContactList - Standard list page for Contact records
  *
- * Uses UnifiedListPageLayout for centralized empty-state branching,
+ * Uses ListPageLayout for centralized empty-state branching,
  * loading states, filter cleanup, and bulk actions.
  */
 export const ContactList = () => {
@@ -145,7 +145,7 @@ export const ContactList = () => {
           sort={{ field: "last_seen", order: "DESC" }}
           exporter={contactExporter}
         >
-          <UnifiedListPageLayout
+          <ListPageLayout
             resource="contacts"
             filterComponent={<ContactListFilter />}
             filterConfig={CONTACT_FILTER_CONFIG}
@@ -159,7 +159,7 @@ export const ContactList = () => {
             bulkActions={<ContactBulkButtons />}
           >
             <ContactDatagrid openSlideOver={openSlideOver} isSlideOverOpen={isOpen} />
-          </UnifiedListPageLayout>
+          </ListPageLayout>
         </List>
       </div>
       <ContactSlideOver

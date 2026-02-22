@@ -226,22 +226,6 @@ vi.mock("@/atomic-crm/tutorial/PageTutorialTrigger", () => ({
   PageTutorialTrigger: () => null,
 }));
 
-// Mock StandardListLayout
-vi.mock("@/components/layouts/StandardListLayout", () => ({
-  StandardListLayout: ({
-    children,
-    filterComponent,
-  }: {
-    children: React.ReactNode;
-    filterComponent: React.ReactNode;
-  }) => (
-    <div data-testid="standard-list-layout">
-      <div data-testid="filter-sidebar">{filterComponent}</div>
-      <div data-testid="list-content">{children}</div>
-    </div>
-  ),
-}));
-
 // Mock List component
 vi.mock("@/components/ra-wrappers/list", () => ({
   List: ({ children }: { children: React.ReactNode }) => (
@@ -467,11 +451,11 @@ describe("ContactList", () => {
     });
   });
 
-  test("renders with StandardListLayout and filter sidebar", async () => {
+  test("renders with ListPageLayout and filter sidebar", async () => {
     renderWithAdminContext(<ContactList />);
 
     await waitFor(() => {
-      // StandardListLayout should render the datagrid
+      // ListPageLayout should render the datagrid
       const datagrid = screen.getByTestId("premium-datagrid");
       expect(datagrid).toBeInTheDocument();
     });

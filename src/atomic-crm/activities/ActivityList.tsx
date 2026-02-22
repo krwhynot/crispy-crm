@@ -5,7 +5,7 @@ import { FunctionField } from "react-admin";
 
 import { List } from "@/components/ra-wrappers/list";
 import { CreateButton } from "@/components/ra-wrappers/create-button";
-import { UnifiedListPageLayout } from "@/components/layouts/UnifiedListPageLayout";
+import { ListPageLayout } from "@/components/layouts/ListPageLayout";
 import { BulkActionsToolbarChildren } from "@/components/ra-wrappers/bulk-actions-toolbar";
 import { PremiumDatagrid } from "@/components/ra-wrappers/PremiumDatagrid";
 import { RowHoverActions } from "@/components/ra-wrappers/RowHoverActions";
@@ -89,7 +89,7 @@ const ActivityEmpty = () => (
 /**
  * ActivityList - Standard list page for Activity records
  *
- * Uses UnifiedListPageLayout for centralized empty-state branching,
+ * Uses ListPageLayout for centralized empty-state branching,
  * loading states, filter cleanup, and bulk actions.
  *
  * Features:
@@ -127,7 +127,7 @@ export default function ActivityList() {
           }}
           actions={false}
         >
-          <UnifiedListPageLayout
+          <ListPageLayout
             resource="activities"
             filterComponent={<ActivityListFilter />}
             filterConfig={ACTIVITY_FILTER_CONFIG}
@@ -140,7 +140,7 @@ export default function ActivityList() {
             bulkActions={<BulkActionsToolbarChildren />}
           >
             <ActivityDatagrid openSlideOver={openSlideOver} isSlideOverOpen={isOpen} />
-          </UnifiedListPageLayout>
+          </ListPageLayout>
         </List>
       </div>
 

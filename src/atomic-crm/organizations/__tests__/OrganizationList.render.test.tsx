@@ -22,7 +22,7 @@ import {
 } from "./OrganizationList.test-utils";
 
 /**
- * Shared mock state for UnifiedListPageLayout branching.
+ * Shared mock state for ListPageLayout branching.
  * Synced in beforeEach with the same values set on useListContext mock.
  */
 const mockListState = vi.hoisted(() => ({
@@ -31,7 +31,7 @@ const mockListState = vi.hoisted(() => ({
   filterValues: {} as Record<string, unknown>,
 }));
 
-// System filter keys excluded from empty-state detection (matches UnifiedListPageLayout)
+// System filter keys excluded from empty-state detection (matches ListPageLayout)
 const EMPTY_STATE_SYSTEM_KEYS = vi.hoisted(() => new Set(["deleted_at", "deleted_at@is", "$or"]));
 
 // Mock dependencies - must be at top level
@@ -222,8 +222,8 @@ vi.mock("../OrganizationBadges", () => ({
   ),
 }));
 
-vi.mock("@/components/layouts/UnifiedListPageLayout", () => ({
-  UnifiedListPageLayout: ({
+vi.mock("@/components/layouts/ListPageLayout", () => ({
+  ListPageLayout: ({
     children,
     filterComponent,
     viewSwitcher,
@@ -358,7 +358,7 @@ describe("OrganizationList rendering", () => {
       isPending: false,
     });
 
-    // Sync hoisted mock state for UnifiedListPageLayout branching
+    // Sync hoisted mock state for ListPageLayout branching
     mockListState.data = defaultContext.data;
     mockListState.isPending = defaultContext.isPending;
     mockListState.filterValues = defaultContext.filterValues;
@@ -401,7 +401,7 @@ describe("OrganizationList rendering", () => {
     });
   });
 
-  test("renders with UnifiedListPageLayout and filter sidebar", async () => {
+  test("renders with ListPageLayout and filter sidebar", async () => {
     renderWithAdminContext(<OrganizationList />);
 
     await waitFor(() => {

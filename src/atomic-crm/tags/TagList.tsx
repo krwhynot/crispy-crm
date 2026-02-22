@@ -1,7 +1,7 @@
 import { TextField, FunctionField } from "react-admin";
 import { List } from "@/components/ra-wrappers/list";
 import { PremiumDatagrid } from "@/components/ra-wrappers/PremiumDatagrid";
-import { UnifiedListPageLayout } from "@/components/layouts/UnifiedListPageLayout";
+import { ListPageLayout } from "@/components/layouts/ListPageLayout";
 import { CreateButton } from "@/components/ra-wrappers/create-button";
 import { cn } from "@/lib/utils";
 import { getTagColorClass } from "./tag-colors";
@@ -20,7 +20,7 @@ export const TagList = () => {
       sort={{ field: "name", order: "ASC" }}
       exporter={false}
     >
-      <UnifiedListPageLayout
+      <ListPageLayout
         resource="tags"
         showFilterSidebar={false}
         sortFields={["name", "color"]}
@@ -55,7 +55,7 @@ export const TagList = () => {
             )}
           />
         </PremiumDatagrid>
-      </UnifiedListPageLayout>
+      </ListPageLayout>
     </List>
   );
 };

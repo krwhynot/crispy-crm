@@ -1,7 +1,7 @@
 import { TextField, DateField, SelectField } from "react-admin";
 import { List } from "@/components/ra-wrappers/list";
 import { PremiumDatagrid } from "@/components/ra-wrappers/PremiumDatagrid";
-import { UnifiedListPageLayout } from "@/components/layouts/UnifiedListPageLayout";
+import { ListPageLayout } from "@/components/layouts/ListPageLayout";
 import { CreateButton } from "@/components/ra-wrappers/create-button";
 import { ListPagination } from "@/components/ra-wrappers/list-pagination";
 import { PRODUCT_DISTRIBUTOR_STATUS_CHOICES } from "./constants";
@@ -16,12 +16,12 @@ export const ProductDistributorList = () => (
     sort={{ field: "created_at", order: "DESC" }}
     pagination={<ListPagination showExport />}
   >
-    <UnifiedListPageLayout
+    <ListPageLayout
       resource="product_distributors"
       filterComponent={<ProductDistributorListFilter />}
       filterConfig={PRODUCT_DISTRIBUTOR_FILTER_CONFIG}
       sortFields={["created_at", "status", "valid_from"]}
-      searchPlaceholder="Search product distributors..."
+      searchPlaceholder="Search by DOT number..."
       primaryAction={<CreateButton variant="default" />}
     >
       <PremiumDatagrid rowClick="edit" bulkActionButtons={false}>
@@ -33,7 +33,7 @@ export const ProductDistributorList = () => (
         <DateField source="valid_from" label="Valid From" />
         <DateField source="valid_to" label="Valid To" emptyText="-" />
       </PremiumDatagrid>
-    </UnifiedListPageLayout>
+    </ListPageLayout>
   </List>
 );
 

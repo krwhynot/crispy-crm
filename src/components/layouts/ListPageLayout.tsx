@@ -16,10 +16,10 @@ import { BulkActionsToolbar } from "@/components/ra-wrappers/bulk-actions-toolba
 import { ListSkeleton } from "@/components/ui/list-skeleton";
 import { cn } from "@/lib/utils";
 import { AdaptiveFilterContainer } from "./AdaptiveFilterContainer";
-import { FilterSidebarProvider } from "./FilterSidebarContext";
+import { FilterSidebarProvider, useFilterSidebarContext } from "./FilterSidebarContext";
 import { ListPageHeader } from "./ListPageHeader";
 import { ListToolbar } from "./ListToolbar";
-import { hasActiveUserFilters } from "./listFilterSemantics";
+import { hasActiveUserFiltersWithOrSource } from "./listFilterSemantics";
 
 export interface ListPageLayoutProps {
   resource: string;
@@ -122,7 +122,11 @@ function ListPageLayoutContent({
   const data = listContext?.data;
   const isPending = listContext?.isPending ?? false;
   const filterValues = listContext?.filterValues;
-  const hasUserFilters = useMemo(() => hasActiveUserFilters(filterValues), [filterValues]);
+  const { isCollapsed, orSource } = useFilterSidebarContext();
+  const hasUserFilters = useMemo(
+    () => hasActiveUserFiltersWithOrSource(filterValues, orSource),
+    [filterValues, orSource]
+  );
   const hasListContext = Boolean(listContext);
 
   const content = renderListContent({
@@ -139,12 +143,18 @@ function ListPageLayoutContent({
   const shouldRenderSidebar = showFilterSidebar && Boolean(filterComponent);
   const shouldRenderFilterToggle = shouldRenderSidebar ? showFilterToggle : false;
 
+  const gridClass = shouldRenderSidebar
+    ? isCollapsed
+      ? "xl:grid xl:grid-cols-[var(--list-sidebar-collapsed-width)_1fr] xl:grid-rows-[minmax(0,1fr)]"
+      : "xl:grid xl:grid-cols-[var(--list-sidebar-width)_1fr] xl:grid-rows-[minmax(0,1fr)]"
+    : undefined;
+
   return (
     <div
       className={cn(
         "list-page-shell",
-        shouldRenderSidebar &&
-          "lg:grid lg:grid-cols-[var(--list-sidebar-width)_1fr] lg:grid-rows-[minmax(0,1fr)]"
+        gridClass,
+        shouldRenderSidebar && "transition-[grid-template-columns] duration-200 ease-out"
       )}
     >
       {shouldRenderSidebar && filterComponent && (
