@@ -1,10 +1,11 @@
 /**
  * OrganizationCard unit tests
  *
- * Tests card rendering of organization data including:
- * - Name, avatar, badges, counts, state
- * - Click handler for slide-over integration
- * - Keyboard accessibility
+ * Tests card rendering of the 3-zone layout:
+ * - Zone 1: Header (avatar, name, priority pill)
+ * - Zone 2: Metadata (location, type/segment, parent)
+ * - Zone 3: Metrics (contact + opportunity counts)
+ * - Interaction: click, keyboard
  */
 
 import { describe, test, expect, vi, beforeEach } from "vitest";
@@ -13,27 +14,7 @@ import { renderWithRecordContext } from "@/tests/utils/render-admin";
 import { OrganizationCard } from "../OrganizationCard";
 import { createMockOrganization } from "@/tests/utils/mock-providers";
 
-// Mock badge components to isolate card logic
-vi.mock("../OrganizationBadges", () => ({
-  OrganizationTypeBadge: ({ type }: { type: string }) => (
-    <span data-testid="org-type-badge">{type}</span>
-  ),
-  PriorityBadge: ({ priority }: { priority: string }) => (
-    <span data-testid="priority-badge">{priority}</span>
-  ),
-  SegmentBadge: ({ segmentName }: { segmentName: string | null | undefined }) => (
-    <span data-testid="segment-badge">{segmentName || "—"}</span>
-  ),
-}));
-
-vi.mock("../OrganizationHierarchyChips", () => ({
-  OrganizationHierarchyChips: ({
-    record,
-  }: {
-    record: { parent_organization_id?: number | null };
-  }) => (record.parent_organization_id ? <span data-testid="hierarchy-chips">child</span> : null),
-}));
-
+// Mock avatar to isolate card logic
 vi.mock("../OrganizationAvatar", () => ({
   OrganizationAvatar: ({ record }: { record: { name: string } }) => (
     <span data-testid="org-avatar">{record.name.charAt(0)}</span>
@@ -53,11 +34,13 @@ describe("OrganizationCard", () => {
       name: "Tech Corp",
       organization_type: "distributor",
       priority: "A",
+      city: "San Francisco",
       state: "CA",
       segment_name: "Restaurant",
       nb_contacts: 5,
       nb_opportunities: 3,
       parent_organization_id: null,
+      parent_organization_name: null,
       ...overrides,
     });
 
@@ -66,6 +49,8 @@ describe("OrganizationCard", () => {
       resource: "organizations",
     });
   };
+
+  // Zone 1: Header
 
   test("renders organization name", () => {
     renderCard();
@@ -78,35 +63,69 @@ describe("OrganizationCard", () => {
     expect(screen.getByTestId("org-avatar")).toHaveTextContent("T");
   });
 
-  test("renders type badge", () => {
+  test("renders priority pill when priority is set", () => {
     renderCard();
-    expect(screen.getByTestId("org-type-badge")).toHaveTextContent("distributor");
+    expect(screen.getByText("A")).toBeInTheDocument();
+    expect(screen.getByText("●")).toBeInTheDocument();
   });
 
-  test("renders priority badge", () => {
-    renderCard();
-    expect(screen.getByTestId("priority-badge")).toHaveTextContent("A");
+  test("does not render priority pill when priority is null", () => {
+    renderCard({ priority: null });
+    expect(screen.queryByText("●")).not.toBeInTheDocument();
   });
 
-  test("renders segment badge", () => {
+  // Zone 2: Metadata
+
+  test("renders location as city, state", () => {
     renderCard();
-    expect(screen.getByTestId("segment-badge")).toHaveTextContent("Restaurant");
+    expect(screen.getByText("San Francisco, CA")).toBeInTheDocument();
   });
 
-  test("renders contact count", () => {
-    renderCard();
-    expect(screen.getByTitle("Contacts")).toHaveTextContent("5");
+  test("renders city only when no state", () => {
+    renderCard({ state: null });
+    expect(screen.getByText("San Francisco")).toBeInTheDocument();
   });
 
-  test("renders opportunity count", () => {
-    renderCard();
-    expect(screen.getByTitle("Opportunities")).toHaveTextContent("3");
-  });
-
-  test("renders state code", () => {
-    renderCard();
+  test("renders state only when no city", () => {
+    renderCard({ city: null });
     expect(screen.getByText("CA")).toBeInTheDocument();
   });
+
+  test("renders em-dash when no location", () => {
+    renderCard({ city: null, state: null });
+    expect(screen.getByText("—")).toBeInTheDocument();
+  });
+
+  test("renders type and segment as neutral text", () => {
+    renderCard();
+    expect(screen.getByText(/Distributor · Restaurant/)).toBeInTheDocument();
+  });
+
+  test("renders parent line when parent exists", () => {
+    renderCard({ parent_organization_id: 99, parent_organization_name: "ParentCorp" });
+    expect(screen.getByText(/Part of ParentCorp/)).toBeInTheDocument();
+  });
+
+  test("does not render parent line for top-level organization", () => {
+    renderCard({ parent_organization_id: null, parent_organization_name: null });
+    expect(screen.queryByText(/Part of/)).not.toBeInTheDocument();
+  });
+
+  // Zone 3: Metrics
+
+  test("renders metric labels with counts", () => {
+    renderCard();
+    expect(screen.getByText(/5 Contacts/)).toBeInTheDocument();
+    expect(screen.getByText(/3 Opportunities/)).toBeInTheDocument();
+  });
+
+  test("renders zero counts when no contacts or opportunities", () => {
+    renderCard({ nb_contacts: 0, nb_opportunities: 0 });
+    expect(screen.getByText(/0 Contacts/)).toBeInTheDocument();
+    expect(screen.getByText(/0 Opportunities/)).toBeInTheDocument();
+  });
+
+  // Interaction
 
   test("calls onClick with record id when clicked", () => {
     renderCard();
@@ -124,26 +143,5 @@ describe("OrganizationCard", () => {
     renderCard();
     fireEvent.keyDown(screen.getByRole("button", { name: /view tech corp/i }), { key: " " });
     expect(mockOnClick).toHaveBeenCalledWith(1);
-  });
-
-  test("renders hierarchy chips when organization has parent", () => {
-    renderCard({ parent_organization_id: 99 });
-    expect(screen.getByTestId("hierarchy-chips")).toBeInTheDocument();
-  });
-
-  test("does not render hierarchy chips for top-level organization", () => {
-    renderCard({ parent_organization_id: null });
-    expect(screen.queryByTestId("hierarchy-chips")).not.toBeInTheDocument();
-  });
-
-  test("renders zero counts when no contacts or opportunities", () => {
-    renderCard({ nb_contacts: 0, nb_opportunities: 0 });
-    expect(screen.getByTitle("Contacts")).toHaveTextContent("0");
-    expect(screen.getByTitle("Opportunities")).toHaveTextContent("0");
-  });
-
-  test("does not render state when not set", () => {
-    renderCard({ state: null });
-    expect(screen.queryByText("CA")).not.toBeInTheDocument();
   });
 });
