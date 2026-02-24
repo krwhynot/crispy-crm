@@ -4,6 +4,7 @@ import {
   useContext,
   useEffect,
   useMemo,
+  useRef,
   useState,
   type ReactNode,
 } from "react";
@@ -81,9 +82,17 @@ export function FilterSidebarProvider({
   // session-only and cannot survive page refresh.
   const [orSource, setOrSource] = useState<"preset" | "owner" | null>(null);
 
-  // Sync effect: prevent stale sidecar when $or is externally removed
+  // Track previous $or to detect genuine removal (present → absent),
+  // preventing premature orSource reset during async filterValues propagation.
+  // React Admin's setFilters schedules URL updates via setTimeout(..., 0),
+  // so filterValues.$or arrives one render cycle after setOrSource("preset").
+  const prevOrRef = useRef(filterValues?.$or);
   useEffect(() => {
-    if (!filterValues?.$or && orSource !== null) {
+    const hadOr = prevOrRef.current != null;
+    const hasOr = filterValues?.$or != null;
+    prevOrRef.current = filterValues?.$or;
+    // Only clear when $or transitions present → absent (genuine removal)
+    if (hadOr && !hasOr && orSource !== null) {
       setOrSource(null);
     }
   }, [filterValues?.$or, orSource]);
