@@ -11,6 +11,7 @@
 import { describe, it, expect } from "vitest";
 import { applySearchParams } from "../dataProviderUtils";
 import { SEARCHABLE_RESOURCES } from "../resources";
+import { ValidationService } from "../services/ValidationService";
 
 describe("Search Consolidation - Central SEARCHABLE_RESOURCES", () => {
   describe("sales resource q-search", () => {
@@ -126,6 +127,35 @@ describe("Search Consolidation - Central SEARCHABLE_RESOURCES", () => {
       // Central search only transforms resources in SEARCHABLE_RESOURCES
       expect(result.filter).not.toHaveProperty("q");
       expect(result.filter).not.toHaveProperty("or@");
+    });
+  });
+
+  describe("non-searchable resource q-stripping (search bar remediation)", () => {
+    it("should silently drop q from non-searchable resource at provider layer", () => {
+      // notifications is not in SEARCHABLE_RESOURCES -- q arrives from stale URL or
+      // a search bar that was visible before the resource became non-searchable
+      const params = {
+        pagination: { page: 1, perPage: 25 },
+        sort: { field: "id", order: "ASC" as const },
+        filter: { q: "abc" },
+      };
+
+      const result = applySearchParams("notifications", params);
+
+      // q must be stripped (no or@ generated, no raw q forwarded to PostgREST)
+      expect(result.filter).not.toHaveProperty("q");
+      expect(result.filter).not.toHaveProperty("or@");
+    });
+
+    it("should accept q in filter registry for non-searchable resources (validation passthrough)", () => {
+      // q is whitelisted in the notifications filter registry so that stale URL
+      // params do not trigger a 400 validation error. The provider layer handles
+      // stripping it before the DB call.
+      const validationService = new ValidationService();
+
+      expect(() => {
+        validationService.validateFilters("notifications", { q: "abc" });
+      }).not.toThrow();
     });
   });
 });

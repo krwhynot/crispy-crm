@@ -1,4 +1,5 @@
 import type { DataProvider, Identifier, RaRecord } from "ra-core";
+import { HttpError } from "react-admin";
 
 /**
  * Duplicate opportunity detection
@@ -160,16 +161,14 @@ export async function validateNoDuplicate(
       "code" in error &&
       (error as DuplicateOpportunityError).code === "DUPLICATE_OPPORTUNITY"
     ) {
-      // Format for React Admin error display
-      throw {
-        message: "Validation failed",
-        body: {
-          errors: {
-            // Show error on the product field since that's the final disambiguating factor
-            product_id: error.message,
-          },
+      // Format for React Admin error display — use HttpError (extends Error)
+      // so withErrorLogging can serialize it properly instead of "[object Object]"
+      throw new HttpError("Validation failed", 409, {
+        errors: {
+          // Show error on the product field since that's the final disambiguating factor
+          product_id: error.message,
         },
-      };
+      });
     }
     // Re-throw unexpected errors
     throw error;

@@ -8,8 +8,6 @@ import { List } from "@/components/ra-wrappers/list";
 import { ListPagination } from "@/components/ra-wrappers/list-pagination";
 import { ListPageLayout } from "@/components/layouts/ListPageLayout";
 import { Card } from "@/components/ui/card";
-import { FilterLiveForm } from "ra-core";
-import { SearchInput } from "@/components/ra-wrappers/search-input";
 import { ToggleFilterButton } from "@/components/ra-wrappers/toggle-filter-button";
 import { FilterCategory } from "../filters/FilterCategory";
 import { AdminButton } from "@/components/admin/AdminButton";
@@ -63,14 +61,6 @@ const NotificationsListFilter = () => {
     <div className="w-52 min-w-52 order-first">
       <Card className="card-list-surface p-content">
         <div className="flex flex-col gap-4">
-          {/* Search */}
-          <FilterLiveForm>
-            <SearchInput source="q" placeholder="Search notifications..." />
-          </FilterLiveForm>
-
-          {/* Divider */}
-          <div className="border-b border-border" />
-
           {/* Read/Unread Filter */}
           <FilterCategory label="Status" icon={<Bell className="h-4 w-4" />}>
             <ToggleFilterButton

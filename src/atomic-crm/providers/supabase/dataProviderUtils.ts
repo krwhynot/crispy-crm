@@ -449,7 +449,18 @@ export function applySearchParams(
   const orTransformedFilter = transformOrFilter(virtualTransformedFilter);
 
   // Transform array filters to PostgREST operators
-  const transformedFilter = transformArrayFilters(orTransformedFilter);
+  let transformedFilter = transformArrayFilters(orTransformedFilter);
+
+  // Normalize q: trim and strip empty/whitespace-only values (query hygiene)
+  if (transformedFilter?.q != null) {
+    const trimmedQ = String(transformedFilter.q).trim();
+    if (trimmedQ) {
+      transformedFilter = { ...transformedFilter, q: trimmedQ };
+    } else {
+      const { q: _q, ...rest } = transformedFilter;
+      transformedFilter = rest;
+    }
+  }
 
   // If no search query but needs soft delete filter
   if (!transformedFilter?.q && needsSoftDeleteFilter) {

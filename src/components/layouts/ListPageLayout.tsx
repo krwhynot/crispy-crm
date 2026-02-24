@@ -15,6 +15,7 @@ import { ListNoResults } from "@/components/ra-wrappers/ListNoResults";
 import { BulkActionsToolbar } from "@/components/ra-wrappers/bulk-actions-toolbar";
 import { ListSkeleton } from "@/components/ui/list-skeleton";
 import { cn } from "@/lib/utils";
+import { isResourceSearchable } from "@/atomic-crm/searchability";
 import { AdaptiveFilterContainer } from "./AdaptiveFilterContainer";
 import { FilterSidebarProvider, useFilterSidebarContext } from "./FilterSidebarContext";
 import { ListPageHeader } from "./ListPageHeader";
@@ -41,6 +42,8 @@ export interface ListPageLayoutProps {
   /** Default filter values to restore on "Clear all" (e.g., { disabled: false } for Sales) */
   defaultFilters?: Record<string, unknown>;
   showPageTitle?: boolean;
+  /** Show search bar in toolbar. Defaults to auto-detect via isResourceSearchable(). */
+  showSearch?: boolean;
   children: ReactNode;
   bulkActions?: ReactNode;
 }
@@ -64,6 +67,7 @@ export function ListPageLayout({
   loadingSkeleton,
   defaultFilters,
   showPageTitle,
+  showSearch,
   children,
   bulkActions,
 }: ListPageLayoutProps) {
@@ -89,6 +93,7 @@ export function ListPageLayout({
         loadingSkeleton={loadingSkeleton}
         defaultFilters={defaultFilters}
         showPageTitle={showPageTitle}
+        showSearch={showSearch}
         children={children}
         bulkActions={bulkActions}
       />
@@ -114,9 +119,11 @@ function ListPageLayoutContent({
   loadingSkeleton,
   defaultFilters,
   showPageTitle,
+  showSearch,
   children,
   bulkActions,
 }: ListPageLayoutProps) {
+  const effectiveShowSearch = showSearch ?? isResourceSearchable(resource);
   const contextFromProvider = useContext(ListContext);
   const listContext = useSafeListContext() ?? contextFromProvider;
   const data = listContext?.data;
@@ -181,6 +188,7 @@ function ListPageLayoutContent({
             sortFields={sortFields}
             searchPlaceholder={searchPlaceholder}
             enableRecentSearches={enableRecentSearches}
+            showSearch={effectiveShowSearch}
             viewSwitcher={viewSwitcher}
             overflowActions={overflowActions}
             showFilterToggle={shouldRenderFilterToggle}

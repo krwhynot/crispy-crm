@@ -17,13 +17,21 @@ export const SearchInput = (
     );
   }
 
+  const effectivePlaceholder = rest.placeholder ?? translate("ra.action.search");
+  const effectiveAriaLabel =
+    (typeof rest["aria-label"] === "string" && rest["aria-label"].trim()) ||
+    (typeof effectivePlaceholder === "string" && effectivePlaceholder.trim()) ||
+    translate("ra.action.search");
+
   return (
     <div className="relative w-full">
       <TextInput
         {...rest}
         label={false}
         helperText={false}
-        placeholder={translate("ra.action.search")}
+        placeholder={effectivePlaceholder}
+        type="search"
+        aria-label={effectiveAriaLabel}
         className="w-full [&_input]:pr-10 [&_input]:pl-3"
         onFocus={onFocus}
       />

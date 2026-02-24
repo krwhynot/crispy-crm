@@ -15,6 +15,7 @@
 
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import type { DataProvider, RaRecord } from "ra-core";
+import { HttpError } from "react-admin";
 import { withErrorLogging } from "./withErrorLogging";
 import { logger } from "@/lib/logger";
 
@@ -154,6 +155,21 @@ describe("withErrorLogging", () => {
         })
       );
     });
+
+    it("should serialize plain object errors with JSON.stringify, not String() (Sentry #7283831143)", async () => {
+      // Regression: plain objects were serialized as "[object Object]" via String()
+      const plainObjectError = { code: "CUSTOM", detail: "something went wrong" };
+      (mockProvider.getOne as ReturnType<typeof vi.fn>).mockRejectedValue(plainObjectError);
+
+      const wrappedProvider = withErrorLogging(mockProvider);
+      await expect(wrappedProvider.getOne("contacts", { id: 1 })).rejects.toBeDefined();
+
+      // The error passed to logger should contain JSON, not "[object Object]"
+      const loggedError = vi.mocked(logger.error).mock.calls[0][1] as Error;
+      expect(loggedError.message).not.toBe("[object Object]");
+      expect(loggedError.message).toContain("CUSTOM");
+      expect(loggedError.message).toContain("something went wrong");
+    });
   });
 
   describe("validation error handling", () => {
@@ -174,11 +190,22 @@ describe("withErrorLogging", () => {
         validationError
       );
 
-      // Error should be logged and passed through unchanged for React Admin
-      expect(logger.error).toHaveBeenCalled();
+      // Validation errors are expected control flow — logged at debug, NOT error level
+      expect(logger.error).not.toHaveBeenCalled();
+      expect(logger.debug).toHaveBeenCalledWith(
+        "DataProvider validation error (expected)",
+        expect.objectContaining({
+          method: "create",
+          resource: "contacts",
+          validationErrors: {
+            email: "Invalid email format",
+            name: "Name is required",
+          },
+        })
+      );
     });
 
-    it("should log validation errors in detail", async () => {
+    it("should log validation errors at debug level, not error level", async () => {
       const validationError = {
         message: "Validation failed",
         body: {
@@ -194,9 +221,10 @@ describe("withErrorLogging", () => {
         wrappedProvider.update("contacts", { id: 1, data: {}, previousData: {} as RaRecord })
       ).rejects.toThrow();
 
-      // Should log validation errors with debug logger
+      // Should log at debug level, not error level
+      expect(logger.error).not.toHaveBeenCalled();
       expect(logger.debug).toHaveBeenCalledWith(
-        "Validation errors detail",
+        "DataProvider validation error (expected)",
         expect.objectContaining({
           validationErrors: { email: "Invalid email format" },
         })
@@ -221,6 +249,32 @@ describe("withErrorLogging", () => {
         const err = error as { body?: { errors?: Record<string, string> } };
         expect(err.body?.errors).toBeDefined();
         expect(err.body?.errors?.email || err.body?.errors?._error).toBeDefined();
+      }
+    });
+
+    it("should wrap transformed Supabase errors in HttpError (not plain object)", async () => {
+      const supabaseError = {
+        message: "Unique violation",
+        code: "23505",
+        details: 'Key (column "name")=(Acme) already exists.',
+      };
+      (mockProvider.update as ReturnType<typeof vi.fn>).mockRejectedValue(supabaseError);
+
+      const wrappedProvider = withErrorLogging(mockProvider);
+      try {
+        await wrappedProvider.update("organizations", {
+          id: 1,
+          data: { name: "Acme" },
+          previousData: { id: 1 } as RaRecord,
+        });
+        expect.fail("Should have thrown");
+      } catch (error: unknown) {
+        // Must be an Error instance (not plain object) for proper Sentry serialization
+        expect(error).toBeInstanceOf(Error);
+        expect(error).toBeInstanceOf(HttpError);
+        // Must still have body.errors for React Admin validation display
+        const httpErr = error as HttpError;
+        expect(httpErr.body?.errors).toBeDefined();
       }
     });
   });

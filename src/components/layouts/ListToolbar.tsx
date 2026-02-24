@@ -26,6 +26,8 @@ export interface ListToolbarProps {
   searchPlaceholder?: string;
   /** Enable recent searches dropdown */
   enableRecentSearches?: boolean;
+  /** Show search bar (default: true) */
+  showSearch?: boolean;
   /** View switcher slot (e.g., OrganizationViewSwitcher) */
   viewSwitcher?: ReactNode;
   /** DropdownMenuItem children for the kebab overflow menu (e.g., ExportMenuItem) */
@@ -52,6 +54,7 @@ export function ListToolbar({
   sortFields,
   searchPlaceholder,
   enableRecentSearches,
+  showSearch = true,
   viewSwitcher,
   overflowActions,
   showFilterToggle = true,
@@ -76,10 +79,12 @@ export function ListToolbar({
     >
       <div className="order-1 basis-full min-w-0 xl:order-1 xl:basis-auto xl:flex-1 xl:min-w-[340px] xl:max-w-xl">
         <div className="flex items-center gap-2">
-          <ListSearchBar
-            placeholder={searchPlaceholder}
-            enableRecentSearches={enableRecentSearches}
-          />
+          {showSearch && (
+            <ListSearchBar
+              placeholder={searchPlaceholder}
+              enableRecentSearches={enableRecentSearches}
+            />
+          )}
           {showFilterToggle && <FilterToggleButton />}
           <ActiveFilterPill defaultFilters={defaultFilters} />
         </div>

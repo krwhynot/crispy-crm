@@ -278,37 +278,33 @@ describe("Q-Search ILIKE Characterization Tests", () => {
 
   describe("4. Edge cases", () => {
     describe("empty and whitespace queries", () => {
-      it("should preserve empty q parameter in filter (current behavior)", () => {
-        // CHARACTERIZATION: Current behavior preserves empty q in output
-        // This may be a bug that FTS migration could fix
+      it("should strip empty q parameter from filter (query hygiene)", () => {
+        // Empty q is stripped at the provider layer before search transformation
         const params = createParams({ q: "" });
         const result = applySearchParams("contacts", params);
 
-        // Current behavior: empty q is preserved (not stripped)
-        expect(result.filter).toHaveProperty("q");
-        expect(result.filter.q).toBe("");
+        // Empty q is removed (not forwarded to PostgREST)
+        expect(result.filter).not.toHaveProperty("q");
         expect(result.filter).not.toHaveProperty("or@");
       });
 
-      it("should preserve whitespace-only q parameter (current behavior)", () => {
-        // CHARACTERIZATION: Current behavior preserves whitespace-only q
-        // This may be a bug that FTS migration could fix
+      it("should strip whitespace-only q parameter (query hygiene)", () => {
+        // Whitespace-only q is trimmed to empty and then stripped
         const params = createParams({ q: "   " });
         const result = applySearchParams("contacts", params);
 
-        // Current behavior: whitespace q is preserved (not stripped)
-        expect(result.filter).toHaveProperty("q");
-        expect(result.filter.q).toBe("   ");
+        // Whitespace q is removed (not forwarded to PostgREST)
+        expect(result.filter).not.toHaveProperty("q");
         expect(result.filter).not.toHaveProperty("or@");
       });
 
-      it("should preserve tabs and newlines (current behavior)", () => {
-        // CHARACTERIZATION: Current behavior preserves whitespace q
+      it("should strip tabs and newlines (query hygiene)", () => {
+        // Tabs/newlines/carriage returns are trimmed to empty and then stripped
         const params = createParams({ q: "\t\n  \r" });
         const result = applySearchParams("contacts", params);
 
-        // Current behavior: whitespace q is preserved
-        expect(result.filter).toHaveProperty("q");
+        // Whitespace-only q is removed (not forwarded to PostgREST)
+        expect(result.filter).not.toHaveProperty("q");
         expect(result.filter).not.toHaveProperty("or@");
       });
 
