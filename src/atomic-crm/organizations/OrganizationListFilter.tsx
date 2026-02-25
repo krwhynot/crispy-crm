@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Building2, MapPin, Truck, User } from "lucide-react";
+import { Building2, GitBranch, MapPin, Truck, User } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { useListContext } from "ra-core";
@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/accordion";
 import { OwnerFilterDropdown } from "@/components/ra-wrappers/OwnerFilterDropdown";
 import { OrganizationSavedQueries } from "./OrganizationSavedQueries";
+import { ParentOrganizationFilterDropdown } from "./ParentOrganizationFilterDropdown";
 import {
   ORGANIZATION_TYPE_CHOICES,
   ORG_TYPE_COLOR_MAP,
@@ -209,6 +210,10 @@ export const OrganizationListFilter = (): React.ReactElement => {
             />
           ))}
         </div>
+      </FilterCategory>
+
+      <FilterCategory label="Parent Organization" icon={<GitBranch className="h-4 w-4" />}>
+        <ParentOrganizationFilterDropdown />
       </FilterCategory>
 
       <FilterCategory label="Account Manager" icon={<User className="h-4 w-4" />}>
