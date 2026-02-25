@@ -1,15 +1,17 @@
 /**
  * OrganizationList column structure tests
  *
- * Tests for the OrganizationList with 8 columns:
- * 1. Name - Primary identifier (sortable)
+ * Tests for the OrganizationList with 7 columns:
+ * 1. Name - Primary identifier (sortable), includes inline parent/branches chips
  * 2. Type - Organization classification (sortable by organization_type)
  * 3. Priority - Business priority indicator (sortable)
  * 4. Segment - Playbook/Operator category (sortable by segment_name)
  * 5. State - US state code (sortable, filterable)
- * 6. Parent - Hierarchy name from summary view (sortable by parent_organization_name)
- * 7. Contacts - Computed count metric (non-sortable)
- * 8. Opportunities - Computed count metric (non-sortable)
+ * 6. Contacts - Computed count metric (non-sortable)
+ * 7. Opportunities - Computed count metric (non-sortable)
+ *
+ * Parent hierarchy is shown as an inline chip in the Name cell (not a dedicated column).
+ * Parent filtering is available via sidebar dropdown (not sortable).
  */
 
 import { describe, test, expect, vi, beforeEach } from "vitest";
@@ -236,19 +238,25 @@ vi.mock("../OrganizationBadges", () => ({
   ),
 }));
 
+/** Captured sortFields from the most recent ListPageLayout render */
+const capturedSortFields = vi.hoisted(() => ({ value: [] as string[] }));
+
 vi.mock("@/components/layouts/ListPageLayout", () => ({
   ListPageLayout: ({
     children,
     filterComponent,
     viewSwitcher,
     emptyState,
+    sortFields,
   }: {
     children: React.ReactNode;
     filterComponent?: React.ReactNode;
     viewSwitcher?: React.ReactNode;
     emptyState?: React.ReactNode;
+    sortFields?: string[];
     [key: string]: unknown;
   }) => {
+    if (sortFields) capturedSortFields.value = sortFields;
     const hasUserFilters =
       mockListState.filterValues &&
       Object.keys(mockListState.filterValues).some(
@@ -346,7 +354,7 @@ vi.mock("../OrganizationViewSwitcher", () => ({
 
 import { useListContext, useGetList } from "ra-core";
 
-describe("OrganizationList 6-column structure", () => {
+describe("OrganizationList 7-column structure", () => {
   beforeEach(() => {
     resetMocks();
 
@@ -398,13 +406,13 @@ describe("OrganizationList 6-column structure", () => {
     mockListState.filterValues = listContext.filterValues;
   });
 
-  test("renders 8 columns: Name, Type, Priority, Segment, State, Parent, Contacts, Opportunities", async () => {
+  test("renders 7 columns: Name, Type, Priority, Segment, State, Contacts, Opportunities", async () => {
     renderWithAdminContext(<OrganizationList />);
 
     await waitFor(() => {
       expect(screen.getByTestId("premium-datagrid")).toBeInTheDocument();
 
-      // Column 1: Name (FunctionField)
+      // Column 1: Name (FunctionField) - includes inline parent/branches chips
       expect(screen.getByTestId("function-field-Name")).toBeInTheDocument();
 
       // Column 2: Type (FunctionField)
@@ -419,13 +427,10 @@ describe("OrganizationList 6-column structure", () => {
       // Column 5: State (TextField)
       expect(screen.getByTestId("text-field-state")).toBeInTheDocument();
 
-      // Column 6: Parent (FunctionField reading parent_organization_name from summary view)
-      expect(screen.getByTestId("function-field-Parent")).toBeInTheDocument();
-
-      // Column 7: Contacts (FunctionField)
+      // Column 6: Contacts (FunctionField)
       expect(screen.getByTestId("function-field-Contacts")).toBeInTheDocument();
 
-      // Column 8: Opportunities (FunctionField)
+      // Column 7: Opportunities (FunctionField)
       expect(screen.getByTestId("function-field-Opps")).toBeInTheDocument();
     });
   });
@@ -523,16 +528,6 @@ describe("OrganizationList column sorting configuration", () => {
     });
   });
 
-  test("Parent column is sortable by parent_organization_name", async () => {
-    renderWithAdminContext(<OrganizationList />);
-
-    await waitFor(() => {
-      const parentField = screen.getByTestId("function-field-Parent");
-      expect(parentField).toHaveAttribute("data-sortable", "true");
-      expect(parentField).toHaveAttribute("data-sort-by", "parent_organization_name");
-    });
-  });
-
   test("Contacts column is NOT sortable (computed count)", async () => {
     renderWithAdminContext(<OrganizationList />);
 
@@ -575,6 +570,14 @@ describe("OrganizationList column sorting configuration", () => {
     await waitFor(() => {
       const datagrid = screen.getByTestId("premium-datagrid");
       expect(datagrid).toHaveAttribute("data-row-class-fn", "true");
+    });
+  });
+
+  test("parent_organization_name is not in sortFields (filtering only)", async () => {
+    renderWithAdminContext(<OrganizationList />);
+
+    await waitFor(() => {
+      expect(capturedSortFields.value).not.toContain("parent_organization_name");
     });
   });
 });

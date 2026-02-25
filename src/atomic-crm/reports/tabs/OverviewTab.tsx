@@ -1,5 +1,5 @@
 import { useMemo, useCallback } from "react";
-import { useGetList } from "ra-core";
+import { useGetList, useStore } from "ra-core";
 import { useNavigate } from "react-router-dom";
 import { TrendingUp, Activity, AlertCircle, Clock } from "lucide-react";
 import { KPICard } from "@/components/ui/kpi-card";
@@ -9,9 +9,10 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { EmptyState } from "../components";
 import {
   useReportData,
-  useReportFilterState,
-  OVERVIEW_DEFAULTS,
-  type OverviewFilterState,
+  GLOBAL_DEFAULTS,
+  type GlobalReportFilterState,
+  useProductFilteredOpportunityIds,
+  ProductTruncationAlert,
 } from "../hooks";
 import { PipelineChart } from "../charts/PipelineChart";
 import { ActivityTrendChart } from "../charts/ActivityTrendChart";
@@ -51,19 +52,19 @@ interface ActivityRecord {
 export default function OverviewTab() {
   const navigate = useNavigate();
 
-  // URL-seeding owner per PATTERNS.md:720 — OverviewTab seeds store from URL on mount
-  const [filterState] = useReportFilterState<OverviewFilterState>(
-    "reports.overview",
-    OVERVIEW_DEFAULTS
-  );
-
-  const salesRepId = filterState.salesRepId;
+  // Read global filter state from shared store
+  const [globalFilters] = useStore<GlobalReportFilterState>("reports.global", GLOBAL_DEFAULTS);
+  const { principalId, productId, ownerId, periodPreset, customStart, customEnd } = globalFilters;
 
   // Resolve date preset to concrete Date range for query filtering
   const resolvedDateRange = useMemo(
-    () => resolvePreset(filterState.datePreset),
-    [filterState.datePreset]
+    () => resolvePreset(periodPreset, customStart, customEnd),
+    [periodPreset, customStart, customEnd]
   );
+
+  // Product filtering via junction table
+  const { opportunityIds, isTruncated: productTruncated } =
+    useProductFilteredOpportunityIds(productId);
 
   // Fetch sales reps for rep performance chart
   const { data: salesReps = [] } = useGetList<Sale>("sales", {
@@ -107,16 +108,16 @@ export default function OverviewTab() {
   }, [navigate]);
 
   // Memoize opportunity filters to prevent infinite re-render loops in useReportData
-  // Note: We use additionalFilters for salesRepId because useReportData uses 'sales_id',
-  // but opportunities use 'opportunity_owner_id' as the owner field
   const opportunityFilters = useMemo(
     () => ({
       "deleted_at@is": null,
-      ...(salesRepId && { opportunity_owner_id: salesRepId }),
+      ...(ownerId && { opportunity_owner_id: ownerId }),
+      ...(principalId && { principal_organization_id: principalId }),
+      ...(opportunityIds != null && { "id@in": opportunityIds }),
       ...(resolvedDateRange && { "created_at@gte": resolvedDateRange.start.toISOString() }),
       ...(resolvedDateRange && { "created_at@lte": resolvedDateRange.end.toISOString() }),
     }),
-    [salesRepId, resolvedDateRange]
+    [ownerId, principalId, opportunityIds, resolvedDateRange]
   );
 
   // Fetch opportunities via useReportData (centralizes through unifiedDataProvider)
@@ -137,8 +138,12 @@ export default function OverviewTab() {
 
   // Memoize activity filters - activities use 'created_by' not 'sales_id'
   const activityFilters = useMemo(
-    () => (salesRepId ? { created_by: salesRepId } : {}),
-    [salesRepId]
+    () => ({
+      ...(ownerId ? { created_by: ownerId } : {}),
+      ...(principalId && { principal_organization_id: principalId }),
+      ...(opportunityIds != null && { "opportunity_id@in": opportunityIds }),
+    }),
+    [ownerId, principalId, opportunityIds]
   );
 
   // Fetch activities via useReportData
@@ -360,6 +365,8 @@ export default function OverviewTab() {
         </div>
       )}
 
+      <ProductTruncationAlert isTruncated={productTruncated} />
+
       {/* Error display (fail-fast principle) */}
       {(opportunitiesError || activitiesError) && (
         <div className="rounded-lg border border-destructive/50 bg-destructive/10 p-4 text-destructive">
@@ -381,7 +388,7 @@ export default function OverviewTab() {
         />
       )}
 
-      {/* Key insights strip — auto-generated contextual summaries */}
+      {/* Key insights strip -- auto-generated contextual summaries */}
       <KeyInsightsStrip
         pipelineData={pipelineData}
         repPerformanceData={repPerformanceData}

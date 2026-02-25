@@ -30,9 +30,8 @@ DELETE FROM opportunity_products WHERE opportunity_id IN (
 );
 DELETE FROM opportunities WHERE name LIKE '[RPT]%';
 
--- Parent-relationship orgs: clear parent links first (FK), then delete
-UPDATE organizations SET parent_organization_id = NULL WHERE id BETWEEN 80001 AND 80020;
-DELETE FROM organizations WHERE id BETWEEN 80001 AND 80020;
+-- NOTE: Hierarchy orgs (IDs 80001-80020) are now seeded in seed.sql.
+-- No cleanup needed here since they are permanent seed data.
 
 -- Reset tag assignments on contacts (tags are bigint[] on contacts)
 UPDATE contacts SET tags = NULL WHERE tags IS NOT NULL;
@@ -226,6 +225,7 @@ DECLARE
   v_act_day INT;
   v_act_idx INT;
   v_sales_idx INT;
+  v_opp_customer_id BIGINT;
 
   -- Opportunity stages (matching enum)
   v_stages TEXT[] := ARRAY['new_lead', 'initial_outreach', 'sample_visit_offered', 'feedback_logged', 'demo_scheduled', 'closed_won', 'closed_lost'];
@@ -244,8 +244,17 @@ DECLARE
   -- Priorities
   v_priorities TEXT[] := ARRAY['low', 'medium', 'high', 'critical', 'medium', 'high'];
 
-  -- Campaigns (3 campaigns for tagging)
-  v_campaigns TEXT[] := ARRAY['Grand Rapids Trade Show', 'Q4 Email Outreach', 'Midwest Distributor Summit', NULL, NULL, NULL, NULL, NULL];
+  -- Campaigns (6 named + 2 NULL for ~75% coverage)
+  v_campaigns TEXT[] := ARRAY['Grand Rapids Trade Show', 'Q4 Email Outreach', 'Midwest Distributor Summit', 'Spring Menu Launch 2026', 'Heartland Chef Series', 'National Foodservice Expo', NULL, NULL];
+
+  -- Lead sources for opportunities
+  v_lead_sources TEXT[] := ARRAY['referral', 'trade_show', 'website', 'cold_call', 'email_campaign', 'social_media', 'existing_customer', 'partner'];
+
+  -- Outcome arrays by activity type
+  v_outcomes_call TEXT[] := ARRAY['Connected', 'Left Voicemail', 'No Answer', 'Connected'];
+  v_outcomes_email TEXT[] := ARRAY['Sent', 'Replied', 'No Reply', 'Sent'];
+  v_outcomes_meeting TEXT[] := ARRAY['Held', 'Rescheduled', 'Held', 'Held'];
+  v_outcomes_sample TEXT[] := ARRAY['Sent', 'Received', 'Feedback Pending', 'Feedback Received'];
 
   -- Task subjects per type
   v_task_subjects_call TEXT[] := ARRAY[
@@ -538,7 +547,7 @@ BEGIN
         name, description, stage, status, priority,
         estimated_close_date, actual_close_date,
         customer_organization_id, principal_organization_id,
-        opportunity_owner_id, account_manager_id, created_by, campaign,
+        opportunity_owner_id, account_manager_id, created_by, campaign, lead_source,
         created_at, updated_at,
         win_reason, loss_reason
       ) VALUES (
@@ -555,6 +564,7 @@ BEGIN
         v_customer_ids[v_customer_idx],
         v_principal_ids[v_principal_idx],
         v_sales_id, v_sales_id, v_sales_id, v_campaign,
+        v_lead_sources[((v_opp_idx - 1) % 8) + 1],
         NOW() - (v_days_ago || ' days')::INTERVAL,
         NOW() - ((v_days_ago / 2) || ' days')::INTERVAL,
         CASE WHEN v_stage = 'closed_won' THEN
@@ -619,6 +629,7 @@ BEGIN
           activity_date, duration_minutes,
           contact_id, organization_id, opportunity_id,
           sentiment, sample_status,
+          outcome, follow_up_required, follow_up_date,
           created_by, created_at, updated_at
         ) VALUES (
           'activity'::activity_type,
@@ -636,6 +647,24 @@ BEGIN
           CASE WHEN v_act_type = 'sample' THEN
             v_sample_statuses[((v_opp_idx + v_act_idx - 1) % 4) + 1]::sample_status
             ELSE NULL END,
+          -- Outcome by type
+          CASE
+            WHEN v_act_type = 'call' THEN v_outcomes_call[((v_opp_idx + v_act_idx) % 4) + 1]
+            WHEN v_act_type = 'email' THEN v_outcomes_email[((v_opp_idx + v_act_idx) % 4) + 1]
+            WHEN v_act_type IN ('meeting', 'demo') THEN v_outcomes_meeting[((v_opp_idx + v_act_idx) % 4) + 1]
+            WHEN v_act_type = 'sample' THEN v_outcomes_sample[((v_opp_idx + v_act_idx) % 4) + 1]
+            WHEN v_act_type = 'site_visit' THEN 'Completed'
+            WHEN v_act_type = 'proposal' THEN 'Sent'
+            WHEN v_act_type = 'follow_up' THEN 'Completed'
+            ELSE NULL
+          END,
+          -- follow_up_required (~30% of activities)
+          ((v_opp_idx + v_act_idx) % 3 = 0),
+          -- follow_up_date (only when follow_up_required)
+          CASE WHEN ((v_opp_idx + v_act_idx) % 3 = 0) THEN
+            CURRENT_DATE + (((v_act_idx % 5) + 3) || ' days')::INTERVAL
+            ELSE NULL
+          END,
           v_sales_id,
           NOW() - (v_act_day || ' days')::INTERVAL,
           NOW() - ((v_act_day - 1) || ' days')::INTERVAL
@@ -645,6 +674,86 @@ BEGIN
       END LOOP;
     END LOOP;
   END LOOP;
+
+  -- ============================================================================
+  -- RECENT ACTIVITY CLUSTER (last 14 days, for Weekly Activity Summary visibility)
+  -- ============================================================================
+  FOR v_idx IN 1..80 LOOP
+    v_sales_idx := ((v_idx - 1) % array_length(v_sales_ids, 1)) + 1;
+    v_sales_id := v_sales_ids[v_sales_idx];
+    v_principal_idx := ((v_idx - 1) % 10) + 1;
+    v_customer_idx := ((v_idx - 1) % array_length(v_customer_ids, 1)) + 1;
+    v_days_ago := (v_idx - 1) % 14;  -- 0-13 days ago
+
+    -- Weighted types: call(30%), email(25%), meeting(15%), site_visit(10%), sample(10%), follow_up(10%)
+    v_act_type := (ARRAY[
+      'call','call','call','call','call','call',
+      'email','email','email','email','email',
+      'meeting','meeting','meeting',
+      'site_visit','site_visit',
+      'sample','sample',
+      'follow_up','follow_up'
+    ])[((v_idx - 1) % 20) + 1];
+
+    v_sentiment := (ARRAY[
+      'positive','positive','positive','positive','positive','positive','positive',
+      'neutral','neutral','neutral',
+      'negative','negative'
+    ])[((v_idx - 1) % 12) + 1];
+
+    -- Get a recent [RPT] opportunity for this principal (with its customer org)
+    SELECT id, customer_organization_id INTO v_opp_id, v_opp_customer_id FROM opportunities
+    WHERE name LIKE '[RPT]%' AND deleted_at IS NULL
+      AND principal_organization_id = v_principal_ids[v_principal_idx]
+    ORDER BY id LIMIT 1;
+
+    -- Get a contact from the opportunity's customer org ~70% of the time
+    v_contact_id := NULL;
+    IF v_idx % 10 < 7 AND v_opp_customer_id IS NOT NULL THEN
+      SELECT c.id INTO v_contact_id FROM contacts c
+      WHERE c.deleted_at IS NULL AND c.organization_id = v_opp_customer_id
+      LIMIT 1;
+    END IF;
+
+    INSERT INTO activities (
+      activity_type, type, subject, description, activity_date, duration_minutes,
+      contact_id, organization_id, opportunity_id, sentiment, outcome,
+      sample_status, follow_up_required, follow_up_date,
+      created_by, created_at, updated_at
+    ) VALUES (
+      'activity'::activity_type,
+      v_act_type::interaction_type,
+      '[RPT] Recent ' || initcap(replace(v_act_type, '_', ' ')) || ' - ' || v_principal_names[v_principal_idx] || ' #R' || v_idx,
+      'Recent activity for reporting visibility. ' || v_principal_names[v_principal_idx],
+      NOW() - (v_days_ago || ' days')::INTERVAL,
+      CASE WHEN v_act_type IN ('call', 'check_in') THEN 15 + (v_idx % 30)
+           WHEN v_act_type IN ('meeting', 'demo') THEN 30 + (v_idx % 60)
+           ELSE NULL END,
+      v_contact_id,
+      COALESCE(v_opp_customer_id, v_customer_ids[v_customer_idx]),
+      v_opp_id,
+      v_sentiment,
+      CASE WHEN v_act_type = 'call' THEN 'Connected'
+           WHEN v_act_type = 'email' THEN 'Sent'
+           WHEN v_act_type = 'meeting' THEN 'Held'
+           WHEN v_act_type = 'sample' THEN 'Received'
+           WHEN v_act_type = 'site_visit' THEN 'Completed'
+           WHEN v_act_type = 'follow_up' THEN 'Completed'
+           ELSE NULL END,
+      CASE WHEN v_act_type = 'sample' THEN
+        v_sample_statuses[((v_idx - 1) % 4) + 1]::sample_status
+        ELSE NULL END,
+      (v_idx % 4 = 0),
+      CASE WHEN v_idx % 4 = 0 THEN CURRENT_DATE + INTERVAL '5 days' ELSE NULL END,
+      v_sales_id,
+      NOW() - (v_days_ago || ' days')::INTERVAL,
+      NOW() - (v_days_ago || ' days')::INTERVAL
+    );
+
+    v_act_count := v_act_count + 1;
+  END LOOP;
+
+  RAISE NOTICE 'Added 80 recent-cluster activities (last 14 days)';
 
   -- ============================================================================
   -- VARIED OPPORTUNITY STATUSES (on_hold, nurturing)
@@ -664,6 +773,77 @@ BEGIN
       SELECT id FROM opportunities WHERE name LIKE '[RPT]%' AND stage = 'initial_outreach'::opportunity_stage AND status = 'active'::opportunity_status
       ORDER BY id LIMIT 3
     );
+
+  -- ============================================================================
+  -- STALE OPPORTUNITIES (push dates to trigger staleness detection)
+  -- ============================================================================
+  -- The get_stale_opportunities RPC uses COALESCE(MAX(activity_date), opp.created_at).
+  -- Push both opportunity created_at and linked activity dates to the past.
+
+  -- Temporarily disable audit trigger for created_at UPDATEs
+  ALTER TABLE opportunities DISABLE TRIGGER protect_opportunities_audit;
+
+  -- 3 stale new_lead (threshold: 7 days, push to 25 days ago)
+  WITH stale_targets AS (
+    SELECT id FROM opportunities
+    WHERE name LIKE '[RPT]%' AND deleted_at IS NULL AND stage = 'new_lead'::opportunity_stage
+    ORDER BY id LIMIT 3
+  )
+  UPDATE opportunities SET created_at = NOW() - INTERVAL '25 days'
+  WHERE id IN (SELECT id FROM stale_targets);
+
+  UPDATE activities SET
+    activity_date = NOW() - INTERVAL '25 days',
+    created_at = NOW() - INTERVAL '25 days'
+  WHERE subject LIKE '[RPT]%'
+    AND opportunity_id IN (
+      SELECT id FROM opportunities
+      WHERE name LIKE '[RPT]%' AND stage = 'new_lead'::opportunity_stage
+        AND created_at < NOW() - INTERVAL '20 days' AND deleted_at IS NULL
+    );
+
+  -- 3 stale initial_outreach (threshold: 14 days, push to 30 days ago)
+  WITH stale_targets AS (
+    SELECT id FROM opportunities
+    WHERE name LIKE '[RPT]%' AND deleted_at IS NULL AND stage = 'initial_outreach'::opportunity_stage
+    ORDER BY id LIMIT 3
+  )
+  UPDATE opportunities SET created_at = NOW() - INTERVAL '30 days'
+  WHERE id IN (SELECT id FROM stale_targets);
+
+  UPDATE activities SET
+    activity_date = NOW() - INTERVAL '30 days',
+    created_at = NOW() - INTERVAL '30 days'
+  WHERE subject LIKE '[RPT]%'
+    AND opportunity_id IN (
+      SELECT id FROM opportunities
+      WHERE name LIKE '[RPT]%' AND stage = 'initial_outreach'::opportunity_stage
+        AND created_at < NOW() - INTERVAL '20 days' AND deleted_at IS NULL
+    );
+
+  -- 2 stale sample_visit_offered (threshold: 14 days, push to 28 days ago)
+  WITH stale_targets AS (
+    SELECT id FROM opportunities
+    WHERE name LIKE '[RPT]%' AND deleted_at IS NULL AND stage = 'sample_visit_offered'::opportunity_stage
+    ORDER BY id LIMIT 2
+  )
+  UPDATE opportunities SET created_at = NOW() - INTERVAL '28 days'
+  WHERE id IN (SELECT id FROM stale_targets);
+
+  UPDATE activities SET
+    activity_date = NOW() - INTERVAL '28 days',
+    created_at = NOW() - INTERVAL '28 days'
+  WHERE subject LIKE '[RPT]%'
+    AND opportunity_id IN (
+      SELECT id FROM opportunities
+      WHERE name LIKE '[RPT]%' AND stage = 'sample_visit_offered'::opportunity_stage
+        AND created_at < NOW() - INTERVAL '20 days' AND deleted_at IS NULL
+    );
+
+  -- Re-enable audit trigger
+  ALTER TABLE opportunities ENABLE TRIGGER protect_opportunities_audit;
+
+  RAISE NOTICE 'Created 8 intentionally stale opportunities (3 new_lead, 3 initial_outreach, 2 sample_visit_offered)';
 
   -- ============================================================================
   -- TASKS (~150, stored in activities with activity_type='task')
@@ -921,12 +1101,14 @@ BEGIN
   RAISE NOTICE '- Tags: 10 (with 36 contact assignments, 6 multi-tag)';
   RAISE NOTICE '- Opportunities: % (per-rep stage profiles, 5 on_hold, 3 nurturing, 3 soft-deleted)', v_opp_count;
   RAISE NOTICE '- Opportunity-Product links: % (2 per opp)', v_opp_count * 2;
-  RAISE NOTICE '- Activities: % (with contact_id on ~70%%, expanded types)', v_act_count;
+  RAISE NOTICE '- Activities: % (incl. 80 recent-cluster, ~70%% contact, outcomes+follow-ups)', v_act_count;
   RAISE NOTICE '- Tasks: % (25 overdue, 8 today, 52 completed, 10 snoozed)', v_task_count;
   RAISE NOTICE '- Product-distributor links: ~80 (active/pending/inactive)';
   RAISE NOTICE '- Product statuses: 5 discontinued, 3 coming_soon';
   RAISE NOTICE '- Notes: 75 (30 contact + 30 opportunity + 15 organization)';
   RAISE NOTICE '- Soft-deleted: 3 opps + 3 products + 5 activities';
+  RAISE NOTICE '- Stale opportunities: 8 (3 new_lead, 3 outreach, 2 sample_visit)';
+  RAISE NOTICE '- Campaigns: 6 named + 2 NULL (~75%% coverage)';
   RAISE NOTICE '============================================================';
 
 END $$;
@@ -955,64 +1137,8 @@ CROSS JOIN (
   SELECT user_id FROM sales WHERE disabled = false AND deleted_at IS NULL
 ) s;
 
--- ============================================================================
--- ORGANIZATIONS WITH PARENT RELATIONSHIPS
--- ============================================================================
--- Exercises parent_organization_id FK, cycle-detection trigger, and
--- org_scope / is_operating_entity columns. Uses IDs 80001-80020.
--- Cleanup: DELETE FROM organizations WHERE id BETWEEN 80001 AND 80020;
--- ============================================================================
-
--- Step 1: Insert all parent/child orgs WITHOUT parent links first
-INSERT INTO organizations (id, name, organization_type, segment_id, org_scope, is_operating_entity, city, state, priority, created_at, updated_at)
-OVERRIDING SYSTEM VALUE
-VALUES
-  -- Hierarchy 1: National distributor → regional branches → local depots
-  --   segment: Major Broadline (national), Specialty/Regional (regional/local)
-  (80001, '[RPT] Continental Food Distributors',  'distributor'::organization_type, '22222222-2222-4222-8222-000000000001', 'national', false, 'Chicago',       'IL', 'A', NOW(), NOW()),
-  (80002, '[RPT] Continental - Great Lakes',      'distributor'::organization_type, '22222222-2222-4222-8222-000000000002', 'regional', false, 'Detroit',       'MI', 'A', NOW(), NOW()),
-  (80003, '[RPT] Continental - Upper Midwest',    'distributor'::organization_type, '22222222-2222-4222-8222-000000000002', 'regional', false, 'Minneapolis',   'MN', 'B', NOW(), NOW()),
-  (80004, '[RPT] Continental - Detroit Depot',    'distributor'::organization_type, '22222222-2222-4222-8222-000000000002', 'local',    true,  'Dearborn',      'MI', 'B', NOW(), NOW()),
-  (80005, '[RPT] Continental - Grand Rapids Depot','distributor'::organization_type,'22222222-2222-4222-8222-000000000002', 'local',    true,  'Grand Rapids',  'MI', 'C', NOW(), NOW()),
-  (80006, '[RPT] Continental - Twin Cities Depot', 'distributor'::organization_type,'22222222-2222-4222-8222-000000000002', 'local',    true,  'St. Paul',      'MN', 'B', NOW(), NOW()),
-
-  -- Hierarchy 2: Restaurant group → individual locations
-  --   segment: Restaurant Group (parent), Casual Dining (locations)
-  (80007, '[RPT] Lakefront Dining Group',         'customer'::organization_type,   '22222222-2222-4222-8222-000000000006', 'regional', false, 'Milwaukee',     'WI', 'A', NOW(), NOW()),
-  (80008, '[RPT] Lakefront - Third Ward',         'customer'::organization_type,   '33333333-3333-4333-8333-000000000102', 'local',    true,  'Milwaukee',     'WI', 'A', NOW(), NOW()),
-  (80009, '[RPT] Lakefront - Bayview',            'customer'::organization_type,   '33333333-3333-4333-8333-000000000102', 'local',    true,  'Milwaukee',     'WI', 'B', NOW(), NOW()),
-  (80010, '[RPT] Lakefront - Wauwatosa',          'customer'::organization_type,   '33333333-3333-4333-8333-000000000104', 'local',    true,  'Wauwatosa',     'WI', 'B', NOW(), NOW()),
-  (80011, '[RPT] Lakefront - Madison',            'customer'::organization_type,   '33333333-3333-4333-8333-000000000103', 'local',    true,  'Madison',       'WI', 'B', NOW(), NOW()),
-
-  -- Hierarchy 3: Principal holding company → sub-brands
-  --   segment: Unknown (holding), various for sub-brands
-  (80012, '[RPT] Prairie Harvest Holdings',       'principal'::organization_type,  '22222222-2222-4222-8222-000000000009', 'national', false, 'Des Moines',    'IA', 'A', NOW(), NOW()),
-  (80013, '[RPT] Prairie Harvest - Organic Line', 'principal'::organization_type,  '22222222-2222-4222-8222-000000000009', 'national', true,  'Des Moines',    'IA', 'A', NOW(), NOW()),
-  (80014, '[RPT] Prairie Harvest - Artisan',      'principal'::organization_type,  '22222222-2222-4222-8222-000000000009', 'national', true,  'Des Moines',    'IA', 'B', NOW(), NOW()),
-  (80015, '[RPT] Prairie Harvest - Value Brand',  'principal'::organization_type,  '22222222-2222-4222-8222-000000000009', 'national', true,  'Des Moines',    'IA', 'C', NOW(), NOW()),
-
-  -- Hierarchy 4: Prospect chain being evaluated (shallow, 2-level)
-  --   segment: Hotel & Aviation (hospitality corp + locations)
-  (80016, '[RPT] Crossroads Hospitality Corp',    'prospect'::organization_type,   '22222222-2222-4222-8222-000000000008', 'regional', false, 'Indianapolis',  'IN', 'B', NOW(), NOW()),
-  (80017, '[RPT] Crossroads - Downtown Indy',     'prospect'::organization_type,   '33333333-3333-4333-8333-000000000005', 'local',    true,  'Indianapolis',  'IN', 'B', NOW(), NOW()),
-  (80018, '[RPT] Crossroads - Carmel',            'prospect'::organization_type,   '33333333-3333-4333-8333-000000000005', 'local',    true,  'Carmel',        'IN', 'C', NOW(), NOW()),
-  (80019, '[RPT] Crossroads - Fishers',           'prospect'::organization_type,   '33333333-3333-4333-8333-000000000005', 'local',    true,  'Fishers',       'IN', 'C', NOW(), NOW()),
-  (80020, '[RPT] Crossroads - Bloomington',       'prospect'::organization_type,   '33333333-3333-4333-8333-000000000005', 'local',    true,  'Bloomington',   'IN', 'C', NOW(), NOW())
-ON CONFLICT (id) DO UPDATE SET
-  name = EXCLUDED.name,
-  organization_type = EXCLUDED.organization_type,
-  segment_id = EXCLUDED.segment_id,
-  org_scope = EXCLUDED.org_scope,
-  is_operating_entity = EXCLUDED.is_operating_entity,
-  updated_at = NOW();
-
--- Step 2: Wire up parent_organization_id links (avoids FK ordering issues)
-UPDATE organizations SET parent_organization_id = 80001 WHERE id IN (80002, 80003);  -- regionals → national
-UPDATE organizations SET parent_organization_id = 80002 WHERE id IN (80004, 80005);  -- depots → Great Lakes
-UPDATE organizations SET parent_organization_id = 80003 WHERE id = 80006;            -- depot → Upper Midwest
-UPDATE organizations SET parent_organization_id = 80007 WHERE id IN (80008, 80009, 80010, 80011); -- locations → group
-UPDATE organizations SET parent_organization_id = 80012 WHERE id IN (80013, 80014, 80015);        -- sub-brands → holding
-UPDATE organizations SET parent_organization_id = 80016 WHERE id IN (80017, 80018, 80019, 80020); -- locations → corp
+-- NOTE: Organization hierarchy data (IDs 80001-80020) is now seeded by seed.sql.
+-- It is available automatically after `supabase db reset`.
 
 -- ============================================================================
 -- RESET SEQUENCES

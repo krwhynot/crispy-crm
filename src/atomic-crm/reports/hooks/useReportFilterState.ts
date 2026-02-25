@@ -15,68 +15,48 @@ import { useStore } from "ra-core";
 import { useSearchParams } from "react-router-dom";
 import { INTERACTION_TYPE_OPTIONS } from "@/atomic-crm/validation/activities";
 
-/** Overview tab filter state */
-export interface OverviewFilterState {
-  datePreset: string;
-  salesRepId: number | null;
+/** Global report filter state — shared across all report tabs */
+export interface GlobalReportFilterState {
+  principalId: number | null;
+  productId: number | null;
+  ownerId: number | null;
+  periodPreset: string;
+  customStart: string | null;
+  customEnd: string | null;
 }
 
-const OVERVIEW_DEFAULTS: OverviewFilterState = {
-  datePreset: "last30",
-  salesRepId: null,
+export const GLOBAL_DEFAULTS: GlobalReportFilterState = {
+  principalId: null,
+  productId: null,
+  ownerId: null,
+  periodPreset: "allTime",
+  customStart: null,
+  customEnd: null,
 };
 
 /** Campaign tab filter state */
 export interface CampaignFilterState {
-  selectedCampaign: string;
-  datePreset: string;
-  startDate: string | null;
-  endDate: string | null;
+  selectedCampaign: string | null;
   selectedActivityTypes: string[];
-  selectedSalesRep: number | null;
   showStaleLeads: boolean;
 }
 
 const CAMPAIGN_DEFAULTS: CampaignFilterState = {
-  selectedCampaign: "",
-  datePreset: "allTime",
-  startDate: null,
-  endDate: null,
+  selectedCampaign: null,
   selectedActivityTypes: INTERACTION_TYPE_OPTIONS.map((opt) => opt.value),
-  selectedSalesRep: null,
   showStaleLeads: false,
 };
 
-/** Weekly tab filter state */
-export interface WeeklyFilterState {
-  start: string;
-  end: string;
-}
-
-// Defaults are dynamic (current week), so the hook accepts them as a param
-
 /** Opportunities tab filter state */
 export interface OpportunitiesFilterState {
-  principal_organization_id: number | null;
   stage: string[];
-  opportunity_owner_id: number | null;
-  startDate: string | null;
-  endDate: string | null;
 }
 
 const OPPORTUNITIES_DEFAULTS: OpportunitiesFilterState = {
-  principal_organization_id: null,
   stage: [],
-  opportunity_owner_id: null,
-  startDate: null,
-  endDate: null,
 };
 
-type FilterState =
-  | OverviewFilterState
-  | CampaignFilterState
-  | WeeklyFilterState
-  | OpportunitiesFilterState;
+type FilterState = GlobalReportFilterState | CampaignFilterState | OpportunitiesFilterState;
 
 /**
  * Generic store-backed filter persistence hook.
@@ -132,43 +112,80 @@ export function useReportFilterState<T extends FilterState>(
 }
 
 /**
- * Build a shareable URL with current tab and filter state encoded.
+ * Build a shareable URL with global + local filter state encoded.
+ *
+ * Supports the new split-store architecture: global filters go in a "global"
+ * param, tab-local filters go in a "filters" param. Only non-default values
+ * are serialized to keep URLs compact.
+ *
+ * Half-filled custom normalization: If periodPreset is "custom" but one of
+ * the dates is missing, period fields are omitted entirely (no half state in URL).
  *
  * @param tab - Active tab key
- * @param filters - Current filter state to encode
+ * @param globalFilters - Current global filter state
+ * @param localFilters - Current tab-local filter state (optional)
+ * @param localDefaults - Tab-local defaults for comparison (optional)
  * @param baseUrl - Base URL (defaults to current page URL without params)
  * @returns Full shareable URL string
  */
-export function buildShareUrl<T extends FilterState>(
+export function buildReportShareUrl(
   tab: string,
-  filters: T,
-  defaults: T,
+  globalFilters: GlobalReportFilterState,
+  localFilters?: Record<string, unknown>,
+  localDefaults?: Record<string, unknown>,
   baseUrl?: string
 ): string {
   const base = baseUrl ?? `${window.location.origin}${window.location.pathname}`;
   const params = new URLSearchParams();
   params.set("tab", tab);
 
-  // Only include non-default filter values to keep URL clean
-  const nonDefaults: Record<string, unknown> = {};
-  let hasNonDefaults = false;
+  // Serialize global -- only non-default values
+  // Half-filled custom normalization: omit period fields if custom range incomplete
+  const globalNonDefaults: Record<string, unknown> = {};
+  let hasGlobal = false;
 
-  for (const key of Object.keys(filters)) {
-    const filterVal = (filters as Record<string, unknown>)[key];
-    const defaultVal = (defaults as Record<string, unknown>)[key];
+  for (const key of Object.keys(GLOBAL_DEFAULTS) as (keyof GlobalReportFilterState)[]) {
+    // Skip half-filled custom period
+    if (
+      globalFilters.periodPreset === "custom" &&
+      (globalFilters.customStart == null || globalFilters.customEnd == null)
+    ) {
+      if (key === "periodPreset" || key === "customStart" || key === "customEnd") continue;
+    }
 
-    if (JSON.stringify(filterVal) !== JSON.stringify(defaultVal)) {
-      nonDefaults[key] = filterVal;
-      hasNonDefaults = true;
+    const val = globalFilters[key];
+    const def = GLOBAL_DEFAULTS[key];
+    if (JSON.stringify(val) !== JSON.stringify(def)) {
+      globalNonDefaults[key] = val;
+      hasGlobal = true;
     }
   }
 
-  if (hasNonDefaults) {
-    params.set("filters", encodeURIComponent(JSON.stringify(nonDefaults)));
+  if (hasGlobal) {
+    params.set("global", encodeURIComponent(JSON.stringify(globalNonDefaults)));
+  }
+
+  // Serialize local -- only non-default values
+  if (localFilters && localDefaults) {
+    const localNonDefaults: Record<string, unknown> = {};
+    let hasLocal = false;
+
+    for (const key of Object.keys(localDefaults)) {
+      const val = localFilters[key];
+      const def = localDefaults[key];
+      if (JSON.stringify(val) !== JSON.stringify(def)) {
+        localNonDefaults[key] = val;
+        hasLocal = true;
+      }
+    }
+
+    if (hasLocal) {
+      params.set("filters", encodeURIComponent(JSON.stringify(localNonDefaults)));
+    }
   }
 
   return `${base}?${params.toString()}`;
 }
 
 // Export defaults for consumer use
-export { OVERVIEW_DEFAULTS, CAMPAIGN_DEFAULTS, OPPORTUNITIES_DEFAULTS };
+export { CAMPAIGN_DEFAULTS, OPPORTUNITIES_DEFAULTS };

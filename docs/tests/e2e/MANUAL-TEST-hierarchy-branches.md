@@ -231,20 +231,20 @@
 
 ## Section 9: List View Verification
 
-### 9.1 Parent Column Display
+### 9.1 Parent Chip Display (Inline in Name Cell)
 | Step | Action | Expected Result | Pass | Fail | Notes |
 |------|--------|-----------------|------|------|-------|
 | 9.1.1 | Navigate to Organizations list | List view loads | [ ] | [ ] | |
-| 9.1.2 | Locate "Parent" column header (4th column) | Column visible on desktop | [ ] | [ ] | |
-| 9.1.3 | Find "Test Branch Chicago" row | Row visible in list | [ ] | [ ] | |
-| 9.1.4 | Verify Parent column shows "Test Parent Corp" | Parent name displayed | [ ] | [ ] | |
-| 9.1.5 | Click "Test Parent Corp" in Parent column | Navigates to parent org | [ ] | [ ] | |
+| 9.1.2 | Find "Test Branch Chicago" row | Row visible in list | [ ] | [ ] | |
+| 9.1.3 | Check secondary line in name cell | Shows city/state + parent chip with icon | [ ] | [ ] | |
+| 9.1.4 | Verify parent chip shows "Test Parent Corp" | Parent name displayed as subtle pill tag | [ ] | [ ] | |
+| 9.1.5 | Click parent chip | Filters list to siblings (same parent) | [ ] | [ ] | |
 
-### 9.2 Tablet View
+### 9.2 Responsive Behavior
 | Step | Action | Expected Result | Pass | Fail | Notes |
 |------|--------|-----------------|------|------|-------|
 | 9.2.1 | Resize browser to iPad width (768px) | Viewport changes | [ ] | [ ] | |
-| 9.2.2 | Check if Parent column hidden | Column may be hidden on tablet | [ ] | [ ] | Acceptable behavior |
+| 9.2.2 | Check parent chip still visible in name cell | Parent chip visible at all breakpoints | [ ] | [ ] | |
 
 ---
 
@@ -299,7 +299,7 @@
 
 ## Known Issues / Limitations
 
-1. **Tablet viewport:** Parent column may be hidden on iPad - this is expected behavior
+1. **Tablet viewport:** Parent chip is always visible in the name cell at all breakpoints
 2. **Cycle detection:** Error message comes from database trigger, may appear as generic API error
 3. **Deletion protection:** Same as above - trigger error surfaces through API
 

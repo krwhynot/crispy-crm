@@ -22,9 +22,10 @@ const mockSalesReps = [
 ];
 
 const createMatchMedia =
-  (isDockedSidebar: boolean) =>
+  (isDesktop: boolean) =>
   (query: string): MediaQueryList => ({
-    matches: isDockedSidebar && query.includes("min-width: 1024px"),
+    matches:
+      isDesktop && (query.includes("min-width: 1024px") || query.includes("min-width: 1280px")),
     media: query,
     onchange: null,
     addListener: vi.fn(),
@@ -73,16 +74,16 @@ describe("ReportsPage", () => {
     expect(tabList).toHaveClass("lg:grid-cols-4");
   });
 
-  it("shows parameter bar with Overview controls on Overview tab", () => {
+  it("renders filter sidebar with global controls on Overview tab", () => {
     renderWithAdminContext(<ReportsPage />);
 
-    // No sidebar anywhere
-    expect(screen.queryByLabelText("Filter reports")).not.toBeInTheDocument();
-    // Parameter bar with Overview controls should be present
-    expect(screen.getByRole("toolbar", { name: "Overview report parameters" })).toBeInTheDocument();
+    // Sidebar renders with global filter controls
+    expect(screen.getByLabelText("Period")).toBeInTheDocument();
+    expect(screen.getByLabelText("Principal")).toBeInTheDocument();
+    expect(screen.getByLabelText("Owner")).toBeInTheDocument();
   });
 
-  it("shows parameter bar with tab-specific controls on non-Overview tabs", async () => {
+  it("renders filter sidebar with tab-specific controls on non-Overview tabs", async () => {
     const user = userEvent.setup();
     renderWithAdminContext(<ReportsPage />);
 
@@ -90,12 +91,9 @@ describe("ReportsPage", () => {
     const oppsTab = screen.getByRole("tab", { name: /^opportunities$/i });
     await user.click(oppsTab);
 
-    // No sidebar anywhere
-    expect(screen.queryByLabelText("Filter reports")).not.toBeInTheDocument();
-    // Parameter bar with Opportunities controls should be present
-    expect(
-      screen.getByRole("toolbar", { name: "Opportunities report parameters" })
-    ).toBeInTheDocument();
+    // Global controls still present
+    expect(screen.getByLabelText("Period")).toBeInTheDocument();
+    expect(screen.getByLabelText("Principal")).toBeInTheDocument();
   });
 
   it("uses Skeleton for tab loading states", () => {

@@ -12,7 +12,6 @@ export { ChartWrapper } from "./ChartWrapper";
 export { ReportPageShell } from "./ReportPageShell";
 export { KPIDrillDown } from "./KPIDrillDown";
 
-// Report Parameter Bar (unified horizontal filter bar for all tabs)
-export { ReportParameterBar } from "./ReportParameterBar";
-export { CheckboxPopoverFilter } from "./CheckboxPopoverFilter";
-export { DateRangePopoverFilter } from "./DateRangePopoverFilter";
+// Sidebar filter components (Reports Redesign Phase 3)
+export { ReportFilterSidebar } from "./ReportFilterSidebar";
+export { ReportsAppliedFiltersBar } from "./ReportsAppliedFiltersBar";

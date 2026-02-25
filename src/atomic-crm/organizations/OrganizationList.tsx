@@ -59,7 +59,10 @@ interface Segment {
  * Following SampleStatusBadge pattern with named functions for React DevTools
  */
 
-/** OrganizationNameCell - Renders org name with hierarchy context chips */
+/** OrganizationNameCell - Renders org name with hierarchy context chips
+ * Line 1: Name + branches chip
+ * Line 2: City, State + parent chip (subtle tag with CornerDownRight icon)
+ */
 const OrganizationNameCell = memo(function OrganizationNameCell({
   record,
 }: {
@@ -71,17 +74,16 @@ const OrganizationNameCell = memo(function OrganizationNameCell({
         <span className="name-cell truncate text-base font-semibold leading-tight">
           {record.name}
         </span>
-        <OrganizationHierarchyChips
-          record={record}
-          parentClassName="lg:hidden"
-          parentDisplayMode="listCompact"
-        />
+        <OrganizationHierarchyChips record={record} show="branches" />
       </div>
-      <span className="text-[13px] text-muted-foreground truncate leading-snug">
-        {record.city && record.state
-          ? `${record.city}, ${record.state}`
-          : record.city || record.state || "\u2014"}
-      </span>
+      <div className="flex items-center gap-1.5 min-w-0">
+        <span className="text-[13px] text-muted-foreground truncate leading-snug">
+          {record.city && record.state
+            ? `${record.city}, ${record.state}`
+            : record.city || record.state || "\u2014"}
+        </span>
+        <OrganizationHierarchyChips record={record} show="parent" parentDisplayMode="listCompact" />
+      </div>
     </div>
   );
 });
@@ -275,7 +277,7 @@ const OrganizationDatagrid = ({
             label={<OrganizationNameHeader />}
             sortBy="name"
             render={(record: OrganizationRecord) => <OrganizationNameCell record={record} />}
-            cellClassName="max-w-[220px]"
+            cellClassName="max-w-[340px]"
           />
 
           {/* Column 2: Type - Organization classification (sortable by organization_type) - always visible */}
@@ -312,21 +314,7 @@ const OrganizationDatagrid = ({
             headerClassName="hidden lg:table-cell"
           />
 
-          {/* Column 6: Parent - Direct read from summary view (sortable by parent_organization_name) - hidden on tablet */}
-          <FunctionField
-            source="parent_organization_name"
-            label="Parent"
-            sortBy="parent_organization_name"
-            render={(record: OrganizationRecord) => (
-              <span className="truncate block max-w-[120px]">
-                {record.parent_organization_name || "-"}
-              </span>
-            )}
-            cellClassName="hidden lg:table-cell w-[120px] max-w-[120px]"
-            headerClassName="hidden lg:table-cell"
-          />
-
-          {/* Column 7: Contacts - Computed count metric (non-sortable) - hidden on mobile */}
+          {/* Column 6: Contacts - Computed count metric (non-sortable) - hidden on mobile */}
           <FunctionField
             source="nb_contacts"
             label="Contacts"
@@ -337,7 +325,7 @@ const OrganizationDatagrid = ({
             headerClassName="hidden md:table-cell"
           />
 
-          {/* Column 8: Opportunities - Computed count metric (non-sortable) - hidden on mobile */}
+          {/* Column 7: Opportunities - Computed count metric (non-sortable) - hidden on mobile */}
           <FunctionField
             source="nb_opportunities"
             label="Opps"

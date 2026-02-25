@@ -1,5 +1,5 @@
 import { useState, useMemo, useEffect, useRef } from "react";
-import { useGetList, useNotify } from "ra-core";
+import { useGetList, useNotify, useStore } from "ra-core";
 import { useNavigate } from "react-router-dom";
 import { TrendingUp, Building2, BarChart3, Download } from "lucide-react";
 import { KPICard } from "@/components/ui/kpi-card";
@@ -7,10 +7,14 @@ import { AdminButton } from "@/components/admin/AdminButton";
 import { EmptyState } from "./components";
 import {
   useReportData,
-  useReportFilterState,
+  GLOBAL_DEFAULTS,
   OPPORTUNITIES_DEFAULTS,
+  type GlobalReportFilterState,
   type OpportunitiesFilterState,
+  useProductFilteredOpportunityIds,
+  ProductTruncationAlert,
 } from "./hooks";
+import { resolvePreset } from "./utils/resolvePreset";
 import { LOOKUP_PAGE_SIZE } from "@/atomic-crm/constants/appConstants";
 import type { Opportunity, Sale } from "../types";
 import {
@@ -37,9 +41,22 @@ export default function OpportunitiesByPrincipalReport() {
   const navigate = useNavigate();
   const notify = useNotify();
 
-  const [filterState] = useReportFilterState<OpportunitiesFilterState>(
+  // Read global + local filter stores
+  const [globalFilters] = useStore<GlobalReportFilterState>("reports.global", GLOBAL_DEFAULTS);
+  const [localFilters] = useStore<OpportunitiesFilterState>(
     "reports.opportunities",
     OPPORTUNITIES_DEFAULTS
+  );
+  const { principalId, productId, ownerId, periodPreset, customStart, customEnd } = globalFilters;
+
+  // Product filtering via junction table
+  const { opportunityIds, isTruncated: productTruncated } =
+    useProductFilteredOpportunityIds(productId);
+
+  // Resolve date preset to concrete Date range
+  const resolvedDateRange = useMemo(
+    () => resolvePreset(periodPreset, customStart, customEnd),
+    [periodPreset, customStart, customEnd]
   );
 
   // Track expanded principals
@@ -48,43 +65,37 @@ export default function OpportunitiesByPrincipalReport() {
 
   // Build filter object for API
   // CRITICAL: Use primitive dependencies to prevent render loops
-  // Depending on entire `filterState` object causes recalculation when object reference changes
-  const stageJson = JSON.stringify(filterState.stage);
+  const stageJson = JSON.stringify(localFilters.stage);
   const apiFilter = useMemo(() => {
     const filter: Record<string, unknown> = {
       "deleted_at@is": null,
       status: "active",
     };
 
-    if (filterState.principal_organization_id) {
-      filter.principal_organization_id = filterState.principal_organization_id;
+    if (principalId) {
+      filter.principal_organization_id = principalId;
     }
 
-    if (filterState.stage.length > 0) {
-      filter.stage = filterState.stage;
+    if (localFilters.stage.length > 0) {
+      filter.stage = localFilters.stage;
     }
 
-    if (filterState.opportunity_owner_id) {
-      filter.opportunity_owner_id = filterState.opportunity_owner_id;
+    if (ownerId) {
+      filter.opportunity_owner_id = ownerId;
     }
 
-    if (filterState.startDate) {
-      filter["estimated_close_date@gte"] = filterState.startDate;
+    if (resolvedDateRange) {
+      filter["estimated_close_date@gte"] = resolvedDateRange.start.toISOString();
+      filter["estimated_close_date@lte"] = resolvedDateRange.end.toISOString();
     }
 
-    if (filterState.endDate) {
-      filter["estimated_close_date@lte"] = filterState.endDate;
+    if (opportunityIds != null) {
+      filter["id@in"] = opportunityIds;
     }
 
     return filter;
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- stageJson serializes filterState.stage for stable array comparison
-  }, [
-    filterState.principal_organization_id,
-    stageJson,
-    filterState.opportunity_owner_id,
-    filterState.startDate,
-    filterState.endDate,
-  ]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- stageJson serializes localFilters.stage for stable array comparison
+  }, [principalId, stageJson, ownerId, resolvedDateRange, opportunityIds]);
 
   // Fetch opportunities
   const {
@@ -126,12 +137,12 @@ export default function OpportunitiesByPrincipalReport() {
     const grouped = new Map<string | null, PrincipalGroup>();
 
     opportunities.forEach((opp) => {
-      const principalId = opp.principal_organization_id?.toString() || null;
+      const pId = opp.principal_organization_id?.toString() || null;
       const principalName = opp.principal_organization_name || "No Principal Assigned";
 
-      if (!grouped.has(principalId)) {
-        grouped.set(principalId, {
-          principalId,
+      if (!grouped.has(pId)) {
+        grouped.set(pId, {
+          principalId: pId,
           principalName,
           opportunities: [],
           totalCount: 0,
@@ -139,7 +150,7 @@ export default function OpportunitiesByPrincipalReport() {
         });
       }
 
-      const group = grouped.get(principalId)!;
+      const group = grouped.get(pId)!;
       group.opportunities.push(opp);
       group.totalCount += 1;
 
@@ -165,8 +176,8 @@ export default function OpportunitiesByPrincipalReport() {
   }, [principalGroups]);
 
   // Toggle principal expansion
-  const togglePrincipalExpansion = (principalId: string | null) => {
-    const key = principalId || "null";
+  const togglePrincipalExpansion = (principalIdKey: string | null) => {
+    const key = principalIdKey || "null";
     const newExpanded = new Set(expandedPrincipals);
     if (newExpanded.has(key)) {
       newExpanded.delete(key);
@@ -214,6 +225,8 @@ export default function OpportunitiesByPrincipalReport() {
           Updating...
         </div>
       )}
+
+      <ProductTruncationAlert isTruncated={productTruncated} />
 
       <div className="flex items-center justify-end gap-2">
         <AdminButton

@@ -477,7 +477,7 @@ describe("CampaignActivityReport", () => {
 
   describe("Filter Combinations", () => {
     // Note: Filter controls (Date Range, Activity Types, Sales Rep, Stale Leads)
-    // now live in the ReportParameterBar above the tabs. The report body only
+    // now live in the ReportFilterSidebar. The report body only
     // contains the Export button and data display.
 
     it("renders Export CSV button", async () => {

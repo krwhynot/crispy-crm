@@ -6,6 +6,7 @@
  * - listCompact mode: icon + name (no prefix) for list table
  * - parentClassName applied for responsive visibility
  * - Branch chip rendering unchanged across modes
+ * - show prop: "all" (default), "parent", "branches" for selective rendering
  */
 
 import { describe, test, expect, vi } from "vitest";
@@ -188,6 +189,66 @@ describe("OrganizationHierarchyChips", () => {
       );
 
       expect(screen.getByText("3 branches")).toBeInTheDocument();
+    });
+  });
+
+  describe("show prop", () => {
+    test('show="parent" renders only parent chip, not branches', () => {
+      const record = createTestRecord({
+        id: 2,
+        parent_organization_id: 1,
+        parent_organization_name: "Acme Corp",
+        child_branch_count: 5,
+      });
+
+      renderWithAdminContext(<OrganizationHierarchyChips record={record} show="parent" />);
+
+      expect(screen.getByText(/Parent: Acme Corp/)).toBeInTheDocument();
+      expect(screen.queryByText("5 branches")).not.toBeInTheDocument();
+    });
+
+    test('show="branches" renders only branches chip, not parent', () => {
+      const record = createTestRecord({
+        id: 2,
+        parent_organization_id: 1,
+        parent_organization_name: "Acme Corp",
+        child_branch_count: 5,
+      });
+
+      renderWithAdminContext(<OrganizationHierarchyChips record={record} show="branches" />);
+
+      expect(screen.getByText("5 branches")).toBeInTheDocument();
+      expect(screen.queryByText(/Parent: Acme Corp/)).not.toBeInTheDocument();
+    });
+
+    test('show="parent" returns null when record has no parent', () => {
+      const record = createTestRecord({
+        id: 1,
+        parent_organization_id: null,
+        parent_organization_name: null,
+        child_branch_count: 5,
+      });
+
+      const { container } = renderWithAdminContext(
+        <OrganizationHierarchyChips record={record} show="parent" />
+      );
+
+      expect(container.innerHTML).toBe("");
+    });
+
+    test('show="branches" returns null when record has no branches', () => {
+      const record = createTestRecord({
+        id: 2,
+        parent_organization_id: 1,
+        parent_organization_name: "Acme Corp",
+        child_branch_count: 0,
+      });
+
+      const { container } = renderWithAdminContext(
+        <OrganizationHierarchyChips record={record} show="branches" />
+      );
+
+      expect(container.innerHTML).toBe("");
     });
   });
 });

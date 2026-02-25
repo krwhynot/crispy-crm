@@ -11,7 +11,19 @@ export interface DatePresetOption {
   label: string;
 }
 
-/** Standard date presets used by Overview and other tabs */
+/** Unified superset of all report date presets */
+export const REPORT_DATE_PRESETS: DatePresetOption[] = [
+  { value: "allTime", label: "All Time" },
+  { value: "today", label: "Today" },
+  { value: "yesterday", label: "Yesterday" },
+  { value: "last7", label: "Last 7 Days" },
+  { value: "last30", label: "Last 30 Days" },
+  { value: "thisMonth", label: "This Month" },
+  { value: "lastMonth", label: "Last Month" },
+  { value: "custom", label: "Custom Range" },
+];
+
+/** Standard date presets used by Overview and other tabs (compatibility export) */
 export const DATE_PRESETS: DatePresetOption[] = [
   { value: "today", label: "Today" },
   { value: "yesterday", label: "Yesterday" },
@@ -21,7 +33,7 @@ export const DATE_PRESETS: DatePresetOption[] = [
   { value: "lastMonth", label: "Last Month" },
 ];
 
-/** Campaign-specific date presets (includes "All time" and "Custom range") */
+/** Campaign-specific date presets (compatibility export) */
 export const CAMPAIGN_DATE_PRESETS: DatePresetOption[] = [
   { value: "allTime", label: "All time" },
   { value: "last7", label: "Last 7 days" },

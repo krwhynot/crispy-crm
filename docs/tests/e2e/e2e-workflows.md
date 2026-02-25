@@ -364,7 +364,7 @@ Step-by-step guide to test all organization form touchpoints: Create, Edit, Slid
 
 | Check | What to Note |
 |-------|--------------|
-| Parent column in list | Shows parent org name? |
+| Parent chip in name cell | Shows parent org name as inline tag? |
 | Parent link | Clickable to navigate? |
 | Child org sidebar | Shows "Parent: [Name]" section? |
 | Parent org sidebar | Shows "Branches" section with children? |

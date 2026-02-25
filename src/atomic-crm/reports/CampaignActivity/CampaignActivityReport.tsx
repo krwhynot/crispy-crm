@@ -1,4 +1,5 @@
 import React, { useMemo, useState } from "react";
+import { useStore } from "ra-core";
 import { Card, CardHeader } from "@/components/ui/card";
 import { ActivityTypeCard } from "./ActivityTypeCard";
 import { StaleLeadsView } from "./StaleLeadsView";
@@ -10,7 +11,16 @@ import { AdminButton } from "@/components/admin/AdminButton";
 
 import { EmptyState } from "@/components/ui/empty-state";
 import { Activity, CheckCircle, Building2, Target, BarChart3, Download } from "lucide-react";
-import { useReportFilterState, CAMPAIGN_DEFAULTS, type CampaignFilterState } from "../hooks";
+import {
+  useReportFilterState,
+  GLOBAL_DEFAULTS,
+  CAMPAIGN_DEFAULTS,
+  type GlobalReportFilterState,
+  type CampaignFilterState,
+  useProductFilteredOpportunityIds,
+  ProductTruncationAlert,
+} from "../hooks";
+import { resolvePreset } from "../utils/resolvePreset";
 
 /** Activity type matching useCampaignActivityData return type and Activity from types.ts */
 interface CampaignActivity {
@@ -41,7 +51,12 @@ interface CampaignActivityGroup {
 export default function CampaignActivityReport() {
   const [expandedTypes, setExpandedTypes] = useState<Set<string>>(new Set());
 
-  const [filterState, updateFilters] = useReportFilterState<CampaignFilterState>(
+  // Read global filter store
+  const [globalFilters] = useStore<GlobalReportFilterState>("reports.global", GLOBAL_DEFAULTS);
+  const { principalId, productId, ownerId, periodPreset, customStart, customEnd } = globalFilters;
+
+  // Read tab-local filter store
+  const [filterState] = useReportFilterState<CampaignFilterState>(
     "reports.campaign",
     CAMPAIGN_DEFAULTS
   );
@@ -50,11 +65,25 @@ export default function CampaignActivityReport() {
 
   const hasInitialized = React.useRef(false);
 
-  // Build dateRange from store state (fixes rehydration bug where dates weren't restored on mount)
-  const dateRange =
-    filterState.startDate && filterState.endDate
-      ? { start: filterState.startDate, end: filterState.endDate }
-      : null;
+  // Product filtering via junction table
+  const { opportunityIds: productLinkedOpportunityIds, isTruncated: productTruncated } =
+    useProductFilteredOpportunityIds(productId);
+
+  // Resolve date range from global preset
+  const resolvedRange = useMemo(
+    () => resolvePreset(periodPreset, customStart, customEnd),
+    [periodPreset, customStart, customEnd]
+  );
+
+  const dateRange = useMemo(
+    () =>
+      resolvedRange
+        ? { start: resolvedRange.start.toISOString(), end: resolvedRange.end.toISOString() }
+        : null,
+    [resolvedRange]
+  );
+
+  const showStaleLeads = filterState.showStaleLeads;
 
   const {
     activities,
@@ -65,23 +94,17 @@ export default function CampaignActivityReport() {
     isLoadingActivities,
     staleOpportunities: staleOpportunitiesData,
   } = useCampaignActivityData({
-    selectedCampaign: filterState.selectedCampaign || "Grand Rapids Trade Show",
+    selectedCampaign: filterState.selectedCampaign,
     dateRange,
     selectedActivityTypes: filterState.selectedActivityTypes,
-    selectedSalesRep: filterState.selectedSalesRep,
+    ownerId,
     allActivityTypes: INTERACTION_TYPE_OPTIONS,
-    showStaleLeads: filterState.showStaleLeads,
+    showStaleLeads,
+    principalId,
+    productLinkedOpportunityIds,
   });
 
-  const selectedCampaign =
-    filterState.selectedCampaign || campaignOptions[0]?.name || "Grand Rapids Trade Show";
-  const showStaleLeads = filterState.showStaleLeads;
-
-  React.useEffect(() => {
-    if (!filterState.selectedCampaign && campaignOptions.length > 0) {
-      updateFilters({ selectedCampaign: campaignOptions[0].name });
-    }
-  }, [campaignOptions, filterState.selectedCampaign, updateFilters]);
+  const selectedCampaign = filterState.selectedCampaign || campaignOptions[0]?.name || "";
 
   const { exportStaleLeads, exportActivities } = useCampaignActivityExport(
     selectedCampaign,
@@ -226,6 +249,8 @@ export default function CampaignActivityReport() {
         </div>
       )}
 
+      <ProductTruncationAlert isTruncated={productTruncated} />
+
       {/* Export */}
       <div className="flex items-center justify-end gap-2">
         <AdminButton
@@ -235,9 +260,7 @@ export default function CampaignActivityReport() {
           onClick={handleExport}
           disabled={
             isLoadingActivities ||
-            (showStaleLeads ? staleOpportunities.length === 0 : activities.length === 0) ||
-            (filterState.datePreset === "custom" &&
-              (!filterState.startDate || !filterState.endDate))
+            (showStaleLeads ? staleOpportunities.length === 0 : activities.length === 0)
           }
         >
           <Download className="h-4 w-4" aria-hidden="true" />
@@ -302,7 +325,10 @@ export default function CampaignActivityReport() {
             icon={CheckCircle}
           />
         ) : (
-          <StaleLeadsView campaignName={selectedCampaign} staleOpportunities={staleOpportunities} />
+          <StaleLeadsView
+            campaignName={filterState.selectedCampaign ?? selectedCampaign}
+            staleOpportunities={staleOpportunities}
+          />
         )
       ) : activityGroups.length > 0 ? (
         <div>

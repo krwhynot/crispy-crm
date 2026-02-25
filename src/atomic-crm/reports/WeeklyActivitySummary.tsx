@@ -1,6 +1,5 @@
 import { useState, useEffect, useMemo } from "react";
-import { useGetIdentity, downloadCSV, useNotify } from "ra-core";
-import { getWeekRange } from "@/atomic-crm/utils";
+import { useGetIdentity, downloadCSV, useNotify, useStore } from "ra-core";
 import jsonExport from "jsonexport/dist";
 import { Activity, Users, TrendingUp, ChevronRight, Download } from "lucide-react";
 import { logger } from "@/lib/logger";
@@ -9,10 +8,18 @@ import { AdminButton } from "@/components/admin/AdminButton";
 import { KPICard } from "@/components/ui/kpi-card";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import { pluralize } from "@/lib/utils/pluralize";
 import { sanitizeCsvValue } from "@/atomic-crm/utils/csvUploadValidator";
 import { EmptyState } from "./components";
-import { useReportData, useReportFilterState, type WeeklyFilterState } from "./hooks";
+import {
+  useReportData,
+  GLOBAL_DEFAULTS,
+  type GlobalReportFilterState,
+  useProductFilteredOpportunityIds,
+  ProductTruncationAlert,
+} from "./hooks";
+import { resolvePreset } from "./utils/resolvePreset";
 import { LOW_ACTIVITY_THRESHOLD } from "@/atomic-crm/constants/appConstants";
 import type { ActivityRecord } from "../types";
 
@@ -60,22 +67,31 @@ interface RepGroup {
 export default function WeeklyActivitySummary() {
   const { data: identity } = useGetIdentity();
   const notify = useNotify();
-  const weeklyDefaults: WeeklyFilterState = getWeekRange();
-  const [filterState] = useReportFilterState<WeeklyFilterState>("reports.weekly", weeklyDefaults);
-  const dateRange = useMemo(
-    () => ({ start: filterState.start, end: filterState.end }),
-    [filterState.start, filterState.end]
+
+  // Read global filter state from shared store
+  const [globalFilters] = useStore<GlobalReportFilterState>("reports.global", GLOBAL_DEFAULTS);
+  const { principalId, productId, ownerId, periodPreset, customStart, customEnd } = globalFilters;
+
+  // Product filtering via junction table
+  const { opportunityIds, isTruncated: productTruncated } =
+    useProductFilteredOpportunityIds(productId);
+
+  // Resolve date preset to concrete Date range
+  const resolvedDateRange = useMemo(
+    () => resolvePreset(periodPreset, customStart, customEnd),
+    [periodPreset, customStart, customEnd]
   );
 
-  // CRITICAL: Memoize Date objects to prevent render loop
-  // new Date() creates new object reference every render, causing useReportData
-  // to see "changed" dependencies and re-fetch continuously
-  const stableDateRange = useMemo(
+  const stableDateRange = useMemo(() => resolvedDateRange ?? undefined, [resolvedDateRange]);
+
+  // Build activity filters from global state
+  const activityFilters = useMemo(
     () => ({
-      start: new Date(dateRange.start),
-      end: new Date(dateRange.end),
+      ...(ownerId ? { created_by: ownerId } : {}),
+      ...(principalId && { principal_organization_id: principalId }),
+      ...(opportunityIds != null && { "opportunity_id@in": opportunityIds }),
     }),
-    [dateRange.start, dateRange.end] // Depend on primitives, not objects
+    [ownerId, principalId, opportunityIds]
   );
 
   // Fetch activities for date range (view includes principal + creator fields)
@@ -83,8 +99,11 @@ export default function WeeklyActivitySummary() {
     data: activities,
     isLoading: activitiesLoading,
     error: activitiesError,
+    isTruncated,
+    total,
   } = useReportData<WeeklyActivityRecord>("activities", {
     dateRange: stableDateRange,
+    additionalFilters: activityFilters,
     dateField: "activity_date",
   });
 
@@ -109,17 +128,17 @@ export default function WeeklyActivitySummary() {
 
       const repGroup = groups.get(activity.created_by)!;
 
-      const principalId = activity.principal_organization_id || 0;
-      if (!repGroup.principals.has(principalId)) {
+      const pId = activity.principal_organization_id || 0;
+      if (!repGroup.principals.has(pId)) {
         let principalName: string;
-        if (principalId === 0) {
+        if (pId === 0) {
           principalName = "No Principal";
         } else if (activity.principal_organization_name) {
           principalName = activity.principal_organization_name;
         } else {
-          principalName = `Principal #${principalId}`;
+          principalName = `Principal #${pId}`;
         }
-        repGroup.principals.set(principalId, {
+        repGroup.principals.set(pId, {
           principalName,
           call: 0,
           email: 0,
@@ -133,7 +152,7 @@ export default function WeeklyActivitySummary() {
         });
       }
 
-      const principalStats = repGroup.principals.get(principalId)!;
+      const principalStats = repGroup.principals.get(pId)!;
 
       // Count by interaction type (activity.type)
       const typeKey = activity.type;
@@ -151,6 +170,11 @@ export default function WeeklyActivitySummary() {
 
     return Array.from(groups.values());
   }, [activities]);
+
+  // Build date range label for CSV export filename
+  const dateRangeLabel = resolvedDateRange
+    ? `${resolvedDateRange.start.toISOString().split("T")[0]}-to-${resolvedDateRange.end.toISOString().split("T")[0]}`
+    : "all-time";
 
   const handleExport = () => {
     const exportData: Array<{
@@ -191,7 +215,7 @@ export default function WeeklyActivitySummary() {
         notify("Export failed. Please try again.", { type: "error" });
         return;
       }
-      downloadCSV(csv, `weekly-activity-${dateRange.start}-to-${dateRange.end}`);
+      downloadCSV(csv, `weekly-activity-${dateRangeLabel}`);
       notify("Report exported successfully", { type: "success" });
     });
   };
@@ -240,6 +264,17 @@ export default function WeeklyActivitySummary() {
         <div className="text-xs text-muted-foreground animate-pulse" role="status">
           Updating...
         </div>
+      )}
+
+      <ProductTruncationAlert isTruncated={productTruncated} />
+
+      {isTruncated && (
+        <Alert>
+          <AlertDescription>
+            Showing {activities?.length ?? 0} of {total} activities. Narrow your date range for
+            complete results.
+          </AlertDescription>
+        </Alert>
       )}
 
       <div className="flex items-center justify-end gap-2">

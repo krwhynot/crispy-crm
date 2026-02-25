@@ -46,9 +46,9 @@ export interface ListToolbarProps {
  * ListToolbar - Unified toolbar row for list pages.
  *
  * Responsive behavior:
- * - <768: search full row, sort inside overflow menu
- * - 768-1279: compact controls, icon-only sort button
- * - >=1280: full controls with labeled sort button
+ * - <768: search full row, sort inside overflow menu only
+ * - 768-1023: search full row, sort+view+create on second row
+ * - >=1024: single row — search flexible, sort+view+create on right
  */
 export function ListToolbar({
   sortFields,
@@ -77,7 +77,7 @@ export function ListToolbar({
       aria-label={resource ? `${resource} list toolbar` : "List toolbar"}
       className="list-toolbar"
     >
-      <div className="order-1 basis-full min-w-0 xl:order-1 xl:basis-auto xl:flex-1 xl:min-w-[340px] xl:max-w-xl">
+      <div className="order-1 basis-full min-w-0 lg:basis-auto lg:flex-1 lg:min-w-[200px] lg:max-w-xl">
         <div className="flex items-center gap-2">
           {showSearch && (
             <ListSearchBar
@@ -90,19 +90,10 @@ export function ListToolbar({
         </div>
       </div>
 
-      <div className="order-2 hidden shrink-0 xl:flex xl:flex-1 xl:justify-center">
-        <SortButton fields={sortFields} />
-      </div>
-
-      <div className="order-2 flex shrink-0 gap-2 xl:hidden">
-        <SortButton
-          fields={sortFields}
-          iconOnly
-          className="h-[var(--list-toolbar-control-height-mobile)] w-[var(--list-toolbar-control-height-mobile)]"
-        />
-      </div>
-
-      <div className="order-3 ml-auto flex shrink-0 items-end gap-2 xl:order-3">
+      <div className="order-2 ml-auto flex shrink-0 items-center gap-2">
+        <div className="hidden shrink-0 md:block">
+          <SortButton fields={sortFields} className="h-11" />
+        </div>
         {viewSwitcher && <div className="shrink-0">{viewSwitcher}</div>}
         {primaryAction && <div className="shrink-0">{primaryAction}</div>}
         <div className={showOverflowOnDesktop ? "shrink-0" : "shrink-0 md:hidden"}>
@@ -135,13 +126,13 @@ function FilterToggleButton() {
           variant="outline"
           size="sm"
           onClick={handleClick}
-          className="relative h-[var(--list-toolbar-control-height-mobile)] px-3 xl:h-[var(--list-toolbar-control-height-desktop)] xl:px-2"
+          className="relative h-[var(--list-toolbar-control-height-mobile)] px-3"
           aria-label={`Filters${activeFilterCount > 0 ? ` (${activeFilterCount} active)` : ""}`}
           aria-expanded={isExpanded}
           aria-controls="filter-sidebar"
         >
           <SlidersHorizontal className="size-5" />
-          <span className="hidden whitespace-nowrap text-xs text-foreground xl:inline">
+          <span className="hidden whitespace-nowrap text-xs text-foreground lg:inline">
             Filters{activeFilterCount > 0 ? ` (${activeFilterCount})` : ""}
           </span>
           {activeFilterCount > 0 && (
@@ -225,7 +216,7 @@ function OverflowMenu({
         <Button
           variant="outline"
           size="icon"
-          className="h-[var(--list-toolbar-control-height-mobile)] w-[var(--list-toolbar-control-height-mobile)] xl:h-[var(--list-toolbar-control-height-desktop)] xl:w-[var(--list-toolbar-control-height-desktop)]"
+          className="h-[var(--list-toolbar-control-height-mobile)] w-[var(--list-toolbar-control-height-mobile)]"
           aria-label="More actions"
         >
           <EllipsisVertical className="size-5" />

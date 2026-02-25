@@ -2,7 +2,7 @@
 -- MASTERFOODS PRODUCTION SEED DATA
 -- ============================================================================
 -- Generated: 2025-12-08T04:51:28.379Z
--- Organizations: 2023
+-- Organizations: 2023 + 20 hierarchy orgs (4 parent/child trees)
 -- Contacts: 1776
 -- Organization-Distributor Relations: 715
 --
@@ -5095,6 +5095,61 @@ BEGIN
 
   RAISE NOTICE 'RBAC Test: Created 3 test opportunities for rep/admin/manager';
 END $$;
+
+-- ============================================================================
+-- ORGANIZATIONS WITH PARENT RELATIONSHIPS (hierarchy seed data)
+-- ============================================================================
+-- Exercises parent_organization_id FK, cycle-detection trigger, and
+-- org_scope / is_operating_entity columns. Uses IDs 80001-80020.
+-- 4 trees: distributor branches, restaurant group, principal holding, prospect chain
+-- ============================================================================
+
+-- Step 1: Insert all parent/child orgs WITHOUT parent links first (avoids FK ordering issues)
+INSERT INTO organizations (id, name, organization_type, segment_id, org_scope, is_operating_entity, city, state, priority, created_at, updated_at)
+OVERRIDING SYSTEM VALUE
+VALUES
+  -- Hierarchy 1: National distributor -> regional branches -> local depots
+  (80001, 'Continental Food Distributors',   'distributor'::organization_type, '22222222-2222-4222-8222-000000000001', 'national', false, 'Chicago',       'IL', 'A', NOW(), NOW()),
+  (80002, 'Continental - Great Lakes',       'distributor'::organization_type, '22222222-2222-4222-8222-000000000002', 'regional', false, 'Detroit',       'MI', 'A', NOW(), NOW()),
+  (80003, 'Continental - Upper Midwest',     'distributor'::organization_type, '22222222-2222-4222-8222-000000000002', 'regional', false, 'Minneapolis',   'MN', 'B', NOW(), NOW()),
+  (80004, 'Continental - Detroit Depot',     'distributor'::organization_type, '22222222-2222-4222-8222-000000000002', 'local',    true,  'Dearborn',      'MI', 'B', NOW(), NOW()),
+  (80005, 'Continental - Grand Rapids Depot','distributor'::organization_type, '22222222-2222-4222-8222-000000000002', 'local',    true,  'Grand Rapids',  'MI', 'C', NOW(), NOW()),
+  (80006, 'Continental - Twin Cities Depot', 'distributor'::organization_type, '22222222-2222-4222-8222-000000000002', 'local',    true,  'St. Paul',      'MN', 'B', NOW(), NOW()),
+
+  -- Hierarchy 2: Restaurant group -> individual locations
+  (80007, 'Lakefront Dining Group',          'customer'::organization_type,   '22222222-2222-4222-8222-000000000006', 'regional', false, 'Milwaukee',     'WI', 'A', NOW(), NOW()),
+  (80008, 'Lakefront - Third Ward',          'customer'::organization_type,   '33333333-3333-4333-8333-000000000102', 'local',    true,  'Milwaukee',     'WI', 'A', NOW(), NOW()),
+  (80009, 'Lakefront - Bayview',             'customer'::organization_type,   '33333333-3333-4333-8333-000000000102', 'local',    true,  'Milwaukee',     'WI', 'B', NOW(), NOW()),
+  (80010, 'Lakefront - Wauwatosa',           'customer'::organization_type,   '33333333-3333-4333-8333-000000000104', 'local',    true,  'Wauwatosa',     'WI', 'B', NOW(), NOW()),
+  (80011, 'Lakefront - Madison',             'customer'::organization_type,   '33333333-3333-4333-8333-000000000103', 'local',    true,  'Madison',       'WI', 'B', NOW(), NOW()),
+
+  -- Hierarchy 3: Principal holding company -> sub-brands
+  (80012, 'Prairie Harvest Holdings',        'principal'::organization_type,  '22222222-2222-4222-8222-000000000009', 'national', false, 'Des Moines',    'IA', 'A', NOW(), NOW()),
+  (80013, 'Prairie Harvest - Organic Line',  'principal'::organization_type,  '22222222-2222-4222-8222-000000000009', 'national', true,  'Des Moines',    'IA', 'A', NOW(), NOW()),
+  (80014, 'Prairie Harvest - Artisan',       'principal'::organization_type,  '22222222-2222-4222-8222-000000000009', 'national', true,  'Des Moines',    'IA', 'B', NOW(), NOW()),
+  (80015, 'Prairie Harvest - Value Brand',   'principal'::organization_type,  '22222222-2222-4222-8222-000000000009', 'national', true,  'Des Moines',    'IA', 'C', NOW(), NOW()),
+
+  -- Hierarchy 4: Prospect chain being evaluated (shallow, 2-level)
+  (80016, 'Crossroads Hospitality Corp',     'prospect'::organization_type,   '22222222-2222-4222-8222-000000000008', 'regional', false, 'Indianapolis',  'IN', 'B', NOW(), NOW()),
+  (80017, 'Crossroads - Downtown Indy',      'prospect'::organization_type,   '33333333-3333-4333-8333-000000000005', 'local',    true,  'Indianapolis',  'IN', 'B', NOW(), NOW()),
+  (80018, 'Crossroads - Carmel',             'prospect'::organization_type,   '33333333-3333-4333-8333-000000000005', 'local',    true,  'Carmel',        'IN', 'C', NOW(), NOW()),
+  (80019, 'Crossroads - Fishers',            'prospect'::organization_type,   '33333333-3333-4333-8333-000000000005', 'local',    true,  'Fishers',       'IN', 'C', NOW(), NOW()),
+  (80020, 'Crossroads - Bloomington',        'prospect'::organization_type,   '33333333-3333-4333-8333-000000000005', 'local',    true,  'Bloomington',   'IN', 'C', NOW(), NOW())
+ON CONFLICT (id) DO UPDATE SET
+  name = EXCLUDED.name,
+  organization_type = EXCLUDED.organization_type,
+  segment_id = EXCLUDED.segment_id,
+  org_scope = EXCLUDED.org_scope,
+  is_operating_entity = EXCLUDED.is_operating_entity,
+  updated_at = NOW();
+
+-- Step 2: Wire up parent_organization_id links
+UPDATE organizations SET parent_organization_id = 80001 WHERE id IN (80002, 80003);            -- regionals -> national
+UPDATE organizations SET parent_organization_id = 80002 WHERE id IN (80004, 80005);            -- depots -> Great Lakes
+UPDATE organizations SET parent_organization_id = 80003 WHERE id = 80006;                      -- depot -> Upper Midwest
+UPDATE organizations SET parent_organization_id = 80007 WHERE id IN (80008, 80009, 80010, 80011); -- locations -> group
+UPDATE organizations SET parent_organization_id = 80012 WHERE id IN (80013, 80014, 80015);     -- sub-brands -> holding
+UPDATE organizations SET parent_organization_id = 80016 WHERE id IN (80017, 80018, 80019, 80020); -- locations -> corp
 
 -- ============================================================================
 -- RESET SEQUENCES (critical for new record creation)

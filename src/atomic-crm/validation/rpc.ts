@@ -289,15 +289,16 @@ export const getCampaignReportStatsResponseSchema = z.strictObject({
 
 /**
  * get_stale_opportunities(
- *   p_campaign TEXT,
+ *   p_campaign TEXT DEFAULT NULL,
  *   p_start_date TIMESTAMPTZ DEFAULT NULL,
  *   p_end_date TIMESTAMPTZ DEFAULT NULL,
  *   p_sales_rep_id BIGINT DEFAULT NULL
  * ) RETURNS SETOF stale_opportunity_record
- * Get stale opportunities for a campaign based on per-stage activity thresholds.
+ * Get stale opportunities based on per-stage activity thresholds.
+ * When p_campaign is NULL, returns stale opportunities across all campaigns.
  */
 export const getStaleOpportunitiesParamsSchema = z.strictObject({
-  p_campaign: z.string().max(255, "Campaign name too long"),
+  p_campaign: z.string().max(255, "Campaign name too long").nullable(),
   p_start_date: z.string().datetime().optional().nullable(),
   p_end_date: z.string().datetime().optional().nullable(),
   p_sales_rep_id: z.number().int().positive().optional().nullable(),
@@ -312,6 +313,7 @@ export const staleOpportunityRecordSchema = z.strictObject({
   days_inactive: z.number().int().nonnegative(),
   stage_threshold: z.number().int().positive(),
   is_stale: z.boolean(),
+  principal_organization_id: z.number().int().positive().nullable(),
 });
 
 export const getStaleOpportunitiesResponseSchema = z

@@ -110,7 +110,7 @@ describe("OverviewTab", () => {
       },
     });
 
-    // Filter controls are in the ReportParameterBar above the tabs.
+    // Filter controls are in the ReportFilterSidebar.
     // The tab content renders KPI cards and charts only.
     await waitFor(() => {
       expect(screen.getByText("Open Opportunities")).toBeInTheDocument();

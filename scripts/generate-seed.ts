@@ -367,15 +367,19 @@ sql += `\nON CONFLICT (id) DO UPDATE SET
 -- ORGANIZATIONS (${orgsForSQL.length} unique)
 -- ============================================================================
 
-INSERT INTO organizations (id, name, organization_type, priority, segment_id, phone, linkedin_url, address, city, state, postal_code, notes) VALUES\n`;
+INSERT INTO organizations (id, name, organization_type, priority, segment_id, org_scope, is_operating_entity, phone, linkedin_url, address, city, state, postal_code, notes) VALUES\n`;
 
 const orgValues = orgsForSQL.map((org, idx) => {
+  const orgScope = (org.org_scope || "").trim();
+  const isOperatingEntity = (org.is_operating_entity || "").trim().toLowerCase();
   const values = [
     org.id,
     escapeSQLString(org.name),
     escapeSQLString(org.organization_type || "prospect"),
     escapeSQLString(org.priority || "C"),
     org.segment_id ? `'${org.segment_id}'` : "NULL",
+    orgScope ? escapeSQLString(orgScope) : "NULL",
+    isOperatingEntity === "true" ? "true" : isOperatingEntity === "false" ? "false" : "NULL",
     escapeSQLString(org.phone),
     escapeSQLString(org.linkedin_url),
     escapeSQLString(org.address),
@@ -389,6 +393,11 @@ const orgValues = orgsForSQL.map((org, idx) => {
 });
 
 sql += orgValues.join("\n") + "\n\n";
+
+// NOTE: parent_organization_id links cannot be derived from flat CSV.
+// Hierarchy data (IDs 80001-80020) and parent link UPDATEs are maintained
+// manually in supabase/seed.sql after the generated org block.
+// If regenerating seed.sql, preserve the hierarchy section at the end.
 
 // ============================================================================
 // CONTACTS

@@ -19,15 +19,22 @@ import type { OrganizationRecord } from "./types";
  *
  * Both chips use FilterableBadge for click-to-filter with toggle,
  * aria-pressed, stopPropagation, and ring highlight.
+ *
+ * The `show` prop controls which chips to render:
+ * - "all" (default): renders both parent and branches chips
+ * - "parent": renders only the parent chip
+ * - "branches": renders only the branches chip
  */
 export const OrganizationHierarchyChips = memo(function OrganizationHierarchyChips({
   record,
   parentClassName,
   parentDisplayMode = "default",
+  show = "all",
 }: {
   record: OrganizationRecord;
   parentClassName?: string;
   parentDisplayMode?: "default" | "listCompact";
+  show?: "all" | "parent" | "branches";
 }) {
   const hasParent =
     record.parent_organization_id != null &&
@@ -36,13 +43,16 @@ export const OrganizationHierarchyChips = memo(function OrganizationHierarchyChi
   const branchCount = record.child_branch_count ?? 0;
   const hasBranches = branchCount > 0;
 
-  if (!hasParent && !hasBranches) return null;
+  const shouldShowParent = hasParent && (show === "all" || show === "parent");
+  const shouldShowBranches = hasBranches && (show === "all" || show === "branches");
+
+  if (!shouldShowParent && !shouldShowBranches) return null;
 
   const isCompact = parentDisplayMode === "listCompact";
 
   return (
     <span className="inline-flex items-center gap-1 flex-shrink-0">
-      {hasParent && (
+      {shouldShowParent && (
         <FilterableBadge
           source="parent_organization_id"
           value={String(record.parent_organization_id)}
@@ -65,7 +75,7 @@ export const OrganizationHierarchyChips = memo(function OrganizationHierarchyChi
           </span>
         </FilterableBadge>
       )}
-      {hasBranches && (
+      {shouldShowBranches && (
         <FilterableBadge
           source="parent_organization_id"
           value={String(record.id)}

@@ -16,6 +16,10 @@ interface AdaptiveFilterContainerProps {
   resource: string;
   /** Default filter values to restore on "Clear all" */
   defaultFilters?: Record<string, unknown>;
+  /** External clear-all handler (e.g., for Report pages without ListContext) */
+  onClearAll?: () => void;
+  /** Override active filter count display (e.g., for Report pages managing their own filter state) */
+  activeFilterCountOverride?: number;
 }
 
 /**
@@ -31,6 +35,8 @@ export function AdaptiveFilterContainer({
   filterComponent,
   resource,
   defaultFilters,
+  onClearAll,
+  activeFilterCountOverride,
 }: AdaptiveFilterContainerProps) {
   const hasDockedFilters = useListHasDockedFilters();
 
@@ -41,6 +47,8 @@ export function AdaptiveFilterContainer({
           filterComponent={filterComponent}
           resource={resource}
           defaultFilters={defaultFilters}
+          onClearAll={onClearAll}
+          activeFilterCountOverride={activeFilterCountOverride}
         />
       </FilterLayoutModeProvider>
     );
@@ -52,6 +60,7 @@ export function AdaptiveFilterContainer({
         filterComponent={filterComponent}
         resource={resource}
         defaultFilters={defaultFilters}
+        onClearAll={onClearAll}
       />
     </FilterLayoutModeProvider>
   );
@@ -65,16 +74,31 @@ function DockedSidebar({
   filterComponent,
   resource,
   defaultFilters,
+  onClearAll: onClearAllProp,
+  activeFilterCountOverride,
 }: {
   filterComponent: ReactNode;
   resource: string;
   defaultFilters?: Record<string, unknown>;
+  onClearAll?: () => void;
+  activeFilterCountOverride?: number;
 }) {
-  const { isCollapsed, toggleSidebar, activeFilterCount, orSource, setOrSource } =
-    useFilterSidebarContext();
+  const {
+    isCollapsed,
+    toggleSidebar,
+    activeFilterCount: contextFilterCount,
+    orSource,
+    setOrSource,
+  } = useFilterSidebarContext();
   const listContext = useContext(ListContext);
 
+  const effectiveFilterCount = activeFilterCountOverride ?? contextFilterCount;
+
   const handleClearAll = () => {
+    if (onClearAllProp) {
+      onClearAllProp();
+      return;
+    }
     if (!listContext) {
       return;
     }
@@ -91,7 +115,7 @@ function DockedSidebar({
   if (isCollapsed) {
     return (
       <IconRail
-        activeFilterCount={activeFilterCount}
+        activeFilterCount={effectiveFilterCount}
         isCollapsed={isCollapsed}
         onToggle={toggleSidebar}
       />
@@ -107,7 +131,7 @@ function DockedSidebar({
       <div className="mb-content border-b border-border pb-2">
         <div className="mb-2 flex items-center justify-between">
           <span className="text-sm font-medium text-muted-foreground">
-            Filters{activeFilterCount > 0 ? ` (${activeFilterCount})` : ""}
+            Filters{effectiveFilterCount > 0 ? ` (${effectiveFilterCount})` : ""}
           </span>
           <Tooltip>
             <TooltipTrigger asChild>
@@ -130,7 +154,7 @@ function DockedSidebar({
           size="sm"
           className="h-9 w-full"
           onClick={handleClearAll}
-          disabled={activeFilterCount === 0}
+          disabled={effectiveFilterCount === 0}
         >
           Clear all
         </Button>
@@ -189,10 +213,12 @@ function FilterSheetTrigger({
   filterComponent,
   resource,
   defaultFilters,
+  onClearAll,
 }: {
   filterComponent: ReactNode;
   resource: string;
   defaultFilters?: Record<string, unknown>;
+  onClearAll?: () => void;
 }) {
   const { isSheetOpen, setSheetOpen, hasToolbar } = useFilterSidebarContext();
 
@@ -224,7 +250,11 @@ function FilterSheetTrigger({
             <SheetTitle>Filters</SheetTitle>
           </SheetHeader>
           <div className="flex-1 overflow-y-auto p-content">{filterComponent}</div>
-          <FilterSheetFooter onClose={() => setSheetOpen(false)} defaultFilters={defaultFilters} />
+          <FilterSheetFooter
+            onClose={() => setSheetOpen(false)}
+            defaultFilters={defaultFilters}
+            onClearAll={onClearAll}
+          />
         </SheetContent>
       </Sheet>
     </>
@@ -238,14 +268,20 @@ function FilterSheetTrigger({
 function FilterSheetFooter({
   onClose,
   defaultFilters,
+  onClearAll: onClearAllProp,
 }: {
   onClose: () => void;
   defaultFilters?: Record<string, unknown>;
+  onClearAll?: () => void;
 }) {
   const listContext = useContext(ListContext);
   const sidebarContext = useOptionalFilterSidebarContext();
 
   const handleClear = () => {
+    if (onClearAllProp) {
+      onClearAllProp();
+      return;
+    }
     if (!listContext) {
       return;
     }
@@ -260,9 +296,11 @@ function FilterSheetFooter({
     );
   };
 
+  const showClearAll = onClearAllProp != null || listContext != null;
+
   return (
     <SheetFooter className="border-t bg-background p-content flex flex-row gap-content shrink-0">
-      {listContext && (
+      {showClearAll && (
         <Button variant="outline" onClick={handleClear} className="flex-1 h-11">
           Clear all
         </Button>

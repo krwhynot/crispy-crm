@@ -809,7 +809,7 @@
   }
 
   .list-toolbar {
-    @apply flex flex-wrap items-end shrink-0;
+    @apply flex flex-wrap items-center shrink-0;
     gap: var(--list-toolbar-gap);
     margin-bottom: var(--list-toolbar-margin-bottom);
     padding-block: 0.25rem;

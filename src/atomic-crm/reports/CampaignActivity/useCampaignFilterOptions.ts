@@ -16,7 +16,7 @@ import { reportKeys } from "@/atomic-crm/queryKeys";
 import type { ExtendedDataProvider } from "../../providers/supabase/extensions/types";
 import type { GetCampaignReportStatsResponse } from "../../validation/rpc";
 
-export function useCampaignFilterOptions(selectedCampaign: string) {
+export function useCampaignFilterOptions(selectedCampaign: string | null) {
   const dataProvider = useDataProvider() as ExtendedDataProvider;
 
   const { data: reportStats, isPending } = useQuery({

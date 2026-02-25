@@ -47,8 +47,8 @@ export type VirtualFilterField =
   | "q" // Full-text search parameter
   | "stale" // Staleness filter (transformed to last_activity_date + stage)
   | "type" // Alias for organization_type/activity_type in some contexts
-  | "opportunities.campaign" // Nested relationship filter
-  | "opportunities.deleted_at"; // Nested relationship filter
+  | "opportunity_campaign" // Denormalized campaign from opportunity (view column)
+  | "opportunity_deleted_at"; // Denormalized soft-delete from opportunity (view column)
 
 /**
  * Resources registered in the filter registry.
