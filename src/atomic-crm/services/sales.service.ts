@@ -43,9 +43,14 @@ export class SalesService {
     }
 
     try {
+      // Strip fields the Edge Function's inviteUserSchema doesn't accept (z.strictObject rejects unknown keys).
+      // Matches the destructure pattern used in salesUpdate.
+      const { first_name, last_name, email, password, role, disabled } = body;
+      const invitePayload = { first_name, last_name, email, password, role, disabled };
+
       const data = await this.dataProvider.invoke<Sale>("users", {
         method: "POST",
-        body: body as Record<string, unknown>,
+        body: invitePayload as Record<string, unknown>,
       });
 
       if (!data) {
