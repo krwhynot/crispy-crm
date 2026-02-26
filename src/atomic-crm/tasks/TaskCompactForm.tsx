@@ -96,7 +96,7 @@ export const TaskCompactForm = () => {
               source="sales_id"
               reference="sales"
               sort={{ field: "last_name", order: "ASC" }}
-              enableGetChoices={enableGetChoices}
+              filter={{ "disabled@neq": true }}
             >
               <AutocompleteInput
                 {...getQSearchAutocompleteProps()}

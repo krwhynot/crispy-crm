@@ -189,6 +189,7 @@ export function TaskSlideOverDetailsTab({
                 source="sales_id"
                 reference="sales"
                 sort={{ field: "last_name", order: "ASC" }}
+                filter={{ "disabled@neq": true }}
                 disabled={isLoading}
               >
                 <AutocompleteInput {...getQSearchAutocompleteProps()} label="Assigned To" />
