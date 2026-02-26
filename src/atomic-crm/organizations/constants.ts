@@ -266,12 +266,13 @@ export const ACTIVITY_PAGE_SIZE = 50;
 /**
  * Hierarchy filter value objects for ToggleFilterButton
  * Keys use PostgREST operator syntax (field@operator)
- * Values are JS null (not string "null") — provider transforms to "field=is.null"
+ * Values use string "null" (not JS null) — React Admin's removeEmpty strips JS null from setFilters.
+ * The string "null" passes through to ra-data-postgrest which builds "field=is.null" / "field=not.is.null".
  */
 export const HIERARCHY_FILTERS = {
   HAS_BRANCHES: { "child_branch_count@gt": 0 },
-  HAS_PARENT: { "parent_organization_id@not.is": null },
-  ROOT_ONLY: { "parent_organization_id@is": null },
+  HAS_PARENT: { "parent_organization_id@not.is": "null" },
+  ROOT_ONLY: { "parent_organization_id@is": "null" },
 } as const;
 
 /**

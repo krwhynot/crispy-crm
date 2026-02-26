@@ -10,9 +10,7 @@ This document provides an architectural overview of testing patterns in Crispy C
 
 | Need | Go To |
 |------|-------|
-| Copy-paste test templates | [Test Authoring Guide](../tests/e2e/test-authoring-guide.md) |
 | Detailed utility patterns (A-H) | [src/tests/PATTERNS.md](../../src/tests/PATTERNS.md) |
-| Test pyramid & metrics | [Test Architecture](../tests/e2e/test-architecture.md) |
 | E2E checklists | [docs/tests/e2e/](../tests/e2e/) |
 
 ---
@@ -21,7 +19,7 @@ This document provides an architectural overview of testing patterns in Crispy C
 
 ### 1. No Direct Supabase in Tests
 
-**Constitution Rule:** Single source of truth via `unifiedDataProvider`
+**Constitution Rule:** Single source of truth via `composedDataProvider`
 
 ```typescript
 // ❌ WRONG: Direct Supabase import

@@ -1,5 +1,8 @@
-import { List, TextField, FunctionField } from "react-admin";
+import { TextField, FunctionField } from "react-admin";
+import { List } from "@/components/ra-wrappers/list";
 import { PremiumDatagrid } from "@/components/ra-wrappers/PremiumDatagrid";
+import { ListPageLayout } from "@/components/layouts/ListPageLayout";
+import { CreateButton } from "@/components/ra-wrappers/create-button";
 import { cn } from "@/lib/utils";
 import { getTagColorClass } from "./tag-colors";
 import type { Tag } from "../types";
@@ -10,35 +13,49 @@ import type { Tag } from "../types";
  */
 export const TagList = () => {
   return (
-    <List title="Tags" perPage={25} sort={{ field: "name", order: "ASC" }} exporter={false}>
-      <PremiumDatagrid rowClick="edit" bulkActionButtons={false}>
-        {/* Name column - primary identifier */}
-        <TextField source="name" label="Tag Name" />
+    <List
+      title={false}
+      actions={false}
+      perPage={25}
+      sort={{ field: "name", order: "ASC" }}
+      exporter={false}
+    >
+      <ListPageLayout
+        resource="tags"
+        showFilterSidebar={false}
+        sortFields={["name", "color"]}
+        searchPlaceholder="Search tags..."
+        primaryAction={<CreateButton variant="default" />}
+      >
+        <PremiumDatagrid rowClick="edit" bulkActionButtons={false}>
+          {/* Name column - primary identifier */}
+          <TextField source="name" label="Tag Name" />
 
-        {/* Color preview - shows the tag as it appears in the UI */}
-        <FunctionField
-          label="Preview"
-          render={(record: Tag) => (
-            <span
-              className={cn(
-                "inline-flex items-center px-2 py-1 text-xs rounded-md",
-                "border border-black/20",
-                getTagColorClass(record.color)
-              )}
-            >
-              {record.name}
-            </span>
-          )}
-        />
+          {/* Color preview - shows the tag as it appears in the UI */}
+          <FunctionField
+            label="Preview"
+            render={(record: Tag) => (
+              <span
+                className={cn(
+                  "inline-flex items-center px-2 py-1 text-xs rounded-md",
+                  "border border-black/20",
+                  getTagColorClass(record.color)
+                )}
+              >
+                {record.name}
+              </span>
+            )}
+          />
 
-        {/* Color name for clarity */}
-        <FunctionField
-          label="Color"
-          render={(record: Tag) => (
-            <span className="text-muted-foreground capitalize">{record.color}</span>
-          )}
-        />
-      </PremiumDatagrid>
+          {/* Color name for clarity */}
+          <FunctionField
+            label="Color"
+            render={(record: Tag) => (
+              <span className="text-muted-foreground capitalize">{record.color}</span>
+            )}
+          />
+        </PremiumDatagrid>
+      </ListPageLayout>
     </List>
   );
 };

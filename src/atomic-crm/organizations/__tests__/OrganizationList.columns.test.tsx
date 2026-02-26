@@ -1,15 +1,17 @@
 /**
  * OrganizationList column structure tests
  *
- * Tests for the OrganizationList with 8 columns:
- * 1. Name - Primary identifier (sortable)
+ * Tests for the OrganizationList with 7 columns:
+ * 1. Name - Primary identifier (sortable), includes inline parent/branches chips
  * 2. Type - Organization classification (sortable by organization_type)
  * 3. Priority - Business priority indicator (sortable)
  * 4. Segment - Playbook/Operator category (sortable by segment_name)
  * 5. State - US state code (sortable, filterable)
- * 6. Parent - Hierarchy name from summary view (sortable by parent_organization_name)
- * 7. Contacts - Computed count metric (non-sortable)
- * 8. Opportunities - Computed count metric (non-sortable)
+ * 6. Contacts - Computed count metric (non-sortable)
+ * 7. Opportunities - Computed count metric (non-sortable)
+ *
+ * Parent hierarchy is shown as an inline chip in the Name cell (not a dedicated column).
+ * Parent filtering is available via sidebar dropdown (not sortable).
  */
 
 import { describe, test, expect, vi, beforeEach } from "vitest";
@@ -27,6 +29,19 @@ import {
   sortableColumns,
   resetMocks,
 } from "./OrganizationList.test-utils";
+
+/**
+ * Shared mock state for ListPageLayout branching.
+ * Synced in beforeEach with the same values set on useListContext mock.
+ */
+const mockListState = vi.hoisted(() => ({
+  data: [] as unknown[],
+  isPending: false,
+  filterValues: {} as Record<string, unknown>,
+}));
+
+// System filter keys excluded from empty-state detection (matches ListPageLayout)
+const EMPTY_STATE_SYSTEM_KEYS = vi.hoisted(() => new Set(["deleted_at", "deleted_at@is", "$or"]));
 
 // Mock dependencies - must be at top level
 vi.mock("ra-core", async () => {
@@ -90,7 +105,7 @@ vi.mock("react-admin", async () => {
         {label || source}
       </span>
     ),
-    FunctionField: ({ label, sortBy, sortable }: MockFieldProps) => {
+    FunctionField: ({ label, sortBy, sortable, textAlign }: MockFieldProps) => {
       let labelText = "";
       if (typeof label === "string") {
         labelText = label;
@@ -104,6 +119,7 @@ vi.mock("react-admin", async () => {
           data-testid={`function-field-${labelText}`}
           data-sortable={sortBy ? "true" : sortable === false ? "false" : "unknown"}
           data-sort-by={sortBy || ""}
+          data-text-align={textAlign || ""}
         >
           {label}
         </div>
@@ -151,7 +167,12 @@ vi.mock("@/components/ra-wrappers/PremiumDatagrid", () => ({
     onRowClick,
     configurable,
     preferenceKey,
-  }: MockLayoutProps & { configurable?: boolean; preferenceKey?: string }) => {
+    rowClassName,
+  }: MockLayoutProps & {
+    configurable?: boolean;
+    preferenceKey?: string;
+    rowClassName?: string | ((record: unknown, index: number) => string);
+  }) => {
     sortableColumns.length = 0;
 
     const processChild = (child: React.ReactNode) => {
@@ -182,6 +203,7 @@ vi.mock("@/components/ra-wrappers/PremiumDatagrid", () => ({
         data-testid="premium-datagrid"
         data-configurable={configurable ? "true" : "false"}
         data-preference-key={preferenceKey || ""}
+        data-row-class-fn={typeof rowClassName === "function" ? "true" : "false"}
         className="table-row-premium"
       >
         {children}
@@ -216,14 +238,59 @@ vi.mock("../OrganizationBadges", () => ({
   ),
 }));
 
-vi.mock("@/components/layouts/StandardListLayout", () => ({
-  StandardListLayout: ({ children, filterComponent, viewSwitcher }: MockLayoutProps) => (
-    <div data-testid="standard-list-layout">
-      <div data-testid="filter-sidebar">{filterComponent}</div>
-      {viewSwitcher && <div data-testid="toolbar-view-switcher">{viewSwitcher}</div>}
-      <div data-testid="list-content">{children}</div>
-    </div>
-  ),
+/** Captured sortFields from the most recent ListPageLayout render */
+const capturedSortFields = vi.hoisted(() => ({ value: [] as string[] }));
+
+vi.mock("@/components/layouts/ListPageLayout", () => ({
+  ListPageLayout: ({
+    children,
+    filterComponent,
+    viewSwitcher,
+    emptyState,
+    sortFields,
+  }: {
+    children: React.ReactNode;
+    filterComponent?: React.ReactNode;
+    viewSwitcher?: React.ReactNode;
+    emptyState?: React.ReactNode;
+    sortFields?: string[];
+    [key: string]: unknown;
+  }) => {
+    if (sortFields) capturedSortFields.value = sortFields;
+    const hasUserFilters =
+      mockListState.filterValues &&
+      Object.keys(mockListState.filterValues).some(
+        (key: string) => !EMPTY_STATE_SYSTEM_KEYS.has(key)
+      );
+
+    if (mockListState.isPending) {
+      return <div data-testid="loading-skeleton">Loading...</div>;
+    }
+
+    if (!mockListState.data?.length && !hasUserFilters && emptyState) {
+      return <>{emptyState}</>;
+    }
+
+    if (!mockListState.data?.length && hasUserFilters) {
+      return (
+        <div data-testid="standard-list-layout">
+          <div data-testid="filter-sidebar">{filterComponent}</div>
+          {viewSwitcher && <div data-testid="toolbar-view-switcher">{viewSwitcher}</div>}
+          <div data-testid="list-content">
+            <div data-testid="list-no-results">No results</div>
+          </div>
+        </div>
+      );
+    }
+
+    return (
+      <div data-testid="standard-list-layout">
+        <div data-testid="filter-sidebar">{filterComponent}</div>
+        {viewSwitcher && <div data-testid="toolbar-view-switcher">{viewSwitcher}</div>}
+        <div data-testid="list-content">{children}</div>
+      </div>
+    );
+  },
 }));
 
 vi.mock("@/components/ra-wrappers/list", () => ({
@@ -241,10 +308,6 @@ vi.mock("../OrganizationEmpty", () => ({
 
 vi.mock("@/components/ra-wrappers/ListNoResults", () => ({
   ListNoResults: () => <div data-testid="list-no-results">No results</div>,
-}));
-
-vi.mock("@/components/ra-wrappers/FloatingCreateButton", () => ({
-  FloatingCreateButton: () => <button data-testid="floating-create">Create</button>,
 }));
 
 vi.mock("@/components/ra-wrappers/bulk-actions-toolbar", () => ({
@@ -291,7 +354,7 @@ vi.mock("../OrganizationViewSwitcher", () => ({
 
 import { useListContext, useGetList } from "ra-core";
 
-describe("OrganizationList 6-column structure", () => {
+describe("OrganizationList 7-column structure", () => {
   beforeEach(() => {
     resetMocks();
 
@@ -301,7 +364,7 @@ describe("OrganizationList 6-column structure", () => {
       isPending: false,
     });
 
-    vi.mocked(useListContext).mockReturnValue({
+    const listContext = {
       data: [
         {
           id: 1,
@@ -333,16 +396,23 @@ describe("OrganizationList 6-column structure", () => {
       onUnselectItems: vi.fn(),
       hasNextPage: false,
       hasPreviousPage: false,
-    });
+    };
+
+    vi.mocked(useListContext).mockReturnValue(listContext);
+
+    // Sync hoisted mock state for ListPageLayout branching
+    mockListState.data = listContext.data;
+    mockListState.isPending = listContext.isPending;
+    mockListState.filterValues = listContext.filterValues;
   });
 
-  test("renders 8 columns: Name, Type, Priority, Segment, State, Parent, Contacts, Opportunities", async () => {
+  test("renders 7 columns: Name, Type, Priority, Segment, State, Contacts, Opportunities", async () => {
     renderWithAdminContext(<OrganizationList />);
 
     await waitFor(() => {
       expect(screen.getByTestId("premium-datagrid")).toBeInTheDocument();
 
-      // Column 1: Name (FunctionField)
+      // Column 1: Name (FunctionField) - includes inline parent/branches chips
       expect(screen.getByTestId("function-field-Name")).toBeInTheDocument();
 
       // Column 2: Type (FunctionField)
@@ -357,13 +427,10 @@ describe("OrganizationList 6-column structure", () => {
       // Column 5: State (TextField)
       expect(screen.getByTestId("text-field-state")).toBeInTheDocument();
 
-      // Column 6: Parent (FunctionField reading parent_organization_name from summary view)
-      expect(screen.getByTestId("function-field-Parent")).toBeInTheDocument();
-
-      // Column 7: Contacts (FunctionField)
+      // Column 6: Contacts (FunctionField)
       expect(screen.getByTestId("function-field-Contacts")).toBeInTheDocument();
 
-      // Column 8: Opportunities (FunctionField)
+      // Column 7: Opportunities (FunctionField)
       expect(screen.getByTestId("function-field-Opps")).toBeInTheDocument();
     });
   });
@@ -379,7 +446,7 @@ describe("OrganizationList column sorting configuration", () => {
       isPending: false,
     });
 
-    vi.mocked(useListContext).mockReturnValue({
+    const listContext = {
       data: [
         {
           id: 1,
@@ -411,7 +478,14 @@ describe("OrganizationList column sorting configuration", () => {
       onUnselectItems: vi.fn(),
       hasNextPage: false,
       hasPreviousPage: false,
-    });
+    };
+
+    vi.mocked(useListContext).mockReturnValue(listContext);
+
+    // Sync hoisted mock state for ListPageLayout branching
+    mockListState.data = listContext.data;
+    mockListState.isPending = listContext.isPending;
+    mockListState.filterValues = listContext.filterValues;
   });
 
   test("Name column is sortable", async () => {
@@ -454,16 +528,6 @@ describe("OrganizationList column sorting configuration", () => {
     });
   });
 
-  test("Parent column is sortable by parent_organization_name", async () => {
-    renderWithAdminContext(<OrganizationList />);
-
-    await waitFor(() => {
-      const parentField = screen.getByTestId("function-field-Parent");
-      expect(parentField).toHaveAttribute("data-sortable", "true");
-      expect(parentField).toHaveAttribute("data-sort-by", "parent_organization_name");
-    });
-  });
-
   test("Contacts column is NOT sortable (computed count)", async () => {
     renderWithAdminContext(<OrganizationList />);
 
@@ -479,6 +543,41 @@ describe("OrganizationList column sorting configuration", () => {
     await waitFor(() => {
       const opportunitiesField = screen.getByTestId("function-field-Opps");
       expect(opportunitiesField).toHaveAttribute("data-sortable", "false");
+    });
+  });
+
+  test("Contacts column is right-aligned", async () => {
+    renderWithAdminContext(<OrganizationList />);
+
+    await waitFor(() => {
+      const contactsField = screen.getByTestId("function-field-Contacts");
+      expect(contactsField).toHaveAttribute("data-text-align", "right");
+    });
+  });
+
+  test("Opportunities column is right-aligned", async () => {
+    renderWithAdminContext(<OrganizationList />);
+
+    await waitFor(() => {
+      const oppsField = screen.getByTestId("function-field-Opps");
+      expect(oppsField).toHaveAttribute("data-text-align", "right");
+    });
+  });
+
+  test("PremiumDatagrid receives rowClassName function for zebra striping", async () => {
+    renderWithAdminContext(<OrganizationList />);
+
+    await waitFor(() => {
+      const datagrid = screen.getByTestId("premium-datagrid");
+      expect(datagrid).toHaveAttribute("data-row-class-fn", "true");
+    });
+  });
+
+  test("parent_organization_name is not in sortFields (filtering only)", async () => {
+    renderWithAdminContext(<OrganizationList />);
+
+    await waitFor(() => {
+      expect(capturedSortFields.value).not.toContain("parent_organization_name");
     });
   });
 });

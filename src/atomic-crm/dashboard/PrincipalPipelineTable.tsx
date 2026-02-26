@@ -145,11 +145,7 @@ export function PrincipalPipelineTable() {
   }
 
   return (
-    <div
-      className="flex flex-col p-4"
-      data-density="compact"
-      data-tutorial="dashboard-pipeline-table"
-    >
+    <div className="flex flex-col p-4" data-tutorial="dashboard-pipeline-table">
       {/* Header with title and filters */}
       <div className="border-b border-border pb-3">
         <div className="flex flex-wrap items-start justify-between gap-y-2">
@@ -232,7 +228,7 @@ export function PrincipalPipelineTable() {
                   onSort={handleSort}
                   getAriaSortValue={getAriaSortValue}
                   renderSortIcon={renderSortIcon}
-                  align="center"
+                  align="right"
                 />
                 <SortableTableHead
                   field="activeLastWeek"
@@ -242,7 +238,7 @@ export function PrincipalPipelineTable() {
                   onSort={handleSort}
                   getAriaSortValue={getAriaSortValue}
                   renderSortIcon={renderSortIcon}
-                  align="center"
+                  align="right"
                   className="hidden lg:table-cell"
                 />
                 <SortableTableHead
@@ -262,7 +258,7 @@ export function PrincipalPipelineTable() {
                   onSort={handleSort}
                   getAriaSortValue={getAriaSortValue}
                   renderSortIcon={renderSortIcon}
-                  align="center"
+                  align="right"
                   className="hidden lg:table-cell"
                 />
                 <TableHead className="max-w-[200px] lg:max-w-[280px]">Next Action</TableHead>

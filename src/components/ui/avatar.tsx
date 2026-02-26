@@ -11,7 +11,7 @@ const Avatar = React.memo(function Avatar({
     <AvatarPrimitive.Root
       data-slot="avatar"
       className={cn(
-        "relative flex size-8 shrink-0 overflow-hidden rounded-full shadow-[var(--avatar-shadow),var(--avatar-highlight)] bg-clip-padding",
+        "relative flex size-8 shrink-0 overflow-hidden rounded-full bg-[color:var(--avatar-fallback-bg)] shadow-[var(--avatar-shadow),var(--avatar-highlight)] bg-clip-padding",
         className
       )}
       {...props}
@@ -43,7 +43,10 @@ const AvatarFallback = React.memo(function AvatarFallback({
   return (
     <AvatarPrimitive.Fallback
       data-slot="avatar-fallback"
-      className={cn("bg-muted flex size-full items-center justify-center rounded-full", className)}
+      className={cn(
+        "flex size-full items-center justify-center rounded-full bg-[color:var(--avatar-fallback-bg)] text-[color:var(--avatar-fallback-fg)]",
+        className
+      )}
       {...props}
     />
   );

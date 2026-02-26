@@ -20,6 +20,7 @@ import { ExportButton } from "@/components/ra-wrappers/export-button";
 import { ListPagination } from "@/components/ra-wrappers/list-pagination";
 import { FilterForm } from "@/components/ra-wrappers/filter-form";
 import { ListNoResults } from "@/components/ra-wrappers/ListNoResults";
+import { useFilterCleanup } from "@/atomic-crm/hooks/useFilterCleanup";
 
 export const List = <RecordType extends RaRecord = RaRecord>(props: ListProps<RecordType>) => {
   const {
@@ -37,6 +38,13 @@ export const List = <RecordType extends RaRecord = RaRecord>(props: ListProps<Re
     storeKey,
     ...rest
   } = props;
+
+  // Clean stale filters/sort from localStorage BEFORE ListBase mounts.
+  // ListBase → useListParams → useStore reads from localStorage on init;
+  // if stale values are present, they cause PostgREST 400 errors or UI crashes.
+  const resourceFromContext = useResourceContext();
+  const resolvedResource = resource ?? resourceFromContext;
+  useFilterCleanup(resolvedResource ?? "");
 
   return (
     <ListBase<RecordType>
@@ -64,18 +72,10 @@ export interface ListProps<RecordType extends RaRecord = RaRecord>
 /**
  * ListView - Fixed page layout with scrollable list content
  *
- * Implements the fixed-page/scrollable-list pattern for iPad optimization:
+ * Implements the fixed-page/scrollable-list pattern:
  * - Header (breadcrumb, toolbar) stays fixed at top
  * - List content scrolls within a constrained container
  * - Pagination stays fixed at bottom
- *
- * Height calculation: 100dvh - 140px accounts for:
- * - Header: ~56px (logo h-8 + py-3 padding)
- * - Layout padding: 16px top + 64px bottom (pb-16 for footer clearance)
- * - Safety margin: ~4px
- *
- * Using `dvh` (dynamic viewport height) for Safari mobile/iPad where
- * the address bar affects viewport height dynamically.
  */
 export const ListView = <RecordType extends RaRecord = RaRecord>(
   props: ListViewProps<RecordType>
@@ -92,7 +92,7 @@ export const ListView = <RecordType extends RaRecord = RaRecord>(
   const { data, isPending, filterValues } = useListContext();
 
   return (
-    <div className="flex h-[calc(100dvh-140px)] flex-col overflow-hidden">
+    <div className="flex flex-1 min-h-0 flex-col overflow-hidden">
       {/* Fixed header area - breadcrumb + toolbar */}
       <div className="shrink-0">
         <Breadcrumb>
@@ -108,7 +108,7 @@ export const ListView = <RecordType extends RaRecord = RaRecord>(
 
         {actions !== false && (
           <FilterContext.Provider value={filters}>
-            <div className="flex justify-between items-center flex-wrap gap-2 my-2">
+            <div className="mb-widget flex flex-wrap items-center justify-between gap-content">
               <FilterForm />
               {actions ?? (
                 <div className="flex items-center gap-2">
@@ -123,13 +123,17 @@ export const ListView = <RecordType extends RaRecord = RaRecord>(
 
       {/* Content area - scrolls vertically for paginated lists, fills height for kanban */}
       <FilterContext.Provider value={filters}>
-        <div className={cn("h-full min-h-0 flex-1 overflow-hidden", props.className)}>
-          {!isPending && data?.length === 0 ? renderEmptyState(filterValues, empty) : children}
+        <div className={cn("h-full min-h-0 flex flex-1 flex-col overflow-hidden", props.className)}>
+          {!isPending && data?.length === 0 && empty
+            ? renderEmptyState(filterValues, empty)
+            : children}
         </div>
 
         {/* Fixed pagination at bottom - only render if pagination is provided */}
         {pagination && (
-          <div className="shrink-0 border-t border-border bg-background py-2">{pagination}</div>
+          <div className="shrink-0 border-t bg-[color:var(--surface-paper-card)] py-content [border-color:var(--paper-divider)]">
+            {pagination}
+          </div>
         )}
       </FilterContext.Provider>
     </div>

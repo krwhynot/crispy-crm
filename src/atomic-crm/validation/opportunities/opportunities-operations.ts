@@ -1,12 +1,10 @@
 import { z } from "zod";
-import { sanitizeHtml } from "@/lib/sanitization";
 import {
   opportunityStageSchema,
   opportunityPrioritySchema,
-  leadSourceSchema,
   winReasonSchema,
   lossReasonSchema,
-  opportunityProductSchema,
+  opportunityBaseSchema,
   type OpportunityStageValue,
 } from "./opportunities-core";
 import { STAGE, CLOSED_STAGES } from "@/atomic-crm/opportunities/constants";
@@ -21,24 +19,35 @@ import { zodErrorToReactAdminError } from "../utils";
 // STAGE TRANSITION VALIDATION (WF-H1-004)
 // ============================================================================
 /**
- * Valid stage transitions map (pipeline flow enforcement)
+ * Stage transition policy (any-stage jump enforcement)
  *
- * Opportunities must progress through pipeline stages in order.
- * Can drop to closed_lost from any active stage (business reality).
- * Terminal states (closed_won, closed_lost) have no valid transitions.
+ * Policy:
+ * - Active stages can jump to any other active stage (forward or back).
+ * - Active stages can transition to closed_won or closed_lost.
+ * - Closed stages can reopen to any active stage.
+ * - Closed → closed is disallowed (must reopen first).
+ * - Same-stage transitions are disallowed.
  *
- * Example violation: new_lead → closed_won (skips required stages)
- * Example valid: new_lead → initial_outreach → closed_lost
+ * Example violation: closed_won → closed_lost (closed-to-closed)
+ * Example valid: new_lead → demo_scheduled (active-to-active jump)
  */
-const VALID_STAGE_TRANSITIONS: Record<OpportunityStageValue, OpportunityStageValue[]> = {
-  new_lead: ["initial_outreach", "closed_lost"],
-  initial_outreach: ["sample_visit_offered", "closed_lost"],
-  sample_visit_offered: ["feedback_logged", "closed_lost"],
-  feedback_logged: ["demo_scheduled", "closed_lost"],
-  demo_scheduled: ["closed_won", "closed_lost"],
-  closed_won: [], // Terminal state
-  closed_lost: [], // Terminal state
-};
+export function isValidOpportunityStageTransition(
+  previousStage: OpportunityStageValue,
+  nextStage: OpportunityStageValue
+): boolean {
+  // Same stage is a no-op, not a valid transition
+  if (previousStage === nextStage) return false;
+
+  const fromClosed = CLOSED_STAGES.includes(previousStage as (typeof CLOSED_STAGES)[number]);
+  const toClosed = CLOSED_STAGES.includes(nextStage as (typeof CLOSED_STAGES)[number]);
+
+  // Closed → closed is disallowed (must reopen to active first)
+  if (fromClosed && toClosed) return false;
+
+  // Everything else is allowed:
+  // active → active, active → closed, closed → active
+  return true;
+}
 
 // ============================================================================
 // CANONICAL PRODUCT SYNC SCHEMAS (Single Source of Truth)
@@ -77,143 +86,6 @@ export const opportunityProductSyncHandlerSchema = z.strictObject({
   product_name: z.string().max(255, "Product name too long").optional(),
   product_category: z.string().max(100, "Product category too long").optional(),
   notes: z.string().max(2000).optional().nullable(),
-});
-
-// Re-create the base schema here to avoid circular dependency issues
-// This is a copy of opportunityBaseSchema from opportunities-core.ts
-const opportunityBaseSchema = z.strictObject({
-  // System fields
-  id: z.union([z.string(), z.number()]).optional(),
-  created_at: z.string().max(50).optional(),
-  updated_at: z.string().max(50).optional(),
-  version: z.number().optional(),
-  deleted_at: z.string().max(50).optional().nullable(),
-
-  // OpportunityInfoInputs fields
-  name: z
-    .string()
-    .trim()
-    .min(1, "Opportunity name is required")
-    .max(255, "Opportunity name too long"),
-  description: z
-    .string()
-    .trim()
-    .max(2000, "Description must be 2000 characters or less")
-    .optional()
-    .nullable()
-    .transform((val) => (val ? sanitizeHtml(val) : val)),
-  estimated_close_date: z.coerce
-    .date({
-      error: "Expected closing date is required",
-    })
-    .default(() => {
-      // Default to 30 days from now
-      const date = new Date();
-      date.setDate(date.getDate() + 30);
-      return date;
-    }),
-
-  // OpportunityClassificationInputs fields
-  // Stage is REQUIRED - no silent default. Forms must explicitly select a stage.
-  // This prevents workflow corruption from missing/null stage values.
-  stage: opportunityStageSchema,
-  priority: opportunityPrioritySchema,
-  lead_source: leadSourceSchema.optional().nullable(),
-
-  // OpportunityOrganizationInputs fields
-  customer_organization_id: z.union([z.string(), z.number()]), // Required - marked with * in UI
-  principal_organization_id: z.union([z.string(), z.number()]), // Required - marked with * in UI
-  distributor_organization_id: z.union([z.string(), z.number()]).optional().nullable(),
-  account_manager_id: z.union([z.string(), z.number()]).optional().nullable(),
-
-  // OpportunityContactsInput fields
-  // SECURITY: Use z.coerce.number() to reject non-numeric strings like "@@ra-create"
-  // This provides defense-in-depth against UI bugs that might add invalid IDs
-  contact_ids: z
-    .array(z.coerce.number().int().positive())
-    .max(100, "Maximum 100 contacts")
-    .optional()
-    .default([]),
-
-  // Campaign & Workflow Tracking fields (added 2025-11-03)
-  campaign: z
-    .string()
-    .trim()
-    .max(100, "Campaign name must be 100 characters or less")
-    .optional()
-    .nullable(),
-  related_opportunity_id: z.union([z.string(), z.number()]).optional().nullable(),
-  notes: z
-    .string()
-    .trim()
-    .max(5000, "Notes must be 5000 characters or less")
-    .optional()
-    .nullable()
-    .transform((val) => (val ? sanitizeHtml(val) : val)), // General notes about the opportunity (separate from activity log)
-  tags: z
-    .array(z.string().trim().max(50, "Tag must be 50 characters or less"))
-    .max(20, "Maximum 20 tags allowed")
-    .optional()
-    .default([]),
-  next_action: z
-    .string()
-    .trim()
-    .max(500, "Next action must be 500 characters or less")
-    .optional()
-    .nullable(),
-  next_action_date: z.coerce.date().optional().nullable(),
-  decision_criteria: z
-    .string()
-    .trim()
-    .max(2000, "Decision criteria must be 2000 characters or less")
-    .optional()
-    .nullable()
-    .transform((val) => (val ? sanitizeHtml(val) : val)),
-
-  // Win/Loss Reason Fields (TODO-004a)
-  // Required when stage is closed_won or closed_lost respectively
-  // Per PRD Section 5.3, MVP #12, #47 - industry standard
-  win_reason: winReasonSchema.optional().nullable(),
-  loss_reason: lossReasonSchema.optional().nullable(),
-  close_reason_notes: z
-    .string()
-    .trim()
-    .max(500, "Close reason notes must be 500 characters or less")
-    .optional()
-    .nullable()
-    .transform((val) => (val ? sanitizeHtml(val) : val)), // Required when reason is "other"
-
-  // Database fields (read-only - no UI inputs in OpportunityInputs.tsx)
-  // Included in schema for validation completeness when loading records
-  // MUST stay in sync with opportunities-core.ts
-  status: z.enum(["active", "on_hold", "nurturing", "stalled", "expired"]).optional().nullable(),
-  index: z.number().int().optional().nullable(),
-  actual_close_date: z.coerce.date().optional().nullable(),
-  stage_manual: z.boolean().optional().nullable(),
-  status_manual: z.boolean().optional().nullable(),
-  competition: z.string().max(2000).optional().nullable(),
-  founding_interaction_id: z.union([z.string(), z.number()]).optional().nullable(),
-  probability: z.number().optional().nullable(),
-  opportunity_owner_id: z.union([z.string(), z.number()]).optional().nullable(),
-  created_by: z.union([z.string(), z.number()]).optional().nullable(),
-  updated_by: z.union([z.string(), z.number()]).optional().nullable(),
-  search_tsv: z.string().optional().nullable(),
-  stage_changed_at: z.string().optional().nullable(),
-
-  // Summary view computed fields (populated by database views, not editable)
-  customer_organization_name: z.string().max(255).optional().nullable(),
-  principal_organization_name: z.string().max(255).optional().nullable(),
-  distributor_organization_name: z.string().max(255).optional().nullable(),
-  days_in_stage: z.number().optional().nullable(),
-  last_activity_date: z.string().optional().nullable(),
-  days_since_last_activity: z.number().optional().nullable(),
-  pending_task_count: z.number().optional().nullable(),
-  overdue_task_count: z.number().optional().nullable(),
-  next_task_id: z.union([z.string(), z.number()]).optional().nullable(),
-  next_task_title: z.string().max(255).optional().nullable(),
-  next_task_due_date: z.string().optional().nullable(),
-  next_task_priority: z.string().max(50).optional().nullable(),
-  products: opportunityProductSchema, // Type-safe JSONB array from view
 });
 
 /**
@@ -364,7 +236,7 @@ export const updateOpportunitySchema = opportunityBaseSchema
 
     // WF-H1-004: Track previous stage for transition validation
     // Provided by form logic when stage field changes
-    // Used to enforce linear pipeline progression
+    // Used to enforce stage transition policy
     previous_stage: opportunityStageSchema.optional(),
   })
   .required({
@@ -373,8 +245,8 @@ export const updateOpportunitySchema = opportunityBaseSchema
   // ============================================================================
   // STAGE TRANSITION VALIDATION (WF-H1-004)
   // ============================================================================
-  // Enforces linear pipeline progression - prevents jumping stages
-  // Example: new_lead → closed_won is INVALID (skips required intermediate stages)
+  // Enforces stage transition policy - prevents invalid transitions
+  // Example: closed_won → closed_lost is INVALID (must reopen to active first)
   .refine(
     (data) => {
       // Skip validation if stage not changing
@@ -383,15 +255,12 @@ export const updateOpportunitySchema = opportunityBaseSchema
       // Skip validation if no previous stage context (creation or first update)
       if (!data.previous_stage) return true;
 
-      // Get valid transitions from previous stage
-      const validTransitions = VALID_STAGE_TRANSITIONS[data.previous_stage];
-
-      // Check if new stage is in the allowed list
-      return validTransitions.includes(data.stage);
+      // Validate transition using policy function
+      return isValidOpportunityStageTransition(data.previous_stage, data.stage);
     },
     {
       message:
-        "Invalid stage transition. Opportunities must progress through pipeline stages in order.",
+        "Invalid stage transition. Allowed: active stages can jump to any other stage; closed stages can reopen to any active stage.",
       path: ["stage"],
     }
   )

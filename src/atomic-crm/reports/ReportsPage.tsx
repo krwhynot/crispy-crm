@@ -2,22 +2,23 @@ import { useSearchParams } from "react-router-dom";
 import { useStore } from "ra-core";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Suspense, lazy, useCallback, useEffect, useState } from "react";
+import { Suspense, lazy, useCallback, useEffect, useRef, useState } from "react";
 import { Link2, Check } from "lucide-react";
 import { AdminButton } from "@/components/admin/AdminButton";
-import { StandardListLayout } from "@/components/layouts/StandardListLayout";
-import { cleanupOldReportKeys } from "./utils/cleanupMigration";
+import { FilterSidebarProvider } from "@/components/layouts/FilterSidebarContext";
+import { AdaptiveFilterContainer } from "@/components/layouts/AdaptiveFilterContainer";
+import { migrateReportStores } from "./utils/cleanupMigration";
 import { ReportPageShell } from "./components/ReportPageShell";
-import { ReportContextHeader } from "./components/ReportContextHeader";
-import { ReportFilterSidebar } from "./filters/ReportFilterSidebar";
+import { ReportFilterSidebar } from "./components/ReportFilterSidebar";
+import { ReportsAppliedFiltersBar } from "./components/ReportsAppliedFiltersBar";
 import {
-  buildShareUrl,
-  OVERVIEW_DEFAULTS,
+  buildReportShareUrl,
+  countReportActiveFilters,
+  GLOBAL_DEFAULTS,
   CAMPAIGN_DEFAULTS,
   OPPORTUNITIES_DEFAULTS,
-  type OverviewFilterState,
+  type GlobalReportFilterState,
   type CampaignFilterState,
-  type WeeklyFilterState,
   type OpportunitiesFilterState,
 } from "./hooks";
 
@@ -48,17 +49,108 @@ export default function ReportsPage() {
   const activeTab = searchParams.get("tab") || "overview";
   const [copied, setCopied] = useState(false);
 
-  // Read stored filter state for each tab (for share URL generation)
-  const [overviewFilters] = useStore<OverviewFilterState>("reports.overview", OVERVIEW_DEFAULTS);
-  const [campaignFilters] = useStore<CampaignFilterState>("reports.campaign", CAMPAIGN_DEFAULTS);
-  const [weeklyFilters] = useStore<WeeklyFilterState>("reports.weekly", { start: "", end: "" });
-  const [opportunitiesFilters] = useStore<OpportunitiesFilterState>(
+  // Read global store
+  const [globalFilters, setGlobalFilters] = useStore<GlobalReportFilterState>(
+    "reports.global",
+    GLOBAL_DEFAULTS
+  );
+
+  // Read tab-local stores for share URL and clear-all
+  const [campaignFilters, setCampaignFilters] = useStore<CampaignFilterState>(
+    "reports.campaign",
+    CAMPAIGN_DEFAULTS
+  );
+  const [opportunitiesFilters, setOpportunitiesFilters] = useStore<OpportunitiesFilterState>(
     "reports.opportunities",
     OPPORTUNITIES_DEFAULTS
   );
 
+  // Compute filter count
+  const localStoreMap: Record<
+    string,
+    { state: Record<string, unknown>; defaults: Record<string, unknown> }
+  > = {
+    opportunities: {
+      state: opportunitiesFilters as unknown as Record<string, unknown>,
+      defaults: OPPORTUNITIES_DEFAULTS as unknown as Record<string, unknown>,
+    },
+    campaign: {
+      state: campaignFilters as unknown as Record<string, unknown>,
+      defaults: CAMPAIGN_DEFAULTS as unknown as Record<string, unknown>,
+    },
+  };
+  const localEntry = localStoreMap[activeTab];
+  const filterCount = countReportActiveFilters(
+    globalFilters as unknown as Record<string, unknown>,
+    GLOBAL_DEFAULTS as unknown as Record<string, unknown>,
+    localEntry?.state,
+    localEntry?.defaults
+  );
+
+  // Clear all resets ALL stores
+  const handleClearAll = useCallback(() => {
+    setGlobalFilters(GLOBAL_DEFAULTS);
+    setCampaignFilters(CAMPAIGN_DEFAULTS);
+    setOpportunitiesFilters(OPPORTUNITIES_DEFAULTS);
+  }, [setGlobalFilters, setCampaignFilters, setOpportunitiesFilters]);
+
+  // URL seeding + migration
+  const [isSeeded, setIsSeeded] = useState(false);
+  const seededRef = useRef(false);
+
   useEffect(() => {
-    cleanupOldReportKeys();
+    if (seededRef.current) return;
+    seededRef.current = true;
+
+    // 1. Run store migration (old per-tab -> unified global)
+    const migrated = migrateReportStores();
+
+    // 2. Check URL for ?global= param (takes priority over migration)
+    const globalParam = searchParams.get("global");
+    const filtersParam = searchParams.get("filters");
+
+    if (globalParam) {
+      try {
+        const decoded = JSON.parse(
+          decodeURIComponent(globalParam)
+        ) as Partial<GlobalReportFilterState>;
+        setGlobalFilters({ ...GLOBAL_DEFAULTS, ...decoded });
+      } catch {
+        /* ignore malformed */
+      }
+    } else if (migrated) {
+      setGlobalFilters(migrated);
+    }
+
+    if (filtersParam) {
+      try {
+        const decoded = JSON.parse(decodeURIComponent(filtersParam)) as Record<string, unknown>;
+        // Seed the active tab's local store
+        const tab = searchParams.get("tab") || "overview";
+        if (tab === "opportunities") {
+          setOpportunitiesFilters({
+            ...OPPORTUNITIES_DEFAULTS,
+            ...(decoded as Partial<OpportunitiesFilterState>),
+          });
+        } else if (tab === "campaign") {
+          setCampaignFilters({
+            ...CAMPAIGN_DEFAULTS,
+            ...(decoded as Partial<CampaignFilterState>),
+          });
+        }
+      } catch {
+        /* ignore malformed */
+      }
+    }
+
+    // Clean URL, preserve tab
+    const tab = searchParams.get("tab");
+    const cleaned = new URLSearchParams();
+    if (tab) cleaned.set("tab", tab);
+    setSearchParams(cleaned, { replace: true });
+
+    setIsSeeded(true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- Run once on mount
   }, []);
 
   const handleTabChange = (value: string) => {
@@ -66,22 +158,26 @@ export default function ReportsPage() {
   };
 
   const handleCopyShareUrl = useCallback(() => {
-    const filterMap: Record<string, { filters: unknown; defaults: unknown }> = {
-      overview: { filters: overviewFilters, defaults: OVERVIEW_DEFAULTS },
-      campaign: { filters: campaignFilters, defaults: CAMPAIGN_DEFAULTS },
-      weekly: { filters: weeklyFilters, defaults: { start: "", end: "" } },
-      opportunities: { filters: opportunitiesFilters, defaults: OPPORTUNITIES_DEFAULTS },
+    const localDefaultsMap: Record<string, Record<string, unknown>> = {
+      opportunities: OPPORTUNITIES_DEFAULTS as unknown as Record<string, unknown>,
+      campaign: CAMPAIGN_DEFAULTS as unknown as Record<string, unknown>,
+    };
+    const localStateMap: Record<string, Record<string, unknown>> = {
+      opportunities: opportunitiesFilters as unknown as Record<string, unknown>,
+      campaign: campaignFilters as unknown as Record<string, unknown>,
     };
 
-    const entry = filterMap[activeTab];
-    if (!entry) return;
-
-    const url = buildShareUrl(activeTab, entry.filters as never, entry.defaults as never);
+    const url = buildReportShareUrl(
+      activeTab,
+      globalFilters,
+      localStateMap[activeTab],
+      localDefaultsMap[activeTab]
+    );
     navigator.clipboard.writeText(url).then(() => {
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     });
-  }, [activeTab, overviewFilters, campaignFilters, weeklyFilters, opportunitiesFilters]);
+  }, [activeTab, globalFilters, opportunitiesFilters, campaignFilters]);
 
   const tabLabels: Record<string, string> = {
     overview: "Overview",
@@ -96,94 +192,89 @@ export default function ReportsPage() {
   ];
 
   return (
-    <ReportPageShell
-      title="Reports & Analytics"
-      breadcrumbs={breadcrumbs}
-      contextHeader={<ReportContextHeader activeTab={activeTab} />}
-      actions={
-        <AdminButton
-          variant="outline"
-          size="sm"
-          onClick={handleCopyShareUrl}
-          className="h-11 gap-2"
-          aria-label="Copy shareable link with current filters"
-        >
-          {copied ? (
-            <>
-              <Check className="h-4 w-4" aria-hidden="true" />
-              Copied!
-            </>
-          ) : (
-            <>
-              <Link2 className="h-4 w-4" aria-hidden="true" />
-              Copy Link
-            </>
-          )}
-        </AdminButton>
-      }
-    >
-      <StandardListLayout
-        resource="reports"
-        filterComponent={<ReportFilterSidebar activeTab={activeTab} />}
-        wrapMainInCard={false}
-        storageKey="crm-report-sidebar-collapsed"
-        showFilterSidebar={activeTab !== "overview"}
+    <FilterSidebarProvider storageKey="crm-reports-filter-sidebar-collapsed">
+      <ReportPageShell
+        title="Reports & Analytics"
+        breadcrumbs={breadcrumbs}
+        sidebar={
+          <AdaptiveFilterContainer
+            filterComponent={<ReportFilterSidebar activeTab={activeTab} />}
+            resource="reports"
+            onClearAll={handleClearAll}
+            activeFilterCountOverride={filterCount}
+          />
+        }
+        actions={
+          <AdminButton
+            variant="outline"
+            size="sm"
+            onClick={handleCopyShareUrl}
+            className="h-11 gap-2"
+            aria-label="Copy shareable link with current filters"
+          >
+            {copied ? (
+              <>
+                <Check className="h-4 w-4" aria-hidden="true" />
+                Copied!
+              </>
+            ) : (
+              <>
+                <Link2 className="h-4 w-4" aria-hidden="true" />
+                Copy Link
+              </>
+            )}
+          </AdminButton>
+        }
       >
-        <Tabs value={activeTab} onValueChange={handleTabChange}>
-          <TabsList className="grid w-full grid-cols-2 lg:grid-cols-4 h-auto bg-transparent p-0 border-b border-border rounded-none">
-            <TabsTrigger
-              value="overview"
-              className="h-11 rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none"
-            >
-              Overview
-            </TabsTrigger>
-            <TabsTrigger
-              value="opportunities"
-              className="h-11 rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none"
-            >
-              Opportunities
-            </TabsTrigger>
-            <TabsTrigger
-              value="weekly"
-              className="h-11 rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none"
-            >
-              Weekly Activity
-            </TabsTrigger>
-            <TabsTrigger
-              value="campaign"
-              className="h-11 rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none"
-            >
-              Campaign
-            </TabsTrigger>
-          </TabsList>
+        {isSeeded ? (
+          <Tabs value={activeTab} onValueChange={handleTabChange} className="flex flex-col gap-0">
+            <TabsList className="paper-tabs-list grid grid-cols-2 lg:grid-cols-4">
+              <TabsTrigger value="overview" className="paper-tabs-trigger">
+                Overview
+              </TabsTrigger>
+              <TabsTrigger value="opportunities" className="paper-tabs-trigger">
+                Opportunities
+              </TabsTrigger>
+              <TabsTrigger value="weekly" className="paper-tabs-trigger">
+                Weekly Activity
+              </TabsTrigger>
+              <TabsTrigger value="campaign" className="paper-tabs-trigger">
+                Campaign
+              </TabsTrigger>
+            </TabsList>
 
-          <div className="mt-widget">
-            <TabsContent value="overview" className="mt-0">
-              <Suspense fallback={<TabSkeleton />}>
-                <OverviewTab />
-              </Suspense>
-            </TabsContent>
+            <ReportsAppliedFiltersBar activeTab={activeTab} />
 
-            <TabsContent value="opportunities" className="mt-0">
-              <Suspense fallback={<TabSkeleton />}>
-                <OpportunitiesTab />
-              </Suspense>
-            </TabsContent>
+            <div className="pt-section">
+              <TabsContent value="overview" className="mt-0">
+                <Suspense fallback={<TabSkeleton />}>
+                  <OverviewTab />
+                </Suspense>
+              </TabsContent>
 
-            <TabsContent value="weekly" className="mt-0">
-              <Suspense fallback={<TabSkeleton />}>
-                <WeeklyActivityTab />
-              </Suspense>
-            </TabsContent>
+              <TabsContent value="opportunities" className="mt-0">
+                <Suspense fallback={<TabSkeleton />}>
+                  <OpportunitiesTab />
+                </Suspense>
+              </TabsContent>
 
-            <TabsContent value="campaign" className="mt-0">
-              <Suspense fallback={<TabSkeleton />}>
-                <CampaignActivityTab />
-              </Suspense>
-            </TabsContent>
-          </div>
-        </Tabs>
-      </StandardListLayout>
-    </ReportPageShell>
+              <TabsContent value="weekly" className="mt-0">
+                <Suspense fallback={<TabSkeleton />}>
+                  <WeeklyActivityTab />
+                </Suspense>
+              </TabsContent>
+
+              <TabsContent value="campaign" className="mt-0">
+                <Suspense fallback={<TabSkeleton />}>
+                  <CampaignActivityTab />
+                </Suspense>
+              </TabsContent>
+            </div>
+          </Tabs>
+        ) : (
+          <TabSkeleton />
+        )}
+      </ReportPageShell>
+    </FilterSidebarProvider>
   );
 }

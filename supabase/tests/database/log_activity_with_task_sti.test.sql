@@ -89,15 +89,29 @@ SELECT ok(
   'Task inserted into activities table with activity_type=task (STI pattern)'
 );
 
--- Test 2: No row in deprecated tasks table (if it still has data visibility)
--- Note: tasks_deprecated has read-only policy, so we check via direct access
+-- Test 2: No row in deprecated tasks table (or table does not exist)
+-- Guard: tasks_deprecated may have been dropped from canonical schema.
+-- Use DO block with dynamic SQL to avoid parse-time error on absent table.
+DO $$
+DECLARE
+  v_count int := 0;
+BEGIN
+  IF to_regclass('public.tasks_deprecated') IS NOT NULL THEN
+    EXECUTE 'SELECT count(*) FROM tasks_deprecated WHERE title = $1'
+      INTO v_count USING 'STI Follow-up Task';
+  END IF;
+  -- Store result in a temp table for pgTAP assertion
+  CREATE TEMP TABLE IF NOT EXISTS _td_result (cnt int);
+  DELETE FROM _td_result;
+  INSERT INTO _td_result VALUES (v_count);
+END $$;
+
 SELECT ok(
-  NOT EXISTS(
-    SELECT 1 FROM tasks_deprecated
-    WHERE title = 'STI Follow-up Task'
-  ),
-  'No task in deprecated tasks table'
+  (SELECT cnt FROM _td_result) = 0,
+  'No task in deprecated tasks table (or table does not exist)'
 );
+
+DROP TABLE IF EXISTS _td_result;
 
 -- ============================================================================
 -- SECTION 2: Verify Activity was also inserted

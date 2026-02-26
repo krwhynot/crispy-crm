@@ -35,6 +35,7 @@ import {
   getOpportunityStageLabel,
   getOpportunityStageClasses,
 } from "./constants";
+import { isClosedStage } from "./constants/stage-enums";
 import { useExportOpportunities } from "./useExportOpportunities";
 import { DEFAULT_PAGE_SIZE } from "@/atomic-crm/constants/appConstants";
 
@@ -192,11 +193,13 @@ export const BulkActionsToolbar = ({
                   <SelectValue placeholder="Select a stage" />
                 </SelectTrigger>
                 <SelectContent>
-                  {OPPORTUNITY_STAGES.map((stage) => (
-                    <SelectItem key={stage.value} value={stage.value}>
-                      {stage.label}
-                    </SelectItem>
-                  ))}
+                  {OPPORTUNITY_STAGES.filter((stage) => !isClosedStage(stage.value)).map(
+                    (stage) => (
+                      <SelectItem key={stage.value} value={stage.value}>
+                        {stage.label}
+                      </SelectItem>
+                    )
+                  )}
                 </SelectContent>
               </Select>
             </div>

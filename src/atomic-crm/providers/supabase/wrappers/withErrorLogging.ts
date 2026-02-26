@@ -21,6 +21,7 @@
  */
 
 import type { DataProvider, Identifier, FilterPayload, RaRecord } from "ra-core";
+import { HttpError } from "react-admin";
 import { logger } from "@/lib/logger";
 import {
   FIELD_LABELS,
@@ -108,7 +109,11 @@ function logError(
   // Log main error with structured context
   logger.error(
     "DataProvider operation failed",
-    error instanceof Error ? error : new Error(String(error)),
+    error instanceof Error
+      ? error
+      : new Error(
+          typeof error === "object" && error !== null ? JSON.stringify(error) : String(error)
+        ),
     context
   );
 
@@ -282,7 +287,19 @@ export function withErrorLogging<T extends DataProvider>(provider: T): T {
 
           return result;
         } catch (error: unknown) {
-          // Log the error with context
+          // Validation errors are expected control flow, not operational failures.
+          // Check BEFORE logging to avoid noisy Sentry events for user input errors.
+          if (isReactAdminValidationError(error)) {
+            logger.debug("DataProvider validation error (expected)", {
+              method,
+              resource,
+              operation: `DataProvider.${method}`,
+              validationErrors: (error as ExtendedError).body?.errors,
+            });
+            throw error;
+          }
+
+          // Log operational errors with full context
           logError(method, resource, params, error);
 
           // Handle idempotent delete - if resource doesn't exist, treat as success
@@ -292,19 +309,15 @@ export function withErrorLogging<T extends DataProvider>(provider: T): T {
             return { data: params.previousData };
           }
 
-          // For validation errors already in React Admin format, pass through
-          if (isReactAdminValidationError(error)) {
-            throw error;
-          }
-
-          // For Supabase errors, try to extract field-specific errors
+          // For Supabase errors, transform to React Admin validation format
+          // Wrapped in HttpError so it's a proper Error instance for downstream handling
           if (isSupabaseError(error)) {
-            // Create error context from current operation
             const errorContext: ErrorContext = {
               resource,
               action: method === "create" ? "create" : method === "update" ? "update" : "delete",
             };
-            throw transformSupabaseError(error as SupabaseError, errorContext);
+            const transformed = transformSupabaseError(error as SupabaseError, errorContext);
+            throw new HttpError(transformed.message, 400, transformed.body);
           }
 
           // Pass through other errors

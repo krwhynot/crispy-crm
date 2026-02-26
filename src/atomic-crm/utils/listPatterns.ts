@@ -1,53 +1,53 @@
 /**
  * listPatterns.ts - Common patterns for list page configuration
- *
- * Design System: Desktop-first responsive (iPad 1024px as primary target)
- * @see docs/architecture/design-system.md
  */
 
 /**
- * Semantic column visibility presets for responsive list pages.
+ * Canonical column visibility presets for iPad-first list pages.
  *
- * Usage:
- * ```tsx
- * <TextField source="email" {...COLUMN_VISIBILITY.desktopOnly} />
- * ```
- *
- * @property largeDesktopOnly - Only visible on large desktop (1280px+), hidden on tablet/iPad
- * @property desktopOnly - Only visible on desktop (1024px+), hidden on tablet/mobile
- * @property tabletUp - Visible on tablet (768px+) and desktop, hidden on mobile only
- * @property alwaysVisible - Always visible on all screen sizes (use for critical columns)
+ * Breakpoint map:
+ * - always: all viewports
+ * - tabletUp: >=768px (md)
+ * - ipadPlus: >=1024px (lg)
+ * - desktopPlus: >=1280px (xl)
  */
-export const COLUMN_VISIBILITY = {
-  /** Only visible on large desktop (1280px+). Use for tertiary information like relationships.
-   * Uses !important to override MUI's MuiTableCell-root display: table-cell specificity. */
-  largeDesktopOnly: {
-    cellClassName: "!hidden xl:!table-cell",
-    headerClassName: "!hidden xl:!table-cell",
+const BASE_COLUMN_VISIBILITY = {
+  always: {
+    cellClassName: "",
+    headerClassName: "",
   },
-  /** Only visible on desktop (1280px+). Use for secondary information.
-   * Uses !important to override MUI's MuiTableCell-root display: table-cell specificity. */
-  desktopOnly: {
-    cellClassName: "!hidden xl:!table-cell",
-    headerClassName: "!hidden xl:!table-cell",
-  },
-  /** Visible on tablet and desktop (768px+). Use for important but not critical columns.
-   * Uses !important to override MUI's MuiTableCell-root display: table-cell specificity. */
   tabletUp: {
     cellClassName: "!hidden md:!table-cell",
     headerClassName: "!hidden md:!table-cell",
   },
-  /** Always visible on all screen sizes. Use for primary identifying columns (name, status). */
-  alwaysVisible: {
-    cellClassName: "",
-    headerClassName: "",
+  ipadPlus: {
+    cellClassName: "!hidden lg:!table-cell",
+    headerClassName: "!hidden lg:!table-cell",
   },
+  desktopPlus: {
+    cellClassName: "!hidden xl:!table-cell",
+    headerClassName: "!hidden xl:!table-cell",
+  },
+} as const;
+
+/**
+ * Semantic column visibility presets with deprecated aliases for migration safety.
+ */
+export const COLUMN_VISIBILITY = {
+  ...BASE_COLUMN_VISIBILITY,
+
+  /** @deprecated Use COLUMN_VISIBILITY.always */
+  alwaysVisible: BASE_COLUMN_VISIBILITY.always,
+  /** @deprecated Use COLUMN_VISIBILITY.ipadPlus */
+  desktopOnly: BASE_COLUMN_VISIBILITY.ipadPlus,
+  /** @deprecated Use COLUMN_VISIBILITY.desktopPlus */
+  largeDesktopOnly: BASE_COLUMN_VISIBILITY.desktopPlus,
 } as const;
 
 /** @deprecated Use COLUMN_VISIBILITY.tabletUp instead */
 export const hideMobile = COLUMN_VISIBILITY.tabletUp;
-/** @deprecated Use COLUMN_VISIBILITY.desktopOnly instead */
-export const hideTablet = COLUMN_VISIBILITY.desktopOnly;
+/** @deprecated Use COLUMN_VISIBILITY.ipadPlus instead */
+export const hideTablet = COLUMN_VISIBILITY.ipadPlus;
 
 export const SORT_FIELDS = {
   contacts: ["first_name", "last_name", "last_seen"],
@@ -65,10 +65,6 @@ export const DEFAULT_PER_PAGE = {
   activities: 50,
 } as const;
 
-/**
- * Helper function to get column visibility classes by semantic name.
- * Prefer direct object spread: `{...COLUMN_VISIBILITY.desktopOnly}` for better type inference.
- */
 export function getColumnVisibility(visibility: keyof typeof COLUMN_VISIBILITY): {
   cellClassName: string;
   headerClassName: string;

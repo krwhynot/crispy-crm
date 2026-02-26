@@ -7,11 +7,17 @@ Standard patterns for product management in Crispy CRM.
 ```
 ProductList (page container)
     ↓
-List + StandardListLayout + PremiumDatagrid
+List + UnifiedListPageLayout + PremiumDatagrid
+    ├── ProductDatagrid (keyboard nav, isSlideOverOpen gating)
+    │       ├── RowHoverActions (view / edit)
+    │       └── CertificationBadges / CategoryBadge / StatusBadge
+    ├── ProductListFilter (sidebar)
+    ├── ProductEmpty (empty-state component)
+    └── PageTutorialTrigger (chapter="products")
     ↓
 [ProductSlideOver ↔ ProductDetailsTab / ProductRelationshipsTab]
     ↓
-[ProductCard ↔ ProductListFilter ↔ ListSearchBar]
+[ProductCard ↔ ProductShow]
     ↓
 ProductCreate / ProductEdit (full-page forms)
     ↓
@@ -38,74 +44,123 @@ React Admin state (filterValues, selectedIds)
 
 ## Pattern A: Datagrid with Filterable Columns
 
-List view using `PremiumDatagrid` with click-to-filter badges and responsive column visibility.
+List view using `PremiumDatagrid` inside `UnifiedListPageLayout` with click-to-filter badges,
+responsive column visibility, keyboard navigation, and `RowHoverActions`.
+
+The datagrid is extracted into a `ProductDatagrid` sub-component that receives `openSlideOver`
+and `isSlideOverOpen` props. Keyboard navigation is disabled while the slide-over is open.
 
 ```tsx
 import { FunctionField } from "react-admin";
 import { PremiumDatagrid } from "@/components/ra-wrappers/PremiumDatagrid";
+import { RowHoverActions } from "@/components/ra-wrappers/RowHoverActions";
 import { TextField } from "@/components/ra-wrappers/text-field";
-import { ReferenceField } from "@/components/ra-wrappers/reference-field";
 import { FilterableBadge } from "@/components/ra-wrappers/FilterableBadge";
 import { COLUMN_VISIBILITY } from "../utils/listPatterns";
 import { ProductNameHeader, ProductCategoryHeader, ProductStatusHeader } from "./ProductsDatagridHeader";
+import { useListKeyboardNavigation } from "@/hooks/useListKeyboardNavigation";
 
-<PremiumDatagrid
-  onRowClick={(id) => openSlideOver(Number(id), "view")}
-  focusedIndex={focusedIndex}
->
-  {/* Column 1: Product Name - Primary identifier (sortable) - always visible */}
-  <TextField
-    source="name"
-    label={<ProductNameHeader />}
-    sortable
-    {...COLUMN_VISIBILITY.alwaysVisible}
-  />
+/**
+ * ProductDatagrid - Keyboard-navigable datagrid with slide-over integration
+ */
+const ProductDatagrid = ({
+  openSlideOver,
+  isSlideOverOpen,
+}: {
+  openSlideOver: (id: number, mode: "view" | "edit") => void;
+  isSlideOverOpen: boolean;
+}) => {
+  const { focusedIndex } = useListKeyboardNavigation({
+    onSelect: (id) => openSlideOver(Number(id), "view"),
+    enabled: !isSlideOverOpen,
+  });
 
-  {/* Column 2: Category - Classification badge (sortable) - always visible */}
-  <FunctionField
-    label={<ProductCategoryHeader />}
-    sortBy="category"
-    render={(record: Product) => (
-      <FilterableBadge source="category" value={record.category}>
-        <CategoryBadge category={record.category} />
-      </FilterableBadge>
-    )}
-    {...COLUMN_VISIBILITY.alwaysVisible}
-  />
+  return (
+    <PremiumDatagrid
+      onRowClick={(id) => openSlideOver(Number(id), "view")}
+      focusedIndex={focusedIndex}
+    >
+      {/* Column 1: Product Name - Primary identifier (sortable) - always visible */}
+      <TextField
+        source="name"
+        label={<ProductNameHeader />}
+        sortable
+        className="text-[15px] font-semibold leading-tight"
+        {...COLUMN_VISIBILITY.always}
+      />
 
-  {/* Column 3: Status - Lifecycle badge (sortable) - always visible */}
-  <FunctionField
-    label={<ProductStatusHeader />}
-    sortBy="status"
-    render={(record: Product) => (
-      <FilterableBadge source="status" value={record.status}>
-        <StatusBadge status={record.status} />
-      </FilterableBadge>
-    )}
-    {...COLUMN_VISIBILITY.alwaysVisible}
-  />
+      {/* Column 2: Category - Classification badge (sortable) - always visible */}
+      <FunctionField
+        label={<ProductCategoryHeader />}
+        sortBy="category"
+        render={(record: Product) => (
+          <FilterableBadge source="category" value={record.category}>
+            <CategoryBadge category={record.category} />
+          </FilterableBadge>
+        )}
+        {...COLUMN_VISIBILITY.always}
+      />
 
-  {/* Column 4: Principal - hidden on tablet/mobile */}
-  <ReferenceField
-    source="principal_id"
-    reference="organizations"
-    label="Principal"
-    link={false}
-    sortable
-    {...COLUMN_VISIBILITY.desktopOnly}
-  >
-    <TextField source="name" />
-  </ReferenceField>
-</PremiumDatagrid>
+      {/* Column 3: Status - Lifecycle badge (sortable) - always visible */}
+      <FunctionField
+        label={<ProductStatusHeader />}
+        sortBy="status"
+        render={(record: Product) => (
+          <FilterableBadge source="status" value={record.status}>
+            <StatusBadge status={record.status} />
+          </FilterableBadge>
+        )}
+        {...COLUMN_VISIBILITY.always}
+      />
+
+      {/* Column 4: Principal - flat field from summary view (DB-001) - hidden on tablet/mobile */}
+      <TextField
+        source="principal_name"
+        label="Principal"
+        sortable
+        sortBy="principal_name"
+        {...COLUMN_VISIBILITY.ipadPlus}
+      />
+
+      {/* Column 5: Certifications - Badges list (non-sortable) - hidden on tablet/mobile */}
+      <FunctionField
+        label="Certifications"
+        sortable={false}
+        render={(record: Product) => <CertificationBadges certifications={record.certifications} />}
+        {...COLUMN_VISIBILITY.ipadPlus}
+      />
+
+      {/* Column 6: Row actions (view / edit via slide-over) */}
+      <FunctionField
+        label="Actions"
+        sortable={false}
+        cellClassName="w-[72px] sm:w-[88px] text-right"
+        render={(record: Product) => (
+          <RowHoverActions
+            className="inline-flex items-center justify-end gap-1"
+            recordId={record.id}
+            resource="products"
+            onView={(id) => openSlideOver(Number(id), "view")}
+            onEdit={(id) => openSlideOver(Number(id), "edit")}
+          />
+        )}
+      />
+    </PremiumDatagrid>
+  );
+};
 ```
 
 **When to use**: Any list page that needs sortable columns with inline filtering.
 
 **Key points:**
-- Use `COLUMN_VISIBILITY.alwaysVisible` for critical columns, `desktopOnly` for supplementary
+- Use `COLUMN_VISIBILITY.always` for critical columns, `ipadPlus` for supplementary
+- The old names `alwaysVisible` and `desktopOnly` are deprecated aliases
+- Column 4 uses flat `TextField source="principal_name"` from the summary view (DB-001), not `ReferenceField`
 - Wrap badges in `FilterableBadge` for click-to-filter functionality
 - Custom headers (e.g., `ProductNameHeader`) enable column-level text/checkbox filters
 - `focusedIndex` from `useListKeyboardNavigation()` enables keyboard navigation
+- `isSlideOverOpen` gates keyboard navigation to prevent conflicts
+- `RowHoverActions` provides view/edit actions on row hover
 
 **Example:** `src/atomic-crm/products/ProductList.tsx`
 
@@ -114,13 +169,17 @@ import { ProductNameHeader, ProductCategoryHeader, ProductStatusHeader } from ".
 ## Pattern B: Relationships Tab (Read-Only)
 
 Display related records from junction tables with proper context providers.
+Uses `SidepaneEmptyState` + `EMPTY_STATE_CONTENT` for empty states and
+`Card`/`CardContent` from `@/components/ui/card` (not `SectionCard`).
 
 ```tsx
 import { RecordContextProvider, useGetList } from "ra-core";
 import { ReferenceField } from "@/components/ra-wrappers/reference-field";
 import { TextField } from "@/components/ra-wrappers/text-field";
+import { Card, CardContent } from "@/components/ui/card";
 import { AsideSection } from "@/components/ui";
-import { SectionCard } from "@/components/ra-wrappers/section-card";
+import { SidepaneEmptyState, EMPTY_STATE_CONTENT } from "@/components/layouts/sidepane";
+import { DEFAULT_PAGE_SIZE } from "@/atomic-crm/constants/appConstants";
 
 export function ProductRelationshipsTab({ record }: ProductRelationshipsTabProps) {
   // Fetch opportunities that include this product
@@ -128,7 +187,7 @@ export function ProductRelationshipsTab({ record }: ProductRelationshipsTabProps
     "opportunity_products",
     {
       filter: { product_id_reference: record.id },
-      pagination: { page: 1, perPage: 100 },
+      pagination: { page: 1, perPage: DEFAULT_PAGE_SIZE },
       sort: { field: "created_at", order: "DESC" },
     }
   );
@@ -139,45 +198,46 @@ export function ProductRelationshipsTab({ record }: ProductRelationshipsTabProps
         {/* Principal Organization */}
         {record.principal_id && (
           <AsideSection title="Principal/Supplier">
-            <SectionCard>
-              <div className="p-4">
+            <Card>
+              <CardContent className="p-4">
                 <ReferenceField source="principal_id" reference="organizations" link="show">
                   <TextField source="name" className="font-medium" />
                 </ReferenceField>
-              </div>
-            </SectionCard>
+              </CardContent>
+            </Card>
           </AsideSection>
         )}
 
         {/* Related Opportunities */}
         <AsideSection title="Related Opportunities">
-          <SectionCard>
-            <div className="p-4">
+          <Card>
+            <CardContent className="p-4">
               {isLoading && (
                 <div className="text-sm text-muted-foreground">Loading opportunities...</div>
               )}
 
               {!isLoading && (!opportunityProducts || opportunityProducts.length === 0) && (
-                <div className="text-sm text-muted-foreground">
-                  No opportunities using this product yet.
-                </div>
+                <SidepaneEmptyState
+                  title={EMPTY_STATE_CONTENT.relationships.title}
+                  description={EMPTY_STATE_CONTENT.relationships.description}
+                />
               )}
 
               {!isLoading && opportunityProducts && opportunityProducts.length > 0 && (
                 <div className="space-y-2">
                   {opportunityProducts.map((oppProduct) => (
-                    <div key={oppProduct.id} className="border-b border-border pb-2 last:border-0">
+                    <div key={oppProduct.id} className="border-b border-border pb-2 last:border-0 last:pb-0">
                       <RecordContextProvider value={oppProduct}>
                         <ReferenceField source="opportunity_id" reference="opportunities" link="show">
-                          <TextField source="title" className="text-sm font-medium" />
+                          <TextField source="name" className="text-sm font-medium" />
                         </ReferenceField>
                       </RecordContextProvider>
                     </div>
                   ))}
                 </div>
               )}
-            </div>
-          </SectionCard>
+            </CardContent>
+          </Card>
         </AsideSection>
       </div>
     </RecordContextProvider>
@@ -190,8 +250,10 @@ export function ProductRelationshipsTab({ record }: ProductRelationshipsTabProps
 **Key points:**
 - Wrap entire tab in `RecordContextProvider` for field access
 - Use nested `RecordContextProvider` for junction table records
-- Always implement loading and empty states
+- Empty states use `SidepaneEmptyState` + `EMPTY_STATE_CONTENT.relationships` (not inline text)
+- Use `Card`/`CardContent` from `@/components/ui/card` (not `SectionCard`)
 - Use `link="show"` for clickable relationship navigation
+- Use `DEFAULT_PAGE_SIZE` constant instead of magic number
 
 **Example:** `src/atomic-crm/products/ProductRelationshipsTab.tsx`
 
@@ -290,7 +352,7 @@ import { useRef, useCallback } from "react";
 import { driver, type DriveStep } from "driver.js";
 import "driver.js/dist/driver.css";
 import { HelpCircle } from "lucide-react";
-import { AdminButton } from "@/components/ra-wrappers/admin-button";
+import { AdminButton } from "@/components/admin/AdminButton";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
 const FORM_TUTORIAL_STEPS: DriveStep[] = [
@@ -394,113 +456,172 @@ export function ProductFormTutorial() {
 
 ## Pattern E: Card View with Selection
 
-Card component supporting bulk selection via checkbox overlay.
+Card component supporting bulk selection via checkbox overlay. Wrapped in `memo()` for
+performance. Uses `Card` from `@/components/ui/card` (not `SectionCard`). Displays
+`principal_name` and `last_promoted_at` from the summary view via `parseDateSafely`.
 
 ```tsx
+import { memo } from "react";
 import { Package, TrendingUp } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useCreatePath, useRecordContext, useListContext } from "ra-core";
 import { formatDistanceToNow } from "date-fns";
-import { SectionCard } from "@/components/ra-wrappers/section-card";
+import { parseDateSafely } from "@/lib/date-utils";
+import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
 
-export const ProductCard = (props: { record?: Product }) => {
-  const createPath = useCreatePath();
-  const record = useRecordContext<Product>(props);
-  const { selectedIds, onToggleItem } = useListContext();
-  if (!record) return null;
+export const ProductCard = memo(
+  function ProductCard(props: { record?: Product }) {
+    const createPath = useCreatePath();
+    const record = useRecordContext<Product>(props);
+    const { selectedIds, onToggleItem } = useListContext();
+    if (!record) return null;
 
-  const statusColors: Record<string, BadgeVariant> = {
-    active: "default",
-    discontinued: "destructive",
-    coming_soon: "secondary",
-  };
+    const statusColors: Record<string, BadgeVariant> = {
+      active: "default",
+      discontinued: "destructive",
+      coming_soon: "secondary",
+    };
 
-  return (
-    <div className="relative">
-      {/* Checkbox positioned absolutely in top-left corner */}
-      <Checkbox
-        checked={selectedIds.includes(record.id)}
-        onCheckedChange={() => onToggleItem(record.id)}
-        aria-label={`Select ${record.name}`}
-        className="absolute top-2 left-2 z-10"
-        onClick={(e) => e.stopPropagation()}  // Prevent link navigation
-      />
+    return (
+      <div className="relative">
+        {/* Checkbox positioned absolutely in top-left corner */}
+        <Checkbox
+          checked={selectedIds.includes(record.id)}
+          onCheckedChange={() => onToggleItem(record.id)}
+          aria-label={`Select ${record.name}`}
+          className="absolute top-2 left-2 z-10"
+          onClick={(e) => e.stopPropagation()}
+        />
 
-      <Link
-        to={createPath({ resource: "products", id: record.id, type: "show" })}
-        className="no-underline group"
-      >
-        <SectionCard className="h-[200px] flex flex-col justify-between p-4 hover:shadow-md transition-shadow motion-safe:hover:-translate-y-0.5 motion-safe:hover:scale-[1.01]">
-          <div className="flex flex-col items-center gap-1">
-            <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
-              <Package className="w-6 h-6 text-primary" />
+        <Link
+          to={createPath({ resource: "products", id: record.id, type: "show" })}
+          className="no-underline group"
+        >
+          <Card className="h-[200px] flex flex-col justify-between p-4 bg-card border border-border rounded-xl shadow-sm hover:shadow-md transition-shadow duration-150 hover:border-primary/20">
+            <div className="flex flex-col items-center gap-1">
+              <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
+                <Package className="w-6 h-6 text-primary" />
+              </div>
+              <div className="text-center mt-1">
+                <h3 className="text-sm font-medium line-clamp-1">{record.name}</h3>
+                <div className="flex gap-1 mt-1 justify-center flex-wrap">
+                  {record.status && (
+                    <Badge variant={statusColors[record.status]} className="text-xs px-1 py-0">
+                      {record.status.replace(/_/g, " ")}
+                    </Badge>
+                  )}
+                  {record.principal_name && (
+                    <Badge variant="secondary" className="text-xs px-1 py-0">
+                      {record.principal_name}
+                    </Badge>
+                  )}
+                </div>
+              </div>
             </div>
-            <h3 className="text-sm font-medium line-clamp-1">{record.name}</h3>
-            <div className="flex gap-1 mt-1 justify-center flex-wrap">
-              {record.status && (
-                <Badge variant={statusColors[record.status]}>
-                  {record.status.replace(/_/g, " ")}
-                </Badge>
+
+            <div className="flex flex-col gap-1">
+              {record.last_promoted_at && parseDateSafely(record.last_promoted_at) && (
+                <div className="flex items-center justify-center gap-0.5">
+                  <TrendingUp className="w-3 h-3 text-muted-foreground" />
+                  <span className="text-xs text-muted-foreground">
+                    {formatDistanceToNow(parseDateSafely(record.last_promoted_at)!, {
+                      addSuffix: true,
+                    })}
+                  </span>
+                </div>
               )}
             </div>
-          </div>
-        </SectionCard>
-      </Link>
-    </div>
-  );
-};
+          </Card>
+        </Link>
+      </div>
+    );
+  },
+  (prev, next) => prev.record?.id === next.record?.id
+);
 ```
 
 **When to use**: Grid layouts with visual cards instead of table rows.
 
 **Key points:**
+- Wrapped in `memo()` with custom comparator for render optimization
+- Uses `Card` from `@/components/ui/card` (not `SectionCard`)
 - Relative container with absolute checkbox prevents layout shift
 - `onClick={(e) => e.stopPropagation()}` prevents link navigation on checkbox
 - `useListContext()` provides `selectedIds` and `onToggleItem` from React Admin
-- `motion-safe:hover:scale-[1.01]` respects reduced-motion preferences
+- Displays `principal_name` from summary view (avoids extra ReferenceField fetch)
+- Uses `parseDateSafely()` for safe `last_promoted_at` date rendering
 - Fixed height `h-[200px]` ensures grid alignment
 
 **Example:** `src/atomic-crm/products/ProductCard.tsx`
 
 ---
 
-## Pattern F: Bulk Operations Toolbar
+## Pattern F: List Page with UnifiedListPageLayout
 
-Integration of `BulkActionsToolbar` with list selection state.
+Integration of `UnifiedListPageLayout` which handles empty-state branching, loading
+skeletons, filter cleanup, search bar, filter chips, and bulk actions via declarative props.
 
 ```tsx
 import { List } from "@/components/ra-wrappers/list";
-import { BulkActionsToolbar } from "@/components/ra-wrappers/bulk-actions-toolbar";
-import { StandardListLayout } from "@/components/layouts/StandardListLayout";
-import { PremiumDatagrid } from "@/components/ra-wrappers/PremiumDatagrid";
+import { CreateButton } from "@/components/ra-wrappers/create-button";
+import { BulkActionsToolbarChildren } from "@/components/ra-wrappers/bulk-actions-toolbar";
+import { UnifiedListPageLayout } from "@/components/layouts/UnifiedListPageLayout";
+import { ExportMenuItem } from "@/components/ra-wrappers/export-menu-item";
+import { ProductListSkeleton } from "@/components/ui/list-skeleton";
+import { ProductListFilter } from "./ProductListFilter";
+import { ProductEmpty } from "./ProductEmpty";
+import { PRODUCT_FILTER_CONFIG } from "./productFilterConfig";
+import { PageTutorialTrigger } from "../tutorial";
 
 export const ProductList = () => {
+  const { slideOverId, isOpen, mode, openSlideOver, closeSlideOver, toggleMode } =
+    useSlideOverState();
+
   return (
     <>
-      <List title={false} perPage={25} sort={{ field: "name", order: "ASC" }}>
-        <StandardListLayout resource="products" filterComponent={<ProductListFilter />}>
-          <ListSearchBar placeholder="Search products..." filterConfig={PRODUCT_FILTER_CONFIG} />
-          <PremiumDatagrid onRowClick={(id) => openSlideOver(Number(id), "view")}>
-            {/* ... columns ... */}
-          </PremiumDatagrid>
-        </StandardListLayout>
+      <List title={false} actions={false} perPage={25} sort={{ field: "name", order: "ASC" }}>
+        <UnifiedListPageLayout
+          resource="products"
+          filterComponent={<ProductListFilter />}
+          filterConfig={PRODUCT_FILTER_CONFIG}
+          sortFields={["name", "category", "status", "created_at"]}
+          searchPlaceholder="Search products..."
+          overflowActions={<ExportMenuItem />}
+          primaryAction={<CreateButton variant="default" />}
+          emptyState={<ProductEmpty />}
+          loadingSkeleton={<ProductListSkeleton />}
+          bulkActions={<BulkActionsToolbarChildren />}
+        >
+          <ProductDatagrid openSlideOver={openSlideOver} isSlideOverOpen={isOpen} />
+        </UnifiedListPageLayout>
       </List>
-      {/* BulkActionsToolbar renders when selectedIds.length > 0 */}
-      <BulkActionsToolbar />
+      <ProductSlideOver ... />
+      <PageTutorialTrigger chapter="products" position="bottom-left" />
     </>
   );
 };
 ```
 
-**When to use**: Any list page where users need to act on multiple records.
+**When to use**: Any list page. `UnifiedListPageLayout` replaces manual composition of
+`StandardListLayout` + `ListSearchBar` + `BulkActionsToolbar`.
+
+**Declarative props API:**
+- `filterComponent` -- Sidebar filter panel content
+- `filterConfig` -- Chip filter configuration for search bar chips
+- `bulkActions` -- Toolbar children rendered when rows are selected
+- `viewSwitcher` -- Toggle between datagrid/card views (optional)
+- `overflowActions` -- Overflow menu items (e.g., Export)
+- `primaryAction` -- Top-right action button (e.g., Create)
+- `emptyState` -- Full-page empty state (no data, no filters)
+- `loadingSkeleton` -- Loading skeleton while data fetches
 
 **Key points:**
-- Place `BulkActionsToolbar` AFTER the `List` component (not inside)
-- Selection state managed by `useListContext()` → `selectedIds`
-- Toolbar appears automatically when rows are selected
-- Works with both datagrid checkboxes and card checkboxes
+- `BulkActionsToolbar` is managed internally; pass children via `bulkActions` prop
+- Filter cleanup (`useFilterCleanup`) is handled internally by `UnifiedListPageLayout`
+- Search bar and filter chips are rendered automatically from `filterConfig`
+- Empty-state branching (loading / empty / filtered-empty / data) is centralized
 
 **Example:** `src/atomic-crm/products/ProductList.tsx`
 
@@ -802,37 +923,62 @@ const selectedIds = useWatch({ name: "distributor_ids" });
 
 ---
 
-## Pattern I: Lazy Loading with Error Boundaries
+## Pattern I: Lazy Loading with Suspense + Error Boundaries
 
-Resource pages wrapped in lazy loading and error boundaries for resilient UX.
+Resource pages wrapped in `React.Suspense` with `<Loading />` fallback and
+`ResourceErrorBoundary` for resilient UX. Each view (list, create, edit, show)
+is independently lazy-loaded and error-isolated.
 
 ```tsx
 import * as React from "react";
 import { ResourceErrorBoundary } from "@/components/ResourceErrorBoundary";
+import { Loading } from "@/components/ra-wrappers/loading";
 
 const ProductListLazy = React.lazy(() => import("./ProductList"));
 const ProductCreateLazy = React.lazy(() => import("./ProductCreate"));
 const ProductEditLazy = React.lazy(() => import("./ProductEdit"));
+const ProductShowLazy = React.lazy(() => import("./ProductShow"));
 
-// Wrap lazy components with resource-specific error boundaries
 export const ProductListView = () => (
   <ResourceErrorBoundary resource="products" page="list">
-    <ProductListLazy />
+    <React.Suspense fallback={<Loading />}>
+      <ProductListLazy />
+    </React.Suspense>
   </ResourceErrorBoundary>
 );
 
 export const ProductCreateView = () => (
   <ResourceErrorBoundary resource="products" page="create">
-    <ProductCreateLazy />
+    <React.Suspense fallback={<Loading />}>
+      <ProductCreateLazy />
+    </React.Suspense>
   </ResourceErrorBoundary>
 );
+
+export const ProductEditView = () => (
+  <ResourceErrorBoundary resource="products" page="edit">
+    <React.Suspense fallback={<Loading />}>
+      <ProductEditLazy />
+    </React.Suspense>
+  </ResourceErrorBoundary>
+);
+
+export const ProductShowView = () => (
+  <ResourceErrorBoundary resource="products" page="show">
+    <React.Suspense fallback={<Loading />}>
+      <ProductShowLazy />
+    </React.Suspense>
+  </ResourceErrorBoundary>
+);
+
+const productRecordRepresentation = (record: { name?: string }) => record?.name || "Product";
 
 export default {
   list: ProductListView,
   create: ProductCreateView,
   edit: ProductEditView,
   show: ProductShowView,
-  recordRepresentation: (record: { name?: string }) => record?.name || "Product",
+  recordRepresentation: productRecordRepresentation,
 };
 ```
 
@@ -840,8 +986,9 @@ export default {
 
 **Key points:**
 - `React.lazy()` enables code splitting per-route
+- `React.Suspense fallback={<Loading />}` provides a loading indicator during chunk download
 - `ResourceErrorBoundary` catches errors per-page, not globally
-- `recordRepresentation` provides display name fallback for breadcrumbs
+- `recordRepresentation` extracted to a named function for stable reference
 - Each page fails independently without crashing the entire app
 
 **Example:** `src/atomic-crm/products/resource.tsx`
@@ -902,34 +1049,26 @@ export const productKeys = createKeys("products");
 
 ---
 
-## Pattern K: Filter Cleanup Hook
+## Pattern K: Filter Cleanup (Handled by UnifiedListPageLayout)
 
-Clean up stale localStorage filter values that may cause errors.
+> **Note:** `useFilterCleanup` is now called internally by `UnifiedListPageLayout`.
+> Feature list pages no longer need to call it directly. This pattern is retained
+> for reference only.
 
-```tsx
-import { useFilterCleanup } from "../hooks/useFilterCleanup";
+Filter cleanup removes stale localStorage filter values that may cause errors
+(e.g., referencing deleted organizations). It runs early in the component
+lifecycle before the list renders.
 
-export const ProductList = () => {
-  // Clean up stale cached filters from localStorage
-  useFilterCleanup("products");
-
-  return (
-    <List title={false} perPage={25} sort={{ field: "name", order: "ASC" }}>
-      {/* ... */}
-    </List>
-  );
-};
-```
-
-**When to use**: List pages using React Admin's filter persistence.
+Previously, each list page called `useFilterCleanup("products")` manually.
+With `UnifiedListPageLayout`, this is handled automatically when you pass
+the `resource` prop.
 
 **Key points:**
-- Removes invalid filter values cached in localStorage
-- Prevents crashes from outdated filter references (e.g., deleted organizations)
-- Call early in component lifecycle before List renders
-- Pass resource name to target the correct localStorage key
+- No manual `useFilterCleanup()` call needed in feature list pages
+- `UnifiedListPageLayout` handles this internally via the `resource` prop
+- Prevents crashes from outdated filter references in localStorage
 
-**Example:** `src/atomic-crm/products/ProductList.tsx`
+**Example:** `src/atomic-crm/products/ProductList.tsx` (no explicit call needed)
 
 ---
 
@@ -1070,18 +1209,47 @@ const ProductEditForm = () => {
 When adding a new product feature or migrating from another pattern:
 
 1. [ ] Check for existing patterns in `ContactList`, `OpportunityList`, `OrganizationList`
-2. [ ] Use `COLUMN_VISIBILITY.alwaysVisible` / `desktopOnly` for responsive columns
+2. [ ] Use `COLUMN_VISIBILITY.always` / `ipadPlus` for responsive columns (not the deprecated `alwaysVisible` / `desktopOnly`)
 3. [ ] Wrap badge columns in `FilterableBadge` for click-to-filter
 4. [ ] Add `data-tutorial` attributes to form fields for onboarding
 5. [ ] Use `RecordContextProvider` for nested component contexts
-6. [ ] Implement loading states (`isPending` checks) and empty states
-7. [ ] Add keyboard navigation via `useListKeyboardNavigation()`
+6. [ ] Implement loading states (`isPending` checks) and empty states using `SidepaneEmptyState` / `EMPTY_STATE_CONTENT`
+7. [ ] Add keyboard navigation via `useListKeyboardNavigation()` gated by `isSlideOverOpen`
 8. [ ] Verify touch targets are 44x44px minimum (`h-11 w-11`)
 9. [ ] Use semantic color tokens (never raw hex values)
 10. [ ] Test with `useWatch()` instead of `watch()` for form subscriptions
 11. [ ] Ensure Zod validation is at API boundary, not in form components
 12. [ ] Cache stable reference data with `staleTime` and `gcTime` options
-13. [ ] Wrap resource views in `ResourceErrorBoundary` with lazy loading (Pattern I)
+13. [ ] Wrap resource views in `ResourceErrorBoundary` + `React.Suspense fallback={<Loading />}` (Pattern I)
 14. [ ] Use query key factory for cache invalidation after mutations (Pattern J)
-15. [ ] Add `useFilterCleanup()` to list pages with filter persistence (Pattern K)
+15. [ ] Use `UnifiedListPageLayout` which handles filter cleanup internally (Pattern K)
 16. [ ] Use `key={record.id}` on forms to force remount on record change (Pattern N)
+17. [ ] Use `Card` from `@/components/ui/card` (not `SectionCard`) for card layouts
+18. [ ] Use flat `TextField source="principal_name"` from summary view instead of `ReferenceField` (DB-001)
+
+---
+
+## File Reference
+
+| File | Purpose | Pattern(s) |
+|------|---------|------------|
+| `index.tsx` | Re-exports resource config default + named view exports | I |
+| `resource.tsx` | Lazy loading + Suspense + ErrorBoundary wrappers | I |
+| `ProductList.tsx` | List page: UnifiedListPageLayout + ProductDatagrid | A, F, L |
+| `ProductCard.tsx` | Card view with memo, selection, principal_name, last_promoted_at | E |
+| `ProductCreate.tsx` | Create form page | N |
+| `ProductEdit.tsx` | Edit form page with key-based remount | N |
+| `ProductShow.tsx` | Full-page product detail view | -- |
+| `ProductSlideOver.tsx` | Slide-over with tabbed details/relationships | H |
+| `ProductDetailsTab.tsx` | Slide-over details tab (view/edit) | H, M |
+| `ProductRelationshipsTab.tsx` | Slide-over relationships tab (read-only) | B |
+| `ProductInputs.tsx` | Shared form input composition | C |
+| `ProductDetailsInputTab.tsx` | Form tab: general product fields | C |
+| `ProductDistributionTab.tsx` | Form tab: distributor assignment | C |
+| `ProductDistributorInput.tsx` | Dynamic distributor DOT-number inputs | C |
+| `ProductListFilter.tsx` | Sidebar filter panel with cached principal list | G |
+| `productFilterConfig.ts` | Filter config schema (status, category, principal) | G |
+| `ProductsDatagridHeader.tsx` | Column label components for datagrid headers | A |
+| `ProductEmpty.tsx` | Empty-state component (no products) | F |
+| `ProductFormTutorial.tsx` | Driver.js tutorial for create form | D |
+| `__tests__/ProductList.test.tsx` | Vitest tests for ProductList | -- |

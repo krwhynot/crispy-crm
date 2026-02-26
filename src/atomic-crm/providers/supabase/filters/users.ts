@@ -48,6 +48,6 @@ export const usersFilters = {
     "read",
     "created_at",
     "deleted_at", // Soft delete timestamp
-    "q", // Special: full-text search parameter
+    "q", // Allowed in URL params but UI-hidden; provider ignores (not searchable)
   ],
 } as const satisfies Partial<FilterRegistry>;

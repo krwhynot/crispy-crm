@@ -3,29 +3,43 @@
 Standard patterns for shadcn/ui components in Crispy CRM.
 
 ```
-┌─────────────────────────────────────────────────────────────────────────────┐
-│                           COMPONENT HIERARCHY                                │
-├─────────────────────────────────────────────────────────────────────────────┤
-│                                                                             │
-│  Radix Primitives / Vaul ← Foundation (Dialog, Checkbox, etc.)              │
-│           ↑                                                                 │
-│  shadcn/ui Wrappers ← CVA variants + Tailwind styling + data-slot           │
-│           ↑                                                                 │
-│  ┌───────────────────────────────────────────────────────────────────────┐  │
-│  │ LAYOUT          │ INPUTS           │ FEEDBACK        │ DATA           │  │
-│  │ ─────────────── │ ──────────────── │ ─────────────── │ ────────────── │  │
-│  │ Sidebar         │ Button           │ Badge           │ DataCell       │  │
-│  │ Card            │ Input            │ Dialog          │ DataRow        │  │
-│  │ Sheet           │ Checkbox         │ Drawer          │ DataHeaderCell │  │
-│  │                 │ Combobox         │ DropdownMenu    │                │  │
-│  └───────────────────────────────────────────────────────────────────────┘  │
-│           ↑                                                                 │
-│  ┌───────────────────────────────────────────────────────────────────────┐  │
-│  │ FORMS: Form → FormField → FormItem → FormControl → Input/Checkbox     │  │
-│  │        (react-hook-form integration with automatic ARIA binding)      │  │
-│  └───────────────────────────────────────────────────────────────────────┘  │
-│                                                                             │
-└─────────────────────────────────────────────────────────────────────────────┘
+┌──────────────────────────────────────────────────────────────────────────────────┐
+│                            COMPONENT HIERARCHY                                   │
+├──────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                  │
+│  Radix Primitives / Vaul ← Foundation (Dialog, Checkbox, etc.)                   │
+│           ↑                                                                      │
+│  shadcn/ui Wrappers ← CVA variants + Tailwind styling + data-slot                │
+│           ↑                                                                      │
+│  ┌────────────────────────────────────────────────────────────────────────────┐  │
+│  │ LAYOUT            │ INPUTS            │ FEEDBACK         │ DATA            │  │
+│  │ ────────────────  │ ────────────────  │ ──────────────── │ ──────────────  │  │
+│  │ Sidebar (dir)     │ Button            │ Badge            │ DataCell        │  │
+│  │ Card / KpiCard    │ Input / Textarea  │ PriorityBadge    │ DataRow         │  │
+│  │ Sheet             │ Checkbox          │ SnoozeBadge      │ DataHeaderCell  │  │
+│  │ AsideSection      │ Select (select-ui)│ Dialog           │ TruncatedText   │  │
+│  │                   │ Combobox          │ Drawer           │ RelativeDate    │  │
+│  │                   │ CharacterCounter  │ DropdownMenu     │                 │  │
+│  │                   │                   │ UnsavedChanges   │                 │  │
+│  │                   │                   │   Dialog         │                 │  │
+│  ├────────────────────────────────────────────────────────────────────────────┤  │
+│  │ LOADING/ERRORS    │ NAVIGATION                                             │  │
+│  │ ────────────────  │ ──────────────────                                     │  │
+│  │ Spinner           │ PriorityTabs                                           │  │
+│  │ ListSkeleton      │ Tabs                                                   │  │
+│  │ ShowSkeleton      │ Pagination                                             │  │
+│  │ Skeleton          │ Breadcrumb                                             │  │
+│  │ DataFetchError    │                                                        │  │
+│  │ NotFound          │                                                        │  │
+│  │ EmptyState        │                                                        │  │
+│  └────────────────────────────────────────────────────────────────────────────┘  │
+│           ↑                                                                      │
+│  ┌────────────────────────────────────────────────────────────────────────────┐  │
+│  │ FORMS: Form -> FormField -> FormItem -> FormControl -> Input/Checkbox      │  │
+│  │        (react-hook-form integration with automatic ARIA binding)           │  │
+│  └────────────────────────────────────────────────────────────────────────────┘  │
+│                                                                                  │
+└──────────────────────────────────────────────────────────────────────────────────┘
 ```
 
 ---
@@ -465,6 +479,43 @@ function CardHeader({ className, ...props }: React.ComponentProps<"div">) {
 - `@container` enables component-level responsive design
 - `has-data-[slot=card-action]` auto-adjusts grid when action present
 
+### Sidebar Decomposition
+
+The sidebar has been decomposed from a monolithic `sidebar.tsx` (~673 lines) into a
+`sidebar/` subdirectory for maintainability. The original `sidebar.tsx` file is still
+present but is no longer the primary import target.
+
+**Module structure (`sidebar/`):**
+
+| File | Responsibility |
+|------|---------------|
+| `SidebarProvider.tsx` | Main provider with context and keyboard shortcuts |
+| `Sidebar.tsx` | Root component with mobile/desktop variants |
+| `SidebarLayout.tsx` | Header, Footer, Content, Inset, Input, Separator |
+| `SidebarGroup.tsx` | Group, GroupLabel, GroupAction, GroupContent |
+| `SidebarMenu.tsx` | Menu, MenuItem, MenuButton, MenuAction, MenuBadge, MenuSkeleton, MenuSub |
+| `SidebarControls.tsx` | Trigger and Rail controls |
+| `index.tsx` | Barrel re-export for backward compatibility |
+
+**Supporting files (parent directory):**
+- `sidebar.constants.ts` -- Dimension and configuration constants
+- `sidebar.utils.ts` -- Context hook (`useSidebar`) and helpers
+
+Import from `@/components/ui/sidebar` (resolves to `sidebar/index.tsx`).
+
+### Key Input Primitives
+
+Two Tier 1 input primitives serve as foundations for ra-wrapper integration:
+
+- **`select-ui.tsx`** -- A multi-feature Select built on Popover + Command, supporting
+  search, multi-select with chips, and create-new-item affordance. Used by
+  `AdminSelectInput` and `AdminAutoCompleteInput` in Tier 2.
+- **`combobox.tsx`** -- A single-value combobox built on Popover + Command with
+  search-as-you-type. Used by `AdminComboboxInput` in Tier 2.
+
+Both follow the shadcn pattern (Radix primitives + CVA styling) and expose `data-slot`
+attributes for CSS targeting.
+
 ---
 
 ## Pattern F: Input Components
@@ -825,6 +876,32 @@ All overlay components use consistent timing:
 
 ---
 
+## Pattern K: Storybook Development Workflow
+
+**When to use:** Component development, visual regression, and isolated testing.
+
+This directory contains 23+ `.stories.tsx` files co-located with their component files.
+Stories follow the Component Story Format (CSF) convention and are used for:
+
+- **Isolated development** -- Build and iterate on components without full app context
+- **Visual documentation** -- Each variant/state is captured as a named story
+- **Design review** -- Stakeholders can browse components without running the app
+
+**Convention:** Story files are named `{component}.stories.tsx` and sit alongside the
+component file. Example pairs:
+
+| Component | Story |
+|-----------|-------|
+| `button.tsx` | `button.stories.tsx` |
+| `badge.tsx` | `badge.stories.tsx` |
+| `combobox.tsx` | `combobox.stories.tsx` |
+| `card.tsx` | `card.stories.tsx` + `card-elevation.stories.tsx` |
+
+Stories are excluded from production bundles and from `CORE-002` / `CORE-003` lint scans
+(per `CORE-022` exception policy).
+
+---
+
 ## Anti-Patterns
 
 Avoid these common mistakes:
@@ -896,6 +973,99 @@ import { buttonVariants } from "./button.constants"
 
 ---
 
+## File Reference
+
+Complete listing of all components in `src/components/ui/`.
+
+### Core Primitives (shadcn/ui wrappers)
+
+| File | Category | Description |
+|------|----------|-------------|
+| `accordion.tsx` | Layout | Collapsible content sections (Radix) |
+| `alert.tsx` | Feedback | Inline alert banners |
+| `alert-dialog.tsx` | Feedback | Confirmation modal with required action |
+| `avatar.tsx` | Data | User/entity avatar with fallback |
+| `badge.tsx` + `badge.constants.ts` | Feedback | Status/label badges with CVA variants |
+| `breadcrumb.tsx` | Navigation | Breadcrumb trail for page hierarchy |
+| `button.tsx` + `button.constants.ts` | Input | Primary action button with CVA variants |
+| `calendar.tsx` | Input | Date picker calendar widget |
+| `card.tsx` | Layout | Content container with elevation system |
+| `checkbox.tsx` | Input | Boolean toggle (Radix) |
+| `collapsible.tsx` | Layout | Expandable content (Radix) |
+| `command.tsx` | Input | Command palette / search menu (cmdk) |
+| `dialog.tsx` | Feedback | Centered modal overlay (Radix) |
+| `drawer.tsx` | Feedback | Touch-optimized bottom/side drawer (Vaul) |
+| `dropdown-menu.tsx` | Input | Context/action menu (Radix) |
+| `form.tsx` | Forms | react-hook-form integration with ARIA binding |
+| `input.tsx` | Input | Text input with touch-target sizing |
+| `label.tsx` | Forms | Accessible form label (Radix) |
+| `pagination.tsx` | Navigation | Page navigation controls |
+| `popover.tsx` | Feedback | Floating content panel (Radix) |
+| `progress.tsx` | Feedback | Progress bar indicator (Radix) |
+| `radio-group.tsx` | Input | Radio button group (Radix) |
+| `scroll-area.tsx` | Layout | Custom scrollbar container (Radix) |
+| `select.tsx` | Input | Native-style select dropdown (Radix) |
+| `separator.tsx` | Layout | Horizontal/vertical divider (Radix) |
+| `sheet.tsx` | Layout | Side panel overlay (Radix) |
+| `skeleton.tsx` | Loading | Animated placeholder shimmer |
+| `switch.tsx` | Input | Toggle switch (Radix) |
+| `table.tsx` | Data | HTML table with semantic styling |
+| `tabs.tsx` | Navigation | Tabbed content panels (Radix) |
+| `textarea.tsx` | Input | Multi-line text input |
+| `toggle-group.tsx` + `toggle.constants.ts` | Input | Grouped toggle buttons |
+| `tooltip.tsx` | Feedback | Hover/focus tooltip (Radix) |
+| `sonner.tsx` | Feedback | Toast notification wrapper (Sonner) |
+
+### Custom CRM Components
+
+| File | Category | Description |
+|------|----------|-------------|
+| `aside-section.tsx` | Layout | Titled section for show-view aside panels |
+| `character-counter.tsx` | Input | Live character count with limit warning |
+| `combobox.tsx` | Input | Single-value searchable select (Popover + Command) |
+| `data-cell.tsx` | Data | DataCell, DataRow, DataHeaderCell for tabular display |
+| `data-fetch-error.tsx` | Error | Error state with retry affordance |
+| `empty-state.tsx` | Feedback | Placeholder for lists/views with no data |
+| `kpi-card.tsx` | Data | Dashboard metric card with CVA tone/emphasis variants |
+| `list-skeleton.tsx` | Loading | Skeleton matching PremiumDatagrid row shape |
+| `not-found.tsx` | Error | 404/missing resource card with back navigation |
+| `priority-badge.tsx` | Feedback | Task priority indicator (high/medium/low) |
+| `priority-tabs.tsx` | Navigation | Priority+ responsive tab list with overflow dropdown |
+| `relative-date.tsx` | Data | Relative date formatting (e.g. "2 days ago") |
+| `select-ui.tsx` | Input | Multi-feature select with search, multi-select, create-new |
+| `show-skeleton.tsx` | Loading | Detail-view skeleton (matches OpportunityShow layout) |
+| `snooze-badge.tsx` | Feedback | Snoozed-task indicator with semantic warning colors |
+| `spinner.tsx` | Loading | Animated loading spinner with CVA size/show variants |
+| `truncated-text.tsx` | Data | Text with overflow detection and tooltip on truncation |
+| `unsaved-changes-dialog.tsx` | Feedback | Confirmation dialog for unsaved form changes |
+
+### Sidebar Module
+
+| File | Description |
+|------|-------------|
+| `sidebar.tsx` | Original monolith (kept for reference) |
+| `sidebar.constants.ts` | Dimension and configuration constants |
+| `sidebar.utils.ts` | `useSidebar` hook and context |
+| `sidebar/index.tsx` | Barrel re-export (primary import target) |
+| `sidebar/SidebarProvider.tsx` | Context provider with keyboard shortcuts |
+| `sidebar/Sidebar.tsx` | Root component with mobile/desktop variants |
+| `sidebar/SidebarLayout.tsx` | Header, Footer, Content, Inset, Input, Separator |
+| `sidebar/SidebarGroup.tsx` | Group, GroupLabel, GroupAction, GroupContent |
+| `sidebar/SidebarMenu.tsx` | Menu, MenuItem, MenuButton, MenuAction, MenuBadge, MenuSkeleton |
+| `sidebar/SidebarControls.tsx` | Trigger and Rail controls |
+
+### Supporting Files
+
+| File | Description |
+|------|-------------|
+| `index.ts` | Barrel exports for the `ui/` directory |
+| `PATTERNS.md` | This document |
+| `README.md` | Component directory overview |
+| `__tests__/` | Unit tests directory |
+| `*.stories.tsx` (23 files) | Storybook stories for component development |
+
+---
+
 ## Migration Checklist
 
 When adding a new UI component:
@@ -915,3 +1085,4 @@ When adding a new UI component:
    - [ ] `sr-only` labels for icon-only buttons
 9. [ ] Test keyboard navigation (Tab, Enter, Escape, Arrow keys)
 10. [ ] Add to component index export (`src/components/ui/index.ts`)
+11. [ ] Add a `.stories.tsx` file with representative variants/states (see Pattern K)

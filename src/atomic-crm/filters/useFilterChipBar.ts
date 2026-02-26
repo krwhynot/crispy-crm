@@ -49,8 +49,11 @@ export interface UseFilterChipBarReturn {
 }
 
 /**
- * System filters that should never show as chips.
- * Includes soft-delete variants used by various lists.
+ * System filters preserved during "Clear all". $or is always preserved here
+ * (conditional clearing based on orSource happens in clearAllFilters).
+ *
+ * Chip bar never renders $or as a visual chip regardless of orSource.
+ * The header/badge count includes preset-$or via countActiveUserFiltersWithOrSource.
  *
  * NOTE: 'q' (search) is NOT excluded - we show search chips for user clarity
  */
@@ -77,7 +80,9 @@ const SYSTEM_FILTERS = new Set(["deleted_at", "deleted_at@is", "$or"]);
  */
 export function useFilterChipBar<TContext = unknown>(
   filterConfig: ChipFilterConfig[],
-  context?: TContext
+  context?: TContext,
+  orSource?: "preset" | "owner" | null,
+  setOrSource?: (source: null) => void
 ): UseFilterChipBarReturn {
   const { filterValues, setFilters, displayedFilters } = useListContext();
 
@@ -181,11 +186,13 @@ export function useFilterChipBar<TContext = unknown>(
       }
 
       // DYNAMIC @ilike HANDLING: TextColumnFilter generates ${source}@ilike keys
-      // Handle these dynamically without requiring explicit config entries
+      // Handle these dynamically, using configured label when available
       if (key.endsWith("@ilike")) {
         const source = key.replace("@ilike", "");
-        // Humanize: first_name -> "First name", name -> "Name"
-        const humanizedSource = source.charAt(0).toUpperCase() + source.slice(1).replace(/_/g, " ");
+        // Use configured label for the base field if available, otherwise humanize
+        const baseConfig = filterConfig.find((c) => c.key === source);
+        const categoryLabel =
+          baseConfig?.label ?? source.charAt(0).toUpperCase() + source.slice(1).replace(/_/g, " ");
         // Strip wildcards from value: %John% -> John
         const displayValue = String(value).replace(/^%|%$/g, "");
 
@@ -193,7 +200,7 @@ export function useFilterChipBar<TContext = unknown>(
           key,
           value: value as string,
           label: displayValue,
-          category: `${humanizedSource} contains`,
+          category: `${categoryLabel} contains`,
         });
         return; // Skip normal processing
       }
@@ -421,12 +428,15 @@ export function useFilterChipBar<TContext = unknown>(
   );
 
   const clearAllFilters = useCallback(() => {
-    // Preserve system filters when clearing
     const preserved = Object.fromEntries(
-      Object.entries(filterValues).filter(([key]) => SYSTEM_FILTERS.has(key))
+      Object.entries(filterValues).filter(([key]) => {
+        if (key === "$or") return orSource !== "preset";
+        return SYSTEM_FILTERS.has(key);
+      })
     );
     setFilters(preserved, displayedFilters);
-  }, [filterValues, setFilters, displayedFilters]);
+    if (orSource === "preset") setOrSource?.(null);
+  }, [filterValues, setFilters, displayedFilters, orSource, setOrSource]);
 
   const activeCount = chips.length;
   const hasActiveFilters = activeCount > 0;

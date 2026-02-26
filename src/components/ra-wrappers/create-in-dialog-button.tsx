@@ -122,7 +122,9 @@ export const CreateInDialogButton = <RecordType extends RaRecord = RaRecord>({
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
-          {description && <DialogDescription>{description}</DialogDescription>}
+          <DialogDescription className={description ? undefined : "sr-only"}>
+            {description || `Create a new ${resource ?? "record"}`}
+          </DialogDescription>
         </DialogHeader>
         <CreateBase
           resource={resource}

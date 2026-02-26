@@ -3,22 +3,21 @@ import jsonExport from "jsonexport/dist";
 import type { Exporter } from "ra-core";
 import { downloadCSV, useGetIdentity, useListContext } from "ra-core";
 import { TextField, FunctionField } from "react-admin";
-import { OrganizationBulkActionsToolbar } from "./OrganizationBulkActionsToolbar";
+import { OrganizationBulkButtons } from "./OrganizationBulkActionsToolbar";
 import { List } from "@/components/ra-wrappers/list";
-import { StandardListLayout } from "@/components/layouts/StandardListLayout";
+import { ListPageLayout } from "@/components/layouts/ListPageLayout";
 import { PremiumDatagrid } from "@/components/ra-wrappers/PremiumDatagrid";
-import { FloatingCreateButton } from "@/components/ra-wrappers/FloatingCreateButton";
+import { RowHoverActions } from "@/components/ra-wrappers/RowHoverActions";
+import { CreateButton } from "@/components/ra-wrappers/create-button";
 import { OrganizationListSkeleton } from "@/components/ui/list-skeleton";
 import { useSlideOverState } from "@/hooks/useSlideOverState";
 import { useListKeyboardNavigation } from "@/hooks/useListKeyboardNavigation";
-import { useFilterCleanup } from "../hooks/useFilterCleanup";
 import { OrganizationListFilter } from "./OrganizationListFilter";
 import { OrganizationSlideOver } from "./OrganizationSlideOver";
-import { OrganizationTypeBadge, PriorityBadge, SegmentBadge } from "./OrganizationBadges";
+import { OrganizationTypeBadge, PriorityBadge } from "./OrganizationBadges";
 import { OrganizationEmpty } from "./OrganizationEmpty";
 import { OrganizationHierarchyChips } from "./OrganizationHierarchyChips";
 import { FilterableBadge } from "@/components/ra-wrappers/FilterableBadge";
-import { ListNoResults } from "@/components/ra-wrappers/ListNoResults";
 import { ExportMenuItem } from "@/components/ra-wrappers/export-menu-item";
 import { OrganizationImportMenuItem } from "./OrganizationImportMenuItem";
 import { ORGANIZATION_FILTER_CONFIG } from "./organizationFilterConfig";
@@ -60,16 +59,31 @@ interface Segment {
  * Following SampleStatusBadge pattern with named functions for React DevTools
  */
 
-/** OrganizationNameCell - Renders org name with hierarchy context chips */
+/** OrganizationNameCell - Renders org name with hierarchy context chips
+ * Line 1: Name + branches chip
+ * Line 2: City, State + parent chip (subtle tag with CornerDownRight icon)
+ */
 const OrganizationNameCell = memo(function OrganizationNameCell({
   record,
 }: {
   record: OrganizationRecord;
 }) {
   return (
-    <div className="flex items-center gap-1.5 min-w-0">
-      <span className="truncate">{record.name}</span>
-      <OrganizationHierarchyChips record={record} />
+    <div className="flex flex-col gap-0.5 min-w-0">
+      <div className="flex items-center gap-1.5 min-w-0">
+        <span className="name-cell truncate text-base font-semibold leading-tight">
+          {record.name}
+        </span>
+        <OrganizationHierarchyChips record={record} show="branches" />
+      </div>
+      <div className="flex items-center gap-1.5 min-w-0">
+        <span className="text-[13px] text-muted-foreground truncate leading-snug">
+          {record.city && record.state
+            ? `${record.city}, ${record.state}`
+            : record.city || record.state || "\u2014"}
+        </span>
+        <OrganizationHierarchyChips record={record} show="parent" parentDisplayMode="listCompact" />
+      </div>
     </div>
   );
 });
@@ -100,15 +114,22 @@ const OrganizationPriorityCell = memo(function OrganizationPriorityCell({
   );
 });
 
-/** OrganizationSegmentCell - Renders segment badge with FilterableBadge wrapper for 44px touch targets */
+/** OrganizationSegmentCell - Renders segment as muted plain text with FilterableBadge wrapper */
 const OrganizationSegmentCell = memo(function OrganizationSegmentCell({
   record,
 }: {
   record: OrganizationRecord;
 }) {
+  const segmentName = record.segment_name;
   return (
     <FilterableBadge source="segment_id" value={record.segment_id}>
-      <SegmentBadge segmentId={record.segment_id} segmentName={record.segment_name} />
+      {segmentName ? (
+        <span className="text-sm text-muted-foreground truncate max-w-[160px]" title={segmentName}>
+          {segmentName}
+        </span>
+      ) : (
+        <span className="text-muted-foreground text-xs">{"\u2014"}</span>
+      )}
     </FilterableBadge>
   );
 });
@@ -119,7 +140,7 @@ const OrganizationContactsCell = memo(function OrganizationContactsCell({
 }: {
   record: OrganizationRecord;
 }) {
-  return <>{record.nb_contacts || 0}</>;
+  return <span className="tabular-nums text-muted-foreground">{record.nb_contacts || 0}</span>;
 });
 
 /** OrganizationOpportunitiesCell - Renders opportunities count metric */
@@ -128,7 +149,7 @@ const OrganizationOpportunitiesCell = memo(function OrganizationOpportunitiesCel
 }: {
   record: OrganizationRecord;
 }) {
-  return <>{record.nb_opportunities || 0}</>;
+  return <span className="tabular-nums text-muted-foreground">{record.nb_opportunities || 0}</span>;
 });
 
 const exporter: Exporter<OrganizationRecord> = async (records, fetchRelatedRecords) => {
@@ -206,19 +227,22 @@ const exporter: Exporter<OrganizationRecord> = async (records, fetchRelatedRecor
   });
 };
 
-const OrganizationListLayout = ({
+/**
+ * OrganizationDatagrid - Content component rendered inside ListPageLayout
+ *
+ * Handles keyboard navigation, view switching (card vs list), and column rendering.
+ * Empty-state branching (loading, empty, filtered-empty) is handled by ListPageLayout.
+ */
+const OrganizationDatagrid = ({
   openSlideOver,
   isSlideOverOpen,
   view,
-  onViewChange,
 }: {
   openSlideOver: (id: number, mode: "view" | "edit") => void;
   isSlideOverOpen: boolean;
   view: OrganizationView;
-  onViewChange: (view: OrganizationView) => void;
 }) => {
-  const { data, error, isPending, filterValues } = useListContext();
-  const { data: identity, isPending: isIdentityPending } = useGetIdentity();
+  const { error } = useListContext();
 
   // Keyboard navigation for list rows
   // Disabled when slide-over is open or in card view
@@ -227,198 +251,110 @@ const OrganizationListLayout = ({
     enabled: !isSlideOverOpen && view === "list",
   });
 
-  const hasFilters = filterValues && Object.keys(filterValues).length > 0;
-
-  // Show skeleton during initial load or while identity is loading
-  if (isPending || isIdentityPending) {
-    return (
-      <StandardListLayout
-        resource="organizations"
-        filterComponent={<OrganizationListFilter />}
-        filterConfig={ORGANIZATION_FILTER_CONFIG}
-        sortFields={["name", "organization_type", "priority", "segment_name", "created_at"]}
-        searchPlaceholder="Search organizations..."
-        enableRecentSearches
-        viewSwitcher={<OrganizationViewSwitcher view={view} onViewChange={onViewChange} />}
-        overflowActions={
-          <>
-            <OrganizationImportMenuItem />
-            <ExportMenuItem />
-          </>
-        }
-      >
-        <OrganizationListSkeleton />
-      </StandardListLayout>
-    );
-  }
-
-  if (!identity) return null;
-
   if (error) {
     return (
-      <StandardListLayout
-        resource="organizations"
-        filterComponent={<OrganizationListFilter />}
-        filterConfig={ORGANIZATION_FILTER_CONFIG}
-        sortFields={["name", "organization_type", "priority", "segment_name", "created_at"]}
-        searchPlaceholder="Search organizations..."
-        enableRecentSearches
-        viewSwitcher={<OrganizationViewSwitcher view={view} onViewChange={onViewChange} />}
-        overflowActions={
-          <>
-            <OrganizationImportMenuItem />
-            <ExportMenuItem />
-          </>
-        }
-      >
-        <div className="p-8 text-center text-destructive">
-          Error loading organizations. Please try refreshing the page.
-        </div>
-      </StandardListLayout>
-    );
-  }
-
-  if (!data?.length && !hasFilters) return <OrganizationEmpty />;
-
-  // Filtered empty state: filters are applied but no results match
-  if (!data?.length && hasFilters) {
-    return (
-      <StandardListLayout
-        resource="organizations"
-        filterComponent={<OrganizationListFilter />}
-        filterConfig={ORGANIZATION_FILTER_CONFIG}
-        sortFields={["name", "organization_type", "priority", "segment_name", "created_at"]}
-        searchPlaceholder="Search organizations..."
-        enableRecentSearches
-        viewSwitcher={<OrganizationViewSwitcher view={view} onViewChange={onViewChange} />}
-        overflowActions={
-          <>
-            <OrganizationImportMenuItem />
-            <ExportMenuItem />
-          </>
-        }
-      >
-        <ListNoResults />
-      </StandardListLayout>
+      <div className="p-8 text-center text-destructive">
+        Error loading organizations. Please try refreshing the page.
+      </div>
     );
   }
 
   return (
-    <>
-      <StandardListLayout
-        resource="organizations"
-        filterComponent={<OrganizationListFilter />}
-        filterConfig={ORGANIZATION_FILTER_CONFIG}
-        sortFields={["name", "organization_type", "priority", "segment_name", "created_at"]}
-        searchPlaceholder="Search organizations..."
-        enableRecentSearches
-        viewSwitcher={<OrganizationViewSwitcher view={view} onViewChange={onViewChange} />}
-        overflowActions={
-          <>
-            <OrganizationImportMenuItem />
-            <ExportMenuItem />
-          </>
-        }
-      >
-        {/* Flex container enables scroll in child components - mirrors OpportunityList pattern */}
-        <div className="flex h-full min-h-0 w-full flex-1 flex-col overflow-hidden">
-          {view === "card" ? (
-            <OrganizationCardGrid onCardClick={(id) => openSlideOver(id, "view")} />
-          ) : (
-            <PremiumDatagrid
-              onRowClick={(id) => openSlideOver(Number(id), "view")}
-              focusedIndex={focusedIndex}
-            >
-              {/* Column 1: Name - Primary identifier with hierarchy chips (sortable) - always visible */}
-              <FunctionField
-                source="name"
-                label={<OrganizationNameHeader />}
-                sortBy="name"
-                render={(record: OrganizationRecord) => <OrganizationNameCell record={record} />}
-                cellClassName="max-w-[220px]"
-              />
+    <div className="flex h-full min-h-0 w-full flex-1 flex-col overflow-hidden">
+      {view === "card" ? (
+        <OrganizationCardGrid onCardClick={(id) => openSlideOver(id, "view")} />
+      ) : (
+        <PremiumDatagrid
+          onRowClick={(id) => openSlideOver(Number(id), "view")}
+          focusedIndex={focusedIndex}
+          rowClassName={(_record: unknown, index: number) =>
+            `organization-list-row${index % 2 === 1 ? " organization-list-row-zebra" : ""}`
+          }
+        >
+          {/* Column 1: Name - Primary identifier with hierarchy chips (sortable) - always visible */}
+          <FunctionField
+            source="name"
+            label={<OrganizationNameHeader />}
+            sortBy="name"
+            render={(record: OrganizationRecord) => <OrganizationNameCell record={record} />}
+            cellClassName="max-w-[340px]"
+          />
 
-              {/* Column 2: Type - Organization classification (sortable by organization_type) - always visible */}
-              <FunctionField
-                source="organization_type"
-                label={<OrganizationTypeHeader />}
-                sortBy="organization_type"
-                render={(record: OrganizationRecord) => <OrganizationTypeCell record={record} />}
-              />
+          {/* Column 2: Type - Organization classification (sortable by organization_type) - always visible */}
+          <FunctionField
+            source="organization_type"
+            label={<OrganizationTypeHeader />}
+            sortBy="organization_type"
+            render={(record: OrganizationRecord) => <OrganizationTypeCell record={record} />}
+          />
 
-              {/* Column 3: Priority - Business priority indicator (sortable) - always visible */}
-              <FunctionField
-                source="priority"
-                label={<OrganizationPriorityHeader />}
-                sortBy="priority"
-                render={(record: OrganizationRecord) => (
-                  <OrganizationPriorityCell record={record} />
-                )}
-              />
+          {/* Column 3: Priority - Business priority indicator (sortable) - always visible */}
+          <FunctionField
+            source="priority"
+            label={<OrganizationPriorityHeader />}
+            sortBy="priority"
+            render={(record: OrganizationRecord) => <OrganizationPriorityCell record={record} />}
+          />
 
-              {/* Column 4: Segment - Playbook/Operator category (sortable by segment_name) - always visible */}
-              <FunctionField
-                source="segment_id"
-                label={<OrganizationSegmentHeader />}
-                sortBy="segment_name"
-                render={(record: OrganizationRecord) => <OrganizationSegmentCell record={record} />}
-                cellClassName="max-w-[160px]"
-              />
+          {/* Column 4: Segment - Playbook/Operator category (sortable by segment_name) - always visible */}
+          <FunctionField
+            source="segment_id"
+            label={<OrganizationSegmentHeader />}
+            sortBy="segment_name"
+            render={(record: OrganizationRecord) => <OrganizationSegmentCell record={record} />}
+            cellClassName="max-w-[160px]"
+          />
 
-              {/* Column 5: State - US state code (sortable, filterable) - hidden on tablet */}
-              <TextField
-                source="state"
-                label={<OrganizationStateHeader />}
-                sortable
-                cellClassName="hidden lg:table-cell w-[60px]"
-                headerClassName="hidden lg:table-cell"
-              />
+          {/* Column 5: State - US state code (sortable, filterable) - hidden on tablet */}
+          <TextField
+            source="state"
+            label={<OrganizationStateHeader />}
+            sortable
+            cellClassName="hidden lg:table-cell w-[60px] text-muted-foreground"
+            headerClassName="hidden lg:table-cell"
+          />
 
-              {/* Column 6: Parent - Direct read from summary view (sortable by parent_organization_name) - hidden on tablet */}
-              <FunctionField
-                source="parent_organization_name"
-                label="Parent"
-                sortBy="parent_organization_name"
-                render={(record: OrganizationRecord) => (
-                  <span className="truncate block max-w-[120px]">
-                    {record.parent_organization_name || "-"}
-                  </span>
-                )}
-                cellClassName="hidden lg:table-cell max-w-[140px]"
-                headerClassName="hidden lg:table-cell"
-              />
+          {/* Column 6: Contacts - Computed count metric (non-sortable) - hidden on mobile */}
+          <FunctionField
+            source="nb_contacts"
+            label="Contacts"
+            sortable={false}
+            render={(record: OrganizationRecord) => <OrganizationContactsCell record={record} />}
+            textAlign="right"
+            cellClassName="hidden md:table-cell"
+            headerClassName="hidden md:table-cell"
+          />
 
-              {/* Column 7: Contacts - Computed count metric (non-sortable) - hidden on mobile */}
-              <FunctionField
-                source="nb_contacts"
-                label="Contacts"
-                sortable={false}
-                render={(record: OrganizationRecord) => (
-                  <OrganizationContactsCell record={record} />
-                )}
-                textAlign="center"
-                cellClassName="hidden md:table-cell"
-                headerClassName="hidden md:table-cell"
-              />
+          {/* Column 7: Opportunities - Computed count metric (non-sortable) - hidden on mobile */}
+          <FunctionField
+            source="nb_opportunities"
+            label="Opps"
+            sortable={false}
+            render={(record: OrganizationRecord) => (
+              <OrganizationOpportunitiesCell record={record} />
+            )}
+            textAlign="right"
+            cellClassName="hidden md:table-cell"
+            headerClassName="hidden md:table-cell"
+          />
 
-              {/* Column 8: Opportunities - Computed count metric (non-sortable) - hidden on mobile */}
-              <FunctionField
-                source="nb_opportunities"
-                label="Opps"
-                sortable={false}
-                render={(record: OrganizationRecord) => (
-                  <OrganizationOpportunitiesCell record={record} />
-                )}
-                textAlign="center"
-                cellClassName="hidden md:table-cell"
-                headerClassName="hidden md:table-cell"
+          <FunctionField
+            label="Actions"
+            sortable={false}
+            cellClassName="w-[72px] sm:w-[88px] text-right"
+            render={(record: OrganizationRecord) => (
+              <RowHoverActions
+                className="inline-flex items-center justify-end gap-1"
+                recordId={record.id}
+                resource="organizations"
+                onView={(id) => openSlideOver(Number(id), "view")}
+                onEdit={(id) => openSlideOver(Number(id), "edit")}
               />
-            </PremiumDatagrid>
-          )}
-        </div>
-      </StandardListLayout>
-      {view === "list" && <OrganizationBulkActionsToolbar />}
-    </>
+            )}
+          />
+        </PremiumDatagrid>
+      )}
+    </div>
   );
 };
 
@@ -434,10 +370,6 @@ export const OrganizationList = () => {
     saveViewPreference(newView);
   };
 
-  // Clean up stale cached filters from localStorage
-  // Generic hook validates all filters against filterRegistry.ts
-  useFilterCleanup("organizations");
-
   if (isIdentityPending) return <OrganizationListSkeleton />;
   if (!identity) return null;
 
@@ -451,13 +383,31 @@ export const OrganizationList = () => {
           sort={SORT_BY_UPDATED_DESC}
           exporter={exporter}
         >
-          <OrganizationListLayout
-            openSlideOver={openSlideOver}
-            isSlideOverOpen={isOpen}
-            view={view}
-            onViewChange={handleViewChange}
-          />
-          <FloatingCreateButton />
+          <ListPageLayout
+            resource="organizations"
+            filterComponent={<OrganizationListFilter />}
+            filterConfig={ORGANIZATION_FILTER_CONFIG}
+            sortFields={["name", "organization_type", "priority", "segment_name", "created_at"]}
+            searchPlaceholder="Search organizations..."
+            enableRecentSearches
+            viewSwitcher={<OrganizationViewSwitcher view={view} onViewChange={handleViewChange} />}
+            overflowActions={
+              <>
+                <OrganizationImportMenuItem />
+                <ExportMenuItem />
+              </>
+            }
+            primaryAction={<CreateButton variant="default" />}
+            emptyState={<OrganizationEmpty />}
+            loadingSkeleton={<OrganizationListSkeleton />}
+            bulkActions={view === "list" ? <OrganizationBulkButtons /> : undefined}
+          >
+            <OrganizationDatagrid
+              openSlideOver={openSlideOver}
+              isSlideOverOpen={isOpen}
+              view={view}
+            />
+          </ListPageLayout>
         </List>
       </div>
       <OrganizationSlideOver

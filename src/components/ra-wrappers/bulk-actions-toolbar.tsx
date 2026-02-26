@@ -1,6 +1,5 @@
 import type { ReactNode } from "react";
 import { useListContext, Translate } from "ra-core";
-import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { BulkDeleteButton } from "@/components/ra-wrappers/bulk-delete-button";
 import { X } from "lucide-react";
@@ -29,8 +28,8 @@ export const BulkActionsToolbar = ({
     onUnselectItems();
   };
   return (
-    <Card className="flex flex-col gap-2 md:gap-6 md:flex-row items-stretch sm:items-center p-2 px-4 w-[90%] sm:w-fit fixed bottom-14 left-4 z-10 bg-card dark:bg-card">
-      <div className="flex items-center gap-2">
+    <div className="list-bulk-actions">
+      <div className="flex flex-wrap items-center gap-2">
         <Button
           variant="ghost"
           size="icon"
@@ -45,8 +44,8 @@ export const BulkActionsToolbar = ({
             {selectedIds.length} rows selected
           </Translate>
         </span>
+        <div className="ml-auto flex flex-wrap items-center gap-2">{children}</div>
       </div>
-      {children}
-    </Card>
+    </div>
   );
 };

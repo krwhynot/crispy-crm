@@ -9,7 +9,7 @@ export const badgeVariants = cva(
   // Base badge styles with subtle depth
   // Added: shadow-[var(--badge-shadow)] for subtle elevation
   // Added: ring-1 ring-inset ring-black/[0.08] for hairline border
-  "inline-flex items-center justify-center rounded-md border px-2.5 py-0.5 text-xs font-medium w-fit whitespace-nowrap shrink-0 [&>svg]:size-3 gap-2 [&>svg]:pointer-events-none shadow-[var(--badge-shadow)] ring-1 ring-inset ring-black/[0.08] dark:ring-white/[0.08] focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive transition-colors duration-150 overflow-hidden",
+  "inline-flex items-center justify-center rounded-[5px] border px-2 py-0.5 text-xs font-medium w-fit whitespace-nowrap shrink-0 [&>svg]:size-3 gap-2 [&>svg]:pointer-events-none shadow-[var(--badge-shadow)] ring-1 ring-inset ring-black/[0.05] dark:ring-white/[0.05] focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/30 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive transition-colors duration-150 overflow-hidden",
   {
     variants: {
       variant: {
@@ -18,7 +18,7 @@ export const badgeVariants = cva(
         secondary:
           "border-transparent bg-secondary text-secondary-foreground ring-secondary-foreground/10 [a&]:hover:bg-secondary/90",
         destructive:
-          "border-transparent bg-destructive text-destructive-foreground ring-destructive/20 [a&]:hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60",
+          "border-transparent bg-destructive text-destructive-foreground ring-destructive/30 [a&]:hover:bg-destructive/90 focus-visible:ring-destructive/30 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60",
         success:
           "border-transparent bg-success text-success-foreground ring-success/20 [a&]:hover:bg-success/90",
         warning:
@@ -36,6 +36,9 @@ export const badgeVariants = cva(
           "border-transparent bg-tag-teal text-tag-teal-fg ring-tag-teal-fg/15 [a&]:hover:bg-tag-teal/90",
         "org-unknown":
           "border-transparent bg-tag-gray text-tag-gray-fg ring-tag-gray-fg/15 [a&]:hover:bg-tag-gray/90",
+        "status-cold": "border badge-status-cold ring-0 [a&]:hover:opacity-90",
+        "status-active": "border badge-status-active ring-0 [a&]:hover:opacity-90",
+        "status-discontinued": "border badge-status-discontinued ring-0 [a&]:hover:opacity-90",
       },
     },
     defaultVariants: {

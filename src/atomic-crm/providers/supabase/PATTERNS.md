@@ -16,7 +16,7 @@ Standard patterns for the Supabase DataProvider subsystem in Crispy CRM. This is
 │               extendWithCustomMethods(composedProvider)                      │
 │         ┌─────────────────┬─────────────────┬─────────────────┐             │
 │         │  Custom Methods │  Storage Ops    │  RPC/Edge Func  │             │
-│         │  (30 methods)   │  (4 methods)    │  (2 methods)    │             │
+│         │  (22 methods)   │  (4 methods)    │  (2 methods)    │             │
 │         └────────┬────────┴────────┬────────┴────────┬────────┘             │
 └──────────────────┼─────────────────┼─────────────────┼──────────────────────┘
                    │                 │                 │
@@ -46,6 +46,8 @@ Standard patterns for the Supabase DataProvider subsystem in Crispy CRM. This is
 │         ↓                                                                    │
 │     withLifecycleCallbacks  ◀──── callbacks/[resource]Callbacks.ts          │
 │         ↓                                                                    │
+│     withSkipDelete          ◀──── Intercepts soft-delete RPC signals        │
+│         ↓                                                                    │
 │     withValidation          ◀──── services/ValidationService.ts             │
 │         ↓                                                                    │
 │     BASE SUPABASE PROVIDER  ◀──── ra-supabase PostgREST                     │
@@ -67,35 +69,76 @@ Creates fully composed DataProvider instances for each resource by stacking wrap
 ### Code Example
 
 ```typescript
-// handlers/tasksHandler.ts
+// handlers/activitiesHandler.ts
 import { withLifecycleCallbacks, type DataProvider } from "react-admin";
-import { withErrorLogging, withValidation } from "../wrappers";
-import { tasksCallbacks } from "../callbacks/tasksCallbacks";
+import { withErrorLogging, withValidation, withSkipDelete } from "../wrappers";
+import { activitiesCallbacks } from "../callbacks";
 
 /**
  * Composition order (innermost to outermost):
- * baseProvider → withValidation → withLifecycleCallbacks → withErrorLogging
+ * baseProvider → withValidation → withSkipDelete → withLifecycleCallbacks → withErrorLogging
  *
  * WHY THIS ORDER:
  * 1. withValidation runs FIRST (innermost) - validates clean data
- * 2. withLifecycleCallbacks runs SECOND - beforeSave strips computed fields AFTER validation
- * 3. withErrorLogging runs LAST (outermost) - catches all errors from inner layers
+ * 2. withSkipDelete runs SECOND - intercepts delete when beforeDelete signals soft-delete via RPC
+ * 3. withLifecycleCallbacks runs THIRD - beforeSave strips computed fields AFTER validation
+ * 4. withErrorLogging runs LAST (outermost) - catches all errors from inner layers
+ *
+ * CRITICAL: withSkipDelete MUST be INSIDE withLifecycleCallbacks because
+ * lifecycle callbacks set the meta.skipDelete flag that withSkipDelete checks.
  */
-export function createTasksHandler(baseProvider: DataProvider): DataProvider {
+export function createActivitiesHandler(baseProvider: DataProvider): DataProvider {
   return withErrorLogging(
     withLifecycleCallbacks(
-      withValidation(baseProvider),
-      [tasksCallbacks]
+      withSkipDelete(withValidation(baseProvider)),
+      [activitiesCallbacks]
     )
   );
 }
 ```
 
 ### Key Points
-- **Composition Order Matters**: `withLifecycleCallbacks` wraps `withValidation` so `beforeSave` can strip computed fields AFTER Zod validates the user input
-- **Each Resource Gets Own Handler**: `createContactsHandler`, `createOpportunitiesHandler`, etc.
+- **Composition Order Matters**: `baseProvider -> withValidation -> withSkipDelete -> withLifecycleCallbacks -> withErrorLogging`
+- **withSkipDelete**: Intercepts delete calls when `beforeDelete` callback signals soft-delete via RPC (`meta.skipDelete = true`), preventing FK constraint errors from hard DELETE
+- **Each Resource Gets Own Handler**: `createContactsHandler`, `createActivitiesHandler`, etc.
 - **~20 Lines Per Handler**: Keep handlers thin - logic goes in callbacks/services
 - **Handlers Are Registered**: In `composedDataProvider.ts` handlers registry
+
+### Exception: Tasks Handler (STI Pattern)
+
+The tasks handler (`handlers/tasksHandler.ts`, ~245 lines) is **not** a standard thin handler.
+It implements a Single Table Inheritance (STI) wrapper over the activities handler:
+
+- Tasks are stored in the `activities` table with `activity_type = 'task'`
+- Auto-filters to `activity_type = 'task'` on reads
+- Auto-sets `activity_type = 'task'` on creates
+- Maps `title <-> subject` and `task_type <-> interaction_type` for backwards compatibility
+- Wraps ALL 9 DataProvider methods, delegating to the activities handler with field translation
+
+```typescript
+// handlers/tasksHandler.ts (simplified)
+export function createTasksHandler(baseProvider: DataProvider): DataProvider {
+  const activitiesHandler = createActivitiesHandler(baseProvider);
+
+  return {
+    ...activitiesHandler,
+    getList: async (_resource, params) => {
+      const result = await activitiesHandler.getList("activities", {
+        ...params,
+        filter: { ...params.filter, activity_type: "task" },
+      });
+      return { ...result, data: result.data.map(activityToTask) };
+    },
+    create: async (_resource, params) => {
+      const result = await activitiesHandler.create("activities", {
+        ...params, data: taskToActivity(params.data),
+      });
+      return { ...result, data: activityToTask(result.data) };
+    },
+    // ... all 9 methods wrapped with field translation
+  };
+}
+```
 
 ---
 
@@ -181,28 +224,48 @@ Cross-cutting concerns implemented as DataProvider decorators.
 // wrappers/withErrorLogging.ts
 import { logger } from '@/lib/logger';
 
-export function withErrorLogging<T extends DataProvider>(
-  provider: T
-): T {
-  return new Proxy(provider, {
-    get(target, prop: string) {
-      const original = target[prop as keyof T];
-      if (typeof original !== 'function') return original;
+export function withErrorLogging<T extends DataProvider>(provider: T): T {
+  const dataProviderMethods: (keyof DataProvider)[] = [
+    "getList", "getOne", "getMany", "getManyReference",
+    "create", "update", "updateMany", "delete", "deleteMany",
+  ];
 
-      return async (...args: unknown[]) => {
+  // Object spread + method override (NOT Proxy pattern)
+  const wrappedProvider = { ...provider } as T;
+
+  for (const method of dataProviderMethods) {
+    const original = provider[method];
+    if (typeof original === 'function') {
+      (wrappedProvider as Record<string, unknown>)[method] = async (
+        resource: string,
+        params: DataProviderLogParams
+      ) => {
         try {
-          return await original.apply(target, args);
-        } catch (error) {
-          logger.error(`DataProvider operation failed`, {
-            operation: prop,
-            error: error instanceof Error ? error.message : String(error),
-            resource: args[0],
-          });
+          const result = await original.call(provider, resource, params);
+
+          // Log success for sensitive operations (audit trail)
+          logSuccess(method, resource, params, result);
+
+          return result;
+        } catch (error: unknown) {
+          logError(method, resource, params, error);
+
+          // Handle idempotent delete (already deleted = success)
+          if (method === "delete" && isAlreadyDeletedError(error)) {
+            return { data: params.previousData };
+          }
+          // Preserve React Admin validation error format
+          if (isReactAdminValidationError(error)) throw error;
+          // Transform Supabase errors to validation format
+          if (isSupabaseError(error)) throw transformSupabaseError(error);
+
           throw error;
         }
       };
-    },
-  });
+    }
+  }
+
+  return wrappedProvider;
 }
 ```
 
@@ -254,9 +317,22 @@ Routes DataProvider method calls to appropriate resource-specific handlers.
 ```typescript
 // composedDataProvider.ts
 export const HANDLED_RESOURCES = [
-  "contacts", "organizations", "opportunities", "activities",
-  "products", "tasks", "contact_notes", "opportunity_notes",
-  "organization_notes", "tags", "sales",
+  // Core CRM resources
+  "contacts", "organizations", "opportunities", "activities", "products",
+  // Task management
+  "tasks",
+  // Notes (3 types)
+  "contact_notes", "opportunity_notes", "organization_notes",
+  // Supporting resources
+  "tags", "sales", "segments", "product_distributors",
+  // Junction tables (soft delete support)
+  "opportunity_participants", "opportunity_contacts",
+  "interaction_participants", "distributor_principal_authorizations",
+  "organization_distributors", "user_favorites",
+  // Notifications
+  "notifications",
+  // Timeline (read-only view)
+  "entity_timeline",
 ] as const;
 
 export function createComposedDataProvider(baseProvider: DataProvider): DataProvider {
@@ -309,27 +385,41 @@ Business logic extracted into service classes, delegated from custom DataProvide
 // services/index.ts (ServiceContainer)
 export function createServiceContainer(baseProvider: DataProvider): ServiceContainer {
   return {
-    sales: new SalesService(baseProvider),       // Edge Functions
+    sales: new SalesService(baseProvider),              // Edge Functions (account manager CRUD)
     opportunities: new OpportunitiesService(baseProvider), // RPC + Product sync
-    activities: new ActivitiesService(baseProvider),       // Activity log
-    junctions: new JunctionsService(baseProvider),         // Many-to-many
-    segments: new SegmentsService(baseProvider),           // Get-or-create
+    junctions: new JunctionsService(baseProvider),         // Many-to-many (13 methods)
+    segments: new SegmentsService(baseProvider),           // Get-or-create pattern
   };
 }
 
 // extensions/customMethodsExtension.ts
+export interface ExtensionConfig {
+  /** Base DataProvider (CRUD only) - mutated with custom methods for runtime service instances */
+  baseProvider: DataProvider;
+  /** Composed DataProvider with handler routing */
+  composedProvider: DataProvider;
+  /** Pre-initialized service container */
+  services: ServiceContainer;
+  /** Supabase client for direct RPC/Storage/Edge Function access */
+  supabaseClient: SupabaseClient;
+}
+
 export function extendWithCustomMethods(config: ExtensionConfig): ExtendedDataProvider {
-  const { composedProvider, services, supabaseClient } = config;
+  const { baseProvider, composedProvider, services, supabaseClient } = config;
 
-  return {
-    ...composedProvider,
+  // Create category extensions
+  const salesExt = createSalesExtension(services);
+  const opportunitiesExt = createOpportunitiesExtension(services);
+  const junctionsExt = createJunctionsExtension(services);
+  const rpcExt = createRPCExtension(supabaseClient);
+  // ... storage, edge functions, specialized extensions
 
-    // Delegate to service
-    salesCreate: async (body) => services.sales.salesCreate(body),
-    archiveOpportunity: async (opp) => services.opportunities.archiveOpportunity(opp),
-    getActivityLog: async (companyId, salesId) =>
-      services.activities.getActivityLog(companyId, salesId),
-  };
+  // CRITICAL: Mutate baseProvider via Object.assign so handlers that create
+  // service instances at runtime can access RPC/storage/invoke methods
+  Object.assign(baseProvider, salesExt, opportunitiesExt, junctionsExt, rpcExt, ...);
+  Object.assign(composedProvider, salesExt, opportunitiesExt, junctionsExt, rpcExt, ...);
+
+  return composedProvider as ExtendedDataProvider;
 }
 ```
 
@@ -339,7 +429,6 @@ export function extendWithCustomMethods(config: ExtensionConfig): ExtendedDataPr
 |---------|---------|----------------|
 | `SalesService` | 3 | Account manager CRUD via Edge Functions |
 | `OpportunitiesService` | 2 | Archive/unarchive via RPC, product sync |
-| `ActivitiesService` | 1 | Activity log aggregation via RPC |
 | `JunctionsService` | 13 | Many-to-many relationships (contacts-orgs, opp-contacts) |
 | `SegmentsService` | 1 | Get-or-create pattern for segments |
 
@@ -406,9 +495,36 @@ function transformZodToReactAdmin(zodError: ZodError): ReactAdminValidationError
 }
 ```
 
+### Sort Validation (`validateSort`)
+
+The `withValidation` wrapper also validates sort fields, gracefully stripping invalid sort parameters rather than failing hard:
+
+```typescript
+// wrappers/withValidation.ts (getList wrapper)
+wrappedProvider.getList = async (resource, params) => {
+  // Clean filter fields
+  if (processedParams.filter) {
+    processedParams.filter = validationService.validateFilters(resource, processedParams.filter);
+  }
+
+  // Validate sort field -- strips invalid sort so handler default applies
+  if (processedParams.sort?.field) {
+    const validatedSort = validationService.validateSort(resource, processedParams.sort);
+    if (!validatedSort) {
+      const { sort: _removed, ...restParams } = processedParams;
+      return provider.getList(resource, restParams);
+    }
+    processedParams.sort = validatedSort;
+  }
+
+  return provider.getList(resource, processedParams);
+};
+```
+
 ### Key Points
 - **NO Form-Level Validation**: Forms use `mode: "onSubmit"`, Zod runs at API boundary
 - **Fail-Fast on Invalid Filters**: Throw 400, don't silently ignore
+- **Graceful Sort Stripping**: Invalid sort fields are removed (falls back to handler default) rather than failing
 - **Schema Per Operation**: Separate schemas for create vs update
 
 ---
@@ -492,34 +608,61 @@ createBoothVisitor: async (data: QuickAddInput): Promise<{ data: BoothVisitorRes
 
 ## Pattern I: Filter Registry Pattern
 
-Explicit allowlist of filterable fields per resource.
+Explicit allowlist of filterable fields per resource, refactored into domain modules.
 
 ### When to Use
 - Preventing stale filter errors from old localStorage values
 - Security (limiting which fields can be filtered)
 - Documentation of available filters
 
+### Architecture
+
+The filter registry has been refactored from a single `filterRegistry.ts` file into a `filters/` subdirectory with 8 domain modules:
+
+| Module | Resources | Description |
+|--------|-----------|-------------|
+| `filters/contacts.ts` | contacts, contact_notes | Contact-related filters |
+| `filters/organizations.ts` | organizations, organization_notes | Org-related filters |
+| `filters/opportunities.ts` | opportunities, opportunity_notes | Opp-related filters |
+| `filters/activities.ts` | activities, tasks | Activity/task filters |
+| `filters/products.ts` | products, product_distributors | Product filters |
+| `filters/users.ts` | sales, user_favorites | User/auth filters |
+| `filters/dashboards.ts` | entity_timeline, notifications | Dashboard views |
+| `filters/misc.ts` | segments, tags, junctions | Supporting resources |
+| `filters/types.ts` | - | Type-safe types (`FilterRegistry`, `RegisteredResource`) |
+| `filters/utils.ts` | - | `getFilterableFields()`, `isValidFilterField()` |
+| `filters/index.ts` | - | Aggregates all modules into `filterableFields` |
+
+The original `filterRegistry.ts` is a **deprecated shim** that re-exports from `filters/`:
+
+```typescript
+// filterRegistry.ts (DEPRECATED - re-exports from filters/)
+export * from "./filters";
+```
+
 ### Code Example
 
 ```typescript
-// filterRegistry.ts
-export const filterableFields: Record<string, string[]> = {
-  contacts: [
-    "id", "first_name", "last_name", "email", "phone", "title",
-    "sales_id", "created_at", "deleted_at", "tags",
-    "q", // Special: full-text search
-  ],
-  opportunities: [
-    "id", "name", "stage", "status", "priority",
-    "customer_organization_id", "principal_organization_id",
-    "created_at", "deleted_at", "tags",
-    "q", // Full-text search
-    "stale", // Virtual filter: transformed to last_activity_date
-  ],
-};
+// filters/index.ts
+import { contactsFilters } from "./contacts";
+import { organizationsFilters } from "./organizations";
+import { opportunitiesFilters } from "./opportunities";
+// ... 5 more domain modules
 
+export const filterableFields = {
+  ...contactsFilters,
+  ...organizationsFilters,
+  ...opportunitiesFilters,
+  ...activitiesFilters,
+  ...productsFilters,
+  ...usersFilters,
+  ...dashboardsFilters,
+  ...miscFilters,
+} as const satisfies Partial<FilterRegistry>;
+
+// filters/utils.ts
 export function isValidFilterField(resource: string, filterKey: string): boolean {
-  const allowedFields = filterableFields[resource];
+  const allowedFields = getFilterableFields(resource);
   if (!allowedFields) return false;
 
   // Handle logical operators
@@ -532,6 +675,9 @@ export function isValidFilterField(resource: string, filterKey: string): boolean
 ```
 
 ### Key Points
+- **Refactored to `filters/` subdirectory**: 8 domain modules + types + utils
+- **Deprecated shim**: `filterRegistry.ts` re-exports from `filters/` for backward compatibility
+- **Type-safe**: Uses `as const satisfies Partial<FilterRegistry>` with DB-derived types
 - **Base Field + Operator**: `"last_seen@gte"` matches `"last_seen"` in registry
 - **Virtual Filters**: `"stale"` is transformed to actual filters
 - **Logical Operators Whitelisted**: `$or`, `@or`, etc. always allowed
@@ -581,7 +727,7 @@ export function transformArrayFilters(filter: FilterRecord): FilterRecord {
 
 | Pattern | Use Case | Location | Example |
 |---------|----------|----------|---------|
-| **A: Handler Factory** | Resource-specific composition | `handlers/*.ts` | `createTasksHandler()` |
+| **A: Handler Factory** | Resource-specific composition | `handlers/*.ts` | `createActivitiesHandler()` |
 | **B: Callbacks Factory** | Standardized lifecycle hooks | `callbacks/*.ts` | `createResourceCallbacks()` |
 | **C: Wrapper Middleware** | Cross-cutting concerns | `wrappers/*.ts` | `withErrorLogging()` |
 | **D: Resource Router** | Central dispatch | `composedDataProvider.ts` | `getProviderForResource()` |
@@ -589,7 +735,7 @@ export function transformArrayFilters(filter: FilterRecord): FilterRecord {
 | **F: Validation Boundary** | Zod at API layer | `ValidationService.ts` | `validate(resource, method, data)` |
 | **G: Transform Service** | Data mutation | callbacks | `composeTransforms()` |
 | **H: RPC Atomic** | Multi-table transactions | Database functions | `create_booth_visitor_opportunity` |
-| **I: Filter Registry** | Allowed filter fields | `filterRegistry.ts` | `filterableFields[resource]` |
+| **I: Filter Registry** | Allowed filter fields | `filters/*.ts` | `filterableFields[resource]` |
 | **J: Query Transform** | PostgREST syntax | `dataProviderUtils.ts` | `transformArrayFilters()` |
 
 ---
@@ -673,8 +819,8 @@ Follow this checklist when adding a new resource:
    - Create Zod schemas for create/update
    - Register in `ValidationService.validationRegistry`
 
-5. [ ] **Add Filter Registry** (`filterRegistry.ts`)
-   - Add resource to `filterableFields`
+5. [ ] **Add Filter Registry** (`filters/[domain].ts`)
+   - Add resource to the appropriate domain module in `filters/`
    - Include all database columns that can be filtered
 
 6. [ ] **Add to Soft Delete** (if applicable)

@@ -41,7 +41,7 @@ describe("CSS Variables", () => {
         const allVars: Map<string, number[]> = new Map();
 
         themeBlocks.forEach((block, blockIndex) => {
-          const vars = extractCSSVariables(block, /\{([^}]+)\}/);
+          const vars = [...new Set(extractCSSVariables(block, /\{([^}]+)\}/))];
           vars.forEach((varName) => {
             const existing = allVars.get(varName) || [];
             existing.push(blockIndex);
@@ -105,17 +105,16 @@ describe("CSS Variables", () => {
       });
     });
 
-    it("should have desktop data density tokens defined once", () => {
-      const densityTokens = [
-        "--row-height-compact",
-        "--row-height-comfortable",
+    it("should have row height and layout tokens defined once", () => {
+      const layoutTokens = [
+        "--row-height",
         "--row-padding-desktop",
         "--hover-zone-padding",
         "--action-button-size",
         "--context-menu-width",
       ];
 
-      densityTokens.forEach((token) => {
+      layoutTokens.forEach((token) => {
         // Count occurrences - should be exactly 1 (in first @theme block only)
         const regex = new RegExp(`${token}:`, "g");
         const matches = cssContent.match(regex);

@@ -1,0 +1,52 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Mutation Allowlist",
+  "description": "Schema for approved fire-and-forget mutation exceptions",
+  "type": "object",
+  "required": ["exceptions"],
+  "properties": {
+    "$schema": { "type": "string" },
+    "description": { "type": "string" },
+    "exceptions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["file", "line", "reason", "ticket_id", "owner", "created_at", "expires_at"],
+        "properties": {
+          "file": {
+            "type": "string",
+            "description": "Relative file path from project root"
+          },
+          "line": {
+            "type": "integer",
+            "description": "Line number of the mutation call"
+          },
+          "reason": {
+            "type": "string",
+            "description": "Why this exception is needed"
+          },
+          "ticket_id": {
+            "type": "string",
+            "description": "Tracking ticket for removal"
+          },
+          "owner": {
+            "type": "string",
+            "description": "Engineer accountable for this exception"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date",
+            "description": "Date exception was approved (YYYY-MM-DD)"
+          },
+          "expires_at": {
+            "type": "string",
+            "format": "date",
+            "description": "Expiry date; CI fails if past this date (YYYY-MM-DD)"
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

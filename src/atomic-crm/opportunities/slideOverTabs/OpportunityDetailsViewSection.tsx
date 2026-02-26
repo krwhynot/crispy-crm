@@ -186,7 +186,7 @@ export function OpportunityDetailsViewSection({
                 <XCircle className="h-4 w-4 text-destructive" />
               )}
               <span
-                className={`text-xs font-medium uppercase tracking-wide ${
+                className={`paper-micro-label ${
                   record.stage === STAGE.CLOSED_WON ? "text-success" : "text-destructive"
                 }`}
               >

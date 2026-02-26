@@ -1,32 +1,40 @@
 # Opportunity Feature Patterns
 
-Comprehensive patterns for the Opportunities module in Crispy CRM. This document covers lazy loading, view management, multi-step forms, quick data entry, Kanban drag-and-drop, slide-over details, grouped views, speed dial FAB, and column preferences.
+Comprehensive patterns for the Opportunities module in Crispy CRM. This document covers lazy loading, view management (via UnifiedListPageLayout), collapsible forms, quick data entry, Kanban drag-and-drop, slide-over details, grouped views, and column preferences.
 
 ## Component Hierarchy
 
 ```
 resource.tsx (Entry point)
-    ├── OpportunityListView (React.lazy)
+    ├── OpportunityListView (React.lazy + React.Suspense)
     │       └── OpportunityList
     │           ├── List (React Admin)
-    │           │   ├── OpportunityListLayout
-    │           │   │   ├── ListSearchBar + OpportunityViewSwitcher
-    │           │   │   ├── [VIEW SWITCHER ROUTES]
-    │           │   │   │   ├── "kanban" → OpportunityListContent (DnD Context)
-    │           │   │   │   │               ├── OpportunityColumn[]
-    │           │   │   │   │               │   └── OpportunityCard[] (useSortable)
-    │           │   │   │   │               └── DragOverlay
-    │           │   │   │   ├── "list" → OpportunityRowListView
-    │           │   │   │   ├── "campaign" → CampaignGroupedList
-    │           │   │   │   └── "principal" → PrincipalGroupedList
-    │           │   │   │                       └── PrincipalColumn[]
-    │           │   │   │                           └── PrincipalOpportunityCard[]
-    │           │   │   └── OpportunityArchivedList
-    │           │   └── OpportunitySpeedDial (FAB)
-    │           │       └── QuickAddDialog
-    │           │           └── QuickAddForm
+    │           │   └── UnifiedListPageLayout
+    │           │       ├── primaryAction → QuickAddButton
+    │           │       │                   └── QuickAddDialog
+    │           │       │                       └── QuickAddForm (RA Form + createFormResolver)
+    │           │       │                           └── QuickAddFormContent (useFormContext)
+    │           │       │                               ├── OpportunityDetailsSection
+    │           │       │                               ├── ContactInformationSection
+    │           │       │                               ├── LocationNotesSection
+    │           │       │                               └── QuickAddFormActions
+    │           │       ├── viewSwitcher → OpportunityViewSwitcher
+    │           │       ├── filterComponent → OpportunityListFilter
+    │           │       ├── overflowActions → ExportMenuItem
+    │           │       └── [VIEW SWITCHER ROUTES]
+    │           │           ├── "kanban" → OpportunityListContent (DnD Context)
+    │           │           │               ├── OpportunityColumn[]
+    │           │           │               │   └── OpportunityCard[] (useSortable)
+    │           │           │               ├── DragOverlay
+    │           │           │               └── CloseOpportunityModal (close stage intercept)
+    │           │           ├── "list" → OpportunityRowListView
+    │           │           ├── "campaign" → CampaignGroupedList
+    │           │           └── "principal" → PrincipalGroupedList
+    │           │                               └── PrincipalColumn[]
+    │           │                                   └── PrincipalOpportunityCard[]
     │           └── OpportunitySlideOver (40vw panel)
     │                   ├── ResourceSlideOver (generic wrapper)
+    │                   │   └── headerActions: FavoriteToggleButton + QuickAddTaskButton
     │                   └── [TABS]
     │                       ├── OpportunitySlideOverDetailsTab
     │                       ├── OpportunityContactsTab
@@ -51,7 +59,7 @@ resource.tsx (Entry point)
     │               │       └── OpportunityCreateFormFooter
     │               ├── SimilarOpportunitiesDialog
     │               └── OpportunityCreateFormTutorial
-    └── OpportunityEditView (React.lazy)
+    └── OpportunityEditView (React.lazy + React.Suspense)
             └── OpportunityEdit
 ```
 
@@ -83,7 +91,9 @@ const OpportunityCreateRedirect = () => {
 
 export const OpportunityListView = () => (
   <ResourceErrorBoundary resource="opportunities" page="list">
-    <OpportunityListLazy />
+    <React.Suspense fallback={<Loading />}>
+      <OpportunityListLazy />
+    </React.Suspense>
   </ResourceErrorBoundary>
 );
 
@@ -91,23 +101,28 @@ export const OpportunityCreateView = () => <OpportunityCreateRedirect />;
 
 export const OpportunityEditView = () => (
   <ResourceErrorBoundary resource="opportunities" page="edit">
-    <OpportunityEditLazy />
+    <React.Suspense fallback={<Loading />}>
+      <OpportunityEditLazy />
+    </React.Suspense>
   </ResourceErrorBoundary>
 );
+
+const opportunityRecordRepresentation = (record: Opportunity) => record?.name || "Opportunity";
 
 // React Admin resource config
 export default {
   list: OpportunityListView,
   create: OpportunityCreateView,
   edit: OpportunityEditView,
-  recordRepresentation: (record: Opportunity) => record?.name || "Opportunity",
+  recordRepresentation: opportunityRecordRepresentation,
 };
 ```
 
 **Key points:**
 - `React.lazy()` enables route-level code splitting
-- `ResourceErrorBoundary` wraps lazy components for graceful error handling
-- **Create redirects to list** - Quick Add (FAB) is the primary creation UX
+- `React.Suspense fallback={<Loading />}` provides loading UI while lazy chunks resolve
+- `ResourceErrorBoundary` wraps lazy+suspense for graceful error handling
+- **Create redirects to list** - Quick Add button is the primary creation UX
 - Full create form accessible via "Create Full Opportunity" link in Quick Add
 - Each view is independently loadable (reduces initial bundle size)
 
@@ -145,8 +160,23 @@ const OpportunityList = () => {
   };
 
   return (
-    <List>
-      <OpportunityListLayout view={view} onViewChange={handleViewChange} />
+    <List perPage={25} filter={FILTER_ACTIVE_RECORDS} sort={SORT_BY_CREATED_DESC}>
+      <UnifiedListPageLayout
+        resource="opportunities"
+        filterComponent={<OpportunityListFilter />}
+        filterConfig={OPPORTUNITY_FILTER_CONFIG}
+        sortFields={["name", "stage", "priority", "estimated_close_date", "created_at"]}
+        searchPlaceholder="Search opportunities..."
+        enableRecentSearches
+        viewSwitcher={<OpportunityViewSwitcher view={view} onViewChange={handleViewChange} />}
+        overflowActions={<ExportMenuItem />}
+        primaryAction={<QuickAddButton />}
+        emptyState={<OpportunityEmpty />}
+        filteredEmptyState={<ListNoResults />}
+        loadingSkeleton={<ListSkeleton rows={8} columns={5} />}
+      >
+        <OpportunityListViews view={view} openSlideOver={openSlideOver} />
+      </UnifiedListPageLayout>
     </List>
   );
 };
@@ -188,10 +218,10 @@ export const OpportunityViewSwitcher = ({ view, onViewChange }: Props) => (
 - Tooltips provide context for icon-only buttons
 
 **Enhanced implementation notes:**
-- `OpportunityListLayout` handles multiple states: loading skeleton, empty (no data/no filters), filtered-empty (filters applied but no results), and data display
+- `UnifiedListPageLayout` handles multiple states: loading skeleton, empty (no data/no filters), filtered-empty (filters applied but no results), and data display
+- Props API: `filterComponent`, `filterConfig`, `sortFields`, `primaryAction`, `overflowActions`, `viewSwitcher`, `emptyState`, `filteredEmptyState`, `loadingSkeleton`
 - Slide-over state managed via `useSlideOverState` hook (URL-synced `?view=123` params)
 - Tutorial integration: `data-tutorial` attributes and `OpportunityListTutorial` component for onboarding
-- `useFilterCleanup("opportunities")` cleans stale cached filters from localStorage
 - Stage filter changes synced to localStorage via `saveStagePreferences()` for persistence
 
 **See also:** `OpportunityList.tsx` for the complete implementation with all state handling branches.
@@ -209,7 +239,7 @@ Performance patterns for dependent dropdowns (ReferenceInput + AutocompleteInput
 Prevents unnecessary ReferenceInput refetches by maintaining stable filter object references.
 
 ```tsx
-// src/atomic-crm/opportunities/forms/OpportunityCompactForm.tsx
+// src/atomic-crm/opportunities/OpportunityCompactForm.tsx
 const customerOrganizationId = useWatch({ name: "customer_organization_id" });
 const principalOrganizationId = useWatch({ name: "principal_organization_id" });
 
@@ -225,7 +255,7 @@ const productFilter = useMemo(
 );
 
 // Usage - filter object only changes when dependency changes
-<ReferenceArrayInput source="contact_ids" reference="contacts_summary" filter={contactFilter}>
+<ReferenceArrayInput source="contact_ids" reference="contacts" filter={contactFilter}>
   <AutocompleteArrayInput ... />
 </ReferenceArrayInput>
 ```
@@ -256,8 +286,15 @@ export const AUTOCOMPLETE_MIN_CHARS = 2;
 
 // enableGetChoices blocks ReferenceInput fetch entirely until threshold met
 // (shouldRenderSuggestions only hides dropdown, doesn't block fetch)
-export const enableGetChoices = ({ q }: { q?: string }) =>
-  !!(q && q.length >= AUTOCOMPLETE_MIN_CHARS);
+// Handles both "q" and specific field filters (like "name@ilike")
+export const enableGetChoices = (filters: Record<string, unknown>) => {
+  // Find the first string value in filters (handles q, name@ilike, title@ilike, etc.)
+  const searchValue = Object.values(filters).find((v): v is string => typeof v === "string");
+  if (!searchValue) return false;
+  // Strip % wildcards from ILIKE patterns to get actual character count
+  const realInput = searchValue.replace(/%/g, "");
+  return realInput.length >= AUTOCOMPLETE_MIN_CHARS;
+};
 
 export const shouldRenderSuggestions = (val: string) =>
   val.trim().length >= AUTOCOMPLETE_MIN_CHARS;
@@ -290,7 +327,7 @@ export const shouldRenderSuggestions = (val: string) =>
 // BAD: Inline filter object creates new reference every render
 <ReferenceArrayInput
   source="contact_ids"
-  reference="contacts_summary"
+  reference="contacts"
   filter={{ organization_id: customerOrganizationId }}  // New object each render!
 >
 
@@ -324,7 +361,7 @@ const OpportunityCreate = () => {
   const [searchParams] = useSearchParams();
   const urlCustomerOrgId = searchParams.get("customer_organization_id");
 
-  // Fuzzy match warning system (Levenshtein threshold: 3)
+  // Fuzzy match warning system (server-side pg_trgm similarity via RPC)
   const {
     checkForSimilar, showDialog, closeDialog, confirmCreate,
     proposedName, similarOpportunities, hasConfirmed, resetConfirmation,
@@ -369,7 +406,7 @@ const OpportunityCreate = () => {
 ### Collapsible Form Structure
 
 ```tsx
-// src/atomic-crm/opportunities/forms/OpportunityCompactForm.tsx
+// src/atomic-crm/opportunities/OpportunityCompactForm.tsx
 import {
   CompactFormRow,
   CollapsibleSection,
@@ -431,23 +468,33 @@ export const OpportunityCompactForm = ({ mode = "create" }) => {
 
 ```tsx
 // src/atomic-crm/opportunities/useSimilarOpportunityCheck.ts
-// Prevents duplicate opportunities via Levenshtein fuzzy matching
+// Prevents duplicate opportunities via server-side pg_trgm similarity matching
+// Uses RPC call to `check_similar_opportunities` (threshold: 0.3)
 
-export const useSimilarOpportunityCheck = () => {
+export const useSimilarOpportunityCheck = (options?) => {
+  const dataProvider = useDataProvider() as ExtendedDataProvider;
   const [showDialog, setShowDialog] = useState(false);
   const [hasConfirmed, setHasConfirmed] = useState(false);
 
-  const checkForSimilar = async (proposedName: string) => {
-    // Query existing opportunities with similar names (Levenshtein threshold: 3)
-    const similar = await findSimilarOpportunities(proposedName);
-    if (similar.length > 0 && !hasConfirmed) {
-      setShowDialog(true);
-      return false; // Block save until confirmed
-    }
-    return true; // Allow save
+  const { mutateAsync: checkSimilarityRpc } = useMutation({
+    mutationFn: async (name: string) =>
+      dataProvider.rpc("check_similar_opportunities", {
+        p_name: name, p_threshold: 0.3, p_exclude_id: options?.excludeId ?? null, p_limit: 10,
+      }),
+  });
+
+  const checkForSimilar = async (name: string): Promise<SimilarityCheckResult> => {
+    if (hasConfirmed || !name?.trim()) return { hasSimilar: false, matches: [] };
+    const results = await checkSimilarityRpc(name);
+    const matches = results.map(r => ({
+      id: r.id, name: r.name, stage: r.stage,
+      distance: mapSimilarityToDistance(r.similarity_score),
+    }));
+    if (matches.length > 0) { setShowDialog(true); }
+    return { hasSimilar: matches.length > 0, matches };
   };
 
-  return { checkForSimilar, showDialog, closeDialog, confirmCreate, hasConfirmed };
+  return { checkForSimilar, showDialog, closeDialog, confirmCreate, hasConfirmed, resetConfirmation };
 };
 ```
 
@@ -457,7 +504,7 @@ export const useSimilarOpportunityCheck = () => {
 - `CollapsibleSection` organizes optional fields into expandable groups
 - `CompactFormRow` enables 2-3 column layouts within sections
 - `useWatch()` for isolated re-renders (not `watch()` - Constitution #5)
-- **Similar opportunity detection** prevents duplicates via fuzzy matching
+- **Similar opportunity detection** prevents duplicates via server-side `pg_trgm` similarity (RPC `check_similar_opportunities`)
 - **URL param pre-fill** enables context-aware creation from other views
 - Form mode `onSubmit` for validation (not `onChange` to avoid re-render storms)
 - Wait for identity to load to prevent RLS policy failures
@@ -472,16 +519,16 @@ Trade show mode for 30-second data entry with "Save & Add Another" pattern.
 
 ```tsx
 // src/atomic-crm/opportunities/QuickAddDialog.tsx
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { QuickAddForm } from "./QuickAddForm";
 
 export const QuickAddDialog = ({ open, onOpenChange }: Props) => (
   <Dialog open={open} onOpenChange={onOpenChange}>
     <DialogContent className="w-full max-w-2xl max-h-[90vh] overflow-y-auto">
       <DialogHeader>
-        <DialogTitle>Quick Add Booth Visitor</DialogTitle>
+        <DialogTitle>Quick Add Opportunity</DialogTitle>
         <DialogDescription>
-          Quickly capture lead information from trade show booth conversations
+          Create a new opportunity with optional contact details
         </DialogDescription>
       </DialogHeader>
       <QuickAddForm onSuccess={() => onOpenChange(false)} />
@@ -492,84 +539,89 @@ export const QuickAddDialog = ({ open, onOpenChange }: Props) => (
 
 ```tsx
 // src/atomic-crm/opportunities/QuickAddForm.tsx
-export const QuickAddForm = ({ onSuccess }: Props) => {
-  const { mutate, isPending } = useQuickAdd();
-  const firstNameRef = useRef<HTMLInputElement>(null);
+// Architecture: Wrapper (Form context) + Content (form logic with useFormContext)
+// Uses React Admin Form with createFormResolver (CORE-018)
 
-  // Derive defaults from schema (single source of truth)
-  const schemaDefaults = quickAddSchema.partial().parse({});
+export const QuickAddForm = ({ onSuccess }: Props) => {
+  const { data: identity, isLoading: identityLoading } = useGetIdentity();
+
+  const schemaDefaults = quickAddBaseSchema.partial().parse({});
 
   // Merge with localStorage for persistence between sessions
-  const defaultValues = {
+  const defaultValues = useMemo(() => ({
     ...schemaDefaults,
-    campaign: getStorageItem<string>("last_campaign", { type: "local" }) ?? "",
-    principal_id: Number(getStorageItem<string>("last_principal", { type: "local" })) || undefined,
-  };
+    campaign: getStorageItem<string>("last_campaign", { type: "local" }) || undefined,
+    principal_id: Number(getStorageItem<string>("last_principal", { type: "local" }) ?? "") || undefined,
+    account_manager_id: identity?.id ? Number(identity.id) : undefined,
+    product_ids: schemaDefaults.product_ids ?? [],
+  }), [identity?.id, schemaDefaults]);
 
-  const { register, handleSubmit, reset, control } = useForm<QuickAddInput>({
-    resolver: zodResolver(quickAddSchema),
-    defaultValues,
-  });
+  if (identityLoading || !identity?.id) return <LoadingSkeleton />;
 
-  // useWatch for isolated re-renders (not watch())
-  const [principalId, cityValue] = useWatch({
+  // React Admin Form provides FormProvider context
+  // mode="onBlur" per Engineering Constitution - no onChange validation
+  return (
+    <Form defaultValues={defaultValues} mode="onBlur" resolver={createFormResolver(quickAddSchema)}>
+      <QuickAddFormContent onSuccess={onSuccess} identity={identity} />
+    </Form>
+  );
+};
+
+// Inner component consumes FormProvider context
+const QuickAddFormContent = ({ onSuccess, identity }: ContentProps) => {
+  const { mutate, isPending } = useQuickAdd();
+  const { register, handleSubmit, setFocus, formState: { errors }, setValue, control, reset } =
+    useFormContext<QuickAddFormValues>();
+
+  const [organizationId, principalId, cityValue] = useWatch({
     control,
-    name: ["principal_id", "city"],
+    name: ["organization_id", "principal_id", "city"],
   });
 
-  const onSubmit = (data: QuickAddInput, closeAfter: boolean) => {
+  const onSubmit = (data: QuickAddFormValues, closeAfter: boolean) => {
     mutate(data, {
       onSuccess: () => {
         if (closeAfter) {
-          onSuccess(); // Close dialog
+          onSuccess();
         } else {
-          // Reset form but KEEP campaign and principal for next entry
           reset({
-            campaign: data.campaign,
             principal_id: data.principal_id,
-            product_ids: [],
-            first_name: "",
-            last_name: "",
-            // ... clear other fields
+            account_manager_id: data.account_manager_id,
+            campaign: data.campaign || undefined,
+            product_ids: [], organization_id: undefined, org_name: "",
+            first_name: "", last_name: "", phone: "", email: "",
+            city: "", state: "", quick_note: "",
           });
-          setTimeout(() => firstNameRef.current?.focus(), 100);
+          setTimeout(() => setFocus("first_name"), 100);
         }
       },
     });
   };
 
   return (
-    <form>
-      {/* Pre-filled section with light success background */}
-      <div className="rounded-lg bg-success/10 p-4 space-y-4">
-        <h3>Pre-filled Information</h3>
-        {/* Campaign, Principal, Products fields */}
-      </div>
-
-      {/* Contact, Organization sections */}
-
-      <div className="flex items-center justify-between pt-4 border-t">
-        <AdminButton variant="outline" onClick={onSuccess}>Cancel</AdminButton>
-        <div className="flex gap-2">
-          <AdminButton onClick={handleSubmit((data) => onSubmit(data, false))}>
-            Save & Add Another
-          </AdminButton>
-          <AdminButton variant="secondary" onClick={handleSubmit((data) => onSubmit(data, true))}>
-            Save & Close
-          </AdminButton>
-        </div>
-      </div>
-    </form>
+    <div className="flex flex-col gap-6">
+      <OpportunityDetailsSection ... />
+      <ContactInformationSection ... />
+      <LocationNotesSection ... />
+      <QuickAddFormActions
+        onCancel={onSuccess}
+        onSaveAndAddAnother={handleSubmit((data) => onSubmit(data, false))}
+        onSaveAndClose={handleSubmit((data) => onSubmit(data, true))}
+        isPending={isPending}
+      />
+    </div>
   );
 };
 ```
 
 **Key points:**
+- Uses React Admin `Form` with `createFormResolver(quickAddSchema)` (CORE-018 compliant, not direct `zodResolver`)
+- Form split: `QuickAddForm` (wrapper with Form context) + `QuickAddFormContent` (inner with `useFormContext`)
+- Section extraction: `OpportunityDetailsSection`, `ContactInformationSection`, `LocationNotesSection`, `QuickAddFormActions`
 - Schema defaults as single source of truth, merged with localStorage
 - `useWatch()` for isolated re-renders (NOT `watch()` which causes full form re-render)
-- "Save & Add Another" resets form but preserves campaign/principal context
-- Focus management: auto-focus first name field after reset
-- Visual grouping: pre-filled fields in `bg-success/10` background
+- "Save & Add Another" resets form but preserves campaign/principal/account_manager context
+- Focus management: auto-focus first name field after reset via `setFocus("first_name")`
 
 **Enhanced implementation notes:**
 - **useFilteredProducts hook:** Products are filtered by selected principal, with `isReady` flag to show placeholder until principal selected
@@ -729,12 +781,27 @@ export const OpportunityCard = React.memo(function OpportunityCard({
 ```
 
 **Key points:**
-- Custom collision detection: `pointerWithin` > `rectIntersection` > `closestCorners`
+- Custom collision detection: `pointerWithin` > `rectIntersection` > `closestCorners` (column-prioritized)
 - Optimistic UI: Update state immediately, rollback on API error
 - `React.memo` on cards for performance
 - 44px touch targets for drag handles
 - Accessibility announcements for screen readers
 - `useSensor` with `distance: 8` to prevent accidental drags on click
+
+**Close stage intercept:**
+- `CloseOpportunityModal` shown when dragging to `closed_won` or `closed_lost`
+- Collects win/loss reason before completing the stage transition
+- `validateCloseOpportunity` guard enforces required close data (from `@/atomic-crm/validation/opportunities`)
+- Cancel reverts the optimistic UI update to the previous state
+
+**Targeted query key invalidation:**
+- On successful stage change, invalidates `activityKeys.lists()`, `opportunityKeys.lists()`, and `entityTimelineKeys.lists()`
+- Uses query key factories from `@/atomic-crm/queryKeys` (not nuclear invalidation per STALE-008)
+
+**Optimistic list operations:**
+- `handleDeleteOpportunity`: Removes opportunity from local state immediately, closes slide-over if viewing the deleted record
+- `handleOpportunityCreated`: Inserts new opportunity at the start of its stage array for instant visibility
+- Both operations trigger `refresh()` to eventually sync with server data
 
 ---
 
@@ -785,7 +852,16 @@ export function OpportunitySlideOver({
       canEdit={canEdit}
       tabs={tabs}
       recordRepresentation={(record) => record.name || `Opportunity #${record.id}`}
-      headerActions={(record) => <QuickAddTaskButton opportunityId={record.id} />}
+      headerActions={(record) => (
+        <>
+          <FavoriteToggleButton
+            entityType="opportunities"
+            entityId={Number(record.id)}
+            displayName={record.name || `Opportunity #${record.id}`}
+          />
+          <QuickAddTaskButton opportunityId={Number(record.id)} />
+        </>
+      )}
     />
   );
 }
@@ -836,7 +912,8 @@ export function useSlideOverState(): UseSlideOverStateReturn {
 - Hash-based routing support for React Admin compatibility
 - Permission-based `canEdit` prop controls edit button visibility
 - Tab configuration with icons and count badges
-- `headerActions` prop for custom action buttons (e.g., QuickAddTaskButton)
+- `headerActions` prop for custom action buttons: `FavoriteToggleButton` and `QuickAddTaskButton`
+- `useRecentSearches` hook tracks viewed records for recent search suggestions
 - Escape key closes slide-over (handled by hook)
 
 ---
@@ -850,7 +927,8 @@ Opportunities grouped by principal/campaign with status priority sorting (red fi
 ```tsx
 // src/atomic-crm/opportunities/PrincipalGroupedList.tsx
 import { useListContext } from "ra-core";
-import { getStageStatus, type StageStatus } from "./constants";
+import { getStageStatus, type StageStatus, STAGE_ORDER, STAGE } from "./constants";
+import { parseDateSafely } from "@/lib/date-utils";
 
 // Status priority for sorting (red first)
 function getStatusPriority(status: StageStatus): number {
@@ -863,25 +941,26 @@ function getStatusPriority(status: StageStatus): number {
   }
 }
 
-// Stage order for secondary sort (earlier stages first)
-const STAGE_ORDER: Record<string, number> = {
-  new_lead: 0, initial_outreach: 1, sample_visit_offered: 2,
-  feedback_logged: 3, demo_scheduled: 4, closed_won: 5, closed_lost: 6,
-};
+// STAGE_ORDER imported from ./constants:
+// { new_lead: 0, initial_outreach: 1, sample_visit_offered: 2,
+//   feedback_logged: 3, demo_scheduled: 4, closed_won: 5, closed_lost: 6 }
 
 // Sort: Red status first -> Earlier stages -> Most days since activity
 function sortOpportunities(opportunities: Opportunity[]): Opportunity[] {
-  return [...opportunities].sort((a, b) => {
-    const aStatus = getStageStatus(a.stage, a.days_in_stage, a.estimated_close_date);
-    const bStatus = getStageStatus(b.stage, b.days_in_stage, b.estimated_close_date);
+  return opportunities.toSorted((a, b) => {
+    const aDate = a.estimated_close_date ? parseDateSafely(a.estimated_close_date) : null;
+    const bDate = b.estimated_close_date ? parseDateSafely(b.estimated_close_date) : null;
+    const aStatus = getStageStatus(a.stage || "", a.days_in_stage || 0, aDate);
+    const bStatus = getStageStatus(b.stage || "", b.days_in_stage || 0, bDate);
 
     // Primary: Status priority (red first)
     const statusDiff = getStatusPriority(aStatus) - getStatusPriority(bStatus);
     if (statusDiff !== 0) return statusDiff;
 
     // Secondary: Stage order (earlier stages first for active)
-    const stageDiff = (STAGE_ORDER[a.stage] ?? 99) - (STAGE_ORDER[b.stage] ?? 99);
-    if (stageDiff !== 0) return stageDiff;
+    const aOrder = STAGE_ORDER[a.stage || ""] ?? 99;
+    const bOrder = STAGE_ORDER[b.stage || ""] ?? 99;
+    if (aOrder !== bOrder) return aOrder - bOrder;
 
     // Tertiary: Days since last activity (most days first)
     return (b.days_since_last_activity ?? 0) - (a.days_since_last_activity ?? 0);
@@ -909,7 +988,7 @@ export const PrincipalGroupedList = ({ openSlideOver }) => {
 
   return (
     <div className="flex gap-3 overflow-x-auto" role="region" aria-label="By principal">
-      {Object.keys(groupedData).sort().map((principalName) => (
+      {Object.keys(groupedData).toSorted().map((principalName) => (
         <PrincipalColumn
           key={principalName}
           principalName={principalName}
@@ -950,106 +1029,6 @@ const PrincipalColumn = ({ principalName, opportunities, metrics, openSlideOver 
 - Column headers show count and win rate metrics
 - Only active (non-closed) opportunities shown in columns
 - Principal color stripe via CSS custom properties (`--principal-{slug}`)
-
----
-
-## Pattern H: Speed Dial FAB
-
-Material Design FAB pattern for quick actions with fan-out animation.
-
-**When to use:** Providing quick access to create actions from list views.
-
-```tsx
-// src/atomic-crm/opportunities/OpportunitySpeedDial.tsx
-import { Plus, X, Zap, ClipboardList } from "lucide-react";
-import { cn } from "@/lib/utils";
-
-export const OpportunitySpeedDial = ({ className }: Props) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [isQuickAddOpen, setIsQuickAddOpen] = useState(false);
-  const createPath = useCreatePath();
-
-  const actions: SpeedDialAction[] = [
-    {
-      icon: Zap,
-      label: "Quick Add",
-      onClick: () => { setIsQuickAddOpen(true); setIsOpen(false); },
-    },
-    {
-      icon: ClipboardList,
-      label: "Full Form",
-      href: createPath({ resource: "opportunities", type: "create" }),
-    },
-  ];
-
-  // Close menu on Escape key
-  useEffect(() => {
-    const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === "Escape" && isOpen) setIsOpen(false);
-    };
-    if (isOpen) {
-      document.addEventListener("keydown", handleEscape);
-      return () => document.removeEventListener("keydown", handleEscape);
-    }
-  }, [isOpen]);
-
-  return (
-    <>
-      <div className="fixed bottom-4 right-4 md:bottom-6 md:right-6 z-50">
-        {/* Speed Dial Actions - positioned ABOVE the FAB */}
-        {isOpen && (
-          <div
-            role="menu"
-            className="absolute bottom-full right-0 mb-3 flex flex-col items-end gap-2 animate-in fade-in-0 slide-in-from-bottom-2"
-          >
-            {actions.map((action, index) => (
-              <AdminButton
-                key={index}
-                role="menuitem"
-                onClick={action.onClick}
-                className="h-11 px-4 gap-2 bg-background hover:bg-accent border shadow-md"
-              >
-                <action.icon className="size-5" />
-                <span>{action.label}</span>
-              </AdminButton>
-            ))}
-          </div>
-        )}
-
-        {/* Main FAB - 56px diameter */}
-        <AdminButton
-          onClick={() => setIsOpen(!isOpen)}
-          aria-haspopup="menu"
-          aria-expanded={isOpen}
-          className="size-14 rounded-full bg-primary shadow-lg p-0"
-        >
-          <span className="grid place-items-center size-6">
-            <Plus className={cn(
-              "col-start-1 row-start-1 transition-all duration-200",
-              isOpen ? "rotate-45 opacity-0" : "rotate-0 opacity-100"
-            )} />
-            <X className={cn(
-              "col-start-1 row-start-1 transition-all duration-200",
-              isOpen ? "rotate-0 opacity-100" : "-rotate-45 opacity-0"
-            )} />
-          </span>
-        </AdminButton>
-      </div>
-
-      <QuickAddDialog open={isQuickAddOpen} onOpenChange={setIsQuickAddOpen} />
-    </>
-  );
-};
-```
-
-**Key points:**
-- FAB size: 56px (`size-14`) per Material Design spec
-- Touch targets: 44px minimum (`h-11`) for action buttons
-- Icon rotation animation: Plus rotates to X when open
-- Fan-out animation: actions slide in from bottom
-- ARIA menu pattern for accessibility
-- Escape key closes menu
-- Actions can be onClick handlers or href links
 
 ---
 
@@ -1146,15 +1125,15 @@ export function useColumnPreferences() {
 
 ### Create Flows
 
-| Aspect | Pattern C (Wizard) | Pattern D (Quick Add) |
-|--------|-------------------|----------------------|
+| Aspect | Pattern C (Collapsible Single-Page Form) | Pattern D (Quick Add) |
+|--------|-------------------------------------------|----------------------|
 | **Entry Point** | Full page | Dialog modal |
 | **Time to complete** | 2-5 minutes | 30 seconds |
-| **Fields** | All fields (4 steps) | Essential fields only |
+| **Fields** | All fields (collapsible sections) | Essential fields only |
 | **Use case** | Complete opportunity creation | Trade show lead capture |
-| **Form library** | React Admin Form | react-hook-form |
-| **Validation** | Step-by-step | All at once |
-| **Context persistence** | N/A | Campaign/Principal saved |
+| **Form library** | React Admin Form | React Admin Form |
+| **Validation** | All at once (onSubmit) | All at once (onBlur) |
+| **Context persistence** | URL param pre-fill | Campaign/Principal saved |
 
 ### View Modes
 
@@ -1255,21 +1234,19 @@ When adding a new view mode:
 
 1. [ ] Add type to `OpportunityView` union
 2. [ ] Add toggle button to `OpportunityViewSwitcher`
-3. [ ] Add case to view router in `OpportunityListLayout`
+3. [ ] Add case to view router in `OpportunityListViews` (inside `UnifiedListPageLayout`)
 4. [ ] Update localStorage validation in `getViewPreference`
 5. [ ] Add empty state handling
 6. [ ] Add loading skeleton
 7. [ ] Test slide-over integration (`openSlideOver` prop)
 
-When adding a new wizard step:
+When adding a new collapsible form section:
 
-1. [ ] Create step component in `forms/OpportunityWizardSteps.tsx`
-2. [ ] Add step config to `OPPORTUNITY_WIZARD_STEPS` array
-3. [ ] Add required field names to step's `fields` array
-4. [ ] Export step component
-5. [ ] Add `WizardStep` wrapper in wizard
-6. [ ] Test step navigation and validation
-7. [ ] Verify form data persists across steps
+1. [ ] Add `FormSectionWithProgress` or `CollapsibleSection` in `OpportunityCompactForm.tsx`
+2. [ ] Add required field names to the section's `requiredFields` array (if using `FormSectionWithProgress`)
+3. [ ] Update progress tracking if applicable
+4. [ ] Test section collapse/expand behavior
+5. [ ] Verify form validation includes the new fields
 
 When adding a new slide-over tab:
 

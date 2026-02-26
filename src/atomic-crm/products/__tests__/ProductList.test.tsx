@@ -44,11 +44,6 @@ interface MockDatagridColumnProps {
   source?: string;
 }
 
-interface MockLayoutProps {
-  children?: React.ReactNode;
-  filterComponent?: React.ReactNode;
-}
-
 interface MockBadgeProps {
   children?: React.ReactNode;
   variant?: string;
@@ -59,6 +54,13 @@ interface MockFilterableBadgeProps {
   source?: string;
   value?: string;
 }
+
+// Shared mock state for ListPageLayout (vi.hoisted runs before vi.mock factories)
+const mockListState = vi.hoisted(() => ({
+  data: [] as Record<string, unknown>[],
+  isPending: false,
+  filterValues: {} as Record<string, unknown>,
+}));
 
 // Mock dependencies
 vi.mock("ra-core", async () => {
@@ -299,15 +301,57 @@ vi.mock("../ProductsDatagridHeader", () => ({
   ProductStatusHeader: () => <span data-testid="product-status-header">Status</span>,
 }));
 
-// Mock StandardListLayout
-vi.mock("@/components/layouts/StandardListLayout", () => ({
-  StandardListLayout: ({ children, filterComponent }: MockLayoutProps) => (
-    <div data-testid="standard-list-layout">
-      <div data-testid="filter-sidebar">{filterComponent}</div>
-      <div data-testid="list-content">{children}</div>
-    </div>
-  ),
-}));
+// Mock ListPageLayout - replicates state-branching logic from real component
+// Reads from mockListState (shared via vi.hoisted) instead of calling useListContext
+vi.mock("@/components/layouts/ListPageLayout", () => {
+  const EMPTY_STATE_SYSTEM_KEYS = new Set(["deleted_at", "deleted_at@is", "$or"]);
+
+  return {
+    ListPageLayout: ({
+      children,
+      filterComponent,
+      emptyState,
+      filteredEmptyState,
+      loadingSkeleton,
+      bulkActions,
+    }: {
+      children?: React.ReactNode;
+      filterComponent?: React.ReactNode;
+      emptyState?: React.ReactNode;
+      filteredEmptyState?: React.ReactNode;
+      loadingSkeleton?: React.ReactNode;
+      bulkActions?: React.ReactNode;
+      [key: string]: unknown;
+    }) => {
+      const { data, isPending, filterValues } = mockListState;
+
+      const hasUserFilters =
+        filterValues &&
+        Object.keys(filterValues).some((key: string) => !EMPTY_STATE_SYSTEM_KEYS.has(key));
+
+      let content = children;
+      if (isPending) {
+        content = loadingSkeleton ?? <div>Loading...</div>;
+      } else if (!data?.length) {
+        if (hasUserFilters) {
+          content = filteredEmptyState ?? <div data-testid="list-no-results">No results</div>;
+        } else if (emptyState) {
+          content = emptyState;
+        }
+      }
+
+      return (
+        <>
+          <div data-testid="standard-list-layout">
+            <div data-testid="filter-sidebar">{filterComponent}</div>
+            <div data-testid="list-content">{content}</div>
+          </div>
+          {bulkActions && <div data-testid="bulk-actions-toolbar">{bulkActions}</div>}
+        </>
+      );
+    },
+  };
+});
 
 // Mock List component
 vi.mock("@/components/ra-wrappers/list", () => ({
@@ -321,13 +365,11 @@ vi.mock("../ProductEmpty", () => ({
   ProductEmpty: () => <div data-testid="product-empty">No products</div>,
 }));
 
-// Mock FloatingCreateButton
-vi.mock("@/components/ra-wrappers/FloatingCreateButton", () => ({
-  FloatingCreateButton: () => <button data-testid="floating-create">Create</button>,
-}));
-
 vi.mock("@/components/ra-wrappers/bulk-actions-toolbar", () => ({
-  BulkActionsToolbar: () => <div data-testid="bulk-actions-toolbar">Bulk Actions</div>,
+  BulkActionsToolbar: ({ children }: { children?: React.ReactNode }) => (
+    <div data-testid="bulk-actions-toolbar">{children || "Bulk Actions"}</div>
+  ),
+  BulkActionsToolbarChildren: () => <div data-testid="bulk-actions-children">Export Delete</div>,
 }));
 
 // Mock ProductListFilter
@@ -443,6 +485,11 @@ describe("ProductList", () => {
       total: 0,
       isPending: false,
     });
+
+    // Sync shared mock state for ListPageLayout
+    mockListState.data = defaultListContext.data;
+    mockListState.isPending = defaultListContext.isPending;
+    mockListState.filterValues = defaultListContext.filterValues;
   });
 
   afterEach(() => {
@@ -481,7 +528,7 @@ describe("ProductList", () => {
     });
   });
 
-  test("renders with StandardListLayout and filter sidebar", async () => {
+  test("renders with ListPageLayout and filter sidebar", async () => {
     renderWithAdminContext(<ProductList />);
 
     await waitFor(() => {
@@ -500,6 +547,9 @@ describe("ProductList", () => {
     };
 
     vi.mocked(useListContext).mockReturnValue(emptyContext);
+    mockListState.data = [];
+    mockListState.isPending = false;
+    mockListState.filterValues = {};
 
     renderWithAdminContext(<ProductList />);
 
@@ -509,7 +559,7 @@ describe("ProductList", () => {
     });
   });
 
-  test("renders datagrid when filters are applied even if no results", async () => {
+  test("renders filtered empty state when filters are applied with no results", async () => {
     const emptyWithFiltersContext = {
       ...defaultListContext,
       data: [],
@@ -518,12 +568,16 @@ describe("ProductList", () => {
     };
 
     vi.mocked(useListContext).mockReturnValue(emptyWithFiltersContext);
+    mockListState.data = [];
+    mockListState.isPending = false;
+    mockListState.filterValues = { category: "oils" };
 
     renderWithAdminContext(<ProductList />);
 
     await waitFor(() => {
-      const datagrid = screen.getByTestId("premium-datagrid");
-      expect(datagrid).toBeInTheDocument();
+      // With ListPageLayout, filtered empty shows ListNoResults instead of datagrid
+      expect(screen.queryByTestId("premium-datagrid")).not.toBeInTheDocument();
+      expect(screen.getByTestId("list-no-results")).toBeInTheDocument();
     });
   });
 });
@@ -538,6 +592,18 @@ describe("ProductList 5-column structure", () => {
    * 5. Certifications - Badges list (non-sortable)
    */
 
+  const columnTestData = [
+    {
+      id: 1,
+      name: "Test Product",
+      sku: "TST-001",
+      category: "dry_goods",
+      status: "active",
+      principal_id: 1,
+      certifications: ["Organic"],
+    },
+  ];
+
   beforeEach(() => {
     vi.clearAllMocks();
     sortableColumns.length = 0;
@@ -549,17 +615,7 @@ describe("ProductList 5-column structure", () => {
     });
 
     vi.mocked(useListContext).mockReturnValue({
-      data: [
-        {
-          id: 1,
-          name: "Test Product",
-          sku: "TST-001",
-          category: "dry_goods",
-          status: "active",
-          principal_id: 1,
-          certifications: ["Organic"],
-        },
-      ],
+      data: columnTestData,
       total: 1,
       isPending: false,
       isLoading: false,
@@ -579,6 +635,11 @@ describe("ProductList 5-column structure", () => {
       hasNextPage: false,
       hasPreviousPage: false,
     });
+
+    // Sync shared mock state for ListPageLayout
+    mockListState.data = columnTestData;
+    mockListState.isPending = false;
+    mockListState.filterValues = {};
   });
 
   test("renders 5 columns: Name, Category, Status, Principal, Certifications", async () => {
@@ -614,6 +675,18 @@ describe("ProductList column sorting configuration", () => {
    * - Certifications: NOT sortable (badges list)
    */
 
+  const sortingTestData = [
+    {
+      id: 1,
+      name: "Test Product",
+      sku: "TST-001",
+      category: "dry_goods",
+      status: "active",
+      principal_id: 1,
+      certifications: ["Organic"],
+    },
+  ];
+
   beforeEach(() => {
     vi.clearAllMocks();
     sortableColumns.length = 0;
@@ -625,17 +698,7 @@ describe("ProductList column sorting configuration", () => {
     });
 
     vi.mocked(useListContext).mockReturnValue({
-      data: [
-        {
-          id: 1,
-          name: "Test Product",
-          sku: "TST-001",
-          category: "dry_goods",
-          status: "active",
-          principal_id: 1,
-          certifications: ["Organic"],
-        },
-      ],
+      data: sortingTestData,
       total: 1,
       isPending: false,
       isLoading: false,
@@ -655,6 +718,11 @@ describe("ProductList column sorting configuration", () => {
       hasNextPage: false,
       hasPreviousPage: false,
     });
+
+    // Sync shared mock state for ListPageLayout
+    mockListState.data = sortingTestData;
+    mockListState.isPending = false;
+    mockListState.filterValues = {};
   });
 
   test("Name column is sortable", async () => {
@@ -718,6 +786,18 @@ describe("ProductList badge components", () => {
    * - CertificationBadges for certifications with overflow handling
    */
 
+  const badgeTestData = [
+    {
+      id: 1,
+      name: "Test Product",
+      sku: "TST-001",
+      category: "dry_goods",
+      status: "active",
+      principal_id: 1,
+      certifications: ["Organic", "Non-GMO", "Kosher", "Halal"],
+    },
+  ];
+
   beforeEach(() => {
     vi.clearAllMocks();
     sortableColumns.length = 0;
@@ -729,17 +809,7 @@ describe("ProductList badge components", () => {
     });
 
     vi.mocked(useListContext).mockReturnValue({
-      data: [
-        {
-          id: 1,
-          name: "Test Product",
-          sku: "TST-001",
-          category: "dry_goods",
-          status: "active",
-          principal_id: 1,
-          certifications: ["Organic", "Non-GMO", "Kosher", "Halal"],
-        },
-      ],
+      data: badgeTestData,
       total: 1,
       isPending: false,
       isLoading: false,
@@ -759,6 +829,11 @@ describe("ProductList badge components", () => {
       hasNextPage: false,
       hasPreviousPage: false,
     });
+
+    // Sync shared mock state for ListPageLayout
+    mockListState.data = badgeTestData;
+    mockListState.isPending = false;
+    mockListState.filterValues = {};
   });
 
   test("Category column uses FilterableBadge wrapper", async () => {

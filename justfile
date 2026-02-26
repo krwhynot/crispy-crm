@@ -68,7 +68,9 @@ test-audit-nightly:
 test-audit-pr:
     npx vitest run src/atomic-crm/reports/__tests__/closed-stages-alignment.test.ts src/atomic-crm/dashboard/__tests__/kpi-metric-snapshot.test.ts
 
-# Seed E2E test data
+# Seed E2E test data (dashboard-v3 fixtures: opportunities, activities, etc.)
+# NOTE: Organization hierarchy data (parent/child companies) is in seed.sql
+# and applied automatically by `just db-reset`. No separate step needed.
 seed-e2e:
     npm run seed:e2e:dashboard-v3
 

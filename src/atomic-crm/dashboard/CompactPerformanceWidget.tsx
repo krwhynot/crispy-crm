@@ -81,7 +81,7 @@ function CompactMetricItem({ type, metric, onClick }: CompactMetricItemProps) {
 
   return (
     <div
-      className="flex items-center gap-2 rounded-md p-1.5 min-h-[44px] cursor-pointer hover:bg-muted/50 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1"
+      className="flex items-center gap-3 rounded-md p-1.5 min-h-[44px] cursor-pointer hover:bg-muted/50 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1"
       role="button"
       tabIndex={0}
       onClick={onClick}
@@ -102,7 +102,7 @@ function CompactMetricItem({ type, metric, onClick }: CompactMetricItemProps) {
       <div className="flex-1 min-w-0">
         <p className="text-xs text-muted-foreground truncate">{config.label}</p>
         <div className="flex items-center gap-1">
-          <span className="text-base font-semibold text-foreground">
+          <span className="text-lg font-semibold text-foreground [font-family:var(--font-serif)]">
             {metric.value.toLocaleString()}
           </span>
           {(metric.previousValue > 0 || metric.value > 0) && (
@@ -157,12 +157,14 @@ export function CompactPerformanceWidget() {
 
   return (
     <Card className="flex flex-col" data-tutorial="dashboard-compact-performance">
-      <CardHeader className="py-2 px-3 shrink-0">
-        <CardTitle className="text-sm font-medium">My Performance</CardTitle>
+      <CardHeader className="py-2 px-3 shrink-0 border-b border-[var(--paper-divider)]">
+        <CardTitle className="text-sm font-medium [font-family:var(--font-serif)] tracking-[-0.01em]">
+          My Performance
+        </CardTitle>
       </CardHeader>
       <CardContent className="flex-1 px-3 pb-3">
         <div
-          className="grid grid-cols-2 gap-2"
+          className="grid grid-cols-2 gap-3"
           role="region"
           aria-label="Personal performance metrics"
         >

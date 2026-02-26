@@ -96,7 +96,7 @@ Based on test distribution analysis, these areas need additional testing:
 
 | File/Area | Missing Tests | Priority |
 |-----------|--------------|----------|
-| `unifiedDataProvider.ts` | Edge cases for all 9 resources | P0 |
+| `composedDataProvider.ts` | Edge cases for all 9 resources | P0 |
 | Zod schemas | Boundary value tests for `.max()` constraints | P0 |
 | RLS policies | Row-level security verification | P0 |
 

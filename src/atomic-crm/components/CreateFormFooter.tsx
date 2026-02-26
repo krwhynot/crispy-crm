@@ -74,6 +74,7 @@ export const CreateFormFooter = ({
         />
         <SaveButton
           type="button"
+          variant="secondary"
           label="Save & Add Another"
           alwaysEnable
           mutationOptions={{

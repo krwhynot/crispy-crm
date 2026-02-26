@@ -184,66 +184,77 @@ SELECT lives_ok(
 -- Switch to anonymous role
 SET LOCAL ROLE anon;
 
+-- Tests 11-20: Anonymous user is DENIED access (no table grants for anon role).
+-- PostgreSQL raises "permission denied for table X" before RLS is even evaluated.
+
 -- Test 11: Anonymous user cannot SELECT from contacts
--- NOTE: PostgreSQL RLS returns 0 rows for roles without matching policies (not permission denied)
--- This is correct security behavior - anon users see nothing
-SELECT is_empty(
-  $$ SELECT * FROM contacts $$,
-  'Anonymous user gets empty results from contacts (RLS filters all rows)'
+SELECT throws_ok(
+  $$ SELECT * FROM contacts LIMIT 1 $$,
+  'permission denied for table contacts',
+  'Anonymous user is denied access to contacts (no table grants)'
 );
 
 -- Test 12: Anonymous user cannot SELECT from organizations
-SELECT is_empty(
-  $$ SELECT * FROM organizations $$,
-  'Anonymous user gets empty results from organizations (RLS filters all rows)'
+SELECT throws_ok(
+  $$ SELECT * FROM organizations LIMIT 1 $$,
+  'permission denied for table organizations',
+  'Anonymous user is denied access to organizations (no table grants)'
 );
 
 -- Test 13: Anonymous user cannot SELECT from activities
-SELECT is_empty(
-  $$ SELECT * FROM activities $$,
-  'Anonymous user gets empty results from activities (RLS filters all rows)'
+SELECT throws_ok(
+  $$ SELECT * FROM activities LIMIT 1 $$,
+  'permission denied for table activities',
+  'Anonymous user is denied access to activities (no table grants)'
 );
 
 -- Test 14: Anonymous user cannot SELECT from opportunities
-SELECT is_empty(
-  $$ SELECT * FROM opportunities $$,
-  'Anonymous user gets empty results from opportunities (RLS filters all rows)'
+SELECT throws_ok(
+  $$ SELECT * FROM opportunities LIMIT 1 $$,
+  'permission denied for table opportunities',
+  'Anonymous user is denied access to opportunities (no table grants)'
 );
 
 -- Test 15: Anonymous user cannot SELECT from products
-SELECT is_empty(
-  $$ SELECT * FROM products $$,
-  'Anonymous user gets empty results from products (RLS filters all rows)'
+SELECT throws_ok(
+  $$ SELECT * FROM products LIMIT 1 $$,
+  'permission denied for table products',
+  'Anonymous user is denied access to products (no table grants)'
 );
 
 -- Test 16: Anonymous user cannot SELECT from segments
-SELECT is_empty(
-  $$ SELECT * FROM segments $$,
-  'Anonymous user gets empty results from segments (RLS filters all rows)'
+SELECT throws_ok(
+  $$ SELECT * FROM segments LIMIT 1 $$,
+  'permission denied for table segments',
+  'Anonymous user is denied access to segments (no table grants)'
 );
 
 -- Test 17: Anonymous user cannot SELECT from tags
-SELECT is_empty(
-  $$ SELECT * FROM tags $$,
-  'Anonymous user gets empty results from tags (RLS filters all rows)'
+SELECT throws_ok(
+  $$ SELECT * FROM tags LIMIT 1 $$,
+  'permission denied for table tags',
+  'Anonymous user is denied access to tags (no table grants)'
 );
 
 -- Test 18: Anonymous user cannot SELECT from contact_notes
-SELECT is_empty(
-  $$ SELECT * FROM contact_notes $$,
-  'Anonymous user gets empty results from contact_notes (RLS filters all rows)'
+SELECT throws_ok(
+  $$ SELECT * FROM contact_notes LIMIT 1 $$,
+  'permission denied for table contact_notes',
+  'Anonymous user is denied access to contact_notes (no table grants)'
 );
 
 -- Test 19: Anonymous user cannot SELECT from organization_notes
-SELECT is_empty(
-  $$ SELECT * FROM organization_notes $$,
-  'Anonymous user gets empty results from organization_notes (RLS filters all rows)'
+SELECT throws_ok(
+  $$ SELECT * FROM organization_notes LIMIT 1 $$,
+  'permission denied for table organization_notes',
+  'Anonymous user is denied access to organization_notes (no table grants)'
 );
 
 -- Test 20: Anonymous user cannot SELECT from opportunity_notes
-SELECT is_empty(
-  $$ SELECT * FROM opportunity_notes $$,
-  'Anonymous user gets empty results from opportunity_notes (RLS filters all rows)'
+SELECT throws_ok(
+  $$ SELECT * FROM opportunity_notes LIMIT 1 $$,
+  'permission denied for table opportunity_notes',
+  'Anonymous user is denied access to opportunity_notes (no table grants)'
 );
 
 -- ============================================================================

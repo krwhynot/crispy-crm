@@ -3,6 +3,7 @@ import { Calendar, CheckSquare, User } from "lucide-react";
 
 import { ToggleFilterButton } from "@/components/ra-wrappers/toggle-filter-button";
 import { FilterCategory } from "../filters/FilterCategory";
+import { FilterSidebar } from "../filters/FilterSidebar";
 import { OwnerFilterDropdown } from "@/components/ra-wrappers/OwnerFilterDropdown";
 
 /**
@@ -13,7 +14,7 @@ import { OwnerFilterDropdown } from "@/components/ra-wrappers/OwnerFilterDropdow
  */
 export const TaskListFilter = () => {
   return (
-    <div className="flex flex-col gap-2">
+    <FilterSidebar showSearch={false}>
       <FilterCategory label="Due Date" icon={<Calendar className="h-4 w-4" />}>
         <ToggleFilterButton
           className="w-full justify-between"
@@ -57,6 +58,6 @@ export const TaskListFilter = () => {
       <FilterCategory label="Assigned To" icon={<User className="h-4 w-4" />}>
         <OwnerFilterDropdown source="sales_id" label="Assigned To" />
       </FilterCategory>
-    </div>
+    </FilterSidebar>
   );
 };

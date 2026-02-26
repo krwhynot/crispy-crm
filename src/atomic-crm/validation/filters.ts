@@ -18,15 +18,17 @@ export type FilterValue = z.infer<typeof filterValueSchema>;
  * Schema for validating React Admin list params from localStorage.
  * Uses .passthrough() to allow extra fields from React Admin.
  */
+/**
+ * React Admin stores list params with flat sort fields:
+ *   { sort: "field_name", order: "ASC", filter: {...}, page: 1, perPage: 10 }
+ * NOT nested: { sort: { field: "...", order: "..." } }
+ * See ra-core/src/controller/list/queryReducer.ts SET_SORT action.
+ */
 export const listParamsSchema = z
   .object({
     filter: z.record(z.string().max(50), z.unknown()).optional(),
-    sort: z
-      .object({
-        field: z.string().max(100),
-        order: z.enum(["ASC", "DESC"]),
-      })
-      .optional(),
+    sort: z.string().max(100).optional(),
+    order: z.enum(["ASC", "DESC"]).optional(),
     page: z.number().int().positive().optional(),
     perPage: z.number().int().positive().max(1000).optional(),
     displayedFilters: z.record(z.string().max(50), z.boolean()).optional(),

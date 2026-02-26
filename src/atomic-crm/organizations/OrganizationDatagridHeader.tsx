@@ -1,24 +1,8 @@
 /**
  * OrganizationDatagridHeader
  *
- * Provides filterable column header labels for the Organizations datagrid.
- * Uses FilterableColumnHeader components that integrate with React Admin's
- * filter state via useListContext.
- *
- * Column Configuration:
- * - Name: Text filter (debounced search)
- * - Type: Checkbox filter (multi-select from ORGANIZATION_TYPE_CHOICES)
- * - Priority: Checkbox filter (multi-select from PRIORITY_CHOICES)
- * - Parent, Contacts, Opportunities: No filter (reference/computed fields)
- *
- * @example
- * ```tsx
- * <TextField
- *   source="name"
- *   label={<OrganizationNameHeader />}
- *   sortable
- * />
- * ```
+ * Column headers for the Organizations datagrid with integrated filters.
+ * Text and checkbox filters are embedded in column headers via FilterableColumnHeader.
  */
 
 import { FilterableColumnHeader } from "@/components/ra-wrappers/column-filters";
@@ -28,28 +12,11 @@ import {
   US_STATES,
   SEGMENT_CHOICES,
 } from "./constants";
-import { SEARCH_DEBOUNCE_MS } from "@/atomic-crm/constants";
 
-/**
- * Filterable header for Organization Name column
- * Uses text filter with debounced search
- */
 export function OrganizationNameHeader() {
-  return (
-    <FilterableColumnHeader
-      source="name"
-      label="Organization Name"
-      filterType="text"
-      placeholder="Search by name..."
-      debounceMs={SEARCH_DEBOUNCE_MS}
-    />
-  );
+  return <FilterableColumnHeader source="name" label="Organization Name" filterType="text" />;
 }
 
-/**
- * Filterable header for Organization Type column
- * Uses checkbox filter with multi-select
- */
 export function OrganizationTypeHeader() {
   return (
     <FilterableColumnHeader
@@ -61,10 +28,6 @@ export function OrganizationTypeHeader() {
   );
 }
 
-/**
- * Filterable header for Priority column
- * Uses checkbox filter with multi-select
- */
 export function OrganizationPriorityHeader() {
   return (
     <FilterableColumnHeader
@@ -76,13 +39,6 @@ export function OrganizationPriorityHeader() {
   );
 }
 
-/**
- * Filterable header for State column
- * Uses checkbox filter with multi-select for all 50 US states
- *
- * IMPORTANT: Uses state codes (id: "IN") not full names (name: "Indiana")
- * The CheckboxColumnFilter has built-in scroll (max-h-64) for large lists
- */
 export function OrganizationStateHeader() {
   return (
     <FilterableColumnHeader
@@ -94,15 +50,6 @@ export function OrganizationStateHeader() {
   );
 }
 
-/**
- * Filterable header for Segment column
- * Uses checkbox filter with ALL segments (playbook + operator)
- *
- * Shows ALL 25+ segments (9 playbook + 16+ operator) with built-in scroll
- * Follows State column pattern (50 US states) with CheckboxColumnFilter's max-h-64 scroll
- *
- * IMPORTANT: Filters by segment_id (UUID), not segment_name
- */
 export function OrganizationSegmentHeader() {
   return (
     <FilterableColumnHeader

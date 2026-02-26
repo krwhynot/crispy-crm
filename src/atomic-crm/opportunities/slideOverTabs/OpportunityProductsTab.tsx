@@ -109,6 +109,7 @@ export function OpportunityProductsTab({
           previousData: record,
         },
         {
+          returnPromise: true,
           onSuccess: async () => {
             success(notificationMessages.updated("Products"));
 

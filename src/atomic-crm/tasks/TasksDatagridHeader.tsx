@@ -1,61 +1,18 @@
 /**
  * TasksDatagridHeader
  *
- * Provides filterable column header labels for the Tasks datagrid.
- * Uses FilterableColumnHeader components that integrate with React Admin's
- * filter state via useListContext.
- *
- * Column Configuration:
- * - Title: Text filter (debounced search)
- * - Priority: Checkbox filter (multi-select from TASK_PRIORITY_CHOICES)
- * - Type: Checkbox filter (dynamic from ConfigurationContext)
- * - Done, Due Date, Assigned To, Contact, Opportunity: No filter
- *
- * @example
- * ```tsx
- * <TextField
- *   source="title"
- *   label={<TaskTitleHeader />}
- *   sortable
- * />
- * ```
+ * Column headers for the Tasks datagrid with integrated filters.
+ * Type uses dynamic choices from ConfigurationContext.
  */
 
 import { FilterableColumnHeader } from "@/components/ra-wrappers/column-filters";
+import { TASK_PRIORITY_CHOICES } from "./constants";
 import { useFormOptions } from "../root/ConfigurationContext";
-import { SEARCH_DEBOUNCE_MS } from "@/atomic-crm/constants";
 
-/**
- * Task priority choices for column filter
- * Different from organization priorities (A-D) - tasks use severity scale
- */
-const TASK_PRIORITY_CHOICES = [
-  { id: "low", name: "Low" },
-  { id: "medium", name: "Medium" },
-  { id: "high", name: "High" },
-  { id: "critical", name: "Critical" },
-] as const;
-
-/**
- * Filterable header for Task Title column
- * Uses text filter with debounced search
- */
 export function TaskTitleHeader() {
-  return (
-    <FilterableColumnHeader
-      source="title"
-      label="Title"
-      filterType="text"
-      placeholder="Search tasks..."
-      debounceMs={SEARCH_DEBOUNCE_MS}
-    />
-  );
+  return <FilterableColumnHeader source="title" label="Title" filterType="text" />;
 }
 
-/**
- * Filterable header for Task Priority column
- * Uses checkbox filter with multi-select
- */
 export function TaskPriorityHeader() {
   return (
     <FilterableColumnHeader
@@ -67,22 +24,19 @@ export function TaskPriorityHeader() {
   );
 }
 
-/**
- * Filterable header for Task Type column
- * Uses checkbox filter with dynamic choices from ConfigurationContext
- */
 export function TaskTypeHeader() {
   const { taskTypes } = useFormOptions();
 
-  // Convert string array to FilterChoice format
-  const typeChoices = taskTypes.map((type) => ({ id: type, name: type }));
+  if (!taskTypes?.length) {
+    return <FilterableColumnHeader source="type" label="Type" filterType="none" />;
+  }
 
   return (
     <FilterableColumnHeader
       source="type"
       label="Type"
       filterType="checkbox"
-      choices={typeChoices}
+      choices={taskTypes.map((t) => ({ id: t, name: t }))}
     />
   );
 }

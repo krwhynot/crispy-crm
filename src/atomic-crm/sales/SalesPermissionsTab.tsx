@@ -6,6 +6,7 @@ import {
   useRedirect,
   useRefresh,
   useNotify,
+  useDataProvider,
 } from "react-admin";
 import { AdminButton } from "@/components/admin/AdminButton";
 import { Label } from "@/components/ui/label";
@@ -31,7 +32,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Trash2 } from "lucide-react";
+import { KeyRound, Trash2 } from "lucide-react";
 // NOTE: Client-side validation removed (2025-12-12)
 // Edge Function /users PATCH handles validation with patchUserSchema
 // salesService.salesUpdate() filters empty strings before sending to Edge Function
@@ -73,6 +74,10 @@ export function SalesPermissionsTab({
   const { data: identity } = useGetIdentity();
   // FIX [WF-C04]: Show reassign dialog before disabling user
   const [showDisableDialog, setShowDisableDialog] = useState(false);
+  const [isResettingPassword, setIsResettingPassword] = useState(false);
+  const dataProvider = useDataProvider() as ReturnType<typeof useDataProvider> & {
+    resetUserPassword?: (targetEmail: string) => Promise<boolean>;
+  };
 
   // Form state
   // Per Engineering Constitution #5: Form defaults from schema
@@ -99,6 +104,22 @@ export function SalesPermissionsTab({
 
   // Prevent editing own account
   const isSelfEdit = record?.id === identity?.id;
+
+  // Admin-initiated password reset for another user
+  const handleResetPassword = async () => {
+    if (!record?.email || !dataProvider.resetUserPassword) return;
+
+    try {
+      setIsResettingPassword(true);
+      await dataProvider.resetUserPassword(record.email);
+      notify(`Password reset email sent to ${record.email}`, { type: "success" });
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : "Failed to send reset email";
+      notify(message, { type: "error" });
+    } finally {
+      setIsResettingPassword(false);
+    }
+  };
 
   // Remove user (soft-delete handled by Data Provider layer)
   const handleRemoveUser = () => {
@@ -173,6 +194,7 @@ export function SalesPermissionsTab({
         "sales",
         { id: record.id, data: formData, previousData: record },
         {
+          returnPromise: true,
           onSuccess: () => {
             // If role changed, invalidate cache so user sees new permissions immediately
             if (formData.role !== record.role) {
@@ -358,6 +380,55 @@ export function SalesPermissionsTab({
           <p className="text-sm text-warning-foreground">
             <strong>Warning:</strong> Disabling this account will prevent the user from logging in.
           </p>
+        </div>
+      )}
+
+      {/* Reset Password (admin only, not self, both view and edit modes) */}
+      {!isSelfEdit && identity?.role === "admin" && (
+        <div className="mt-6 pt-6 border-t border-border">
+          <div className="p-4 border border-border rounded-lg bg-muted/20">
+            <h3 className="text-sm font-semibold mb-2">Password Management</h3>
+            <p className="text-sm text-muted-foreground mb-4">
+              Send a password reset email to this user. They will receive a link to choose a new
+              password.
+            </p>
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <AdminButton
+                  variant="outline"
+                  size="sm"
+                  disabled={isResettingPassword}
+                  isLoading={isResettingPassword}
+                  loadingText="Sending..."
+                  className="gap-2"
+                >
+                  <KeyRound className="h-4 w-4" />
+                  Reset Password
+                </AdminButton>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>Reset User Password</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    Send a password reset email to{" "}
+                    <strong>
+                      {record?.first_name} {record?.last_name}
+                    </strong>{" "}
+                    ({record?.email})?
+                    <br />
+                    <br />
+                    They will receive an email with a link to set a new password.
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>Cancel</AlertDialogCancel>
+                  <AlertDialogAction onClick={handleResetPassword}>
+                    Send Reset Email
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
+          </div>
         </div>
       )}
 

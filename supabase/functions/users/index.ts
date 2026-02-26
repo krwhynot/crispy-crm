@@ -187,6 +187,10 @@ async function inviteUser(
     const { error: emailError } = await supabaseAdmin.auth.admin.inviteUserByEmail(email);
     if (emailError) {
       console.error("Error sending invitation email:", emailError);
+      // Compensating rollback: delete the orphaned auth user since invite failed
+      await supabaseAdmin.auth.admin.deleteUser(data.user.id).catch((deleteErr) => {
+        console.error("Failed to rollback auth user after invite email failure:", deleteErr);
+      });
       return createErrorResponse(500, "Failed to send invitation email", corsHeaders);
     }
   } else {
@@ -209,6 +213,10 @@ async function inviteUser(
     );
   } catch (e) {
     console.error("Error patching sale:", e);
+    // Compensating rollback: delete the orphaned auth user since RPC failed
+    await supabaseAdmin.auth.admin.deleteUser(data.user.id).catch((deleteErr) => {
+      console.error("Failed to rollback auth user after RPC failure:", deleteErr);
+    });
     return createErrorResponse(500, "Internal Server Error", corsHeaders);
   }
 }

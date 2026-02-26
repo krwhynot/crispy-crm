@@ -86,9 +86,9 @@ export const notificationKeys = {
 // Report Keys
 export const reportKeys = {
   all: ["reports"] as const,
-  campaignStats: (campaign?: string) => ["campaign-report-stats", campaign] as const,
+  campaignStats: (campaign: string | null) => ["campaign-report-stats", campaign] as const,
   staleOpportunities: (
-    campaign?: string,
+    campaign: string | null,
     dateRange?: { start: string; end: string } | null,
     salesRepId?: number | null
   ) => ["stale-opportunities", campaign, dateRange?.start, dateRange?.end, salesRepId] as const,

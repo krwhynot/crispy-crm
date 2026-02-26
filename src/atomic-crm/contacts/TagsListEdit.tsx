@@ -41,11 +41,15 @@ export const TagsListEdit = () => {
       throw new Error("No contact record found");
     }
     const tags = [...record.tags, id];
-    update("contacts", {
-      id: record.id,
-      data: { tags }, // Only send the tags field
-      previousData: record,
-    });
+    update(
+      "contacts",
+      {
+        id: record.id,
+        data: { tags }, // Only send the tags field
+        previousData: record,
+      },
+      { returnPromise: true }
+    );
   };
 
   const handleTagDelete = async (id: Identifier) => {
@@ -53,11 +57,15 @@ export const TagsListEdit = () => {
       throw new Error("No contact record found");
     }
     const tags = record.tags.filter((tagId) => tagId !== id);
-    await update("contacts", {
-      id: record.id,
-      data: { tags }, // Only send the tags field
-      previousData: record,
-    });
+    await update(
+      "contacts",
+      {
+        id: record.id,
+        data: { tags }, // Only send the tags field
+        previousData: record,
+      },
+      { returnPromise: true }
+    );
   };
 
   const openTagCreateDialog = () => {
@@ -82,6 +90,7 @@ export const TagsListEdit = () => {
           previousData: record,
         },
         {
+          returnPromise: true,
           onSuccess: () => {
             setOpen(false);
           },

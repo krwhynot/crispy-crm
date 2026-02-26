@@ -16,11 +16,11 @@ Standard patterns for business logic services in Crispy CRM.
 │     ┌─────────────────────────────────────────────────────────┐     │
 │     │               Service Registry (Actual)                  │     │
 │     │  ┌──────────────┬──────────────┬──────────────────────┐ │     │
-│     │  │ SalesService │ Opportunities│ ActivitiesService    │ │     │
+│     │  │ SalesService │ Opportunities│ JunctionsService     │ │     │
 │     │  │       ✅     │ Service ✅   │         ✅          │ │     │
 │     │  ├──────────────┼──────────────┼──────────────────────┤ │     │
-│     │  │ Junctions    │ Segments     │                      │ │     │
-│     │  │ Service ✅   │ Service ✅   │                      │ │     │
+│     │  │ Segments     │              │                      │ │     │
+│     │  │ Service ✅   │              │                      │ │     │
 │     │  └──────────────┴──────────────┴──────────────────────┘ │     │
 │     │                                                          │     │
 │     │  🚧 Planned (not yet registered):                       │     │
@@ -51,36 +51,26 @@ Standard patterns for business logic services in Crispy CRM.
 Service classes use constructor injection to receive the DataProvider.
 
 ```typescript
-// src/atomic-crm/services/activities.service.ts
-import type { DataProvider, Identifier } from "ra-core";
-import { getActivityLog } from "../providers/commons/activity";
+// src/atomic-crm/services/segments.service.ts
+import type { DataProvider } from "ra-core";
 
 /**
- * Activities service handles activity log aggregation and management
+ * Segments service handles get-or-create pattern for segment tagging.
  * Follows Engineering Constitution principle #14: Service Layer orchestration for business ops
  */
-export class ActivitiesService {
+export class SegmentsService {
   constructor(private dataProvider: DataProvider) {}
 
   /**
-   * Get activity log for an organization or sales person
-   * Uses optimized RPC function to consolidate 5 queries into 1 server-side UNION ALL
+   * Get or create a segment by name (case-insensitive lookup).
+   * Uses RPC function to avoid race conditions during concurrent creates.
    */
-  async getActivityLog(
-    organizationId?: Identifier,
-    salesId?: Identifier
-  ): Promise<Record<string, unknown>[]> {
+  async getOrCreateSegment(name: string): Promise<{ id: number; name: string }> {
     try {
-      return await getActivityLog(this.dataProvider, organizationId, salesId);
+      return await this.dataProvider.rpc("get_or_create_segment", { p_name: name });
     } catch (error: unknown) {
-      logger.error('Failed to get activity log', {
-        service: 'ActivitiesService',
-        organizationId,
-        salesId,
-        error: error instanceof Error ? error.message : String(error),
-      });
       const errorMessage = error instanceof Error ? error.message : "Unknown error";
-      throw new Error(`Get activity log failed: ${errorMessage}`);
+      throw new Error(`Get or create segment failed: ${errorMessage}`);
     }
   }
 }
@@ -96,6 +86,8 @@ export class ActivitiesService {
 - Private `dataProvider` field for internal use
 - All public methods are `async` and return Promises
 - Error handling wraps all operations
+
+**Registered services (4 total):** `SalesService`, `OpportunitiesService`, `JunctionsService`, `SegmentsService`
 
 **Example:** `src/atomic-crm/services/opportunities.service.ts`
 
@@ -336,7 +328,7 @@ Provider Initialization Flow:
 │                            ▼                                │
 │ Stage 2: ServiceContainer                                   │
 │     createServiceContainer(baseProvider)                    │
-│     → SalesService, OpportunitiesService, ActivitiesService │
+│     → SalesService, OpportunitiesService                    │
 │     → JunctionsService, SegmentsService                     │
 │                            │                                │
 │                            ▼                                │
@@ -385,52 +377,39 @@ function createExtendedDataProvider(): DataProvider {
 export interface ServiceContainer {
   sales: SalesService;
   opportunities: OpportunitiesService;
-  activities: ActivitiesService;
   junctions: JunctionsService;
   segments: SegmentsService;
-  // 🚧 Not yet registered (but implemented):
-  // - ProductsService
-  // - ProductDistributorsService
-  // - DigestService
 }
 
 export function createServiceContainer(baseProvider: DataProvider): ServiceContainer {
   return {
-    // ✅ Registered Services:
-
     // Sales service - Account manager CRUD via Edge Functions
     sales: new SalesService(baseProvider),
 
     // Opportunities service - Product sync, archive/unarchive workflows
     opportunities: new OpportunitiesService(baseProvider),
 
-    // Activities service - Activity log aggregation via RPC
-    activities: new ActivitiesService(baseProvider),
-
     // Junctions service - Many-to-many relationship management
     junctions: new JunctionsService(baseProvider),
 
     // Segments service - Get-or-create pattern for segment tagging
     segments: new SegmentsService(baseProvider),
-
-    // 🚧 Implemented but not registered:
-    // - ProductsService (src/atomic-crm/services/products.service.ts)
-    //   Purpose: Product CRUD with distributor relationships, soft delete via RPC
-    //   Methods: getOneWithDistributors(), createWithDistributors(), softDelete()
-    //   TODO: Add to ServiceContainer interface and factory
-    //
-    // - ProductDistributorsService (src/atomic-crm/services/productDistributors.service.ts)
-    //   Purpose: Composite key junction table operations
-    //   Methods: getOne(), create(), update(), delete(), getDistributorsForProduct()
-    //   TODO: Add to ServiceContainer interface and factory
-    //
-    // - DigestService (src/atomic-crm/services/digest.service.ts)
-    //   Purpose: Digest queries for tasks, stale deals, and daily digests
-    //   Methods: getOverdueTasksForUser(), getTasksDueTodayForUser(), getStaleDealsForUser(),
-    //            getUserDigestSummary(), generateDailyDigests(), getStaleThreshold(), isDealStale()
-    //   TODO: Add to ServiceContainer interface and factory
   };
 }
+
+// 🚧 Implemented but not registered in ServiceContainer:
+// - ProductsService (src/atomic-crm/services/products.service.ts)
+//   Purpose: Product CRUD with distributor relationships, soft delete via RPC
+//   Methods: getOneWithDistributors(), createWithDistributors(), softDelete()
+//
+// - ProductDistributorsService (src/atomic-crm/services/productDistributors.service.ts)
+//   Purpose: Composite key junction table operations
+//   Methods: getOne(), create(), update(), delete(), getDistributorsForProduct()
+//
+// - DigestService (src/atomic-crm/services/digest.service.ts)
+//   Purpose: Digest queries for tasks, stale deals, and daily digests
+//   Methods: getOverdueTasksForUser(), getTasksDueTodayForUser(), getStaleDealsForUser(),
+//            getUserDigestSummary(), generateDailyDigests(), getStaleThreshold(), isDealStale()
 ```
 
 ### Extension Layer (Custom Methods)
@@ -823,7 +802,6 @@ Quick reference for all services (✅ registered in ServiceContainer, 🚧 imple
 |---------|--------|---------|-------------|
 | **SalesService** | ✅ | Account manager CRUD via Edge Functions | `salesCreate()`, `salesUpdate()`, `salesDelete()` |
 | **OpportunitiesService** | ✅ | Product sync, archive/unarchive workflows | `archiveOpportunity()`, `syncOpportunityWithProducts()` |
-| **ActivitiesService** | ✅ | Activity log aggregation via RPC | `getActivityLog()` |
 | **JunctionsService** | ✅ | Many-to-many relationship management for opportunities | `addOpportunityParticipant()`, `addOpportunityContact()`, `getOpportunityParticipants()` |
 | **SegmentsService** | ✅ | Get-or-create pattern for segment tagging | `getOrCreateSegment()` |
 | **ProductsService** | 🚧 | Product CRUD with distributor relationships, soft delete via RPC (not yet registered) | `getOneWithDistributors()`, `createWithDistributors()`, `updateWithDistributors()`, `softDelete()`, `softDeleteMany()` |

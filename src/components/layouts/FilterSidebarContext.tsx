@@ -4,15 +4,14 @@ import {
   useContext,
   useEffect,
   useMemo,
+  useRef,
   useState,
   type ReactNode,
 } from "react";
 import { ListContext } from "ra-core";
+import { countActiveUserFiltersWithOrSource } from "./listFilterSemantics";
 
 const DEFAULT_STORAGE_KEY = "crm-filter-sidebar-collapsed";
-
-/** System filter keys excluded from the active filter count */
-const SYSTEM_FILTER_KEYS = new Set(["deleted_at", "deleted_at@is", "$or", "q"]);
 
 interface FilterSidebarContextValue {
   /** Whether the desktop sidebar is collapsed */
@@ -23,8 +22,16 @@ interface FilterSidebarContextValue {
   isSheetOpen: boolean;
   /** Open or close the mobile filter sheet */
   setSheetOpen: (open: boolean) => void;
-  /** Number of active user-facing filters (excludes system keys and search) */
+  /** Number of active user-facing filters (excludes only internal system keys) */
   activeFilterCount: number;
+  /** Whether a ListToolbar is present (owns the filter trigger at <1024px) */
+  hasToolbar: boolean;
+  /** Called by ListToolbar on mount to claim filter trigger ownership */
+  setHasToolbar: (value: boolean) => void;
+  /** Tracks who set the current $or filter: "preset" (quick filters), "owner" (OwnerFilterDropdown), or null (unknown/URL-restored) */
+  orSource: "preset" | "owner" | null;
+  /** Set the $or filter origin */
+  setOrSource: (source: "preset" | "owner" | null) => void;
 }
 
 const FilterSidebarContext = createContext<FilterSidebarContextValue | null>(null);
@@ -64,11 +71,37 @@ export function FilterSidebarProvider({
   // Mobile sheet open state
   const [isSheetOpen, setSheetOpen] = useState(false);
 
-  // Active filter count — excludes system keys
-  const activeFilterCount = useMemo(() => {
-    if (!filterValues) return 0;
-    return Object.keys(filterValues).filter((key) => !SYSTEM_FILTER_KEYS.has(key)).length;
-  }, [filterValues]);
+  // Whether a ListToolbar is mounted (owns the filter trigger at <1024px)
+  const [hasToolbar, setHasToolbar] = useState(false);
+
+  // orSource tracks WHO set the current $or filter: "preset" (quick filters),
+  // "owner" (OwnerFilterDropdown), or null (unknown -- e.g. URL-restored).
+  // null is treated as "owner" (safe default): URL-restored preset $or won't
+  // count toward active filters, won't be cleared by "Clear all", and won't
+  // trigger filtered-empty-state. This is intentional -- sidecar metadata is
+  // session-only and cannot survive page refresh.
+  const [orSource, setOrSource] = useState<"preset" | "owner" | null>(null);
+
+  // Track previous $or to detect genuine removal (present → absent),
+  // preventing premature orSource reset during async filterValues propagation.
+  // React Admin's setFilters schedules URL updates via setTimeout(..., 0),
+  // so filterValues.$or arrives one render cycle after setOrSource("preset").
+  const prevOrRef = useRef(filterValues?.$or);
+  useEffect(() => {
+    const hadOr = prevOrRef.current != null;
+    const hasOr = filterValues?.$or != null;
+    prevOrRef.current = filterValues?.$or;
+    // Only clear when $or transitions present → absent (genuine removal)
+    if (hadOr && !hasOr && orSource !== null) {
+      setOrSource(null);
+    }
+  }, [filterValues?.$or, orSource]);
+
+  // Active filter count — excludes system keys, counts preset $or as user filter
+  const activeFilterCount = useMemo(
+    () => countActiveUserFiltersWithOrSource(filterValues, orSource),
+    [filterValues, orSource]
+  );
 
   const value = useMemo<FilterSidebarContextValue>(
     () => ({
@@ -77,8 +110,12 @@ export function FilterSidebarProvider({
       isSheetOpen,
       setSheetOpen,
       activeFilterCount,
+      hasToolbar,
+      setHasToolbar,
+      orSource,
+      setOrSource,
     }),
-    [isCollapsed, toggleSidebar, isSheetOpen, activeFilterCount]
+    [isCollapsed, toggleSidebar, isSheetOpen, activeFilterCount, hasToolbar, orSource]
   );
 
   return <FilterSidebarContext.Provider value={value}>{children}</FilterSidebarContext.Provider>;
@@ -90,4 +127,9 @@ export function useFilterSidebarContext(): FilterSidebarContextValue {
     throw new Error("useFilterSidebarContext must be used within a FilterSidebarProvider");
   }
   return context;
+}
+
+/** Non-throwing version for components that may render outside FilterSidebarProvider */
+export function useOptionalFilterSidebarContext(): FilterSidebarContextValue | null {
+  return useContext(FilterSidebarContext);
 }

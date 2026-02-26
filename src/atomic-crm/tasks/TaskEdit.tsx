@@ -40,7 +40,10 @@ export const TaskEdit = () => {
 const TaskEditForm = () => {
   const record = useRecordContext<Task>();
 
-  const defaultValues = useMemo(() => taskSchema.partial().parse(record), [record]);
+  const defaultValues = useMemo(
+    () => (record ? taskSchema.partial().passthrough().parse(record) : {}),
+    [record]
+  );
 
   if (!record) return null;
 

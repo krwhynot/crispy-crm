@@ -128,7 +128,7 @@ export interface ExtendedDataProvider extends DataProvider {
   ): Promise<Partial<Omit<SalesFormData, "password">>>;
 
   /**
-   * Trigger password reset email for account manager
+   * Trigger self-service password reset email for account manager
    *
    * @param id - Sales user ID
    * @returns True if reset email sent successfully
@@ -141,6 +141,23 @@ export interface ExtendedDataProvider extends DataProvider {
    * ```
    */
   updatePassword(id: Identifier): Promise<boolean>;
+
+  /**
+   * Admin-initiated password reset for another user
+   *
+   * Sends a password reset email to the specified user. Only admins can call this.
+   *
+   * @param targetEmail - Email of the user to reset password for
+   * @returns True if reset email sent successfully
+   * @throws Error if caller is not admin or user not found
+   *
+   * @example
+   * ```typescript
+   * await dataProvider.resetUserPassword("user@example.com");
+   * // Target user receives password reset email
+   * ```
+   */
+  resetUserPassword(targetEmail: string): Promise<boolean>;
 
   // ==================== Opportunities Methods ====================
   // Delegate to OpportunitiesService

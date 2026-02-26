@@ -5,6 +5,8 @@ import { useQueryClient } from "@tanstack/react-query";
 import { createFormResolver } from "@/lib/zodErrorFormatting";
 import { logger } from "@/lib/logger";
 import { Popover, PopoverAnchor, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { useDuplicateOrgCheck } from "./useDuplicateOrgCheck";
+import { DuplicateOrgWarningDialog } from "./DuplicateOrgWarningDialog";
 import { useCreateSuggestionContext } from "@/hooks/useSupportCreateSuggestion";
 import { AdminButton } from "@/components/admin/AdminButton";
 import { Input } from "@/components/ui/input";
@@ -188,6 +190,7 @@ function useQuickCreateOrg({
   const dataProvider = useDataProvider();
   const notify = useNotify();
   const queryClient = useQueryClient();
+  const { checkForDuplicate, duplicateOrg, clearDuplicate } = useDuplicateOrgCheck();
 
   const methods = useForm<OrganizationQuickCreateInput>({
     resolver: createFormResolver(organizationQuickCreateSchema),
@@ -200,6 +203,9 @@ function useQuickCreateOrg({
   });
 
   const createOrg = async (data: OrganizationQuickCreateInput) => {
+    const duplicate = await checkForDuplicate(data.name);
+    if (duplicate) return;
+
     setIsPending(true);
     try {
       const result = await dataProvider.create("organizations", { data });
@@ -240,7 +246,7 @@ function useQuickCreateOrg({
       segment_id: PLAYBOOK_CATEGORY_IDS.Unknown,
     });
 
-  return { methods, isPending, handleSubmit, handleQuickCreate };
+  return { methods, isPending, handleSubmit, handleQuickCreate, duplicateOrg, clearDuplicate };
 }
 
 // ============================================================================
@@ -263,15 +269,16 @@ export function QuickCreatePopover({
   children,
 }: QuickCreatePopoverProps) {
   const [open, setOpen] = useState(true);
-  const { methods, isPending, handleSubmit, handleQuickCreate } = useQuickCreateOrg({
-    name,
-    organizationType,
-    onSuccess: (record) => {
-      onCreated(record);
-      setOpen(false);
-    },
-    logContext: "handleSubmit",
-  });
+  const { methods, isPending, handleSubmit, handleQuickCreate, duplicateOrg, clearDuplicate } =
+    useQuickCreateOrg({
+      name,
+      organizationType,
+      onSuccess: (record) => {
+        onCreated(record);
+        setOpen(false);
+      },
+      logContext: "handleSubmit",
+    });
 
   return (
     <Popover open={open} onOpenChange={(isOpen) => !isOpen && onCancel()}>
@@ -310,6 +317,13 @@ export function QuickCreatePopover({
           </div>
         </form>
       </PopoverContent>
+      {duplicateOrg && (
+        <DuplicateOrgWarningDialog
+          open={!!duplicateOrg}
+          duplicateName={duplicateOrg.name}
+          onCancel={clearDuplicate}
+        />
+      )}
     </Popover>
   );
 }
@@ -326,11 +340,12 @@ export function QuickCreateOrganizationRA({
   const { filter, onCreate, onCancel } = useCreateSuggestionContext();
   const name = filter || "";
 
-  const { methods, isPending, handleSubmit, handleQuickCreate } = useQuickCreateOrg({
-    name,
-    organizationType,
-    onSuccess: (record) => onCreate(record),
-  });
+  const { methods, isPending, handleSubmit, handleQuickCreate, duplicateOrg, clearDuplicate } =
+    useQuickCreateOrg({
+      name,
+      organizationType,
+      onSuccess: (record) => onCreate(record),
+    });
 
   const handleMinimalSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -377,6 +392,13 @@ export function QuickCreateOrganizationRA({
           )}
         </form>
       </PopoverContent>
+      {duplicateOrg && (
+        <DuplicateOrgWarningDialog
+          open={!!duplicateOrg}
+          duplicateName={duplicateOrg.name}
+          onCancel={clearDuplicate}
+        />
+      )}
     </Popover>
   );
 }

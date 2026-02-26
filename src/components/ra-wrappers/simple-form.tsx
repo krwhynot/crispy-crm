@@ -9,7 +9,7 @@ import type { FieldValues, SubmitHandler } from "react-hook-form";
 
 /**
  * Props for SimpleForm with generic type support for form data.
- * This allows proper typing of onSubmit handlers without requiring `as any` casts.
+ * This allows proper typing of onSubmit handlers without requiring unsafe casts.
  */
 export interface SimpleFormProps<TFormData extends FieldValues = FieldValues> extends Omit<
   FormProps,

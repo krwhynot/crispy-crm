@@ -19,7 +19,7 @@ This document defines when direct shadcn/ui component usage is acceptable versus
 │  TIER 2: Admin Wrappers                                                         │
 │  ─────────────────────────────────────────────────────────────────────────────  │
 │  React Admin integration + Form context + Validation                            │
-│  Location: src/components/admin/                                                │
+│  Location: src/components/ra-wrappers/                                          │
 │  Examples: SubmitButtonGroup, FormSelectInput, TextInput                        │
 │                                                                                 │
 │           ↑                                                                     │
@@ -364,7 +364,7 @@ Tier 2 wrappers are **required** when components participate in React Admin's fo
 - Prevents duplicate save-button implementations
 
 ```tsx
-// src/components/admin/form/SubmitButtonGroup.tsx
+// src/components/ra-wrappers/form/SubmitButtonGroup.tsx
 export interface SubmitButtonGroupProps {
   isSubmitting: boolean;       // Loading state from form
   onCancel: () => void;        // Close form/dialog
@@ -417,7 +417,7 @@ function ContactCreate() {
 - Consistent styling with other form inputs
 
 ```tsx
-// Future implementation: src/components/admin/form/FormSelectInput.tsx
+// Future implementation: src/components/ra-wrappers/form/FormSelectInput.tsx
 // This wrapper would provide:
 // 1. Integration with react-hook-form via Controller
 // 2. Auto-generated ARIA IDs from FormItem context

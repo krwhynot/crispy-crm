@@ -7,6 +7,20 @@ export default defineConfig({
     environment: "jsdom",
     setupFiles: ["@testing-library/jest-dom", "./src/tests/setup.ts"],
     timeout: 10000,
+    // OOM prevention for Vitest 3.2.x + jsdom + 100+ test files:
+    // Vitest 3.2 has a known memory regression (vitest-dev/vitest#8293) where
+    // worker threads accumulate memory across test files. Using forks pool with
+    // child process heap limits prevents the parent from OOMing. The test scripts
+    // in package.json use --shard to split the suite into sequential batches, each
+    // starting fresh with its own memory budget.
+    pool: "forks",
+    poolOptions: {
+      forks: {
+        maxForks: 2,
+        minForks: 1,
+        execArgv: ["--max-old-space-size=4096"],
+      },
+    },
     // Clear mock call history after each test to prevent test pollution
     // Using clearMocks instead of restoreMocks to preserve module-level mocks
     clearMocks: true,

@@ -42,7 +42,7 @@ const Header = () => {
   }
 
   return (
-    <nav className="flex-grow">
+    <nav className="shrink-0">
       <header className="bg-secondary">
         <div className="px-4">
           <div className="flex justify-between items-center flex-1">

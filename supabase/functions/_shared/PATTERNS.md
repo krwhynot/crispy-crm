@@ -5,28 +5,39 @@ Standard patterns for Supabase Edge Functions in Crispy CRM.
 ## Architecture
 
 ```
-┌─────────────────────────────────────────────────────────────────────┐
-│                      Edge Functions (Deno)                          │
-├─────────────────────────────────────────────────────────────────────┤
-│                                                                     │
-│  ┌──────────────────┐  ┌──────────────────┐  ┌──────────────────┐  │
-│  │   daily-digest   │  │ check-overdue-   │  │      users       │  │
-│  │                  │  │     tasks        │  │                  │  │
-│  │  (Cron Function) │  │  (Cron Function) │  │  (User-Facing)   │  │
-│  └────────┬─────────┘  └────────┬─────────┘  └────────┬─────────┘  │
-│           │                     │                     │            │
-│           └─────────────────────┼─────────────────────┘            │
-│                                 │                                  │
-│                                 ▼                                  │
-│                    ┌────────────────────────┐                      │
-│                    │      _shared/          │                      │
-│                    ├────────────────────────┤                      │
-│                    │ supabaseAdmin.ts       │ ← Admin client       │
-│                    │ cors-config.ts         │ ← Dynamic CORS       │
-│                    │ utils.ts (deprecated)  │ ← Legacy utilities   │
-│                    └────────────────────────┘                      │
-│                                 │                                  │
-└─────────────────────────────────┼──────────────────────────────────┘
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│                           Edge Functions (Deno)                                  │
+├─────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                  │
+│  ┌──────────────────┐  ┌──────────────────┐  ┌────────────────────────────┐     │
+│  │   daily-digest   │  │ check-overdue-   │  │ capture-dashboard-         │     │
+│  │                  │  │     tasks        │  │     snapshots              │     │
+│  │  (Cron Function) │  │  (Cron Function) │  │  (Cron Function)          │     │
+│  └────────┬─────────┘  └────────┬─────────┘  └────────────┬──────────────┘     │
+│           │                     │                          │                    │
+│  ┌──────────────────┐  ┌──────────────────┐  ┌──────────────────┐              │
+│  │      users       │  │ updatePassword   │  │  health-check    │              │
+│  │                  │  │                  │  │                  │              │
+│  │  (User-Facing)   │  │  (User-Facing)   │  │  (Public)        │              │
+│  └────────┬─────────┘  └────────┬─────────┘  └────────┬─────────┘              │
+│           │                     │                     │                        │
+│  ┌──────────────────┐           │                     │                        │
+│  │  digest-opt-out  │           │                     │                        │
+│  │  (Public)        │           │                     │                        │
+│  └────────┬─────────┘           │                     │                        │
+│           │                     │                     │                        │
+│           └─────────────────────┼─────────────────────┘                        │
+│                                 │                                              │
+│                                 ▼                                              │
+│                    ┌────────────────────────┐                                  │
+│                    │      _shared/          │                                  │
+│                    ├────────────────────────┤                                  │
+│                    │ supabaseAdmin.ts       │ ← Admin client                   │
+│                    │ cors-config.ts         │ ← Dynamic CORS                   │
+│                    │ utils.ts (deprecated)  │ ← Legacy utilities               │
+│                    └────────────────────────┘                                  │
+│                                 │                                              │
+└─────────────────────────────────┼──────────────────────────────────────────────┘
                                   │
                                   ▼
                     ┌────────────────────────┐
@@ -473,13 +484,25 @@ Deno.serve(async (req: Request) => {
 
 | Aspect         | Cron Function                  | User-Facing API              | Public Endpoint     |
 | -------------- | ------------------------------ | ---------------------------- | ------------------- |
-| **Auth**       | CRON_SECRET / SERVICE_ROLE_KEY | JWT (Bearer token)           | Token in URL params |
+| **Auth**       | CRON_SECRET / SERVICE_ROLE_KEY | JWT (Bearer token)           | Token in URL params or none |
 | **CORS**       | Not needed                     | Required (createCorsHeaders) | Not needed          |
 | **Client**     | supabaseAdmin only             | Both admin + user client     | supabaseAdmin only  |
 | **Response**   | JSON                           | JSON with CORS headers       | HTML or JSON        |
-| **Trigger**    | pg_cron schedule               | Browser fetch                | Email link click    |
+| **Trigger**    | pg_cron schedule               | Browser fetch                | Email link click / direct URL |
 | **Validation** | Minimal                        | Zod at boundary              | Token validation    |
-| **Example**    | daily-digest (v3.0)            | users                        | digest-opt-out      |
+| **Examples**   | daily-digest, check-overdue-tasks, capture-dashboard-snapshots | users, updatePassword | digest-opt-out, health-check |
+
+### All Edge Functions Inventory
+
+| Function | Type | Auth | Purpose |
+|----------|------|------|---------|
+| `daily-digest` | Cron | CRON_SECRET / SERVICE_ROLE_KEY | Send daily email digests with tasks, overdue items, stale deals |
+| `check-overdue-tasks` | Cron | CRON_SECRET / SERVICE_ROLE_KEY | Flag overdue tasks for notifications |
+| `capture-dashboard-snapshots` | Cron | CRON_SECRET / SERVICE_ROLE_KEY | Daily snapshots of dashboard metrics for trend analysis |
+| `users` | User-Facing | JWT (Bearer) | User management (CRUD, roles) |
+| `updatePassword` | User-Facing | JWT (Bearer) | Send password reset email for authenticated user |
+| `digest-opt-out` | Public | HMAC token in URL | One-click unsubscribe from daily digest emails |
+| `health-check` | Public | None (limited info) / SERVICE_ROLE_KEY (detailed) | Verify critical seed data (Playbook segments) exists |
 
 ---
 

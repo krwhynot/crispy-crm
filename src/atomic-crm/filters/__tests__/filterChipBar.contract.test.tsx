@@ -278,6 +278,30 @@ describe("FilterChipBar contracts (invariants)", () => {
       expect(chip?.category).toBe("First name contains");
       expect(chip?.label).toBe("John");
     });
+
+    test("first_name@ilike uses configured label when config provided", () => {
+      mockFilterValues = { "first_name@ilike": "%Jane%" };
+
+      const config: ChipFilterConfig[] = [{ key: "first_name", label: "Name", type: "select" }];
+      const { result } = renderHook(() => useFilterChipBar(config), { wrapper });
+
+      const chip = result.current.chips[0];
+      // Should use configured label "Name" instead of humanized "First name"
+      expect(chip?.category).toBe("Name contains");
+      expect(chip?.label).toBe("Jane");
+    });
+
+    test("name@ilike uses configured label 'Organization' when config provided", () => {
+      mockFilterValues = { "name@ilike": "%Acme%" };
+
+      const config: ChipFilterConfig[] = [{ key: "name", label: "Organization", type: "select" }];
+      const { result } = renderHook(() => useFilterChipBar(config), { wrapper });
+
+      const chip = result.current.chips[0];
+      // Should use configured label "Organization" instead of humanized "Name"
+      expect(chip?.category).toBe("Organization contains");
+      expect(chip?.label).toBe("Acme");
+    });
   });
 
   /**

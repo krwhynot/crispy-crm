@@ -16,7 +16,7 @@ import type { Segment } from "../../../validation/segments";
 import type { ProductDistributor } from "../../../validation/productDistributors";
 
 // Import all validation schemas
-import { validateContactForm, validateUpdateContact } from "../../../validation/contacts";
+import { validateCreateContact, validateUpdateContact } from "../../../validation/contacts";
 import {
   validateUpdateOrganization,
   validateCreateOrganization,
@@ -206,7 +206,7 @@ export class ValidationService {
 
     this.validationRegistry = {
       contacts: {
-        create: async (data: unknown) => validateContactForm(data),
+        create: async (data: unknown) => validateCreateContact(data),
         update: async (data: unknown) => validateUpdateContact(data),
       },
       organizations: {
@@ -410,5 +410,46 @@ export class ValidationService {
     }
 
     return validFilters;
+  }
+
+  /**
+   * Validates sort field against the filter registry.
+   * Unlike validateFilters (which throws on invalid fields), invalid sort
+   * resets gracefully since sort errors are UX concerns, not security concerns.
+   *
+   * @param resource The resource name (e.g., 'contacts', 'organizations')
+   * @param sort The sort object from React Admin (e.g., { field: 'last_seen', order: 'DESC' })
+   * @returns The validated sort (unchanged if valid), or undefined if invalid (lets handler default apply)
+   */
+  validateSort(
+    resource: string,
+    sort: { field: string; order: "ASC" | "DESC" }
+  ): { field: string; order: "ASC" | "DESC" } | undefined {
+    if (!sort?.field) return sort;
+
+    const allowedFields = filterableFields[resource];
+    if (!allowedFields) {
+      // No registry = allow all (backward compatible for unconfigured resources)
+      return sort;
+    }
+
+    // Use direct allowedFields check instead of isValidFilterField —
+    // sort fields are always plain column names (no operator stripping needed),
+    // and isValidFilterField whitelists logical operators ($or, and, etc.)
+    // that are valid for filters but nonsensical for sort.
+    if (allowedFields.includes(sort.field)) {
+      return sort;
+    }
+
+    // Invalid sort field — log and strip so handler default kicks in
+    logger.warn("Invalid sort field stripped by provider validation", {
+      feature: "ValidationService",
+      resource,
+      sortField: sort.field,
+      allowedFields,
+      reason: "Field not in filter registry; handler default will apply",
+    });
+
+    return undefined;
   }
 }

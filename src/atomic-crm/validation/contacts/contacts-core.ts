@@ -83,8 +83,18 @@ export const contactBaseSchema = z.strictObject({
 
   // Contact information - ContactPersonalInformationInputs
   // JSONB arrays in database: email and phone
-  email: z.array(emailAndTypeSchema).max(10, "Maximum 10 email addresses").default([]),
-  phone: z.array(phoneNumberAndTypeSchema).max(10, "Maximum 10 phone numbers").default([]),
+  email: z
+    .array(emailAndTypeSchema)
+    .max(10, "Maximum 10 email addresses")
+    .nullable()
+    .transform((val) => val ?? [])
+    .default([]),
+  phone: z
+    .array(phoneNumberAndTypeSchema)
+    .max(10, "Maximum 10 phone numbers")
+    .nullable()
+    .transform((val) => val ?? [])
+    .default([]),
 
   // Professional information - ContactPositionInputs
   title: z.string().trim().max(100).optional().nullable(),
@@ -148,7 +158,12 @@ export const contactBaseSchema = z.strictObject({
   // Classification fields - exist in DB
   // FIX [EDIT-001]: tags are BIGINT[] foreign keys to tags table (not strings)
   // TagsListEdit.tsx confirms: record.tags.includes(tag.id) where tag.id is number
-  tags: z.array(z.coerce.number()).max(50, "Maximum 50 tags").default([]),
+  tags: z
+    .array(z.coerce.number())
+    .max(50, "Maximum 50 tags")
+    .nullable()
+    .transform((val) => val ?? [])
+    .default([]),
   status: z.string().trim().max(50).optional().nullable(),
 
   // System fields (readonly, set by triggers)
@@ -162,6 +177,42 @@ export const contactBaseSchema = z.strictObject({
   // Required to pass strictObject validation when getOne returns base table record
   // FIX [EDIT-001]: Matches pattern from opportunities-core.ts (opportunityBaseSchema)
   search_tsv: z.unknown().optional(),
+});
+
+// Form-level schema for contact creation — adds required field validation
+// Uses contactBaseSchema (accepts all form fields) + superRefine (no .omit/.transform)
+// Cannot reuse createContactSchema because .omit() on strictObject rejects form fields
+// like created_at that exist in RHF state. Provider-level validation (validateCreateContact)
+// is the safety net.
+export const contactCreateFormSchema = contactBaseSchema.superRefine((data, ctx) => {
+  if (!data.first_name || (typeof data.first_name === "string" && data.first_name === "")) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      path: ["first_name"],
+      message: "First name is required",
+    });
+  }
+  if (!data.last_name || (typeof data.last_name === "string" && data.last_name === "")) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      path: ["last_name"],
+      message: "Last name is required",
+    });
+  }
+  if (!data.sales_id) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      path: ["sales_id"],
+      message: "Account manager is required",
+    });
+  }
+  if (!data.organization_id) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      path: ["organization_id"],
+      message: "Organization is required",
+    });
+  }
 });
 
 // Helper function to transform data

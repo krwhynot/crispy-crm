@@ -92,7 +92,12 @@ export const TaskCompactForm = () => {
             />
           </FormFieldWrapper>
           <FormFieldWrapper name="sales_id" isRequired countDefaultAsFilled>
-            <ReferenceInput source="sales_id" reference="sales" enableGetChoices={enableGetChoices}>
+            <ReferenceInput
+              source="sales_id"
+              reference="sales"
+              sort={{ field: "last_name", order: "ASC" }}
+              enableGetChoices={enableGetChoices}
+            >
               <AutocompleteInput
                 {...getQSearchAutocompleteProps()}
                 label="Assigned To *"

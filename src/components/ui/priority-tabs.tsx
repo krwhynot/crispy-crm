@@ -155,7 +155,7 @@ export function PriorityTabsList({
     <div ref={containerRef} className="w-full">
       <TabsList
         className={cn(
-          "w-full justify-start rounded-none border-b border-border h-auto p-0 bg-transparent px-6",
+          "w-full justify-start rounded-none border-b border-border h-auto p-0 bg-transparent px-3",
           className
         )}
         aria-label="Resource tabs"
@@ -169,7 +169,7 @@ export function PriorityTabsList({
             <TabsTrigger
               key={tab.key}
               value={tab.key}
-              className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent py-3 px-4 min-h-11 flex items-center gap-2"
+              className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent py-2 px-3 min-h-11 flex items-center gap-1.5"
               aria-label={showBadge ? `${tab.label} (${count})` : tab.label}
             >
               {tab.icon && <tab.icon className="h-4 w-4 shrink-0" />}

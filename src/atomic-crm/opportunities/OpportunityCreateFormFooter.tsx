@@ -273,7 +273,7 @@ export function OpportunityCreateFormFooter({
           </AdminButton>
           <AdminButton
             type="button"
-            variant="default"
+            variant="secondary"
             disabled={disabled}
             onClick={handleSaveAndAddAnother}
             className={cn(

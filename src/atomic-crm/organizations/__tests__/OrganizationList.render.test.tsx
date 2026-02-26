@@ -21,6 +21,19 @@ import {
   resetMocks,
 } from "./OrganizationList.test-utils";
 
+/**
+ * Shared mock state for ListPageLayout branching.
+ * Synced in beforeEach with the same values set on useListContext mock.
+ */
+const mockListState = vi.hoisted(() => ({
+  data: [] as unknown[],
+  isPending: false,
+  filterValues: {} as Record<string, unknown>,
+}));
+
+// System filter keys excluded from empty-state detection (matches ListPageLayout)
+const EMPTY_STATE_SYSTEM_KEYS = vi.hoisted(() => new Set(["deleted_at", "deleted_at@is", "$or"]));
+
 // Mock dependencies - must be at top level
 vi.mock("ra-core", async () => {
   const actual = await vi.importActual("ra-core");
@@ -209,14 +222,53 @@ vi.mock("../OrganizationBadges", () => ({
   ),
 }));
 
-vi.mock("@/components/layouts/StandardListLayout", () => ({
-  StandardListLayout: ({ children, filterComponent, viewSwitcher }: MockLayoutProps) => (
-    <div data-testid="standard-list-layout">
-      <div data-testid="filter-sidebar">{filterComponent}</div>
-      {viewSwitcher && <div data-testid="toolbar-view-switcher">{viewSwitcher}</div>}
-      <div data-testid="list-content">{children}</div>
-    </div>
-  ),
+vi.mock("@/components/layouts/ListPageLayout", () => ({
+  ListPageLayout: ({
+    children,
+    filterComponent,
+    viewSwitcher,
+    emptyState,
+  }: {
+    children: React.ReactNode;
+    filterComponent?: React.ReactNode;
+    viewSwitcher?: React.ReactNode;
+    emptyState?: React.ReactNode;
+    [key: string]: unknown;
+  }) => {
+    const hasUserFilters =
+      mockListState.filterValues &&
+      Object.keys(mockListState.filterValues).some(
+        (key: string) => !EMPTY_STATE_SYSTEM_KEYS.has(key)
+      );
+
+    if (mockListState.isPending) {
+      return <div data-testid="loading-skeleton">Loading...</div>;
+    }
+
+    if (!mockListState.data?.length && !hasUserFilters && emptyState) {
+      return <>{emptyState}</>;
+    }
+
+    if (!mockListState.data?.length && hasUserFilters) {
+      return (
+        <div data-testid="standard-list-layout">
+          <div data-testid="filter-sidebar">{filterComponent}</div>
+          {viewSwitcher && <div data-testid="toolbar-view-switcher">{viewSwitcher}</div>}
+          <div data-testid="list-content">
+            <div data-testid="list-no-results">No results</div>
+          </div>
+        </div>
+      );
+    }
+
+    return (
+      <div data-testid="standard-list-layout">
+        <div data-testid="filter-sidebar">{filterComponent}</div>
+        {viewSwitcher && <div data-testid="toolbar-view-switcher">{viewSwitcher}</div>}
+        <div data-testid="list-content">{children}</div>
+      </div>
+    );
+  },
 }));
 
 vi.mock("@/components/ra-wrappers/list", () => ({
@@ -229,10 +281,6 @@ vi.mock("../OrganizationEmpty", () => ({
 
 vi.mock("@/components/ra-wrappers/ListNoResults", () => ({
   ListNoResults: () => <div data-testid="list-no-results">No results</div>,
-}));
-
-vi.mock("@/components/ra-wrappers/FloatingCreateButton", () => ({
-  FloatingCreateButton: () => <button data-testid="floating-create">Create</button>,
 }));
 
 vi.mock("@/components/ra-wrappers/bulk-actions-toolbar", () => ({
@@ -301,12 +349,19 @@ describe("OrganizationList rendering", () => {
   beforeEach(() => {
     resetMocks();
     localStorage.removeItem("organization.view.preference");
-    vi.mocked(useListContext).mockReturnValue(createDefaultListContext());
+
+    const defaultContext = createDefaultListContext();
+    vi.mocked(useListContext).mockReturnValue(defaultContext);
     vi.mocked(useGetList).mockReturnValue({
       data: [],
       total: 0,
       isPending: false,
     });
+
+    // Sync hoisted mock state for ListPageLayout branching
+    mockListState.data = defaultContext.data;
+    mockListState.isPending = defaultContext.isPending;
+    mockListState.filterValues = defaultContext.filterValues;
   });
 
   afterEach(() => {
@@ -346,7 +401,7 @@ describe("OrganizationList rendering", () => {
     });
   });
 
-  test("renders with StandardListLayout and filter sidebar", async () => {
+  test("renders with ListPageLayout and filter sidebar", async () => {
     renderWithAdminContext(<OrganizationList />);
 
     await waitFor(() => {
@@ -366,6 +421,10 @@ describe("OrganizationList rendering", () => {
 
     vi.mocked(useListContext).mockReturnValue(emptyContext);
 
+    // Sync hoisted mock state
+    mockListState.data = [];
+    mockListState.filterValues = {};
+
     renderWithAdminContext(<OrganizationList />);
 
     await waitFor(() => {
@@ -383,6 +442,10 @@ describe("OrganizationList rendering", () => {
     };
 
     vi.mocked(useListContext).mockReturnValue(emptyWithFiltersContext);
+
+    // Sync hoisted mock state
+    mockListState.data = [];
+    mockListState.filterValues = { priority: "A" };
 
     renderWithAdminContext(<OrganizationList />);
 

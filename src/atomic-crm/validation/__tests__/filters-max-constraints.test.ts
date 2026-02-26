@@ -42,23 +42,19 @@ describe("Filters .max() Constraints", () => {
     });
   });
 
-  describe("listParamsSchema - sort.field", () => {
+  describe("listParamsSchema - sort field (RA flat format)", () => {
     it("should accept sort field at max length (100 chars)", () => {
       const validParams = {
-        sort: {
-          field: "a".repeat(100),
-          order: "ASC" as const,
-        },
+        sort: "a".repeat(100),
+        order: "ASC" as const,
       };
       expect(() => listParamsSchema.parse(validParams)).not.toThrow();
     });
 
     it("should reject sort field over max length (101 chars)", () => {
       const invalidParams = {
-        sort: {
-          field: "a".repeat(101),
-          order: "ASC" as const,
-        },
+        sort: "a".repeat(101),
+        order: "ASC" as const,
       };
       expect(() => listParamsSchema.parse(invalidParams)).toThrow(z.ZodError);
     });

@@ -11,6 +11,9 @@ src/tests/
 │   ├── Browser API polyfills  ─── jsdom compatibility
 │   └── QueryClient factory    ─── Isolated test instances
 │
+├── hooks/
+│   └── track-test-run.test.ts ─── Test command detection regex tests
+│
 ├── utils/
 │   ├── render-admin.tsx       ─── renderWithAdminContext()
 │   │   └── Provider Stack: QueryClient > Tooltip > Router > AdminContext
@@ -26,10 +29,19 @@ src/tests/
 │   ├── typed-mocks.ts         ─── Typed mock factories for RA hooks
 │   │   └── mockUseGetListReturn(), mockUseCreateReturn(), etc.
 │   │
+│   ├── typed-mocks.test.ts    ─── Tests for typed mock factory functions
+│   │
 │   ├── typed-test-helpers.ts  ─── Type-safe test pattern helpers
 │   │   └── mapExportRows(), getFilterValue(), createMockSetState()
 │   │
-│   └── index.ts               ─── Public API barrel export
+│   ├── index.ts               ─── Public API barrel export
+│   │
+│   └── __tests__/
+│       ├── mock-providers.test.ts  ─── Tests for mock data providers/factories
+│       └── render-admin.test.tsx   ─── Tests for renderWithAdminContext utility
+│
+├── .quarantine/
+│   └── auth-flow.test.ts.legacy ── Quarantined auth flow integration tests
 │
 └── fixtures/
     └── auth-users.json        ─── Static user/session data
@@ -1059,3 +1071,5 @@ When adding new tests:
 | **G: Typed Mock Utilities** | `utils/typed-mocks.ts` |
 | **H: Typed Test Helpers** | `utils/typed-test-helpers.ts` |
 | **Static Fixtures** | `fixtures/auth-users.json` |
+| **Test Files** | `utils/typed-mocks.test.ts`, `utils/__tests__/mock-providers.test.ts`, `utils/__tests__/render-admin.test.tsx`, `hooks/track-test-run.test.ts` |
+| **Quarantine** | `.quarantine/auth-flow.test.ts.legacy` |

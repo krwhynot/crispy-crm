@@ -33,7 +33,7 @@ export const OrganizationInfoCard: React.FC<OrganizationInfoCardProps> = ({ oppo
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {/* Customer Organization */}
           <div className="flex flex-col gap-2">
-            <div className="flex items-center gap-2 text-xs text-muted-foreground uppercase tracking-wide">
+            <div className="flex items-center gap-2 paper-micro-label">
               <Users className="w-3.5 h-3.5" />
               <span>Customer</span>
             </div>
@@ -52,7 +52,7 @@ export const OrganizationInfoCard: React.FC<OrganizationInfoCardProps> = ({ oppo
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <div className="flex items-center gap-2 text-xs uppercase tracking-wide">
+                    <div className="flex items-center gap-2 paper-micro-label">
                       <Star className="w-3.5 h-3.5 text-primary fill-primary" />
                       <span className="font-bold text-primary">Principal</span>
                     </div>
@@ -85,7 +85,7 @@ export const OrganizationInfoCard: React.FC<OrganizationInfoCardProps> = ({ oppo
           {/* Distributor Organization (optional) */}
           {opportunity.distributor_organization_id && (
             <div className="flex flex-col gap-2">
-              <div className="flex items-center gap-2 text-xs text-muted-foreground uppercase tracking-wide">
+              <div className="flex items-center gap-2 paper-micro-label">
                 <TruckIcon className="w-3.5 h-3.5" />
                 <span>Distributor</span>
               </div>

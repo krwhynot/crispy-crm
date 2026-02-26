@@ -34,7 +34,7 @@ describe("QuickAddDialog", () => {
     renderWithAdminContext(<QuickAddDialog open={true} onOpenChange={onOpenChange} />);
 
     // Check title and description (updated for opportunity-focused flow)
-    expect(screen.getByText("Quick Add Opportunity")).toBeInTheDocument();
+    expect(screen.getByText("Add Opportunity")).toBeInTheDocument();
     expect(
       screen.getByText("Create a new opportunity with optional contact details")
     ).toBeInTheDocument();

@@ -1,9 +1,10 @@
 import { AdminButton } from "@/components/admin/AdminButton";
-import { Clock, Star, User, Zap } from "lucide-react";
-import { useGetIdentity, useListContext } from "ra-core";
+import { Clock, Star, User } from "lucide-react";
+import { useGetIdentity } from "ra-core";
 import { addDays } from "date-fns";
 
-import { FilterCategory } from "../filters/FilterCategory";
+import { QuickFilterGroup } from "../filters/QuickFilterGroup";
+import { usePresetFilter } from "../filters/usePresetFilter";
 
 /**
  * Quick filter presets for the Organizations sidebar.
@@ -11,40 +12,12 @@ import { FilterCategory } from "../filters/FilterCategory";
  */
 export const OrganizationSavedQueries = () => {
   const { data: identity } = useGetIdentity();
-  const { filterValues, setFilters } = useListContext();
+  const { isPresetActive, handlePresetClick } = usePresetFilter();
 
   const thirtyDaysAgo = addDays(new Date(), -30).toISOString().split("T")[0];
 
-  const isPresetActive = (presetFilters: Record<string, unknown>): boolean => {
-    return Object.entries(presetFilters).every(([key, value]) => {
-      const currentValue = filterValues?.[key];
-      if (key === "$or" && Array.isArray(value) && Array.isArray(currentValue)) {
-        // Deep compare $or arrays (both are arrays of {field: value} objects)
-        return JSON.stringify(value) === JSON.stringify(currentValue);
-      }
-      if (Array.isArray(value) && Array.isArray(currentValue)) {
-        return value.every((v) => currentValue.includes(v));
-      }
-      return currentValue === value;
-    });
-  };
-
-  const handlePresetClick = (presetFilters: Record<string, unknown>) => {
-    if (isPresetActive(presetFilters)) {
-      // Toggle OFF: remove preset keys from current filters
-      const next = { ...filterValues };
-      for (const key of Object.keys(presetFilters)) {
-        delete next[key];
-      }
-      setFilters(next);
-    } else {
-      // Toggle ON: merge preset into current filters
-      setFilters({ ...filterValues, ...presetFilters });
-    }
-  };
-
   return (
-    <FilterCategory label="Quick Filters" icon={<Zap className="h-4 w-4" />} defaultExpanded>
+    <QuickFilterGroup label="Quick Filters">
       <AdminButton
         type="button"
         variant={
@@ -102,6 +75,6 @@ export const OrganizationSavedQueries = () => {
         <Clock className="w-3.5 h-3.5 mr-2" />
         Recent Prospects
       </AdminButton>
-    </FilterCategory>
+    </QuickFilterGroup>
   );
 };

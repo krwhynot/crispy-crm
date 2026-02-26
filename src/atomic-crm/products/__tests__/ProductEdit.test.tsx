@@ -119,25 +119,26 @@ describe("ProductEdit - Transform Logic", () => {
       expect(record.updated_by).toBeNull();
     });
 
-    it("productUpdateSchema.strip() removes unknown keys from database records", () => {
+    it("productUpdateSchema.passthrough() preserves unknown keys (callbacks strip before DB write)", () => {
       // Database records contain extra fields not in schema
       const databaseRecord = {
-        id: 123, // Not in schema
+        id: 123,
         name: "Test Product",
         principal_id: 1,
         category: "beverages",
         status: "active",
-        created_at: "2024-01-01T00:00:00Z", // Not in schema
-        updated_at: "2024-01-01T00:00:00Z", // Not in schema
+        created_at: "2024-01-01T00:00:00Z",
+        updated_at: "2024-01-01T00:00:00Z",
       };
 
-      // productUpdateSchema uses .strip() to remove unknown keys
+      // productUpdateSchema uses .passthrough() — lifecycle callbacks strip computed fields before write
       const parsed = productUpdateSchema.partial().parse(databaseRecord);
 
       expect(parsed.name).toBe("Test Product");
-      expect(parsed).not.toHaveProperty("id");
-      expect(parsed).not.toHaveProperty("created_at");
-      expect(parsed).not.toHaveProperty("updated_at");
+      // passthrough preserves extra keys — callbacks handle stripping
+      expect(parsed).toHaveProperty("id", 123);
+      expect(parsed).toHaveProperty("created_at", "2024-01-01T00:00:00Z");
+      expect(parsed).toHaveProperty("updated_at", "2024-01-01T00:00:00Z");
     });
   });
 

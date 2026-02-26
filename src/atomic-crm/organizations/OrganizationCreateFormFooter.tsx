@@ -15,28 +15,24 @@ import { SaveButton } from "@/components/ra-wrappers/form";
 import { UnsavedChangesDialog } from "@/components/ui/unsaved-changes-dialog";
 import { useSafeNotify } from "@/atomic-crm/hooks/useSafeNotify";
 import { notificationMessages } from "@/atomic-crm/constants/notificationMessages";
-import type { OrganizationFormValues, DuplicateCheckCallback } from "./types";
+import type { OrganizationFormValues } from "./types";
 import { UNKNOWN_SEGMENT_ID } from "@/atomic-crm/validation/segments";
 import { ORGANIZATION_FORM_VARIANTS } from "../validation/organizationFormConfig";
 
 interface OrganizationCreateFormFooterProps {
-  onDuplicateFound: DuplicateCheckCallback;
   checkForDuplicate: (name: string) => Promise<{ id: string | number; name: string } | null>;
   isChecking: boolean;
   redirectPath?: string;
   transformValues: (values: OrganizationFormValues) => OrganizationFormValues;
-  bypassDuplicate: () => void;
 }
 
 type SaveAction = "close" | "addAnother";
 
 export const OrganizationCreateFormFooter = ({
-  onDuplicateFound,
   checkForDuplicate,
   isChecking,
   redirectPath = "/organizations",
   transformValues,
-  bypassDuplicate,
 }: OrganizationCreateFormFooterProps) => {
   const { success, actionError } = useSafeNotify();
   const redirectFn = useRedirect();
@@ -50,8 +46,6 @@ export const OrganizationCreateFormFooter = ({
   const variant = ORGANIZATION_FORM_VARIANTS.create;
   const preserveFields = variant.preserveFields;
 
-  // Track which save action was clicked
-  const pendingActionRef = useRef<SaveAction | null>(null);
   // Hidden submit button ref (not used for actual submission, but kept for pattern consistency)
   const hiddenSubmitRef = useRef<HTMLButtonElement>(null);
 
@@ -69,7 +63,7 @@ export const OrganizationCreateFormFooter = ({
   );
 
   /**
-   * Core save logic after duplicate check passes or is bypassed.
+   * Core save logic after duplicate check passes.
    * Handles both "Save & Close" and "Save & Add Another" actions.
    */
   const performSave = useCallback(
@@ -83,8 +77,8 @@ export const OrganizationCreateFormFooter = ({
           "organizations",
           { data: transformedValues },
           {
+            returnPromise: true,
             onSuccess: (data: { id: string | number }) => {
-              bypassDuplicate();
               success(notificationMessages.created("Organization"));
 
               if (action === "close") {
@@ -117,22 +111,12 @@ export const OrganizationCreateFormFooter = ({
         setIsCreating(false);
       }
     },
-    [
-      getValues,
-      transformValues,
-      create,
-      bypassDuplicate,
-      success,
-      actionError,
-      redirectFn,
-      preserveFields,
-      reset,
-    ]
+    [getValues, transformValues, create, success, actionError, redirectFn, preserveFields, reset]
   );
 
   /**
    * Handle save button click with duplicate check.
-   * If duplicate found, stores the pending action and triggers dialog.
+   * If duplicate found, the hook sets duplicateOrg which triggers the blocking dialog.
    * If no duplicate, proceeds with save immediately.
    */
   const handleSaveClick = useCallback(
@@ -161,19 +145,16 @@ export const OrganizationCreateFormFooter = ({
         return;
       }
 
-      // Check for duplicates
+      // Check for duplicates - if found, hook opens blocking dialog
       const duplicate = await checkForDuplicate(name);
       if (duplicate) {
-        // Store the action for when user confirms
-        pendingActionRef.current = action;
-        onDuplicateFound(duplicate.name, values);
         return;
       }
 
       // No duplicate - save immediately
       await performSave(action);
     },
-    [trigger, getValues, checkForDuplicate, onDuplicateFound, performSave]
+    [trigger, getValues, checkForDuplicate, performSave]
   );
 
   const isButtonDisabled = isChecking || isCreating;
@@ -210,6 +191,7 @@ export const OrganizationCreateFormFooter = ({
           />
           <SaveButton
             type="button"
+            variant="secondary"
             label={buttonLabel("Save & Add Another")}
             alwaysEnable={!isButtonDisabled}
             disabled={isButtonDisabled}

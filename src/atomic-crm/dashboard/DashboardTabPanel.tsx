@@ -26,6 +26,9 @@ const PrincipalPipelineTable = lazy(() => import("./PrincipalPipelineTable"));
 const TasksKanbanPanel = lazy(() => import("./TasksKanbanPanel"));
 const MyPerformanceWidget = lazy(() => import("./MyPerformanceWidget"));
 const ActivityFeedPanel = lazy(() => import("./ActivityFeedPanel"));
+const KPISummaryRow = lazy(() =>
+  import("./KPISummaryRow").then((m) => ({ default: m.KPISummaryRow }))
+);
 
 function TabSkeleton() {
   return (
@@ -140,17 +143,14 @@ export function DashboardTabPanel() {
   const { pendingCount, isLoading } = useTaskCount();
 
   return (
-    <Card className="flex min-h-0 flex-1 flex-col gap-0 overflow-hidden">
-      <Tabs defaultValue="pipeline" className="flex min-h-0 flex-1 flex-col gap-0">
-        <div className="shrink-0 border-b border-border px-4 py-3">
-          <TabsList
-            className="h-11 w-full justify-start gap-2 bg-transparent p-0"
-            data-tutorial="dashboard-tabs"
-          >
+    <Card className="paper-card flex min-h-0 flex-1 flex-col gap-0 overflow-hidden">
+      <Tabs defaultValue="tasks" className="flex min-h-0 flex-1 flex-col gap-0">
+        <div className="shrink-0 border-b px-3 py-2 [border-color:color-mix(in_oklch,var(--paper-divider)_50%,transparent)]">
+          <TabsList className="paper-tabs-list overflow-x-auto" data-tutorial="dashboard-tabs">
             {/* Pipeline Tab - 44px touch target */}
             <TabsTrigger
               value="pipeline"
-              className="h-11 min-w-[120px] gap-2 rounded-t-lg rounded-b-none border-b-2 border-transparent px-4 data-[state=active]:border-primary data-[state=active]:bg-transparent"
+              className="paper-tabs-trigger gap-1.5"
               data-tutorial="dashboard-tab-pipeline"
             >
               <LayoutGrid className="h-4 w-4" />
@@ -160,7 +160,7 @@ export function DashboardTabPanel() {
             {/* My Tasks Tab */}
             <TabsTrigger
               value="tasks"
-              className="h-11 min-w-[120px] gap-2 rounded-t-lg rounded-b-none border-b-2 border-transparent px-4 data-[state=active]:border-primary data-[state=active]:bg-transparent"
+              className="paper-tabs-trigger gap-1.5"
               data-tutorial="dashboard-tab-tasks"
             >
               <CheckSquare className="h-4 w-4" />
@@ -175,7 +175,7 @@ export function DashboardTabPanel() {
             {/* Performance Tab */}
             <TabsTrigger
               value="performance"
-              className="h-11 min-w-[120px] gap-2 rounded-t-lg rounded-b-none border-b-2 border-transparent px-4 data-[state=active]:border-primary data-[state=active]:bg-transparent"
+              className="paper-tabs-trigger gap-1.5"
               data-tutorial="dashboard-tab-performance"
             >
               <TrendingUp className="h-4 w-4" />
@@ -185,7 +185,7 @@ export function DashboardTabPanel() {
             {/* Team Activity Tab */}
             <TabsTrigger
               value="activity"
-              className="h-11 min-w-[120px] gap-2 rounded-t-lg rounded-b-none border-b-2 border-transparent px-4 data-[state=active]:border-primary data-[state=active]:bg-transparent"
+              className="paper-tabs-trigger gap-1.5"
               data-tutorial="dashboard-tab-activity"
             >
               <Users className="h-4 w-4" />
@@ -195,7 +195,7 @@ export function DashboardTabPanel() {
             {/* Recently Viewed Tab */}
             <TabsTrigger
               value="recent"
-              className="h-11 min-w-[120px] gap-2 rounded-t-lg rounded-b-none border-b-2 border-transparent px-4 data-[state=active]:border-primary data-[state=active]:bg-transparent"
+              className="paper-tabs-trigger gap-1.5 ml-auto opacity-60 data-[state=active]:opacity-100"
               data-tutorial="dashboard-tab-recent"
             >
               <Clock className="h-4 w-4" />
@@ -234,7 +234,10 @@ export function DashboardTabPanel() {
             forceMount
           >
             <Suspense fallback={<TabSkeleton />}>
-              <MyPerformanceWidget />
+              <div className="space-y-4 p-4">
+                <KPISummaryRow />
+                <MyPerformanceWidget />
+              </div>
             </Suspense>
           </TabsContent>
 

@@ -163,3 +163,41 @@ describe("WG-002: Stage Close Validation (opportunities-operations.ts)", () => {
     });
   });
 });
+
+describe("Any-stage jump and reopen transitions", () => {
+  it("accepts multi-stage active jump with previous_stage", () => {
+    const result = updateOpportunitySchema.safeParse({
+      id: 1,
+      stage: "demo_scheduled",
+      previous_stage: "new_lead",
+    });
+    expect(result.success).toBe(true);
+  });
+
+  it("accepts reopen from closed_won to any active stage", () => {
+    const result = updateOpportunitySchema.safeParse({
+      id: 1,
+      stage: "new_lead",
+      previous_stage: "closed_won",
+    });
+    expect(result.success).toBe(true);
+  });
+
+  it("accepts reopen from closed_lost to any active stage", () => {
+    const result = updateOpportunitySchema.safeParse({
+      id: 1,
+      stage: "feedback_logged",
+      previous_stage: "closed_lost",
+    });
+    expect(result.success).toBe(true);
+  });
+
+  it("rejects closed → closed transition", () => {
+    const result = updateOpportunitySchema.safeParse({
+      id: 1,
+      stage: "closed_lost",
+      previous_stage: "closed_won",
+    });
+    expect(result.success).toBe(false);
+  });
+});

@@ -54,60 +54,96 @@ export const ContactList = () => {
 
 **When to use**: Every List component that uses React Admin's list params caching.
 
-### How It Works
+### How It Works (Two-Phase Architecture)
 
-The hook validates stored filters against the `filterRegistry`:
+Cleanup runs in two phases to prevent PostgREST 400 errors on the very first render:
+
+1. **Phase 1 (Synchronous, pre-render):** `cleanStaleListParams()` runs outside `useEffect` during render, fixing localStorage before React Admin's `useListParams` reads it.
+2. **Phase 2 (Effect, post-render):** Syncs React Admin's in-memory store via `store.setItem()` so subsequent renders pick up cleaned values.
 
 ```tsx
-// useFilterCleanup.ts:60-93
-export const useFilterCleanup = (resource: string) => {
-  const [, storeApi] = useStore();
+// useFilterCleanup.ts — Phase 1: synchronous cleanup function
+function cleanStaleListParams(resource: string): boolean {
+  const key = `RaStoreCRM.${resource}.listParams`;
+  const storedParams = localStorage.getItem(key);
+  if (!storedParams) return false;
 
-  useEffect(() => {
-    // Key matches React Admin store name configured in CRM.tsx
-    const key = `RaStoreCRM.${resource}.listParams`;
-    const storedParams = localStorage.getItem(key);
+  const params = safeJsonParse(storedParams, listParamsSchema);
+  if (!params) return false;
 
-    if (!storedParams) return;
+  let modified = false;
 
-    const params = safeJsonParse(storedParams, listParamsSchema);
-    if (!params?.filter) return;
-
-    const cleanedFilter: Record<string, any> = {};
-    let modified = false;
-
+  // Clean stale filter fields
+  if (params.filter) {
+    const cleanedFilter: Record<string, unknown> = {};
     for (const filterKey in params.filter) {
       if (isValidFilterField(resource, filterKey)) {
         cleanedFilter[filterKey] = params.filter[filterKey];
       } else {
-        logger.warn('Stale filter removed', {
-          hook: 'useFilterCleanup',
-          filterKey,
-          operation: 'cleanup'
+        logger.warn('Found stale filter in localStorage, removing it', {
+          feature: 'useFilterCleanup', resource, filterKey,
         });
         modified = true;
       }
     }
+    if (modified) params.filter = cleanedFilter;
+  }
 
-    if (modified) {
-      params.filter = cleanedFilter;
-      localStorage.setItem(key, JSON.stringify(params));
-      storeApi.setItem(key, params); // Sync RA store
+  // Check sort field validity — RA stores sort as flat string, not nested {field, order}
+  if (typeof params.sort === "string" && params.sort) {
+    if (!isValidFilterField(resource, params.sort)) {
+      params.sort = DEFAULT_SORT_FIELDS[resource] || "id";
+      modified = true;
     }
-  }, [resource, storeApi]);
+  }
+
+  if (modified) localStorage.setItem(key, JSON.stringify(params));
+  return modified;
+}
+
+// useFilterCleanup.ts — Hook with two-phase cleanup
+export const useFilterCleanup = (resource: string) => {
+  const store = useStoreContext();
+  const notify = useNotify();
+
+  // Phase 1: Synchronous pre-render cleanup
+  const cleanedRef = useRef<{ resource: string; cleaned: boolean } | null>(null);
+  if (!cleanedRef.current || cleanedRef.current.resource !== resource) {
+    const cleaned = cleanStaleListParams(resource);
+    cleanedRef.current = { resource, cleaned };
+  }
+
+  // Phase 2: Sync RA's in-memory store post-render
+  useEffect(() => {
+    if (cleanedRef.current?.cleaned) {
+      const localStorageKey = `RaStoreCRM.${resource}.listParams`;
+      const storeKey = `${resource}.listParams`;
+      const storedParams = localStorage.getItem(localStorageKey);
+      if (storedParams) {
+        const params = safeJsonParse(storedParams, listParamsSchema);
+        if (params) store.setItem(storeKey, params);
+      }
+      cleanedRef.current = { resource, cleaned: false };
+    }
+  }, [resource, store, notify]);
 };
 ```
 
+**Key differences from earlier version:**
+- Uses `useStoreContext()` (not `useStore`) for React Admin store access
+- Schema imported from `../validation/filters` (not defined inline)
+- Sort field stored as flat string format (`"field_name"`), not nested `{field, order}` object
+
 ### Zod Schema for Validation
 
+The `listParamsSchema` is defined in `../validation/filters.ts` (not inline in the hook):
+
 ```tsx
-// useFilterCleanup.ts:25-34
-const listParamsSchema = z.object({
-  filter: z.record(z.string(), z.unknown()).optional(),
-  sort: z.object({
-    field: z.string().max(100),
-    order: z.enum(["ASC", "DESC"]),
-  }).optional(),
+// src/atomic-crm/validation/filters.ts
+export const listParamsSchema = z.object({
+  filter: z.record(z.string().max(50), z.unknown()).optional(),
+  sort: z.string().max(100).optional(),       // Flat string, NOT nested {field, order}
+  order: z.enum(["ASC", "DESC"]).optional(),
   page: z.number().int().positive().optional(),
   perPage: z.number().int().positive().max(1000).optional(),
   displayedFilters: z.record(z.string(), z.boolean()).optional(),
@@ -119,7 +155,7 @@ const listParamsSchema = z.object({
 When a stale sort field is detected, the hook resets to a sensible default:
 
 ```tsx
-// useFilterCleanup.ts:11-19
+// useFilterCleanup.ts:13-21
 const DEFAULT_SORT_FIELDS: Record<string, string> = {
   contacts: "last_seen",
   organizations: "name",
@@ -483,13 +519,30 @@ const RESOURCE_RELATIONSHIPS = {
   organizations: [
     { resource: "contacts", field: "organization_id", label: "Contacts" },
     { resource: "opportunities", field: "customer_organization_id", label: "Opportunities (Customer)" },
+    { resource: "opportunities", field: "principal_organization_id", label: "Opportunities (Principal)" },
+    { resource: "opportunities", field: "distributor_organization_id", label: "Opportunities (Distributor)" },
     { resource: "activities", field: "organization_id", label: "Activities" },
+    { resource: "organization_notes", field: "organization_id", label: "Notes" },
   ],
   contacts: [
     { resource: "activities", field: "contact_id", label: "Activities" },
     { resource: "tasks", field: "contact_id", label: "Tasks" },
+    { resource: "contact_notes", field: "contact_id", label: "Notes" },
+    { resource: "opportunity_contacts", field: "contact_id", label: "Opportunity Links" },
   ],
 };
+```
+
+### Return Value
+
+```tsx
+interface UseRelatedRecordCountsResult {
+  relatedCounts: RelatedRecordCount[];
+  isLoading: boolean;
+  error: Error | null;
+  /** True if some (but not all) queries failed - UI should show warning */
+  hasPartialFailure: boolean;
+}
 ```
 
 ---
@@ -630,7 +683,13 @@ export interface SafeNotifyReturn {
 ### Implementation
 
 ```tsx
-// useSafeNotify.ts:28-90
+// useSafeNotify.ts
+import {
+  TOAST_SUCCESS_DURATION_MS,
+  TOAST_INFO_DURATION_MS,
+  TOAST_ERROR_DURATION_MS,
+} from "@/atomic-crm/constants";
+
 export function useSafeNotify(): SafeNotifyReturn {
   const notify = useNotify();
 
@@ -638,8 +697,9 @@ export function useSafeNotify(): SafeNotifyReturn {
     (message: string, options?: Omit<SafeNotifyOptions, "fallback">) => {
       notify(message, {
         type: "success",
-        autoHideDuration: 3000,
-        ...options,
+        autoHideDuration: options?.autoHideDuration ?? TOAST_SUCCESS_DURATION_MS,
+        undoable: options?.undoable,
+        messageArgs: options?.messageArgs,
       });
     },
     [notify]
@@ -647,30 +707,41 @@ export function useSafeNotify(): SafeNotifyReturn {
 
   const error = useCallback(
     (err: unknown, fallbackOrOptions?: string | SafeNotifyOptions) => {
-      const { fallback, ...options } =
-        typeof fallbackOrOptions === "string"
-          ? { fallback: fallbackOrOptions }
-          : fallbackOrOptions || {};
+      let fallback: string | undefined;
+      let options: Omit<SafeNotifyOptions, "fallback"> = {};
+
+      if (typeof fallbackOrOptions === "string") {
+        fallback = fallbackOrOptions;
+      } else if (fallbackOrOptions) {
+        fallback = fallbackOrOptions.fallback;
+        options = fallbackOrOptions;
+      }
 
       const message = fallback ?? mapErrorToUserMessage(err);
       notify(message, {
         type: "error",
-        autoHideDuration: 5000,
-        ...options,
+        autoHideDuration: options.autoHideDuration ?? TOAST_ERROR_DURATION_MS,
+        undoable: options.undoable,
+        messageArgs: options.messageArgs,
       });
     },
     [notify]
   );
 
   const actionError = useCallback(
-    (error: unknown, action: string, resource?: string) => {
-      const message = getActionErrorMessage(error, action, resource);
-      notify(message, { type: "error", autoHideDuration: 5000 });
+    (err: unknown, action: "create" | "update" | "delete" | "save" | "load", resource?: string) => {
+      // First try to get a meaningful message from the error
+      const sanitized = mapErrorToUserMessage(err);
+      // If generic, use the action-specific fallback
+      const isGeneric = sanitized === "Something went wrong. Please try again.";
+      const message = isGeneric ? getActionErrorMessage(action, resource) : sanitized;
+
+      notify(message, { type: "error", autoHideDuration: TOAST_ERROR_DURATION_MS });
     },
     [notify]
   );
 
-  // ... warning, info methods
+  // ... warning, info methods (use TOAST_INFO_DURATION_MS)
 }
 ```
 
@@ -681,8 +752,8 @@ export function useSafeNotify(): SafeNotifyReturn {
 | Wraps `useNotify` | Maintains React Admin compatibility while adding safety |
 | `mapErrorToUserMessage` | Converts database/technical errors to user-friendly text |
 | All methods use `useCallback` | Ensures stable references for downstream deps |
-| `actionError` helper | Provides consistent error messages for CRUD operations |
-| Default durations (3s/5s) | Success messages auto-hide faster than errors |
+| `actionError` helper | Uses `getActionErrorMessage(action, resource)` (no error param) for consistent CRUD messages |
+| Duration constants | Uses `TOAST_SUCCESS_DURATION_MS`, `TOAST_ERROR_DURATION_MS`, `TOAST_INFO_DURATION_MS` from `@/atomic-crm/constants` (not hardcoded `3000`/`5000`) |
 
 ### Error Sanitization
 

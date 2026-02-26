@@ -7,16 +7,13 @@
 
 ## Overview
 
-Crispy CRM uses **two distinct tracking systems** for technical issues:
+Crispy CRM uses a single tracking system for technical issues:
 
 | System | File | Purpose | ID Format |
 |--------|------|---------|-----------|
 | **Technical Debt Tracker** | `docs/technical-debt.md` | Long-term code quality issues from audits | `PREFIX-XX` (2-digit) |
-| **Audit/TODOs Tracker** | `docs/TODOs.md` | Active remediation items from provider audit | `PREFIX-XXX` or `PREFIX-CXX` |
 
-**Key Difference:**
-- Technical Debt = Backlog items discovered during code audits (P0-P3 priority)
-- Audit/TODOs = Active execution plan with phased rollout (Items 1-14)
+Historical security/workflow findings (SF-CXX, WF-CXX) were consolidated into the technical debt tracker in January 2026.
 
 ---
 
@@ -54,7 +51,7 @@ Crispy CRM uses **two distinct tracking systems** for technical issues:
 ```markdown
 | ID | Category | Issue | File(s) | Status |
 |----|----------|-------|---------|--------|
-| UI-04 | Focus Mgmt | ColumnsButton manual portal bypass breaks focus management | `src/components/admin/columns-button.tsx:85-87` | Open |
+| UI-04 | Focus Mgmt | ColumnsButton manual portal bypass breaks focus management | `src/components/ra-wrappers/columns-button.tsx:85-87` | Open |
 ```
 
 ---
@@ -143,7 +140,7 @@ Commit: fix(security): resolve SF-C09 IDOR in data provider
 ### From Technical Debt to Source
 
 ```
-UI-04 → docs/technical-debt.md → File: src/components/admin/columns-button.tsx:85-87
+UI-04 → docs/technical-debt.md → File: src/components/ra-wrappers/columns-button.tsx:85-87
 ```
 
 ### From Finding to Resolution

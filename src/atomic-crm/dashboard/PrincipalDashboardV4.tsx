@@ -33,8 +33,9 @@ const CompactPerformanceWidget = lazy(() => import("./CompactPerformanceWidget")
  */
 export function PrincipalDashboardV4() {
   return (
-    <div className="pb-6">
-      <main className="grid grid-cols-1 lg:grid-cols-12 gap-3">
+    <div className="pb-8">
+      <h1 className="text-lg font-semibold shrink-0 mb-3">Dashboard</h1>
+      <main className="grid grid-cols-1 lg:grid-cols-12 gap-4">
         {/* 1. KPIs — mobile: 1st, desktop: left col row 1 */}
         <div className="lg:col-span-3 lg:col-start-1 lg:row-start-1">
           <KPISummaryRow />

@@ -38,7 +38,7 @@ src/atomic-crm/components/
 └── TrackRecordView.tsx           # Invisible component for recent items tracking
 ```
 
-**Import Pattern:** Always import from the barrel export:
+**Import Pattern:** Import from the barrel export where available:
 
 ```tsx
 // ✅ Recommended: Import from barrel
@@ -49,9 +49,15 @@ import {
   CreateFormFooter,
 } from "@/atomic-crm/components";
 
-// ❌ Avoid: Direct file imports
+// ❌ Avoid: Direct file imports for barrel-exported components
 import { SampleStatusBadge } from "@/atomic-crm/components/SampleStatusBadge";
 ```
+
+> **Note:** `TrackRecordView` is **not** exported from the barrel (`index.ts`).
+> Consumers import it directly:
+> ```tsx
+> import { TrackRecordView } from "@/atomic-crm/components/TrackRecordView";
+> ```
 
 ---
 

@@ -67,6 +67,14 @@ export interface PremiumDatagridProps extends Omit<DatagridProps, "rowClassName"
    * Can be a string or a function that receives (record, index) and returns a string.
    */
   rowClassName?: string | ((record: unknown, index: number) => string);
+
+  /**
+   * Keep datagrid table headers sticky while scrolling.
+   * Enabled by default for list readability.
+   *
+   * @default true
+   */
+  stickyHeader?: boolean;
 }
 
 /**
@@ -81,6 +89,7 @@ export function PremiumDatagrid({
   configurable = false,
   preferenceKey,
   rowClassName: externalRowClassName,
+  stickyHeader = true,
   ...props
 }: PremiumDatagridProps) {
   const { data } = useListContext();
@@ -158,7 +167,13 @@ export function PremiumDatagrid({
   };
 
   return (
-    <div className="flex-1 min-h-0 overflow-auto">
+    <div
+      className={cn(
+        "flex-1 min-h-0 overflow-auto overflow-x-auto overflow-y-auto",
+        stickyHeader && "sticky-header"
+      )}
+      data-sticky-header={stickyHeader ? "true" : "false"}
+    >
       <DatagridComponent {...componentProps} />
     </div>
   );

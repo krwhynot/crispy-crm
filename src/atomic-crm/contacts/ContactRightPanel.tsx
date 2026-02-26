@@ -8,6 +8,7 @@ import { contactKeys } from "@/atomic-crm/queryKeys";
 import { logger } from "@/lib/logger";
 import { contactBaseSchema } from "../validation/contacts";
 import { notificationMessages } from "@/atomic-crm/constants/notificationMessages";
+import { extractProviderValidationMessage } from "@/atomic-crm/utils/extractProviderValidationMessage";
 import { ReferenceField } from "@/components/ra-wrappers/reference-field";
 import { TextField } from "@/components/ra-wrappers/text-field";
 import { ArrayField } from "@/components/ra-wrappers/array-field";
@@ -111,11 +112,15 @@ export function ContactRightPanel({
         return;
       }
 
-      await update("contacts", {
-        id: record.id,
-        data: result.data,
-        previousData: record,
-      });
+      await update(
+        "contacts",
+        {
+          id: record.id,
+          data: result.data,
+          previousData: record,
+        },
+        { returnPromise: true }
+      );
 
       // Invalidate contact caches after successful update
       queryClient.invalidateQueries({ queryKey: contactKeys.lists() });
@@ -124,7 +129,11 @@ export function ContactRightPanel({
       notify(notificationMessages.updated("Contact"), { type: "success" });
       onModeToggle?.();
     } catch (error: unknown) {
-      notify("Error updating contact", { type: "error" });
+      const message = extractProviderValidationMessage(error, {
+        resource: "contacts",
+        action: "update",
+      });
+      notify(message, { type: "error" });
       logger.error("Error updating contact", error, {
         feature: "ContactRightPanel",
         contactId: record.id,

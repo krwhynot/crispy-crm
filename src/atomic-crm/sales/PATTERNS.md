@@ -48,6 +48,7 @@ import * as React from "react";
 import type { Sale } from "../types";
 import { formatName } from "../utils/formatName";
 import { ResourceErrorBoundary } from "@/components/ResourceErrorBoundary";
+import { Loading } from "@/components/ra-wrappers/loading";
 
 // Lazy loading for code splitting
 const SalesListLazy = React.lazy(() => import("./SalesList"));
@@ -55,16 +56,20 @@ const SalesEditLazy = React.lazy(() => import("./SalesEdit"));
 const SalesCreateLazy = React.lazy(() => import("./SalesCreate"));
 const SalesShowLazy = React.lazy(() => import("./SalesShow"));
 
-// Each view wrapped in error boundary
+// Each view wrapped in error boundary + Suspense fallback
 const SalesListView = () => (
   <ResourceErrorBoundary resource="sales" page="list">
-    <SalesListLazy />
+    <React.Suspense fallback={<Loading />}>
+      <SalesListLazy />
+    </React.Suspense>
   </ResourceErrorBoundary>
 );
 
 const SalesEditView = () => (
   <ResourceErrorBoundary resource="sales" page="edit">
-    <SalesEditLazy />
+    <React.Suspense fallback={<Loading />}>
+      <SalesEditLazy />
+    </React.Suspense>
   </ResourceErrorBoundary>
 );
 
@@ -83,6 +88,7 @@ export default {
 **Key points:**
 - Use `React.lazy()` for code splitting (reduces initial bundle size)
 - Wrap every view in `ResourceErrorBoundary` with resource and page props
+- Wrap lazy components in `React.Suspense` with `<Loading />` fallback
 - Define `recordRepresentation` for breadcrumbs and navigation
 - Export default object matching React Admin resource shape
 
@@ -276,6 +282,12 @@ export const SalesListFilter = () => {
           label="Active Only"
           value={{ disabled: false }}
         />
+        <ToggleFilterButton
+          className="w-full justify-between"
+          label="Disabled Only"
+          value={{ disabled: true }}
+        />
+        {/* Clearing both shows all users */}
       </FilterCategory>
     </div>
   );
@@ -352,7 +364,7 @@ export function SalesSlideOver({
 }
 ```
 
-**List view integration:**
+**List view integration (UnifiedListPageLayout):**
 
 ```tsx
 // In SalesList.tsx
@@ -362,13 +374,27 @@ export default function SalesList() {
 
   return (
     <>
-      <List
-        filterDefaultValues={{ disabled: false }}
-        aside={<SalesListFilter />}
-      >
-        <SalesListLayout openSlideOver={openSlideOver} isSlideOverOpen={isOpen} />
-        <FloatingCreateButton />
-      </List>
+      <div data-tutorial="sales-list">
+        <List
+          title={false}
+          actions={false}
+          sort={{ field: "first_name", order: "ASC" }}
+          filterDefaultValues={{ disabled: false }}
+        >
+          <UnifiedListPageLayout
+            resource="sales"
+            filterComponent={<SalesListFilter />}
+            filterConfig={SALES_FILTER_CONFIG}
+            sortFields={["first_name", "last_name", "email"]}
+            searchPlaceholder="Search team members..."
+            primaryAction={<CreateButton variant="default" />}
+            emptyState={<SalesEmpty />}
+            loadingSkeleton={<SalesListSkeleton />}
+          >
+            <SalesDatagrid openSlideOver={openSlideOver} isSlideOverOpen={isOpen} />
+          </UnifiedListPageLayout>
+        </List>
+      </div>
 
       <SalesSlideOver
         recordId={slideOverId}
@@ -383,8 +409,12 @@ export default function SalesList() {
 ```
 
 **Key points:**
+- Use `actions={false}` on `<List>` -- actions are handled by `UnifiedListPageLayout`
+- `primaryAction={<CreateButton variant="default" />}` replaces `FloatingCreateButton`
+- `filterComponent` receives the sidebar filter UI; `filterConfig` drives `FilterChipBar`
+- `sortFields` enables column sort controls in the layout header
+- `emptyState` and `loadingSkeleton` provide consistent loading/empty experiences
 - Use `useSlideOverState()` hook for state management and URL sync
-- Pass `openSlideOver`, `isSlideOverOpen` to list layout for keyboard nav integration
 - `TabConfig` requires: `key`, `label`, `component`, and optional `icon`
 - Tab components receive: `record`, `mode`, `onModeToggle` props automatically
 - Design: 40vw width (480-720px), slide-in from right, ESC to close
@@ -402,8 +432,6 @@ export default function SalesList() {
   const { slideOverId, isOpen, mode, openSlideOver, closeSlideOver, toggleMode } =
     useSlideOverState();
 
-  useFilterCleanup("sales");
-
   // Identity-aware loading
   if (isIdentityPending) return <SalesListSkeleton />;
   if (!identity) return null;
@@ -413,13 +441,22 @@ export default function SalesList() {
       <div data-tutorial="sales-list">
         <List
           title={false}
-          actions={<SalesListActions />}
+          actions={false}
           sort={{ field: "first_name", order: "ASC" }}
           filterDefaultValues={{ disabled: false }}
-          aside={<SalesListFilter />}
         >
-          <SalesListLayout openSlideOver={openSlideOver} isSlideOverOpen={isOpen} />
-          <FloatingCreateButton />
+          <UnifiedListPageLayout
+            resource="sales"
+            filterComponent={<SalesListFilter />}
+            filterConfig={SALES_FILTER_CONFIG}
+            sortFields={["first_name", "last_name", "email"]}
+            searchPlaceholder="Search team members..."
+            primaryAction={<CreateButton variant="default" />}
+            emptyState={<SalesEmpty />}
+            loadingSkeleton={<SalesListSkeleton />}
+          >
+            <SalesDatagrid openSlideOver={openSlideOver} isSlideOverOpen={isOpen} />
+          </UnifiedListPageLayout>
         </List>
       </div>
 
@@ -439,29 +476,33 @@ export default function SalesList() {
 
 ```tsx
 // RoleBadgeField - Uses semantic colors (NEVER hardcoded hex)
+// Includes role="status" and aria-label for accessibility (CORE-014)
 const RoleBadgeField = ({ label: _label, ..._props }: { label: string }) => {
-  const record = useRecordContext();
+  const record = useRecordContext<Sale>();
   if (!record) return null;
 
   let badge = null;
   switch (record.role) {
     case "admin":
       badge = (
-        <Badge variant="outline" className="border-primary text-primary">
+        <Badge variant="outline" className="border-primary text-primary"
+          role="status" aria-label="Role: Admin">
           Admin
         </Badge>
       );
       break;
     case "manager":
       badge = (
-        <Badge variant="outline" className="border-success text-success">
+        <Badge variant="outline" className="border-success text-success"
+          role="status" aria-label="Role: Manager">
           Manager
         </Badge>
       );
       break;
     case "rep":
       badge = (
-        <Badge variant="outline" className="border-muted-foreground text-muted-foreground">
+        <Badge variant="outline" className="border-muted-foreground text-muted-foreground"
+          role="status" aria-label="Role: Rep">
           Rep
         </Badge>
       );
@@ -474,9 +515,10 @@ const RoleBadgeField = ({ label: _label, ..._props }: { label: string }) => {
 
 **Key points:**
 - Check `isIdentityPending` before rendering - show skeleton during load
-- Use `useFilterCleanup(resource)` to clear stale filters on navigation
+- Use `actions={false}` on `<List>` -- `UnifiedListPageLayout` handles actions/search/filters
 - Use `COLUMN_VISIBILITY` presets for responsive column hiding
 - Custom field components must use `useRecordContext()` to access row data
+- Badge fields must include `role="status"` and `aria-label` for accessibility (CORE-014)
 - ALWAYS use semantic colors: `text-primary`, `text-success`, `text-muted-foreground`
 - NEVER use hardcoded colors: `text-blue-600`, `text-green-500`
 
@@ -507,29 +549,30 @@ export function SalesPermissionsTab({ record, mode, onModeToggle }: SalesPermiss
   // Prevent editing own account
   const isSelfEdit = record?.id === identity?.id;
 
-  // Soft-delete user (sets deleted_at)
-  const handleRemoveUser = async () => {
+  // Remove user - soft-delete handled by Data Provider layer (withSkipDelete)
+  const handleRemoveUser = () => {
     if (isSelfEdit) {
       notify("You cannot remove your own account", { type: "warning" });
       return;
     }
 
-    setIsDeleting(true);
-    try {
-      await update(
-        "sales",
-        { id: record.id, data: { deleted_at: new Date().toISOString() }, previousData: record },
-        {
-          onSuccess: () => {
-            notify("User removed successfully", { type: "success" });
-            refresh();
-            redirect("/sales");
-          },
-        }
-      );
-    } finally {
-      setIsDeleting(false);
-    }
+    // useDelete hook handles soft-delete conversion via Data Provider
+    // The withSkipDelete wrapper intercepts and sets deleted_at automatically
+    deleteOne(
+      "sales",
+      { id: record.id, previousData: record },
+      {
+        onSuccess: () => {
+          notify(notificationMessages.deleted("User"), { type: "success" });
+          refresh();
+          redirect("/sales");
+        },
+        onError: (error: unknown) => {
+          const message = error instanceof Error ? error.message : "Failed to remove user";
+          notify(message, { type: "error" });
+        },
+      }
+    );
   };
 
   // Identity cache invalidation on role change
@@ -594,7 +637,7 @@ export function SalesPermissionsTab({ record, mode, onModeToggle }: SalesPermiss
 - Compare `record?.id === identity?.id` for self-edit detection
 - Disable inputs with `disabled={isLoading || isSelfEdit}`
 - Show warning banner when user tries to edit own permissions
-- Use soft-delete: set `deleted_at` timestamp, don't hard delete
+- Use `deleteOne()` for soft-delete -- the `withSkipDelete` wrapper in the data provider intercepts and sets `deleted_at` automatically (do NOT manually set `deleted_at` via `update()`)
 - Call `invalidateIdentityCache()` when role changes for immediate permission update
 - Danger zones: semantic colors (`border-destructive`, `bg-destructive/5`)
 - Admin-only features: check `identity?.role === "admin"`
@@ -610,6 +653,7 @@ export function SalesPermissionsTab({ record, mode, onModeToggle }: SalesPermiss
 import { AvatarFallback, AvatarImage, Avatar as ShadcnAvatar } from "@/components/ui/avatar";
 import { useRecordContext } from "ra-core";
 import type { Sale } from "../types";
+import { getInitials } from "@/atomic-crm/utils/formatters";
 
 export const SaleAvatar = (props: {
   record?: Sale;
@@ -640,8 +684,7 @@ export const SaleAvatar = (props: {
     <ShadcnAvatar className={sizeClass} title={props.title}>
       <AvatarImage src={record.avatar?.src ?? undefined} />
       <AvatarFallback className={textSizeClass}>
-        {record.first_name?.charAt(0).toUpperCase()}
-        {record.last_name?.charAt(0).toUpperCase()}
+        {getInitials(record.first_name, record.last_name)}
       </AvatarFallback>
     </ShadcnAvatar>
   );
@@ -651,7 +694,7 @@ export const SaleAvatar = (props: {
 **Key points:**
 - Use `useRecordContext<Sale>(props)` for flexibility (works in list columns AND standalone)
 - Size variants: `sm` (w-5/h-5), `md` (w-6/h-6 default), `lg` (w-10/h-10)
-- Fallback initials: First letter of first_name + first_name of last_name, uppercased
+- Fallback initials: Uses `getInitials(first_name, last_name)` utility from `@/atomic-crm/utils/formatters`
 - Handle null gracefully: return null if no name data
 - Use optional `title` prop for tooltips
 
@@ -674,6 +717,7 @@ import * as React from "react";
 import type { Sale } from "../types";
 import { formatName } from "../utils/formatName";
 import { ResourceErrorBoundary } from "@/components/ResourceErrorBoundary";
+import { Loading } from "@/components/ra-wrappers/loading";
 
 // 1. Lazy-load all views for code splitting
 const SalesListLazy = React.lazy(() => import("./SalesList"));
@@ -681,32 +725,40 @@ const SalesEditLazy = React.lazy(() => import("./SalesEdit"));
 const SalesCreateLazy = React.lazy(() => import("./SalesCreate"));
 const SalesShowLazy = React.lazy(() => import("./SalesShow"));
 
-// 2. Wrap each view in error boundary
+// 2. Wrap each view in error boundary + Suspense fallback
 const SalesListView = () => (
   <ResourceErrorBoundary resource="sales" page="list">
-    <SalesListLazy />
+    <React.Suspense fallback={<Loading />}>
+      <SalesListLazy />
+    </React.Suspense>
   </ResourceErrorBoundary>
 );
 
 const SalesEditView = () => (
   <ResourceErrorBoundary resource="sales" page="edit">
-    <SalesEditLazy />
+    <React.Suspense fallback={<Loading />}>
+      <SalesEditLazy />
+    </React.Suspense>
   </ResourceErrorBoundary>
 );
 
 const SalesCreateView = () => (
   <ResourceErrorBoundary resource="sales" page="create">
-    <SalesCreateLazy />
+    <React.Suspense fallback={<Loading />}>
+      <SalesCreateLazy />
+    </React.Suspense>
   </ResourceErrorBoundary>
 );
 
 const SalesShowView = () => (
   <ResourceErrorBoundary resource="sales" page="show">
-    <SalesShowLazy />
+    <React.Suspense fallback={<Loading />}>
+      <SalesShowLazy />
+    </React.Suspense>
   </ResourceErrorBoundary>
 );
 
-// 3. Export individual views (for testing)
+// 3. Export individual views (for testing / direct imports)
 export { SalesListView, SalesEditView, SalesCreateView, SalesShowView };
 
 // 4. Export resource configuration (for App.tsx)
@@ -721,18 +773,21 @@ export default {
 
 **index.tsx entry point:**
 
+Note: `index.tsx` re-exports only 3 of the 4 views (no `SalesShowView`). The show view is available via direct import from `resource.tsx` if needed.
+
 ```tsx
 // index.tsx
 export { default } from "./resource";
-export * from "./resource";
+export { SalesListView, SalesEditView, SalesCreateView } from "./resource";
 ```
 
 **Key points:**
 - Always use `React.lazy()` for views (enables code splitting)
 - Every view needs `ResourceErrorBoundary` wrapper with resource and page
+- Wrap lazy components in `React.Suspense` with `<Loading />` fallback
 - Export both individual views (for testing) and default resource config
 - `recordRepresentation` used for breadcrumbs, select options, navigation
-- Entry `index.tsx` re-exports resource for clean imports
+- Entry `index.tsx` re-exports resource config and primary views
 
 ---
 

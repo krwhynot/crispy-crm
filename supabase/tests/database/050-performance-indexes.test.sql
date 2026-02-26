@@ -12,7 +12,6 @@
 --   The following FK constraints are intentionally excluded from this check:
 --   - Audit columns (updated_by) not used in RLS policies or JOINs
 --   - Non-RLS created_by columns on low-volume tables
---   - tasks_deprecated (deprecated table, no longer actively written to)
 --   RLS-critical FKs are covered by migrations 000002 and 000008.
 --
 -- ============================================================================
@@ -61,7 +60,6 @@ WITH unindexed_fks AS (
       'product_distributor_authorizations_created_by_fkey',
       'product_distributors_updated_by_fkey',
       'products_updated_by_fkey',
-      'tasks_created_by_fkey',
       'user_favorites_updated_by_fkey'
     )
 )

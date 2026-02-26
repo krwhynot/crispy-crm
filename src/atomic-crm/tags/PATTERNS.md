@@ -46,10 +46,11 @@ For fast tag creation when no existing tag matches the search term.
 
 ```tsx
 // src/atomic-crm/tags/TagQuickInput.tsx
-import { useState } from 'react';
-import { ReferenceInput, useCreate, useRefresh } from 'react-admin';
-import { useSafeNotify } from '@/atomic-crm/hooks/useSafeNotify';  // Preferred over useNotify
-import { GenericSelectInput } from '@/components/ra-wrappers/generic-select-input';
+import { useState } from "react";
+import { ReferenceInput, useCreate, useRefresh } from "react-admin";
+import { GenericSelectInput } from "@/components/ra-wrappers/generic-select-input";
+import { useSafeNotify } from "@/atomic-crm/hooks/useSafeNotify";
+import { notificationMessages } from "@/atomic-crm/constants/notificationMessages";
 
 interface TagQuickInputProps {
   source: string;
@@ -57,23 +58,24 @@ interface TagQuickInputProps {
 }
 
 export function TagQuickInput({ source, label }: TagQuickInputProps) {
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
   const [create, { isLoading: isCreating }] = useCreate();
-  const { success, error: notifyError } = useSafeNotify();  // Sanitizes error messages
+  const { success, error: notifyError } = useSafeNotify();
   const refresh = useRefresh();
 
   const handleQuickCreate = async (name: string) => {
     if (!name.trim()) return;
 
     await create(
-      'tags',
-      { data: { name: name.trim(), color: 'warm' } },  // Default color
+      "tags",
+      { data: { name: name.trim(), color: "warm" } },  // Default color
       {
+        returnPromise: true,
         onSuccess: () => {
-          success('Tag created');  // useSafeNotify helper
+          success(notificationMessages.created("Tag"));  // Centralized notification string
           refresh();  // Triggers ReferenceInput to refetch
         },
-        onError: (err) => {
+        onError: (err: unknown) => {
           notifyError(err);  // Sanitizes error message automatically
         },
       }
@@ -114,19 +116,27 @@ For complete tag management with name and color selection.
 
 ```tsx
 // src/atomic-crm/tags/TagDialog.tsx
-import { useEffect, useMemo } from "react";
-import { useForm, FormProvider } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { AdminButton } from "@/components/admin/AdminButton";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button";
-import { FormErrorSummary } from "@/components/ra-wrappers/FormErrorSummary";
-import { createTagSchema, type CreateTagInput } from "../validation/tags";
+import { SaveIcon } from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
+import { useForm, FormProvider, useWatch } from "react-hook-form";
+import { createFormResolver } from "@/lib/zodErrorFormatting";
+import type { Tag } from "../types";
 import { colors } from "./colors";
 import { RoundButton } from "./RoundButton";
-import type { Tag } from "../types";
 import type { TagColorName } from "@/lib/color-types";
+import { createTagSchema, type CreateTagInput } from "../validation/tags";
+import { FormErrorSummary } from "@/components/ra-wrappers/FormErrorSummary";
+import { UnsavedChangesDialog } from "@/components/ui/unsaved-changes-dialog";
 
 interface TagDialogProps {
   open: boolean;
@@ -138,79 +148,153 @@ interface TagDialogProps {
 
 export function TagDialog({ open, tag, title, onClose, onSubmit }: TagDialogProps) {
   // P2: Schema-derived defaults - NOT local useState
+  // FIX: Use undefined (not "") for empty name - .partial() allows undefined but "" still fails min(1)
   const defaultValues = useMemo(
     () =>
       createTagSchema.partial().parse({
-        name: tag?.name ?? "",
+        name: tag?.name || undefined,
         color: tag?.color ?? "warm",
       }),
     [tag]
   );
 
   const form = useForm<CreateTagInput>({
-    resolver: zodResolver(createTagSchema),
+    resolver: createFormResolver(createTagSchema),  // CORE-018: createFormResolver, NOT zodResolver
     defaultValues,
     mode: "onSubmit", // P5: onSubmit mode for performance
   });
 
-  const { register, handleSubmit, reset, setValue, watch, formState: { errors, isSubmitting } } = form;
-  const selectedColor = watch("color") as TagColorName;
+  const {
+    register,
+    handleSubmit,
+    reset,
+    setValue,
+    control,
+    formState: { errors, isSubmitting, isDirty },
+  } = form;
 
-  // Reset form when dialog opens
+  // P5: useWatch for isolated re-renders (only re-renders when color changes, not on every keystroke)
+  const selectedColor = useWatch({ name: "color", control }) as TagColorName;
+
+  const [showUnsavedDialog, setShowUnsavedDialog] = useState(false);
+
+  // Reset form when dialog opens/closes or tag changes
   useEffect(() => {
     if (open) {
-      reset({ name: tag?.name ?? "", color: (tag?.color as TagColorName) ?? "warm" });
+      reset({
+        name: tag?.name ?? "",
+        color: (tag?.color as TagColorName) ?? "warm",
+      });
     }
   }, [open, tag, reset]);
 
+  const handleFormSubmit = async (data: CreateTagInput) => {
+    await onSubmit({ name: data.name, color: data.color });
+    reset(defaultValues);
+    onClose();
+  };
+
+  // Dirty-state protection: prompt before discarding unsaved changes
+  const handleClose = () => {
+    if (isDirty) {
+      setShowUnsavedDialog(true);
+      return;
+    }
+    reset(defaultValues);
+    onClose();
+  };
+
+  const handleConfirmClose = () => {
+    setShowUnsavedDialog(false);
+    reset(defaultValues);
+    onClose();
+  };
+
   return (
-    <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-lg">
-        <FormProvider {...form}>
-          <form onSubmit={handleSubmit(async (data) => { await onSubmit(data); onClose(); })}>
-            <DialogHeader>
-              <DialogTitle>{title}</DialogTitle>
-            </DialogHeader>
+    <>
+      <Dialog open={open} onOpenChange={handleClose}>
+        <DialogContent className="sm:max-w-lg">
+          <FormProvider {...form}>
+            <form onSubmit={handleSubmit(handleFormSubmit)}>
+              <DialogHeader>
+                <DialogTitle>{title}</DialogTitle>
+                <DialogDescription>Enter a name and choose a color for your tag.</DialogDescription>
+              </DialogHeader>
 
-            <div className="space-y-4 py-4">
-              {/* P3: FormErrorSummary for accessible error aggregation */}
-              <FormErrorSummary errors={errors} fieldLabels={{ name: "Tag Name", color: "Color" }} />
-
-              <div className="space-y-2">
-                <Label htmlFor="tag-name">Tag name</Label>
-                <Input
-                  id="tag-name"
-                  {...register("name")}
-                  aria-invalid={!!errors.name}
-                  aria-describedby={errors.name ? "name-error" : undefined}
+              <div className="space-y-4 py-4">
+                {/* P3: FormErrorSummary for accessible error aggregation */}
+                <FormErrorSummary
+                  errors={errors}
+                  fieldLabels={{ name: "Tag Name", color: "Color" }}
                 />
-                {errors.name && (
-                  <p id="name-error" className="text-sm text-destructive" role="alert">
-                    {errors.name.message}
-                  </p>
-                )}
-              </div>
 
-              <div className="space-y-2">
-                <Label>Color</Label>
-                <div className="flex flex-wrap gap-1">
-                  {colors.map((color) => (
-                    <RoundButton
-                      key={color}
-                      color={color}
-                      selected={color === selectedColor}
-                      handleClick={() => setValue("color", color, { shouldValidate: true })}
-                    />
-                  ))}
+                <div className="space-y-2">
+                  <Label htmlFor="tag-name">Tag name</Label>
+                  <Input
+                    id="tag-name"
+                    {...register("name")}
+                    placeholder="Enter tag name"
+                    aria-invalid={!!errors.name}
+                    aria-describedby={errors.name ? "name-error" : undefined}
+                  />
+                  {errors.name && (
+                    <p id="name-error" className="text-sm text-destructive" role="alert">
+                      {errors.name.message}
+                    </p>
+                  )}
+                </div>
+
+                <div className="space-y-2">
+                  <Label>Color</Label>
+                  <div className="flex flex-wrap gap-1">
+                    {colors.map((color) => (
+                      <div key={color} className="relative group">
+                        <RoundButton
+                          color={color}
+                          selected={color === selectedColor}
+                          handleClick={() => {
+                            setValue("color", color, { shouldValidate: true });
+                          }}
+                        />
+                        {/* Color name tooltip on hover */}
+                        <span className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 text-xs text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+                          {color}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                  {/* Color validation error display */}
+                  {errors.color && (
+                    <p id="color-error" className="text-sm text-destructive mt-1" role="alert">
+                      {errors.color.message}
+                    </p>
+                  )}
                 </div>
               </div>
-            </div>
 
-            <Button type="submit" disabled={isSubmitting}>Save</Button>
-          </form>
-        </FormProvider>
-      </DialogContent>
-    </Dialog>
+              <div className="flex justify-end pt-4">
+                <AdminButton
+                  type="submit"
+                  variant="outline"
+                  isLoading={isSubmitting}
+                  loadingText="Saving..."
+                  className="text-primary"
+                >
+                  <SaveIcon className="h-4 w-4" />
+                  Save
+                </AdminButton>
+              </div>
+            </form>
+          </FormProvider>
+        </DialogContent>
+      </Dialog>
+      {/* Dirty-state protection dialog */}
+      <UnsavedChangesDialog
+        open={showUnsavedDialog}
+        onConfirm={handleConfirmClose}
+        onCancel={() => setShowUnsavedDialog(false)}
+      />
+    </>
   );
 }
 ```
@@ -221,6 +305,13 @@ export function TagDialog({ open, tag, title, onClose, onSubmit }: TagDialogProp
 - **P2**: Schema defaults via `createTagSchema.partial().parse({})`
 - **P3**: FormErrorSummary for accessible error aggregation
 - **P5**: Form mode `onSubmit` (not `onChange`) for performance
+- **CORE-018**: `createFormResolver(createTagSchema)` instead of direct `zodResolver`
+- **CORE-015**: `DialogDescription` for accessible dialog context
+- `useWatch({ name: "color", control })` for isolated re-renders (not `watch()`)
+- `UnsavedChangesDialog` for dirty-state protection on close
+- `AdminButton` with `isLoading`/`loadingText` instead of plain `Button`
+- Color tooltips on hover via grouped `<span>` elements
+- Color error display with `role="alert"` for accessibility
 
 ---
 
@@ -230,14 +321,15 @@ For tag selection with the option to create new tags with full control.
 
 ```tsx
 // src/atomic-crm/tags/TagSelectWithCreate.tsx
-import { useState } from 'react';
-import { ReferenceInput, useCreate, useRefresh } from 'react-admin';
-import { useSafeNotify } from '@/atomic-crm/hooks/useSafeNotify';
-import { GenericSelectInput } from '@/components/ra-wrappers/generic-select-input';
-import { Button } from '@/components/ui/button';
-import { PlusIcon } from 'lucide-react';
-import { TagDialog } from './TagDialog';
-import type { Tag } from '../types';
+import { useState } from "react";
+import { ReferenceInput, useCreate, useRefresh } from "react-admin";
+import { useSafeNotify } from "@/atomic-crm/hooks/useSafeNotify";
+import { GenericSelectInput } from "@/components/ra-wrappers/generic-select-input";
+import { AdminButton } from "@/components/admin/AdminButton";
+import { PlusIcon } from "lucide-react";
+import { TagDialog } from "./TagDialog";
+import { notificationMessages } from "@/atomic-crm/constants/notificationMessages";
+import type { Tag } from "../types";
 
 interface TagSelectWithCreateProps {
   source: string;
@@ -246,23 +338,24 @@ interface TagSelectWithCreateProps {
 
 export function TagSelectWithCreate({ source, label }: TagSelectWithCreateProps) {
   const [dialogOpen, setDialogOpen] = useState(false);
-  const [defaultName, setDefaultName] = useState('');
+  const [defaultName, setDefaultName] = useState("");
   const [create] = useCreate();
-  const { success, error: notifyError } = useSafeNotify();  // Sanitizes error messages
+  const { success, error: notifyError } = useSafeNotify();
   const refresh = useRefresh();
 
-  const handleCreateTag = async (data: Pick<Tag, 'name' | 'color'>) => {
+  const handleCreateTag = async (data: Pick<Tag, "name" | "color">) => {
     await create(
-      'tags',
+      "tags",
       { data },
       {
+        returnPromise: true,
         onSuccess: () => {
-          success('Tag created');  // useSafeNotify helper
+          success(notificationMessages.created("Tag"));  // Centralized notification string
           setDialogOpen(false);
           refresh();
         },
-        onError: (err) => {
-          notifyError(err);  // Sanitizes error message automatically
+        onError: (error) => {
+          notifyError(error);
         },
       }
     );
@@ -270,7 +363,7 @@ export function TagSelectWithCreate({ source, label }: TagSelectWithCreateProps)
 
   // Footer stays visible even when filtering
   const footer = (
-    <Button
+    <AdminButton
       type="button"
       variant="ghost"
       className="h-11 w-full justify-start text-sm"
@@ -278,7 +371,7 @@ export function TagSelectWithCreate({ source, label }: TagSelectWithCreateProps)
     >
       <PlusIcon className="mr-2 h-4 w-4" />
       Create new tag
-    </Button>
+    </AdminButton>
   );
 
   return (
@@ -296,7 +389,7 @@ export function TagSelectWithCreate({ source, label }: TagSelectWithCreateProps)
       <TagDialog
         open={dialogOpen}
         title="Create a new tag"
-        tag={{ name: defaultName, color: 'warm' }}  // Pre-fill from search
+        tag={{ name: defaultName, color: "warm" }}  // Pre-fill from search
         onSubmit={handleCreateTag}
         onClose={() => setDialogOpen(false)}
       />
@@ -320,8 +413,8 @@ For displaying tags with color, edit trigger, and remove action.
 
 ```tsx
 // src/atomic-crm/tags/TagChip.tsx
-import { useState } from "react";
 import { X } from "lucide-react";
+import { memo, useState } from "react";
 import { cn } from "@/lib/utils";
 import type { Tag } from "../types";
 import { TagEditModal } from "./TagEditModal";
@@ -332,55 +425,67 @@ interface TagChipProps {
   onUnlink: () => Promise<void>;
 }
 
-export function TagChip({ tag, onUnlink }: TagChipProps) {
+// memo() prevents unnecessary re-renders when parent re-renders with same tag/onUnlink
+export const TagChip = memo(function TagChip({ tag, onUnlink }: TagChipProps) {
   const [open, setOpen] = useState(false);
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleClick = () => {
+    setOpen(true);
+  };
 
   return (
     <>
       <div
         className={cn(
           "inline-flex items-center gap-1 px-2 py-1 text-xs rounded-md cursor-pointer",
-          "border border-[var(--tag-border)]",  // CSS variable defined in src/index.css:962
+          "border border-black/20",  // Semantic border with 20% opacity
           "transition-all duration-200",
-          "hover:shadow-sm hover:scale-[1.02]",
-          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2",
+          "hover:shadow-sm hover:scale-[1.02] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2",
           getTagColorClass(tag.color)  // Returns 'tag-warm', 'tag-blue', etc.
         )}
-        onClick={() => setOpen(true)}
+        onClick={handleClick}
         tabIndex={0}
         role="button"
         onKeyDown={(e) => {
           if (e.key === "Enter" || e.key === " ") {
             e.preventDefault();
-            setOpen(true);
+            handleClick();
           }
         }}
       >
         {tag.name}
-        {/* Remove button with 44px touch target (WCAG 2.5.5) */}
+        {/* Remove button with 44px touch target (WCAG 2.5.5) - uses negative margin to maintain visual density */}
         <button
           onClick={(e) => {
             e.stopPropagation();
             onUnlink();
           }}
-          className="relative -my-2 -mr-1 ml-0.5 h-11 w-11 flex items-center justify-center"
+          className="relative -my-2 -mr-1 ml-0.5 h-11 w-11 flex items-center justify-center transition-colors cursor-pointer hover:opacity-70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 rounded-sm"
           aria-label={`Remove ${tag.name} tag`}
         >
           <X className="w-3 h-3" />
         </button>
       </div>
-      <TagEditModal tag={tag} open={open} onClose={() => setOpen(false)} />
+      <TagEditModal tag={tag} open={open} onClose={handleClose} />
     </>
   );
-}
+});
 ```
 
 **When to use**: Displaying assigned tags on entities (contacts, opportunities). Click to edit, X to unlink.
+
+**Performance:**
+- `memo()` wrapping prevents unnecessary re-renders when parent re-renders with same props
 
 **Accessibility:**
 - `tabIndex={0}` and `role="button"` for keyboard navigation
 - `aria-label` on remove button
 - 44px touch target (WCAG 2.5.5) using negative margins for visual density
+- Focus-visible ring on both chip and remove button
 
 ---
 
@@ -444,6 +549,11 @@ export function validateTagColor(value: string): string | undefined {
   }
   return "Invalid color selection";
 }
+
+/**
+ * Export the valid colors list for use in UI components
+ */
+export const TAG_COLORS = VALID_TAG_COLORS;
 ```
 
 ### Zod Validation with Color Transformation
@@ -575,10 +685,15 @@ import { VALID_TAG_COLORS } from "@/lib/color-types";
 export const colors: TagColorName[] = VALID_TAG_COLORS;
 ```
 
-### Barrel Exports
+### Dual Barrel Structure
+
+The tags module uses two barrel files to separate concerns:
+
+- **`index.ts`** -- Type and utility exports (consumed by other modules importing tag types/helpers)
+- **`index.tsx`** -- CRUD component exports (consumed by the resource registration and admin routes)
 
 ```tsx
-// src/atomic-crm/tags/index.ts
+// src/atomic-crm/tags/index.ts — Types, utilities, and reusable components
 export type { Tag, CreateTagInput, UpdateTagInput, TagWithCount, TagSelection, TagFilterOptions } from "./types";
 export { TAG_COLORS } from "./colors";
 export { getTagColorClass, normalizeColorToSemantic, validateTagColor } from "./tag-colors";
@@ -587,6 +702,23 @@ export { TagChip } from "./TagChip";
 export { TagCreateModal } from "./TagCreateModal";
 export { TagEditModal } from "./TagEditModal";
 export { TagDialog } from "./TagDialog";
+```
+
+```tsx
+// src/atomic-crm/tags/index.tsx — CRUD admin components
+// Architecture: TagShow intentionally omitted (tags are ultra-simple entities)
+
+// CRUD components for admin management
+export { TagList } from "./TagList";
+export { TagCreate } from "./TagCreate";
+export { TagEdit } from "./TagEdit";
+export { TagInputs } from "./TagInputs";
+
+// Existing tag components (shared between admin and feature modules)
+export { TagSelectWithCreate } from "./TagSelectWithCreate";
+export { TagChip } from "./TagChip";
+export { TagDialog } from "./TagDialog";
+export { RoundButton } from "./RoundButton";
 ```
 
 ---
@@ -611,8 +743,10 @@ TagCreateModal and TagEditModal follow a thin wrapper pattern:
 ```tsx
 // src/atomic-crm/tags/TagCreateModal.tsx
 import { useCreate } from "ra-core";
+import { useQueryClient } from "@tanstack/react-query";
 import type { Tag } from "../types";
 import { TagDialog } from "./TagDialog";
+import { tagKeys } from "@/atomic-crm/queryKeys";
 
 interface TagCreateModalProps {
   open: boolean;
@@ -622,11 +756,21 @@ interface TagCreateModalProps {
 
 export function TagCreateModal({ open, onClose, onSuccess }: TagCreateModalProps) {
   const [create] = useCreate<Tag>();
+  const queryClient = useQueryClient();
 
   const handleCreateTag = async (data: Pick<Tag, "name" | "color">) => {
-    await create("tags", { data }, {
-      onSuccess: async (tag) => { await onSuccess?.(tag); },
-    });
+    await create(
+      "tags",
+      { data },
+      {
+        returnPromise: true,
+        onSuccess: async (tag) => {
+          // STALE-002: Invalidate tag caches to refresh lists after create
+          await queryClient.invalidateQueries({ queryKey: tagKeys.all });
+          await onSuccess?.(tag);
+        },
+      }
+    );
   };
 
   return (
@@ -638,8 +782,10 @@ export function TagCreateModal({ open, onClose, onSuccess }: TagCreateModalProps
 ```tsx
 // src/atomic-crm/tags/TagEditModal.tsx
 import { useUpdate } from "ra-core";
+import { useQueryClient } from "@tanstack/react-query";
 import type { Tag } from "../types";
 import { TagDialog } from "./TagDialog";
+import { tagKeys } from "@/atomic-crm/queryKeys";
 
 interface TagEditModalProps {
   tag: Tag;
@@ -650,11 +796,21 @@ interface TagEditModalProps {
 
 export function TagEditModal({ tag, open, onClose, onSuccess }: TagEditModalProps) {
   const [update] = useUpdate<Tag>();
+  const queryClient = useQueryClient();
 
   const handleEditTag = async (data: Pick<Tag, "name" | "color">) => {
-    await update("tags", { id: tag.id, data, previousData: tag }, {
-      onSuccess: async (tag) => { await onSuccess?.(tag); },
-    });
+    await update(
+      "tags",
+      { id: tag.id, data, previousData: tag },
+      {
+        returnPromise: true,
+        onSuccess: async (updatedTag) => {
+          // STALE-002: Invalidate tag caches to refresh lists after update
+          await queryClient.invalidateQueries({ queryKey: tagKeys.all });
+          await onSuccess?.(updatedTag);
+        },
+      }
+    );
   };
 
   return (
@@ -664,6 +820,280 @@ export function TagEditModal({ tag, open, onClose, onSuccess }: TagEditModalProp
 ```
 
 **When to use**: Use these wrappers instead of TagDialog directly when you need React Admin CRUD hooks (`useCreate`, `useUpdate`).
+
+**Stale-state compliance (STALE-002):**
+- Both modals use `useQueryClient` and `tagKeys.all` to invalidate caches after mutation
+- `returnPromise: true` ensures the mutation completes before invalidation
+- This keeps tag lists in sync across all views that display tags
+
+---
+
+## Pattern H: CRUD Admin Module
+
+Full admin CRUD views for managing tags as a standalone resource (list, create, edit).
+
+### TagList.tsx
+
+```tsx
+// src/atomic-crm/tags/TagList.tsx
+import { TextField, FunctionField } from "react-admin";
+import { List } from "@/components/ra-wrappers/list";
+import { PremiumDatagrid } from "@/components/ra-wrappers/PremiumDatagrid";
+import { UnifiedListPageLayout } from "@/components/layouts/UnifiedListPageLayout";
+import { CreateButton } from "@/components/ra-wrappers/create-button";
+import { cn } from "@/lib/utils";
+import { getTagColorClass } from "./tag-colors";
+import type { Tag } from "../types";
+
+export const TagList = () => {
+  return (
+    <List
+      title={false}
+      actions={false}
+      perPage={25}
+      sort={{ field: "name", order: "ASC" }}
+      exporter={false}
+    >
+      <UnifiedListPageLayout
+        resource="tags"
+        showFilterSidebar={false}
+        sortFields={["name", "color"]}
+        searchPlaceholder="Search tags..."
+        primaryAction={<CreateButton variant="default" />}
+      >
+        <PremiumDatagrid rowClick="edit" bulkActionButtons={false}>
+          <TextField source="name" label="Tag Name" />
+          <FunctionField
+            label="Preview"
+            render={(record: Tag) => (
+              <span
+                className={cn(
+                  "inline-flex items-center px-2 py-1 text-xs rounded-md",
+                  "border border-black/20",
+                  getTagColorClass(record.color)
+                )}
+              >
+                {record.name}
+              </span>
+            )}
+          />
+          <FunctionField
+            label="Color"
+            render={(record: Tag) => (
+              <span className="text-muted-foreground capitalize">{record.color}</span>
+            )}
+          />
+        </PremiumDatagrid>
+      </UnifiedListPageLayout>
+    </List>
+  );
+};
+```
+
+**Key points:**
+- `UnifiedListPageLayout` provides consistent list shell with search, sort, and primary action
+- `PremiumDatagrid` (CORE-016) instead of raw `Datagrid`
+- `rowClick="edit"` -- users go directly to edit (no Show view for simple entities)
+- Preview column renders actual tag chip appearance inline
+
+### TagCreate.tsx
+
+```tsx
+// src/atomic-crm/tags/TagCreate.tsx
+import { useMemo } from "react";
+import { CreateBase, Form } from "ra-core";
+import { SectionCard } from "@/components/ra-wrappers/SectionCard";
+import { CreateFormFooter } from "@/atomic-crm/components";
+import { TagInputs } from "./TagInputs";
+import { createTagSchema } from "../validation/tags";
+import { createFormResolver } from "@/lib/zodErrorFormatting";
+
+export const TagCreate = () => {
+  // P2: Schema-derived defaults ensure type safety
+  const defaultValues = useMemo(() => createTagSchema.partial().parse({}), []);
+
+  return (
+    <CreateBase redirect="list">
+      <div className="bg-muted px-6 py-6">
+        <div className="max-w-2xl mx-auto">
+          <SectionCard title="Create Tag">
+            <Form
+              defaultValues={defaultValues}
+              mode="onBlur"
+              resolver={createFormResolver(createTagSchema)}
+            >
+              <TagInputs />
+              <CreateFormFooter resourceName="tag" redirectPath="/tags" />
+            </Form>
+          </SectionCard>
+        </div>
+      </div>
+    </CreateBase>
+  );
+};
+```
+
+### TagEdit.tsx
+
+```tsx
+// src/atomic-crm/tags/TagEdit.tsx
+import { useMemo } from "react";
+import { EditBase, Form, useEditContext } from "ra-core";
+import { SectionCard } from "@/components/ra-wrappers/SectionCard";
+import { FormToolbar } from "../layout/FormToolbar";
+import { TagInputs } from "./TagInputs";
+import { tagSchema } from "../validation/tags";
+import { createFormResolver } from "@/lib/zodErrorFormatting";
+import type { Tag } from "../types";
+
+export const TagEdit = () => {
+  return (
+    <EditBase redirect="list" mutationMode="pessimistic">
+      <TagEditContent />
+    </EditBase>
+  );
+};
+
+const TagEditContent = () => {
+  const { isPending, record } = useEditContext<Tag>();
+
+  // P2: Schema-derived defaults with existing record data
+  // Use passthrough() to allow extra DB fields (description, usage_count, created_at)
+  const defaultValues = useMemo(
+    () =>
+      tagSchema
+        .partial()
+        .passthrough()
+        .parse(record ?? {}),
+    [record]
+  );
+
+  if (isPending || !record) {
+    return null;
+  }
+
+  return (
+    <div className="bg-muted px-6 py-6">
+      <div className="max-w-2xl mx-auto">
+        <SectionCard title="Edit Tag">
+          <Form
+            defaultValues={defaultValues}
+            mode="onBlur"
+            resolver={createFormResolver(tagSchema)}
+          >
+            <TagInputs />
+            <FormToolbar />
+          </Form>
+        </SectionCard>
+      </div>
+    </div>
+  );
+};
+```
+
+### TagInputs.tsx (Shared Form Inputs)
+
+```tsx
+// src/atomic-crm/tags/TagInputs.tsx
+import { useFormContext, useWatch } from "react-hook-form";
+import { TextInput } from "@/components/ra-wrappers/text-input";
+import { Label } from "@/components/ui/label";
+import { colors } from "./colors";
+import { RoundButton } from "./RoundButton";
+import type { TagColorName } from "@/lib/color-types";
+
+export const TagInputs = () => {
+  const { setValue } = useFormContext();
+  // P5: useWatch for isolated re-renders
+  const selectedColor = useWatch({ name: "color" }) as TagColorName;
+
+  return (
+    <div className="flex flex-col gap-6">
+      <TextInput
+        source="name"
+        label="Tag Name"
+        fullWidth
+        helperText="Enter a unique name for this tag (max 50 characters)"
+      />
+
+      <div className="space-y-2">
+        <Label>Color</Label>
+        <div className="flex flex-wrap gap-2" role="radiogroup" aria-label="Tag color">
+          {colors.map((color) => (
+            <div key={color} className="relative group">
+              <RoundButton
+                color={color}
+                selected={color === selectedColor}
+                handleClick={() => {
+                  setValue("color", color, { shouldValidate: true, shouldDirty: true });
+                }}
+              />
+              <span className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 text-xs text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap capitalize">
+                {color}
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
+```
+
+**When to use**: Shared between `TagCreate` and `TagEdit` to avoid input duplication (MOD-006).
+
+### resource.tsx (Lazy Loading Resource Config)
+
+```tsx
+// src/atomic-crm/tags/resource.tsx
+import * as React from "react";
+import type { Tag } from "../types";
+import { ResourceErrorBoundary } from "@/components/ResourceErrorBoundary";
+import { Loading } from "@/components/ra-wrappers/loading";
+
+const TagListLazy = React.lazy(() => import("./TagList"));
+const TagEditLazy = React.lazy(() => import("./TagEdit"));
+const TagCreateLazy = React.lazy(() => import("./TagCreate"));
+
+export const TagListView = () => (
+  <ResourceErrorBoundary resource="tags" page="list">
+    <React.Suspense fallback={<Loading />}>
+      <TagListLazy />
+    </React.Suspense>
+  </ResourceErrorBoundary>
+);
+
+export const TagEditView = () => (
+  <ResourceErrorBoundary resource="tags" page="edit">
+    <React.Suspense fallback={<Loading />}>
+      <TagEditLazy />
+    </React.Suspense>
+  </ResourceErrorBoundary>
+);
+
+export const TagCreateView = () => (
+  <ResourceErrorBoundary resource="tags" page="create">
+    <React.Suspense fallback={<Loading />}>
+      <TagCreateLazy />
+    </React.Suspense>
+  </ResourceErrorBoundary>
+);
+
+const tagRecordRepresentation = (record: Tag) => record?.name || `Tag #${record?.id}`;
+
+export default {
+  list: TagListView,
+  edit: TagEditView,
+  create: TagCreateView,
+  recordRepresentation: tagRecordRepresentation,
+};
+```
+
+**Key points:**
+- `React.lazy()` for code-split loading of each CRUD view
+- `ResourceErrorBoundary` wraps each view for resource-specific error handling
+- `recordRepresentation` provides human-readable tag names in RA references
+- TagShow intentionally omitted -- tags are ultra-simple entities (id, name, color) with no relationships
 
 ---
 
@@ -715,6 +1145,15 @@ export function TagEditModal({ tag, open, onClose, onSuccess }: TagEditModalProp
 
 **Why**: Single point of validation (P3) at API boundary.
 
+### Resolver Usage (CORE-018)
+
+| Don't | Do |
+|-------|-----|
+| `resolver: zodResolver(schema)` | `resolver: createFormResolver(schema)` |
+| `import { zodResolver } from "@hookform/resolvers/zod"` | `import { createFormResolver } from "@/lib/zodErrorFormatting"` |
+
+**Why**: `createFormResolver` wraps `zodResolver` with standardized error formatting. Direct `zodResolver` usage bypasses error normalization and violates CORE-018.
+
 ---
 
 ## Migration Checklist
@@ -732,3 +1171,29 @@ When extending or modifying tag functionality:
 - [ ] Add `aria-label` to interactive elements
 - [ ] Use `refresh()` after create/update in ReferenceInput contexts
 - [ ] Export new components via `index.ts` barrel file
+- [ ] Use `createFormResolver()` (not `zodResolver`) for form resolvers
+- [ ] Invalidate `tagKeys.all` after mutations in modal wrappers
+
+---
+
+## File Reference
+
+| File | Purpose | Pattern |
+|------|---------|---------|
+| `TagDialog.tsx` | Base form modal for create/edit tags | Pattern B |
+| `TagCreateModal.tsx` | Thin create wrapper with `useCreate` + cache invalidation | Modal Wrapper |
+| `TagEditModal.tsx` | Thin edit wrapper with `useUpdate` + cache invalidation | Modal Wrapper |
+| `TagChip.tsx` | Display tag with color, edit trigger, and remove action | Pattern D |
+| `TagQuickInput.tsx` | Simple inline creation via `emptyAction` | Pattern A |
+| `TagSelectWithCreate.tsx` | Select with footer creation button + dialog | Pattern C |
+| `TagList.tsx` | Admin list view with `UnifiedListPageLayout` + `PremiumDatagrid` | Pattern H (CRUD) |
+| `TagCreate.tsx` | Admin create form with `SectionCard` + `CreateFormFooter` | Pattern H (CRUD) |
+| `TagEdit.tsx` | Admin edit form with `SectionCard` + `FormToolbar` | Pattern H (CRUD) |
+| `TagInputs.tsx` | Shared form inputs (name + color picker) for admin CRUD | Pattern H (CRUD) |
+| `resource.tsx` | Lazy-loaded resource config with error boundaries | Pattern H (CRUD) |
+| `RoundButton.tsx` | Color picker button (44px touch target) | Pattern F |
+| `tag-colors.ts` | Color utilities: `getTagColorClass`, `normalizeColorToSemantic`, `TAG_COLORS` | Pattern E |
+| `colors.ts` | Color name array export for pickers | Pattern G (Config) |
+| `types.ts` | TypeScript interfaces for tag entities | Pattern G (Config) |
+| `index.ts` | Barrel exports: types, utilities, reusable components | Dual Barrel |
+| `index.tsx` | Barrel exports: CRUD admin components | Dual Barrel |

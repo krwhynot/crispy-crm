@@ -49,7 +49,7 @@ export const OrganizationTypeBadge = memo(function OrganizationTypeBadge({
 }: OrganizationTypeBadgeProps) {
   const colorClass = ORG_TYPE_COLOR_MAP[type as OrganizationType] || "tag-gray";
 
-  return <Badge className={`text-xs px-2 py-1 ${colorClass}`}>{ucFirst(type)}</Badge>;
+  return <Badge className={`text-xs py-1 ${colorClass}`}>{ucFirst(type)}</Badge>;
 });
 
 OrganizationTypeBadge.displayName = "OrganizationTypeBadge";
@@ -66,9 +66,10 @@ OrganizationTypeBadge.displayName = "OrganizationTypeBadge";
 export const PriorityBadge = memo(function PriorityBadge({ priority }: PriorityBadgeProps) {
   const variant = PRIORITY_VARIANT_MAP[priority as PriorityLevel] || "default";
   const label = PRIORITY_CHOICES.find((p) => p.id === priority)?.name || priority;
+  const isMuted = priority === "D";
 
   return (
-    <Badge variant={variant} className="text-xs px-2 py-1">
+    <Badge variant={variant} className={`text-xs py-1${isMuted ? " text-muted-foreground" : ""}`}>
       {label}
     </Badge>
   );
@@ -105,8 +106,8 @@ export const SegmentBadge = memo(function SegmentBadge({
   const colorClass = getSegmentColor(segmentId);
 
   return (
-    <Badge className={`text-xs px-2 py-1 max-w-[130px] truncate ${colorClass}`} title={segmentName}>
-      {segmentName}
+    <Badge className={`text-xs py-1 max-w-[160px] ${colorClass}`} title={segmentName}>
+      <span className="truncate min-w-0">{segmentName}</span>
     </Badge>
   );
 });

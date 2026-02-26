@@ -226,22 +226,6 @@ vi.mock("@/atomic-crm/tutorial/PageTutorialTrigger", () => ({
   PageTutorialTrigger: () => null,
 }));
 
-// Mock StandardListLayout
-vi.mock("@/components/layouts/StandardListLayout", () => ({
-  StandardListLayout: ({
-    children,
-    filterComponent,
-  }: {
-    children: React.ReactNode;
-    filterComponent: React.ReactNode;
-  }) => (
-    <div data-testid="standard-list-layout">
-      <div data-testid="filter-sidebar">{filterComponent}</div>
-      <div data-testid="list-content">{children}</div>
-    </div>
-  ),
-}));
-
 // Mock List component
 vi.mock("@/components/ra-wrappers/list", () => ({
   List: ({ children }: { children: React.ReactNode }) => (
@@ -257,11 +241,6 @@ vi.mock("../ContactEmpty", () => ({
 // Mock ListNoResults to avoid useResourceContext null error
 vi.mock("@/components/ra-wrappers/ListNoResults", () => ({
   ListNoResults: () => <div data-testid="list-no-results">No results</div>,
-}));
-
-// Mock FloatingCreateButton
-vi.mock("@/components/ra-wrappers/FloatingCreateButton", () => ({
-  FloatingCreateButton: () => <button data-testid="floating-create">Create</button>,
 }));
 
 vi.mock("@/components/ra-wrappers/bulk-actions-toolbar", () => ({
@@ -472,11 +451,11 @@ describe("ContactList", () => {
     });
   });
 
-  test("renders with StandardListLayout and filter sidebar", async () => {
+  test("renders with ListPageLayout and filter sidebar", async () => {
     renderWithAdminContext(<ContactList />);
 
     await waitFor(() => {
-      // StandardListLayout should render the datagrid
+      // ListPageLayout should render the datagrid
       const datagrid = screen.getByTestId("premium-datagrid");
       expect(datagrid).toBeInTheDocument();
     });
@@ -601,7 +580,7 @@ describe("ContactList 5-column directory layout", () => {
     });
   });
 
-  test("does NOT render removed columns (standalone Avatar, Notes, Actions)", async () => {
+  test("does NOT render removed columns (standalone Avatar, Notes) and includes hover Actions", async () => {
     renderWithAdminContext(<ContactList />);
 
     await waitFor(() => {
@@ -609,8 +588,8 @@ describe("ContactList 5-column directory layout", () => {
       expect(screen.queryByTestId("function-field-")).not.toBeInTheDocument();
       // Notes column is gone
       expect(screen.queryByTestId("function-field-Notes")).not.toBeInTheDocument();
-      // Actions column is gone
-      expect(screen.queryByTestId("function-field-Actions")).not.toBeInTheDocument();
+      // Hover actions column is present in the refreshed list view
+      expect(screen.getByTestId("function-field-Actions")).toBeInTheDocument();
     });
   });
 

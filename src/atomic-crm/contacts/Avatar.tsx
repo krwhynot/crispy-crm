@@ -18,7 +18,7 @@ export const Avatar = (props: {
   if (!record?.avatar && !record?.first_name && !record?.last_name) {
     return (
       <div
-        className={`${sizeClass} rounded-full bg-muted flex-shrink-0`}
+        className={`${sizeClass} rounded-full bg-[color:var(--avatar-fallback-bg)] shadow-[var(--avatar-shadow),var(--avatar-highlight)] flex-shrink-0`}
         aria-label="Contact avatar placeholder"
       />
     );

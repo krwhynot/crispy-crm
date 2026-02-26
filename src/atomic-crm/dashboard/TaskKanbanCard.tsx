@@ -139,11 +139,11 @@ export const TaskKanbanCard = memo(function TaskKanbanCard({
       className={`
         bg-card rounded-lg border border-border
         p-3
-        transition-all duration-200
-        hover:shadow-md hover:-translate-y-0.5
+        transition-all duration-150
+        hover:shadow-[var(--paper-shadow-1)]
         cursor-pointer
         ${isDragging && !isDragOverlay ? "opacity-50" : "opacity-100"}
-        ${isDragOverlay ? "shadow-xl" : ""}
+        ${isDragOverlay ? "shadow-lg" : ""}
       `}
       data-testid="task-kanban-card"
     >

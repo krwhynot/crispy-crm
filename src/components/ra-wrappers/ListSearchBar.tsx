@@ -13,7 +13,7 @@ interface ListSearchBarProps {
   /** Enable recent searches dropdown (default: false for backward compatibility) */
   enableRecentSearches?: boolean;
   /**
-   * @deprecated Filter chips are now rendered by StandardListLayout via filterConfig prop.
+   * @deprecated Filter chips are now rendered by ListPageLayout via filterConfig prop.
    * This prop is ignored and will be removed in a future version.
    */
   filterConfig?: unknown[];
@@ -26,7 +26,7 @@ interface ListSearchBarProps {
  * - Global search input
  * - Recent searches dropdown (optional, enabled via prop)
  *
- * Note: Filter chips (FilterChipBar) are now rendered by StandardListLayout
+ * Note: Filter chips (FilterChipBar) are now rendered by ListPageLayout
  * via the `filterConfig` prop, not by this component.
  *
  * @example
@@ -80,7 +80,7 @@ export function ListSearchBar({
   );
 
   return (
-    <div className="flex items-center gap-4">
+    <div className="flex items-center gap-content">
       {/* Search Input - optionally wrapped in Popover for recent searches */}
       {enableRecentSearches ? (
         <Popover
@@ -94,7 +94,7 @@ export function ListSearchBar({
           }}
         >
           <PopoverAnchor asChild>
-            <div className="flex-shrink-0 w-64" onBlurCapture={handleBlur}>
+            <div className="w-full md:max-w-sm" onBlurCapture={handleBlur}>
               {searchInputContent}
             </div>
           </PopoverAnchor>
@@ -114,7 +114,7 @@ export function ListSearchBar({
           </PopoverContent>
         </Popover>
       ) : (
-        <div className="flex-shrink-0 w-64">{searchInputContent}</div>
+        <div className="w-full md:max-w-sm">{searchInputContent}</div>
       )}
     </div>
   );

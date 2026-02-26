@@ -2,7 +2,7 @@
 
 Central navigation hub for Crispy CRM design documentation.
 
-**Implementation Details:** See [design-system/](../design-system/INDEX.md) for code patterns (forms, filters, badges, typography).
+**Implementation Details:** See implementation specs below (forms, filters, badges, typography).
 
 **Target Devices:** Desktop (1440px+) & iPad (equal priority) for field sales representatives.
 
@@ -15,7 +15,6 @@ Central navigation hub for Crispy CRM design documentation.
 | Color System | [`.claude/skills/ui-ux-design-principles/resources/color-system.md`](../../.claude/skills/ui-ux-design-principles/resources/color-system.md) | OKLCH semantic palette, brand colors, status colors |
 | Design Tokens | [`.claude/skills/ui-ux-design-principles/resources/design-tokens.md`](../../.claude/skills/ui-ux-design-principles/resources/design-tokens.md) | Spacing scale, grid system, touch targets |
 | Typography | [`.claude/skills/ui-ux-design-principles/resources/typography.md`](../../.claude/skills/ui-ux-design-principles/resources/typography.md) | Font hierarchy, text colors, heading patterns |
-| Component Catalog | [`./COMPONENT-CATALOG.md`](./COMPONENT-CATALOG.md) | UI component inventory and usage patterns |
 | Accessibility | [`./ACCESSIBILITY.md`](./ACCESSIBILITY.md) | WCAG 2.1 AA compliance, ARIA patterns |
 | Interaction Patterns | [`./INTERACTION-PATTERNS.md`](./INTERACTION-PATTERNS.md) | Hover states, focus management, animations |
 | Responsive Specs | [`./RESPONSIVE-SPECS.md`](./RESPONSIVE-SPECS.md) | Breakpoints, iPad layouts, touch optimization |
@@ -35,11 +34,20 @@ Central navigation hub for Crispy CRM design documentation.
 
 ---
 
+## Implementation Specs
+
+| Resource | Path | Description |
+|----------|------|-------------|
+| Badges | [`./badges.md`](./badges.md) | Badge system and priority indicators |
+| Filter Patterns | [`./filter-patterns.md`](./filter-patterns.md) | Filter sidebar patterns and configurations |
+| Form Patterns | [`./form-patterns.md`](./form-patterns.md) | Three form layout patterns |
+| Touch Targets | [`./touch-targets.md`](./touch-targets.md) | 44px minimum touch target standards |
+| Typography | [`./typography.md`](./typography.md) | Typography patterns (UPPERCASE vs Title Case) |
+
 ## Related Resources
 
 | Resource | Path | Description |
 |----------|------|-------------|
-| Implementation Patterns | [`../design-system/INDEX.md`](../design-system/INDEX.md) | Developer-focused technical specs (forms, filters, badges) |
 | Technical Debt | [`../technical-debt.md`](../technical-debt.md) | Prioritized fix list with open/resolved status |
 | Dashboard Reference | [`../features/dashboard-reference.md`](../features/dashboard-reference.md) | Principal dashboard widget specifications |
 | Decisions Log | [`../decisions.md`](../decisions.md) | Architectural decisions affecting UI/UX |

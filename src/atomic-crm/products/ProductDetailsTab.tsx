@@ -6,6 +6,7 @@ import { Form } from "react-admin";
 import { productKeys } from "@/atomic-crm/queryKeys";
 import { logger } from "@/lib/logger";
 import { notificationMessages } from "@/atomic-crm/constants/notificationMessages";
+import { extractProviderValidationMessage } from "@/atomic-crm/utils/extractProviderValidationMessage";
 import { ReferenceField } from "@/components/ra-wrappers/reference-field";
 import { TextField } from "@/components/ra-wrappers/text-field";
 import { TextInput } from "@/components/ra-wrappers/text-input";
@@ -118,16 +119,24 @@ export function ProductDetailsTab({
       const allFormValues = getValuesRef.current?.() ?? formData;
       const completeData = { ...allFormValues };
 
-      await update("products", {
-        id: record.id,
-        data: completeData,
-        previousData: record,
-      });
+      await update(
+        "products",
+        {
+          id: record.id,
+          data: completeData,
+          previousData: record,
+        },
+        { returnPromise: true }
+      );
       queryClient.invalidateQueries({ queryKey: productKeys.all });
       notify(notificationMessages.updated("Product"), { type: "success" });
       onModeToggle?.();
     } catch (error: unknown) {
-      notify("Error updating product", { type: "error" });
+      const message = extractProviderValidationMessage(error, {
+        resource: "products",
+        action: "update",
+      });
+      notify(message, { type: "error" });
       logger.error("Failed to save product", error, {
         feature: "ProductDetailsTab",
         productId: record.id,

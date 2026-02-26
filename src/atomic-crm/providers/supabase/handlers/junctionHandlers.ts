@@ -4,6 +4,9 @@
  * Handlers for junction tables that need soft delete support.
  * Without these handlers, junction tables use HARD DELETE causing data loss.
  *
+ * Composition order (innermost to outermost):
+ * baseProvider → withValidation → withSkipDelete → withLifecycleCallbacks → withErrorLogging
+ *
  * Junction tables handled:
  * - opportunity_participants: Links opportunities to sales reps
  * - opportunity_contacts: Links opportunities to contacts
@@ -16,7 +19,7 @@
  */
 
 import { withLifecycleCallbacks, type DataProvider } from "react-admin";
-import { withErrorLogging, withValidation } from "../wrappers";
+import { withErrorLogging, withValidation, withSkipDelete } from "../wrappers";
 import { createResourceCallbacks } from "../callbacks/createResourceCallbacks";
 import { logger } from "@/lib/logger";
 
@@ -39,7 +42,9 @@ export function createOpportunityParticipantsHandler(baseProvider: DataProvider)
     supportsSoftDelete: true,
   });
 
-  return withErrorLogging(withLifecycleCallbacks(withValidation(baseProvider), [callbacks]));
+  return withErrorLogging(
+    withLifecycleCallbacks(withSkipDelete(withValidation(baseProvider)), [callbacks])
+  );
 }
 
 /**
@@ -52,7 +57,9 @@ export function createOpportunityContactsHandler(baseProvider: DataProvider): Da
     supportsSoftDelete: true,
   });
 
-  return withErrorLogging(withLifecycleCallbacks(withValidation(baseProvider), [callbacks]));
+  return withErrorLogging(
+    withLifecycleCallbacks(withSkipDelete(withValidation(baseProvider)), [callbacks])
+  );
 }
 
 /**
@@ -65,7 +72,9 @@ export function createInteractionParticipantsHandler(baseProvider: DataProvider)
     supportsSoftDelete: true,
   });
 
-  return withErrorLogging(withLifecycleCallbacks(withValidation(baseProvider), [callbacks]));
+  return withErrorLogging(
+    withLifecycleCallbacks(withSkipDelete(withValidation(baseProvider)), [callbacks])
+  );
 }
 
 /**
@@ -80,7 +89,9 @@ export function createDistributorPrincipalAuthorizationsHandler(
     supportsSoftDelete: true,
   });
 
-  return withErrorLogging(withLifecycleCallbacks(withValidation(baseProvider), [callbacks]));
+  return withErrorLogging(
+    withLifecycleCallbacks(withSkipDelete(withValidation(baseProvider)), [callbacks])
+  );
 }
 
 /**
@@ -93,7 +104,9 @@ export function createOrganizationDistributorsHandler(baseProvider: DataProvider
     supportsSoftDelete: true,
   });
 
-  return withErrorLogging(withLifecycleCallbacks(withValidation(baseProvider), [callbacks]));
+  return withErrorLogging(
+    withLifecycleCallbacks(withSkipDelete(withValidation(baseProvider)), [callbacks])
+  );
 }
 
 /**
@@ -106,5 +119,7 @@ export function createUserFavoritesHandler(baseProvider: DataProvider): DataProv
     supportsSoftDelete: true,
   });
 
-  return withErrorLogging(withLifecycleCallbacks(withValidation(baseProvider), [callbacks]));
+  return withErrorLogging(
+    withLifecycleCallbacks(withSkipDelete(withValidation(baseProvider)), [callbacks])
+  );
 }

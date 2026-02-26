@@ -116,6 +116,7 @@ export function OpportunitiesTab() {
           },
         },
         {
+          returnPromise: true,
           onSuccess: async () => {
             notify("Opportunity linked", { type: "success" });
             refresh();

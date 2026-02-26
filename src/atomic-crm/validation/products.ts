@@ -79,7 +79,12 @@ export const productSchema = z.strictObject({
   updated_by: z.number().int().nullish(),
 });
 
-export const productUpdateSchema = productSchema.strip();
+export const productUpdateSchema = productSchema
+  .partial()
+  .extend({
+    id: z.union([z.string().max(50), z.number()]).optional(),
+  })
+  .passthrough();
 
 // Validation function for React Admin
 export async function validateProductForm(data: unknown): Promise<void> {

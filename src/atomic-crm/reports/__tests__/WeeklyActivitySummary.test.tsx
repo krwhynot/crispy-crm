@@ -45,10 +45,14 @@ interface TestWeeklyActivity extends RaRecord {
  */
 const mockUseReportData = vi.fn();
 
-vi.mock("../hooks", () => ({
-  useReportData: (...args: unknown[]) => mockUseReportData(...args),
-  useReportFilterState: () => [{ start: "2026-02-09", end: "2026-02-15" }, vi.fn(), vi.fn()],
-}));
+vi.mock("../hooks", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("../hooks")>();
+  return {
+    ...actual,
+    useReportData: (...args: unknown[]) => mockUseReportData(...args),
+    useReportFilterState: () => [{ start: "2026-02-09", end: "2026-02-15" }, vi.fn(), vi.fn()],
+  };
+});
 
 // Mock jsonexport (used by CSV export)
 vi.mock("jsonexport/dist", () => ({

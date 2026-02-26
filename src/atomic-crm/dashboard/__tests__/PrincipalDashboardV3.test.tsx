@@ -6,9 +6,7 @@ import { PrincipalDashboardV3 } from "../PrincipalDashboardV3";
 
 // ---------- Stub child components ----------
 
-vi.mock("../KPISummaryRow", () => ({
-  KPISummaryRow: () => <div data-testid="kpi-summary-row">KPISummaryRow</div>,
-}));
+// KPISummaryRow moved into DashboardTabPanel (Phase 9.1) - no longer a direct child
 
 vi.mock("../DashboardTabPanel", () => ({
   DashboardTabPanel: () => <div data-testid="dashboard-tab-panel">DashboardTabPanel</div>,
@@ -48,6 +46,11 @@ function renderDashboard() {
 // ---------- Tests ----------
 
 describe("PrincipalDashboardV3", () => {
+  it("renders Dashboard page heading", () => {
+    renderDashboard();
+    expect(screen.getByRole("heading", { level: 1, name: "Dashboard" })).toBeInTheDocument();
+  });
+
   it("renders a vertical flex-col layout with a main element", () => {
     const { container } = renderDashboard();
 
@@ -60,11 +63,6 @@ describe("PrincipalDashboardV3", () => {
     expect(mainEl).toBeInTheDocument();
     expect(mainEl?.classList.contains("flex-1")).toBe(true);
     expect(mainEl?.classList.contains("flex-col")).toBe(true);
-  });
-
-  it("renders the KPISummaryRow child component", () => {
-    renderDashboard();
-    expect(screen.getByTestId("kpi-summary-row")).toBeInTheDocument();
   });
 
   it("renders the DashboardTabPanel child component", () => {
@@ -116,11 +114,5 @@ describe("PrincipalDashboardV3", () => {
     invalidateSpy.mockRestore();
   });
 
-  it("wraps KPISummaryRow in a shrink-0 container", () => {
-    renderDashboard();
-
-    const kpiStub = screen.getByTestId("kpi-summary-row");
-    const wrapper = kpiStub.parentElement;
-    expect(wrapper?.classList.contains("shrink-0")).toBe(true);
-  });
+  // KPISummaryRow moved into DashboardTabPanel Performance tab (Phase 9.1)
 });

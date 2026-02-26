@@ -6,7 +6,7 @@ import { TextField } from "@/components/ra-wrappers/text-field";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import { EditButton } from "@/components/ra-wrappers/edit-button";
+import { RowHoverActions } from "@/components/ra-wrappers/RowHoverActions";
 import { formatDistance, format } from "date-fns";
 import { Building2, X } from "lucide-react";
 import { useUserRole } from "@/hooks/useUserRole";
@@ -81,7 +81,7 @@ export const OpportunityRowListView = ({
   };
 
   return (
-    <>
+    <div className="flex flex-1 min-h-0 flex-col w-full">
       {/* Bulk selection controls - shown when items are selected */}
       {selectedIds.length > 0 && (
         <div className="space-y-3">
@@ -117,7 +117,7 @@ export const OpportunityRowListView = ({
         </div>
       )}
 
-      <Card className="bg-card border border-border shadow-sm rounded-xl p-2">
+      <Card className="bg-card border border-border shadow-sm rounded-xl p-2 flex-1 overflow-y-auto min-h-0">
         <div className="space-y-2">
           {opportunities.map((opportunity, index) => {
             const canEdit =
@@ -128,7 +128,7 @@ export const OpportunityRowListView = ({
             return (
               <RecordContextProvider key={opportunity.id} value={opportunity}>
                 <div
-                  className={`group relative flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 sm:gap-3 rounded-lg border bg-card px-3 py-2 sm:py-1.5 transition-all duration-150 hover:border-border hover:shadow-md motion-safe:hover:-translate-y-0.5 active:scale-[0.98] focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 ${getOpportunityRowClassName(opportunity)} ${
+                  className={`group relative flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 sm:gap-3 rounded-lg border bg-card px-3 py-2 sm:py-1.5 transition-all duration-150 hover:border-border hover:shadow-md active:scale-[0.98] focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 ${getOpportunityRowClassName(opportunity)} ${
                     focusedIndex === index
                       ? "border-primary ring-2 ring-primary ring-offset-2"
                       : "border-transparent"
@@ -217,7 +217,7 @@ export const OpportunityRowListView = ({
                     </div>
                   </div>
 
-                  {/* Right cluster: Stage, Priority, Close Date, Owner, Edit */}
+                  {/* Right cluster: Stage, Priority, Close Date, Owner, Actions */}
                   <div className="flex flex-wrap items-center gap-2 sm:gap-3 shrink-0 w-full sm:w-auto justify-start sm:justify-end">
                     {/* Stage Badge */}
                     <Badge
@@ -286,11 +286,15 @@ export const OpportunityRowListView = ({
                       </div>
                     )}
 
-                    {/* Edit Button - positioned above stretched link overlay (hidden for non-owners) */}
+                    {/* Hover actions - positioned above stretched link overlay (hidden for non-owners) */}
                     {canEdit && (
-                      <div className="relative z-10">
-                        <EditButton resource="opportunities" />
-                      </div>
+                      <RowHoverActions
+                        className="relative z-10 inline-flex items-center gap-1"
+                        recordId={opportunity.id}
+                        resource="opportunities"
+                        onView={(id) => openSlideOver(Number(id), "view")}
+                        onEdit={(id) => openSlideOver(Number(id), "edit")}
+                      />
                     )}
                   </div>
                 </div>
@@ -299,6 +303,6 @@ export const OpportunityRowListView = ({
           })}
         </div>
       </Card>
-    </>
+    </div>
   );
 };

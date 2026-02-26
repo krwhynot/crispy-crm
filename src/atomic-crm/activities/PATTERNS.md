@@ -9,38 +9,52 @@ Patterns for activity logging, filtering, sample tracking, and data export in Cr
                     │     React Admin Routes      │
                     └─────────────────────────────┘
                                │
-          ┌────────────────────┴────────────────────┐
-          ▼                                         ▼
-    ActivityList                              ActivityEdit
-          │                                         │
-          │                                         ▼
-          │                              ActivitySinglePage
-          │                              (Shared Form Fields)
-          ▼
-    ActivityListFilter
-    (Sidebar Filters)
+                        resource.tsx
+                    (lazy-loading + ErrorBoundary)
+                               │
+          ┌────────────────────┼────────────────────┐
+          ▼                    ▼                     ▼
+    ActivityList          ActivityEdit          ActivityShow
+          │                    │              (standalone page)
+          │                    ▼
+          │             ActivityInputs
+          │             (error summary +
+          │              ActivitySinglePage)
+          │
+          ├─→ UnifiedListPageLayout
+          │       └─→ ActivityListFilter (sidebar filters)
+          │       └─→ PremiumDatagrid
+          │               ├─→ ActivityTypeCell (memo)
+          │               ├─→ ActivitySampleStatusCell (memo)
+          │               └─→ ActivitySentimentCell (memo)
+          │
+          └─→ ActivitySlideOver (40vw)
+                  ├─→ slideOverTabs/ActivityDetailsTab
+                  └─→ slideOverTabs/ActivityRelatedTab
 
 ┌─────────────────────────────────────────────────────────────┐
-│      Quick Logging (Dialogs - Primary Activity Creation)     │
+│      Quick Logging (Dashboard module - NOT activities)        │
 └─────────────────────────────────────────────────────────────┘
                             │
-       ┌────────────────────┼────────────────────┐
-       ▼                    ▼                    ▼
-QuickLogActivity  TaskCompletionDialog   ActivityTimeline
-  Dialog              (Task→Activity)       (History View)
-Dialog (reusable)   (task completion)    Entry (display)
-       │
-       └─→ QuickLogForm (lazy-loaded)
+       QuickLogForm (lazy-loaded from ../dashboard/)
+       (reusable rapid entry form)
+                            │
+       ActivityTimeline (History View)
+       Entry (display)
 ```
 
 ---
 
 ## Pattern A: Quick Activity Logging
 
-Controlled Sheet dialog for rapid activity entry from anywhere in the app with entity context pre-fill and draft persistence.
+Rapid activity entry for <30 second logging, accessible from the dashboard and entity slide-overs.
+
+> **Note:** The `QuickLogForm` component lives in the **dashboard module** (`src/atomic-crm/dashboard/QuickLogForm`), not in the activities directory. It is lazy-loaded into activity creation entry points. There is no `QuickLogActivityDialog.tsx` file in the activities module.
+
+### Entity Context
 
 ```tsx
-// QuickLogActivityDialog.tsx
+// Interface used by callers to provide pre-fill context
 export interface ActivityEntityContext {
   /** Pre-fill and lock the contact field */
   contactId?: number;
@@ -49,47 +63,12 @@ export interface ActivityEntityContext {
   /** Pre-fill and lock the opportunity field (also sets activity_type to "interaction") */
   opportunityId?: number;
 }
-
-// Configuration system
-export interface QuickLogActivityDialogConfig {
-  /** Pre-select interaction type (e.g., from MobileQuickActionBar) */
-  activityType?: ActivityTypePreset;
-  /** Lock interaction type selection (prevent user from changing) */
-  lockActivityType?: boolean;
-  /** Enable draft persistence to localStorage (24-hour expiry) */
-  enableDraftPersistence?: boolean;
-  /** Custom storage key for draft persistence */
-  draftStorageKey?: string;
-  /** Show "Save & New" button for rapid entry workflows */
-  showSaveAndNew?: boolean;
-}
-```
-
-### Usage Examples
-
-```tsx
-// Dashboard FAB usage (standalone with draft persistence)
-<QuickLogActivityDialog
-  open={isOpen}
-  onOpenChange={setIsOpen}
-  config={{ enableDraftPersistence: true }}
-  onSuccess={handleRefresh}
-/>
-
-// Contact slide-over usage (pre-filled, no draft)
-<QuickLogActivityDialog
-  open={isOpen}
-  onOpenChange={setIsOpen}
-  entityContext={{ contactId: contact.id, organizationId: contact.organization_id }}
-  config={{ enableDraftPersistence: false, showSaveAndNew: false }}
-  onSuccess={() => refresh()}
-/>
 ```
 
 ### Lazy Loading Pattern
 
 ```tsx
-// Saves ~15-20KB from initial chunk via lazy loading
+// resource.tsx - Saves ~15-20KB from initial chunk via lazy loading
 const QuickLogForm = lazy(() =>
   import("../dashboard/QuickLogForm").then((m) => ({
     default: m.QuickLogForm,
@@ -108,7 +87,7 @@ const QuickLogForm = lazy(() =>
 
 **When to use**: Dashboard FAB, slide-over "Log Activity" buttons, anywhere rapid <30 second entry is needed.
 
-**Example:** `src/atomic-crm/activities/QuickLogActivityDialog.tsx`
+**Source:** `QuickLogForm` in `src/atomic-crm/dashboard/`, lazy-loaded via `resource.tsx`
 
 ---
 
@@ -150,9 +129,10 @@ Sidebar filter panel using collapsible `FilterCategory` components with 13 inter
   <ToggleFilterButton
     className="w-full justify-between"
     label={
-      <Badge variant="default" className="text-xs">
+      <span className="flex items-center gap-2">
+        <Clock className="h-4 w-4" aria-hidden="true" />
         Pending Feedback
-      </Badge>
+      </span>
     }
     value={{ sample_status: "feedback_pending" }}
   />
@@ -329,46 +309,61 @@ const handleAdvanceStatus = useCallback(async () => {
 
 ## Pattern D: Activity List with Sentiment
 
-Standard list page with keyboard navigation, 8-column datagrid, and CSV export with relationship enrichment.
+Standard list page using `UnifiedListPageLayout` for centralized empty-state branching, loading states, filter cleanup, and bulk actions. Includes keyboard navigation, responsive datagrid with memoized cell components, and CSV export with relationship enrichment.
+
+### Memoized Cell Components
+
+The datagrid uses memoized cell components for render performance:
 
 ```tsx
-// ActivityList.tsx - Sentiment column
+// ActivityList.tsx - Named memo components for React DevTools
+const ActivityTypeCell = memo(function ActivityTypeCell({ record }: { record: ActivityRecord }) {
+  const typeOption = INTERACTION_TYPE_OPTIONS.find((opt) => opt.value === record.type);
+  return (
+    <Badge variant="outline" className="text-xs">
+      {typeOption?.label || record.type}
+    </Badge>
+  );
+});
+
+const ActivitySampleStatusCell = memo(function ActivitySampleStatusCell({
+  record,
+}: { record: ActivityRecord }) {
+  if (record.type !== "sample" || !record.sample_status) {
+    return <span className="text-muted-foreground">—</span>;
+  }
+  return <SampleStatusBadge status={record.sample_status} />;
+});
+
+const ActivitySentimentCell = memo(function ActivitySentimentCell({
+  record,
+}: { record: ActivityRecord }) {
+  if (!record.sentiment) {
+    return <span className="text-muted-foreground">—</span>;
+  }
+  const sentimentColors: Record<string, string> = {
+    positive: "bg-success/10 text-success",
+    neutral: "bg-muted text-muted-foreground",
+    negative: "bg-destructive/10 text-destructive",
+  };
+  return (
+    <Badge className={sentimentColors[record.sentiment] || ""} variant="outline">
+      {ucFirst(record.sentiment)}
+    </Badge>
+  );
+});
+```
+
+### Column Visibility
+
+Uses `COLUMN_VISIBILITY.ipadPlus` for responsive columns (the deprecated alias `desktopOnly` still exists but should not be used in new code):
+
+```tsx
 <FunctionField
   label="Sentiment"
   sortable={false}
-  render={(record: ActivityRecord) => {
-    if (!record.sentiment) {
-      return <span className="text-muted-foreground">—</span>;
-    }
-    const sentimentColors: Record<string, string> = {
-      positive: "bg-success/10 text-success",
-      neutral: "bg-muted text-muted-foreground",
-      negative: "bg-destructive/10 text-destructive",
-    };
-    return (
-      <Badge className={sentimentColors[record.sentiment] || ""} variant="outline">
-        {record.sentiment.charAt(0).toUpperCase() + record.sentiment.slice(1)}
-      </Badge>
-    );
-  }}
-  {...COLUMN_VISIBILITY.desktopOnly}
-/>
-```
-
-### Conditional Sample Status Column
-
-```tsx
-// Only renders for sample activities
-<FunctionField
-  label="Sample Status"
-  sortable={false}
-  render={(record: ActivityRecord) => {
-    if (record.type !== "sample" || !record.sample_status) {
-      return <span className="text-muted-foreground">—</span>;
-    }
-    return <SampleStatusBadge status={record.sample_status} readonly />;
-  }}
-  {...COLUMN_VISIBILITY.desktopOnly}
+  render={(record: ActivityRecord) => <ActivitySentimentCell record={record} />}
+  {...COLUMN_VISIBILITY.ipadPlus}
 />
 ```
 
@@ -379,11 +374,11 @@ Standard list page with keyboard navigation, 8-column datagrid, and CSV export w
 | 1 | Type (badge) | Always | Yes |
 | 2 | Subject | Always | Yes |
 | 3 | Activity Date | Always | Yes |
-| 4 | Sample Status | Desktop | No |
-| 5 | Sentiment | Desktop | No |
+| 4 | Sample Status | ipadPlus | No |
+| 5 | Sentiment | ipadPlus | No |
 | 6 | Organization | Always | Yes |
-| 7 | Opportunity | Desktop | No |
-| 8 | Created By | Desktop | No |
+| 7 | Opportunity | ipadPlus | No |
+| 8 | Created By | ipadPlus | No |
 
 **When to use**: Main activity list page with filtering, responsive columns, and export capability.
 
@@ -393,7 +388,7 @@ Standard list page with keyboard navigation, 8-column datagrid, and CSV export w
 
 ## Pattern E: Draft Persistence
 
-Zod schema for validating activity draft data stored in localStorage with type safety and expiry validation.
+Zod schema for validating activity draft data stored in localStorage with type safety and expiry validation. Draft utility functions are centralized in `utils/activityDraftStorage.ts`.
 
 ```tsx
 // activityDraftSchema.ts - Full file
@@ -419,14 +414,23 @@ export const activityDraftSchema = z.strictObject({
 export type ActivityDraft = z.infer<typeof activityDraftSchema>;
 ```
 
-### Load/Save/Clear Functions
+### Centralized Draft Storage Utilities
+
+Draft persistence functions are extracted to `utils/activityDraftStorage.ts` with four exported functions:
 
 ```tsx
-// QuickLogActivityDialog.tsx - Draft persistence
-const DRAFT_SAVE_DEBOUNCE_MS = 500;
-const DRAFT_EXPIRY_MS = 24 * 60 * 60 * 1000; // 24 hours
+// utils/activityDraftStorage.ts
+export const DEFAULT_DRAFT_STORAGE_KEY = "quick-log-activity-draft";
+export const DRAFT_SAVE_DEBOUNCE_MS = 500;
+export const DRAFT_EXPIRY_MS = 24 * 60 * 60 * 1000; // 24 hours
 
-function loadDraft(storageKey: string): Partial<ActivityLogInput> | null {
+/** Generate a unique draft storage key based on context */
+export function generateDraftKey(baseKey: string, contextId?: string): string {
+  return contextId ? `${baseKey}-${contextId}` : baseKey;
+}
+
+/** Load a draft from localStorage (returns null if not found/expired/invalid) */
+export function loadDraft(storageKey: string): Partial<ActivityLogInput> | null {
   if (typeof window === "undefined") return null;
 
   const stored = localStorage.getItem(storageKey);
@@ -447,10 +451,10 @@ function loadDraft(storageKey: string): Partial<ActivityLogInput> | null {
   return draft.formData;
 }
 
-function saveDraft(storageKey: string, formData: Partial<ActivityLogInput>): void {
+/** Save a draft to localStorage (empty drafts are auto-removed) */
+export function saveDraft(storageKey: string, formData: Partial<ActivityLogInput>): void {
   if (typeof window === "undefined") return;
 
-  // Don't save empty drafts
   const hasContent =
     formData.notes || formData.contactId || formData.organizationId || formData.opportunityId;
 
@@ -459,40 +463,15 @@ function saveDraft(storageKey: string, formData: Partial<ActivityLogInput>): voi
     return;
   }
 
-  const draft: ActivityDraft = {
-    formData,
-    savedAt: Date.now(),
-  };
-
+  const draft: ActivityDraft = { formData, savedAt: Date.now() };
   localStorage.setItem(storageKey, JSON.stringify(draft));
 }
 
-function clearDraft(storageKey: string): void {
+/** Clear a draft from localStorage */
+export function clearDraft(storageKey: string): void {
   if (typeof window === "undefined") return;
   localStorage.removeItem(storageKey);
 }
-```
-
-### Debounced Save Integration
-
-```tsx
-// Debounced save handler
-const handleDraftChange = useCallback(
-  (formData: Partial<ActivityLogInput>) => {
-    if (!enableDraftPersistence) return;
-
-    // Debounce saves to avoid excessive localStorage writes
-    if (debounceRef.current) {
-      clearTimeout(debounceRef.current);
-    }
-
-    debounceRef.current = setTimeout(() => {
-      saveDraft(draftStorageKey, formData);
-      setHasDraft(true);
-    }, DRAFT_SAVE_DEBOUNCE_MS);
-  },
-  [enableDraftPersistence, draftStorageKey]
-);
 ```
 
 **Key points:**
@@ -501,10 +480,11 @@ const handleDraftChange = useCallback(
 - 24-hour expiry prevents stale drafts from appearing
 - Debounced saves (500ms) prevent excessive localStorage writes
 - Empty drafts are automatically removed
+- `generateDraftKey` supports context-specific keys (e.g., per-entity slide-over)
 
 **When to use**: Dialogs where users may close accidentally and need recovery.
 
-**Example:** `src/atomic-crm/activities/activityDraftSchema.ts`
+**Example:** Schema in `src/atomic-crm/activities/activityDraftSchema.ts`, utilities in `src/atomic-crm/activities/utils/activityDraftStorage.ts`
 
 ---
 
@@ -515,12 +495,12 @@ Centralized filter configuration matching ActivityListFilter UI with label consi
 ```tsx
 // activityFilterConfig.ts - Full implementation
 import { validateFilterConfig } from "../filters/filterConfigSchema";
-import { format, isToday, isThisWeek, isThisMonth } from "date-fns";
 import {
   INTERACTION_TYPE_OPTIONS,
   SAMPLE_STATUS_OPTIONS,
   sentimentSchema,
 } from "../validation/activities";
+import { ucFirst } from "../utils";
 
 // Convert validation options to filter choices format
 const INTERACTION_TYPE_CHOICES = INTERACTION_TYPE_OPTIONS.map((opt) => ({
@@ -535,21 +515,8 @@ const SAMPLE_STATUS_CHOICES = SAMPLE_STATUS_OPTIONS.map((opt) => ({
 
 const SENTIMENT_CHOICES = sentimentSchema.options.map((value) => ({
   id: value,
-  name: value.charAt(0).toUpperCase() + value.slice(1),
+  name: ucFirst(value),
 }));
-
-// Format date values for chip display
-function formatDateLabel(value: unknown): string {
-  if (!value || typeof value !== "string") return String(value);
-
-  const date = new Date(value);
-  if (isNaN(date.getTime())) return String(value);
-
-  if (isToday(date)) return "Today";
-  if (isThisWeek(date)) return "This week";
-  if (isThisMonth(date)) return "This month";
-  return format(date, "MMM d, yyyy");
-}
 
 export const ACTIVITY_FILTER_CONFIG = validateFilterConfig([
   {
@@ -568,14 +535,12 @@ export const ACTIVITY_FILTER_CONFIG = validateFilterConfig([
     key: "activity_date@gte",
     label: "After",
     type: "date-range",
-    formatLabel: formatDateLabel,
-    removalGroup: "activity_date_range",  // Grouped for coordinated cleanup
+    removalGroup: "activity_date_range",
   },
   {
     key: "activity_date@lte",
     label: "Before",
     type: "date-range",
-    formatLabel: formatDateLabel,
     removalGroup: "activity_date_range",
   },
   {
@@ -595,9 +560,9 @@ export const ACTIVITY_FILTER_CONFIG = validateFilterConfig([
 
 **Key points:**
 - Imports from validation schema (single source of truth)
+- Uses `ucFirst` utility from `../utils` (not inline `charAt(0).toUpperCase()`)
 - Prevents label drift between filter UI and chip display
 - `removalGroup` ensures coordinated date range cleanup
-- `formatDateLabel` provides human-readable date chip labels
 
 **When to use**: Centralized filter definitions for ListSearchBar integration.
 
@@ -607,14 +572,21 @@ export const ACTIVITY_FILTER_CONFIG = validateFilterConfig([
 
 ## Pattern G: Single-Page Activity View
 
-Comprehensive form layout with 4 logical sections using FormSection and FormFieldWrapper components.
+Comprehensive form layout with 4 logical sections using `FormSectionWithProgress` (with `id` and `requiredFields` props) and `FormFieldWrapper` components.
 
 ```tsx
 // ActivitySinglePage.tsx - Activity Details section
 export default function ActivitySinglePage() {
+  const interactionType = useWatch({ name: "type" });
+  const isSampleActivity = interactionType === "sample";
+
   return (
     <div className="space-y-6">
-      <FormSection title="Activity Details">
+      <FormSectionWithProgress
+        id="activity-details"
+        title="Activity Details"
+        requiredFields={["type", "subject", "activity_date"]}
+      >
         <FormGrid>
           <div data-tutorial="activity-type">
             <FormFieldWrapper name="type" isRequired countDefaultAsFilled>
@@ -630,6 +602,19 @@ export default function ActivitySinglePage() {
               />
             </FormFieldWrapper>
           </div>
+
+          {/* WG-001: Sample Status field - only shown when type="sample" */}
+          {isSampleActivity && (
+            <FormFieldWrapper name="sample_status" isRequired>
+              <SelectInput
+                source="sample_status"
+                label="Sample Status"
+                choices={SAMPLE_STATUS_CHOICES}
+                helperText="Current status of the sample workflow"
+                isRequired
+              />
+            </FormFieldWrapper>
+          )}
         </FormGrid>
 
         <FormFieldWrapper name="subject" isRequired>
@@ -643,7 +628,7 @@ export default function ActivitySinglePage() {
 
         <FormGrid>
           <FormFieldWrapper name="activity_date" isRequired countDefaultAsFilled>
-            <TextInput source="activity_date" label="Date" type="date" isRequired />
+            <DateInput source="activity_date" label="Date" isRequired disableFuture />
           </FormFieldWrapper>
           <FormFieldWrapper name="duration_minutes">
             <TextInput
@@ -666,7 +651,7 @@ export default function ActivitySinglePage() {
             />
           </FormFieldWrapper>
         </div>
-      </FormSection>
+      </FormSectionWithProgress>
 
       {/* Additional sections: Relationships, Follow-up, Outcome */}
     </div>
@@ -678,16 +663,18 @@ export default function ActivitySinglePage() {
 
 | Section | Fields |
 |---------|--------|
-| **Activity Details** | type, subject, activity_date, duration_minutes, description |
+| **Activity Details** | type, subject, activity_date, duration_minutes, description, sample_status (conditional: type="sample") |
 | **Relationships** | opportunity_id, contact_id, organization_id |
-| **Follow-up** | sentiment, follow_up_date, follow_up_notes |
+| **Follow-up** | sentiment, follow_up_required (BooleanInput), follow_up_date, follow_up_notes |
 | **Outcome** | location, outcome |
 
 **Key points:**
-- `FormSection` provides logical grouping with titles
+- `FormSectionWithProgress` provides logical grouping with progress tracking via `id` and `requiredFields` props
 - `FormGrid` creates responsive column layouts
 - `FormFieldWrapper` with `isRequired` and `countDefaultAsFilled`
 - `data-tutorial` attributes for guided tours
+- `sample_status` field conditionally shown when `type="sample"` (uses `useWatch`)
+- `follow_up_required` is a `BooleanInput` with context-sensitive helper text for sample activities
 - All reference inputs use AutocompleteInput
 
 **When to use**: Full activity create/edit forms with comprehensive fields.
@@ -780,20 +767,45 @@ const exporter: Exporter<ActivityRecord> = async (records, fetchRelatedRecords) 
 
 ## Activity Creation Pattern
 
-All activity creation now flows through `QuickLogActivityDialog`:
+Activity creation uses `QuickLogForm` from the dashboard module, lazy-loaded into entry points:
 
 | Aspect | Details |
 |--------|---------|
-| **Entry points** | Dashboard FAB, slide-over "+" buttons, TaskCompletionDialog |
+| **Entry points** | Dashboard FAB, slide-over "+" buttons |
 | **Fields shown** | Core fields only (5-6 for quick logging) |
-| **Draft persistence** | Yes (localStorage with 24h expiry) |
-| **Entity pre-fill** | Yes (locked display based on context) |
+| **Draft persistence** | Yes (localStorage with 24h expiry, via `utils/activityDraftStorage.ts`) |
+| **Entity pre-fill** | Yes (locked display via `LockedEntityDisplay` component) |
 | **Use case** | Rapid 30-second logging (MVP goal) |
-| **Component** | `QuickLogActivityDialog` → `QuickLogForm` |
-| **Lazy loading** | Yes (QuickLogForm chunk ~15-20KB) |
+| **Component** | `QuickLogForm` (from `src/atomic-crm/dashboard/`) |
+| **Lazy loading** | Yes (QuickLogForm chunk ~15-20KB, loaded via `resource.tsx`) |
 
 > **Note:** The standalone `/activities/create` route was removed to consolidate UX.
 > Legacy URLs redirect to `/activities`. Edit via `/activities/:id/edit`.
+
+---
+
+## File Reference
+
+| File | Purpose |
+|------|---------|
+| `index.tsx` | Module entry point, re-exports components and resource config |
+| `resource.tsx` | Lazy-loading layer with `ResourceErrorBoundary` wrappers |
+| `ActivityList.tsx` | List page with `UnifiedListPageLayout`, memoized cells, CSV export |
+| `ActivityEdit.tsx` | Edit page (wraps `ActivityInputs`) |
+| `ActivityShow.tsx` | Standalone show page with `SectionCard` layout |
+| `ActivitySinglePage.tsx` | Shared form fields with `FormSectionWithProgress` sections |
+| `ActivityInputs.tsx` | Form wrapper: error summary + `ActivitySinglePage` |
+| `ActivitySlideOver.tsx` | 40vw slide-over panel with Details/Related tabs |
+| `ActivityListFilter.tsx` | Sidebar filter panel (type, status, date, sentiment, owner) |
+| `ActivityTimelineEntry.tsx` | Timeline display component for entity detail views |
+| `activityDraftSchema.ts` | Zod schema for localStorage draft validation |
+| `activityFilterConfig.ts` | Centralized filter config for `ListSearchBar` chips |
+| `constants.ts` | Module constants (`ACTIVITY_PAGE_SIZE`) |
+| `slideOverTabs/ActivityDetailsTab.tsx` | Details tab for slide-over (view/edit modes) |
+| `slideOverTabs/ActivityRelatedTab.tsx` | Related entities tab for slide-over |
+| `slideOverTabs/index.ts` | Barrel export for slide-over tabs |
+| `utils/activityDraftStorage.ts` | Draft persistence: `generateDraftKey`, `loadDraft`, `saveDraft`, `clearDraft` |
+| `components/LockedEntityDisplay.tsx` | Read-only entity field with "Locked" badge |
 
 ---
 
@@ -802,14 +814,14 @@ All activity creation now flows through `QuickLogActivityDialog`:
 | Item Count | Recommendation |
 |------------|----------------|
 | < 20 items | Non-searchable filter buttons |
-| ≥ 20 items | Searchable dropdown |
+| >= 20 items | Searchable dropdown |
 | > 100 items | Server-side filtering via ReferenceInput |
 
 ---
 
 ## Anti-Patterns
 
-### ❌ Missing Draft Cleanup
+### Missing Draft Cleanup
 
 ```tsx
 // BAD: Draft persists after successful save
@@ -829,7 +841,7 @@ const handleComplete = useCallback(() => {
 }, [enableDraftPersistence, draftStorageKey, onOpenChange, onSuccess]);
 ```
 
-### ❌ Type Confusion
+### Type Confusion
 
 ```tsx
 // BAD: Confusing activity_type with type
@@ -840,7 +852,7 @@ filter={{ type: "call" }}           // Correct
 filter={{ activity_type: "interaction", type: "call" }}  // Full context
 ```
 
-### ❌ Direct sample_status Updates
+### Direct sample_status Updates
 
 ```tsx
 // BAD: Raw update bypasses workflow validation
@@ -855,7 +867,7 @@ await update("activities", { id, data: { sample_status: "feedback_received" } })
 />
 ```
 
-### ❌ Filter Config Drift
+### Filter Config Drift
 
 ```tsx
 // BAD: Hardcoding choices (drifts from validation schema)
@@ -868,11 +880,36 @@ const SENTIMENT_CHOICES = [
 // GOOD: Derive from validation schema
 const SENTIMENT_CHOICES = sentimentSchema.options.map((value) => ({
   id: value,
-  name: value.charAt(0).toUpperCase() + value.slice(1),
+  name: ucFirst(value),
 }));
 ```
 
-### ❌ Skipping Entity Validation
+### Hardcoded Sentiment Choices (Known Issue)
+
+> **Known technical debt:** The sentiment choices in `ActivitySinglePage.tsx` (lines 19-23) and
+> `slideOverTabs/ActivityDetailsTab.tsx` (lines 32-36) use hardcoded arrays instead of deriving
+> from `sentimentSchema`. This contradicts the "derive from validation schema" pattern shown above.
+> These should be refactored to use `sentimentSchema.options.map(...)` like `activityFilterConfig.ts` does.
+
+```tsx
+// CURRENT (anti-pattern present in code):
+const sentimentChoices = [
+  { id: "positive", name: "Positive" },
+  { id: "neutral", name: "Neutral" },
+  { id: "negative", name: "Negative" },
+];
+
+// SHOULD BE:
+import { sentimentSchema } from "../validation/activities";
+import { ucFirst } from "../utils";
+
+const SENTIMENT_CHOICES = sentimentSchema.options.map((value) => ({
+  id: value,
+  name: ucFirst(value),
+}));
+```
+
+### Skipping Entity Validation
 
 ```tsx
 // BAD: Creating interaction without opportunity

@@ -60,7 +60,7 @@ Per official Claude Code guidance, large state databases (search.db, vectors.lan
 - Archived to: `.claude/state/archive/YYYYMMDD-HHMMSS/`
 
 ## 🏗 Architecture & Structure
-**Critical:** All DB access via `src/atomic-crm/providers/supabase/unifiedDataProvider.ts`.
+**Critical:** All DB access via `src/atomic-crm/providers/supabase/composedDataProvider.ts`.
 - **Rules:** NO direct Supabase imports. Zod schemas at API boundary (provider), NOT forms.
 
 **Directory Map:**
@@ -80,7 +80,7 @@ Per official Claude Code guidance, large state databases (search.db, vectors.lan
 **Strict Bans (Deprecated):**
 - `Contact.company_id` → Use `contact_organizations` junction.
 - `Opportunity.archived_at` → Use `deleted_at`.
-- Direct Supabase imports → Use `unifiedDataProvider`.
+- Direct Supabase imports → Use `composedDataProvider`.
 - Form-level validation → Move to API boundary.
 
 **Accessibility (A11y):** `aria-invalid`, `aria-describedby`, `role="alert"`. Targets ≥44px (`h-11 w-11`).

@@ -5,25 +5,18 @@
 ```
 docs/
 ├── architecture/        # System design, component tiers, data consolidation
-├── audits/              # Active audit summaries and reports
-│   ├── archive/         # Historical snapshots, phase artifacts
-│   └── .baseline/       # Audit baselines
+├── audits/              # Active audit summaries and baselines
 ├── blog/                # Engineering blog posts
-├── component-inventory/ # Component documentation
-├── design/              # UI/UX design philosophy and patterns
-├── design-system/       # Developer implementation specs
-├── development/         # Development guides
+├── design/              # UI/UX design + implementation specs (merged)
+├── development/         # Development guides, finding IDs
 ├── features/            # Feature specifications (pipeline, dashboard, reports)
-├── migrations/          # Migration documentation
-├── patterns/            # Code patterns
 ├── performance/         # Performance documentation
-├── testing/             # Test patterns and utilities
-├── tests/               # E2E test checklists
-│   ├── e2e/             # Manual E2E testing (40+ checklists)
+├── tests/               # Test patterns, E2E checklists
+│   ├── e2e/             # Manual E2E testing (numbered suites + Claude Chrome prompts)
 │   └── ui/              # UI-specific tests
 ├── technical-debt.md    # Tracked debt items (consolidated from audits)
 ├── decisions.md         # Architecture Decision Records
-└── ERD.md               # Entity-Relationship Diagram
+└── ERD.md               # Entity-Relationship Diagram (auto-generated)
 ```
 
 ## Key Documents
@@ -31,10 +24,8 @@ docs/
 | Document | Purpose |
 |----------|---------|
 | `architecture/COMPONENT_TIERS.md` | Three-tier component hierarchy (shadcn -> RA wrappers -> Features) |
-| `architecture/TEST_PATTERNS.md` | Testing patterns and mock utilities |
-| `design/INDEX.md` | Design system navigation hub |
+| `design/INDEX.md` | Design system navigation hub (UI philosophy + implementation specs) |
 | `design/ACCESSIBILITY.md` | WCAG 2.1 AA compliance guide |
-| `design-system/touch-targets.md` | 44px minimum touch target standards |
 | `ERD.md` | Database schema reference (auto-generated from live Supabase) |
 | `decisions.md` | Architecture Decision Records |
 | `technical-debt.md` | Tracked technical debt items |
@@ -46,22 +37,10 @@ docs/
 | Section | Entry Point | Contains |
 |---------|-------------|----------|
 | Architecture | `architecture/` | Component tiers, data model (`ERD.md`), access model |
-| Audits | `audits/INDEX.md` | Active summaries; historical in `archive/` |
-| Design | `design/INDEX.md` | UX philosophy, a11y, responsive specs |
-| Design System | `design-system/INDEX.md` | Forms, filters, badges, typography |
+| Audits | `audits/INDEX.md` | Active summaries; baselines in `.baseline/` |
+| Design | `design/INDEX.md` | UX philosophy, a11y, responsive specs, badges, filters, forms, typography |
 | Features | `features/` | Dashboard, pipeline, workflows, reports |
 | Testing | `tests/e2e/SETUP.md` | Canonical credentials, E2E checklists |
-
-## Auto-Generated Docs
-
-These files are auto-generated and CI-enforced fresh:
-
-| Path | Generate With | Contains |
-|------|---------------|----------|
-| `.claude/state/component-inventory/` | `just discover` | 484 React components |
-| `.claude/state/hooks-inventory.json` | `just discover` | 77 custom hooks |
-| `.claude/state/schemas-inventory/` | `just discover` | 82 Zod schemas |
-| `.claude/state/forms-inventory.json` | `just discover` | 39 form components |
 
 ## Adding Documentation
 
@@ -71,13 +50,3 @@ These files are auto-generated and CI-enforced fresh:
 | Architecture decision | Add to `decisions.md` |
 | Technical debt | Add to `technical-debt.md` |
 | UI/UX patterns | `design/` (see `design/INDEX.md`) |
-| Completed audit | `audits/archive/` |
-
-## Archive Policy
-
-Date-stamped audit snapshots and phase artifacts are archived in `audits/archive/`:
-- **Snapshots**: Date-stamped audit reports (`YYYY-MM-DD-*.md`) moved after actionable items are extracted to `technical-debt.md`
-- **Phase artifacts**: Audit prompt/runbook directories (e.g., `full-db-audit-phases/`, `reporting-audit-phases/`)
-- **Active summaries**: Current INDEX, summary reports, and recent audits remain in `audits/`
-
-Do not delete archived documents - they provide context for decisions made.

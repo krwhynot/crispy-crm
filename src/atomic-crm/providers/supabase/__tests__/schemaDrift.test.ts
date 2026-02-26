@@ -66,8 +66,8 @@ const VIRTUAL_FILTER_FIELDS = new Set([
   "stale", // Staleness filter (transformed to last_activity_date + stage)
   "type", // Alias for organization_type/activity_type
   "company_name", // Computed join field on contacts
-  "opportunities.campaign", // Nested relationship filter
-  "opportunities.deleted_at", // Nested relationship filter
+  "opportunity_campaign", // Denormalized view column (not in base table)
+  "opportunity_deleted_at", // Denormalized view column (not in base table)
 ]);
 
 // =============================================================================

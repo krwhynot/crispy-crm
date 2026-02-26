@@ -170,22 +170,36 @@ export function FilterChipBar({ filterConfig, context, className }: FilterChipBa
 
   return (
     <div
+      ref={chipBarRef}
       role="toolbar"
       aria-label="Active filters"
-      className="flex items-center gap-2 px-4 py-2 bg-muted/50 border-b overflow-x-auto"
+      aria-orientation="horizontal"
+      onKeyDown={handleKeyDown}
+      className={cn(
+        "flex items-center gap-2 border-b border-border/70 bg-background px-4 py-2.5 overflow-x-auto",
+        className
+      )}
     >
-      <span className="text-sm text-muted-foreground">Active filters:</span>
-      <div role="list" className="flex items-center gap-1.5 flex-wrap">
+      <span id="filter-chip-bar-label" className="text-sm text-muted-foreground whitespace-nowrap">
+        Active filters:
+      </span>
+      <div role="list" aria-labelledby="filter-chip-bar-label" className="flex items-center gap-1.5 flex-wrap">
         {chips.map((chip) => (
           <div key={`${chip.key}-${chip.value}`} role="listitem">
-            <FilterChip label={chip.label} onRemove={() => removeFilter(chip.key, chip.value)} />
+            <FilterChip label={chip.label} onRemove={() => handleRemoveFilter(chip.key, chip.value)} />
           </div>
         ))}
       </div>
-      {activeCount >= 2 && (
-        <Button variant="ghost" size="sm" onClick={clearAllFilters}>
+      {activeCount >= 1 && (
+        <AdminButton
+          variant="ghost"
+          size="sm"
+          onClick={clearAllFilters}
+          className="ml-auto h-9 whitespace-nowrap text-muted-foreground hover:text-foreground"
+          aria-label={`Clear all ${activeCount} filters`}
+        >
           Clear all
-        </Button>
+        </AdminButton>
       )}
     </div>
   );
@@ -241,36 +255,69 @@ export function FilterSidebar({
 
 ```tsx
 // src/atomic-crm/filters/FilterCategory.tsx
+import { useFilterLayoutMode } from "./FilterLayoutModeContext";
+
 export const FilterCategory = ({
   icon,
   label,
   children,
   defaultExpanded = false,
   hasActiveFilters = false,
-}: Props) => {
+}: FilterCategoryProps) => {
+  const mode = useFilterLayoutMode();
+
+  // Sheet mode: always expand categories for discoverability
+  const forceExpanded = mode === "sheet";
+
+  return (
+    <ExpandedCategory
+      icon={icon}
+      label={label}
+      defaultExpanded={forceExpanded || defaultExpanded}
+      hasActiveFilters={hasActiveFilters}
+    >
+      {children}
+    </ExpandedCategory>
+  );
+};
+
+/**
+ * Full/sheet mode: collapsible category with icon + label + chevron.
+ * In sheet mode, categories default to expanded for discoverability.
+ */
+function ExpandedCategory({ icon, label, defaultExpanded, hasActiveFilters, children }: {
+  icon: ReactNode; label: string; defaultExpanded: boolean; hasActiveFilters: boolean; children?: ReactNode;
+}) {
   const [isExpanded, setIsExpanded] = useState(hasActiveFilters || defaultExpanded);
 
   return (
     <div className="flex flex-col">
       <button
-        onClick={() => setIsExpanded(!isExpanded)}
-        className="flex items-center justify-between min-h-12 px-2 hover:bg-muted rounded-md"
+        type="button"
+        onClick={(e) => { e.stopPropagation(); setIsExpanded(!isExpanded); }}
+        className="flex flex-row items-center justify-between w-full text-left min-h-12 px-2 hover:bg-muted rounded-md transition-colors group cursor-pointer"
         aria-expanded={isExpanded}
       >
-        <div className="flex items-center gap-2">
-          <div className="text-muted-foreground">{icon}</div>
-          <h3 className="font-semibold text-sm"><Translate i18nKey={label} /></h3>
+        <div className="flex flex-row items-center gap-2">
+          <div className="text-muted-foreground group-hover:text-foreground transition-colors">{icon}</div>
+          <h3 className="font-semibold text-sm text-foreground"><Translate i18nKey={label} /></h3>
           {hasActiveFilters && <div className="h-2 w-2 rounded-full bg-accent" />}
         </div>
-        <ChevronDown className={cn("size-4", !isExpanded && "-rotate-90")} />
+        <ChevronDown className={cn("size-4 text-muted-foreground transition-transform duration-200", !isExpanded && "-rotate-90")} />
       </button>
       {isExpanded && (
         <div className="flex flex-col items-start gap-2 pl-7 mt-2 mb-2">{children}</div>
       )}
     </div>
   );
-};
+}
 ```
+
+**Key behaviors:**
+- Uses `useFilterLayoutMode()` from `FilterLayoutModeContext.tsx` to determine layout mode
+- Sheet mode (`<1280px`) forces all categories expanded for discoverability
+- Full mode (`>=1280px`) respects `defaultExpanded` and `hasActiveFilters`
+- Delegates to `ExpandedCategory` sub-component for the collapsible UI
 
 **When to use**: Sidebar filter panels with grouped, collapsible sections.
 
@@ -280,19 +327,25 @@ export const FilterCategory = ({
 
 Accordion-based panel for displaying active filters in a collapsible area. Alternative to FilterChipBar for space-constrained layouts.
 
+Uses `AccordionSection` from `@/components/ra-wrappers/form` (not raw shadcn Accordion primitives).
+
 ```tsx
 // src/atomic-crm/filters/FilterChipsPanel.tsx
+import { AccordionSection } from "@/components/ra-wrappers/form";
+import { formatFilterLabel, flattenFilterValues } from "./filterFormatters";
+
 export const FilterChipsPanel = ({ className }: FilterChipsPanelProps) => {
   const { filterValues, removeFilterValue } = useFilterManagement();
 
-  // Extract IDs for name resolution hooks
-  const customerOrgIds = extractFilterIds(filterValues, "customer_organization_id");
-  const principalOrgIds = extractFilterIds(filterValues, "principal_organization_id");
-  const salesIds = extractFilterIds(filterValues, "opportunity_owner_id");
-  const tagIds = extractFilterIds(filterValues, "tags");
+  // Extract IDs directly from filterValues (inline, no extractFilterIds helper)
+  const customerOrgIds = filterValues?.customer_organization_id
+    ? Array.isArray(filterValues.customer_organization_id)
+      ? filterValues.customer_organization_id.map(String)
+      : [String(filterValues.customer_organization_id)]
+    : undefined;
+  // ... similar for principalOrgIds, salesIds, tagIds
 
-  // Fetch names for reference filters
-  const { getOrganizationName } = useOrganizationNames([...customerOrgIds, ...principalOrgIds]);
+  const { getOrganizationName } = useOrganizationNames(allOrgIds);
   const { getSalesName } = useSalesNames(salesIds);
   const { getTagName } = useTagNames(tagIds);
 
@@ -300,30 +353,32 @@ export const FilterChipsPanel = ({ className }: FilterChipsPanelProps) => {
   if (filterChips.length === 0) return null;
 
   return (
-    <Accordion type="single" collapsible defaultValue="filters">
-      <AccordionItem value="filters">
-        <AccordionTrigger>
-          Active Filters ({filterChips.length})
-        </AccordionTrigger>
-        <AccordionContent>
+    <div className={cn("w-full", className)}>
+      <AccordionSection
+        title="Active Filters"
+        badge={<span className="text-xs text-muted-foreground">({filterChips.length} filter{filterChips.length !== 1 ? "s" : ""})</span>}
+        contentClassName="pb-3"
+      >
+        <div className="flex flex-wrap gap-2">
           {filterChips.map((chip, index) => (
             <FilterChip
               key={`${chip.key}-${chip.value}-${index}`}
               label={formatFilterLabel(chip.key, chip.value, getOrganizationName, getSalesName, getTagName)}
-              onRemove={() => removeFilterValue(chip.key, chip.value)}
+              onRemove={() => handleRemoveFilter(chip.key, chip.value)}
             />
           ))}
-        </AccordionContent>
-      </AccordionItem>
-    </Accordion>
+        </div>
+      </AccordionSection>
+    </div>
   );
 };
 ```
 
 **Key differences from FilterChipBar:**
-- Collapsible via shadcn/ui Accordion (saves vertical space)
-- Always includes filter count in header
+- Collapsible via `AccordionSection` wrapper (saves vertical space)
+- Always includes filter count badge in header
 - No "Clear all" button (chips are individually removable)
+- Uses `formatFilterLabel` and `flattenFilterValues` from `filterFormatters.ts`
 
 **When to use**: Space-constrained sidebars where filters should be collapsible.
 
@@ -493,6 +548,19 @@ export const buildInitialFilters = (
 };
 ```
 
+### Additional Functions
+
+The `filterPrecedence.ts` module also exports these utilities:
+
+| Function | Purpose |
+|----------|---------|
+| `getInitialStageFilter(urlFilters?)` | Stage-specific precedence: URL > sessionStorage > `getDefaultVisibleStages()` |
+| `updateStagePreferences(stages)` | Saves stage preferences to sessionStorage (skips save if matches defaults) |
+| `getDefaultVisibleStages()` | Returns active (non-closed) stages from `ACTIVE_STAGES` constant |
+| `parseUrlFilters(search)` | Parses URL search params into `FilterValues`, handling JSON arrays |
+| `saveFilterPreferences(key, value)` | Generic sessionStorage write with error handling |
+| `getStoredFilterPreferences(key)` | Generic sessionStorage read with error handling |
+
 **When to use**: Initializing list filters with proper precedence (bookmarked URLs, user preferences, sensible defaults).
 
 ---
@@ -642,6 +710,62 @@ export const CONTACT_FILTER_CONFIG = validateFilterConfig([
 | `field_gte` / `field_lte` | **Legacy** - existing only | Opportunities (do not add new) |
 
 When adding date filters to a resource, check its existing config file for the format already in use.
+
+---
+
+## Supporting Modules (Undocumented Files)
+
+The following files provide infrastructure for the filter system but do not have their own pattern sections:
+
+### `FilterLayoutModeContext.tsx`
+
+Context provider for responsive filter layout. Two modes:
+- `"full"`: Expanded sidebar with collapsible categories (>=1280px desktop)
+- `"sheet"`: Full layout inside a slide-over sheet (<1280px)
+
+Used by `FilterCategory` to force-expand categories in sheet mode.
+
+```tsx
+export type FilterLayoutMode = "full" | "sheet";
+const FilterLayoutModeContext = createContext<FilterLayoutMode>("full");
+export const FilterLayoutModeProvider = FilterLayoutModeContext.Provider;
+export function useFilterLayoutMode(): FilterLayoutMode {
+  return useContext(FilterLayoutModeContext);
+}
+```
+
+### `useFilterChipBar.ts` (435 lines)
+
+Core hook that transforms React Admin filter state into displayable chips. This is the largest file in the filter system and handles:
+- Reference resolution (organizations, sales, tags, segments, categories, tasks)
+- Date range formatting with preset detection
+- Grouped filter removal (`removalGroup`)
+- Memoized chip computation from filter values + config
+- 6 reference name hooks integrated (`useOrganizationNames`, `useSalesNames`, `useTagNames`, `useSegmentNames`, `useCategoryNames`, `useTaskNames`)
+
+### `filterFormatters.ts`
+
+Centralized logic for converting filter values to display labels. Used by `FilterChipsPanel` (not by `FilterChipBar`, which uses `useFilterChipBar`). Provides:
+- `formatFilterLabel()` - main label resolver
+- `formatStageLabel()` / `formatPriorityLabel()` / `formatCategoryLabel()` - domain formatters
+- `flattenFilterValues()` - converts nested filter object to flat chip array
+
+### `dateFilterLabels.ts`
+
+Semantic label detection for date range filters. Instead of checking "is this date today?", it checks "does this filter combination match a known sidebar preset?" to fix the mismatch bug where "This week" would show "Today" if the start of week was today. Provides:
+- `detectDatePresetLabel()` - matches filter combination to known presets
+- `formatDateValue()` - fallback date formatting
+
+### `types.ts` (143 lines)
+
+Comprehensive type system for the filter infrastructure:
+- `SingleFilterValue`, `ArrayFilterValue`, `FilterValue` - value types
+- `FilterValues`, `FilterChipData`, `FilterChoice` - structural types
+- `FilterConfig` - filter configuration interface
+- `FilterPrecedence` enum, `FilterPreferences` interface
+- `FilterFormatter`, `FilterValidator`, `FilterTransform` - function types
+- Type guards: `isArrayFilterValue()`, `isSingleFilterValue()`, `isValidFilterValue()`
+- `FILTER_KEYS` constant object with all standard filter key names
 
 ---
 
@@ -851,27 +975,31 @@ The FilterChipBar implements toolbar-style keyboard navigation for accessibility
 // src/atomic-crm/filters/FilterChipBar.tsx
 
 const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
-  const buttons = chipBarRef.current?.querySelectorAll('button[aria-label^="Remove"]');
+  const buttons = chipBarRef.current?.querySelectorAll("[data-chip-button]");
   if (!buttons?.length) return;
 
   const currentIndex = Array.from(buttons).findIndex((btn) => btn === document.activeElement);
 
+  const focusButton = (button: Element | undefined): void => {
+    if (button instanceof HTMLElement) button.focus();
+  };
+
   switch (e.key) {
     case "ArrowRight":
       e.preventDefault();
-      (buttons[(currentIndex + 1) % buttons.length] as HTMLElement).focus();
+      focusButton(buttons[(currentIndex + 1) % buttons.length]);
       break;
     case "ArrowLeft":
       e.preventDefault();
-      (buttons[currentIndex <= 0 ? buttons.length - 1 : currentIndex - 1] as HTMLElement).focus();
+      focusButton(buttons[currentIndex <= 0 ? buttons.length - 1 : currentIndex - 1]);
       break;
     case "Home":
       e.preventDefault();
-      (buttons[0] as HTMLElement).focus();
+      focusButton(buttons[0]);
       break;
     case "End":
       e.preventDefault();
-      (buttons[buttons.length - 1] as HTMLElement).focus();
+      focusButton(buttons[buttons.length - 1]);
       break;
   }
 }, []);
@@ -894,9 +1022,9 @@ The FilterChipBar uses the following accessibility attributes:
 ### Focus Management
 
 1. **Ref-based DOM query**: Uses `chipBarRef` to find all remove buttons
-2. **Selector pattern**: `'button[aria-label^="Remove"]'` ensures only chip buttons are targeted
+2. **Selector pattern**: `"[data-chip-button]"` data attribute ensures only chip buttons are targeted (replaces fragile `aria-label^="Remove"` selector)
 3. **Circular navigation**: Arrow keys wrap around at boundaries (last -> first, first -> last)
-4. **Native button focus**: Standard `HTMLElement.focus()` for browser consistency
+4. **Type-safe focus**: Uses `focusButton()` helper with `instanceof HTMLElement` guard
 
 ### Design Decisions
 

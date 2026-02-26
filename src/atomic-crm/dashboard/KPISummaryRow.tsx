@@ -52,21 +52,24 @@ export function KPISummaryRow() {
         value={formatKPIValue(metrics.openOpportunitiesCount)}
         icon={Briefcase}
         loading={loading}
+        tone="neutral"
+        emphasis="executiveCompact"
         onClick={() => navigate(KPI_NAVIGATION.openOpportunities)}
         data-tutorial="dashboard-kpi-open-opportunities"
       />
 
-      {/* KPI #2: Overdue Tasks (red accent when > 0) */}
+      {/* KPI #2: Overdue Tasks (clay accent when > 0) */}
       <KPICard
         title="Overdue Tasks"
         value={formatKPIValue(metrics.overdueTasksCount)}
         icon={AlertCircle}
         loading={loading}
-        variant={
+        tone={
           metrics.overdueTasksCount !== null && metrics.overdueTasksCount > 0
-            ? "destructive"
-            : "default"
+            ? "critical"
+            : "neutral"
         }
+        emphasis="executiveCompact"
         onClick={() => navigate(KPI_NAVIGATION.overdueTasks)}
         data-tutorial="dashboard-kpi-overdue-tasks"
       />
@@ -77,21 +80,24 @@ export function KPISummaryRow() {
         value={formatKPIValue(metrics.activitiesThisWeek)}
         icon={Activity}
         loading={loading}
+        tone="neutral"
+        emphasis="executiveCompact"
         subtitle={formatRecentActivitySubtitle(metrics.recentActivityCount)}
         trend={trends.activitiesThisWeek ?? undefined}
         onClick={() => navigate(KPI_NAVIGATION.activitiesThisWeek)}
         data-tutorial="dashboard-kpi-activities"
       />
 
-      {/* KPI #4: Stale Deals (amber/warning when > 0) */}
+      {/* KPI #4: Stale Deals (warning when > 0) */}
       <KPICard
         title="Stale Deals"
         value={formatKPIValue(metrics.staleDealsCount)}
         icon={AlertTriangle}
         loading={loading}
-        variant={
-          metrics.staleDealsCount !== null && metrics.staleDealsCount > 0 ? "warning" : "default"
+        tone={
+          metrics.staleDealsCount !== null && metrics.staleDealsCount > 0 ? "warning" : "neutral"
         }
+        emphasis="executiveCompact"
         onClick={() => navigate(KPI_NAVIGATION.staleDeals)}
         data-tutorial="dashboard-kpi-stale-deals"
       />

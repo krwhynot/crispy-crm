@@ -87,6 +87,11 @@ function renderDashboard() {
 // ---------- Tests ----------
 
 describe("PrincipalDashboardV4", () => {
+  it("renders Dashboard page heading", () => {
+    renderDashboard();
+    expect(screen.getByRole("heading", { level: 1, name: "Dashboard" })).toBeInTheDocument();
+  });
+
   // 1. Renders all 5 key sections
   it("renders KPISummaryRow", () => {
     renderDashboard();

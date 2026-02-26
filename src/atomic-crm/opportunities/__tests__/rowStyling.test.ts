@@ -4,7 +4,6 @@ import {
   isClosedStage,
   isHotLead,
   getOpportunityRowClassName,
-  opportunityRowClassName,
 } from "../rowStyling";
 
 describe("rowStyling utilities", () => {
@@ -128,27 +127,6 @@ describe("rowStyling utilities", () => {
         stage: "demo_scheduled",
       });
       expect(result.trim()).toBe("");
-    });
-  });
-
-  describe("opportunityRowClassName (type-safe wrapper)", () => {
-    it("handles null/undefined record gracefully", () => {
-      expect(opportunityRowClassName(null, 0)).toBe("");
-      expect(opportunityRowClassName(undefined, 0)).toBe("");
-    });
-
-    it("handles non-object record gracefully", () => {
-      expect(opportunityRowClassName("string", 0)).toBe("");
-      expect(opportunityRowClassName(123, 0)).toBe("");
-    });
-
-    it("processes valid opportunity record", () => {
-      const result = opportunityRowClassName(
-        { estimated_close_date: "2025-12-10", stage: "new_lead" },
-        0
-      );
-      expect(result).toContain("bg-error-subtle");
-      expect(result).toContain("border-l-primary");
     });
   });
 });

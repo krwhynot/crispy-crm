@@ -1,6 +1,8 @@
 import type { ReactNode } from "react";
 import { Link } from "react-router-dom";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbPage } from "@/components/ra-wrappers/breadcrumb";
+import { useOptionalFilterSidebarContext } from "@/components/layouts/FilterSidebarContext";
+import { cn } from "@/lib/utils";
 
 interface BreadcrumbEntry {
   label: string;
@@ -11,8 +13,8 @@ interface ReportPageShellProps {
   title: string;
   breadcrumbs: BreadcrumbEntry[];
   actions?: ReactNode;
-  /** Inline filter header rendered between title row and children (e.g., ReportContextHeader) */
-  contextHeader?: ReactNode;
+  /** Filter sidebar rendered in a docked grid column (xl+) or sheet (below xl) */
+  sidebar?: ReactNode;
   children: ReactNode;
 }
 
@@ -20,11 +22,14 @@ export function ReportPageShell({
   title,
   breadcrumbs,
   actions,
-  contextHeader,
+  sidebar,
   children,
 }: ReportPageShellProps) {
+  const sidebarContext = useOptionalFilterSidebarContext();
+  const isCollapsed = sidebarContext?.isCollapsed ?? false;
+
   return (
-    <div className="p-content md:p-widget space-y-section">
+    <div className="paper-dashboard-surface p-content md:p-widget space-y-section rounded-xl">
       <Breadcrumb>
         <BreadcrumbItem>
           <Link to="/">Home</Link>
@@ -41,19 +46,25 @@ export function ReportPageShell({
       </Breadcrumb>
 
       <div className="flex items-center justify-between gap-content">
-        <h1 className="text-2xl md:text-3xl font-bold">{title}</h1>
+        <h1 className="text-lg font-semibold">{title}</h1>
         {actions && <div className="flex items-center gap-compact">{actions}</div>}
       </div>
 
-      {/* Gap #4: Sticky context header — sits outside overflow-hidden containers
-          so position:sticky works against the document viewport */}
-      {contextHeader && (
-        <div className="sticky top-0 z-10 bg-background/95 backdrop-blur-sm border-b border-border/50 -mx-4 px-4 py-2">
-          {contextHeader}
+      {sidebar ? (
+        <div
+          className={cn(
+            "xl:grid xl:gap-content",
+            isCollapsed
+              ? "xl:grid-cols-[var(--list-sidebar-collapsed-width)_1fr]"
+              : "xl:grid-cols-[var(--list-sidebar-width)_1fr]"
+          )}
+        >
+          {sidebar}
+          <div className="space-y-widget min-w-0">{children}</div>
         </div>
+      ) : (
+        <div className="space-y-widget">{children}</div>
       )}
-
-      <div className="space-y-widget">{children}</div>
     </div>
   );
 }

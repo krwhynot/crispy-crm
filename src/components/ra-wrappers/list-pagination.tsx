@@ -1,11 +1,9 @@
-import { cn } from "@/lib/utils";
-import {
-  Pagination,
-  PaginationContent,
-  PaginationEllipsis,
-  PaginationItem,
-  PaginationLink,
-} from "@/components/ui/pagination";
+import { useEffect, useMemo, useState } from "react";
+import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
+import { useListContext, useListPaginationContext, useTranslate } from "ra-core";
+import { ExportButton } from "@/components/ra-wrappers/export-button";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
@@ -13,14 +11,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
-import { useListPaginationContext, Translate, useTranslate, useListContext } from "ra-core";
-import { ExportButton } from "@/components/ra-wrappers/export-button";
 
 export const ListPagination = ({
   rowsPerPageOptions = [5, 10, 25, 50],
   className,
-  showExport = true,
+  showExport = false,
 }: {
   rowsPerPageOptions?: number[];
   className?: string;
@@ -29,202 +24,131 @@ export const ListPagination = ({
   const translate = useTranslate();
   const { hasPreviousPage, hasNextPage, page, perPage, setPerPage, total, setPage } =
     useListPaginationContext();
-  const { selectedIds } = useListContext();
+  const { selectedIds, isPending, data } = useListContext();
+  const isInitialLoading = isPending && (!data || data.length === 0);
 
-  // Ensure current perPage is always in options (prevents empty dropdown when perPage isn't in default options)
-  const effectiveOptions = rowsPerPageOptions.includes(perPage)
-    ? rowsPerPageOptions
-    : [...rowsPerPageOptions, perPage].toSorted((a, b) => a - b);
-
-  // Defensive defaults to prevent undefined values causing template placeholder issues
   const safeTotal = total ?? 0;
   const safePage = page ?? 1;
-  const safePerPage = perPage ?? 10;
+  const safePerPage = perPage ?? rowsPerPageOptions[0] ?? 10;
+  const totalPages = Math.max(1, Math.ceil(safeTotal / safePerPage));
+  const clampedPage = Math.min(Math.max(safePage, 1), totalPages);
 
-  // Handle empty results: show "0 of 0" instead of "1-0 of 0"
-  const pageStart = safeTotal === 0 ? 0 : (safePage - 1) * safePerPage + 1;
-  const pageEnd = safeTotal === 0 ? 0 : hasNextPage ? safePage * safePerPage : safeTotal;
-
-  const boundaryCount = 1;
-  const siblingCount = 1;
-  const count = safeTotal ? Math.ceil(safeTotal / safePerPage) : 1;
-
-  const range = (start: number, end: number) => {
-    const length = end - start + 1;
-    return Array.from({ length }, (_, i) => start + i);
-  };
-
-  const startPages = range(1, Math.min(boundaryCount, count));
-  const endPages = range(Math.max(count - boundaryCount + 1, boundaryCount + 1), count);
-
-  const siblingsStart = Math.max(
-    Math.min(
-      // Natural start
-      page - siblingCount,
-      // Lower boundary when page is high
-      count - boundaryCount - siblingCount * 2 - 1
-    ),
-    // Greater than startPages
-    boundaryCount + 2
+  const pageStart = safeTotal === 0 ? 0 : (clampedPage - 1) * safePerPage + 1;
+  const pageEnd = safeTotal === 0 ? 0 : Math.min(clampedPage * safePerPage, safeTotal);
+  const effectiveOptions = useMemo(
+    () =>
+      rowsPerPageOptions.includes(safePerPage)
+        ? rowsPerPageOptions
+        : [...rowsPerPageOptions, safePerPage].toSorted((a, b) => a - b),
+    [rowsPerPageOptions, safePerPage]
   );
 
-  const siblingsEnd = Math.min(
-    Math.max(
-      // Natural end
-      page + siblingCount,
-      // Upper boundary when page is low
-      boundaryCount + siblingCount * 2 + 2
-    ),
-    // Less than endPages
-    count - boundaryCount - 1
-  );
+  const [pageInput, setPageInput] = useState(String(clampedPage));
 
-  const siblingPages = range(siblingsStart, siblingsEnd);
+  useEffect(() => {
+    setPageInput(String(clampedPage));
+  }, [clampedPage]);
 
-  const pageChangeHandler = (newPage: number) => {
-    return (event: React.MouseEvent<HTMLAnchorElement>) => {
-      event.preventDefault();
-      setPage(newPage);
-    };
+  const commitPageInput = () => {
+    const parsed = Number(pageInput);
+    if (!Number.isFinite(parsed)) {
+      setPageInput(String(clampedPage));
+      return;
+    }
+
+    const nextPage = Math.min(Math.max(Math.trunc(parsed), 1), totalPages);
+    setPage(nextPage);
+    setPageInput(String(nextPage));
   };
 
   return (
-    <div className={`flex items-center justify-between w-full ${className}`}>
-      <div className="hidden md:flex items-center">
-        {showExport && !selectedIds?.length && <ExportButton />}
-      </div>
+    <div
+      className={`flex w-full items-center justify-between gap-4 ${className ?? ""} ${isInitialLoading ? "pointer-events-none opacity-50" : ""}`}
+      aria-busy={isInitialLoading || undefined}
+      aria-disabled={isInitialLoading || undefined}
+    >
+      {showExport && !selectedIds?.length && (
+        <div className="hidden items-center md:flex">
+          <ExportButton />
+        </div>
+      )}
 
-      <div className="flex items-center space-x-2 gap-4">
-        <div className="hidden md:flex items-center space-x-2">
-          <p className="text-sm font-medium">
-            <Translate i18nKey="ra.navigation.page_rows_per_page">Rows per page</Translate>
-          </p>
+      <div className="ml-auto flex flex-wrap items-center justify-end gap-3">
+        <div className="hidden items-center gap-2.5 md:flex">
+          <span className="text-sm font-medium">
+            {translate("ra.navigation.page_rows_per_page", { _: "Rows per page" })}
+          </span>
           <Select
-            value={perPage.toString()}
+            value={String(safePerPage)}
             onValueChange={(value) => {
-              setPerPage(Number(value));
+              const next = Number(value);
+              setPerPage(next);
+              setPage(1);
             }}
           >
-            <SelectTrigger className="h-11 w-[70px]">
-              <SelectValue placeholder={perPage} />
+            <SelectTrigger className="h-9 w-[84px]">
+              <SelectValue placeholder={safePerPage} />
             </SelectTrigger>
             <SelectContent side="top">
-              {effectiveOptions.map((pageSize) => (
-                <SelectItem key={pageSize} value={`${pageSize}`}>
-                  {pageSize}
+              {effectiveOptions.map((option) => (
+                <SelectItem key={option} value={String(option)}>
+                  {option}
                 </SelectItem>
               ))}
             </SelectContent>
           </Select>
         </div>
-        <div className="text-sm text-muted-foreground">
-          <Translate
-            i18nKey="ra.navigation.page_range_info"
-            options={{
-              offsetBegin: pageStart,
-              offsetEnd: pageEnd,
-              total: safeTotal === -1 ? pageEnd : safeTotal,
-            }}
+
+        <span className="min-w-[110px] text-xs text-muted-foreground">
+          {`${pageStart}-${pageEnd} of ${safeTotal}`}
+        </span>
+
+        <div className="flex items-center gap-2.5">
+          <Button
+            type="button"
+            variant="ghost"
+            size="sm"
+            className="h-9 border [border-color:var(--paper-divider-soft)] text-muted-foreground hover:bg-[color:var(--paper-row-hover-bg)] hover:text-foreground"
+            disabled={!hasPreviousPage}
+            onClick={() => setPage(Math.max(clampedPage - 1, 1))}
+            aria-label={translate("ra.navigation.previous", { _: "Previous" })}
           >
-            {`${pageStart}-${pageEnd} of ${safeTotal === -1 ? pageEnd : safeTotal}`}
-          </Translate>
+            <ChevronLeftIcon className="h-4 w-4" />
+            Prev
+          </Button>
+
+          <div className="flex items-center gap-2 rounded-md border bg-[color:var(--surface-paper-inner)] px-2 py-1 [border-color:var(--paper-divider-soft)]">
+            <span className="text-xs uppercase tracking-[0.08em] text-muted-foreground">Page</span>
+            <Input
+              value={pageInput}
+              onChange={(event) => setPageInput(event.target.value)}
+              onBlur={commitPageInput}
+              onKeyDown={(event) => {
+                if (event.key === "Enter") {
+                  event.preventDefault();
+                  commitPageInput();
+                }
+              }}
+              inputMode="numeric"
+              aria-label="Page number"
+              className="h-8 w-14 border-[color:var(--paper-divider-soft)] text-center text-foreground"
+            />
+            <span className="text-sm font-medium text-foreground">of {totalPages}</span>
+          </div>
+
+          <Button
+            type="button"
+            variant="ghost"
+            size="sm"
+            className="h-9 border [border-color:var(--paper-divider-soft)] text-muted-foreground hover:bg-[color:var(--paper-row-hover-bg)] hover:text-foreground"
+            disabled={!hasNextPage}
+            onClick={() => setPage(Math.min(clampedPage + 1, totalPages))}
+            aria-label={translate("ra.navigation.next", { _: "Next" })}
+          >
+            Next
+            <ChevronRightIcon className="h-4 w-4" />
+          </Button>
         </div>
-        <Pagination className="-w-full -mx-auto">
-          <PaginationContent>
-            <PaginationItem>
-              <PaginationLink
-                href="#"
-                onClick={pageChangeHandler(page - 1)}
-                className={cn(
-                  "gap-1 px-2.5 sm:pr-2.5",
-                  !hasPreviousPage ? "opacity-50 cursor-not-allowed" : ""
-                )}
-                aria-label={translate("ra.navigation.previous", {
-                  _: "Previous",
-                })}
-              >
-                <ChevronLeftIcon />
-              </PaginationLink>
-            </PaginationItem>
-            {startPages.map((pageNumber) => (
-              <PaginationItem key={pageNumber}>
-                <PaginationLink
-                  href="#"
-                  onClick={pageChangeHandler(pageNumber)}
-                  isActive={pageNumber === page}
-                >
-                  {pageNumber}
-                </PaginationLink>
-              </PaginationItem>
-            ))}
-            {siblingsStart > boundaryCount + 2 ? (
-              <PaginationItem>
-                <PaginationEllipsis />
-              </PaginationItem>
-            ) : boundaryCount + 1 < count - boundaryCount ? (
-              <PaginationItem>
-                <PaginationLink
-                  href="#"
-                  onClick={pageChangeHandler(boundaryCount + 1)}
-                  isActive={boundaryCount + 1 === page}
-                >
-                  {boundaryCount + 1}
-                </PaginationLink>
-              </PaginationItem>
-            ) : null}
-            {siblingPages.map((pageNumber) => (
-              <PaginationItem key={pageNumber}>
-                <PaginationLink
-                  href="#"
-                  onClick={pageChangeHandler(pageNumber)}
-                  isActive={pageNumber === page}
-                >
-                  {pageNumber}
-                </PaginationLink>
-              </PaginationItem>
-            ))}
-            {siblingsEnd < count - boundaryCount - 1 ? (
-              <PaginationItem>
-                <PaginationEllipsis />
-              </PaginationItem>
-            ) : count - boundaryCount > boundaryCount ? (
-              <PaginationItem>
-                <PaginationLink
-                  href="#"
-                  onClick={pageChangeHandler(count - boundaryCount)}
-                  isActive={count - boundaryCount === page}
-                >
-                  {count - boundaryCount}
-                </PaginationLink>
-              </PaginationItem>
-            ) : null}
-            {endPages.map((pageNumber) => (
-              <PaginationItem key={pageNumber}>
-                <PaginationLink
-                  href="#"
-                  onClick={pageChangeHandler(pageNumber)}
-                  isActive={pageNumber === page}
-                >
-                  {pageNumber}
-                </PaginationLink>
-              </PaginationItem>
-            ))}
-            <PaginationItem>
-              <PaginationLink
-                href="#"
-                onClick={pageChangeHandler(page + 1)}
-                size="default"
-                className={cn(
-                  "gap-1 px-2.5 sm:pr-2.5",
-                  !hasNextPage ? "opacity-50 cursor-not-allowed" : ""
-                )}
-                aria-label={translate("ra.navigation.next", { _: "Next" })}
-              >
-                <ChevronRightIcon />
-              </PaginationLink>
-            </PaginationItem>
-          </PaginationContent>
-        </Pagination>
       </div>
     </div>
   );

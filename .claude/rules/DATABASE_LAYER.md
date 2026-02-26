@@ -1,221 +1,46 @@
-# Database Layer: RLS, Views & Triggers
+﻿# Database Layer Overlay
 
-Border control that enforces soft deletes and performance rules when frontend fails.
+Scope: RLS, SQL view strategy, soft-delete enforcement, FK/index conventions, and storage-table security.
 
-## View Duality (Performance)
+## Applies
 
-DO:
-- `contacts_summary`, `opportunities_summary` - SQL views for reads
-- Pre-calculate expensive operations (counts, joins, computed fields)
-- `SELECT * FROM contacts_summary` - read from views
-- `INSERT INTO contacts` - write to base tables
+- `CORE-008`, `CORE-010`, `CORE-011`, `CORE-019`, `CORE-020`
 
-DON'T:
-- Fetch base tables for list views
-- Calculate aggregates in JavaScript
-- Mix read/write destinations
+## Database Rules
 
-## Soft Delete Enforcement (Security)
+- [DB-001] List/read workloads must use summary SQL views with precomputed fields where configured.
+- [DB-002] Do not implement view-computable aggregations in application JavaScript when SQL can calculate them.
+- [DB-003] Read policies must enforce soft-delete visibility (`deleted_at` hidden) plus authenticated tenant/ownership filters.
+- [DB-004] Soft-delete cascade behavior must be enforced in SQL policies/triggers, not only in frontend filters.
+- [DB-005] `storage.objects` must have RLS enabled; private buckets are default for tenant/user data.
+- [DB-006] Storage paths must follow `/{tenant_id}/{resource}/{record_id}/{filename}` and DB rows store path keys, not signed URLs.
+- [DB-007] `USING (true)` is banned except explicit `service_role` or approved public reference-data policies.
+- [DB-008] Junction-table policies must validate authorization for both linked foreign-key records.
+- [DB-009] Junction-table authorization queries must be backed by FK indexes to avoid full scans.
+- [DB-010] `created_at` and `updated_at` are database-managed fields; clients cannot own timestamp writes.
+- [DB-011] Computed fields must use generated columns/views/triggers instead of frontend mutation logic.
+- [DB-012] New FKs to `sales` follow convention: ownership/audit metadata uses `SET NULL`; immutable audit trail references may use `NO ACTION`.
+- [DB-013] Policy audits must run with `CMD-006` when changing migrations or RLS rules.
 
-DO:
-- RLS policies with `deleted_at IS NULL` - enforce at row level
-- Cascade soft deletes via triggers/policies
-- Test: manually querying Supabase should hide deleted records
+## Canonical Risk Stub (Permissive Policy)
 
-DON'T:
-- Rely only on frontend filtering `deleted_at`
-- Skip RLS policies - attackers can bypass frontend
-
-## Storage Layer (Files & Assets)
-
-DO:
-- **Bucket RLS:** Enable Row Level Security on `storage.objects`. Buckets are tables too.
-- **Path Structure:** Enforce hierarchy: `/{tenant_id}/{resource}/{record_id}/{filename}`. Prevents collisions and leaks.
-- **Private by Default:** Use private buckets. Only make buckets public for generic assets (e.g., app logos).
-- **Foreign Keys:** Store the file path string in the database record (e.g., `avatar_url`), not the full signed URL.
-
-DON'T:
-- **Public PII:** Never store sensitive user documents in public buckets.
-- **Flat Structures:** Don't dump all files in the root of a bucket.
-- **Orphaned Files:** Don't delete database records without cleaning up associated storage files (handle via triggers or soft-delete workflows).
-
-## Access Control Patterns
-
-DO:
-- `USING (auth.uid() IS NOT NULL)` - minimum requirement for authenticated users
-- `USING (auth.jwt() ->> 'role' = 'admin')` - role-based access control
-- `USING (company_id = (auth.jwt() ->> 'company_id')::int)` - multi-tenant isolation
-- `USING (user_id = auth.uid())` - owner-only access
-- Join table restrictions - verify both sides of relationship are authorized
-
-DON'T:
-- `USING (true)` - BANNED except for service_role policies
-- Rely on "deny all" defaults without explicit policies
-- Skip policies for junction tables (security hole)
-- Use `USING (true)` as a placeholder during development
-
-### Permissive Policy Hole
-
-WRONG:
 ```sql
--- Security Issue: Any authenticated user can access ALL records
--- No company isolation, no ownership check, no role check
-CREATE POLICY "Users can select product_distributors"
-  ON product_distributors FOR SELECT USING (true);
-
-CREATE POLICY "Users can update product_distributors"
-  ON product_distributors FOR UPDATE USING (true);
-
-CREATE POLICY "Users can delete product_distributors"
-  ON product_distributors FOR DELETE USING (true);
+-- Disallowed except approved service/public cases
+CREATE POLICY "bad_select" ON product_distributors FOR SELECT USING (true);
 ```
 
-RIGHT:
-```sql
--- Option 1: Multi-tenant isolation (most business tables)
-CREATE POLICY "Users can select own company product_distributors"
-  ON product_distributors FOR SELECT
-  USING (
-    company_id = (auth.jwt() ->> 'company_id')::int
-    AND deleted_at IS NULL
-  );
+## Checklist IDs
 
--- Option 2: Authenticated-only (reference/configuration tables)
-CREATE POLICY "Authenticated users can view product_distributors"
-  ON product_distributors FOR SELECT
-  USING (
-    auth.uid() IS NOT NULL
-    AND deleted_at IS NULL
-  );
-
--- Option 3: Role-based (admin-only tables)
-CREATE POLICY "Admins can manage product_distributors"
-  ON product_distributors FOR ALL
-  USING (
-    (auth.jwt() ->> 'role') = 'admin'
-  );
-
--- Service role bypass (for edge functions only)
-CREATE POLICY "Service role full access"
-  ON product_distributors FOR ALL
-  TO service_role
-  USING (true)
-  WITH CHECK (true);
-```
-
-USING (true) means "allow everyone" - only acceptable for service_role or public reference data.
-
-### Junction Table Security
-
-WRONG:
-```sql
--- Missing authorization - users could link unauthorized records
-CREATE POLICY "Allow contact_organizations inserts"
-  ON contact_organizations FOR INSERT
-  USING (true);
-```
-
-RIGHT:
-```sql
--- Verify user can access BOTH sides of relationship
-CREATE POLICY "Users can link own company contacts and orgs"
-  ON contact_organizations FOR INSERT
-  WITH CHECK (
-    -- User must own the contact
-    EXISTS (
-      SELECT 1 FROM contacts
-      WHERE id = contact_organizations.contact_id
-      AND company_id = (auth.jwt() ->> 'company_id')::int
-    )
-    AND
-    -- User must own the organization
-    EXISTS (
-      SELECT 1 FROM organizations
-      WHERE id = contact_organizations.organization_id
-      AND company_id = (auth.jwt() ->> 'company_id')::int
-    )
-  );
-```
-
-Junction tables require authorization checks on both foreign keys.
-
-Performance Note: The double EXISTS checks require indexes on foreign keys. Verify indexes exist:
-```sql
-CREATE INDEX idx_[table]_[fk1] ON [table] ([fk_column_1]) WHERE (deleted_at IS NULL);
-CREATE INDEX idx_[table]_[fk2] ON [table] ([fk_column_2]) WHERE (deleted_at IS NULL);
-```
-
-Without indexes, EXISTS subqueries will cause full table scans and degrade write performance.
-
-## ON DELETE Convention for Sales References
-
-Sales team members (`sales` table) are **never hard-deleted** in production. Deactivation uses `disabled = true`. ON DELETE rules on FKs referencing `sales` are safety nets, not operational triggers.
-
-**Convention for new FKs referencing `sales`:**
-- `created_by / updated_by -> sales`: **SET NULL** (audit metadata, shouldn't block deactivation)
-- `sales_id -> sales` (ownership): **SET NULL** (reassignable ownership)
-- `changed_by -> sales` (audit trail): **NO ACTION** (audit integrity must be preserved)
-
-**Note:** Historical migrations have inconsistent ON DELETE rules across `created_by` columns (mix of NO ACTION and SET NULL). This is cosmetic — the rules never fire because sales rows aren't hard-deleted. Normalize if sales hard-deletion is ever introduced.
-
-## Immutable Fields (Data Integrity)
-
-DO:
-- `created_at` and `updated_at` managed by SQL triggers
-- Generated columns for computed values (search vectors)
-
-DON'T:
-- Don't allow frontend to set timestamps manually
-
-## Violation Fixes
-
-### Leaky Delete
-
-WRONG:
-```typescript
-// Frontend only - hackers can bypass
-supabase.from('contacts').select().is('deleted_at', null)
-```
-
-RIGHT:
-```sql
--- RLS enforced at database level
-CREATE POLICY "Hide deleted contacts"
-ON contacts FOR SELECT
-USING (deleted_at IS NULL);
-```
-
-### Slow Dashboard
-
-WRONG:
-```typescript
-// Fetching 1000 rows to filter in JS
-opportunities.filter(o => o.updated_at < Date.now() - 14*24*60*60*1000)
-```
-
-RIGHT:
-```sql
-CREATE VIEW opportunities_summary AS
-SELECT *,
-  CASE WHEN updated_at < NOW() - INTERVAL '14 days'
-    THEN true ELSE false END as is_stale
-FROM opportunities;
-```
-
-## Audit Command
-
-```bash
-rg "CREATE POLICY" supabase/migrations
-```
-
-## Checklist
-
-- [ ] List views have `_summary` SQL views with pre-calculated fields
-- [ ] `SELECT` policies enforce `deleted_at IS NULL`
-- [ ] Soft-delete cascades handled by triggers/policies
-- [ ] `created_at`/`updated_at` managed by triggers (not frontend)
-- [ ] Computed columns auto-generated
-- [ ] No `USING (true)` policies except `service_role`
-- [ ] All policies verify `auth.uid()` or `company_id`
-- [ ] Junction table policies check both foreign key sides
-- [ ] Junction table foreign keys have indexes for `EXISTS` query performance
+- `DB-001`
+- `DB-002`
+- `DB-003`
+- `DB-004`
+- `DB-005`
+- `DB-006`
+- `DB-007`
+- `DB-008`
+- `DB-009`
+- `DB-010`
+- `DB-011`
+- `DB-012`
+- `DB-013`

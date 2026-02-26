@@ -26,13 +26,19 @@ vi.mock("../ActivityFeedPanel", () => ({
   default: () => <div data-testid="activity-feed">Activity Content</div>,
 }));
 
+vi.mock("../KPISummaryRow", () => ({
+  KPISummaryRow: () => <div data-testid="kpi-summary-row">KPI Content</div>,
+}));
+
 describe("DashboardTabPanel", () => {
-  it("renders all three tabs", () => {
+  it("renders all dashboard tabs", () => {
     renderWithAdminContext(<DashboardTabPanel />);
 
+    expect(screen.getByRole("tab", { name: /pipeline/i })).toBeInTheDocument();
     expect(screen.getByRole("tab", { name: /my tasks/i })).toBeInTheDocument();
     expect(screen.getByRole("tab", { name: /performance/i })).toBeInTheDocument();
     expect(screen.getByRole("tab", { name: /team activity/i })).toBeInTheDocument();
+    expect(screen.getByRole("tab", { name: /recently viewed/i })).toBeInTheDocument();
   });
 
   it("shows task count badge", () => {
@@ -41,16 +47,16 @@ describe("DashboardTabPanel", () => {
     expect(screen.getByText("3")).toBeInTheDocument();
   });
 
-  it("defaults to pipeline tab and loads content", async () => {
+  it("defaults to tasks tab and loads content", async () => {
     renderWithAdminContext(<DashboardTabPanel />);
 
-    // Pipeline is the default tab (defaultValue="pipeline")
-    const pipelineTab = screen.getByRole("tab", { name: /pipeline/i });
-    expect(pipelineTab).toHaveAttribute("data-state", "active");
+    // Tasks is the default tab (defaultValue="tasks")
+    const tasksTab = screen.getByRole("tab", { name: /my tasks/i });
+    expect(tasksTab).toHaveAttribute("data-state", "active");
 
     // Wait for lazy-loaded content (Suspense boundary)
     await waitFor(() => {
-      expect(screen.getByTestId("pipeline-table")).toBeInTheDocument();
+      expect(screen.getByTestId("tasks-panel")).toBeInTheDocument();
     });
   });
 
@@ -58,8 +64,8 @@ describe("DashboardTabPanel", () => {
     const user = userEvent.setup();
     renderWithAdminContext(<DashboardTabPanel />);
 
-    // Wait for initial content (pipeline is the default tab)
-    await screen.findByTestId("pipeline-table");
+    // Wait for initial content (tasks is the default tab)
+    await screen.findByTestId("tasks-panel");
 
     await user.click(screen.getByRole("tab", { name: /performance/i }));
 
@@ -75,13 +81,12 @@ describe("DashboardTabPanel", () => {
     expect(screen.getByTestId("pipeline-table")).toBeInTheDocument();
   });
 
-  it("has accessible touch targets (44px)", () => {
+  it("uses paper tab trigger styling while preserving touch-target semantics", () => {
     renderWithAdminContext(<DashboardTabPanel />);
 
     const tabs = screen.getAllByRole("tab");
     tabs.forEach((tab) => {
-      // h-11 = 44px
-      expect(tab).toHaveClass("h-11");
+      expect(tab).toHaveClass("paper-tabs-trigger");
     });
   });
 

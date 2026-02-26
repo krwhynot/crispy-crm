@@ -20,7 +20,7 @@ describe("KPICard", () => {
     expect(screen.getByText("42")).toBeInTheDocument();
   });
 
-  it("shows positive trend with green color", () => {
+  it("shows positive trend with olive color", () => {
     renderWithAdminContext(
       <KPICard
         title="Revenue"
@@ -30,12 +30,11 @@ describe("KPICard", () => {
       />
     );
 
-    // The new component shows "↑25%" format
-    const changeElement = screen.getByText(/↑25%/);
-    expect(changeElement).toHaveClass("text-success");
+    const changeElement = screen.getByText(/25%/);
+    expect(changeElement).toHaveClass("text-[color:var(--olive-trend)]");
   });
 
-  it("shows negative trend with red color", () => {
+  it("shows negative trend with clay color", () => {
     renderWithAdminContext(
       <KPICard
         title="Leads"
@@ -45,9 +44,8 @@ describe("KPICard", () => {
       />
     );
 
-    // The new component shows "↓10%" format
-    const changeElement = screen.getByText(/↓10%/);
-    expect(changeElement).toHaveClass("text-destructive");
+    const changeElement = screen.getByText(/10%/);
+    expect(changeElement).toHaveClass("text-[color:var(--clay-text)]");
   });
 
   describe("onClick navigation (PRD Section 9.2.1)", () => {
@@ -115,55 +113,147 @@ describe("KPICard", () => {
     });
   });
 
-  describe("variant styling (PRD Section 9.2.1)", () => {
-    it("applies warning styling for warning variant", () => {
+  describe("tone styling (3-axis CVA)", () => {
+    it("applies warning tone with clay surface tint", () => {
+      renderWithAdminContext(
+        <KPICard title="Stale Deals" value="5" icon={TrendingUp} tone="warning" />
+      );
+
+      const card = screen.getByText("Stale Deals").closest('[data-slot="card"]');
+      expect(card).toHaveClass("paper-card");
+      expect(card).toHaveClass("bg-[var(--clay-surface)]");
+    });
+
+    it("applies positive tone without background tint", () => {
+      renderWithAdminContext(<KPICard title="Wins" value="10" icon={TrendingUp} tone="positive" />);
+
+      const card = screen.getByText("Wins").closest('[data-slot="card"]');
+      expect(card).toHaveClass("paper-card");
+      expect(card).not.toHaveClass("bg-[var(--clay-surface)]");
+    });
+
+    it("applies critical tone without background tint", () => {
+      renderWithAdminContext(
+        <KPICard title="Overdue Tasks" value="3" icon={TrendingDown} tone="critical" />
+      );
+
+      const card = screen.getByText("Overdue Tasks").closest('[data-slot="card"]');
+      expect(card).toHaveClass("paper-card");
+      expect(card).not.toHaveClass("bg-[var(--clay-surface)]");
+    });
+
+    it("applies neutral tone (no tint) when no tone specified", () => {
+      renderWithAdminContext(<KPICard title="Default KPI" value="42" icon={TrendingUp} />);
+
+      const card = screen.getByText("Default KPI").closest('[data-slot="card"]');
+      expect(card).toHaveClass("paper-card");
+      expect(card).not.toHaveClass("bg-[var(--clay-surface)]");
+    });
+  });
+
+  describe("deprecated variant prop backward compat", () => {
+    it("maps variant='warning' to warning tone", () => {
       renderWithAdminContext(
         <KPICard title="Stale Deals" value="5" icon={TrendingUp} variant="warning" />
       );
 
-      // Find the card element (not button since no onClick)
       const card = screen.getByText("Stale Deals").closest('[data-slot="card"]');
-      expect(card).toHaveClass("border-warning/50");
-      expect(card).toHaveClass("bg-warning/5");
+      expect(card).toHaveClass("paper-card");
+      expect(card).toHaveClass("bg-[var(--clay-surface)]");
     });
 
-    it("applies success styling for success variant", () => {
+    it("maps variant='success' to positive tone", () => {
       renderWithAdminContext(
         <KPICard title="Wins" value="10" icon={TrendingUp} variant="success" />
       );
 
       const card = screen.getByText("Wins").closest('[data-slot="card"]');
-      expect(card).toHaveClass("border-success/50");
-      expect(card).toHaveClass("bg-success/5");
+      expect(card).toHaveClass("paper-card");
+      expect(card).not.toHaveClass("bg-[var(--clay-surface)]");
     });
 
-    it("applies destructive styling for destructive variant", () => {
+    it("maps variant='destructive' to critical tone", () => {
       renderWithAdminContext(
         <KPICard title="Overdue Tasks" value="3" icon={TrendingDown} variant="destructive" />
       );
 
       const card = screen.getByText("Overdue Tasks").closest('[data-slot="card"]');
-      expect(card).toHaveClass("border-destructive/50");
-      expect(card).toHaveClass("bg-destructive/5");
+      expect(card).toHaveClass("paper-card");
+      expect(card).not.toHaveClass("bg-[var(--clay-surface)]");
     });
 
-    it("applies default styling when no variant specified", () => {
-      renderWithAdminContext(<KPICard title="Default KPI" value="42" icon={TrendingUp} />);
+    it("tone prop takes precedence over variant", () => {
+      renderWithAdminContext(
+        <KPICard
+          title="Precedence Test"
+          value="7"
+          icon={TrendingUp}
+          variant="destructive"
+          tone="warning"
+        />
+      );
 
-      const card = screen.getByText("Default KPI").closest('[data-slot="card"]');
-      // Default variant should NOT have warning/success/destructive classes
-      expect(card).not.toHaveClass("border-warning/50");
-      expect(card).not.toHaveClass("border-success/50");
-      expect(card).not.toHaveClass("border-destructive/50");
+      const card = screen.getByText("Precedence Test").closest('[data-slot="card"]');
+      // tone="warning" should win, producing clay-surface tint
+      expect(card).toHaveClass("bg-[var(--clay-surface)]");
+    });
+  });
+
+  describe("emphasis axis", () => {
+    it("uses default emphasis (text-xl) by default", () => {
+      renderWithAdminContext(<KPICard title="Default Emphasis" value="42" icon={TrendingUp} />);
+
+      const valueEl = screen.getByText("42");
+      expect(valueEl).toHaveClass("text-xl");
+      expect(valueEl).toHaveClass("leading-tight");
+    });
+
+    it("uses executive emphasis (40px) when specified", () => {
+      renderWithAdminContext(
+        <KPICard title="Exec KPI" value="$1.2M" icon={TrendingUp} emphasis="executive" />
+      );
+
+      const valueEl = screen.getByText("$1.2M");
+      expect(valueEl).toHaveClass("text-[40px]");
+      expect(valueEl).toHaveClass("leading-[1.1]");
+    });
+  });
+
+  describe("interactive axis", () => {
+    it("auto-detects interactive from onClick", () => {
+      const handleClick = vi.fn();
+      renderWithAdminContext(
+        <KPICard title="Auto Interactive" value="10" icon={TrendingUp} onClick={handleClick} />
+      );
+
+      const card = screen.getByRole("button", { name: /Auto Interactive: 10/i });
+      expect(card).toHaveClass("cursor-pointer");
+    });
+
+    it("can force interactive=false even with onClick", () => {
+      const handleClick = vi.fn();
+      renderWithAdminContext(
+        <KPICard
+          title="Forced Static"
+          value="10"
+          icon={TrendingUp}
+          onClick={handleClick}
+          interactive={false}
+        />
+      );
+
+      // interactive=false means cursor-default, no button role
+      const card = screen.getByText("Forced Static").closest('[data-slot="card"]');
+      expect(card).toHaveClass("cursor-default");
     });
   });
 
   describe("dark-mode readability", () => {
-    it("uses text-xs for title readability", () => {
+    it("uses paper KPI title styling for readability", () => {
       renderWithAdminContext(<KPICard title="Dark Mode Title" value="42" icon={TrendingUp} />);
 
       const title = screen.getByText("Dark Mode Title");
-      expect(title).toHaveClass("text-xs");
+      expect(title).toHaveClass("paper-kpi-title");
     });
 
     it("uses text-[11px] for trend readability", () => {
@@ -176,7 +266,7 @@ describe("KPICard", () => {
         />
       );
 
-      const trend = screen.getByText(/↑5%/);
+      const trend = screen.getByText(/5%/);
       expect(trend).toHaveClass("text-[11px]");
     });
 

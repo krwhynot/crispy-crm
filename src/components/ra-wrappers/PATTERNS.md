@@ -2,6 +2,12 @@
 
 Standard patterns for dropdown/select inputs in Crispy CRM.
 
+> **Coverage note:** This directory contains 90+ files. This PATTERNS.md documents the
+> select/filter/picker patterns only. Many newer wrapper files (e.g., `SectionCard.tsx`,
+> `PremiumDatagrid.tsx`, `bulk-reassign-button.tsx`, `HierarchicalSelectInput.tsx`,
+> `SegmentComboboxInput.tsx`, etc.) are not referenced here. See the individual files
+> or the `form/PATTERNS.md` sub-directory for form-specific patterns.
+
 ## Component Hierarchy
 
 ```
@@ -195,7 +201,7 @@ For creating records that require multiple fields or complex forms.
 import { useState } from 'react';
 import { ReferenceInput, useCreate, useNotify, useRefresh } from 'react-admin';
 import { GenericSelectInput } from '@/components/ra-wrappers/generic-select-input';
-import { AdminButton } from '@/components/ra-wrappers/admin-button';
+import { AdminButton } from '@/components/admin/AdminButton';
 import { PlusIcon } from 'lucide-react';
 import { TagDialog } from './TagDialog';
 import type { Tag } from '../types';
@@ -312,7 +318,7 @@ For sidebar or toolbar filters with many options, use `FilterSelectUI`:
 
 ```tsx
 import { useListContext } from 'react-admin';
-import { FilterSelectUI } from '@/components/ui/filter-select-ui';
+import { FilterSelectUI } from '@/components/ra-wrappers/FilterSelect';
 
 const STAGE_OPTIONS = [
   { id: 'new_lead', label: 'New Lead' },

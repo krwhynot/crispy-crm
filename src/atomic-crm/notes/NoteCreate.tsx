@@ -93,16 +93,25 @@ const NoteCreateButton = ({
     reset(noteFormSchema.partial().parse({}), { keepValues: false });
 
     // Only update last_seen for contacts (opportunities don't have last_seen)
-    if (reference === "contacts") {
-      await update(reference, {
-        id: record.id,
-        data: { last_seen: new Date().toISOString() },
-        previousData: record,
-      });
-    }
+    try {
+      if (reference === "contacts") {
+        await update(
+          reference,
+          {
+            id: record.id,
+            data: { last_seen: new Date().toISOString() },
+            previousData: record,
+          },
+          { returnPromise: true }
+        );
+      }
 
-    refetch();
-    notify("Note added");
+      refetch();
+      notify("Note added");
+    } catch {
+      notify("Note added, but failed to update contact last seen", { type: "warning" });
+      refetch();
+    }
   };
 
   return (

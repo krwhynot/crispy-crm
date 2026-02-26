@@ -59,9 +59,7 @@ export const RelatedOpportunitiesSection = ({ opportunity }: RelatedOpportunitie
       {parentOpportunity && (
         <div className="space-y-2">
           <div className="flex items-center gap-2">
-            <span className="text-xs text-muted-foreground tracking-wide uppercase">
-              Parent Opportunity
-            </span>
+            <span className="paper-micro-label">Parent Opportunity</span>
             <ArrowRight className="w-3 h-3 text-muted-foreground" />
           </div>
           <div className="flex items-center gap-3 p-3 rounded-md bg-muted/30 hover:bg-muted/50 transition-colors">
@@ -113,7 +111,7 @@ export const RelatedOpportunitiesSection = ({ opportunity }: RelatedOpportunitie
       {childOpportunities && childOpportunities.length > 0 && (
         <div className="space-y-2">
           <div className="flex items-center gap-2">
-            <span className="text-xs text-muted-foreground tracking-wide uppercase">
+            <span className="paper-micro-label">
               Follow-up Opportunities ({childOpportunities.length})
             </span>
           </div>

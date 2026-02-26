@@ -1,448 +1,530 @@
-# Git Hooks (Husky) Patterns
+# Husky Pre-Commit Patterns
 
-Git hooks enforcing code quality gates at commit time. Implements fail-fast philosophy with security-first checks.
+Documentation of the git hook execution flow and patterns used in `.husky/pre-commit`.
+Regenerated from the actual hook source; line numbers reference `.husky/pre-commit` directly.
 
 ## Architecture Overview
 
 ```
 .husky/
-├── _/                 # INTERNAL: Managed by Husky - do not modify or replicate
-│   ├── h              # Hook dispatcher (Husky v9 internal, auto-generated)
-│   └── husky.sh       # DEPRECATED - v10 migration warning
-├── pre-commit         # Security + Types + Discovery (BLOCKING)
-└── post-merge         # Migration notifications (ADVISORY)
+  _/                 # INTERNAL: Managed by Husky - do not modify
+    h                # Hook dispatcher (resolves hook path, runs with sh -e)
+    husky.sh         # DEPRECATED - v10 migration warning
+  pre-commit         # 7-step quality gate (BLOCKING)
+  post-merge         # Migration notification (ADVISORY, always exit 0)
+  PATTERNS.md        # This file
 
-Hook Execution Flow:
-┌─────────────────────────────────────────────────────────────┐
-│ git commit                                                   │
-│     │                                                        │
-│     ▼                                                        │
-│ .husky/_/h (dispatcher)                                      │
-│     │                                                        │
-│     ▼                                                        │
-│ .husky/pre-commit                                            │
-│     ├── 1. Security: Block .env files (exit 1)              │
-│     ├── 2. Types: tsc --noEmit on TS files (exit 1)         │
-│     └── 3. Discovery: Auto-regenerate if stale (git add)    │
-│     │                                                        │
-│     ▼                                                        │
-│ Commit proceeds (or blocked)                                 │
-└─────────────────────────────────────────────────────────────┘
+Pre-Commit Execution Flow (7 steps):
+  git commit
+      |
+      v
+  .husky/_/h (dispatcher: adds node_modules/.bin to PATH, runs pre-commit)
+      |
+      v
+  .husky/pre-commit
+      |
+      +-- [Fast Mode?] SKIP_SLOW_HOOKS=1 disables steps 3, 4, 7  (lines 14-23)
+      |
+      +-- Step 1: Security scan           BLOCKING   always runs    (lines 25-41)
+      +-- Step 2: UI Patterns gate         BLOCKING   .tsx staged    (lines 43-84)
+      +-- Step 3: TypeScript type-check    BLOCKING   .ts/.tsx staged, skippable  (lines 86-98)
+      +-- Step 4: Discovery staleness      WARNING    src/atomic-crm staged, skippable  (lines 100-114)
+      +-- Step 5: Semantic colors          BLOCKING   .tsx staged    (lines 116-130)
+      +-- Step 6: Migration validation     BLOCKING   migrations staged  (lines 132-150)
+      +-- Step 7: Migration drift          BLOCKING   migrations staged, skippable  (lines 152-200)
+      |
+      v
+  "Pre-commit checks passed" (line 204)
 ```
 
 ---
 
-## Pattern A: Pre-Commit Security Gates
+## Fast Mode: SKIP_SLOW_HOOKS
 
-Block dangerous files BEFORE any other checks. Security violations cause immediate exit.
+### Problem
 
-**When to use**: Any file type that must NEVER be committed (secrets, credentials, local configs)
+Full pre-commit takes several seconds due to `tsc`, discovery checks, and Supabase
+network calls. During rapid iteration this slows the developer loop.
 
-### .env File Blocking
+### Solution
+
+Set `SKIP_SLOW_HOOKS=1` to disable the three slowest steps (type-check, discovery,
+drift detection) while keeping all security and style gates active.
+
+### Implementation
 
 ```bash
-# .husky/pre-commit
-# ANSI color codes for visibility
-RED='\033[0;31m'
-YELLOW='\033[1;33m'
-NC='\033[0m' # No Color
+# .husky/pre-commit lines 14-23
+# Usage: SKIP_SLOW_HOOKS=1 git commit -m "message"
+if [ "$SKIP_SLOW_HOOKS" = "1" ]; then
+  echo -e "${YELLOW}Fast mode: skipping type-check, discovery, and drift checks${NC}"
+  SKIP_TYPECHECK=1
+  SKIP_DISCOVERY=1
+  SKIP_DRIFT=1
+fi
+```
 
-# Get staged files ONCE at start (performance)
-STAGED_FILES=$(git diff --cached --name-only --diff-filter=ACM)
+**Key points:**
+- Steps 1, 2, 5, and 6 always run regardless of fast mode
+- Steps 3 (`SKIP_TYPECHECK`), 4 (`SKIP_DISCOVERY`), and 7 (`SKIP_DRIFT`) are disabled
+- CI enforces full checks; fast mode is a local-only convenience
 
-# Security check FIRST - block .env files
+---
+
+## Step 1: Security Scan -- Block .env Files
+
+### Problem
+
+Accidentally committing `.env` files leaks secrets (API keys, database URLs) into
+version control history, which is difficult to fully purge.
+
+### Solution
+
+Scan staged files for any `.env` or `.env.*` patterns and block the commit immediately
+with remediation instructions.
+
+### Implementation
+
+```bash
+# .husky/pre-commit lines 25-41
 env_files=$(echo "$STAGED_FILES" | grep -E '\.env$|\.env\.' || true)
 
 if [ -n "$env_files" ]; then
-  echo -e "${RED}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
-  echo -e "${RED}❌ COMMIT BLOCKED: .env file(s) detected${NC}"
-  echo -e "${RED}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
-  echo
+  echo -e "${RED}COMMIT BLOCKED: .env file(s) detected${NC}"
   echo -e "${YELLOW}The following .env files are staged for commit:${NC}"
   echo "$env_files" | sed 's/^/  - /'
-  echo
   echo "To fix: git reset HEAD $env_files"
-  echo -e "${RED}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
   exit 1
 fi
 ```
 
 **Key points:**
-- Security checks run FIRST before expensive operations
-- `|| true` prevents grep from failing on no match
-- Clear remediation instructions in error message
-- `exit 1` blocks commit - no fallback
-
-**Example:** `.husky/pre-commit` lines 14-30
+- Runs FIRST before any expensive operations (security-first ordering)
+- `|| true` prevents grep from returning non-zero on no match
+- BLOCKING: `exit 1` on any match -- no bypass short of `--no-verify`
+- Cannot be skipped by `SKIP_SLOW_HOOKS`
 
 ---
 
-## Pattern B: Staged File Filtering
+## Step 2: UI Patterns Enforcement
 
-Filter staged files by extension and directory for targeted checks. Prevents running expensive operations on unrelated files.
+### Problem
 
-**When to use**: Any hook that runs expensive tooling (TypeScript, linters, generators)
+Feature code drifts from the design system when developers use native HTML elements
+or hardcoded Tailwind color classes instead of project wrappers and semantic tokens.
 
-### Extension-Based Filtering
+### Solution
+
+Scan staged `.tsx` files under `src/atomic-crm/` (excluding tests) for three specific
+anti-patterns and block the commit if any are found.
+
+### Implementation
 
 ```bash
-# .husky/pre-commit
-# Get staged files once, filter multiple times
-STAGED_FILES=$(git diff --cached --name-only --diff-filter=ACM)
+# .husky/pre-commit lines 43-84
+tsx_feature_files=$(echo "$STAGED_FILES" | grep -E '^src/atomic-crm/.*\.tsx$' \
+  | grep -v -E '\.test\.|\.spec\.|__tests__' || true)
 
-# TypeScript files only
-ts_files=$(echo "$STAGED_FILES" | grep -E '\.(ts|tsx)$' || true)
+if [ -n "$tsx_feature_files" ]; then
+  ui_violations=0
 
-if [ -n "$ts_files" ]; then
-  echo "⚡ Type-checking staged files..."
-  npx tsc --noEmit 2>/dev/null
-  if [ $? -ne 0 ]; then
-    echo -e "${RED}❌ TypeScript errors found. Run 'npx tsc --noEmit' for details.${NC}"
+  # Check 1: Native <select> elements (use SelectInput from ra-wrappers)
+  # lines 52-58
+
+  # Check 2: Hardcoded border colors (border-neutral-*, border-gray-*, border-[#...])
+  # lines 60-66
+
+  # Check 3: Hardcoded background colors (bg-neutral-*, bg-gray-*)
+  # lines 68-74
+
+  if [ $ui_violations -eq 1 ]; then
+    echo -e "${RED}UI pattern violations detected. See UI_STANDARDS.md for guidance.${NC}"
     exit 1
   fi
-  echo -e "${GREEN}✓ Types OK${NC}"
+  echo -e "${GREEN}UI patterns OK${NC}"
 fi
 ```
 
-### Directory + Extension Filtering
+**Detected anti-patterns:**
+
+| Check | Pattern | Replacement |
+|-------|---------|-------------|
+| Native select | `<select` | `SelectInput` from `@/components/ra-wrappers` |
+| Border colors | `border-(neutral\|gray)-`, `border-[#` | `border-muted`, `border-border`, `border-destructive` |
+| Background colors | `bg-(neutral\|gray)-` | `bg-muted`, `bg-background`, `bg-card` |
+
+**Key points:**
+- Only scans `src/atomic-crm/**/*.tsx`, excluding test files
+- Accumulates all violations before exiting (shows all problems, not just first)
+- Shows up to 10 matching lines per check via `head -10`
+- BLOCKING: `exit 1` if any violation found
+- Cannot be skipped by `SKIP_SLOW_HOOKS`
+- Enforces rules from `UI_STANDARDS.md` (UI-001, UI-006)
+
+---
+
+## Step 3: TypeScript Type-Check
+
+### Problem
+
+TypeScript errors in staged code break the build. Catching them at commit time is
+faster feedback than waiting for CI.
+
+### Solution
+
+Run `tsc --noEmit --incremental` when any `.ts` or `.tsx` file is staged.
+Skippable via `SKIP_SLOW_HOOKS` for rapid iteration.
+
+### Implementation
 
 ```bash
-# Only run discovery for atomic-crm source files
-discovery_files=$(echo "$STAGED_FILES" | grep -E '\.(ts|tsx)$' | grep -E 'src/atomic-crm/' || true)
+# .husky/pre-commit lines 86-98
+ts_files=$(echo "$STAGED_FILES" | grep -E '\.(ts|tsx)$' || true)
 
-if [ -n "$discovery_files" ]; then
-  # Run discovery regeneration
+if [ -n "$ts_files" ] && [ "$SKIP_TYPECHECK" != "1" ]; then
+  echo "Type-checking (incremental)..."
+  if ! npx tsc --noEmit --incremental 2>/dev/null; then
+    echo -e "${RED}TypeScript errors found. Run 'npx tsc --noEmit' for details.${NC}"
+    exit 1
+  fi
+  echo -e "${GREEN}Types OK${NC}"
 fi
 ```
 
 **Key points:**
-- `--diff-filter=ACM` = Added, Copied, Modified (excludes Deleted)
-- Get staged files ONCE, filter multiple times (performance)
-- Pipe chains: extension filter | directory filter
-- Empty check with `[ -n "$var" ]` before running commands
-
-**Example:** `.husky/pre-commit` lines 35-45
+- Uses `--incremental` for speed (reuses previous type-check cache)
+- `2>/dev/null` suppresses tsc output; developer re-runs manually for details
+- BLOCKING: `exit 1` on type errors
+- Skippable: `SKIP_SLOW_HOOKS=1` or `SKIP_TYPECHECK=1`
 
 ---
 
-## Pattern C: Auto-Regeneration with Stage-Fixed
+## Step 4: Discovery Staleness Check
 
-Automatically regenerate files when source changes, then stage the generated output. Prevents stale generated files from diverging.
+### Problem
 
-**When to use**: Any generated files that must stay in sync with source (types, indexes, discovery)
+The discovery index (`.claude/state/`) can become stale when component or hook files
+change. Stale indexes degrade code intelligence quality.
 
-### Discovery Auto-Regeneration
+### Solution
+
+Run a hash-based staleness check on staged `src/atomic-crm/` TypeScript files.
+If stale, emit a WARNING but do NOT auto-regenerate or block the commit.
+CI enforces full freshness.
+
+### Implementation
 
 ```bash
-# .husky/pre-commit
-discovery_files=$(echo "$STAGED_FILES" | grep -E '\.(ts|tsx)$' | grep -E 'src/atomic-crm/' || true)
+# .husky/pre-commit lines 100-114
+discovery_files=$(echo "$STAGED_FILES" | grep -E '\.(ts|tsx)$' \
+  | grep -E 'src/atomic-crm/' || true)
 
-if [ -n "$discovery_files" ]; then
-  echo "🔍 Checking discovery freshness..."
-  if ! npx tsx scripts/discover/index.ts --check 2>/dev/null; then
-    echo -e "${YELLOW}🔄 Auto-regenerating discovery files...${NC}"
-    just discover           # Regenerate
-    git add .claude/state/  # Stage generated files
-    echo -e "${GREEN}✓ Discovery auto-updated and staged${NC}"
+if [ -n "$discovery_files" ] && [ "$SKIP_DISCOVERY" != "1" ]; then
+  echo "Checking discovery freshness (hash-only)..."
+  if ! npx tsx scripts/discover/check-staleness.ts 2>/dev/null; then
+    echo -e "${YELLOW}Discovery index may be stale. Run 'just discover' after commit.${NC}"
+    # Don't auto-regenerate - let CI enforce freshness
   else
-    echo -e "${GREEN}✓ Discovery files are fresh${NC}"
+    echo -e "${GREEN}Discovery files are fresh${NC}"
   fi
 fi
 ```
 
 **Key points:**
-- Freshness check prevents unnecessary regeneration
-- `git add` stages generated files automatically (stage-fixed pattern)
-- Uses `just discover` - project task runner, not raw npm
-- Silent check (`2>/dev/null`) keeps output clean
-
-**Example:** `.husky/pre-commit` lines 47-63
+- WARNING ONLY: does NOT `exit 1` on staleness, does NOT auto-regenerate
+- Does NOT run `just discover` or `git add` -- the old auto-regeneration pattern is removed
+- Uses `scripts/discover/check-staleness.ts` for fast hash comparison
+- Only triggers on `src/atomic-crm/**/*.ts{,x}` files (not all TS)
+- Skippable: `SKIP_SLOW_HOOKS=1` or `SKIP_DISCOVERY=1`
 
 ---
 
-## Pattern D: Post-Merge Developer Notifications
+## Step 5: Semantic Colors Validation
 
-Detect changes in specific directories after merge/pull and notify developer of required actions. Advisory (non-blocking) pattern.
+### Problem
 
-**When to use**: Changes that require manual intervention after sync (migrations, dependency updates)
+After 243 color-fix commits, the project established a "no hardcoded colors" policy.
+Without a gate, developers re-introduce hardcoded Tailwind color utilities.
 
-### Migration Detection
+### Solution
+
+Run the project's `validate:semantic-colors` npm script against staged `.tsx` files.
+This is a full validation script, not the inline grep checks in Step 2.
+
+### Implementation
 
 ```bash
-# .husky/post-merge
-# Detect new migrations after git pull/merge
-if git diff-tree -r --name-only --no-commit-id HEAD@{1} HEAD 2>/dev/null | grep -q "supabase/migrations/"; then
-  YELLOW='\033[1;33m'
-  RED='\033[0;31m'
-  NC='\033[0m' # No Color
+# .husky/pre-commit lines 116-130
+tsx_files=$(echo "$STAGED_FILES" | grep -E '\.tsx$' || true)
 
-  echo ""
-  echo "${YELLOW}========================================================${NC}"
-  echo "${RED}⚠️  New database migrations detected!${NC}"
-  echo "${YELLOW}========================================================${NC}"
-  echo "Your local database schema might be out of date."
-  echo ""
-  echo "Run: ${YELLOW}npm run db:migrate${NC}"
-  echo ""
-  echo "${RED}NOTE: This will reset your local Docker database.${NC}"
-  echo "${YELLOW}========================================================${NC}"
-  echo ""
+if [ -n "$tsx_files" ]; then
+  echo "Validating semantic colors..."
+  if ! npm run validate:semantic-colors 2>/dev/null; then
+    echo -e "${RED}Hardcoded colors detected. Run 'npm run validate:semantic-colors' for details.${NC}"
+    echo -e "${YELLOW}Fix: Replace legacy Tailwind colors with semantic tokens${NC}"
+    exit 1
+  fi
+  echo -e "${GREEN}Semantic colors OK${NC}"
 fi
-
-exit 0  # ADVISORY - never block merge
 ```
 
 **Key points:**
-- `git diff-tree HEAD@{1} HEAD` compares before/after merge
-- `grep -q` for silent matching (exit code only)
-- `2>/dev/null` handles edge cases (fresh clone, no reflog)
-- `exit 0` makes this advisory - merge always succeeds
-- Clear action instructions with specific command
-
-**Example:** `.husky/post-merge` lines 1-23
+- Broader scope than Step 2: checks ALL staged `.tsx` files, not just `src/atomic-crm/`
+- Delegates to `npm run validate:semantic-colors` for comprehensive checking
+- BLOCKING: `exit 1` on failure
+- Cannot be skipped by `SKIP_SLOW_HOOKS`
 
 ---
 
-## Pattern Comparison Table
+## Step 6: Migration Validation
 
-| Aspect | Security Gates | Staged Filtering | Auto-Regeneration | Post-Merge Notify |
-|--------|----------------|------------------|-------------------|-------------------|
-| **Purpose** | Block dangerous files | Target expensive checks | Keep generated files in sync | Inform of required actions |
-| **Blocking** | Yes (exit 1) | Yes (exit 1) | No (auto-fix) | No (exit 0) |
-| **When runs** | Always first | When file types match | When source files staged | After merge/pull |
-| **Git command** | diff --cached | diff --cached + grep | git add | diff-tree |
+### Problem
+
+SQL migrations that violate project conventions (missing soft-delete columns,
+non-idempotent policies) cause runtime failures that are expensive to fix post-deploy.
+
+### Solution
+
+Run `scripts/validate-migrations.sh --staged` against staged SQL migration files.
+Degrades gracefully if the validator script does not exist.
+
+### Implementation
+
+```bash
+# .husky/pre-commit lines 132-150
+migration_files=$(echo "$STAGED_FILES" | grep -E '^supabase/migrations/.*\.sql$' || true)
+
+if [ -n "$migration_files" ]; then
+  echo "Validating migration files..."
+  if [ -x "./scripts/validate-migrations.sh" ]; then
+    if ! ./scripts/validate-migrations.sh --staged 2>/dev/null; then
+      echo -e "${RED}Migration validation failed.${NC}"
+      echo -e "${YELLOW}Fix: Check for missing columns, idempotent policies, and soft-delete patterns${NC}"
+      exit 1
+    fi
+    echo -e "${GREEN}Migrations OK${NC}"
+  else
+    echo -e "${YELLOW}Migration validator not found, skipping...${NC}"
+  fi
+fi
+```
+
+**Key points:**
+- Only scans `supabase/migrations/*.sql` (not all SQL files)
+- Uses `[ -x ... ]` to check the script is executable before running
+- Graceful degradation: warns and skips if validator not found
+- BLOCKING: `exit 1` on validation failure (when validator exists)
+- Cannot be skipped by `SKIP_SLOW_HOOKS`
+- The `$migration_files` variable is reused by Step 7
 
 ---
 
-## Anti-Patterns to Avoid
+## Step 7: Migration Drift Detection
+
+### Problem
+
+Local and cloud migration histories can diverge when migrations are applied
+directly to the Supabase cloud instance, causing deploy failures and data conflicts.
+
+### Solution
+
+When migration files are staged, run `supabase db push --dry-run` with a 10-second
+timeout to compare local and cloud migration histories. Block on history mismatch;
+warn on pending migrations.
+
+### Implementation
+
+```bash
+# .husky/pre-commit lines 152-200
+if [ -n "$migration_files" ] && [ "$SKIP_DRIFT" != "1" ]; then
+  echo "Checking migration drift (local vs cloud)..."
+
+  # Check if supabase is linked
+  if [ -f "supabase/.temp/project-ref" ] || npx supabase projects list &>/dev/null; then
+
+    # Dry-run with 10-second timeout
+    if drift_output=$(timeout 10 npx supabase db push --dry-run 2>&1); then
+
+      # BLOCKING: history mismatch means cloud has unknown migrations
+      if echo "$drift_output" | grep -q "migration history does not match"; then
+        echo -e "${RED}MIGRATION DRIFT DETECTED${NC}"
+        echo "To investigate:"
+        echo "  npx supabase db pull"
+        echo "  npx supabase db push --dry-run"
+        echo "To fix:"
+        echo "  npx supabase migration repair --status reverted <version>"
+        echo "  npx supabase migration repair --status applied <version>"
+        exit 1
+      fi
+
+      # WARNING: pending migrations are informational only
+      if echo "$drift_output" | grep -qE "Would apply|migrations? to apply"; then
+        echo -e "${YELLOW}Pending migrations will be applied on next deploy${NC}"
+      fi
+
+      echo -e "${GREEN}Migration sync OK${NC}"
+    else
+      echo -e "${YELLOW}Migration drift check skipped (Supabase unavailable or timeout)${NC}"
+    fi
+  else
+    echo -e "${YELLOW}Supabase not linked, skipping drift check${NC}"
+  fi
+fi
+```
+
+**Key points:**
+- Reuses `$migration_files` from Step 6 (no redundant grep)
+- 10-second `timeout` prevents network hangs from stalling commits
+- Three graceful-degradation paths: not linked, network timeout, command failure
+- BLOCKING: `exit 1` only on confirmed history mismatch
+- WARNING: pending migrations (local ahead of cloud) do not block
+- Skippable: `SKIP_SLOW_HOOKS=1` or `SKIP_DRIFT=1`
+
+**Drift types:**
+
+| Condition | Severity | Behavior |
+|-----------|----------|----------|
+| History mismatch (cloud has unknown migrations) | Critical | `exit 1` |
+| Pending migrations (local ahead of cloud) | Info | Warning message |
+| Supabase not linked | N/A | Skip silently |
+| Network timeout / unavailable | N/A | Skip with warning |
+
+---
+
+## Post-Merge Hook (Advisory)
+
+Separate from the pre-commit pipeline. Detects new migration files after
+`git pull` or `git merge` and reminds the developer to run `npm run db:migrate`.
+
+```bash
+# .husky/post-merge lines 1-23
+if git diff-tree -r --name-only --no-commit-id HEAD@{1} HEAD 2>/dev/null \
+  | grep -q "supabase/migrations/"; then
+  echo "New database migrations detected!"
+  echo "Run: npm run db:migrate"
+fi
+exit 0  # ADVISORY - never blocks merge
+```
+
+---
+
+## Anti-Patterns
 
 ### 1. Running Checks on All Files
 
 ```bash
-# BAD: Runs on entire codebase - slow, irrelevant noise
+# BAD: Runs on entire codebase regardless of what changed
 npx tsc --noEmit
 npx eslint .
 
-# GOOD: Only check staged files
+# GOOD: Filter to staged files first
 ts_files=$(echo "$STAGED_FILES" | grep -E '\.(ts|tsx)$' || true)
 if [ -n "$ts_files" ]; then
-  npx tsc --noEmit
+  npx tsc --noEmit --incremental
 fi
 ```
 
-### 2. Blocking on Advisory Hooks
+### 2. Auto-Regenerating in Pre-Commit
+
+```bash
+# BAD: Auto-regenerates and stages generated files (stale pattern, removed)
+just discover
+git add .claude/state/
+
+# GOOD: Warn only; let CI enforce freshness
+if ! npx tsx scripts/discover/check-staleness.ts 2>/dev/null; then
+  echo "Discovery index may be stale. Run 'just discover' after commit."
+fi
+```
+
+### 3. Blocking on Advisory Hooks
 
 ```bash
 # BAD: post-merge should never block
-if [ -n "$migrations" ]; then
-  echo "Run migrations first!"
-  exit 1  # Blocks checkout/merge unexpectedly
-fi
+exit 1
 
-# GOOD: Advisory notification only
-if [ -n "$migrations" ]; then
-  echo "New migrations detected - run: npm run db:migrate"
-fi
-exit 0  # Always allow merge to complete
+# GOOD: Always exit 0 in post-merge
+exit 0
 ```
 
-### 3. Silent Failures
+### 4. Silent Failures
 
 ```bash
-# BAD: Error hidden, no remediation
-env_files=$(echo "$STAGED_FILES" | grep -E '\.env' || true)
+# BAD: No remediation guidance
 [ -n "$env_files" ] && exit 1
 
-# GOOD: Clear error with fix instructions
-if [ -n "$env_files" ]; then
-  echo "COMMIT BLOCKED: .env files detected"
-  echo "To fix: git reset HEAD $env_files"
-  exit 1
+# GOOD: Clear error message with fix command
+echo "COMMIT BLOCKED: .env files detected"
+echo "To fix: git reset HEAD $env_files"
+exit 1
+```
+
+### 5. Missing Graceful Degradation
+
+```bash
+# BAD: Fails hard if external tool missing
+./scripts/validate-migrations.sh --staged
+
+# GOOD: Check existence before calling
+if [ -x "./scripts/validate-migrations.sh" ]; then
+  ./scripts/validate-migrations.sh --staged
+else
+  echo "Migration validator not found, skipping..."
 fi
 ```
 
-### 4. Forgetting to Stage Generated Files
-
-```bash
-# BAD: Generates but doesn't stage - diverges on next commit
-just discover
-
-# GOOD: Generate AND stage (stage-fixed pattern)
-just discover
-git add .claude/state/
-```
-
 ---
 
-## Git Hook Checklist
+## Step Summary Table
 
-When adding/modifying git hooks:
+| Step | Name | Lines | Blocking | Skippable | Trigger |
+|------|------|-------|----------|-----------|---------|
+| -- | Fast mode setup | 14-23 | -- | -- | `SKIP_SLOW_HOOKS=1` |
+| 1 | Security scan | 25-41 | Yes | No | Any staged `.env` file |
+| 2 | UI Patterns | 43-84 | Yes | No | `src/atomic-crm/**/*.tsx` (non-test) |
+| 3 | Type-check | 86-98 | Yes | Yes (`SKIP_TYPECHECK`) | Any `.ts`/`.tsx` staged |
+| 4 | Discovery staleness | 100-114 | No (warning) | Yes (`SKIP_DISCOVERY`) | `src/atomic-crm/**/*.ts{,x}` |
+| 5 | Semantic colors | 116-130 | Yes | No | Any `.tsx` staged |
+| 6 | Migration validation | 132-150 | Yes | No | `supabase/migrations/*.sql` |
+| 7 | Migration drift | 152-200 | Yes (on mismatch) | Yes (`SKIP_DRIFT`) | `supabase/migrations/*.sql` |
 
-1. [ ] Security checks run FIRST before expensive operations
-2. [ ] Blocking hooks (pre-commit) use `exit 1` on failure
-3. [ ] Advisory hooks (post-merge) always `exit 0`
-4. [ ] Staged file filtering uses `--diff-filter=ACM`
-5. [ ] Error messages include remediation command
-6. [ ] ANSI colors used for visibility (RED=error, YELLOW=warning, GREEN=success)
-7. [ ] Generated files auto-staged with `git add`
-8. [ ] Hook is executable: `chmod +x .husky/<hook-name>`
-9. [ ] Verify: `git commit --dry-run` or stage a test file
+## Exit Code Semantics
 
----
+| Code | Meaning | Source |
+|------|---------|--------|
+| 0 | All checks passed | Line 204 (end of script) |
+| 1 | Security violation (Step 1) | Line 40 |
+| 1 | UI pattern violation (Step 2) | Line 80 |
+| 1 | TypeScript error (Step 3) | Line 95 |
+| 1 | Semantic color violation (Step 5) | Line 127 |
+| 1 | Migration validation failure (Step 6) | Line 143 |
+| 1 | Migration drift detected (Step 7) | Line 185 |
 
-## Pattern E: Semantic Colors Validation
-
-Prevents theme drift by blocking commits with hardcoded Tailwind colors. This gate was added after 243 color-fix commits revealed widespread theme inconsistency.
-
-**When to use**: Enforcing design system compliance on all TSX files
-
-### Color Validation Gate
-
-```bash
-# .husky/pre-commit
-# Only check staged TSX files for performance
-tsx_files=$(echo "$STAGED_FILES" | grep -E '\.tsx$' || true)
-
-if [ -n "$tsx_files" ]; then
-  echo "🎨 Validating semantic colors..."
-  if ! npm run validate:semantic-colors 2>/dev/null; then
-    echo -e "${RED}❌ Hardcoded colors detected. Run 'npm run validate:semantic-colors' for details.${NC}"
-    echo -e "${YELLOW}Fix: Replace legacy Tailwind colors with semantic tokens (bg-warning, text-destructive, etc.)${NC}"
-    exit 1
-  fi
-  echo -e "${GREEN}✓ Semantic colors OK${NC}"
-fi
-```
-
-**Key points:**
-- Only runs on `.tsx` files (performance optimization)
-- Uses project's `validate:semantic-colors` npm script
-- Blocks hardcoded colors like `text-gray-500`, `bg-red-600`
-- Enforces semantic tokens: `text-muted-foreground`, `bg-destructive`
-- Clear remediation message guides developers to fix
-
-**Example:** `.husky/pre-commit` (lines 66-79)
-
----
-
-## Pattern F: SQL Migration Validation
-
-Validates migration files against project standards before commit. Checks for idempotent policies, soft-delete patterns, and required columns.
-
-**When to use**: Enforcing database migration quality gates
-
-### Migration Validation Gate
-
-```bash
-# .husky/pre-commit
-# Only check staged SQL files in migrations directory
-migration_files=$(echo "$STAGED_FILES" | grep -E '^supabase/migrations/.*\.sql$' || true)
-
-if [ -n "$migration_files" ]; then
-  echo "🗄️ Validating migration files..."
-  if [ -x "./scripts/validate-migrations.sh" ]; then
-    if ! ./scripts/validate-migrations.sh --staged 2>/dev/null; then
-      echo -e "${RED}❌ Migration validation failed. Run './scripts/validate-migrations.sh' for details.${NC}"
-      echo -e "${YELLOW}Fix: Check for missing columns, idempotent policies, and soft-delete patterns${NC}"
-      exit 1
-    fi
-    echo -e "${GREEN}✓ Migrations OK${NC}"
-  else
-    echo -e "${YELLOW}⚠ Migration validator not found, skipping...${NC}"
-  fi
-fi
-```
-
-**Key points:**
-- Targets only `supabase/migrations/*.sql` files
-- Uses project's `validate-migrations.sh` script with `--staged` flag
-- Graceful degradation: skips if validator script not found
-- Validates: required columns, RLS policies, soft-delete patterns
-
-**Example:** `.husky/pre-commit` (lines 81-99)
-
----
-
-## Pattern G: Migration Drift Detection
-
-Detects divergence between local and cloud migration histories before commit. This prevents the scenario where local migrations and cloud schema diverge, catching sync issues early.
-
-**When to use**: Detecting local vs cloud schema divergence when migration files are staged
-
-### Drift Detection Gate
-
-```bash
-# .husky/pre-commit
-# Only run when migration files are staged
-if [ -n "$migration_files" ]; then
-  echo "🔄 Checking migration drift (local vs cloud)..."
-
-  # Check if supabase is linked (has .supabase directory or config)
-  if [ -f "supabase/.temp/project-ref" ] || npx supabase projects list &>/dev/null; then
-
-    # Run dry-run to detect drift - this is the authoritative check
-    drift_output=$(npx supabase db push --dry-run 2>&1 || true)
-
-    # Check for history mismatch (critical - cloud has migrations not in local)
-    if echo "$drift_output" | grep -q "migration history does not match"; then
-      echo -e "${RED}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
-      echo -e "${RED}❌ MIGRATION DRIFT DETECTED${NC}"
-      echo -e "${RED}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
-      echo
-      echo -e "${YELLOW}Local and cloud migration histories have diverged.${NC}"
-      echo -e "${YELLOW}This typically happens when migrations are applied directly to cloud.${NC}"
-      echo
-      echo "To investigate:"
-      echo "  npx supabase db pull    # See what cloud has"
-      echo "  npx supabase db push --dry-run  # See full diff"
-      echo
-      echo "To fix (after investigation):"
-      echo "  npx supabase migration repair --status reverted <version>  # For cloud-only"
-      echo "  npx supabase migration repair --status applied <version>   # For local-only"
-      echo
-      echo -e "${RED}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
-      exit 1
-    fi
-
-    # Check for pending migrations (warning only - local migrations not yet in cloud)
-    if echo "$drift_output" | grep -qE "Would apply|migrations? to apply"; then
-      echo -e "${YELLOW}⚠ Pending migrations will be applied on next deploy${NC}"
-    fi
-
-    echo -e "${GREEN}✓ Migration sync OK${NC}"
-  else
-    echo -e "${YELLOW}⚠ Supabase not linked, skipping drift check${NC}"
-  fi
-fi
-```
-
-**Key points:**
-- Only runs when migration files are staged (piggybacks on Pattern F filtering)
-- Uses `npx supabase db push --dry-run` as authoritative check
-- Detects "migration history does not match" - cloud has migrations not in local
-- Provides detailed remediation instructions with specific commands
-- Warning-only for pending migrations (local not yet in cloud)
-- Graceful degradation: skips if Supabase not linked (fresh clone, CI)
-- BLOCKING: `exit 1` on drift detection - prevents commit
-
-**When drift occurs:**
-- **History mismatch**: Cloud has migrations applied that don't exist locally
-- **Typical cause**: Direct migration application to cloud (bypassing local)
-- **Resolution**: Use `supabase migration repair` to reconcile histories
-
-**Example:** `.husky/pre-commit` (lines 102-146)
-
----
+Note: Step 4 (discovery staleness) never returns a non-zero exit code.
 
 ## File Reference
 
-| Pattern | Primary Files |
-|---------|---------------|
-| **A: Security Gates** | `.husky/pre-commit` (lines 14-30) |
-| **B: Staged Filtering** | `.husky/pre-commit` (lines 12, 35, 51) |
-| **C: Auto-Regeneration** | `.husky/pre-commit` (lines 47-63) |
-| **D: Post-Merge Notify** | `.husky/post-merge` |
-| **E: Semantic Colors** | `.husky/pre-commit` (lines 66-79) |
-| **F: Migration Validation** | `.husky/pre-commit` (lines 81-99) |
-| **G: Migration Drift** | `.husky/pre-commit` (lines 102-146) |
-| **Hook Dispatcher** | `.husky/_/h` |
+| File | Purpose | Lines |
+|------|---------|-------|
+| `.husky/pre-commit` | 7-step blocking quality gate | 205 lines |
+| `.husky/post-merge` | Advisory migration notification | 23 lines |
+| `.husky/_/h` | Husky dispatcher (adds PATH, runs hook with `sh -e`) | 22 lines |
+| `scripts/discover/check-staleness.ts` | Hash-based discovery freshness check | Referenced by Step 4 |
+| `scripts/validate-migrations.sh` | SQL migration convention validator | Referenced by Step 6 |
+| `npm run validate:semantic-colors` | Semantic color enforcement script | Referenced by Step 5 |
+
+## Migration Checklist
+
+When modifying `.husky/pre-commit`:
+
+1. [ ] Update step numbers and line references in this PATTERNS.md
+2. [ ] Security checks (Step 1) remain the first gate after fast-mode setup
+3. [ ] New blocking steps use `exit 1` with remediation instructions
+4. [ ] New skippable steps check their `SKIP_*` variable AND are listed in fast-mode setup
+5. [ ] Staged file filtering uses `--diff-filter=ACM` (Added, Copied, Modified)
+6. [ ] `|| true` on all grep pipes to prevent set -e failures
+7. [ ] ANSI colors: RED for errors, YELLOW for warnings, GREEN for success
+8. [ ] Graceful degradation for external tools (check existence before calling)
+9. [ ] Advisory hooks (post-merge) always `exit 0`
+10. [ ] Hook is executable: `chmod +x .husky/pre-commit`
+11. [ ] Test with: `git commit --dry-run` or stage a test file

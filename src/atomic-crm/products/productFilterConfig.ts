@@ -7,16 +7,7 @@
  */
 
 import { validateFilterConfig } from "../filters/filterConfigSchema";
-
-/**
- * Product status choices
- * Matches ProductListFilter.tsx status options
- */
-const PRODUCT_STATUS_CHOICES = [
-  { id: "active", name: "Active" },
-  { id: "discontinued", name: "Discontinued" },
-  { id: "coming_soon", name: "Coming Soon" },
-];
+import { PRODUCT_STATUS_CHOICES } from "./constants";
 
 /**
  * Filter configuration for Products list

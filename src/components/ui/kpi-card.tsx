@@ -8,24 +8,83 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Info } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
+// ---------------------------------------------------------------------------
+// 3-axis CVA: tone x emphasis x interactive
+// ---------------------------------------------------------------------------
+
 const kpiCardVariants = cva(
-  "relative overflow-hidden transition-all hover:shadow-md cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+  "paper-card relative overflow-hidden transition-all duration-150 ease-out focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
   {
     variants: {
-      variant: {
-        default: "bg-card",
-        success: "border-success/50 bg-success/5",
-        warning: "border-warning/50 bg-warning/5",
-        destructive: "border-destructive/50 bg-destructive/5",
+      tone: {
+        neutral: "",
+        positive: "",
+        warning: "bg-[var(--clay-surface)]",
+        critical: "",
+      },
+      emphasis: {
+        default: "",
+        executive: "",
+        executiveCompact: "",
+      },
+      interactive: {
+        true: "cursor-pointer hover:shadow-md focus-visible:ring-[var(--clay-base)]",
+        false: "cursor-default",
       },
     },
     defaultVariants: {
-      variant: "default",
+      tone: "neutral",
+      emphasis: "default",
+      interactive: false,
     },
   }
 );
 
-export interface KPICardProps extends VariantProps<typeof kpiCardVariants> {
+// ---------------------------------------------------------------------------
+// Tone-aware style lookups (replace the 3 inline maps)
+// ---------------------------------------------------------------------------
+
+const toneIconStyles: Record<NonNullable<KPICardTone>, string> = {
+  neutral: "bg-primary/7 text-primary",
+  positive: "bg-[var(--olive-surface)] text-[color:var(--olive-text)]",
+  warning: "bg-warning/7 text-warning",
+  critical: "bg-[var(--clay-surface)] text-[color:var(--clay-text)]",
+};
+
+const toneStripeStyles: Record<NonNullable<KPICardTone>, string> = {
+  neutral: "hidden",
+  positive: "w-[3px] bg-[var(--olive-base)]",
+  warning: "w-[3px] bg-[var(--clay-base)]",
+  critical: "w-[3px] bg-[var(--clay-text)]",
+};
+
+const toneValueStyles: Record<NonNullable<KPICardTone>, string> = {
+  neutral: "text-foreground",
+  positive: "text-[color:var(--olive-trend)]",
+  warning: "text-warning",
+  critical: "text-[color:var(--clay-text)]",
+};
+
+// ---------------------------------------------------------------------------
+// Deprecated variant -> tone mapping
+// ---------------------------------------------------------------------------
+
+type DeprecatedVariant = "default" | "success" | "warning" | "destructive";
+
+const variantToTone: Record<DeprecatedVariant, KPICardTone> = {
+  default: "neutral",
+  success: "positive",
+  warning: "warning",
+  destructive: "critical",
+};
+
+// ---------------------------------------------------------------------------
+// Types
+// ---------------------------------------------------------------------------
+
+type KPICardTone = NonNullable<VariantProps<typeof kpiCardVariants>["tone"]>;
+
+export interface KPICardProps {
   title: string;
   value: string | number;
   icon?: LucideIcon;
@@ -39,6 +98,17 @@ export interface KPICardProps extends VariantProps<typeof kpiCardVariants> {
   onClick?: () => void;
   className?: string;
   "data-tutorial"?: string;
+
+  // 3-axis props
+  /** Semantic tone: neutral | positive | warning | critical */
+  tone?: KPICardTone;
+  /** Metric emphasis: default (20px) | executive (40px serif) */
+  emphasis?: NonNullable<VariantProps<typeof kpiCardVariants>["emphasis"]>;
+  /** Explicit interactive override. Auto-detected from onClick when omitted. */
+  interactive?: boolean;
+
+  /** @deprecated Use `tone` instead. Maps: default->neutral, success->positive, warning->warning, destructive->critical */
+  variant?: DeprecatedVariant;
 }
 
 export function KPICard({
@@ -50,15 +120,27 @@ export function KPICard({
   comparisonLabel,
   infoTooltip,
   loading = false,
-  variant,
   onClick,
   className,
   "data-tutorial": dataTutorial,
+  tone: toneProp,
+  emphasis = "default",
+  interactive: interactiveProp,
+  variant,
 }: KPICardProps) {
+  // Resolve tone: explicit tone wins, then deprecated variant, then neutral
+  const resolvedTone: KPICardTone = toneProp ?? (variant ? variantToTone[variant] : "neutral");
+
+  // Resolve interactive: explicit prop wins, then auto-detect from onClick
+  const isInteractive = interactiveProp ?? Boolean(onClick);
+
   if (loading) {
     return (
       <Card
-        className={cn(kpiCardVariants({ variant }), "cursor-default", className)}
+        className={cn(
+          kpiCardVariants({ tone: resolvedTone, emphasis, interactive: false }),
+          className
+        )}
         aria-busy="true"
         aria-label={`Loading ${title}`}
         data-tutorial={dataTutorial}
@@ -76,8 +158,6 @@ export function KPICard({
     );
   }
 
-  const isClickable = Boolean(onClick);
-
   const handleKeyDown = (event: React.KeyboardEvent) => {
     if (onClick && (event.key === "Enter" || event.key === " ")) {
       event.preventDefault();
@@ -85,48 +165,53 @@ export function KPICard({
     }
   };
 
-  const variantIconStyles = {
-    default: "bg-primary/10 text-primary",
-    success: "bg-success/10 text-success",
-    warning: "bg-warning/10 text-warning",
-    destructive: "bg-destructive/10 text-destructive",
-  };
+  const iconStyle = toneIconStyles[resolvedTone];
+  const valueStyle = toneValueStyles[resolvedTone];
+  const stripeStyle = toneStripeStyles[resolvedTone];
 
-  const variantValueStyles = {
-    default: "text-foreground",
-    success: "text-success",
-    warning: "text-warning",
-    destructive: "text-destructive",
-  };
-
-  const iconStyle = variantIconStyles[variant ?? "default"];
-  const valueStyle = variantValueStyles[variant ?? "default"];
-
+  const isExecutive = emphasis === "executive";
+  const isExecutiveCompact = emphasis === "executiveCompact";
   return (
     <Card
       className={cn(
-        kpiCardVariants({ variant }),
-        isClickable ? "cursor-pointer" : "cursor-default",
+        kpiCardVariants({ tone: resolvedTone, emphasis, interactive: isInteractive }),
         className
       )}
       onClick={onClick}
       onKeyDown={handleKeyDown}
-      tabIndex={isClickable ? 0 : undefined}
-      role={isClickable ? "button" : undefined}
-      aria-label={isClickable ? `${title}: ${value}. Click to view details.` : undefined}
+      tabIndex={isInteractive ? 0 : undefined}
+      role={isInteractive ? "button" : undefined}
+      aria-label={isInteractive ? `${title}: ${value}. Click to view details.` : undefined}
       data-tutorial={dataTutorial}
     >
-      <CardContent className="px-3 py-2">
+      {/* Accent strip -- hidden for neutral tone */}
+      <span className={cn("absolute inset-y-0 left-0", stripeStyle)} aria-hidden="true" />
+      <CardContent
+        className={cn(
+          isExecutive
+            ? "px-4 py-4 pl-5"
+            : isExecutiveCompact
+              ? "px-3 py-2.5 pl-4"
+              : "px-3 py-3 pl-4"
+        )}
+      >
         <div className="flex items-center gap-2">
           {Icon && (
             <div
-              className={cn("flex h-7 w-7 items-center justify-center rounded shrink-0", iconStyle)}
+              className={cn(
+                "flex items-center justify-center rounded-md shrink-0 border border-border/50",
+                isExecutiveCompact ? "h-7 w-7" : "h-8 w-8",
+                iconStyle
+              )}
             >
-              <Icon className="h-3.5 w-3.5" aria-hidden="true" />
+              <Icon
+                className={cn(isExecutiveCompact ? "h-3 w-3" : "h-3.5 w-3.5")}
+                aria-hidden="true"
+              />
             </div>
           )}
           <div className="flex-1 min-w-0">
-            <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide inline-flex items-center gap-1">
+            <span className="paper-kpi-title inline-flex items-center gap-1">
               {title}
               {infoTooltip && (
                 <Tooltip>
@@ -142,16 +227,30 @@ export function KPICard({
                 </Tooltip>
               )}
             </span>
+            <div
+              className={cn("paper-kpi-divider", isExecutiveCompact ? "my-1" : "my-1.5")}
+              aria-hidden="true"
+            />
             <div className="flex items-baseline gap-1.5">
-              <span className={cn("text-lg font-bold truncate leading-tight", valueStyle)}>
+              <span
+                className={cn(
+                  "truncate font-semibold [font-family:var(--font-serif)]",
+                  isExecutive
+                    ? "text-[40px] leading-[1.1]"
+                    : isExecutiveCompact
+                      ? "text-[38px] leading-[1.1]"
+                      : "text-xl leading-tight",
+                  valueStyle
+                )}
+              >
                 {value}
               </span>
               {trend && (
                 <span
                   className={cn(
                     "text-[11px] font-medium",
-                    trend.direction === "up" && "text-success",
-                    trend.direction === "down" && "text-destructive",
+                    trend.direction === "up" && "text-[color:var(--olive-trend)]",
+                    trend.direction === "down" && "text-[color:var(--clay-text)]",
                     trend.direction === "neutral" && "text-muted-foreground"
                   )}
                 >

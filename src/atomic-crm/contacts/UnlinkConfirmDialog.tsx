@@ -41,6 +41,7 @@ export function UnlinkConfirmDialog({
         "opportunity_contacts",
         { id: opportunity.junctionId },
         {
+          returnPromise: true,
           onSuccess: () => {
             success(`Removed ${contactName} from ${opportunity.name}`);
             queryClient.invalidateQueries({ queryKey: opportunityContactKeys.all });

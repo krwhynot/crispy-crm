@@ -1,6 +1,6 @@
-import type { ReactNode } from "react";
-import { ArrowUpDown, EllipsisVertical, SlidersHorizontal } from "lucide-react";
-import { useListSortContext, useTranslate, useTranslateLabel } from "ra-core";
+import { useEffect, type ReactNode } from "react";
+import { ArrowUpDown, EllipsisVertical, SlidersHorizontal, X } from "lucide-react";
+import { useListContext, useListSortContext, useTranslate, useTranslateLabel } from "ra-core";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -15,8 +15,9 @@ import {
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { ListSearchBar } from "@/components/ra-wrappers/ListSearchBar";
 import { SortButton } from "@/components/ra-wrappers/sort-button";
-import { useBreakpoint } from "@/hooks/useBreakpoint";
-import { useFilterSidebarContext } from "./FilterSidebarContext";
+import { useFilterSidebarContext, useOptionalFilterSidebarContext } from "./FilterSidebarContext";
+import { resetListFilters } from "./listFilterReset";
+import { useListHasDockedFilters } from "./useListViewport";
 
 export interface ListToolbarProps {
   /** Sortable field names passed to SortButton */
@@ -25,6 +26,8 @@ export interface ListToolbarProps {
   searchPlaceholder?: string;
   /** Enable recent searches dropdown */
   enableRecentSearches?: boolean;
+  /** Show search bar (default: true) */
+  showSearch?: boolean;
   /** View switcher slot (e.g., OrganizationViewSwitcher) */
   viewSwitcher?: ReactNode;
   /** DropdownMenuItem children for the kebab overflow menu (e.g., ExportMenuItem) */
@@ -33,91 +36,105 @@ export interface ListToolbarProps {
   showFilterToggle?: boolean;
   /** Resource name for ARIA labels */
   resource?: string;
+  /** Primary action slot (e.g., CreateButton) */
+  primaryAction?: ReactNode;
+  /** Default filter values to restore on "Clear all" */
+  defaultFilters?: Record<string, unknown>;
 }
 
 /**
  * ListToolbar - Unified toolbar row for list pages.
  *
- * Layout: [ Search ] [ Filters (n) ] [ Sort ] [ View Toggle ] [ ... ]
- *
- * Responsive:
- * - Desktop (≥1280px): All elements visible
- * - Tablet landscape (1024-1279px): SortButton renders in icon-only mode
- * - Mobile (<768px): SortButton hidden, sort options move to kebab menu
+ * Responsive behavior:
+ * - <768: search full row, sort inside overflow menu only
+ * - 768-1023: search full row, sort+view+create on second row
+ * - >=1024: single row — search flexible, sort+view+create on right
  */
 export function ListToolbar({
   sortFields,
   searchPlaceholder,
   enableRecentSearches,
+  showSearch = true,
   viewSwitcher,
   overflowActions,
   showFilterToggle = true,
   resource,
+  primaryAction,
+  defaultFilters,
 }: ListToolbarProps) {
+  const { setHasToolbar } = useFilterSidebarContext();
+
+  useEffect(() => {
+    setHasToolbar(true);
+    return () => setHasToolbar(false);
+  }, [setHasToolbar]);
+
+  const showOverflowOnDesktop = Boolean(overflowActions);
+
   return (
     <div
       role="toolbar"
       aria-label={resource ? `${resource} list toolbar` : "List toolbar"}
-      className="flex items-center gap-2 mb-3 shrink-0"
+      className="list-toolbar"
     >
-      {/* 1. Search - fills remaining space */}
-      <div className="flex-1 min-w-0">
-        <ListSearchBar
-          placeholder={searchPlaceholder}
-          enableRecentSearches={enableRecentSearches}
-        />
+      <div className="order-1 basis-full min-w-0 lg:basis-auto lg:flex-1 lg:min-w-[200px] lg:max-w-xl">
+        <div className="flex items-center gap-2">
+          {showSearch && (
+            <ListSearchBar
+              placeholder={searchPlaceholder}
+              enableRecentSearches={enableRecentSearches}
+            />
+          )}
+          {showFilterToggle && <FilterToggleButton />}
+          <ActiveFilterPill defaultFilters={defaultFilters} />
+        </div>
       </div>
 
-      {/* 2. Filter toggle with badge */}
-      {showFilterToggle && <FilterToggleButton />}
-
-      {/* 3. Sort dropdown - hidden below md, moves to kebab */}
-      <div className="hidden md:block">
-        <SortButton fields={sortFields} />
+      <div className="order-2 ml-auto flex shrink-0 items-center gap-2">
+        <div className="hidden shrink-0 md:block">
+          <SortButton fields={sortFields} className="h-11" />
+        </div>
+        {viewSwitcher && <div className="shrink-0">{viewSwitcher}</div>}
+        {primaryAction && <div className="shrink-0">{primaryAction}</div>}
+        <div className={showOverflowOnDesktop ? "shrink-0" : "shrink-0 md:hidden"}>
+          <OverflowMenu sortFields={sortFields} overflowActions={overflowActions} />
+        </div>
       </div>
-
-      {/* 4. View switcher slot */}
-      {viewSwitcher}
-
-      {/* 5. Kebab overflow menu */}
-      <OverflowMenu sortFields={sortFields} overflowActions={overflowActions} />
     </div>
   );
 }
 
-// ---------------------------------------------------------------------------
-// FilterToggleButton - Toggles sidebar (desktop) or opens sheet (mobile)
-// ---------------------------------------------------------------------------
-
 function FilterToggleButton() {
   const { isCollapsed, toggleSidebar, isSheetOpen, setSheetOpen, activeFilterCount } =
     useFilterSidebarContext();
-  const breakpoint = useBreakpoint();
-  const isMobileSheet = breakpoint === "mobile" || breakpoint === "tablet-portrait";
+  const hasDockedFilters = useListHasDockedFilters();
 
   const handleClick = () => {
-    if (isMobileSheet) {
-      setSheetOpen(true);
-    } else {
+    if (hasDockedFilters) {
       toggleSidebar();
+      return;
     }
+    setSheetOpen(true);
   };
 
-  const isExpanded = isMobileSheet ? isSheetOpen : !isCollapsed;
+  const isExpanded = hasDockedFilters ? !isCollapsed : isSheetOpen;
 
   return (
     <Tooltip>
       <TooltipTrigger asChild>
         <Button
           variant="outline"
-          size="icon"
+          size="sm"
           onClick={handleClick}
-          className="h-11 w-11 relative"
+          className="relative h-[var(--list-toolbar-control-height-mobile)] px-3"
           aria-label={`Filters${activeFilterCount > 0 ? ` (${activeFilterCount} active)` : ""}`}
           aria-expanded={isExpanded}
           aria-controls="filter-sidebar"
         >
           <SlidersHorizontal className="size-5" />
+          <span className="hidden whitespace-nowrap text-xs text-foreground lg:inline">
+            Filters{activeFilterCount > 0 ? ` (${activeFilterCount})` : ""}
+          </span>
           {activeFilterCount > 0 && (
             <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-[10px] font-medium text-primary-foreground">
               {activeFilterCount}
@@ -132,9 +149,59 @@ function FilterToggleButton() {
   );
 }
 
-// ---------------------------------------------------------------------------
-// OverflowMenu - Kebab menu with sort (mobile) + custom overflow actions
-// ---------------------------------------------------------------------------
+function ActiveFilterPill({ defaultFilters }: { defaultFilters?: Record<string, unknown> }) {
+  const { activeFilterCount } = useFilterSidebarContext();
+  const sidebarContext = useOptionalFilterSidebarContext();
+
+  let filterValues: Record<string, unknown> | undefined;
+  let displayedFilters: unknown;
+  let setFilters:
+    | ((filters: Record<string, unknown>, displayedFilters?: unknown) => void)
+    | undefined;
+
+  try {
+    const ctx = useListContext();
+    filterValues = ctx.filterValues;
+    displayedFilters = ctx.displayedFilters;
+    setFilters = ctx.setFilters;
+  } catch {
+    return null;
+  }
+
+  if (activeFilterCount === 0) return null;
+
+  const handleClear = () => {
+    if (!setFilters) return;
+    resetListFilters(
+      setFilters,
+      displayedFilters,
+      defaultFilters,
+      filterValues,
+      sidebarContext?.orSource,
+      sidebarContext?.setOrSource
+    );
+  };
+
+  return (
+    <div
+      role="status"
+      aria-live="polite"
+      className="flex items-center gap-1.5 rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary"
+    >
+      <span>
+        {activeFilterCount} active {activeFilterCount === 1 ? "filter" : "filters"}
+      </span>
+      <button
+        type="button"
+        onClick={handleClear}
+        className="inline-flex items-center justify-center rounded-full p-0.5 hover:bg-primary/20 touch-target-44"
+        aria-label="Clear all filters"
+      >
+        <X className="h-3.5 w-3.5" />
+      </button>
+    </div>
+  );
+}
 
 function OverflowMenu({
   sortFields,
@@ -146,12 +213,16 @@ function OverflowMenu({
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="icon" className="h-11 w-11" aria-label="More actions">
+        <Button
+          variant="outline"
+          size="icon"
+          className="h-[var(--list-toolbar-control-height-mobile)] w-[var(--list-toolbar-control-height-mobile)]"
+          aria-label="More actions"
+        >
           <EllipsisVertical className="size-5" />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        {/* Sort submenu - only visible on mobile when SortButton is hidden */}
         <div className="md:hidden">
           <SortMenuSub fields={sortFields} />
           {overflowActions && <DropdownMenuSeparator />}
@@ -162,19 +233,27 @@ function OverflowMenu({
   );
 }
 
-// ---------------------------------------------------------------------------
-// SortMenuSub - Sort options as a submenu inside the kebab menu
-// ---------------------------------------------------------------------------
+function useSafeListSortContext() {
+  try {
+    return useListSortContext();
+  } catch {
+    return null;
+  }
+}
 
 function SortMenuSub({ fields }: { fields: string[] }) {
-  const { resource, sort, setSort } = useListSortContext();
+  const sortContext = useSafeListSortContext();
   const translate = useTranslate();
   const translateLabel = useTranslateLabel();
+
+  if (!sortContext) return null;
+  const { resource, sort, setSort } = sortContext;
+  const sortField = typeof sort.field === "string" ? sort.field : fields[0];
 
   const handleChangeSort = (field: string) => {
     setSort({
       field,
-      order: field === sort.field ? inverseOrder(sort.order) : "ASC",
+      order: field === sortField ? inverseOrder(sort.order) : "ASC",
     });
   };
 
@@ -188,7 +267,7 @@ function SortMenuSub({ fields }: { fields: string[] }) {
         {fields.map((field) => (
           <DropdownMenuItem key={field} onSelect={() => handleChangeSort(field)}>
             {translateLabel({ resource, source: field })}{" "}
-            {translate(`ra.sort.${sort.field === field ? inverseOrder(sort.order) : "ASC"}`)}
+            {translate(`ra.sort.${sortField === field ? inverseOrder(sort.order) : "ASC"}`)}
           </DropdownMenuItem>
         ))}
       </DropdownMenuSubContent>

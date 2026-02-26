@@ -384,7 +384,7 @@ Duplicate check, validation, name generation = 3 separate calls. Could batch int
 |---------|----------|--------|
 | **Optimistic Updates** | useMyTasks implements React Query race-condition fix (onMutate, rollback) | Instant UI feedback, no stale state on network fail |
 | **Memoization Strategy** | 169 useMemo across codebase, strategic dependency arrays | Derived state doesn't cascade re-renders |
-| **Data Provider Pattern** | No direct Supabase imports in components, all via unifiedDataProvider | Centralized cache, consistent error handling |
+| **Data Provider Pattern** | No direct Supabase imports in components, all via composedDataProvider | Centralized cache, consistent error handling |
 | **Form Mode** | QuickAddForm uses mode="onBlur" per constitution | Reduces onChange validation re-renders |
 | **Cell Memoization** | ContactList properly memoizes datagrid cells | Efficient list re-renders |
 

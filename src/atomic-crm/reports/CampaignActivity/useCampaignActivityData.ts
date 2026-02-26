@@ -31,12 +31,14 @@ interface DateRange {
 }
 
 interface UseCampaignActivityDataOptions {
-  selectedCampaign: string;
+  selectedCampaign: string | null;
   dateRange: DateRange | null;
   selectedActivityTypes: string[];
-  selectedSalesRep: number | null;
+  ownerId: number | null;
   allActivityTypes: readonly { value: string; label: string }[];
   showStaleLeads: boolean;
+  principalId: number | null;
+  productLinkedOpportunityIds: number[] | null;
 }
 
 export function useCampaignActivityData(options: UseCampaignActivityDataOptions) {
@@ -44,9 +46,11 @@ export function useCampaignActivityData(options: UseCampaignActivityDataOptions)
     selectedCampaign,
     dateRange,
     selectedActivityTypes,
-    selectedSalesRep,
+    ownerId,
     allActivityTypes,
     showStaleLeads,
+    principalId,
+    productLinkedOpportunityIds,
   } = options;
 
   const dataProvider = useDataProvider() as ExtendedDataProvider;
@@ -62,15 +66,27 @@ export function useCampaignActivityData(options: UseCampaignActivityDataOptions)
 
   const activitiesFilter = useMemo(
     () => ({
-      "opportunities.campaign": selectedCampaign,
-      "opportunities.deleted_at@is": null,
+      activity_type: "activity",
+      ...(selectedCampaign != null && { opportunity_campaign: selectedCampaign }),
+      "opportunity_deleted_at@is": null,
       ...(selectedActivityTypes.length > 0 &&
         selectedActivityTypes.length < allActivityTypes.length && {
           type: selectedActivityTypes,
         }),
-      ...(selectedSalesRep !== null && { created_by: selectedSalesRep }),
+      ...(ownerId != null && { created_by: ownerId }),
+      ...(principalId != null && { principal_organization_id: principalId }),
+      ...(productLinkedOpportunityIds != null && {
+        "opportunity_id@in": productLinkedOpportunityIds,
+      }),
     }),
-    [selectedCampaign, selectedActivityTypes, selectedSalesRep, allActivityTypes.length]
+    [
+      selectedCampaign,
+      selectedActivityTypes,
+      ownerId,
+      principalId,
+      productLinkedOpportunityIds,
+      allActivityTypes.length,
+    ]
   );
 
   const activitiesDateRange = useMemo(
@@ -128,23 +144,41 @@ export function useCampaignActivityData(options: UseCampaignActivityDataOptions)
   );
 
   const totalCampaignOpportunities = useMemo(() => {
+    if (selectedCampaign == null) {
+      // "All Campaigns" — sum across all campaigns
+      return campaignOptions.reduce((sum, c) => sum + c.count, 0);
+    }
     const selected = campaignOptions.find((c) => c.name === selectedCampaign);
     return selected?.count ?? 0;
   }, [campaignOptions, selectedCampaign]);
 
   // Fetch stale opportunities when showStaleLeads is true
   const { data: staleOpportunities = [], isPending: staleOpportunitiesLoading } = useQuery({
-    queryKey: reportKeys.staleOpportunities(selectedCampaign, dateRange, selectedSalesRep),
+    queryKey: reportKeys.staleOpportunities(selectedCampaign, dateRange, ownerId),
     queryFn: () =>
       dataProvider.rpc<GetStaleOpportunitiesResponse>("get_stale_opportunities", {
         p_campaign: selectedCampaign,
         p_start_date: dateRange?.start ? new Date(dateRange.start).toISOString() : null,
         p_end_date: dateRange?.end ? new Date(dateRange.end).toISOString() : null,
-        p_sales_rep_id: selectedSalesRep,
+        p_sales_rep_id: ownerId,
       }),
-    enabled: showStaleLeads && !!selectedCampaign,
-    staleTime: 2 * 60 * 1000, // 2 minutes
+    enabled: showStaleLeads,
+    staleTime: 2 * 60 * 1000,
   });
+
+  // Client-side filtering for stale opps by principal and product
+  const filteredStaleOpportunities = useMemo(() => {
+    let result = staleOpportunities;
+    if (principalId != null) {
+      result = result.filter(
+        (o) => (o as Record<string, unknown>).principal_organization_id === principalId
+      );
+    }
+    if (productLinkedOpportunityIds != null) {
+      result = result.filter((o) => productLinkedOpportunityIds.includes(o.id));
+    }
+    return result;
+  }, [staleOpportunities, principalId, productLinkedOpportunityIds]);
 
   const isLoadingCampaigns = reportStatsPending;
   const isLoadingActivities = activitiesLoading;
@@ -160,7 +194,7 @@ export function useCampaignActivityData(options: UseCampaignActivityDataOptions)
     totalCampaignOpportunities,
     isLoadingCampaigns,
     isLoadingActivities,
-    staleOpportunities,
+    staleOpportunities: filteredStaleOpportunities,
     isLoadingStaleOpportunities: staleOpportunitiesLoading,
   };
 }

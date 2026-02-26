@@ -611,6 +611,8 @@ describe("RPC Validation Schemas", () => {
         "log_activity_with_task", // Added for atomic activity+task creation
         "check_similar_opportunities", // Server-side fuzzy matching using pg_trgm
         "get_campaign_report_stats", // Server-side aggregation for Campaign Activity Report
+        "get_stale_opportunities", // Stale opportunity detection
+        "get_organization_descendants", // Organization hierarchy traversal
       ];
 
       expectedFunctions.forEach((funcName) => {
@@ -618,8 +620,8 @@ describe("RPC Validation Schemas", () => {
       });
     });
 
-    it("should have exactly 11 RPC function schemas", () => {
-      expect(Object.keys(RPC_SCHEMAS).length).toBe(11);
+    it("should have exactly 12 RPC function schemas", () => {
+      expect(Object.keys(RPC_SCHEMAS).length).toBe(12);
     });
 
     it("should map function names to valid Zod schemas", () => {

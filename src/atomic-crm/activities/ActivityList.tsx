@@ -1,12 +1,14 @@
 import { memo } from "react";
 import jsonExport from "jsonexport/dist";
-import { downloadCSV, type Exporter, useGetIdentity, useListContext } from "ra-core";
+import { downloadCSV, type Exporter, useGetIdentity } from "ra-core";
 import { FunctionField } from "react-admin";
 
 import { List } from "@/components/ra-wrappers/list";
-import { FloatingCreateButton } from "@/components/ra-wrappers/FloatingCreateButton";
-import { StandardListLayout } from "@/components/layouts/StandardListLayout";
+import { CreateButton } from "@/components/ra-wrappers/create-button";
+import { ListPageLayout } from "@/components/layouts/ListPageLayout";
+import { BulkActionsToolbarChildren } from "@/components/ra-wrappers/bulk-actions-toolbar";
 import { PremiumDatagrid } from "@/components/ra-wrappers/PremiumDatagrid";
+import { RowHoverActions } from "@/components/ra-wrappers/RowHoverActions";
 import { TextField } from "@/components/ra-wrappers/text-field";
 import { DateField } from "@/components/ra-wrappers/date-field";
 import { ReferenceField } from "@/components/ra-wrappers/reference-field";
@@ -15,10 +17,8 @@ import { ActivityListSkeleton } from "@/components/ui/list-skeleton";
 import { SaleName } from "../sales/SaleName";
 import { ActivityListFilter } from "./ActivityListFilter";
 import { SampleStatusBadge } from "../components/SampleStatusBadge";
-import { useFilterCleanup } from "../hooks/useFilterCleanup";
 import { useListKeyboardNavigation } from "@/hooks/useListKeyboardNavigation";
 import { useSlideOverState } from "@/hooks/useSlideOverState";
-import { BulkActionsToolbar } from "@/components/ra-wrappers/bulk-actions-toolbar";
 import { ExportMenuItem } from "@/components/ra-wrappers/export-menu-item";
 import { COLUMN_VISIBILITY } from "../utils/listPatterns";
 import { PageTutorialTrigger } from "../tutorial";
@@ -76,16 +76,27 @@ const ActivitySentimentCell = memo(function ActivitySentimentCell({
   );
 });
 
+/** ActivityEmpty - Shown when no activities exist and no filters are applied */
+const ActivityEmpty = () => (
+  <div className="flex flex-col items-center justify-center py-12 text-center">
+    <p className="text-muted-foreground">No activities found.</p>
+    <p className="text-sm text-muted-foreground mt-2">
+      Activities will appear here as you log interactions with customers.
+    </p>
+  </div>
+);
+
 /**
  * ActivityList - Standard list page for Activity records
  *
- * Follows ContactList reference pattern:
- * - Identity-aware rendering with skeleton loading
- * - Keyboard navigation (no slide-over - activities edited inline/modal)
- * - BulkActionsToolbar for selection operations
- * - Responsive columns using COLUMN_VISIBILITY semantic presets
+ * Uses ListPageLayout for centralized empty-state branching,
+ * loading states, filter cleanup, and bulk actions.
  *
  * Features:
+ * - Identity-aware rendering with skeleton loading
+ * - Keyboard navigation with slide-over integration
+ * - BulkActionsToolbar for selection operations
+ * - Responsive columns using COLUMN_VISIBILITY semantic presets
  * - Filter by activity type (13 types including samples)
  * - Filter by sample_status (sent, received, feedback_pending, feedback_received)
  * - Quick filters: "Samples Only", "Pending Feedback"
@@ -99,9 +110,6 @@ export default function ActivityList() {
   const { data: identity, isPending: isIdentityPending } = useGetIdentity();
   const { slideOverId, isOpen, mode, openSlideOver, closeSlideOver, toggleMode } =
     useSlideOverState();
-
-  // Clean up stale cached filters from localStorage
-  useFilterCleanup("activities");
 
   if (isIdentityPending) return <ActivityListSkeleton />;
   if (!identity) return null;
@@ -119,8 +127,20 @@ export default function ActivityList() {
           }}
           actions={false}
         >
-          <ActivityListLayout openSlideOver={openSlideOver} isSlideOverOpen={isOpen} />
-          <FloatingCreateButton />
+          <ListPageLayout
+            resource="activities"
+            filterComponent={<ActivityListFilter />}
+            filterConfig={ACTIVITY_FILTER_CONFIG}
+            sortFields={["type", "subject", "activity_date", "created_at"]}
+            searchPlaceholder="Search activities..."
+            overflowActions={<ExportMenuItem />}
+            primaryAction={<CreateButton variant="default" />}
+            emptyState={<ActivityEmpty />}
+            loadingSkeleton={<ActivityListSkeleton />}
+            bulkActions={<BulkActionsToolbarChildren />}
+          >
+            <ActivityDatagrid openSlideOver={openSlideOver} isSlideOverOpen={isOpen} />
+          </ListPageLayout>
         </List>
       </div>
 
@@ -137,155 +157,117 @@ export default function ActivityList() {
 }
 
 /**
- * ActivityListLayout - Handles loading, empty states, and datagrid rendering
+ * ActivityDatagrid - Keyboard-navigable datagrid with slide-over integration
  */
-const ActivityListLayout = ({
+const ActivityDatagrid = ({
   openSlideOver,
   isSlideOverOpen,
 }: {
   openSlideOver: (id: number, mode: "view" | "edit") => void;
   isSlideOverOpen: boolean;
 }) => {
-  const { data, isPending, filterValues } = useListContext();
-
-  // Keyboard navigation for list rows
-  // Disabled when slide-over is open to prevent conflicts
   const { focusedIndex } = useListKeyboardNavigation({
     onSelect: (id) => openSlideOver(Number(id), "view"),
     enabled: !isSlideOverOpen,
   });
 
-  const hasFilters = filterValues && Object.keys(filterValues).length > 0;
-
-  if (isPending) {
-    return (
-      <StandardListLayout
-        resource="activities"
-        filterComponent={<ActivityListFilter />}
-        filterConfig={ACTIVITY_FILTER_CONFIG}
-        sortFields={["type", "subject", "activity_date", "created_at"]}
-        searchPlaceholder="Search activities..."
-        overflowActions={<ExportMenuItem />}
-      >
-        <ActivityListSkeleton />
-      </StandardListLayout>
-    );
-  }
-
-  if (!data?.length && !hasFilters) {
-    return (
-      <StandardListLayout
-        resource="activities"
-        filterComponent={<ActivityListFilter />}
-        filterConfig={ACTIVITY_FILTER_CONFIG}
-        sortFields={["type", "subject", "activity_date", "created_at"]}
-        searchPlaceholder="Search activities..."
-        overflowActions={<ExportMenuItem />}
-      >
-        <div className="flex flex-col items-center justify-center py-12 text-center">
-          <p className="text-muted-foreground">No activities found.</p>
-          <p className="text-sm text-muted-foreground mt-2">
-            Activities will appear here as you log interactions with customers.
-          </p>
-        </div>
-      </StandardListLayout>
-    );
-  }
-
   return (
-    <>
-      <StandardListLayout
-        resource="activities"
-        filterComponent={<ActivityListFilter />}
-        filterConfig={ACTIVITY_FILTER_CONFIG}
-        sortFields={["type", "subject", "activity_date", "created_at"]}
-        searchPlaceholder="Search activities..."
-        overflowActions={<ExportMenuItem />}
+    <PremiumDatagrid
+      onRowClick={(id) => openSlideOver(Number(id), "view")}
+      focusedIndex={focusedIndex}
+    >
+      {/* Column 1: Activity Type - Classification badge (sortable) - always visible */}
+      <FunctionField
+        label="Type"
+        sortBy="type"
+        render={(record: ActivityRecord) => <ActivityTypeCell record={record} />}
+        {...COLUMN_VISIBILITY.always}
+      />
+
+      {/* Column 2: Subject - Primary identifier (sortable) - always visible */}
+      <TextField
+        source="subject"
+        label="Subject"
+        className="max-w-[300px] truncate"
+        {...COLUMN_VISIBILITY.always}
+      />
+
+      {/* Column 3: Activity Date - Time field (sortable) - always visible */}
+      <DateField
+        source="activity_date"
+        label="Date"
+        showTime={false}
+        sortable
+        {...COLUMN_VISIBILITY.always}
+      />
+
+      {/* Column 4: Sample Status - Only for sample activities (non-sortable) - hidden on tablet/mobile */}
+      <FunctionField
+        label="Sample Status"
+        sortable={false}
+        render={(record: ActivityRecord) => <ActivitySampleStatusCell record={record} />}
+        {...COLUMN_VISIBILITY.ipadPlus}
+      />
+
+      {/* Column 5: Sentiment - Feedback indicator (non-sortable) - hidden on tablet/mobile */}
+      <FunctionField
+        label="Sentiment"
+        sortable={false}
+        render={(record: ActivityRecord) => <ActivitySentimentCell record={record} />}
+        {...COLUMN_VISIBILITY.ipadPlus}
+      />
+
+      {/* Column 6: Organization - Reference field (sortable) - always visible */}
+      <ReferenceField
+        source="organization_id"
+        reference="organizations"
+        label="Organization"
+        link={false}
+        sortable
+        {...COLUMN_VISIBILITY.always}
       >
-        <PremiumDatagrid
-          onRowClick={(id) => openSlideOver(Number(id), "view")}
-          focusedIndex={focusedIndex}
-        >
-          {/* Column 1: Activity Type - Classification badge (sortable) - always visible */}
-          <FunctionField
-            label="Type"
-            sortBy="type"
-            render={(record: ActivityRecord) => <ActivityTypeCell record={record} />}
-            {...COLUMN_VISIBILITY.alwaysVisible}
+        <TextField source="name" />
+      </ReferenceField>
+
+      {/* Column 7: Opportunity - Reference field (non-sortable) - hidden on tablet/mobile */}
+      <ReferenceField
+        source="opportunity_id"
+        reference="opportunities"
+        label="Opportunity"
+        link={false}
+        sortable={false}
+        {...COLUMN_VISIBILITY.ipadPlus}
+      >
+        <TextField source="name" />
+      </ReferenceField>
+
+      {/* Column 8: Created By - Sales reference (non-sortable) - hidden on tablet/mobile */}
+      <ReferenceField
+        source="created_by"
+        reference="sales"
+        label="Created By"
+        link={false}
+        sortable={false}
+        {...COLUMN_VISIBILITY.ipadPlus}
+      >
+        <SaleName />
+      </ReferenceField>
+
+      <FunctionField
+        label="Actions"
+        sortable={false}
+        cellClassName="w-[72px] sm:w-[88px] text-right"
+        render={(record: ActivityRecord) => (
+          <RowHoverActions
+            className="inline-flex items-center justify-end gap-1"
+            recordId={record.id}
+            resource="activities"
+            onView={(id) => openSlideOver(Number(id), "view")}
+            onEdit={(id) => openSlideOver(Number(id), "edit")}
           />
-
-          {/* Column 2: Subject - Primary identifier (sortable) - always visible */}
-          <TextField
-            source="subject"
-            label="Subject"
-            className="max-w-[300px] truncate"
-            {...COLUMN_VISIBILITY.alwaysVisible}
-          />
-
-          {/* Column 3: Activity Date - Time field (sortable) - always visible */}
-          <DateField
-            source="activity_date"
-            label="Date"
-            showTime={false}
-            sortable
-            {...COLUMN_VISIBILITY.alwaysVisible}
-          />
-
-          {/* Column 4: Sample Status - Only for sample activities (non-sortable) - hidden on tablet/mobile */}
-          <FunctionField
-            label="Sample Status"
-            sortable={false}
-            render={(record: ActivityRecord) => <ActivitySampleStatusCell record={record} />}
-            {...COLUMN_VISIBILITY.desktopOnly}
-          />
-
-          {/* Column 5: Sentiment - Feedback indicator (non-sortable) - hidden on tablet/mobile */}
-          <FunctionField
-            label="Sentiment"
-            sortable={false}
-            render={(record: ActivityRecord) => <ActivitySentimentCell record={record} />}
-            {...COLUMN_VISIBILITY.desktopOnly}
-          />
-
-          {/* Column 6: Organization - Reference field (sortable) - always visible */}
-          <ReferenceField
-            source="organization_id"
-            reference="organizations"
-            label="Organization"
-            link={false}
-            sortable
-            {...COLUMN_VISIBILITY.alwaysVisible}
-          >
-            <TextField source="name" />
-          </ReferenceField>
-
-          {/* Column 7: Opportunity - Reference field (non-sortable) - hidden on tablet/mobile */}
-          <ReferenceField
-            source="opportunity_id"
-            reference="opportunities"
-            label="Opportunity"
-            link={false}
-            sortable={false}
-            {...COLUMN_VISIBILITY.desktopOnly}
-          >
-            <TextField source="name" />
-          </ReferenceField>
-
-          {/* Column 8: Created By - Sales reference (non-sortable) - hidden on tablet/mobile */}
-          <ReferenceField
-            source="created_by"
-            reference="sales"
-            label="Created By"
-            link={false}
-            sortable={false}
-            {...COLUMN_VISIBILITY.desktopOnly}
-          >
-            <SaleName />
-          </ReferenceField>
-        </PremiumDatagrid>
-      </StandardListLayout>
-      <BulkActionsToolbar />
-    </>
+        )}
+      />
+    </PremiumDatagrid>
   );
 };
 

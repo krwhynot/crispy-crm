@@ -6,36 +6,43 @@ Standard patterns for task management in Crispy CRM.
 
 ```
 Task Lifecycle Flow:
-┌─────────────────────────────────────────────────────────────────────────┐
-│                           TASK LIFECYCLE                                 │
-├─────────────────────────────────────────────────────────────────────────┤
-│                                                                          │
-│  TaskCreate ──────► TaskList ──────► TaskSlideOver ──────► TaskEdit     │
-│       │                 │                   │                   │        │
-│       ▼                 ▼                   ▼                   ▼        │
-│  TaskCompactForm   TasksIterator    ┌──────────────┐     TaskCompactForm│
-│  (Single-page)     (Filtered)       │  Details Tab │     (Single-page)  │
-│       │                 │           │  Related Tab │           │        │
-│       ▼                 ▼           └──────────────┘           ▼        │
-│  FormSection       Task.tsx                              FormSection    │
-│  WithProgress      (Row + Menu)                          WithProgress   │
-│                         │                                               │
-│                         ▼                                               │
-│               TaskCompletionDialog                                      │
-│               (Activity Logging)                                        │
-└─────────────────────────────────────────────────────────────────────────┘
++-------------------------------------------------------------------------+
+|                           TASK LIFECYCLE                                 |
++-------------------------------------------------------------------------+
+|                                                                          |
+|  TaskCreate ----------> TaskList ----------> TaskSlideOver --> TaskEdit  |
+|       |                    |                      |                |     |
+|       v                    v                      v                v     |
+|  TaskInputs          TaskDatagrid          Details Tab       TaskInputs |
+|  TaskCompactForm     (PremiumDatagrid)     (view/edit)       (edit)     |
+|  (Sectioned form)          |               single tab                   |
+|       |                    v                      |                     |
+|       v               Task.tsx                    v                     |
+|  FormSection          (Row + Menu)         TaskHierarchy-               |
+|  WithProgress              |               Breadcrumb                   |
+|                            v                                            |
+|                   TaskActionMenu                                        |
+|                   (Snooze / Delete)                                      |
+|                                                                          |
+|  AddTask (Dialog) --- Quick-create from Contact/Opportunity views       |
+|  TaskShow         --- Full-page read-only detail view                   |
+|  TaskEmpty        --- Empty state for TaskList                          |
+|  TaskListFilter   --- Sidebar filter panel (date, status, assigned)     |
+|  resource.tsx     --- Lazy-loaded view wrappers + recordRepresentation  |
+|  taskRoutes.ts    --- Slide-over URL helpers (hash-router navigation)   |
++-------------------------------------------------------------------------+
 
 Data Flow:
-┌────────────┐    ┌──────────────────┐    ┌─────────────────┐
-│   Forms    │───►│ unifiedDataProvider │───►│    Supabase     │
-│            │    │  (Zod validation)  │    │   (PostgreSQL)  │
-└────────────┘    └──────────────────┘    └─────────────────┘
-                          │
-                          ▼
-                 ┌──────────────────┐
-                 │  taskSchema.ts   │
-                 │  (strictObject)  │
-                 └──────────────────┘
++------------+    +----------------------+    +-----------------+
+|   Forms    |--->| composedDataProvider |--->|    Supabase     |
+|            |    |  (Zod validation)    |    |   (PostgreSQL)  |
++------------+    +----------------------+    +-----------------+
+                          |
+                          v
+                 +------------------+
+                 |  taskSchema.ts   |
+                 |  (strictObject)  |
+                 +------------------+
 ```
 
 ---
@@ -87,48 +94,40 @@ const nextMondayFormatted = format(nextMonday, "EEE, MMM d");
 
 ## Pattern B: Task Completion Flow
 
-Checkbox toggle with ISO timestamps and activity logging workflow.
+Checkbox toggle with ISO timestamps and inline cache invalidation.
 
 ```tsx
 // Task.tsx - Completion toggle handler
 const handleCheck = (checked: boolean) => {
-  update(
-    "tasks",
-    {
-      id: task.id,
-      data: {
-        id: task.id, // Include ID to trigger partial update validation
-        completed: checked,
-        completed_at: checked ? new Date().toISOString() : null,
-      },
-      previousData: task,
+  update("tasks", {
+    id: task.id,
+    data: {
+      id: task.id, // Include ID to trigger partial update validation
+      completed: checked,
+      completed_at: checked ? new Date().toISOString() : null,
     },
-    {
-      onSuccess: () => {
-        // Only open activity dialog when task is being completed (not uncompleted)
-        if (checked) {
-          setOpenActivityDialog(true);
-        }
-      },
-    }
-  );
+    previousData: task,
+  });
 };
 
-// Render activity dialog after completion
-{openActivityDialog && (
-  <TaskCompletionDialog
-    open={openActivityDialog}
-    onClose={handleCloseActivityDialog}
-    task={task}
-  />
-)}
+// useEffect for targeted cache invalidation after non-completion updates
+useEffect(() => {
+  // Skip invalidation for completion toggles (completed_at changes)
+  if (isUpdatePending || !isSuccess || variables?.data?.completed_at != undefined) {
+    return;
+  }
+
+  queryClient.invalidateQueries({ queryKey: taskKeys.lists() });
+  queryClient.invalidateQueries({ queryKey: entityTimelineKeys.lists() });
+}, [queryClient, isUpdatePending, isSuccess, variables]);
 ```
 
-**When to use**: Task completion with follow-up workflows.
+**When to use**: Task completion with cache-aware state management.
 
 **Key concepts:**
 - Timestamp completion with ISO string (`new Date().toISOString()`)
-- Only show activity dialog on completion (not uncompleting)
+- `useEffect` guards: only invalidate caches for non-completion updates (e.g., postpone)
+- Completion toggling relies on React Admin's optimistic update cycle (no manual invalidation)
 - Include `id` in data for partial update validation (Zod strictObject)
 - `previousData` enables optimistic updates with rollback
 
@@ -136,9 +135,11 @@ const handleCheck = (checked: boolean) => {
 
 ## Pattern C: Snoozing/Postponing
 
-Smart date calculations for postponement actions.
+Smart date calculations for postponement actions. Two competing patterns exist:
 
-### C.1: Dropdown Postponement
+### C.1: Due-Date Postponement (Task.tsx)
+
+Modifies `due_date` directly. Used by the inline dropdown menu on task rows.
 
 ```tsx
 {canPostponeTomorrow && (
@@ -177,10 +178,37 @@ Smart date calculations for postponement actions.
 )}
 ```
 
-### C.2: Snooze Schema
+### C.2: Snooze-Until Postponement (TaskActionMenu.tsx)
+
+Sets `snooze_until` instead of modifying `due_date`. Used by the reusable `TaskActionMenu`
+component (Kanban, TaskList datagrid row actions).
 
 ```tsx
-// Uses preprocess to handle empty string from forms → null
+// TaskActionMenu.tsx - Snooze handler
+const handlePostponeInternal = async (days: number) => {
+  const newSnoozeDate = new Date();
+  newSnoozeDate.setDate(newSnoozeDate.getDate() + days);
+  newSnoozeDate.setHours(23, 59, 59, 999);
+
+  await update(
+    "tasks",
+    {
+      id: taskId,
+      data: { snooze_until: newSnoozeDate.toISOString() },
+      previousData: task,
+    },
+    { returnPromise: true }
+  );
+
+  queryClient.invalidateQueries({ queryKey: taskKeys.lists() });
+  queryClient.invalidateQueries({ queryKey: entityTimelineKeys.lists() });
+};
+```
+
+### C.3: Snooze Schema
+
+```tsx
+// Uses preprocess to handle empty string from forms -> null
 snooze_until: z.preprocess(
   (val) => (val === "" ? null : val),
   z.coerce.date().nullable().optional()
@@ -190,9 +218,12 @@ snooze_until: z.preprocess(
 **When to use**: Postponing overdue tasks, implementing snooze functionality.
 
 **Key concepts:**
-- Spread existing task fields in update (required by Zod strictObject)
+- **C.1 (Task.tsx)**: Moves `due_date` forward, which changes the task's actual deadline
+- **C.2 (TaskActionMenu.tsx)**: Sets `snooze_until`, which hides the task temporarily without changing `due_date`
+- Spread existing task fields in update (required by Zod strictObject) for C.1 pattern
+- C.2 sends only `snooze_until` (minimal payload) since `taskUpdateSchema` uses `.partial()`
 - Format dates as `yyyy-MM-dd` (ISO string format for database)
-- Conditional rendering: Only show options if task is already overdue
+- Conditional rendering in C.1: Only show options if task is already overdue
 - `snooze_until = NULL` means task is active
 - `snooze_until = future timestamp` means task is hidden until then
 
@@ -217,6 +248,20 @@ export const TASK_FILTER_CONFIG = validateFilterConfig([
     label: "Due before",
     type: "date-range",
     removalGroup: "due_date_range",
+  },
+  // Overdue filter (used by KPISummaryRow and TaskListFilter "Overdue" preset)
+  {
+    key: "due_date@lt",
+    label: "Overdue",
+    type: "boolean",
+    formatLabel: () => "Overdue tasks",
+  },
+  // Task ID filter (used by TimelineEntry to link to specific task)
+  {
+    key: "id",
+    label: "Task",
+    type: "reference",
+    reference: "tasks",
   },
   {
     key: "completed",
@@ -272,13 +317,15 @@ function formatDateLabel(value: unknown): string {
 - `removalGroup`: Removes conflicting filters (both date range filters together)
 - `formatLabel()`: Custom formatting for chip display (optional per filter)
 - `getTaskTypeChoices()`: Dynamic choices from ConfigurationContext
-- Date filters use `@gte/@lte` operators for ranges
+- Date filters use `@gte/@lte/@lt` operators for ranges and overdue detection
+- `due_date@lt` filter is used by the "Overdue" preset in `TaskListFilter`
+- `id` filter enables deep-linking from timeline entries to specific tasks
 
 ---
 
 ## Pattern E: Task Tabbed View
 
-Slide-over with view/edit mode switching.
+Slide-over with view/edit mode switching. The slide-over has a single "Details" tab.
 
 ### E.1: View Mode
 
@@ -313,6 +360,11 @@ return (
               <span className="text-sm font-medium">
                 {record.completed ? "Completed" : "Mark as complete"}
               </span>
+              {record.completed_at && (
+                <span className="text-xs text-muted-foreground">
+                  on <DateField source="completed_at" options={{ dateStyle: "short" }} />
+                </span>
+              )}
             </label>
           </div>
         </SidepaneSection>
@@ -322,8 +374,24 @@ return (
           <div className="space-y-2">
             <div className="text-sm">
               <span className="text-muted-foreground">Due: </span>
-              <DateField source="due_date" className="font-medium" />
+              <DateField
+                source="due_date"
+                options={{ year: "numeric", month: "long", day: "numeric" }}
+                className="font-medium"
+              />
             </div>
+            {record.reminder_date && (
+              <div className="text-sm">
+                <span className="text-muted-foreground">Reminder: </span>
+                <DateField
+                  source="reminder_date"
+                  options={{ year: "numeric", month: "long", day: "numeric" }}
+                  className="font-medium"
+                />
+              </div>
+            )}
+            {/* Snooze indicator - prominent icon indicator */}
+            <SnoozeIndicator snoozeUntil={record.snooze_until} />
           </div>
         </SidepaneSection>
 
@@ -336,8 +404,25 @@ return (
                 <PriorityBadge priority={record.priority} />
               </div>
             )}
+            {record.type && (
+              <div className="flex items-center gap-2">
+                <span className="text-sm text-muted-foreground">Type:</span>
+                <Badge variant="outline">{record.type}</Badge>
+              </div>
+            )}
           </div>
         </SidepaneSection>
+
+        {/* Assignment Section */}
+        {record.sales_id && (
+          <SidepaneSection label="Assigned To" showSeparator>
+            <div className="text-sm">
+              <ReferenceField source="sales_id" reference="sales">
+                <SaleName />
+              </ReferenceField>
+            </div>
+          </SidepaneSection>
+        )}
 
         <SidepaneMetadata createdAt={record.created_at} updatedAt={record.updated_at} />
       </div>
@@ -356,23 +441,49 @@ if (mode === "edit") {
         <DirtyStateTracker onDirtyChange={onDirtyChange} />
         <div className="space-y-6" role="form" aria-label="Edit task form">
           <div className="space-y-4">
-            <TextInput source="title" label="Task Title" />
-            <TextInput source="description" label="Description" multiline rows={3} />
-            <TextInput source="due_date" label="Due Date" type="date" />
+            <TextInput source="title" label="Task Title" disabled={isLoading} />
+            <TextInput source="description" label="Description" multiline rows={3}
+              disabled={isLoading} />
+            <DateInput source="due_date" label="Due Date" disabled={isLoading} />
+            <DateInput source="reminder_date" label="Reminder Date" disabled={isLoading} />
 
-            <SelectInput
-              source="priority"
-              label="Priority"
+            <SelectInput source="priority" label="Priority"
               choices={[
                 { id: "low", name: "Low" },
                 { id: "medium", name: "Medium" },
                 { id: "high", name: "High" },
                 { id: "critical", name: "Critical" },
               ]}
+              disabled={isLoading}
             />
 
-            <ReferenceInput source="sales_id" reference="sales">
-              <AutocompleteInput label="Assigned To" />
+            <SelectInput source="type" label="Type"
+              choices={taskTypes.map((type) => ({ id: type, name: type }))}
+              disabled={isLoading}
+            />
+
+            <BooleanInput source="completed" label="Completed" disabled={isLoading} />
+
+            <ReferenceInput source="sales_id" reference="sales"
+              sort={{ field: "last_name", order: "ASC" }} disabled={isLoading}>
+              <AutocompleteInput {...getQSearchAutocompleteProps()} label="Assigned To" />
+            </ReferenceInput>
+
+            <ReferenceInput source="contact_id" reference="contacts" disabled={isLoading}>
+              <AutocompleteInput {...getQSearchAutocompleteProps()} label="Contact"
+                optionText={contactOptionText} />
+            </ReferenceInput>
+
+            <ReferenceInput source="organization_id" reference="organizations"
+              disabled={isLoading}>
+              <AutocompleteInput {...getQSearchAutocompleteProps()} label="Organization"
+                optionText="name" />
+            </ReferenceInput>
+
+            <ReferenceInput source="opportunity_id" reference="opportunities"
+              disabled={isLoading}>
+              <AutocompleteInput {...getQSearchAutocompleteProps()} label="Opportunity"
+                optionText="name" />
             </ReferenceInput>
           </div>
         </div>
@@ -387,18 +498,41 @@ if (mode === "edit") {
 ```tsx
 const handleSave = async (data: Partial<Task>) => {
   try {
-    await update("tasks", {
-      id: record.id,
-      data,
-      previousData: record,
-    });
-    notify("Task updated successfully", { type: "success" });
+    // PRE-VALIDATE before API call (passthrough preserves id, created_at, etc.)
+    const result = taskUpdateSchema.safeParse({ ...data, id: record.id });
+
+    if (!result.success) {
+      const firstError = result.error.issues[0];
+      notify(`${firstError.path.join(".")}: ${firstError.message}`, { type: "error" });
+      logger.error("Task validation failed", result.error, {
+        feature: "TaskSlideOverDetailsTab",
+        taskId: record.id,
+      });
+      return;
+    }
+
+    await update(
+      "tasks",
+      {
+        id: record.id,
+        data: result.data,
+        previousData: record,
+      },
+      { returnPromise: true }
+    );
+    await queryClient.invalidateQueries({ queryKey: taskKeys.lists() });
+    await queryClient.invalidateQueries({ queryKey: entityTimelineKeys.lists() });
+    notify(notificationMessages.updated("Task"), { type: "success" });
     onModeToggle?.(); // Return to view mode after successful save
-  } catch (error) {
-    notify("Error updating task", { type: "error" });
-    logger.error('Task save failed', {
-      error: error instanceof Error ? error.message : String(error),
-      operation: 'saveTask'
+  } catch (error: unknown) {
+    const message = extractProviderValidationMessage(error, {
+      resource: "tasks",
+      action: "update",
+    });
+    notify(message, { type: "error" });
+    logger.error("Error updating task", error, {
+      feature: "TaskSlideOverDetailsTab",
+      taskId: record.id,
     });
   }
 };
@@ -412,90 +546,11 @@ const handleSave = async (data: Partial<Task>) => {
 - `min-h-11` ensures 44px touch target
 - `SidepaneSection` with `showSeparator` for visual structure
 - Return to view mode on successful save
-
----
-
-## Pattern F: Related Items Linking
-
-Read-only tab showing associated entities.
-
-```tsx
-// TaskRelatedItemsTab.tsx
-export function TaskRelatedItemsTab({ record }: TaskRelatedItemsTabProps) {
-  const hasRelationships =
-    record.organization_id || record.contact_id || record.opportunity_id || record.sales_id;
-
-  return (
-    <RecordContextProvider value={record}>
-      <div className="space-y-6">
-        {!hasRelationships && (
-          <SidepaneEmptyState
-            icon={Link}
-            message="No related items. Add relationships in the Details tab."
-          />
-        )}
-
-        {/* Related Organization */}
-        {record.organization_id && (
-          <SidepaneSection label="Related Organization">
-            <SectionCard>
-              <div className="p-4">
-                <div className="flex items-center gap-2">
-                  <Building2 className="size-5 text-muted-foreground" />
-                  <ReferenceField source="organization_id" reference="organizations" link="show">
-                    <TextField source="name" className="font-medium" />
-                  </ReferenceField>
-                </div>
-              </div>
-            </SectionCard>
-          </SidepaneSection>
-        )}
-
-        {/* Related Contact */}
-        {record.contact_id && (
-          <SidepaneSection label="Related Contact">
-            <SectionCard>
-              <div className="p-4">
-                <div className="flex items-center gap-2">
-                  <UserCircle className="size-5 text-muted-foreground" />
-                  <ReferenceField source="contact_id" reference="contacts_summary" link="show">
-                    <TextField source={contactOptionText} className="font-medium" />
-                  </ReferenceField>
-                </div>
-              </div>
-            </SectionCard>
-          </SidepaneSection>
-        )}
-
-        {/* Related Opportunity */}
-        {record.opportunity_id && (
-          <SidepaneSection label="Related Opportunity">
-            <SectionCard>
-              <div className="p-4">
-                <div className="flex items-center gap-2">
-                  <Target className="size-5 text-muted-foreground" />
-                  <ReferenceField source="opportunity_id" reference="opportunities" link="show">
-                    <TextField source="title" className="font-medium" />
-                  </ReferenceField>
-                </div>
-              </div>
-            </SectionCard>
-          </SidepaneSection>
-        )}
-      </div>
-    </RecordContextProvider>
-  );
-}
-```
-
-**When to use**: Displaying associated entities in slide-overs.
-
-**Key concepts:**
-- Conditional rendering: Only show items that exist
-- Empty state with icon and actionable message
-- Icons from `lucide-react` for visual identification
-- `link="show"` enables navigation to related records
-- Cards with consistent padding for visual grouping
+- Pre-validation via `taskUpdateSchema.safeParse()` before API call
+- `queryClient.invalidateQueries` for targeted cache invalidation
+- `extractProviderValidationMessage` for user-friendly error messages
+- View mode shows `completed_at`, `reminder_date`, `SnoozeIndicator`, `Type` badge, `Assigned To`
+- Edit mode includes `DateInput`, `BooleanInput`, `organization_id`, `opportunity_id`
 
 ---
 
@@ -564,7 +619,6 @@ export const getTaskDefaultValues = () =>
     completed: false,
     priority: "medium" as const,
     type: "Call" as const, // Meaningful default reduces cognitive load
-    due_date: new Date(),
   });
 ```
 
@@ -575,7 +629,10 @@ export const taskSchema = z.strictObject({
   id: idSchema.optional(),
   title: z.string().trim().min(1, "Title is required").max(500, "Title too long"),
   description: z.string().max(2000, "Description too long").nullable().optional(),
-  due_date: z.coerce.date({ error: "Due date is required" }),
+  due_date: z.preprocess(
+    (val) => (val === null || val === undefined || val === "" ? undefined : val),
+    z.coerce.date().optional()
+  ),
   reminder_date: z.coerce.date().nullable().optional(),
   completed: z.coerce.boolean().default(false),
   completed_at: z.string().max(50).nullable().optional(),
@@ -592,8 +649,11 @@ export const taskSchema = z.strictObject({
     z.coerce.date().nullable().optional()
   ),
 
+  // Related task reference (links follow-up tasks to original completed task)
+  related_task_id: idSchema.nullable().optional(),
+
   // Audit fields
-  created_by: z.union([z.string(), z.number()]).optional().nullable(),
+  created_by: z.union([z.string().max(50), z.number()]).optional().nullable(),
   created_at: z.string().max(50).optional(),
   updated_at: z.string().max(50).optional(),
   deleted_at: z.string().max(50).optional().nullable(), // Soft-delete
@@ -628,6 +688,8 @@ export const taskUpdateSchema = taskSchema
 - `z.enum()`: Allowlist patterns (not denylist)
 - `.partial().parse({})`: Derive defaults from schema
 - Separate schemas: Create (omits system fields), Update (partial + passthrough)
+- `due_date` uses `z.preprocess` to convert empty/null/undefined to `undefined`, then `z.coerce.date().optional()` -- the field is optional (no default in `getTaskDefaultValues`)
+- `related_task_id`: Links follow-up tasks to their originating completed task
 
 ---
 
@@ -657,10 +719,22 @@ export const taskUpdateSchema = taskSchema
 | Filter | Type | Operator | Example Value |
 |--------|------|----------|---------------|
 | Due Date Range | `date-range` | `@gte`, `@lte` | `2024-01-15` |
+| Overdue | `boolean` | `@lt` | Today's date (via `due_date@lt`) |
+| Task Reference | `reference` | `=` | `42` (task id, used by timeline deep-links) |
 | Completion Status | `boolean` | `=` | `true` / `false` |
 | Priority | `multiselect` | `in` | `["high", "critical"]` |
 | Type | `multiselect` | `in` | `["Call", "Email"]` |
 | Assigned To | `reference` | `=` | `123` (sales_id) |
+
+### Postpone Approach Comparison
+
+| Aspect | Task.tsx (C.1) | TaskActionMenu.tsx (C.2) |
+|--------|----------------|--------------------------|
+| Field modified | `due_date` | `snooze_until` |
+| Effect | Changes actual deadline | Hides task temporarily |
+| Payload | `...task` (full spread) | `{ snooze_until }` (minimal) |
+| Used by | Inline row dropdown | Kanban card, datagrid row actions |
+| Cache invalidation | Via `useEffect` guard | Explicit `queryClient.invalidateQueries` |
 
 ---
 
@@ -669,14 +743,14 @@ export const taskUpdateSchema = taskSchema
 ### 1. Orphaned Tasks (No Assignment)
 
 ```tsx
-// ❌ WRONG: Task without sales_id
+// WRONG: Task without sales_id
 const badTask = {
   title: "Follow up with client",
   due_date: new Date(),
   // sales_id missing!
 };
 
-// ✅ CORRECT: Always include sales_id
+// CORRECT: Always include sales_id
 const goodTask = {
   title: "Follow up with client",
   due_date: new Date(),
@@ -686,35 +760,14 @@ const goodTask = {
 
 **Why**: `sales_id` is required in schema. Orphaned tasks break RLS policies and ownership queries.
 
-### 2. Missing Activity Logs
+### 2. Direct Supabase Access
 
 ```tsx
-// ❌ WRONG: Complete task without follow-up
-const handleCheck = (checked: boolean) => {
-  update("tasks", { id: task.id, data: { completed: checked } });
-  // No activity dialog!
-};
-
-// ✅ CORRECT: Prompt for activity logging
-const handleCheck = (checked: boolean) => {
-  update("tasks", { ... }, {
-    onSuccess: () => {
-      if (checked) setOpenActivityDialog(true); // Prompt user
-    },
-  });
-};
-```
-
-**Why**: Tasks often require follow-up activities. Prompting ensures activity tracking.
-
-### 3. Direct Supabase Access
-
-```tsx
-// ❌ WRONG: Direct Supabase client
+// WRONG: Direct Supabase client
 import { supabase } from "@/lib/supabase";
 const { data } = await supabase.from("tasks").select("*");
 
-// ✅ CORRECT: Use React Admin hooks via data provider
+// CORRECT: Use React Admin hooks via data provider
 import { useUpdate, useGetList } from "ra-core";
 const [update] = useUpdate();
 update("tasks", { id, data, previousData });
@@ -722,31 +775,31 @@ update("tasks", { id, data, previousData });
 
 **Why**: Data provider centralizes validation, caching, and error handling.
 
-### 4. Form-Level Validation
+### 3. Form-Level Validation
 
 ```tsx
-// ❌ WRONG: Validation in form component
+// WRONG: Validation in form component
 const validateTitle = (value: string) => {
   if (!value) return "Title required";
   if (value.length > 500) return "Too long";
 };
 
-// ✅ CORRECT: Zod at API boundary
+// CORRECT: Zod at API boundary
 // validation/task.ts
 title: z.string().trim().min(1, "Title is required").max(500, "Title too long")
 ```
 
 **Why**: Single source of truth. Schema validates on create/update, not per-form.
 
-### 5. onChange Mode in Forms
+### 4. onChange Mode in Forms
 
 ```tsx
-// ❌ WRONG: Validates on every keystroke
+// WRONG: Validates on every keystroke
 <Form mode="onChange">
   <TextInput source="title" />
 </Form>
 
-// ✅ CORRECT: Validate on blur or submit
+// CORRECT: Validate on blur or submit
 <Form mode="onBlur">
   <TextInput source="title" />
 </Form>
@@ -754,15 +807,15 @@ title: z.string().trim().min(1, "Title is required").max(500, "Title too long")
 
 **Why**: `onChange` causes re-render storms. Use `onBlur` or `onSubmit` per Constitution.
 
-### 6. Missing Touch Targets
+### 5. Missing Touch Targets
 
 ```tsx
-// ❌ WRONG: Small touch target
+// WRONG: Small touch target
 <AdminButton size="sm" className="h-6 w-6">
   <Icon className="h-3 w-3" />
 </AdminButton>
 
-// ✅ CORRECT: 44px minimum (WCAG AA)
+// CORRECT: 44px minimum (WCAG AA)
 <AdminButton size="icon" className="h-11 w-11">
   <Icon className="h-4 w-4" />
 </AdminButton>
@@ -770,14 +823,14 @@ title: z.string().trim().min(1, "Title is required").max(500, "Title too long")
 
 **Why**: iPad/touch users need 44x44px minimum targets.
 
-### 7. Raw Color Values
+### 6. Raw Color Values
 
 ```tsx
-// ❌ WRONG: Hardcoded colors
+// WRONG: Hardcoded colors
 <span className="text-gray-500">Due date</span>
 <Badge className="bg-red-500">Overdue</Badge>
 
-// ✅ CORRECT: Semantic tokens
+// CORRECT: Semantic tokens
 <span className="text-muted-foreground">Due date</span>
 <Badge variant="destructive">Overdue</Badge>
 ```
@@ -801,7 +854,7 @@ export const taskTypeSchema = z.enum([
   "Follow-up",
   "Demo",
   "Proposal",
-  "Site Visit", // ← Add here
+  "Site Visit", // <-- Add here
   "Other",
 ]);
 ```
@@ -814,7 +867,7 @@ If creating tasks from URL params:
 // src/atomic-crm/tasks/TaskCreate.tsx
 const URL_TYPE_MAP: Record<string, string> = {
   follow_up: "Follow-up",
-  site_visit: "Site Visit", // ← Add here
+  site_visit: "Site Visit", // <-- Add here
   // ...
 };
 ```
@@ -827,20 +880,20 @@ If types come from config:
 // src/atomic-crm/root/ConfigurationContext.tsx
 const defaultTaskTypes = [
   "Call", "Email", "Meeting", "Follow-up",
-  "Demo", "Proposal", "Site Visit", "Other" // ← Add here
+  "Demo", "Proposal", "Site Visit", "Other" // <-- Add here
 ];
 ```
 
-### 4. Add Icon Mapping (Optional)
+### 4. Add Icon Mapping (Optional, Not Yet Implemented)
 
-If using type-specific icons:
+If type-specific icons are needed, create a mapping component:
 
 ```tsx
-// src/atomic-crm/tasks/TaskTypeIcon.tsx
+// src/atomic-crm/tasks/TaskTypeIcon.tsx (create this file)
 const TASK_TYPE_ICONS: Record<string, LucideIcon> = {
   Call: Phone,
   Email: Mail,
-  "Site Visit": MapPin, // ← Add here
+  "Site Visit": MapPin, // <-- Add here
   // ...
 };
 ```
@@ -869,12 +922,57 @@ Add to this PATTERNS.md if new type has special handling.
 
 | Pattern | File | Purpose |
 |---------|------|---------|
-| Date Calculations | `Task.tsx` | Postponement logic |
-| Completion Toggle | `Task.tsx` | Checkbox + activity dialog |
-| Postpone Menu | `Task.tsx` | Dropdown actions |
-| Filter Config | `taskFilterConfig.ts` | FilterChipBar setup |
-| View/Edit Mode | `TaskSlideOverDetailsTab.tsx` | Slide-over content |
-| Related Items | `TaskRelatedItemsTab.tsx` | Association display |
+| Date Calculations | `Task.tsx` | Postponement logic via `due_date` |
+| Completion Toggle | `Task.tsx` | Checkbox + cache invalidation via `useEffect` |
+| Postpone Menu | `Task.tsx` | Dropdown actions (modifies `due_date`) |
+| Snooze Actions | `TaskActionMenu.tsx` | Reusable menu (modifies `snooze_until`) |
+| Filter Config | `taskFilterConfig.ts` | FilterChipBar setup (8 filters) |
+| Sidebar Filters | `TaskListFilter.tsx` | Collapsible filter panel (date, status, owner) |
+| View/Edit Mode | `TaskSlideOverDetailsTab.tsx` | Slide-over content (single Details tab) |
+| Slide-Over Shell | `TaskSlideOver.tsx` | Shell with breadcrumb + tab config |
+| Hierarchy Breadcrumb | `TaskHierarchyBreadcrumb.tsx` | Parent entity navigation in slide-over header |
 | Iterator Filter | `TasksIterator.tsx` | 5-minute completion window |
 | Form Defaults | `validation/task.ts` | Schema-derived defaults |
 | Zod Schema | `validation/task.ts` | strictObject validation |
+| Form Inputs | `TaskInputs.tsx` | FormErrorSummary + TaskCompactForm wrapper |
+| Compact Form | `TaskCompactForm.tsx` | Sectioned form (General + Details) |
+| Full-page Create | `TaskCreate.tsx` | CreateBase + URL params + progress bar |
+| Full-page Edit | `TaskEdit.tsx` | EditBase + dialog edit (standalone + inline) |
+| Full-page Show | `TaskShow.tsx` | Read-only detail view (SectionCard) |
+| Quick Add | `AddTask.tsx` | Dialog-based create from Contact views |
+| List Page | `TaskList.tsx` | UnifiedListPageLayout + PremiumDatagrid |
+| Empty State | `TaskEmpty.tsx` | EmptyState with Create button |
+| Datagrid Headers | `TasksDatagridHeader.tsx` | Column label components |
+| URL Helpers | `taskRoutes.ts` | Slide-over path builders + hash navigation |
+| Resource Config | `resource.tsx` | Lazy-loaded views + recordRepresentation |
+| Types | `types.ts` | Re-exports from `validation/task.ts` |
+| Module Barrel | `index.tsx` | Re-exports from `resource.tsx` |
+
+---
+
+## File Reference
+
+| File | Lines | Exports | Purpose |
+|------|-------|---------|---------|
+| `index.tsx` | 7 | Default resource config, named views | Module barrel re-exporting from `resource.tsx` |
+| `resource.tsx` | 43 | `TaskListView`, `TaskEditView`, `TaskCreateView`, default config | Lazy-loaded view wrappers with `ResourceErrorBoundary` + `Suspense` |
+| `types.ts` | 1 | `Task`, `TaskType`, `PriorityLevel` | Re-exports types from `validation/task.ts` |
+| `Task.tsx` | 211 | `Task` (memo) | Single task row: checkbox, postpone menu, inline edit dialog |
+| `TaskActionMenu.tsx` | 212 | `TaskActionMenu` | Reusable dropdown: view, edit, snooze, delete (Kanban + List) |
+| `TaskList.tsx` | 426 | `TaskList` (default), `TaskDatagrid`, `CompletionCheckbox` | Full list page: `UnifiedListPageLayout` + `PremiumDatagrid` + CSV exporter |
+| `TaskCreate.tsx` | 155 | `TaskCreate` (default) | Full-page create with URL pre-fill, progress bar, `createFormResolver` |
+| `TaskEdit.tsx` | 68 | `TaskEdit` (default + named) | Full-page edit with `EditBase`, `createFormResolver(taskSchema)` |
+| `TaskShow.tsx` | 99 | `TaskShow` (default) | Read-only detail: SectionCard with priority/type badges, references |
+| `TaskSlideOver.tsx` | 65 | `TaskSlideOver` | Slide-over shell: single "Details" tab, breadcrumb, mode toggle |
+| `TaskSlideOverDetailsTab.tsx` | 335 | `TaskSlideOverDetailsTab` | View/edit tab: pre-validation, cache invalidation, completion toggle |
+| `TaskInputs.tsx` | 57 | `TaskInputs` | FormErrorSummary wrapper delegating to `TaskCompactForm` |
+| `TaskCompactForm.tsx` | 158 | `TaskCompactForm` | Sectioned form: General (title, desc, dates) + Details (priority, type, refs) |
+| `TasksIterator.tsx` | 38 | `TasksIterator` | Filtered list with 5-min completion undo window |
+| `AddTask.tsx` | 207 | `AddTask` | Dialog-based quick-create from Contact/Opportunity context |
+| `TaskListFilter.tsx` | 62 | `TaskListFilter` | Sidebar: Due Date (Today/This Week/Overdue), Status, Assigned To |
+| `TaskEmpty.tsx` | 17 | `TaskEmpty` | Empty state with "New Task" `CreateButton` |
+| `TaskHierarchyBreadcrumb.tsx` | 95 | `TaskHierarchyBreadcrumb` | Breadcrumb: Opportunity/Organization > Task (links to parent slide-over) |
+| `taskFilterConfig.ts` | 99 | `TASK_FILTER_CONFIG` | 8 filter entries: due_date range/overdue, id, completed, priority, type, sales_id |
+| `taskRoutes.ts` | 32 | `getTaskSlideOverPath`, `getTaskViewPath`, `getTaskEditPath`, `navigateToTaskSlideOver` | Hash-router URL builders for slide-over deep-linking |
+| `TasksDatagridHeader.tsx` | 18 | `TaskTitleHeader`, `TaskPriorityHeader`, `TaskTypeHeader` | Column label components for datagrid |
+| `hooks/index.ts` | 2 | (empty barrel) | Reserved for future task-specific hooks |

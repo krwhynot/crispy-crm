@@ -102,6 +102,7 @@ export function useFavorites(): UseFavoritesReturn {
                 previousData: existingFavorite,
               },
               {
+                returnPromise: true,
                 onSuccess: () => {
                   setOptimisticState((prev) => {
                     const next = new Map(prev);
@@ -135,6 +136,7 @@ export function useFavorites(): UseFavoritesReturn {
               },
             },
             {
+              returnPromise: true,
               onSuccess: () => {
                 setOptimisticState((prev) => {
                   const next = new Map(prev);

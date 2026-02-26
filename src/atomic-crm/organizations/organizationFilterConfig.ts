@@ -71,11 +71,18 @@ export const ORGANIZATION_FILTER_CONFIG = validateFilterConfig([
     type: "date-range",
     removalGroup: "created_at_range",
   },
-  // Parent organization filter (used by OrganizationHierarchyChips)
+  // Parent organization filter (used by OrganizationHierarchyChips and sidebar dropdown)
   {
     key: "parent_organization_id",
     label: "Parent",
     type: "reference",
     reference: "organizations",
+  },
+  // "Has parent connection" toggle filter (PostgREST operator syntax)
+  {
+    key: "parent_organization_id@not.is",
+    label: "Parent",
+    type: "boolean",
+    formatLabel: () => "Has parent connection",
   },
 ]);

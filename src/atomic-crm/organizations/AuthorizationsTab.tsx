@@ -107,6 +107,7 @@ export function AuthorizationsTab({
         "distributor_principal_authorizations",
         { id: removeAuth.id },
         {
+          returnPromise: true,
           onSuccess: () => {
             notify(`Removed authorization for ${principalNameForRemove}`, { type: "success" });
             refresh();

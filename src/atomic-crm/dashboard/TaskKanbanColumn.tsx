@@ -36,22 +36,22 @@ const columnConfig: Record<
   }
 > = {
   overdue: {
-    accentColor: "border-destructive",
-    bgColor: "bg-destructive/5",
+    accentColor: "border-[color-mix(in_oklch,var(--clay-base)_70%,transparent)]",
+    bgColor: "bg-[oklch(98%_0.01_32)]",
     emptyIcon: CheckCircle2,
     emptyText: "No overdue tasks",
     emptySubtext: "Great job staying on top of things!",
   },
   today: {
-    accentColor: "border-primary",
-    bgColor: "bg-primary/5",
+    accentColor: "border-[var(--olive-base)]",
+    bgColor: "bg-[oklch(98.5%_0.005_118)]",
     emptyIcon: CalendarClock,
     emptyText: "No tasks due today",
     emptySubtext: "Drag tasks here to focus on them today",
   },
   thisWeek: {
-    accentColor: "border-muted-foreground",
-    bgColor: "bg-muted/30",
+    accentColor: "border-muted-foreground/40",
+    bgColor: "bg-[oklch(98.5%_0.003_85)]",
     emptyIcon: CalendarPlus,
     emptyText: "No upcoming tasks",
     emptySubtext: "Plan your week by adding tasks here",
@@ -116,15 +116,15 @@ export const TaskKanbanColumn = React.memo(function TaskKanbanColumn({
   return (
     <div
       className={cn(
-        "flex flex-col rounded-xl border-t-4 bg-card",
+        "flex flex-col rounded-xl border-t-2 bg-card",
         "w-full lg:min-w-0 lg:flex-1",
-        "shadow-sm",
+        "shadow-[var(--paper-shadow-1)]",
         config.accentColor
       )}
       data-testid={`task-kanban-column-${columnId}`}
     >
       {/* Column Header */}
-      <div className="flex items-center justify-between px-4 py-3 border-b border-border">
+      <div className="flex items-center justify-between px-4 py-3 border-b border-border/50">
         <h2 className="font-semibold text-foreground">{title}</h2>
         <span className="text-sm text-muted-foreground">{tasks.length}</span>
       </div>
@@ -133,8 +133,8 @@ export const TaskKanbanColumn = React.memo(function TaskKanbanColumn({
       <div
         ref={setNodeRef}
         className={cn(
-          "flex-1 p-3 space-y-2 overflow-y-auto",
-          "min-h-[120px] transition-colors duration-200",
+          "flex-1 p-4 space-y-3 overflow-y-auto",
+          "min-h-[120px] transition-colors duration-150",
           isOver && config.bgColor
         )}
       >

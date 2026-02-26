@@ -48,6 +48,21 @@ waitForElement utility
     +-- Polls DOM every 100ms via requestAnimationFrame
     +-- Extends timeout if skeleton loading states detected
     +-- Rejects with error on timeout
+    +-- filterValidSteps: filters steps to only those with existing DOM elements
+
+OpportunityCreateFormTutorial (standalone floating button)
+    |
+    +-- Does NOT use TutorialProvider/useTutorial context
+    +-- No auto-start on first visit (click-only trigger)
+    +-- Page-specific: Only renders on /opportunities/create
+    +-- Uses standalone steps from steps/opportunityCreateFormSteps.ts
+    +-- No progress persistence
+
+Standalone Step Definitions (steps/opportunityCreateFormSteps.ts)
+    |
+    +-- NOT registered in CHAPTER_STEPS map
+    +-- Imported directly by OpportunityCreateFormTutorial
+    +-- 20 steps covering every create-form field
 ```
 
 ---
@@ -608,6 +623,8 @@ const prepareStep = useCallback(
 - Skeleton detection prevents premature timeout during data fetching
 - Returns Promise for async/await pattern in prepareStep
 - Logging on timeout helps debug missing `data-tutorial` attributes
+- `filterValidSteps(steps)` is also exported from this file -- filters an array of `TutorialStep[]` to only those whose `element` selector currently exists in the DOM (steps without `element` always pass)
+- `elementExists(selector)` is a synchronous helper that checks `document.querySelector`
 
 **Example:** `src/atomic-crm/tutorial/waitForElement.ts`
 
@@ -782,6 +799,60 @@ export function TutorialLauncher() {
 - `onClick` directly calls `startTutorial` (no intermediate state)
 
 **Example:** `src/atomic-crm/tutorial/TutorialLauncher.tsx`
+
+---
+
+## Pattern G: Standalone Form Tutorial (No Context)
+
+A self-contained floating tutorial button for a specific form page, without depending on TutorialProvider or shared progress tracking.
+
+**When to use**: Form-specific tutorials that do not need cross-page navigation or persistent progress.
+
+### Key Differences from PageTutorialTrigger
+
+| Aspect | PageTutorialTrigger (Pattern E) | OpportunityCreateFormTutorial (Pattern G) |
+|--------|--------------------------------|------------------------------------------|
+| **Context** | Uses `useTutorial()` from TutorialProvider | Standalone -- no context dependency |
+| **Auto-start** | First visit auto-trigger | Click-only (no auto-start) |
+| **Progress** | Persisted to localStorage | None |
+| **Steps source** | `CHAPTER_STEPS` registry via `getChapterSteps()` | Direct import from `steps/opportunityCreateFormSteps.ts` |
+| **Navigation** | Cross-page via `navigateTo` | Single-page only (no route changes) |
+| **Step filtering** | N/A | Uses `filterValidSteps()` to skip missing elements |
+
+### Implementation
+
+```tsx
+// src/atomic-crm/tutorial/OpportunityCreateFormTutorial.tsx
+
+// Imports steps directly (not from CHAPTER_STEPS registry)
+import { opportunityCreateFormSteps } from "./steps/opportunityCreateFormSteps";
+import { waitForElement, filterValidSteps } from "./waitForElement";
+
+export function OpportunityCreateFormTutorial() {
+  // Only renders on /opportunities/create
+  // Click triggers: filterValidSteps -> waitForElement -> driver().drive()
+  // No TutorialProvider, no useTutorial(), no progress persistence
+}
+```
+
+### Standalone Step Definitions
+
+```tsx
+// src/atomic-crm/tutorial/steps/opportunityCreateFormSteps.ts
+// NOT registered in CHAPTER_STEPS -- imported directly by the component
+// 20 steps covering: name, customer, principal, stage, priority,
+// close date, account manager, distributor, contacts, products,
+// classification section, lead source, campaign, details section,
+// description, next action, next action date, save button
+export const opportunityCreateFormSteps: TutorialStep[] = [
+  { popover: { title: "Create an Opportunity", ... } },       // intro
+  { element: '[data-tutorial="opp-name"]', popover: { ... } }, // field
+  // ...18 more steps...
+  { popover: { title: "Ready to Create!", ... } },             // outro
+];
+```
+
+**Example:** `src/atomic-crm/tutorial/OpportunityCreateFormTutorial.tsx`, `steps/opportunityCreateFormSteps.ts`
 
 ---
 
@@ -990,3 +1061,5 @@ document.querySelector('[data-slot="skeleton"]')
 | D: Element Waiting | `waitForElement.ts` |
 | E: Page Trigger | `PageTutorialTrigger.tsx` |
 | F: Launcher Menu | `TutorialLauncher.tsx` |
+| G: Standalone Form Tutorial | `OpportunityCreateFormTutorial.tsx`, `steps/opportunityCreateFormSteps.ts` |
+| Barrel Export | `index.tsx` -- re-exports `TutorialProvider`, `useTutorial`, `TutorialLauncher`, `PageTutorialTrigger`, `OpportunityCreateFormTutorial`, and types |

@@ -94,11 +94,11 @@ const PIPELINE_TUTORIAL_STEPS: DriveStep[] = [
       align: "start",
     },
   },
-  // 9. Quick Add Button
+  // 9. Add Opportunity Button
   {
     element: '[data-tutorial="opp-quick-add"]',
     popover: {
-      title: "Quick Add",
+      title: "Add Opportunity",
       description: "Rapidly add new opportunities without leaving the pipeline.",
       side: "bottom",
       align: "end",

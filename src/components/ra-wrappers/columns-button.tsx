@@ -32,6 +32,7 @@ import { FieldToggle } from "@/components/ra-wrappers/field-toggle";
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -96,6 +97,7 @@ export const ColumnsButton = (props: ColumnsButtonProps) => {
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
             <DialogTitle>{title}</DialogTitle>
+            <DialogDescription className="sr-only">Show or hide table columns</DialogDescription>
           </DialogHeader>
           <ColumnsSelector storeKey={storeKey}>{children}</ColumnsSelector>
         </DialogContent>

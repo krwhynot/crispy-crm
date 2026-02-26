@@ -171,7 +171,7 @@ export function CompactActivityWidget() {
             <p className="text-sm text-muted-foreground">No recent activity.</p>
           </div>
         ) : (
-          <div className="divide-y divide-border">
+          <div className="divide-y divide-border/30">
             {activities.slice(0, 4).map((activity) => (
               <CompactActivityItem key={activity.id} activity={activity} />
             ))}

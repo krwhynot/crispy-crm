@@ -107,6 +107,29 @@ jobs:
           fi
           echo "No direct react-admin input import violations found."
 
+  guardrails:
+    name: Guardrails (Baseline)
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - run: npm ci
+
+      - name: Mutation Integrity
+        run: npm run guardrail:mutation-integrity
+
+      - name: Schema Strip
+        run: npm run guardrail:schema-strip
+
+      - name: Handler Chain
+        run: npm run guardrail:handler-chain
+
   test:
     name: Tests
     runs-on: ubuntu-latest

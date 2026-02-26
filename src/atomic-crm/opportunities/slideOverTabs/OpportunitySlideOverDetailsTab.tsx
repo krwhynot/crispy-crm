@@ -81,6 +81,7 @@ export function OpportunitySlideOverDetailsTab({
             previousData: record,
           },
           {
+            returnPromise: true,
             onSuccess: async () => {
               setServerError(null); // Clear server errors on success
               notify(notificationMessages.updated("Opportunity"), { type: "success" });
@@ -161,6 +162,7 @@ export function OpportunitySlideOverDetailsTab({
           win_reason: closeData.win_reason,
           loss_reason: closeData.loss_reason,
           close_reason_notes: closeData.close_reason_notes,
+          actual_close_date: closeData.actual_close_date,
         });
         pendingFormDataRef.current = null;
       }

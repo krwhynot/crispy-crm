@@ -4,6 +4,7 @@ import { Form, ReferenceField } from "react-admin";
 import { activityKeys, entityTimelineKeys } from "../../queryKeys";
 import { logger } from "@/lib/logger";
 import { notificationMessages } from "@/atomic-crm/constants/notificationMessages";
+import { extractProviderValidationMessage } from "@/atomic-crm/utils/extractProviderValidationMessage";
 import { TextInput } from "@/components/ra-wrappers/text-input";
 import { DateInput } from "@/components/ra-wrappers/date-input";
 import { SelectInput } from "@/components/ra-wrappers/select-input";
@@ -64,17 +65,25 @@ export function ActivityDetailsTab({
 
   const handleSave = async (data: Partial<ActivityRecord>) => {
     try {
-      await update("activities", {
-        id: record.id,
-        data,
-        previousData: record,
-      });
+      await update(
+        "activities",
+        {
+          id: record.id,
+          data,
+          previousData: record,
+        },
+        { returnPromise: true }
+      );
       queryClient.invalidateQueries({ queryKey: activityKeys.lists() });
       queryClient.invalidateQueries({ queryKey: entityTimelineKeys.lists() });
       notify(notificationMessages.updated("Activity"), { type: "success" });
       onModeToggle?.();
     } catch (error: unknown) {
-      notify("Error updating activity", { type: "error" });
+      const message = extractProviderValidationMessage(error, {
+        resource: "activities",
+        action: "update",
+      });
+      notify(message, { type: "error" });
       logger.error("Failed to update activity", error, {
         feature: "ActivityDetailsTab",
         activityId: record.id,

@@ -26,6 +26,7 @@ export function TagQuickInput({ source, label }: TagQuickInputProps) {
       "tags",
       { data: { name: name.trim(), color: "warm" } },
       {
+        returnPromise: true,
         onSuccess: () => {
           success(notificationMessages.created("Tag"));
           refresh();

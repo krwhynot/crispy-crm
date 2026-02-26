@@ -50,42 +50,41 @@ SELECT ok(
 );
 
 -- ============================================================================
--- SECTION 2: created_by defaults verification
+-- SECTION 2: created_by has NO database default (set by application layer)
 -- ============================================================================
+-- The canonical schema (20260214003329) defines created_by as bare bigint
+-- with no DEFAULT. The provider layer sets created_by explicitly.
+-- Only notes/junction tables (contact_notes, opportunity_notes, opportunity_products)
+-- retain the get_current_sales_id() default.
 
--- Test 3: activities.created_by has default
-SELECT col_default_is(
+-- Test 3: activities.created_by has no default
+SELECT col_hasnt_default(
   'public', 'activities', 'created_by',
-  'get_current_sales_id()',
-  'activities.created_by has get_current_sales_id() default'
+  'activities.created_by has no DB default (set by application layer)'
 );
 
--- Test 4: contacts.created_by has default
-SELECT col_default_is(
+-- Test 4: contacts.created_by has no default
+SELECT col_hasnt_default(
   'public', 'contacts', 'created_by',
-  'get_current_sales_id()',
-  'contacts.created_by has get_current_sales_id() default'
+  'contacts.created_by has no DB default (set by application layer)'
 );
 
--- Test 5: organizations.created_by has default
-SELECT col_default_is(
+-- Test 5: organizations.created_by has no default
+SELECT col_hasnt_default(
   'public', 'organizations', 'created_by',
-  'get_current_sales_id()',
-  'organizations.created_by has get_current_sales_id() default'
+  'organizations.created_by has no DB default (set by application layer)'
 );
 
--- Test 6: opportunities.created_by has default
-SELECT col_default_is(
+-- Test 6: opportunities.created_by has no default
+SELECT col_hasnt_default(
   'public', 'opportunities', 'created_by',
-  'get_current_sales_id()',
-  'opportunities.created_by has get_current_sales_id() default'
+  'opportunities.created_by has no DB default (set by application layer)'
 );
 
--- Test 7: products.created_by has default
-SELECT col_default_is(
+-- Test 7: products.created_by has no default
+SELECT col_hasnt_default(
   'public', 'products', 'created_by',
-  'get_current_sales_id()',
-  'products.created_by has get_current_sales_id() default'
+  'products.created_by has no DB default (set by application layer)'
 );
 
 -- ============================================================================
@@ -131,30 +130,27 @@ SELECT is_empty(
 -- SECTION 4: Ownership policy existence verification
 -- ============================================================================
 
--- Test 10: Activities has ownership INSERT policy (role-based SELECT)
--- Policy names updated to match migration chain:
---   activities_select_unified (20260121053244), activities_insert_policy (20260125233756),
---   activities_update_unified + activities_delete_unified (20260121000004),
---   activities_update_owner_or_privileged (20260123144656), delete_activities (20260125000001)
+-- Test 10: Activities has ownership policies
+-- Policy names from canonical schema (20260214003329_remote_schema.sql):
+--   activities_select, activities_insert, activities_update, activities_delete, activities_service_role
 SELECT policies_are(
   'public', 'activities',
   ARRAY[
-    'activities_delete_unified',
-    'activities_insert_policy',
-    'activities_select_unified',
-    'activities_update_owner_or_privileged',
-    'activities_update_unified',
-    'delete_activities'
+    'activities_delete',
+    'activities_insert',
+    'activities_select',
+    'activities_service_role',
+    'activities_update'
   ],
   'activities table has correct ownership policies'
 );
 
--- Test 11: Contacts has ownership policies (shared SELECT)
--- Policy names updated: contacts_select_all (20260121053244), delete_contacts (20260125000001)
+-- Test 11: Contacts has ownership policies
+-- Policy names from canonical schema: contacts_select_all, contacts_insert_owner,
+-- contacts_update_owner_or_privileged, delete_contacts
 SELECT policies_are(
   'public', 'contacts',
   ARRAY[
-    'contacts_delete_owner_or_privileged',
     'contacts_insert_owner',
     'contacts_select_all',
     'contacts_update_owner_or_privileged',
@@ -164,14 +160,16 @@ SELECT policies_are(
 );
 
 -- Test 12: Tags has manager/admin policies
--- Policy names updated: delete_tags_admin + update_tags_admin (20260122184338)
+-- Policy names from canonical schema: authenticated_select_tags, tags_insert_privileged,
+-- tags_delete_privileged, tags_soft_delete_authenticated, tags_service_role
 SELECT policies_are(
   'public', 'tags',
   ARRAY[
     'authenticated_select_tags',
-    'delete_tags_admin',
+    'tags_delete_privileged',
     'tags_insert_privileged',
-    'update_tags_admin'
+    'tags_service_role',
+    'tags_soft_delete_authenticated'
   ],
   'tags table has correct manager/admin policies'
 );
@@ -205,10 +203,10 @@ SELECT policies_are(
 -- ============================================================================
 
 -- Test 15: Activities INSERT policy checks created_by = current_sales_id()
--- Policy renamed to activities_insert_policy (20260125233756); regex handles (SELECT ...) wrapper
+-- Policy name in canonical schema: activities_insert
 SELECT matches(
   (SELECT with_check::text FROM pg_policies
-   WHERE tablename = 'activities' AND policyname = 'activities_insert_policy'),
+   WHERE tablename = 'activities' AND policyname = 'activities_insert'),
   'created_by = .*current_sales_id',
   'activities INSERT policy checks ownership via current_sales_id()'
 );

@@ -13,6 +13,7 @@
   --font-sans:
     "Nunito", "Inter", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
     sans-serif;
+  --font-serif: "Lora", "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Georgia, serif;
 
   /* Data table optimized font size - 13px for high-density scanning */
   --text-table: 0.8125rem;
@@ -104,24 +105,50 @@
   --spacing-edge-ipad: 60px;
   --spacing-edge-mobile: 16px;
 
-  /* Vertical Rhythm - Desktop Data Density */
-  --spacing-section: 24px; /* Reduced from 32px - Between major sections */
-  --spacing-widget: 16px; /* Reduced from 24px - Between widgets */
-  --spacing-content: 12px; /* Reduced from 16px - Within content areas */
-  --spacing-compact: 8px; /* Reduced from 12px - Tight spacing for related items */
+  /* 8px-based spacing scale (executive vertical rhythm) */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 40px;
+  --space-8: 48px;
+  --space-9: 64px;
+  --space-10: 80px;
+
+  /* Vertical Rhythm - Desktop Data Density (aliased to scale) */
+  --spacing-section: var(--space-5); /* 24px - Between major sections */
+  --spacing-widget: var(--space-4); /* 16px - Between widgets */
+  --spacing-content: var(--space-3); /* 12px - Within content areas */
+  --spacing-compact: var(--space-2); /* 8px - Tight spacing for related items */
 
   /* Widget/Card Internals - Desktop Optimized */
   --spacing-widget-padding: 12px; /* Reduced from 20px for desktop density */
   --spacing-widget-min-height: 240px; /* Reduced from 280px for more rows */
   --spacing-top-offset: 60px; /* Reduced from 80px for better space usage */
 
-  /* Desktop Data Density Tokens - NEW */
-  --row-height-compact: 32px; /* Compact row height for data tables */
-  --row-height-comfortable: 40px; /* Comfortable row height */
+  /* Layout constraint */
+  --layout-max-width: 1536px;
+
+  /* Two-tier row density: 58px default (dashboard/detail), 44px compact (list pages via .list-page-shell) */
+  --row-height: 58px;
   --row-padding-desktop: 6px 12px; /* Row padding for desktop density */
   --hover-zone-padding: 4px; /* Padding for hover/focus zones */
   --action-button-size: 28px; /* Compact action button size */
   --context-menu-width: 200px; /* Standard context menu width */
+
+  /* List layout semantics */
+  --list-shell-gap: var(--spacing-content);
+  --list-toolbar-gap: var(--spacing-content);
+  --list-toolbar-margin-bottom: var(--spacing-widget);
+  --list-sidebar-width: 16rem;
+  --list-sidebar-collapsed-width: 60px;
+  --list-main-card-padding: var(--spacing-widget-padding);
+  --list-filter-card-padding: var(--spacing-content);
+  --list-toolbar-control-height-mobile: 44px;
+  --list-toolbar-control-height-desktop: 36px;
+  --list-row-focus-ring-width: 2px;
 }
 
 @layer utilities {
@@ -204,6 +231,9 @@
   }
   .mb-widget {
     margin-bottom: var(--spacing-widget);
+  }
+  .mb-content {
+    margin-bottom: var(--spacing-content);
   }
 
   /* Shadow Elevation Utilities - Maps to 3-tier warm-tinted shadow system */
@@ -318,6 +348,24 @@
     border-color: color-mix(in oklch, var(--destructive) 20%, transparent);
   }
 
+  .badge-status-cold {
+    background-color: var(--status-cold-bg);
+    color: var(--status-cold-fg);
+    border-color: color-mix(in oklch, var(--status-cold-fg) 20%, transparent);
+  }
+
+  .badge-status-active {
+    background-color: var(--status-active-bg);
+    color: var(--status-active-fg);
+    border-color: color-mix(in oklch, var(--status-active-fg) 20%, transparent);
+  }
+
+  .badge-status-discontinued {
+    background-color: var(--status-discontinued-bg);
+    color: var(--status-discontinued-fg);
+    border-color: color-mix(in oklch, var(--status-discontinued-fg) 20%, transparent);
+  }
+
   /* ========================================
      TOUCH TARGET & DATA ENTRY UTILITIES
      ======================================== */
@@ -419,12 +467,12 @@
   /* IMPORTANT: Both classes need identical @apply statements (no @extend in PostCSS!) */
   .interactive-card,
   .table-row-premium {
-    @apply rounded-lg border border-transparent bg-card px-3 py-2;
+    @apply rounded-lg border border-transparent px-3 py-2;
+    background: var(--surface-paper-inner);
+    border-color: color-mix(in oklch, var(--paper-divider) 40%, transparent);
     transition: all var(--duration-normal) var(--ease-out-soft);
 
-    /* Hover elevation - shadow lift with subtle translate for premium feel */
-    @apply hover:bg-muted/30 hover:border-border/50;
-    @apply motion-safe:hover:shadow-sm motion-safe:hover:-translate-y-px;
+    /* Hover: background + border change only (no physical lift) */
 
     /* Cursor pointer for clickable rows */
     @apply cursor-pointer;
@@ -440,31 +488,214 @@
   /* Note: height on tr is more reliable than min-height on td for enforcing row height */
   /* Performance: content-visibility skips rendering off-screen rows in long lists */
   .table-row-premium {
-    height: 56px;
+    height: var(--row-height);
     content-visibility: auto;
-    contain-intrinsic-size: 0 56px;
+    contain-intrinsic-size: 0 var(--row-height);
+    border-left: 3px solid transparent;
+    border-bottom: 1px solid color-mix(in oklch, var(--paper-divider) 15%, transparent);
+    border-radius: 0;
+  }
+
+  .interactive-card:hover {
+    background: var(--paper-row-hover-bg);
+    border-color: color-mix(in oklch, var(--paper-divider) 65%, transparent);
+  }
+
+  .table-row-premium:hover {
+    background: var(--paper-row-hover-bg);
+  }
+
+  /* Ensure React Admin row defaults do not override list density heights */
+  .RaDatagrid-table tbody .RaDatagrid-row {
+    height: var(--row-height) !important;
+    min-height: var(--row-height) !important;
   }
 
   .table-row-premium td {
     @apply py-3;
     vertical-align: middle;
+    border-bottom: none;
   }
 
-  /* Compact density variant — scoped to containers with data-density="compact" */
-  /* Used by dashboard Pipeline table; does NOT affect global PremiumDatagrid tables */
-  [data-density="compact"] .table-row-premium {
-    height: 48px;
-    contain-intrinsic-size: 0 48px;
+  .RaDatagrid-table tbody .RaDatagrid-row > td {
+    padding-top: 0.75rem !important;
+    padding-bottom: 0.75rem !important;
   }
 
-  [data-density="compact"] .table-row-premium td {
-    @apply py-2;
-    vertical-align: middle;
+  .table-row-premium:hover {
+    border-left-color: color-mix(in oklch, var(--paper-row-hover-accent) 72%, transparent);
+    border-bottom-color: color-mix(in oklch, var(--paper-divider) 30%, transparent);
+    box-shadow: var(--paper-row-hover-shadow);
+  }
+
+  .table-row-premium:hover .name-cell {
+    color: var(--text-metric);
+    transition: color 150ms ease;
+  }
+
+  .RaDatagrid-table tbody .RaDatagrid-row .RaDatagrid-checkbox {
+    @apply flex items-center justify-center;
+    min-height: 100%;
+  }
+
+  /* Row actions - hidden at rest, visible on hover/focus/open-menu/touch.
+   *
+   * Visibility triggers:
+   * - Row hover (mouse users)
+   * - Row focus-within (keyboard users)
+   * - [data-open] attribute (dropdown menu open — set by RowHoverActions.tsx)
+   * - Touch devices (@media (hover: none)) — always visible
+   */
+  .RaDatagrid-row [data-row-actions],
+  .table-row-premium [data-row-actions] {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 150ms ease-in-out;
+  }
+
+  .RaDatagrid-row:hover [data-row-actions],
+  .table-row-premium:hover [data-row-actions],
+  .RaDatagrid-row:focus-within [data-row-actions],
+  .table-row-premium:focus-within [data-row-actions],
+  [data-row-actions][data-open] {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  @media (hover: none) {
+    .RaDatagrid-row [data-row-actions],
+    .table-row-premium [data-row-actions] {
+      opacity: 1;
+      pointer-events: auto;
+    }
   }
 
   /* Standard card container */
   .card-container {
-    @apply bg-card border border-border shadow-sm rounded-xl p-6;
+    @apply rounded-[0.75rem] p-6;
+    background: var(--surface-paper-card);
+    border: 1px solid color-mix(in oklch, var(--paper-divider) 85%, var(--surface-paper-card));
+    box-shadow: var(--paper-shadow-1);
+  }
+
+  .paper-dashboard-surface {
+    background-color: var(--surface-paper-page);
+    position: relative;
+    isolation: isolate;
+  }
+
+  .paper-dashboard-surface::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: -1;
+    background-image:
+      radial-gradient(
+        circle at 18% 24%,
+        color-mix(in oklch, var(--paper-grain-ink) var(--paper-grain-density), transparent) 0.5px,
+        transparent 0.5px
+      ),
+      radial-gradient(
+        circle at 72% 58%,
+        color-mix(
+            in oklch,
+            var(--paper-grain-ink) calc(var(--paper-grain-density) * 0.7),
+            transparent
+          )
+          0.5px,
+        transparent 0.5px
+      );
+    background-size:
+      11px 11px,
+      13px 13px;
+    opacity: var(--paper-grain-opacity);
+  }
+
+  .paper-card {
+    background: var(--surface-paper-card);
+    border: 1px solid color-mix(in oklch, var(--paper-divider) 50%, var(--surface-paper-card));
+    border-radius: 0.625rem;
+    box-shadow: var(--paper-shadow-1);
+  }
+
+  .paper-inner-surface {
+    background: var(--surface-paper-inner);
+    border: 1px solid color-mix(in oklch, var(--paper-divider) 55%, transparent);
+    border-radius: 0.5rem;
+  }
+
+  .paper-micro-label {
+    @apply text-xs font-medium text-muted-foreground;
+    letter-spacing: 0.02em;
+  }
+
+  .paper-section-rule {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: var(--text-subtle);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .paper-section-rule::before,
+  .paper-section-rule::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: var(--paper-divider);
+  }
+
+  .paper-tabs-list {
+    @apply h-11 w-full justify-start gap-1 bg-transparent p-0 rounded-none;
+    border-bottom: 1px solid color-mix(in oklch, var(--paper-divider) 50%, transparent);
+  }
+
+  .paper-tabs-trigger {
+    @apply h-11 rounded-none border-b-2 border-transparent bg-transparent px-3;
+    @apply text-xs font-semibold text-muted-foreground transition-colors;
+    @apply data-[state=active]:text-[color:var(--text-title)] data-[state=active]:border-[color:color-mix(in_oklch,var(--olive-base,var(--brand-700))_70%,transparent)];
+    @apply data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:font-bold;
+  }
+
+  .paper-kpi-title {
+    @apply text-xs font-semibold uppercase tracking-[0.06em] text-muted-foreground;
+  }
+
+  .paper-kpi-divider {
+    height: 1px;
+    background: var(--paper-divider);
+  }
+
+  /* Report filter controls — elevated "executive" select styling */
+  .report-filter-trigger {
+    background: var(--surface-paper-card);
+    border: 1px solid color-mix(in oklch, var(--paper-divider) 40%, transparent);
+    box-shadow: var(--elevation-1);
+    padding-inline: 1rem;
+    font-weight: 500;
+    transition:
+      background 150ms,
+      border-color 150ms;
+  }
+  .report-filter-trigger:hover {
+    background: var(--surface-paper-inner);
+  }
+  .report-filter-trigger[data-state="open"] {
+    background: var(--surface-paper-inner);
+  }
+
+  .report-filter-content {
+    background: var(--surface-paper-card);
+    box-shadow: var(--elevation-2);
+    border-radius: 0.75rem;
+    border: 1px solid color-mix(in oklch, var(--paper-divider) 40%, transparent);
+  }
+  .report-filter-content [data-slot="select-item"]:focus {
+    background: var(--surface-paper-inner);
   }
 
   /* Create form card - higher elevation */
@@ -475,6 +706,145 @@
   /* Sidebar filter panel */
   .filter-sidebar {
     @apply w-64 shrink-0 space-y-4;
+  }
+
+  /* Unified list shell primitives */
+  .list-page-shell {
+    @apply flex h-full min-h-0 min-w-0 flex-1;
+    gap: var(--list-shell-gap);
+    column-gap: 0; /* Flush sidebar-to-main for attached-panel feel */
+  }
+
+  /* Excel-style list overrides — scoped to list pages only */
+
+  /* Neutralize .card-container warm-paper styling within list shells */
+  .list-page-shell .card-container {
+    background: var(--surface-paper-inner);
+    border: 1px solid var(--border);
+    box-shadow: 0 1px 2px 0 oklch(0% 0 0 / 0.05);
+  }
+
+  /* Override list-page-main-card paper shadow */
+  .list-page-shell .list-page-main-card {
+    box-shadow: 0 1px 2px 0 oklch(0% 0 0 / 0.05);
+  }
+
+  /* Filter sidebar — drawer treatment: flush panel, not floating card */
+  .list-page-shell .list-filter-card {
+    background: transparent;
+    border: none;
+    border-right: 1px solid var(--border);
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  /* Compact tier: overrides --row-height to 44px for list pages (touch-safe, WCAG AA) */
+  .list-page-shell .table-row-premium {
+    height: 44px;
+    contain-intrinsic-size: 0 44px;
+    border-left: none;
+    border-bottom: 1px solid var(--border);
+    border-radius: 0;
+  }
+  .list-page-shell .RaDatagrid-table tbody .RaDatagrid-row {
+    height: 44px !important;
+    min-height: 44px !important;
+  }
+
+  /* Reduced cell padding */
+  .list-page-shell .table-row-premium td {
+    padding-top: 0.375rem;
+    padding-bottom: 0.375rem;
+    vertical-align: middle;
+  }
+  .list-page-shell .RaDatagrid-table tbody .RaDatagrid-row > td {
+    padding-top: 0.375rem !important;
+    padding-bottom: 0.375rem !important;
+  }
+
+  /* Clean hover — subtle neutral, no left accent, no shadow lift */
+  .list-page-shell .table-row-premium:hover {
+    background: color-mix(in oklch, var(--muted) 50%, transparent);
+    border-left-color: transparent;
+    box-shadow: none;
+  }
+  .list-page-shell .table-row-premium:hover .name-cell {
+    color: inherit;
+  }
+
+  /* --- Organization list: taller rows for readability --- */
+  .list-page-shell .organization-list-row {
+    height: 52px;
+    contain-intrinsic-size: 0 52px;
+  }
+  .list-page-shell .RaDatagrid-table tbody .RaDatagrid-row.organization-list-row {
+    height: 52px !important;
+    min-height: 52px !important;
+  }
+  .list-page-shell .organization-list-row > td {
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+  }
+  .list-page-shell .RaDatagrid-table tbody .RaDatagrid-row.organization-list-row > td {
+    padding-top: 0.75rem !important;
+    padding-bottom: 0.75rem !important;
+  }
+
+  /* Organization list: zebra striping for scanability */
+  .list-page-shell .organization-list-row-zebra {
+    background: color-mix(in oklch, var(--muted) 25%, transparent);
+  }
+  .list-page-shell .organization-list-row-zebra:hover {
+    background: color-mix(in oklch, var(--muted) 50%, transparent);
+  }
+
+  /* Distinct header row */
+  .list-page-shell .sticky-header table thead th {
+    background: var(--muted);
+    border-bottom: 2px solid var(--border);
+    letter-spacing: 0.03em;
+    padding: 4px 8px;
+    vertical-align: middle;
+    white-space: nowrap;
+  }
+
+  .list-toolbar {
+    @apply flex flex-wrap items-center shrink-0;
+    gap: var(--list-toolbar-gap);
+    margin-bottom: var(--list-toolbar-margin-bottom);
+    padding-block: 0.25rem;
+  }
+
+  .list-page-main-card {
+    padding: var(--list-main-card-padding);
+    box-shadow: var(--paper-shadow-2);
+    border-radius: 0.75rem;
+  }
+
+  .list-filter-card {
+    padding: var(--list-filter-card-padding);
+    /* Drawer overrides (bg, border, radius, shadow) are scoped under .list-page-shell */
+  }
+
+  .list-bulk-actions {
+    @apply mb-widget sticky top-0 z-10 rounded-xl border border-border bg-card p-content shadow-sm;
+  }
+
+  .card-list-surface {
+    @apply rounded-xl border border-border shadow-sm gap-content;
+  }
+
+  .sticky-header table thead th {
+    position: sticky;
+    top: 0;
+    z-index: 6;
+    background: var(--surface-paper-card);
+    border-bottom: 1px solid color-mix(in oklch, var(--paper-divider) 90%, transparent);
+    color: var(--paper-header-foreground);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
   }
 
   /* Filter sidebar scrollbar styling */
@@ -516,11 +886,9 @@
   .card-interactive:hover {
     box-shadow: var(--elevation-2);
     border-color: var(--stroke-card-hover);
-    transform: translateY(-1px);
   }
 
   .card-interactive:active {
-    transform: translateY(0);
     box-shadow: var(--elevation-1);
   }
 
@@ -686,9 +1054,9 @@
   --btn-shadow-rest: 0 1px 2px 0 oklch(30% 0.01 92 / 0.1);
   --btn-shadow-hover: 0 2px 4px -1px oklch(30% 0.01 92 / 0.15);
 
-  /* Badge refinement - hairline depth */
-  --badge-shadow: 0 1px 2px -1px oklch(30% 0.01 92 / 0.08);
-  --badge-ring-opacity: 0.08;
+  /* Badge refinement - quieter hairline depth */
+  --badge-shadow: 0 1px 2px -1px oklch(30% 0.01 92 / 0.05); /* Quieted from 0.08 */
+  --badge-ring-opacity: 0.05; /* Quieted from 0.08 */
 
   /* Input glow - elegant focus states */
   --input-shadow-rest: inset 0 1px 2px oklch(30% 0.01 92 / 0.04);
@@ -705,7 +1073,7 @@
   /* Micro-interaction timing - natural deceleration */
   --duration-fast: 100ms;
   --duration-normal: 150ms;
-  --duration-slow: 200ms;
+  --duration-slow: 150ms;
   --ease-out-soft: cubic-bezier(0.25, 0.1, 0.25, 1);
 
   /* Core Neutrals - OKLCH format with paper cream undertone (hue 92° for consistency) */
@@ -739,12 +1107,15 @@
   --accent-clay-300: oklch(82% 0.06 72); /* #F4D4A8 - Very light clay */
 
   /* Foundation colors (semantic mappings) */
-  --background: oklch(97.5% 0.01 92); /* Paper cream - subtle warmth, improved card separation */
-  --foreground: oklch(20% 0.012 85); /* Slightly warmer dark text */
+  --background: oklch(97.5% 0.01 92); /* Warm beige app background */
+  --foreground: oklch(18% 0.008 85); /* Darkened primary text */
   --card: oklch(100% 0 0); /* Pure white - material layering principle */
   --card-foreground: var(--neutral-700); /* Card text */
   --popover: oklch(100% 0 0); /* Pure white popover surface */
   --popover-foreground: var(--neutral-700); /* Popover text */
+  --surface-paper-page: oklch(96% 0.012 88);
+  --surface-paper-card: oklch(98.7% 0.008 88);
+  --surface-paper-inner: oklch(100% 0 0);
 
   /* Interactive colors */
   --primary: var(--brand-500); /* Forest green for buttons - WCAG AAA compliant (10.8:1) */
@@ -759,7 +1130,7 @@
   /* Overlay/backdrop colors */
   --overlay: oklch(0 0 0 / 50%); /* Black 50% opacity for modals */
   --overlay-light: oklch(0 0 0 / 30%); /* Lighter overlay variant */
-  --destructive: oklch(58% 0.18 27); /* Slightly lighter terracotta for cream background */
+  --destructive: oklch(42% 0.12 32); /* Clay — WCAG 6.01:1 on white, 5.81:1 on cream */
   --destructive-foreground: oklch(99% 0 0); /* White text on destructive */
 
   /* Chart semantic aliases (map to *-default variants for useChartTheme hook) */
@@ -767,20 +1138,27 @@
   --warning: var(--warning-default);
 
   /* Borders and focus */
-  --border: var(--neutral-200); /* Borders */
+  --border: var(--neutral-200); /* Warm beige divider */
   --input: var(--neutral-300); /* Input borders - darker for better visibility */
   --ring: oklch(55% 0.095 142); /* #4D9900 - Brightened focus ring for visibility */
 
-  /* Success states (emerald green) - hue 155° to differentiate from forest green brand */
-  --success-subtle: oklch(92% 0.08 155);
-  --success-default: oklch(56% 0.115 155); /* #10B981 - Brighter emerald */
-  --success-strong: oklch(48% 0.12 155);
-  --success-bg: oklch(95% 0.05 155);
-  --success-border: oklch(78% 0.09 155);
-  --success-hover: oklch(60% 0.112 155);
-  --success-active: oklch(52% 0.117 155);
-  --success-disabled: oklch(72% 0.06 155);
+  /* Success states (olive) - hue 118° for executive restraint, max chroma 0.10 */
+  --success-subtle: oklch(92% 0.05 118);
+  --success-default: oklch(43% 0.1 118); /* WCAG ~5.43:1 on cream */
+  --success-strong: oklch(38% 0.08 118);
+  --success-bg: oklch(95% 0.03 118);
+  --success-border: oklch(78% 0.06 118);
+  --success-hover: oklch(47% 0.097 118);
+  --success-active: oklch(40% 0.1 118);
+  --success-disabled: oklch(72% 0.04 118);
   --success-foreground: oklch(100% 0 0); /* White text on success backgrounds */
+
+  /* Olive semantic tokens (KPI card tone system, kanban) */
+  --olive-base: oklch(40% 0.08 118);
+  --olive-surface: oklch(85% 0.03 118);
+  --olive-surface-light: oklch(92% 0.02 118);
+  --olive-text: oklch(34% 0.09 118);
+  --olive-trend: oklch(43% 0.1 118);
 
   /* Warning states (golden amber) - kept at warm hue 85° */
   --warning-foreground: oklch(20% 0.02 85); /* Dark text on warning backgrounds for contrast */
@@ -803,43 +1181,53 @@
   --info-active: oklch(54% 0.067 200);
   --info-disabled: oklch(72% 0.04 200);
 
-  /* Error/Destructive extended (terracotta) - kept at hue 25° */
-  --error-subtle: oklch(92% 0.075 25);
-  --error-default: oklch(58% 0.13 25);
-  --error-strong: oklch(48% 0.135 25);
-  --error-bg: oklch(95% 0.055 25);
-  --error-border: oklch(80% 0.105 25);
-  --error-hover: oklch(62% 0.127 25);
-  --error-active: oklch(54% 0.132 25);
-  --error-disabled: oklch(72% 0.07 25);
+  /* Error/Destructive extended (clay) - hue 32°, chroma ≤0.14 */
+  --error-subtle: oklch(93% 0.02 32);
+  --error-default: oklch(42% 0.12 32);
+  --error-strong: oklch(38% 0.11 32);
+  --error-bg: oklch(95% 0.02 32);
+  --error-border: oklch(58% 0.14 32); /* WCAG 3.28:1 on white for non-text */
+  --error-hover: oklch(48% 0.12 32);
+  --error-active: oklch(38% 0.12 32);
+  --error-disabled: oklch(72% 0.04 32);
 
-  /* Tag colors - V2: More aggressive contrast for better readability */
-  --tag-warm-bg: oklch(87% 0.07 80);
-  --tag-warm-fg: oklch(20% 0.02 85);
-  --tag-green-bg: oklch(88% 0.06 155);
-  --tag-green-fg: oklch(20% 0.02 85);
-  --tag-teal-bg: oklch(86% 0.05 200);
-  --tag-teal-fg: oklch(20% 0.02 85);
-  --tag-blue-bg: oklch(85% 0.06 270);
-  --tag-blue-fg: oklch(20% 0.02 85);
-  --tag-purple-bg: oklch(87% 0.06 305);
-  --tag-purple-fg: oklch(20% 0.02 85);
-  --tag-yellow-bg: oklch(92% 0.1 110);
-  --tag-yellow-fg: oklch(20% 0.02 85);
-  --tag-gray-bg: oklch(90% 0.015 85);
-  --tag-gray-fg: oklch(20% 0.02 85);
-  --tag-pink-bg: oklch(89% 0.07 15);
-  --tag-pink-fg: oklch(20% 0.02 85);
+  /* Clay semantic tokens (KPI card + kanban) */
+  --clay-base: oklch(45% 0.1 32);
+  --clay-surface: oklch(93% 0.02 32);
+  --clay-surface-dark: oklch(86% 0.04 32);
+  --clay-text: oklch(38% 0.11 32);
 
-  /* Earth-tone tags with stronger saturation */
-  --tag-clay-bg: oklch(85% 0.075 50);
-  --tag-clay-fg: oklch(20% 0.02 85);
-  --tag-sage-bg: oklch(87% 0.05 120);
-  --tag-sage-fg: oklch(20% 0.02 85);
-  --tag-amber-bg: oklch(90% 0.08 85);
-  --tag-amber-fg: oklch(20% 0.02 85);
-  --tag-cocoa-bg: oklch(83% 0.06 75);
-  --tag-cocoa-fg: oklch(20% 0.02 85);
+  /* Executive supporting neutrals */
+  --divider-warm: oklch(86% 0.01 85);
+  --border-warm: oklch(82% 0.02 85);
+
+  /* Tag colors - V3: Softened chroma (~25% reduction) for executive tone */
+  --tag-warm-bg: oklch(88% 0.05 80);
+  --tag-warm-fg: oklch(22% 0.02 85);
+  --tag-green-bg: oklch(89% 0.045 118); /* Olive-aligned */
+  --tag-green-fg: oklch(22% 0.02 85);
+  --tag-teal-bg: oklch(87% 0.038 200);
+  --tag-teal-fg: oklch(22% 0.02 85);
+  --tag-blue-bg: oklch(88% 0.03 255);
+  --tag-blue-fg: oklch(22% 0.02 85);
+  --tag-purple-bg: oklch(88% 0.045 305);
+  --tag-purple-fg: oklch(22% 0.02 85);
+  --tag-yellow-bg: oklch(93% 0.075 110);
+  --tag-yellow-fg: oklch(22% 0.02 85);
+  --tag-gray-bg: oklch(91% 0.01 85);
+  --tag-gray-fg: oklch(22% 0.02 85);
+  --tag-pink-bg: oklch(90% 0.05 15);
+  --tag-pink-fg: oklch(22% 0.02 85);
+
+  /* Earth-tone tags — softened chroma */
+  --tag-clay-bg: oklch(86% 0.055 50);
+  --tag-clay-fg: oklch(22% 0.02 85);
+  --tag-sage-bg: oklch(88% 0.038 120);
+  --tag-sage-fg: oklch(22% 0.02 85);
+  --tag-amber-bg: oklch(91% 0.06 85);
+  --tag-amber-fg: oklch(22% 0.02 85);
+  --tag-cocoa-bg: oklch(84% 0.045 75);
+  --tag-cocoa-fg: oklch(22% 0.02 85);
 
   /* ========================================
      PIPELINE STAGE COLORS
@@ -980,7 +1368,7 @@
   --chart-8-stroke: oklch(35% 0.012 85);
 
   /* Chart support tokens */
-  --chart-gridline: oklch(90% 0.01 92); /* Subtle paper cream gridlines */
+  --chart-gridline: oklch(88.5% 0.008 88); /* Financial report-style warm gridlines */
   --chart-axis-text: oklch(46% 0.018 85); /* Axis labels - neutral-600 for WCAG AA on white cards */
   --chart-disabled: oklch(78% 0.008 85); /* Disabled/muted data */
 
@@ -1009,11 +1397,36 @@
   --tag-border: oklch(0 0 0 / 0.2); /* 20% black for tag borders */
 
   /* Divider System - Internal separators */
-  --divider-subtle: oklch(96% 0.004 92); /* On white surfaces, internal dividers */
-  --divider-strong: oklch(94.5% 0.004 92); /* Section separators */
+  --divider-subtle: oklch(96% 0.004 92); /* Warm subtle 1px separators */
+  --divider-strong: oklch(94.5% 0.004 92); /* Warm section separators */
+  --paper-divider: oklch(87% 0.012 88 / 0.3); /* Lightened from 0.42 */
+  --paper-divider-soft: oklch(87% 0.012 88 / 0.18); /* Lightened from 0.25 */
+  --paper-shadow-1:
+    0 1px 1px 0 oklch(28% 0.015 70 / 0.08), 0 8px 20px -16px oklch(28% 0.015 70 / 0.2);
+  --paper-shadow-2:
+    0 1px 2px 0 oklch(28% 0.016 70 / 0.1), 0 14px 24px -16px oklch(28% 0.016 70 / 0.24);
+  --paper-row-hover-bg: oklch(97.7% 0.01 88);
+  --paper-row-hover-accent: var(--brand-700);
+  --paper-row-hover-shadow:
+    0 1px 3px 0 oklch(28% 0.015 70 / 0.1), 0 10px 24px -14px oklch(28% 0.015 70 / 0.22);
+  --paper-header-foreground: oklch(28% 0.035 108);
+  --paper-last-seen-dot: var(
+    --olive-base
+  ); /* Was hardcoded hue 145, now aligned with olive system */
+  --paper-grain-opacity: 0.026;
+  --paper-grain-density: 18%;
+  --paper-grain-ink: oklch(42% 0.02 82);
 
   /* Interactive Surface System - Hover/focus states */
-  --surface-interactive-hover: oklch(99% 0.006 92); /* Warm hover tint for interactive elements */
+  --surface-interactive-hover: oklch(99% 0.006 92); /* Warm hover tint */
+
+  /* Product lifecycle/status semantic tokens — softened chroma */
+  --status-cold-bg: oklch(95.5% 0.02 240);
+  --status-cold-fg: oklch(45% 0.06 240);
+  --status-active-bg: oklch(95.5% 0.025 150);
+  --status-active-fg: oklch(42% 0.07 150);
+  --status-discontinued-bg: oklch(95% 0.03 25);
+  --status-discontinued-fg: oklch(45% 0.08 25);
 
   /* Text Hierarchy - Improved contrast for widget titles and metrics */
   /* Zen Recommendation: Warm-tint all text for complete cohesion with paper cream background */
@@ -1026,13 +1439,15 @@
 
   /* Avatar Micro-Elevation - Ring + shadow + highlight for depth */
   --avatar-shadow: 0 0 0 1px oklch(93% 0.004 92), 0 1px 2px 0 var(--shadow-ink) / 0.1;
-  --avatar-highlight: inset 0 1px 0 0 oklch(100% 0 0 / 0.3);
+  --avatar-highlight: inset 0 1px 0 0 oklch(100% 0 0 / 0.18);
+  --avatar-fallback-bg: oklch(89% 0.02 72);
+  --avatar-fallback-fg: oklch(28% 0.025 72);
 
   /* Dashboard Layout Tokens */
   --dashboard-tasks-width: 320px;
   --dashboard-icon-rail-width: 48px;
   --dashboard-tasks-drawer-width: 70%;
-  --dashboard-transition-duration: 200ms;
+  --dashboard-transition-duration: 150ms;
   --dashboard-transition-easing: ease-out;
 
   /*
@@ -1125,7 +1540,7 @@
   --accent-clay-600-dark: oklch(70% 0.1 72); /* Medium-light clay */
   --accent-clay-500-dark: oklch(75% 0.095 72); /* Light clay */
 
-  --destructive-dark: oklch(70.4% 0.191 22.216); /* Foundational token for dark destructive */
+  --destructive-dark: oklch(68% 0.14 32); /* Clay — dark mode foundational token */
 
   /* Foundation colors (semantic mappings) */
   --background: var(--neutral-50); /* Dark background */
@@ -1134,6 +1549,9 @@
   --card-foreground: var(--neutral-900); /* Card text */
   --popover: var(--neutral-100); /* Popover surface */
   --popover-foreground: var(--neutral-900); /* Popover text */
+  --surface-paper-page: var(--background);
+  --surface-paper-card: var(--card);
+  --surface-paper-inner: var(--card);
 
   /* Interactive colors */
   --primary: var(--brand-700); /* Primary buttons - forest green */
@@ -1146,7 +1564,7 @@
   --accent-foreground: oklch(12% 0.02 72); /* Very dark text for accessibility */
   --destructive: var(--destructive-dark);
   --destructive-foreground: oklch(
-    12% 0.02 25
+    12% 0.02 32
   ); /* Very dark text on destructive for accessibility */
 
   /* Overlay/backdrop colors - dark mode */
@@ -1162,16 +1580,23 @@
   --input: oklch(1 0 0 / 15%); /* Input borders */
   --ring: oklch(55% 0.095 142); /* Focus ring - same brightness as light mode */
 
-  /* Success states - dark mode (emerald hue 155° to differentiate from brand) */
-  --success-subtle: oklch(25% 0.08 155);
-  --success-default: oklch(55% 0.12 155);
-  --success-strong: oklch(65% 0.11 155);
-  --success-bg: oklch(20% 0.06 155);
-  --success-border: oklch(40% 0.1 155);
-  --success-hover: oklch(50% 0.13 155);
-  --success-active: oklch(60% 0.12 155);
-  --success-disabled: oklch(35% 0.05 155);
+  /* Success states - dark mode (olive hue 118°) */
+  --success-subtle: oklch(25% 0.06 118);
+  --success-default: oklch(58% 0.1 118);
+  --success-strong: oklch(68% 0.09 118);
+  --success-bg: oklch(20% 0.04 118);
+  --success-border: oklch(40% 0.08 118);
+  --success-hover: oklch(53% 0.1 118);
+  --success-active: oklch(63% 0.1 118);
+  --success-disabled: oklch(35% 0.04 118);
   --success-foreground: oklch(100% 0 0); /* White text on success backgrounds */
+
+  /* Olive semantic tokens - dark mode */
+  --olive-base: oklch(55% 0.08 118);
+  --olive-surface: oklch(25% 0.03 118);
+  --olive-surface-light: oklch(22% 0.02 118);
+  --olive-text: oklch(70% 0.08 118);
+  --olive-trend: oklch(58% 0.1 118);
 
   /* Warning states - dark mode */
   --warning-subtle: oklch(25% 0.09 85);
@@ -1193,44 +1618,62 @@
   --info-active: oklch(60% 0.12 200);
   --info-disabled: oklch(38% 0.05 200);
 
-  /* Error/Destructive extended - dark mode */
-  --error-subtle: oklch(27% 0.11 25);
-  --error-default: oklch(55% 0.145 25);
-  --error-strong: oklch(65% 0.14 25);
-  --error-bg: oklch(22% 0.08 25);
-  --error-border: oklch(43% 0.13 25);
-  --error-hover: oklch(50% 0.15 25);
-  --error-active: oklch(60% 0.143 25);
-  --error-disabled: oklch(40% 0.06 25);
+  /* Error/Destructive extended - dark mode (clay hue 32°) */
+  --error-subtle: oklch(27% 0.08 32);
+  --error-default: oklch(58% 0.12 32);
+  --error-strong: oklch(68% 0.11 32);
+  --error-bg: oklch(22% 0.05 32);
+  --error-border: oklch(43% 0.1 32);
+  --error-hover: oklch(53% 0.12 32);
+  --error-active: oklch(63% 0.12 32);
+  --error-disabled: oklch(40% 0.04 32);
 
-  /* Tag colors - dark mode: Mirrored from light mode for consistent readability */
-  /* High-contrast tags that pop against dark backgrounds with dark text on light backgrounds */
-  --tag-warm-bg: oklch(87% 0.07 80);
-  --tag-warm-fg: oklch(20% 0.02 85);
-  --tag-green-bg: oklch(88% 0.06 155);
-  --tag-green-fg: oklch(20% 0.02 85);
-  --tag-teal-bg: oklch(86% 0.05 200);
-  --tag-teal-fg: oklch(20% 0.02 85);
-  --tag-blue-bg: oklch(85% 0.06 270);
-  --tag-blue-fg: oklch(20% 0.02 85);
-  --tag-purple-bg: oklch(87% 0.06 305);
-  --tag-purple-fg: oklch(20% 0.02 85);
-  --tag-yellow-bg: oklch(92% 0.1 110);
-  --tag-yellow-fg: oklch(20% 0.02 85);
-  --tag-gray-bg: oklch(90% 0.015 85);
-  --tag-gray-fg: oklch(20% 0.02 85);
-  --tag-pink-bg: oklch(89% 0.07 15);
-  --tag-pink-fg: oklch(20% 0.02 85);
+  /* Clay semantic tokens - dark mode */
+  --clay-base: oklch(60% 0.1 32);
+  --clay-surface: oklch(25% 0.02 32);
+  --clay-surface-dark: oklch(22% 0.03 32);
+  --clay-text: oklch(72% 0.1 32);
 
-  /* Earth-tone tags - dark mode mirrored from light mode */
-  --tag-clay-bg: oklch(85% 0.075 50);
-  --tag-clay-fg: oklch(20% 0.02 85);
-  --tag-sage-bg: oklch(87% 0.05 120);
-  --tag-sage-fg: oklch(20% 0.02 85);
-  --tag-amber-bg: oklch(90% 0.08 85);
-  --tag-amber-fg: oklch(20% 0.02 85);
-  --tag-cocoa-bg: oklch(83% 0.06 75);
-  --tag-cocoa-fg: oklch(20% 0.02 85);
+  /* Status badges — dark mode (legible on dark surfaces, same hues as light) */
+  --status-cold-bg: oklch(25% 0.04 240);
+  --status-cold-fg: oklch(72% 0.07 240);
+  --status-active-bg: oklch(25% 0.05 150);
+  --status-active-fg: oklch(72% 0.08 150);
+  --status-discontinued-bg: oklch(28% 0.05 25);
+  --status-discontinued-fg: oklch(72% 0.09 25);
+
+  /* Executive supporting neutrals - dark mode */
+  --divider-warm: oklch(30% 0.01 85);
+  --border-warm: oklch(35% 0.02 85);
+
+  /* Tag colors - dark mode: Mirrored from light mode V3 (softened chroma) */
+  /* Light badges on dark surfaces — same values as light mode */
+  --tag-warm-bg: oklch(88% 0.05 80);
+  --tag-warm-fg: oklch(22% 0.02 85);
+  --tag-green-bg: oklch(89% 0.045 118); /* Olive-aligned */
+  --tag-green-fg: oklch(22% 0.02 85);
+  --tag-teal-bg: oklch(87% 0.038 200);
+  --tag-teal-fg: oklch(22% 0.02 85);
+  --tag-blue-bg: oklch(88% 0.03 255);
+  --tag-blue-fg: oklch(22% 0.02 85);
+  --tag-purple-bg: oklch(88% 0.045 305);
+  --tag-purple-fg: oklch(22% 0.02 85);
+  --tag-yellow-bg: oklch(93% 0.075 110);
+  --tag-yellow-fg: oklch(22% 0.02 85);
+  --tag-gray-bg: oklch(91% 0.01 85);
+  --tag-gray-fg: oklch(22% 0.02 85);
+  --tag-pink-bg: oklch(90% 0.05 15);
+  --tag-pink-fg: oklch(22% 0.02 85);
+
+  /* Earth-tone tags — dark mode mirrored (softened chroma) */
+  --tag-clay-bg: oklch(86% 0.055 50);
+  --tag-clay-fg: oklch(22% 0.02 85);
+  --tag-sage-bg: oklch(88% 0.038 120);
+  --tag-sage-fg: oklch(22% 0.02 85);
+  --tag-amber-bg: oklch(91% 0.06 85);
+  --tag-amber-fg: oklch(22% 0.02 85);
+  --tag-cocoa-bg: oklch(84% 0.045 75);
+  --tag-cocoa-fg: oklch(22% 0.02 85);
 
   /* Pipeline Stage Colors - Dark Mode */
   /* Stage tokens use semantic refs which auto-update for dark mode */
@@ -1350,6 +1793,18 @@
   --shadow-card-1-hover: 0 3px 8px var(--shadow-ink-dark) / 0.45;
   --shadow-card-2-hover: 0 5px 14px var(--shadow-ink-dark) / 0.5;
   --shadow-card-3-hover: 0 7px 18px var(--shadow-ink-dark) / 0.55;
+  --paper-divider: oklch(38% 0.02 286 / 0.65);
+  --paper-divider-soft: oklch(100% 0 0 / 0.1);
+  --paper-shadow-1: var(--shadow-card-1);
+  --paper-shadow-2: var(--shadow-card-2);
+  --paper-row-hover-bg: color-mix(in oklch, var(--card) 88%, var(--brand-100));
+  --paper-row-hover-accent: var(--brand-500);
+  --paper-row-hover-shadow: var(--shadow-card-1);
+  --paper-header-foreground: var(--text-title);
+  --paper-last-seen-dot: var(--olive-base); /* Aligned with light mode */
+  --paper-grain-opacity: 0;
+  --paper-grain-density: 0%;
+  --paper-grain-ink: oklch(98% 0 0);
 
   /* Column shadows - dark mode with cool tinting */
   --shadow-col: 0 3px 10px var(--shadow-ink-dark) / 0.4;
@@ -1365,6 +1820,8 @@
   --text-title: oklch(95% 0.004 286); /* Headings - very light (13:1+ contrast) */
   --text-body: oklch(93% 0.005 285); /* Standard body text (11:1+ contrast) */
   --text-subtle: oklch(85% 0.007 285); /* Timestamps, metadata (7:1+ contrast) */
+  --avatar-fallback-bg: oklch(34% 0.015 285);
+  --avatar-fallback-fg: oklch(90% 0.008 285);
 }
 
 a,
@@ -1403,10 +1860,13 @@ input[type="time"] {
   }
   html {
     scrollbar-gutter: stable;
+    height: 100%;
   }
   body {
     @apply bg-background text-foreground;
     font-family: var(--font-sans);
+    min-height: 100dvh;
+    overflow: hidden;
   }
 }
 
@@ -1504,7 +1964,7 @@ input[type="time"] {
 
 /* Smooth transitions for overlay */
 .driver-overlay {
-  transition: opacity 0.2s ease-in-out;
+  transition: opacity 150ms ease-in-out;
 }
 
 /* Tutorial button touch targets - 44px minimum for iPad accessibility */

@@ -9,10 +9,12 @@ export { FilterChipBar } from "./FilterChipBar";
 export { FilterChipsPanel } from "./FilterChipsPanel";
 export { FilterSidebar } from "./FilterSidebar";
 export { FilterCategory } from "./FilterCategory";
+export { QuickFilterGroup } from "./QuickFilterGroup";
 
 // Hooks
 export { useFilterChipBar } from "./useFilterChipBar";
 export { useFilterManagement } from "./useFilterManagement";
+export { usePresetFilter } from "./usePresetFilter";
 export { useOrganizationNames } from "./useOrganizationNames";
 export { useSalesNames } from "./useSalesNames";
 export { useTagNames } from "./useTagNames";

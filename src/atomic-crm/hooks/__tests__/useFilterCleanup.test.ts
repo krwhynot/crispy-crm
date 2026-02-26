@@ -65,17 +65,32 @@ describe("useFilterCleanup", () => {
   });
 
   describe("when stored params have no filters", () => {
-    it("should do nothing when params object exists but has no filter property", () => {
-      // Arrange
-      const params = { sort: { field: "name", order: "ASC" } };
+    it("should still validate sort even when no filter property exists", () => {
+      // Arrange - sort field "name" is invalid for contacts (default mock returns falsy)
+      // RA stores sort as flat fields: { sort: "name", order: "ASC" }
+      const params = { sort: "name", order: "ASC" };
       localStorage.setItem("RaStoreCRM.contacts.listParams", JSON.stringify(params));
 
       // Act
       renderHook(() => useFilterCleanup("contacts"));
 
-      // Assert
+      // Assert - sort should be reset to default for contacts ("last_seen")
+      const stored = JSON.parse(localStorage.getItem("RaStoreCRM.contacts.listParams")!);
+      expect(stored.sort).toBe("last_seen");
+      expect(consoleWarnSpy).toHaveBeenCalledWith(expect.stringContaining("stale sort"));
+    });
+
+    it("should do nothing when no filter and sort field is valid", () => {
+      // Arrange - sort field is valid (RA flat format)
+      const params = { sort: "last_seen", order: "ASC" };
+      localStorage.setItem("RaStoreCRM.contacts.listParams", JSON.stringify(params));
+      vi.mocked(isValidFilterField).mockReturnValue(true);
+
+      // Act
+      renderHook(() => useFilterCleanup("contacts"));
+
+      // Assert - nothing changed
       expect(mockSetItem).not.toHaveBeenCalled();
-      expect(consoleWarnSpy).not.toHaveBeenCalled();
     });
 
     it("should do nothing when filter property is null", () => {
@@ -143,7 +158,8 @@ describe("useFilterCleanup", () => {
           stale_old_column: "should be removed",
           another_invalid: "also removed",
         },
-        sort: { field: "name", order: "ASC" }, // Non-filter params preserved
+        sort: "name",
+        order: "ASC", // RA flat sort format - non-filter params preserved
       };
       localStorage.setItem("RaStoreCRM.contacts.listParams", JSON.stringify(params));
 
@@ -164,8 +180,9 @@ describe("useFilterCleanup", () => {
       expect(stored.filter).not.toHaveProperty("stale_old_column");
       expect(stored.filter).not.toHaveProperty("another_invalid");
 
-      // Sort params should be preserved
-      expect(stored.sort).toEqual({ field: "name", order: "ASC" });
+      // Sort params should be preserved (RA flat format)
+      expect(stored.sort).toBe("name");
+      expect(stored.order).toBe("ASC");
     });
 
     it("should update both localStorage and React Admin store", () => {
@@ -181,8 +198,9 @@ describe("useFilterCleanup", () => {
       renderHook(() => useFilterCleanup("contacts"));
 
       // Assert - both storage mechanisms updated
+      // store.setItem uses the unprefixed key (RA auto-prefixes with "RaStoreCRM.")
       expect(mockSetItem).toHaveBeenCalledWith(
-        "RaStoreCRM.contacts.listParams",
+        "contacts.listParams",
         expect.objectContaining({
           filter: { valid: "keep" },
         })
@@ -458,6 +476,120 @@ describe("useFilterCleanup", () => {
       // Assert - only own properties checked
       expect(isValidFilterField).toHaveBeenCalledWith("contacts", "ownProperty");
       expect(isValidFilterField).not.toHaveBeenCalledWith("contacts", "inherited");
+    });
+  });
+
+  describe("legacy text-filter key migration", () => {
+    /**
+     * Tests for the migration of bare text-filter keys to @ilike format.
+     * Old localStorage may have bare keys (e.g., "name") for fields that now use
+     * TextColumnFilter which writes to "${source}@ilike" keys.
+     *
+     * The TEXT_FILTER_FIELDS map in useFilterCleanup defines:
+     * - contacts: ["first_name"]
+     * - organizations: ["name"]
+     * - products: ["name"]
+     * - tasks: ["title"]
+     */
+
+    it("should migrate bare 'name' key to 'name@ilike' with %value% wrapping for organizations", () => {
+      // Arrange - old format with bare key
+      const params = {
+        filter: { name: "Acme" },
+      };
+      localStorage.setItem("RaStoreCRM.organizations.listParams", JSON.stringify(params));
+      vi.mocked(isValidFilterField).mockReturnValue(true);
+
+      // Act
+      renderHook(() => useFilterCleanup("organizations"));
+
+      // Assert - bare key migrated to @ilike with wildcards
+      const stored = JSON.parse(localStorage.getItem("RaStoreCRM.organizations.listParams")!);
+      expect(stored.filter).not.toHaveProperty("name");
+      expect(stored.filter["name@ilike"]).toBe("%Acme%");
+    });
+
+    it("should keep @ilike and remove bare key when both exist", () => {
+      // Arrange - both old and new format exist
+      const params = {
+        filter: { name: "old value", "name@ilike": "%new value%" },
+      };
+      localStorage.setItem("RaStoreCRM.organizations.listParams", JSON.stringify(params));
+      vi.mocked(isValidFilterField).mockReturnValue(true);
+
+      // Act
+      renderHook(() => useFilterCleanup("organizations"));
+
+      // Assert - bare key removed, @ilike preserved
+      const stored = JSON.parse(localStorage.getItem("RaStoreCRM.organizations.listParams")!);
+      expect(stored.filter).not.toHaveProperty("name");
+      expect(stored.filter["name@ilike"]).toBe("%new value%");
+    });
+
+    it("should normalize wildcards: %test% stays %test%, %foo becomes %foo%", () => {
+      // Arrange - value already has leading wildcard only
+      const params = {
+        filter: { name: "%foo" },
+      };
+      localStorage.setItem("RaStoreCRM.organizations.listParams", JSON.stringify(params));
+      vi.mocked(isValidFilterField).mockReturnValue(true);
+
+      // Act
+      renderHook(() => useFilterCleanup("organizations"));
+
+      // Assert - wildcards stripped then re-wrapped: %foo -> foo -> %foo%
+      const stored = JSON.parse(localStorage.getItem("RaStoreCRM.organizations.listParams")!);
+      expect(stored.filter["name@ilike"]).toBe("%foo%");
+    });
+
+    it("should collapse multiple boundary % characters: %%foo%% becomes %foo%", () => {
+      // Arrange - multiple boundary wildcards
+      const params = {
+        filter: { name: "%%foo%%" },
+      };
+      localStorage.setItem("RaStoreCRM.organizations.listParams", JSON.stringify(params));
+      vi.mocked(isValidFilterField).mockReturnValue(true);
+
+      // Act
+      renderHook(() => useFilterCleanup("organizations"));
+
+      // Assert - boundary %s collapsed, then re-wrapped once
+      const stored = JSON.parse(localStorage.getItem("RaStoreCRM.organizations.listParams")!);
+      expect(stored.filter["name@ilike"]).toBe("%foo%");
+    });
+
+    it("should remove key entirely for empty/whitespace-only value", () => {
+      // Arrange - empty value
+      const params = {
+        filter: { name: "   " },
+      };
+      localStorage.setItem("RaStoreCRM.organizations.listParams", JSON.stringify(params));
+      vi.mocked(isValidFilterField).mockReturnValue(true);
+
+      // Act
+      renderHook(() => useFilterCleanup("organizations"));
+
+      // Assert - key removed entirely
+      const stored = JSON.parse(localStorage.getItem("RaStoreCRM.organizations.listParams")!);
+      expect(stored.filter).not.toHaveProperty("name");
+      expect(stored.filter).not.toHaveProperty("name@ilike");
+    });
+
+    it("should NOT migrate non-text-filter bare keys (e.g., status)", () => {
+      // Arrange - "status" is not in TEXT_FILTER_FIELDS for organizations
+      const params = {
+        filter: { status: "active" },
+      };
+      localStorage.setItem("RaStoreCRM.organizations.listParams", JSON.stringify(params));
+      vi.mocked(isValidFilterField).mockReturnValue(true);
+
+      // Act
+      renderHook(() => useFilterCleanup("organizations"));
+
+      // Assert - status key preserved as-is, NOT migrated to status@ilike
+      const stored = JSON.parse(localStorage.getItem("RaStoreCRM.organizations.listParams")!);
+      expect(stored.filter).toHaveProperty("status", "active");
+      expect(stored.filter).not.toHaveProperty("status@ilike");
     });
   });
 });

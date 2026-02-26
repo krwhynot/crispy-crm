@@ -11,7 +11,7 @@ import { FilterLiveForm } from "react-admin";
 import { SearchInput } from "@/components/ra-wrappers/search-input";
 import { cn } from "@/lib/utils";
 
-interface FilterSidebarProps {
+interface FilterSidebarProps extends React.ComponentPropsWithoutRef<"div"> {
   children: React.ReactNode;
   /** Placeholder text for the search input */
   searchPlaceholder?: string;
@@ -21,8 +21,7 @@ interface FilterSidebarProps {
    * @default true
    */
   showSearch?: boolean;
-  /** Additional CSS classes */
-  className?: string;
+  // className is inherited from ComponentPropsWithoutRef<"div">
 }
 
 /**
@@ -51,15 +50,16 @@ export function FilterSidebar({
   searchPlaceholder = "Search...",
   showSearch = true,
   className,
+  ...rest
 }: FilterSidebarProps) {
   return (
-    <div className={cn("flex flex-col gap-4 p-4", className)}>
+    <div className={cn("flex flex-col gap-3 p-4", className)} {...rest}>
       {showSearch && (
         <FilterLiveForm>
           <SearchInput source="q" placeholder={searchPlaceholder} />
         </FilterLiveForm>
       )}
-      <div className="flex flex-col gap-3">{children}</div>
+      <div className="flex flex-col gap-2">{children}</div>
     </div>
   );
 }

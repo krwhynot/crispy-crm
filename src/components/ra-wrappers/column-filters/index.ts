@@ -7,7 +7,8 @@
  *
  * @example
  * // In a custom datagrid header
- * import { FilterableColumnHeader, ORGANIZATION_TYPE_CHOICES } from "@/components/ra-wrappers/column-filters";
+ * import { FilterableColumnHeader } from "@/components/ra-wrappers/column-filters";
+ * import { ORGANIZATION_TYPE_CHOICES } from "@/atomic-crm/organizations/constants";
  *
  * <FilterableColumnHeader
  *   source="name"
@@ -19,7 +20,7 @@
  *   source="organization_type"
  *   label="Type"
  *   filterType="checkbox"
- *   choices={ORGANIZATION_TYPE_CHOICES}
+ *   choices={[...ORGANIZATION_TYPE_CHOICES]}
  * />
  */
 

@@ -52,7 +52,10 @@ export const ContactEdit = () => {
 const ContactEditContent = () => {
   const { isPending, record } = useEditContext<Contact>();
 
-  const defaultValues = useMemo(() => contactBaseSchema.partial().parse(record), [record]);
+  const defaultValues = useMemo(
+    () => (record ? contactBaseSchema.partial().passthrough().parse(record) : {}),
+    [record]
+  );
 
   if (isPending || !record) return null;
 

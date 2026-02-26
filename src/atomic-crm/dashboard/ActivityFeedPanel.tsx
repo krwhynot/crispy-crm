@@ -225,7 +225,7 @@ function ActivityFeedPanel({ limit = 15 }: ActivityFeedPanelProps) {
             </div>
           </div>
         ) : (
-          <div className="divide-y divide-border">
+          <div className="divide-y divide-border/30">
             {activities.map((activity) => (
               <ActivityItem key={activity.id} activity={activity} />
             ))}

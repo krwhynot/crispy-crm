@@ -1,11 +1,12 @@
 import * as React from "react";
-import { Building2, MapPin, Truck, User } from "lucide-react";
+import { Building2, GitBranch, MapPin, Truck, User } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { useListContext } from "ra-core";
 
 import { ToggleFilterButton } from "@/components/ra-wrappers/toggle-filter-button";
 import { FilterCategory } from "../filters/FilterCategory";
+import { FilterSidebar } from "../filters/FilterSidebar";
 import { StarredFilterToggle } from "../filters/StarredFilterToggle";
 import { PLAYBOOK_CATEGORY_CHOICES } from "@/atomic-crm/validation/segments";
 import { OPERATOR_SEGMENT_GROUPS } from "@/atomic-crm/validation/operatorSegments";
@@ -17,7 +18,7 @@ import {
 } from "@/components/ui/accordion";
 import { OwnerFilterDropdown } from "@/components/ra-wrappers/OwnerFilterDropdown";
 import { OrganizationSavedQueries } from "./OrganizationSavedQueries";
-import { FilterRailHidden } from "../filters/FilterLayoutModeContext";
+import { ParentOrganizationFilterDropdown } from "./ParentOrganizationFilterDropdown";
 import {
   ORGANIZATION_TYPE_CHOICES,
   ORG_TYPE_COLOR_MAP,
@@ -128,105 +129,100 @@ export const OrganizationListFilter = (): React.ReactElement => {
   );
 
   return (
-    <div className="flex flex-col gap-4" data-tutorial="org-filters">
+    <FilterSidebar showSearch={false} data-tutorial="org-filters">
       {/* Starred Quick Filter - TOP of sidebar */}
-      <FilterRailHidden>
-        <StarredFilterToggle entityType="organizations" />
-      </FilterRailHidden>
+      <StarredFilterToggle entityType="organizations" />
 
       {/* Quick Filter Presets */}
-      <FilterRailHidden>
-        <OrganizationSavedQueries />
-      </FilterRailHidden>
+      <OrganizationSavedQueries />
 
       {/* Collapsible Filter Sections */}
-      <div className="flex flex-col gap-2">
-        {/* Organization Type - multiselect */}
-        <FilterCategory icon={<Building2 className="h-4 w-4" />} label="Organization Type">
-          {ORGANIZATION_TYPE_CHOICES.map((type) => (
+      {/* Organization Type - multiselect */}
+      <FilterCategory icon={<Building2 className="h-4 w-4" />} label="Organization Type">
+        {ORGANIZATION_TYPE_CHOICES.map((type) => (
+          <ToggleFilterButton
+            multiselect
+            key={type.id}
+            className="w-full justify-between"
+            label={
+              <Badge
+                className={`text-xs px-3 py-2 min-h-[44px] flex items-center ${ORG_TYPE_COLOR_MAP[type.id as OrganizationType]}`}
+              >
+                {type.name}
+              </Badge>
+            }
+            value={{ organization_type: type.id }}
+          />
+        ))}
+      </FilterCategory>
+
+      {/* Category - unified section with helper text */}
+      <FilterCategory icon={<Truck className="h-4 w-4" />} label="Category">
+        {/* Playbook categories - for Distributors/Principals */}
+        {showPlaybookFilters && (
+          <>
+            {showPrincipalOnlyPlaybook ? (
+              <Badge
+                className={`text-xs px-3 py-2 min-h-[44px] flex items-center ${getSegmentColor(principalPlaybookChoice?.id)}`}
+              >
+                {principalPlaybookChoice?.name ?? "Principal/Manufacturer"} (fixed)
+              </Badge>
+            ) : (
+              PLAYBOOK_CATEGORY_CHOICES.map((category) => (
+                <ToggleFilterButton
+                  multiselect
+                  key={category.id}
+                  className="w-full justify-between"
+                  label={
+                    <Badge
+                      className={`text-xs px-3 py-2 min-h-[44px] flex items-center ${getSegmentColor(category.id)}`}
+                    >
+                      {category.name}
+                    </Badge>
+                  }
+                  value={{ segment_id: category.id }}
+                />
+              ))
+            )}
+          </>
+        )}
+
+        {/* Operator segments - for Customers/Prospects (grouped accordion) */}
+        {showOperatorFilters && (
+          <OperatorSegmentAccordion filterValues={filterValues} getSegmentColor={getSegmentColor} />
+        )}
+      </FilterCategory>
+
+      {/* State - US states filter */}
+      <FilterCategory icon={<MapPin className="h-4 w-4" />} label="State">
+        <div className="max-h-64 overflow-y-auto">
+          {US_STATES.map((state) => (
             <ToggleFilterButton
               multiselect
-              key={type.id}
+              key={state.id}
               className="w-full justify-between"
               label={
-                <Badge
-                  className={`text-xs px-3 py-2 min-h-[44px] flex items-center ${ORG_TYPE_COLOR_MAP[type.id as OrganizationType]}`}
-                >
-                  {type.name}
+                <Badge className="text-xs px-3 py-2 min-h-[44px] flex items-center tag-gray">
+                  {state.name}
                 </Badge>
               }
-              value={{ organization_type: type.id }}
+              value={{ state: state.id }}
             />
           ))}
-        </FilterCategory>
+        </div>
+      </FilterCategory>
 
-        {/* Category - unified section with helper text */}
-        <FilterCategory icon={<Truck className="h-4 w-4" />} label="Category">
-          {/* Playbook categories - for Distributors/Principals */}
-          {showPlaybookFilters && (
-            <>
-              {showPrincipalOnlyPlaybook ? (
-                <Badge
-                  className={`text-xs px-3 py-2 min-h-[44px] flex items-center ${getSegmentColor(principalPlaybookChoice?.id)}`}
-                >
-                  {principalPlaybookChoice?.name ?? "Principal/Manufacturer"} (fixed)
-                </Badge>
-              ) : (
-                PLAYBOOK_CATEGORY_CHOICES.map((category) => (
-                  <ToggleFilterButton
-                    multiselect
-                    key={category.id}
-                    className="w-full justify-between"
-                    label={
-                      <Badge
-                        className={`text-xs px-3 py-2 min-h-[44px] flex items-center ${getSegmentColor(category.id)}`}
-                      >
-                        {category.name}
-                      </Badge>
-                    }
-                    value={{ segment_id: category.id }}
-                  />
-                ))
-              )}
-            </>
-          )}
+      <FilterCategory label="Parent Organization" icon={<GitBranch className="h-4 w-4" />}>
+        <ParentOrganizationFilterDropdown />
+      </FilterCategory>
 
-          {/* Operator segments - for Customers/Prospects (grouped accordion) */}
-          {showOperatorFilters && (
-            <OperatorSegmentAccordion
-              filterValues={filterValues}
-              getSegmentColor={getSegmentColor}
-            />
-          )}
-        </FilterCategory>
-
-        {/* State - US states filter */}
-        <FilterCategory icon={<MapPin className="h-4 w-4" />} label="State">
-          <div className="max-h-64 overflow-y-auto">
-            {US_STATES.map((state) => (
-              <ToggleFilterButton
-                multiselect
-                key={state.id}
-                className="w-full justify-between"
-                label={
-                  <Badge className="text-xs px-3 py-2 min-h-[44px] flex items-center tag-gray">
-                    {state.name}
-                  </Badge>
-                }
-                value={{ state: state.id }}
-              />
-            ))}
-          </div>
-        </FilterCategory>
-
-        <FilterCategory label="Account Manager" icon={<User className="h-4 w-4" />}>
-          <OwnerFilterDropdown
-            source="sales_id"
-            secondarySource="secondary_sales_id"
-            label="Account Manager"
-          />
-        </FilterCategory>
-      </div>
-    </div>
+      <FilterCategory label="Account Manager" icon={<User className="h-4 w-4" />}>
+        <OwnerFilterDropdown
+          source="sales_id"
+          secondarySource="secondary_sales_id"
+          label="Account Manager"
+        />
+      </FilterCategory>
+    </FilterSidebar>
   );
 };

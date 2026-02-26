@@ -26,6 +26,7 @@ export interface SalesExtension {
     data: Partial<Omit<SalesFormData, "password">>
   ): Promise<Partial<Omit<SalesFormData, "password">>>;
   updatePassword(id: Identifier): Promise<boolean>;
+  resetUserPassword(targetEmail: string): Promise<boolean>;
 }
 
 /**
@@ -65,7 +66,7 @@ export function createSalesExtension(services: ServiceContainer): SalesExtension
     },
 
     /**
-     * Trigger password reset email via Edge Function
+     * Trigger self-service password reset email via Edge Function
      * Delegates to SalesService which calls reset-password Edge Function
      *
      * @param id - Sale record ID
@@ -73,6 +74,17 @@ export function createSalesExtension(services: ServiceContainer): SalesExtension
      */
     updatePassword: async (id: Identifier): Promise<boolean> => {
       return services.sales.updatePassword(id);
+    },
+
+    /**
+     * Admin-initiated password reset for another user via Edge Function
+     * Delegates to SalesService. Requires caller to have admin role.
+     *
+     * @param targetEmail - Email of the user to reset password for
+     * @returns Success boolean
+     */
+    resetUserPassword: async (targetEmail: string): Promise<boolean> => {
+      return services.sales.resetUserPassword(targetEmail);
     },
   };
 }

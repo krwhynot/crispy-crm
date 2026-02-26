@@ -364,7 +364,7 @@ Step-by-step guide to test all organization form touchpoints: Create, Edit, Slid
 
 | Check | What to Note |
 |-------|--------------|
-| Parent column in list | Shows parent org name? |
+| Parent chip in name cell | Shows parent org name as inline tag? |
 | Parent link | Clickable to navigate? |
 | Child org sidebar | Shows "Parent: [Name]" section? |
 | Parent org sidebar | Shows "Branches" section with children? |
@@ -2765,7 +2765,7 @@ For developers investigating issues:
 | Products | `src/atomic-crm/products/` |
 | Dashboard | `src/atomic-crm/dashboard/` |
 | Validation Schemas | `src/atomic-crm/validation/` |
-| Data Provider | `src/atomic-crm/providers/supabase/unifiedDataProvider.ts` |
+| Data Provider | `src/atomic-crm/providers/supabase/composedDataProvider.ts` |
 
 ---
 

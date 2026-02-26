@@ -4,6 +4,7 @@ import { Form } from "react-admin";
 import { logger } from "@/lib/logger";
 import { taskUpdateSchema } from "@/atomic-crm/validation/task";
 import { notificationMessages } from "@/atomic-crm/constants/notificationMessages";
+import { extractProviderValidationMessage } from "@/atomic-crm/utils/extractProviderValidationMessage";
 import { taskKeys, entityTimelineKeys } from "../queryKeys";
 import { SnoozeIndicator } from "@/components/ui/snooze-badge";
 import { ReferenceField } from "@/components/ra-wrappers/reference-field";
@@ -76,17 +77,25 @@ export function TaskSlideOverDetailsTab({
         return;
       }
 
-      await update("tasks", {
-        id: record.id,
-        data: result.data,
-        previousData: record,
-      });
+      await update(
+        "tasks",
+        {
+          id: record.id,
+          data: result.data,
+          previousData: record,
+        },
+        { returnPromise: true }
+      );
       await queryClient.invalidateQueries({ queryKey: taskKeys.lists() });
       await queryClient.invalidateQueries({ queryKey: entityTimelineKeys.lists() });
       notify(notificationMessages.updated("Task"), { type: "success" });
       onModeToggle?.(); // Return to view mode after successful save
     } catch (error: unknown) {
-      notify("Error updating task", { type: "error" });
+      const message = extractProviderValidationMessage(error, {
+        resource: "tasks",
+        action: "update",
+      });
+      notify(message, { type: "error" });
       logger.error("Error updating task", error, {
         feature: "TaskSlideOverDetailsTab",
         taskId: record.id,
@@ -98,26 +107,38 @@ export function TaskSlideOverDetailsTab({
   const handleCompletionToggle = async (checked: boolean) => {
     try {
       if (checked) {
-        await update("tasks", {
-          id: record.id,
-          data: { completed: true, completed_at: new Date().toISOString() },
-          previousData: record,
-        });
+        await update(
+          "tasks",
+          {
+            id: record.id,
+            data: { completed: true, completed_at: new Date().toISOString() },
+            previousData: record,
+          },
+          { returnPromise: true }
+        );
         queryClient.invalidateQueries({ queryKey: taskKeys.lists() });
         queryClient.invalidateQueries({ queryKey: entityTimelineKeys.lists() });
         notify("Task marked complete", { type: "success" });
       } else {
-        await update("tasks", {
-          id: record.id,
-          data: { completed: false, completed_at: null },
-          previousData: record,
-        });
+        await update(
+          "tasks",
+          {
+            id: record.id,
+            data: { completed: false, completed_at: null },
+            previousData: record,
+          },
+          { returnPromise: true }
+        );
         queryClient.invalidateQueries({ queryKey: taskKeys.lists() });
         queryClient.invalidateQueries({ queryKey: entityTimelineKeys.lists() });
         notify("Task marked incomplete", { type: "success" });
       }
     } catch (error: unknown) {
-      notify("Error updating task", { type: "error" });
+      const message = extractProviderValidationMessage(error, {
+        resource: "tasks",
+        action: "update",
+      });
+      notify(message, { type: "error" });
       logger.error("Completion toggle error", error, {
         feature: "TaskSlideOverDetailsTab",
         taskId: record.id,
@@ -164,7 +185,12 @@ export function TaskSlideOverDetailsTab({
 
               <BooleanInput source="completed" label="Completed" disabled={isLoading} />
 
-              <ReferenceInput source="sales_id" reference="sales" disabled={isLoading}>
+              <ReferenceInput
+                source="sales_id"
+                reference="sales"
+                sort={{ field: "last_name", order: "ASC" }}
+                disabled={isLoading}
+              >
                 <AutocompleteInput {...getQSearchAutocompleteProps()} label="Assigned To" />
               </ReferenceInput>
 

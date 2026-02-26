@@ -6,6 +6,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { logger } from "@/lib/logger";
 import { organizationSchema } from "@/atomic-crm/validation/organizations";
 import { notificationMessages } from "@/atomic-crm/constants/notificationMessages";
+import { extractProviderValidationMessage } from "@/atomic-crm/utils/extractProviderValidationMessage";
 import { organizationKeys, segmentKeys } from "@/atomic-crm/queryKeys";
 import { TextInput } from "@/components/ra-wrappers/text-input";
 import { SelectInput } from "@/components/ra-wrappers/select-input";
@@ -100,11 +101,15 @@ export function OrganizationRightPanel({
         return;
       }
 
-      await update("organizations", {
-        id: record.id,
-        data: result.data,
-        previousData: record,
-      });
+      await update(
+        "organizations",
+        {
+          id: record.id,
+          data: result.data,
+          previousData: record,
+        },
+        { returnPromise: true }
+      );
 
       // Detect if segment changed and invalidate segment cache
       if (result.data.segment_id !== record.segment_id) {
@@ -120,7 +125,11 @@ export function OrganizationRightPanel({
       notify(notificationMessages.updated("Organization"), { type: "success" });
       onModeToggle?.();
     } catch (error: unknown) {
-      notify("Error updating organization", { type: "error" });
+      const message = extractProviderValidationMessage(error, {
+        resource: "organizations",
+        action: "update",
+      });
+      notify(message, { type: "error" });
       logger.error("Error updating organization", error, {
         feature: "OrganizationRightPanel",
         organizationId: record.id,

@@ -195,6 +195,20 @@ async function organizationsBeforeDeleteMany(
 }
 
 /**
+ * Org-specific JSONB array normalization.
+ * Cannot reuse contacts' normalizeJsonbArrays — it normalizes ["email", "phone", "tags"],
+ * but organizations have email/phone as strings (not JSONB arrays).
+ * Only tags is a JSONB array for organizations.
+ */
+function normalizeOrgJsonbArrays(record: RaRecord): RaRecord {
+  const normalized = { ...record };
+  if (normalized.tags === null || normalized.tags === undefined) {
+    normalized.tags = [];
+  }
+  return normalized;
+}
+
+/**
  * Base callbacks from factory (computed fields, transforms)
  * We DON'T use soft delete from factory because we need custom RPC cascade delete
  */
@@ -202,6 +216,7 @@ const baseCallbacks = createResourceCallbacks({
   resource: "organizations",
   supportsSoftDelete: false, // FIX [WF-C02]: We handle soft delete via custom RPC
   computedFields: COMPUTED_FIELDS,
+  afterReadTransform: normalizeOrgJsonbArrays, // Normalize null→[] for tags
 });
 
 /**

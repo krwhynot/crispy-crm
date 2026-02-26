@@ -1,7 +1,34 @@
 {
-  "statusLine": {
-    "type": "command",
-    "command": "node .claude/statusline.js"
+  "permissions": {
+    "allow": [
+      "Bash(npm test*)",
+      "Bash(npm run build*)",
+      "Bash(npm run lint*)",
+      "Bash(npx tsc*)",
+      "Bash(npx vitest*)",
+      "Bash(npx playwright*)",
+      "Bash(git status*)",
+      "Bash(git log*)",
+      "Bash(git diff*)",
+      "Bash(just *)",
+      "MCP(supabase:*)",
+      "mcp__supabase__execute_sql",
+      "mcp__supabase__list_tables",
+      "mcp__supabase__apply_migration",
+      "mcp__supabase__get_logs",
+      "mcp__supabase__generate_typescript_types"
+    ],
+    "deny": [
+      "Read(./.env)",
+      "Read(./.env.*)",
+      "Read(./secrets/**)",
+      "Read(./.claude/state/search.db)",
+      "Read(./.claude/state/search.db-*)",
+      "Read(./.claude/state/*-inventory/**)",
+      "Read(./supabase/.env)",
+      "Read(./supabase/.env.local)"
+    ],
+    "ask": []
   },
   "hooks": {
     "PreToolUse": [
@@ -79,35 +106,11 @@
       }
     ]
   },
-  "permissions": {
-    "allow": [
-      "Bash(npm test*)",
-      "Bash(npm run build*)",
-      "Bash(npm run lint*)",
-      "Bash(npx tsc*)",
-      "Bash(npx vitest*)",
-      "Bash(npx playwright*)",
-      "Bash(git status*)",
-      "Bash(git log*)",
-      "Bash(git diff*)",
-      "Bash(just *)",
-      "MCP(supabase:*)",
-      "mcp__supabase__execute_sql",
-      "mcp__supabase__list_tables",
-      "mcp__supabase__apply_migration",
-      "mcp__supabase__get_logs",
-      "mcp__supabase__generate_typescript_types"
-    ],
-    "deny": [
-      "Read(./.env)",
-      "Read(./.env.*)",
-      "Read(./secrets/**)",
-      "Read(./.claude/state/search.db)",
-      "Read(./.claude/state/search.db-*)",
-      "Read(./.claude/state/*-inventory/**)",
-      "Read(./supabase/.env)",
-      "Read(./supabase/.env.local)"
-    ],
-    "ask": []
+  "statusLine": {
+    "type": "command",
+    "command": "node .claude/statusline.js"
+  },
+  "enabledPlugins": {
+    "code-review@claude-plugins-official": true
   }
 }

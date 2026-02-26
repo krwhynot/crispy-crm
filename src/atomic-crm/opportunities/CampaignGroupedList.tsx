@@ -109,179 +109,181 @@ const CampaignGroupedListComponent = ({ openSlideOver }: CampaignGroupedListProp
   }
 
   return (
-    <div className="space-y-4">
-      <div className="flex items-center gap-2 mb-2">
+    <div className="flex flex-col h-full min-h-0 flex-1">
+      <div className="flex items-center gap-2 mb-2 shrink-0">
         <FolderOpen className="w-5 h-5 text-muted-foreground" />
         <h2 className="text-lg font-semibold">Campaigns ({campaignNames.length})</h2>
       </div>
 
       {/* Level 1: Campaigns */}
-      <Accordion type="multiple" className="space-y-2">
-        {campaignNames.map((campaignName) => {
-          const principalGroups = groupedData[campaignName];
-          const principalNames = Object.keys(principalGroups).toSorted();
+      <div className="overflow-y-auto flex-1 min-h-0 space-y-4">
+        <Accordion type="multiple" className="space-y-2">
+          {campaignNames.map((campaignName) => {
+            const principalGroups = groupedData[campaignName];
+            const principalNames = Object.keys(principalGroups).toSorted();
 
-          // Calculate total opportunities across all principals/customers in this campaign
-          const totalOpportunities = principalNames.reduce((sum, principal) => {
-            const customerGroups = principalGroups[principal];
+            // Calculate total opportunities across all principals/customers in this campaign
+            const totalOpportunities = principalNames.reduce((sum, principal) => {
+              const customerGroups = principalGroups[principal];
+              return (
+                sum +
+                Object.values(customerGroups).reduce(
+                  (customerSum, opps) => customerSum + opps.length,
+                  0
+                )
+              );
+            }, 0);
+
             return (
-              sum +
-              Object.values(customerGroups).reduce(
-                (customerSum, opps) => customerSum + opps.length,
-                0
-              )
-            );
-          }, 0);
-
-          return (
-            <AccordionItem
-              key={campaignName}
-              value={campaignName}
-              className="border border-border rounded-lg bg-card"
-            >
-              <AccordionTrigger className="px-4 hover:no-underline hover:bg-muted/50">
-                <div className="flex items-center gap-3">
-                  <div className="flex flex-col items-start">
-                    <span className="font-semibold text-base">{campaignName}</span>
-                    <span className="text-xs text-muted-foreground">
-                      {totalOpportunities}{" "}
-                      {totalOpportunities === 1 ? "opportunity" : "opportunities"} across{" "}
-                      {principalNames.length}{" "}
-                      {principalNames.length === 1 ? "principal" : "principals"}
-                    </span>
+              <AccordionItem
+                key={campaignName}
+                value={campaignName}
+                className="border border-border rounded-lg bg-card"
+              >
+                <AccordionTrigger className="px-4 hover:no-underline hover:bg-muted/50">
+                  <div className="flex items-center gap-3">
+                    <div className="flex flex-col items-start">
+                      <span className="font-semibold text-base">{campaignName}</span>
+                      <span className="text-xs text-muted-foreground">
+                        {totalOpportunities}{" "}
+                        {totalOpportunities === 1 ? "opportunity" : "opportunities"} across{" "}
+                        {principalNames.length}{" "}
+                        {principalNames.length === 1 ? "principal" : "principals"}
+                      </span>
+                    </div>
                   </div>
-                </div>
-              </AccordionTrigger>
+                </AccordionTrigger>
 
-              <AccordionContent className="px-4 pb-4">
-                {/* Level 2: Principals */}
-                <Accordion type="multiple" className="space-y-2 mt-2">
-                  {principalNames.map((principalName) => {
-                    const customerGroups = principalGroups[principalName];
-                    const customerNames = Object.keys(customerGroups).toSorted();
+                <AccordionContent className="px-4 pb-4">
+                  {/* Level 2: Principals */}
+                  <Accordion type="multiple" className="space-y-2 mt-2">
+                    {principalNames.map((principalName) => {
+                      const customerGroups = principalGroups[principalName];
+                      const customerNames = Object.keys(customerGroups).toSorted();
 
-                    // Calculate opportunities for this principal across all customers
-                    const principalTotalOpps = customerNames.reduce(
-                      (sum, customer) => sum + customerGroups[customer].length,
-                      0
-                    );
+                      // Calculate opportunities for this principal across all customers
+                      const principalTotalOpps = customerNames.reduce(
+                        (sum, customer) => sum + customerGroups[customer].length,
+                        0
+                      );
 
-                    return (
-                      <AccordionItem
-                        key={principalName}
-                        value={principalName}
-                        className="border border-border rounded-md bg-muted/50"
-                      >
-                        <AccordionTrigger className="px-3 py-2 hover:no-underline hover:bg-muted/70">
-                          <div className="flex items-center gap-2">
-                            <Factory className="w-4 h-4 text-muted-foreground" />
-                            <span className="font-medium text-sm">{principalName}</span>
-                            <span className="text-xs text-muted-foreground ml-auto mr-2">
-                              {principalTotalOpps}{" "}
-                              {principalTotalOpps === 1 ? "opportunity" : "opportunities"} across{" "}
-                              {customerNames.length}{" "}
-                              {customerNames.length === 1 ? "customer" : "customers"}
-                            </span>
-                          </div>
-                        </AccordionTrigger>
+                      return (
+                        <AccordionItem
+                          key={principalName}
+                          value={principalName}
+                          className="border border-border rounded-md bg-muted/50"
+                        >
+                          <AccordionTrigger className="px-3 py-2 hover:no-underline hover:bg-muted/70">
+                            <div className="flex items-center gap-2">
+                              <Factory className="w-4 h-4 text-muted-foreground" />
+                              <span className="font-medium text-sm">{principalName}</span>
+                              <span className="text-xs text-muted-foreground ml-auto mr-2">
+                                {principalTotalOpps}{" "}
+                                {principalTotalOpps === 1 ? "opportunity" : "opportunities"} across{" "}
+                                {customerNames.length}{" "}
+                                {customerNames.length === 1 ? "customer" : "customers"}
+                              </span>
+                            </div>
+                          </AccordionTrigger>
 
-                        <AccordionContent className="px-3 pb-2">
-                          {/* Level 3: Customers */}
-                          <Accordion type="multiple" className="space-y-1 mt-1">
-                            {customerNames.map((customerName) => {
-                              const customerOpportunities = customerGroups[customerName];
+                          <AccordionContent className="px-3 pb-2">
+                            {/* Level 3: Customers */}
+                            <Accordion type="multiple" className="space-y-1 mt-1">
+                              {customerNames.map((customerName) => {
+                                const customerOpportunities = customerGroups[customerName];
 
-                              return (
-                                <AccordionItem
-                                  key={customerName}
-                                  value={customerName}
-                                  className="border border-border rounded-md bg-muted/30"
-                                >
-                                  <AccordionTrigger className="px-3 py-2 hover:no-underline hover:bg-muted/50">
-                                    <div className="flex items-center gap-2">
-                                      <Building2 className="w-4 h-4 text-muted-foreground" />
-                                      <span className="font-medium text-sm">{customerName}</span>
-                                      <Badge variant="secondary" className="text-xs">
-                                        {customerOpportunities.length}
-                                      </Badge>
-                                    </div>
-                                  </AccordionTrigger>
+                                return (
+                                  <AccordionItem
+                                    key={customerName}
+                                    value={customerName}
+                                    className="border border-border rounded-md bg-muted/30"
+                                  >
+                                    <AccordionTrigger className="px-3 py-2 hover:no-underline hover:bg-muted/50">
+                                      <div className="flex items-center gap-2">
+                                        <Building2 className="w-4 h-4 text-muted-foreground" />
+                                        <span className="font-medium text-sm">{customerName}</span>
+                                        <Badge variant="secondary" className="text-xs">
+                                          {customerOpportunities.length}
+                                        </Badge>
+                                      </div>
+                                    </AccordionTrigger>
 
-                                  <AccordionContent className="px-3 pb-2">
-                                    {/* Level 4: Opportunity Items */}
-                                    <div className="space-y-1 mt-1">
-                                      {customerOpportunities.map((opp) => (
-                                        <div
-                                          key={opp.id}
-                                          className="flex items-center gap-3 p-2 rounded-md hover:bg-muted/50 transition-colors cursor-pointer"
-                                          role="button"
-                                          tabIndex={0}
-                                          onClick={(e) => {
-                                            e.preventDefault();
-                                            e.stopPropagation();
-                                            openSlideOver(opp.id as number, "view");
-                                          }}
-                                          onKeyDown={(e) => {
-                                            if (e.key === "Enter" || e.key === " ") {
+                                    <AccordionContent className="px-3 pb-2">
+                                      {/* Level 4: Opportunity Items */}
+                                      <div className="space-y-1 mt-1">
+                                        {customerOpportunities.map((opp) => (
+                                          <div
+                                            key={opp.id}
+                                            className="flex items-center gap-3 p-2 rounded-md hover:bg-muted/50 transition-colors cursor-pointer"
+                                            role="button"
+                                            tabIndex={0}
+                                            onClick={(e) => {
                                               e.preventDefault();
+                                              e.stopPropagation();
                                               openSlideOver(opp.id as number, "view");
-                                            }
-                                          }}
-                                        >
-                                          <div className="flex-1 text-sm text-primary hover:underline flex items-center gap-2">
-                                            {opp.name}
-                                            <ExternalLink className="w-3 h-3" />
-                                          </div>
-                                          <div className="flex items-center gap-2">
-                                            <Badge
-                                              variant={
-                                                opp.stage === STAGE.CLOSED_WON
-                                                  ? "default"
-                                                  : opp.stage === STAGE.CLOSED_LOST
-                                                    ? "destructive"
-                                                    : "secondary"
+                                            }}
+                                            onKeyDown={(e) => {
+                                              if (e.key === "Enter" || e.key === " ") {
+                                                e.preventDefault();
+                                                openSlideOver(opp.id as number, "view");
                                               }
-                                              className="text-xs"
-                                            >
-                                              {opp.stage.replace(/_/g, " ")}
-                                            </Badge>
-                                            {opp.priority && (
+                                            }}
+                                          >
+                                            <div className="flex-1 text-sm text-primary hover:underline flex items-center gap-2">
+                                              {opp.name}
+                                              <ExternalLink className="w-3 h-3" />
+                                            </div>
+                                            <div className="flex items-center gap-2">
                                               <Badge
                                                 variant={
-                                                  opp.priority === "critical"
-                                                    ? "destructive"
-                                                    : opp.priority === "high"
-                                                      ? "default"
-                                                      : "outline"
+                                                  opp.stage === STAGE.CLOSED_WON
+                                                    ? "default"
+                                                    : opp.stage === STAGE.CLOSED_LOST
+                                                      ? "destructive"
+                                                      : "secondary"
                                                 }
-                                                className={
-                                                  opp.priority === "high"
-                                                    ? "border-transparent bg-warning text-warning-foreground"
-                                                    : "text-xs"
-                                                }
+                                                className="text-xs"
                                               >
-                                                {opp.priority}
+                                                {opp.stage.replace(/_/g, " ")}
                                               </Badge>
-                                            )}
+                                              {opp.priority && (
+                                                <Badge
+                                                  variant={
+                                                    opp.priority === "critical"
+                                                      ? "destructive"
+                                                      : opp.priority === "high"
+                                                        ? "default"
+                                                        : "outline"
+                                                  }
+                                                  className={
+                                                    opp.priority === "high"
+                                                      ? "border-transparent bg-warning text-warning-foreground"
+                                                      : "text-xs"
+                                                  }
+                                                >
+                                                  {opp.priority}
+                                                </Badge>
+                                              )}
+                                            </div>
                                           </div>
-                                        </div>
-                                      ))}
-                                    </div>
-                                  </AccordionContent>
-                                </AccordionItem>
-                              );
-                            })}
-                          </Accordion>
-                        </AccordionContent>
-                      </AccordionItem>
-                    );
-                  })}
-                </Accordion>
-              </AccordionContent>
-            </AccordionItem>
-          );
-        })}
-      </Accordion>
+                                        ))}
+                                      </div>
+                                    </AccordionContent>
+                                  </AccordionItem>
+                                );
+                              })}
+                            </Accordion>
+                          </AccordionContent>
+                        </AccordionItem>
+                      );
+                    })}
+                  </Accordion>
+                </AccordionContent>
+              </AccordionItem>
+            );
+          })}
+        </Accordion>
+      </div>
     </div>
   );
 };

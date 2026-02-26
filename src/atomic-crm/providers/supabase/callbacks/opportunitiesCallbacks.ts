@@ -32,6 +32,11 @@ import { createResourceCallbacks, type ResourceCallbacks } from "./createResourc
 import type { Opportunity } from "../../../types";
 import { supabase } from "../supabase";
 import { logger } from "@/lib/logger";
+import {
+  isValidOpportunityStageTransition,
+  type OpportunityStageValue,
+} from "@/atomic-crm/validation/opportunities";
+import { isClosedStage } from "@/atomic-crm/opportunities/constants/stage-enums";
 
 /**
  * Type-safe computed fields that exist on the Opportunity type
@@ -67,7 +72,7 @@ const TYPED_COMPUTED_FIELDS = [
   "created_by",
   // Internal state fields (managed by system, not directly editable)
   "status",
-  "actual_close_date",
+  // NOTE: actual_close_date is NOT stripped - it's user-provided via CloseOpportunityModal
   "founding_interaction_id",
   "stage_manual",
   "status_manual",
@@ -296,26 +301,74 @@ function validateStageTransition(toStage: string, data: Partial<RaRecord>): void
 }
 
 /**
- * Custom beforeUpdate: Validate stage transitions
+ * Custom beforeUpdate: Validate stage transitions + reopen cleanup
  *
  * WHY CUSTOM: When opportunity stage changes, validate prerequisites before
  * allowing the transition. Activity logging is handled by DB trigger.
+ * When reopening (closed → active), clear close metadata.
  *
  * @param params - Update parameters with data and previousData
- * @param _dataProvider - React Admin data provider (unused - activity logging removed)
- * @returns Unchanged params after validation
+ * @param dataProvider - React Admin data provider (used for getOne fallback)
+ * @returns Updated params after validation (with reopen cleanup if applicable)
  */
 async function opportunitiesBeforeUpdate(
   params: UpdateParams,
-  _dataProvider: DataProvider
+  dataProvider: DataProvider
 ): Promise<UpdateParams> {
   const { data, previousData } = params;
 
-  // Check if stage changed
-  if (previousData?.stage && data.stage && previousData.stage !== data.stage) {
-    // Validate stage transition prerequisites (fail-fast)
-    validateStageTransition(data.stage, data);
-    // NOTE: Activity logging removed - DB trigger handles stage change logging
+  // Skip validation if stage not changing
+  if (!data.stage) return params;
+
+  // Authoritative current stage: prefer previousData, fallback to getOne
+  let currentStage: string | undefined = previousData?.stage as string | undefined;
+  if (!currentStage && params.id) {
+    try {
+      const { data: record } = await dataProvider.getOne("opportunities", { id: params.id });
+      currentStage = record?.stage;
+    } catch (error) {
+      logger.error("Stage transition validation failed: getOne error", error, {
+        feature: "OpportunitiesCallbacks",
+      });
+      throw new Error(
+        "Cannot validate stage transition: unable to verify current opportunity state. Please try again."
+      );
+    }
+  }
+
+  if (!currentStage) {
+    throw new Error(
+      "Cannot change stage: current stage unknown. Provide previousData or valid id."
+    );
+  }
+
+  // No-op if stage unchanged
+  if (currentStage === data.stage) return params;
+
+  // WF-H1-004: Authoritative stage transition validation (provider is source of truth)
+  if (
+    !isValidOpportunityStageTransition(
+      currentStage as OpportunityStageValue,
+      data.stage as OpportunityStageValue
+    )
+  ) {
+    throw new Error(
+      `Invalid stage transition from "${currentStage}" to "${data.stage}". Allowed: active stages can jump to any other stage; closed stages can reopen to any active stage.`
+    );
+  }
+
+  // Validate stage transition prerequisites (fail-fast)
+  validateStageTransition(data.stage, data);
+
+  // Reopen cleanup: clear close metadata when moving from closed to active
+  if (isClosedStage(currentStage) && !isClosedStage(data.stage as string)) {
+    params.data = {
+      ...data,
+      win_reason: null,
+      loss_reason: null,
+      close_reason_notes: null,
+      actual_close_date: null,
+    };
   }
 
   return params;
@@ -343,6 +396,10 @@ async function opportunitiesBeforeSave(
 
   // Strip computed fields - conditionally strip UPDATE_ONLY_STRIP_FIELDS for updates
   let processed = stripComputedFields(data, isUpdate);
+
+  // Strip previous_stage - virtual field used only for transition validation
+  // Ensures it never reaches the database even if injected by old clients
+  delete processed.previous_stage;
 
   // Strip empty contact_ids for stage-only updates (Kanban drag-drop)
   // Detection: stage is present AND this is an update (has id) AND name is NOT present

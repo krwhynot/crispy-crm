@@ -19,6 +19,7 @@ export function TagCreateModal({ open, onClose, onSuccess }: TagCreateModalProps
       "tags",
       { data },
       {
+        returnPromise: true,
         onSuccess: async (tag) => {
           // SS-05 FIX: Invalidate tag caches to refresh lists
           await queryClient.invalidateQueries({ queryKey: tagKeys.all });

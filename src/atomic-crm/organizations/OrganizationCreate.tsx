@@ -2,17 +2,18 @@
  * OrganizationCreate - Create form for new organizations
  *
  * Features:
- * - Soft duplicate warning: Shows confirmation dialog instead of hard block
+ * - Hard duplicate block: Shows dialog requiring name change or view existing
  * - Schema-derived defaults (Constitution #5: Form state from truth)
  * - Website URL auto-prefixing
  * - Parent organization pre-fill from router state
  *
  * The duplicate check uses useDuplicateOrgCheck hook which performs a
  * case-insensitive search before save. If a potential duplicate is found,
- * DuplicateOrgWarningDialog appears to let the user confirm or change the name.
+ * DuplicateOrgWarningDialog blocks creation until the user changes the name
+ * or views the existing organization.
  */
-import { useCallback, useEffect, useRef, useState } from "react";
-import { CreateBase, Form, useCreate, useRedirect, useNotify, useCanAccess } from "ra-core";
+import { useCallback, useEffect } from "react";
+import { CreateBase, Form, useRedirect, useNotify, useCanAccess } from "ra-core";
 import { createFormResolver } from "@/lib/zodErrorFormatting";
 import { SectionCard } from "@/components/ra-wrappers/SectionCard";
 import {
@@ -29,10 +30,9 @@ import { useDuplicateOrgCheck } from "./useDuplicateOrgCheck";
 import { DuplicateOrgWarningDialog } from "./DuplicateOrgWarningDialog";
 import { OrganizationCreateFormFooter } from "./OrganizationCreateFormFooter";
 import { useSmartDefaults } from "@/atomic-crm/hooks/useSmartDefaults";
-import type { OrganizationFormValues, DuplicateCheckCallback } from "./types";
+import type { OrganizationFormValues } from "./types";
 import { useUnsavedChangesWarning } from "@/hooks/useUnsavedChangesWarning";
 import { usePermissions } from "@/hooks/usePermissions";
-import { notificationMessages } from "@/atomic-crm/constants/notificationMessages";
 
 /**
  * Prevents Enter key in form inputs from triggering form submission
@@ -55,7 +55,6 @@ const handleFormKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
 
 const OrganizationCreate = () => {
   const location = useLocation();
-  const [create] = useCreate();
   const redirect = useRedirect();
   const notify = useNotify();
 
@@ -71,13 +70,8 @@ const OrganizationCreate = () => {
   // Smart defaults hook for async identity handling
   const { defaults: smartDefaults, isLoading: isLoadingDefaults } = useSmartDefaults();
 
-  // Duplicate check hook for soft warning
-  const { checkForDuplicate, duplicateOrg, clearDuplicate, bypassDuplicate, isChecking } =
-    useDuplicateOrgCheck();
-
-  // Store pending values when duplicate is found
-  const pendingValuesRef = useRef<OrganizationFormValues | null>(null);
-  const [isCreating, setIsCreating] = useState(false);
+  // Duplicate check hook for hard block
+  const { checkForDuplicate, duplicateOrg, clearDuplicate, isChecking } = useDuplicateOrgCheck();
 
   // Read parent_organization_id from router state (set by "Add Branch" button)
   const parentOrgId = (location.state as { record?: { parent_organization_id?: string | number } })
@@ -92,54 +86,15 @@ const OrganizationCreate = () => {
     return values;
   }, []);
 
-  // Handle when duplicate is found - store values and show dialog
-  const handleDuplicateFound = useCallback(
-    (_duplicateName: string, values: OrganizationFormValues) => {
-      pendingValuesRef.current = values;
-    },
-    []
-  );
-
-  // Handle user confirming to create despite duplicate
-  const handleProceedAnyway = useCallback(async () => {
-    if (!pendingValuesRef.current) return;
-
-    setIsCreating(true);
-    try {
-      const transformedValues = transformValues(pendingValuesRef.current);
-      await create(
-        "organizations",
-        { data: transformedValues },
-        {
-          onSuccess: (data) => {
-            bypassDuplicate();
-            pendingValuesRef.current = null;
-            notify(notificationMessages.created("Organization"), { type: "success" });
-            redirect("show", "organizations", data.id);
-          },
-          onError: (error: unknown) => {
-            notify(error instanceof Error ? error.message : "Failed to create organization", {
-              type: "error",
-            });
-          },
-        }
-      );
-    } finally {
-      setIsCreating(false);
-    }
-  }, [create, transformValues, bypassDuplicate, notify, redirect]);
-
   // Handle user canceling (wants to change name)
   const handleCancelDuplicate = useCallback(() => {
     clearDuplicate();
-    pendingValuesRef.current = null;
   }, [clearDuplicate]);
 
   // Handle user wanting to view the existing duplicate organization
   const handleViewExisting = useCallback(() => {
     if (duplicateOrg?.id) {
       clearDuplicate();
-      pendingValuesRef.current = null;
       redirect("show", "organizations", duplicateOrg.id);
     }
   }, [duplicateOrg?.id, clearDuplicate, redirect]);
@@ -214,11 +169,9 @@ const OrganizationCreate = () => {
                 <FormProgressBar schema={createOrganizationSchema} className="mb-6" />
                 <SectionCard>
                   <OrganizationFormContent
-                    onDuplicateFound={handleDuplicateFound}
                     checkForDuplicate={checkForDuplicate}
                     isChecking={isChecking}
                     transformValues={transformValues}
-                    bypassDuplicate={bypassDuplicate}
                     isRep={isRep}
                   />
                 </SectionCard>
@@ -228,35 +181,29 @@ const OrganizationCreate = () => {
         </div>
       </CreateBase>
 
-      {/* Soft duplicate warning dialog */}
+      {/* Hard duplicate block dialog */}
       <DuplicateOrgWarningDialog
         open={!!duplicateOrg}
         duplicateName={duplicateOrg?.name}
         duplicateOrgId={duplicateOrg?.id}
         onCancel={handleCancelDuplicate}
-        onProceed={handleProceedAnyway}
         onViewExisting={handleViewExisting}
-        isLoading={isCreating}
       />
     </>
   );
 };
 
 interface OrganizationFormContentProps {
-  onDuplicateFound: DuplicateCheckCallback;
   checkForDuplicate: (name: string) => Promise<{ id: string | number; name: string } | null>;
   isChecking: boolean;
   transformValues: (values: OrganizationFormValues) => OrganizationFormValues;
-  bypassDuplicate: () => void;
   isRep?: boolean;
 }
 
 const OrganizationFormContent = ({
-  onDuplicateFound,
   checkForDuplicate,
   isChecking,
   transformValues,
-  bypassDuplicate,
   isRep,
 }: OrganizationFormContentProps) => {
   useUnsavedChangesWarning();
@@ -265,13 +212,10 @@ const OrganizationFormContent = ({
     <>
       <OrganizationInputs isRep={isRep} />
       <OrganizationCreateFormFooter
-        onDuplicateFound={onDuplicateFound}
         checkForDuplicate={checkForDuplicate}
         isChecking={isChecking}
         redirectPath="/organizations"
-        preserveFields={["parent_organization_id", "organization_type", "sales_id"]}
         transformValues={transformValues}
-        bypassDuplicate={bypassDuplicate}
       />
     </>
   );

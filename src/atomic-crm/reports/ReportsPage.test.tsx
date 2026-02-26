@@ -4,14 +4,6 @@ import userEvent from "@testing-library/user-event";
 import { renderWithAdminContext } from "@/tests/utils/render-admin";
 import ReportsPage from "./ReportsPage";
 
-// Mock useBreakpoint to return "desktop" — JSDOM has no real viewport
-vi.mock("@/hooks/useBreakpoint", () => ({
-  useBreakpoint: () => "desktop" as const,
-  useIsDesktop: () => true,
-  useIsLaptopOrLarger: () => true,
-  useIsMobileOrTablet: () => false,
-}));
-
 // Mock ra-core hooks (used by GlobalFilterBar)
 vi.mock("ra-core", async () => {
   // eslint-disable-next-line @typescript-eslint/consistent-type-imports -- typeof import() required in vi.mock factory
@@ -29,16 +21,33 @@ const mockSalesReps = [
   { id: 2, first_name: "Jane", last_name: "Doe" },
 ];
 
+const createMatchMedia =
+  (isDesktop: boolean) =>
+  (query: string): MediaQueryList => ({
+    matches:
+      isDesktop && (query.includes("min-width: 1024px") || query.includes("min-width: 1280px")),
+    media: query,
+    onchange: null,
+    addListener: vi.fn(),
+    removeListener: vi.fn(),
+    addEventListener: vi.fn(),
+    removeEventListener: vi.fn(),
+    dispatchEvent: vi.fn(),
+  });
+
 describe("ReportsPage", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     vi.mocked(useGetList).mockReturnValue({ data: mockSalesReps, isPending: false });
+    window.matchMedia = vi.fn().mockImplementation(createMatchMedia(true));
   });
 
   it("renders page title", () => {
     renderWithAdminContext(<ReportsPage />);
 
-    expect(screen.getByText("Reports & Analytics")).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { level: 1, name: "Reports & Analytics" })
+    ).toBeInTheDocument();
   });
 
   it("renders all tabs", () => {
@@ -65,16 +74,16 @@ describe("ReportsPage", () => {
     expect(tabList).toHaveClass("lg:grid-cols-4");
   });
 
-  it("hides filter sidebar on Overview tab (uses inline context header instead)", () => {
+  it("renders filter sidebar with global controls on Overview tab", () => {
     renderWithAdminContext(<ReportsPage />);
 
-    // Overview tab uses ReportContextHeader instead of sidebar
-    expect(screen.queryByLabelText("Filter reports")).not.toBeInTheDocument();
-    // Context header with Overview filters should be present
-    expect(screen.getByRole("toolbar", { name: "Overview filters" })).toBeInTheDocument();
+    // Sidebar renders with global filter controls
+    expect(screen.getByLabelText("Period")).toBeInTheDocument();
+    expect(screen.getByLabelText("Principal")).toBeInTheDocument();
+    expect(screen.getByLabelText("Owner")).toBeInTheDocument();
   });
 
-  it("shows filter sidebar on non-Overview tabs", async () => {
+  it("renders filter sidebar with tab-specific controls on non-Overview tabs", async () => {
     const user = userEvent.setup();
     renderWithAdminContext(<ReportsPage />);
 
@@ -82,8 +91,9 @@ describe("ReportsPage", () => {
     const oppsTab = screen.getByRole("tab", { name: /^opportunities$/i });
     await user.click(oppsTab);
 
-    // Sidebar should now be visible for non-overview tabs
-    expect(screen.getByLabelText("Filter reports")).toBeInTheDocument();
+    // Global controls still present
+    expect(screen.getByLabelText("Period")).toBeInTheDocument();
+    expect(screen.getByLabelText("Principal")).toBeInTheDocument();
   });
 
   it("uses Skeleton for tab loading states", () => {
