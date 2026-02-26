@@ -180,9 +180,9 @@ export class SalesService {
   }
 
   /**
-   * Update sales user password via Edge function
-   * @param id Sales user ID
-   * @returns Success status
+   * Self-service password reset: sends reset email to the authenticated caller.
+   * @param id Sales user ID (unused by Edge Function, kept for API compatibility)
+   * @returns true on success
    */
   async updatePassword(id: Identifier): Promise<boolean> {
     if (!this.dataProvider.invoke) {
@@ -196,21 +196,16 @@ export class SalesService {
     }
 
     try {
-      const passwordUpdated = await this.dataProvider.invoke<boolean>("updatePassword", {
+      // Edge Function returns { data: { success: true } } on success.
+      // If invoke doesn't throw, the reset email was sent successfully.
+      await this.dataProvider.invoke("updatePassword", {
         method: "PATCH",
         body: {
           sales_id: id,
         },
       });
 
-      if (!passwordUpdated) {
-        devError("SalesService", "Update password returned false", {
-          id,
-        });
-        throw new Error(`Password update failed: Edge Function returned false`);
-      }
-
-      return passwordUpdated;
+      return true;
     } catch (error: unknown) {
       devError("SalesService", "Failed to update password", {
         id,
@@ -218,6 +213,42 @@ export class SalesService {
       });
       const message = error instanceof Error ? error.message : "Unknown error";
       throw new Error(`Password update failed: ${message}`);
+    }
+  }
+
+  /**
+   * Admin-initiated password reset: sends reset email to a target user.
+   * Only admins can use this endpoint.
+   * @param targetEmail Email of the user to reset password for
+   * @returns true on success
+   */
+  async resetUserPassword(targetEmail: string): Promise<boolean> {
+    if (!this.dataProvider.invoke) {
+      devError("SalesService", "DataProvider missing invoke capability", {
+        operation: "resetUserPassword",
+        targetEmail,
+      });
+      throw new Error(
+        `Admin password reset failed: DataProvider does not support Edge Function operations`
+      );
+    }
+
+    try {
+      await this.dataProvider.invoke("updatePassword", {
+        method: "PATCH",
+        body: {
+          target_email: targetEmail,
+        },
+      });
+
+      return true;
+    } catch (error: unknown) {
+      devError("SalesService", "Failed to reset user password", {
+        targetEmail,
+        error,
+      });
+      const message = error instanceof Error ? error.message : "Unknown error";
+      throw new Error(`Admin password reset failed: ${message}`);
     }
   }
 }

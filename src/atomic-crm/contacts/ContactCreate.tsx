@@ -14,7 +14,7 @@ import { useSmartDefaults } from "@/atomic-crm/hooks/useSmartDefaults";
 import { CreateFormFooter } from "@/atomic-crm/components";
 import type { Contact } from "../types";
 import { ContactInputs } from "./ContactInputs";
-import { contactBaseSchema } from "../validation/contacts";
+import { contactBaseSchema, contactCreateFormSchema } from "../validation/contacts";
 import { ContactFormTutorial } from "./ContactFormTutorial";
 
 const ContactCreate = () => {
@@ -77,7 +77,7 @@ const ContactCreate = () => {
             <Form
               defaultValues={formDefaults}
               mode="onBlur"
-              resolver={createFormResolver(contactBaseSchema)}
+              resolver={createFormResolver(contactCreateFormSchema)}
             >
               <ContactFormContent redirect={redirect} />
             </Form>

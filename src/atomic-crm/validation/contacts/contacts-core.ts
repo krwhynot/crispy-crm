@@ -179,6 +179,42 @@ export const contactBaseSchema = z.strictObject({
   search_tsv: z.unknown().optional(),
 });
 
+// Form-level schema for contact creation — adds required field validation
+// Uses contactBaseSchema (accepts all form fields) + superRefine (no .omit/.transform)
+// Cannot reuse createContactSchema because .omit() on strictObject rejects form fields
+// like created_at that exist in RHF state. Provider-level validation (validateCreateContact)
+// is the safety net.
+export const contactCreateFormSchema = contactBaseSchema.superRefine((data, ctx) => {
+  if (!data.first_name || (typeof data.first_name === "string" && data.first_name === "")) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      path: ["first_name"],
+      message: "First name is required",
+    });
+  }
+  if (!data.last_name || (typeof data.last_name === "string" && data.last_name === "")) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      path: ["last_name"],
+      message: "Last name is required",
+    });
+  }
+  if (!data.sales_id) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      path: ["sales_id"],
+      message: "Account manager is required",
+    });
+  }
+  if (!data.organization_id) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      path: ["organization_id"],
+      message: "Organization is required",
+    });
+  }
+});
+
 // Helper function to transform data
 function transformContactData(data: Record<string, unknown>) {
   // Compute name from first + last if not provided

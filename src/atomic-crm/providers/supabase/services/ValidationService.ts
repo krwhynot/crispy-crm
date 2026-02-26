@@ -16,7 +16,7 @@ import type { Segment } from "../../../validation/segments";
 import type { ProductDistributor } from "../../../validation/productDistributors";
 
 // Import all validation schemas
-import { validateContactForm, validateUpdateContact } from "../../../validation/contacts";
+import { validateCreateContact, validateUpdateContact } from "../../../validation/contacts";
 import {
   validateUpdateOrganization,
   validateCreateOrganization,
@@ -206,7 +206,7 @@ export class ValidationService {
 
     this.validationRegistry = {
       contacts: {
-        create: async (data: unknown) => validateContactForm(data),
+        create: async (data: unknown) => validateCreateContact(data),
         update: async (data: unknown) => validateUpdateContact(data),
       },
       organizations: {
