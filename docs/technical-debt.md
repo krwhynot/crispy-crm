@@ -69,7 +69,7 @@
 |----|----------|-------|---------|--------|
 | IMP-01 | Deep Imports | 4-level deep imports need @/ alias | `src/atomic-crm/providers/supabase/extensions/__tests__/customMethodsExtension.test.ts:31-32` | Open |
 | IMP-02 | Deep Imports | 3-level deep imports in provider/service layer | Multiple files - needs audit | Open |
-| IMP-03 | Extension | 5 imports include unnecessary .tsx extension | `src/components/supabase/forgot-password-page.tsx:4,7`, `src/main.tsx:11`, `src/components/admin/ListNoResults.tsx:7`, `src/atomic-crm/root/CRM.tsx:38` | Open |
+| IMP-03 | Extension | 5 imports include unnecessary .tsx extension | `src/components/supabase/forgot-password-page.tsx:4,7`, `src/main.tsx:11`, `src/components/ra-wrappers/ListNoResults.tsx:7`, `src/atomic-crm/root/CRM.tsx:38` | Open |
 
 ### Dead Code
 
@@ -96,9 +96,9 @@
 
 | ID | Category | Issue | File(s) | Status |
 |----|----------|-------|---------|--------|
-| FORM-02 | Touch Target | FormErrorSummary expand button < 44px | `src/components/admin/FormErrorSummary.tsx:136` | Open |
-| FORM-03 | Touch Target | FormErrorSummary error item button < 44px | `src/components/admin/FormErrorSummary.tsx:168` | Open |
-| FORM-04 | Mobile-First | SimpleFormIterator uses sm: instead of md: breakpoint | `src/components/admin/simple-form-iterator.tsx:324` | Open |
+| FORM-02 | Touch Target | FormErrorSummary expand button < 44px | `src/components/ra-wrappers/FormErrorSummary.tsx:136` | Open |
+| FORM-03 | Touch Target | FormErrorSummary error item button < 44px | `src/components/ra-wrappers/FormErrorSummary.tsx:168` | Open |
+| FORM-04 | Mobile-First | SimpleFormIterator uses sm: instead of md: breakpoint | `src/components/ra-wrappers/simple-form-iterator.tsx:324` | Open |
 
 ### Code Quality (from TODO scan)
 

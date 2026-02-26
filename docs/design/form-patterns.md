@@ -471,8 +471,8 @@ When refactoring existing forms:
 
 ## See Also
 
-- `FormSectionWithProgress` component: `src/components/admin/form/FormSectionWithProgress.tsx`
-- `FormFieldWrapper` component: `src/components/admin/form/FormFieldWrapper.tsx`
-- `CompactFormRow` component: `src/components/admin/form/CompactFormRow.tsx`
-- `FormProgressProvider` context: `src/components/admin/form/formProgressUtils.ts`
+- `FormSectionWithProgress` component: `src/components/ra-wrappers/form/FormSectionWithProgress.tsx`
+- `FormFieldWrapper` component: `src/components/ra-wrappers/form/FormFieldWrapper.tsx`
+- `CompactFormRow` component: `src/components/ra-wrappers/form/CompactFormRow.tsx`
+- `FormProgressProvider` context: `src/components/ra-wrappers/form/formProgressUtils.ts`
 - Zod validation: `src/atomic-crm/validation/` directory

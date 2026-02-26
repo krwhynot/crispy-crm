@@ -2765,7 +2765,7 @@ For developers investigating issues:
 | Products | `src/atomic-crm/products/` |
 | Dashboard | `src/atomic-crm/dashboard/` |
 | Validation Schemas | `src/atomic-crm/validation/` |
-| Data Provider | `src/atomic-crm/providers/supabase/unifiedDataProvider.ts` |
+| Data Provider | `src/atomic-crm/providers/supabase/composedDataProvider.ts` |
 
 ---
 

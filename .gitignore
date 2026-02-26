@@ -141,3 +141,6 @@ test-output.txt
 
 # Windows /dev/null artifact
 nul
+
+# Binary business reference files (Excel, PDF, Word)
+docs/activitytrackerform/

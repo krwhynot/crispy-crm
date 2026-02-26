@@ -82,7 +82,7 @@ interface SidepaneSectionProps {
 ### 2. Form Section Headings (FormSectionWithProgress)
 
 **Component:** `FormSectionWithProgress`
-**Location:** `src/components/admin/form/FormSectionWithProgress.tsx`
+**Location:** `src/components/ra-wrappers/form/FormSectionWithProgress.tsx`
 
 #### Styling
 
