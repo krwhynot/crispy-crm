@@ -2,6 +2,7 @@ import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import { createClient } from "jsr:@supabase/supabase-js@2";
 import { supabaseAdmin } from "../_shared/supabaseAdmin.ts";
 import { createCorsHeaders } from "../_shared/cors-config.ts";
+import { createErrorResponse } from "../_shared/utils.ts";
 import { z } from "npm:zod@3.22.4";
 
 interface Sale {
@@ -13,13 +14,6 @@ interface Sale {
   role: "admin" | "manager" | "rep";
   disabled: boolean;
   avatar_url?: string;
-}
-
-function createErrorResponse(status: number, message: string, corsHeaders: Record<string, string>) {
-  return new Response(JSON.stringify({ status, message }), {
-    headers: { "Content-Type": "application/json", ...corsHeaders },
-    status,
-  });
 }
 
 // Zod schemas following engineering constitution:
