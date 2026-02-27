@@ -211,18 +211,30 @@ async function patchUser(
     return createErrorResponse(401, "Not Authorized", corsHeaders);
   }
 
-  const { data, error: userError } = await supabaseAdmin.auth.admin.updateUserById(
-    saleToUpdate.user_id,
-    {
-      email,
-      ban_duration: disabled ? "87600h" : "none",
-      user_metadata: { first_name, last_name },
-    }
-  );
+  // Only call auth admin API when there are meaningful auth changes
+  const hasAuthChanges =
+    email != null || first_name != null || last_name != null || disabled != null;
 
-  if (!data?.user || userError) {
-    console.error("Error patching user:", userError);
-    return createErrorResponse(500, "Internal Server Error", corsHeaders);
+  if (hasAuthChanges) {
+    const authUpdate: Record<string, unknown> = {};
+    if (email != null) authUpdate.email = email;
+    if (disabled != null) authUpdate.ban_duration = disabled ? "87600h" : "none";
+    if (first_name != null || last_name != null) {
+      authUpdate.user_metadata = {
+        ...(first_name != null && { first_name }),
+        ...(last_name != null && { last_name }),
+      };
+    }
+
+    const { data, error: userError } = await supabaseAdmin.auth.admin.updateUserById(
+      saleToUpdate.user_id,
+      authUpdate
+    );
+
+    if (!data?.user || userError) {
+      console.error("Error patching user:", userError);
+      return createErrorResponse(500, "Internal Server Error", corsHeaders);
+    }
   }
 
   // Only administrators can update the role and disabled status
@@ -267,6 +279,18 @@ async function patchUser(
       avatar_url: avatar_url ?? undefined,
       deleted_at: deleted_at ?? undefined,
     });
+
+    // Ban soft-deleted users from auth system
+    if (deleted_at != null) {
+      const { error: banError } = await supabaseAdmin.auth.admin.updateUserById(
+        saleToUpdate.user_id,
+        { ban_duration: "87600h" }
+      );
+      if (banError) {
+        console.error("Warning: Failed to ban soft-deleted user:", banError);
+        // Non-critical: DB soft-delete succeeded, log but don't fail the request
+      }
+    }
 
     return new Response(
       JSON.stringify({

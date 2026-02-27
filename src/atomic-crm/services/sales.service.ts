@@ -134,7 +134,7 @@ export class SalesService {
     data: Partial<SalesFormData> & { deleted_at?: string }
   ): Promise<Partial<SalesFormData> & { deleted_at?: string }> {
     // Destructure all fields that can be updated (avatar_url matches DB column name)
-    const { email, first_name, last_name, role, avatar_url, disabled, deleted_at } = data;
+    const { email, first_name, last_name, phone, role, avatar_url, disabled, deleted_at } = data;
 
     if (!this.dataProvider.invoke) {
       devError("SalesService", "DataProvider missing invoke capability", {
@@ -156,6 +156,7 @@ export class SalesService {
       if (last_name) body.last_name = last_name;
       if (role !== undefined) body.role = role; // enum - keep !== undefined
       if (disabled !== undefined) body.disabled = disabled; // boolean - false is valid
+      if (phone) body.phone = phone;
       if (avatar_url) body.avatar_url = avatar_url;
       if (deleted_at) body.deleted_at = deleted_at;
 

@@ -64,8 +64,9 @@ export function RowHoverActions({
       }
       notify("Record deleted", { type: "success" });
       refresh();
-    } catch {
-      notify("Failed to delete record", { type: "error" });
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Failed to delete record";
+      notify(message, { type: "error" });
     }
   };
 
