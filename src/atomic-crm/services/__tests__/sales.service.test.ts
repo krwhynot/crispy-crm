@@ -46,7 +46,6 @@ describe("SalesService", () => {
 
     mockSalesFormData = {
       email: "john.doe@example.com",
-      password: "SecurePassword123!",
       first_name: "John",
       last_name: "Doe",
       administrator: false,
@@ -72,14 +71,13 @@ describe("SalesService", () => {
 
       const result = await service.salesCreate(mockSalesFormData);
 
-      // Only the 6 fields accepted by the Edge Function's inviteUserSchema are sent
+      // Only the 5 fields accepted by the Edge Function's inviteUserSchema are sent
       expect(mockDataProvider.invoke).toHaveBeenCalledWith("users", {
         method: "POST",
         body: {
           first_name: mockSalesFormData.first_name,
           last_name: mockSalesFormData.last_name,
           email: mockSalesFormData.email,
-          password: mockSalesFormData.password,
           role: undefined, // not set in mockSalesFormData
           disabled: mockSalesFormData.disabled,
         },
@@ -175,7 +173,7 @@ describe("SalesService", () => {
 
       await service.salesCreate(disabledFormData);
 
-      // Extra fields (avatar_url, administrator) are stripped; only 6 invite fields sent
+      // Extra fields (avatar_url, administrator) are stripped; only 5 invite fields sent
       expect(mockDataProvider.invoke).toHaveBeenCalledWith(
         "users",
         expect.objectContaining({
@@ -191,12 +189,12 @@ describe("SalesService", () => {
     test("should handle validation errors from Edge Function", async () => {
       mockDataProvider.invoke = vi
         .fn()
-        .mockRejectedValue(new Error("Password must be at least 8 characters"));
+        .mockRejectedValue(new Error("Validation failed: email: Invalid email format"));
 
       // Service now throws HttpError with body.errors format per React Admin server validation
       await expect(service.salesCreate(mockSalesFormData)).rejects.toThrow(HttpError);
       await expect(service.salesCreate(mockSalesFormData)).rejects.toThrow(
-        "Password must be at least 8 characters"
+        "Validation failed: email: Invalid email format"
       );
     });
   });
@@ -276,24 +274,6 @@ describe("SalesService", () => {
           sales_id: salesId,
           first_name: "Updated",
         }),
-      });
-    });
-
-    test("should exclude password from update data", async () => {
-      // Intentional: Testing that password is excluded even if passed (bypasses type check)
-      const updateDataWithPassword = {
-        first_name: "John",
-        password: "should-not-be-here",
-      } as unknown as Parameters<typeof service.salesUpdate>[1];
-
-      mockDataProvider.invoke = vi.fn().mockResolvedValue({ id: 1 } as Sale);
-
-      await service.salesUpdate(1, updateDataWithPassword);
-
-      // Verify password is not in the PATCH body
-      expect(mockDataProvider.invoke).toHaveBeenCalledWith("users", {
-        method: "PATCH",
-        body: expect.not.objectContaining({ password: expect.anything() }),
       });
     });
 
@@ -469,6 +449,69 @@ describe("SalesService", () => {
       await expect(service.updatePassword(1)).rejects.toThrow(
         "Password update failed: Network request failed: timeout"
       );
+    });
+  });
+
+  describe("resetUserPassword", () => {
+    test("should return OTP code on success", async () => {
+      mockDataProvider.invoke = vi.fn().mockResolvedValue({
+        data: { success: true, email_otp: "123456" },
+      });
+
+      const result = await service.resetUserPassword("user@example.com");
+
+      expect(mockDataProvider.invoke).toHaveBeenCalledWith("updatePassword", {
+        method: "PATCH",
+        body: { target_email: "user@example.com" },
+      });
+      expect(result).toEqual({ email_otp: "123456" });
+    });
+
+    test("should throw if dataProvider lacks invoke capability", async () => {
+      const providerWithoutInvoke: DataProviderWithInvoke = createMockDataProvider();
+      const serviceWithoutInvoke = new SalesService(providerWithoutInvoke);
+
+      await expect(serviceWithoutInvoke.resetUserPassword("user@example.com")).rejects.toThrow(
+        "DataProvider does not support Edge Function operations"
+      );
+    });
+
+    test("should throw if OTP is missing from response", async () => {
+      mockDataProvider.invoke = vi.fn().mockResolvedValue({
+        data: { success: true },
+      });
+
+      await expect(service.resetUserPassword("user@example.com")).rejects.toThrow(
+        "no OTP code returned"
+      );
+    });
+
+    test("should handle Edge Function errors", async () => {
+      mockDataProvider.invoke = vi
+        .fn()
+        .mockRejectedValue(new Error("Failed to generate password reset"));
+
+      await expect(service.resetUserPassword("user@example.com")).rejects.toThrow(
+        "Admin password reset failed: Failed to generate password reset"
+      );
+    });
+
+    test("should log error details on failure", async () => {
+      const consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+      mockDataProvider.invoke = vi.fn().mockRejectedValue(new Error("Database error"));
+
+      await expect(service.resetUserPassword("user@example.com")).rejects.toThrow();
+
+      expect(consoleErrorSpy).toHaveBeenCalledWith(
+        "[SalesService]",
+        "Failed to reset user password",
+        expect.objectContaining({
+          targetEmail: "user@example.com",
+          error: expect.any(Error),
+        })
+      );
+
+      consoleErrorSpy.mockRestore();
     });
   });
 

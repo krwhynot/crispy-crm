@@ -109,7 +109,7 @@ export async function validateSalesForm(data: unknown): Promise<void> {
 }
 
 // Create-specific schema (stricter requirements)
-// Industry-standard invite flow: Admin enters name/email/role, user sets own password via invite email
+// Invite-only flow: Admin enters name/email/role, user sets own password via invite email
 export const createSalesSchema = salesSchema
   .omit({
     id: true,
@@ -118,19 +118,10 @@ export const createSalesSchema = salesSchema
     updated_at: true,
     deleted_at: true,
   })
-  .extend({
-    // Password optional - Edge Function uses Supabase inviteUserByEmail for password setup
-    password: z
-      .string()
-      .min(8, "Password must be at least 8 characters")
-      .max(128, "Password too long")
-      .optional(),
-  })
   .required({
     first_name: true,
     last_name: true,
     email: true,
-    // Note: password removed from required - user sets via invite email
   });
 
 // Update-specific schema (more flexible)
@@ -170,17 +161,11 @@ export async function validateUpdateSales(data: unknown): Promise<void> {
  * Used by UserInviteForm in the /sales create flow
  * Validation happens at Edge Function (API boundary), NOT in form
  *
- * Industry-standard invite flow: Admin provides name/email/role only
+ * Invite-only flow: Admin provides name/email/role only
  * User receives invite email and sets their own password
  */
 export const userInviteSchema = z.strictObject({
   email: z.string().max(254, "Email too long").email("Invalid email format"),
-  // Password optional - Supabase inviteUserByEmail handles password setup
-  password: z
-    .string()
-    .min(8, "Password must be at least 8 characters")
-    .max(128, "Password too long")
-    .optional(),
   first_name: z.string().trim().min(1, "First name is required").max(100, "First name too long"),
   last_name: z.string().trim().min(1, "Last name is required").max(100, "Last name too long"),
   role: UserRoleEnum.default("rep"),

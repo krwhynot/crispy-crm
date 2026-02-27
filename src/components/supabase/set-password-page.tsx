@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Form, useNotify, useTranslate } from "ra-core";
 import { useSetPassword, useSupabaseAccessToken } from "ra-supabase-core";
+import { useLocation } from "react-router-dom";
 import type { FieldValues, SubmitHandler } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { TextInput } from "@/components/ra-wrappers/text-input";
@@ -63,6 +64,11 @@ export const SetPasswordPage = () => {
     parameterName: "refresh_token",
   });
 
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const isRecoveryFlow = searchParams.get("flow") === "recovery";
+  const otpType: "recovery" | "invite" = isRecoveryFlow ? "recovery" : "invite";
+
   const notify = useNotify();
   const translate = useTranslate();
   const [, { mutateAsync: setPassword }] = useSetPassword();
@@ -120,7 +126,7 @@ export const SetPasswordPage = () => {
       const { error } = await supabase.auth.verifyOtp({
         email: values.email,
         token: values.otp,
-        type: "invite",
+        type: otpType,
       });
 
       if (error) {
@@ -231,7 +237,9 @@ export const SetPasswordPage = () => {
           {translate("ra-supabase.set_password.new_password", { _: "Verify your invitation" })}
         </h1>
         <p className="text-sm text-muted-foreground">
-          Enter the email address from your invitation and the 6-digit code from the email.
+          {isRecoveryFlow
+            ? "Enter your email and the 6-digit reset code from your administrator."
+            : "Enter the email address from your invitation and the 6-digit code from the email."}
         </p>
       </div>
       <Form<OtpFormData> className="space-y-8" onSubmit={submitOtp as SubmitHandler<FieldValues>}>

@@ -21,12 +21,9 @@ import type { SalesFormData, Sale } from "../../../types";
  */
 export interface SalesExtension {
   salesCreate(body: SalesFormData): Promise<Sale>;
-  salesUpdate(
-    id: Identifier,
-    data: Partial<Omit<SalesFormData, "password">>
-  ): Promise<Partial<Omit<SalesFormData, "password">>>;
+  salesUpdate(id: Identifier, data: Partial<SalesFormData>): Promise<Partial<SalesFormData>>;
   updatePassword(id: Identifier): Promise<boolean>;
-  resetUserPassword(targetEmail: string): Promise<boolean>;
+  resetUserPassword(targetEmail: string): Promise<{ email_otp: string }>;
 }
 
 /**
@@ -43,7 +40,7 @@ export function createSalesExtension(services: ServiceContainer): SalesExtension
      * Create account manager via Edge Function
      * Delegates to SalesService which calls create-sales Edge Function
      *
-     * @param body - Sales form data with email, password, profile info
+     * @param body - Sales form data with email, profile info
      * @returns Created sale record with user_id
      */
     salesCreate: async (body: SalesFormData): Promise<Sale> => {
@@ -55,13 +52,13 @@ export function createSalesExtension(services: ServiceContainer): SalesExtension
      * Delegates to SalesService which calls update-sales Edge Function
      *
      * @param id - Sale record ID
-     * @param data - Partial sales data (password excluded)
+     * @param data - Partial sales data
      * @returns Updated partial sales data
      */
     salesUpdate: async (
       id: Identifier,
-      data: Partial<Omit<SalesFormData, "password">>
-    ): Promise<Partial<Omit<SalesFormData, "password">>> => {
+      data: Partial<SalesFormData>
+    ): Promise<Partial<SalesFormData>> => {
       return services.sales.salesUpdate(id, data);
     },
 
@@ -81,9 +78,9 @@ export function createSalesExtension(services: ServiceContainer): SalesExtension
      * Delegates to SalesService. Requires caller to have admin role.
      *
      * @param targetEmail - Email of the user to reset password for
-     * @returns Success boolean
+     * @returns Object containing the 6-digit OTP code
      */
-    resetUserPassword: async (targetEmail: string): Promise<boolean> => {
+    resetUserPassword: async (targetEmail: string): Promise<{ email_otp: string }> => {
       return services.sales.resetUserPassword(targetEmail);
     },
   };

@@ -78,6 +78,7 @@ describe("extendWithCustomMethods", () => {
         salesCreate: vi.fn(),
         salesUpdate: vi.fn(),
         updatePassword: vi.fn(),
+        resetUserPassword: vi.fn(),
       },
       opportunities: {
         archiveOpportunity: vi.fn(),
@@ -146,10 +147,11 @@ describe("extendWithCustomMethods", () => {
     it("should add all 30 custom methods to provider", () => {
       const extendedProvider = extendWithCustomMethods(config);
 
-      // Sales methods (3)
+      // Sales methods (4)
       expect(extendedProvider.salesCreate).toBeTypeOf("function");
       expect(extendedProvider.salesUpdate).toBeTypeOf("function");
       expect(extendedProvider.updatePassword).toBeTypeOf("function");
+      expect(extendedProvider.resetUserPassword).toBeTypeOf("function");
 
       // Opportunities methods (2)
       expect(extendedProvider.archiveOpportunity).toBeTypeOf("function");
@@ -171,7 +173,6 @@ describe("extendWithCustomMethods", () => {
       const extendedProvider = extendWithCustomMethods(config);
       const formData: SalesFormData = {
         email: "test@example.com",
-        password: "secure123",
         first_name: "Test",
         last_name: "User",
         administrator: false,
@@ -195,11 +196,11 @@ describe("extendWithCustomMethods", () => {
 
     it("should delegate salesUpdate to SalesService", async () => {
       const extendedProvider = extendWithCustomMethods(config);
-      const updateData: Partial<Omit<SalesFormData, "password">> = {
+      const updateData: Partial<SalesFormData> = {
         first_name: "Updated",
         last_name: "Name",
       };
-      const expectedResult: Partial<Omit<SalesFormData, "password">> = updateData;
+      const expectedResult: Partial<SalesFormData> = updateData;
 
       vi.mocked(mockServices.sales.salesUpdate).mockResolvedValue(expectedResult);
 
@@ -218,6 +219,19 @@ describe("extendWithCustomMethods", () => {
 
       expect(mockServices.sales.updatePassword).toHaveBeenCalledWith(1);
       expect(result).toBe(true);
+    });
+
+    it("should delegate resetUserPassword to SalesService", async () => {
+      const extendedProvider = extendWithCustomMethods(config);
+
+      vi.mocked(mockServices.sales.resetUserPassword).mockResolvedValue({
+        email_otp: "123456",
+      });
+
+      const result = await extendedProvider.resetUserPassword("user@example.com");
+
+      expect(mockServices.sales.resetUserPassword).toHaveBeenCalledWith("user@example.com");
+      expect(result).toEqual({ email_otp: "123456" });
     });
   });
 

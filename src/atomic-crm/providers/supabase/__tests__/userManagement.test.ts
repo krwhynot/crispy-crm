@@ -38,7 +38,6 @@ import { supabase } from "../supabase";
  */
 async function inviteUser(params: {
   email: string;
-  password: string;
   first_name: string;
   last_name: string;
   role: string;
@@ -128,7 +127,7 @@ describe("User Management Data Provider", () => {
 
       const result = await inviteUser({
         email: "new@test.com",
-        password: "SecurePass123!",
+
         first_name: "New",
         last_name: "User",
         role: "rep",
@@ -156,7 +155,7 @@ describe("User Management Data Provider", () => {
       await expect(
         inviteUser({
           email: "existing@test.com",
-          password: "SecurePass123!",
+
           first_name: "Test",
           last_name: "User",
           role: "rep",
@@ -174,7 +173,7 @@ describe("User Management Data Provider", () => {
       await expect(
         inviteUser({
           email: "test@test.com",
-          password: "SecurePass123!",
+
           first_name: "Test",
           last_name: "User",
           role: "rep",
@@ -192,7 +191,7 @@ describe("User Management Data Provider", () => {
       await expect(
         inviteUser({
           email: "test@test.com",
-          password: "SecurePass123!",
+
           first_name: "Test",
           last_name: "User",
           role: "rep",

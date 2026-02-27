@@ -88,7 +88,7 @@ export interface ExtendedDataProvider extends DataProvider {
   /**
    * Create account manager via Edge Function
    *
-   * @param body - Sales user form data including email, password, profile
+   * @param body - Sales user form data including email and profile
    * @returns Created sales user record
    * @throws Error if Edge Function fails or validation errors
    *
@@ -96,11 +96,9 @@ export interface ExtendedDataProvider extends DataProvider {
    * ```typescript
    * const sale = await dataProvider.salesCreate({
    *   email: "john@example.com",
-   *   password: "SecurePass123",
    *   first_name: "John",
    *   last_name: "Doe",
    *   role: "rep",
-   *   is_admin: false,
    * });
    * ```
    */
@@ -110,7 +108,7 @@ export interface ExtendedDataProvider extends DataProvider {
    * Update account manager profile via Edge Function
    *
    * @param id - Sales user ID
-   * @param data - Partial sales user data (password excluded)
+   * @param data - Partial sales user data
    * @returns Updated sales user record
    * @throws Error if Edge Function fails or user not found
    *
@@ -122,10 +120,7 @@ export interface ExtendedDataProvider extends DataProvider {
    * });
    * ```
    */
-  salesUpdate(
-    id: Identifier,
-    data: Partial<Omit<SalesFormData, "password">>
-  ): Promise<Partial<Omit<SalesFormData, "password">>>;
+  salesUpdate(id: Identifier, data: Partial<SalesFormData>): Promise<Partial<SalesFormData>>;
 
   /**
    * Trigger self-service password reset email for account manager
@@ -145,19 +140,20 @@ export interface ExtendedDataProvider extends DataProvider {
   /**
    * Admin-initiated password reset for another user
    *
-   * Sends a password reset email to the specified user. Only admins can call this.
+   * Generates a recovery OTP code for the specified user. Only admins can call this.
+   * Admin shares the OTP code with the user, who enters it on the set-password page.
    *
    * @param targetEmail - Email of the user to reset password for
-   * @returns True if reset email sent successfully
+   * @returns Object containing the 6-digit OTP code
    * @throws Error if caller is not admin or user not found
    *
    * @example
    * ```typescript
-   * await dataProvider.resetUserPassword("user@example.com");
-   * // Target user receives password reset email
+   * const { email_otp } = await dataProvider.resetUserPassword("user@example.com");
+   * // Admin shares the OTP code with the target user
    * ```
    */
-  resetUserPassword(targetEmail: string): Promise<boolean>;
+  resetUserPassword(targetEmail: string): Promise<{ email_otp: string }>;
 
   // ==================== Opportunities Methods ====================
   // Delegate to OpportunitiesService
@@ -533,7 +529,6 @@ export interface ExtendedDataProvider extends DataProvider {
    *   method: "POST",
    *   body: {
    *     email: "john@example.com",
-   *     password: "SecurePass123",
    *     first_name: "John",
    *     last_name: "Doe",
    *   },

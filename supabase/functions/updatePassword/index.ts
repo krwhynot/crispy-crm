@@ -69,14 +69,28 @@ Deno.serve(async (req: Request) => {
       return createErrorResponse(403, "Only admins can reset other users' passwords", corsHeaders);
     }
 
-    const { error: resetError } = await supabaseAdmin.auth.resetPasswordForEmail(targetEmail);
+    const { data: linkData, error: linkError } = await supabaseAdmin.auth.admin.generateLink({
+      type: "recovery",
+      email: targetEmail,
+    });
 
-    if (resetError) {
-      console.error("Password reset error:", resetError.message);
-      return createErrorResponse(500, "Failed to send password reset email", corsHeaders);
+    if (linkError) {
+      console.error("Generate link error:", linkError.message);
+      return createErrorResponse(500, "Failed to generate password reset", corsHeaders);
     }
 
-    return createJsonResponse({ success: true }, corsHeaders);
+    if (!linkData?.properties?.email_otp) {
+      console.error("No OTP in generateLink response");
+      return createErrorResponse(500, "Password reset generation incomplete", corsHeaders);
+    }
+
+    return createJsonResponse(
+      {
+        success: true,
+        email_otp: linkData.properties.email_otp,
+      },
+      corsHeaders
+    );
   }
 
   // Self-service reset: send reset email to the authenticated caller

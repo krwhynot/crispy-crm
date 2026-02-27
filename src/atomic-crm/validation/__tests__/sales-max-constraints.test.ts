@@ -237,26 +237,6 @@ describe("Sales .max() Constraints", () => {
       };
       expect(() => createSalesSchema.parse(invalidCreate)).toThrow(z.ZodError);
     });
-
-    it("should accept password at max length (128 chars)", () => {
-      const validCreate = {
-        first_name: "John",
-        last_name: "Doe",
-        email: "test@example.com",
-        password: "a".repeat(128),
-      };
-      expect(() => createSalesSchema.parse(validCreate)).not.toThrow();
-    });
-
-    it("should reject password over max length (129 chars)", () => {
-      const invalidCreate = {
-        first_name: "John",
-        last_name: "Doe",
-        email: "test@example.com",
-        password: "a".repeat(129),
-      };
-      expect(() => createSalesSchema.parse(invalidCreate)).toThrow(z.ZodError);
-    });
   });
 
   describe("updateSalesSchema", () => {

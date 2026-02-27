@@ -21,17 +21,11 @@ interface Sale {
 // - .max() on all strings (DoS prevention)
 // - z.coerce for type conversion
 
-// Industry-standard invite flow: Admin provides name/email/role
+// Invite-only flow: Admin provides name/email/role
 // User sets their own password via Supabase inviteUserByEmail magic link
 const inviteUserSchema = z
   .strictObject({
     email: z.string().email("Invalid email format").max(254, "Email too long"),
-    // Password optional - Supabase inviteUserByEmail handles password setup
-    password: z
-      .string()
-      .min(8, "Password must be at least 8 characters")
-      .max(128, "Password too long")
-      .optional(),
     first_name: z.string().min(1, "First name required").max(100, "First name too long"),
     last_name: z.string().min(1, "Last name required").max(100, "Last name too long"),
     disabled: z.coerce.boolean().optional().default(false),
@@ -147,48 +141,17 @@ async function inviteUser(
     return createErrorResponse(400, message, corsHeaders);
   }
 
-  const { email, password, first_name, last_name, disabled, role } = validatedData;
+  const { email, first_name, last_name, disabled, role } = validatedData;
 
-  // Industry-standard invite flow:
-  // - If no password provided, create user with email_confirm: true
-  // - inviteUserByEmail() sends magic link for user to set their own password
-  const createUserOptions: Parameters<typeof supabaseAdmin.auth.admin.createUser>[0] = {
-    email,
-    user_metadata: { first_name, last_name },
-  };
+  // Single API call: creates user + sends invite email
+  // In local dev, Inbucket captures the email; in production, SMTP delivers it
+  const { data, error: inviteError } = await supabaseAdmin.auth.admin.inviteUserByEmail(email, {
+    data: { first_name, last_name },
+  });
 
-  // Only include password if explicitly provided (backward compatibility)
-  if (password) {
-    createUserOptions.password = password;
-  } else {
-    // No password = invite flow, auto-confirm email since invite link handles verification
-    createUserOptions.email_confirm = true;
-  }
-
-  const { data, error: userError } = await supabaseAdmin.auth.admin.createUser(createUserOptions);
-
-  if (!data?.user || userError) {
-    console.error("Error creating user:", userError);
-    return createErrorResponse(500, "Internal Server Error", corsHeaders);
-  }
-
-  // Only send invitation email in production (SMTP not configured in local dev)
-  const isDevelopment =
-    Deno.env.get("ENVIRONMENT") === "development" ||
-    Deno.env.get("SUPABASE_URL")?.includes("localhost");
-
-  if (!isDevelopment) {
-    const { error: emailError } = await supabaseAdmin.auth.admin.inviteUserByEmail(email);
-    if (emailError) {
-      console.error("Error sending invitation email:", emailError);
-      // Compensating rollback: delete the orphaned auth user since invite failed
-      await supabaseAdmin.auth.admin.deleteUser(data.user.id).catch((deleteErr) => {
-        console.error("Failed to rollback auth user after invite email failure:", deleteErr);
-      });
-      return createErrorResponse(500, "Failed to send invitation email", corsHeaders);
-    }
-  } else {
-    console.log("Development mode: Skipping invitation email for", email);
+  if (!data?.user || inviteError) {
+    console.error("Error inviting user:", inviteError);
+    return createErrorResponse(500, "Failed to invite user", corsHeaders);
   }
 
   try {

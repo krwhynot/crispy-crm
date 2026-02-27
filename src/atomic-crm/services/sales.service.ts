@@ -45,8 +45,8 @@ export class SalesService {
     try {
       // Strip fields the Edge Function's inviteUserSchema doesn't accept (z.strictObject rejects unknown keys).
       // Matches the destructure pattern used in salesUpdate.
-      const { first_name, last_name, email, password, role, disabled } = body;
-      const invitePayload = { first_name, last_name, email, password, role, disabled };
+      const { first_name, last_name, email, role, disabled } = body;
+      const invitePayload = { first_name, last_name, email, role, disabled };
 
       const data = await this.dataProvider.invoke<Sale>("users", {
         method: "POST",
@@ -126,13 +126,13 @@ export class SalesService {
   /**
    * Update sales account manager profile via Edge function
    * @param id Sales user ID
-   * @param data Profile update data (password excluded)
+   * @param data Profile update data
    * @returns Updated profile data
    */
   async salesUpdate(
     id: Identifier,
-    data: Partial<Omit<SalesFormData, "password">> & { deleted_at?: string }
-  ): Promise<Partial<Omit<SalesFormData, "password">> & { deleted_at?: string }> {
+    data: Partial<SalesFormData> & { deleted_at?: string }
+  ): Promise<Partial<SalesFormData> & { deleted_at?: string }> {
     // Destructure all fields that can be updated (avatar_url matches DB column name)
     const { email, first_name, last_name, role, avatar_url, disabled, deleted_at } = data;
 
@@ -222,12 +222,12 @@ export class SalesService {
   }
 
   /**
-   * Admin-initiated password reset: sends reset email to a target user.
-   * Only admins can use this endpoint.
+   * Admin-initiated password reset: generates recovery OTP for a target user.
+   * Only admins can use this endpoint. Returns OTP code for admin to share.
    * @param targetEmail Email of the user to reset password for
-   * @returns true on success
+   * @returns Object containing the 6-digit OTP code
    */
-  async resetUserPassword(targetEmail: string): Promise<boolean> {
+  async resetUserPassword(targetEmail: string): Promise<{ email_otp: string }> {
     if (!this.dataProvider.invoke) {
       devError("SalesService", "DataProvider missing invoke capability", {
         operation: "resetUserPassword",
@@ -239,14 +239,20 @@ export class SalesService {
     }
 
     try {
-      await this.dataProvider.invoke("updatePassword", {
+      const result = await this.dataProvider.invoke("updatePassword", {
         method: "PATCH",
         body: {
           target_email: targetEmail,
         },
       });
 
-      return true;
+      // createJsonResponse wraps as { data: payload }, invoke returns parsed body
+      const response = result as { data: { success: boolean; email_otp: string } };
+      if (!response?.data?.email_otp) {
+        throw new Error("Password reset succeeded but no OTP code returned");
+      }
+
+      return { email_otp: response.data.email_otp };
     } catch (error: unknown) {
       devError("SalesService", "Failed to reset user password", {
         targetEmail,

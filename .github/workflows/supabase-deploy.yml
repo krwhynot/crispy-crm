@@ -52,4 +52,11 @@ jobs:
       - name: Deploy Edge Functions
         env:
           SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
-        run: npx supabase functions deploy || true
+        run: |
+          npx supabase functions deploy updatePassword
+          npx supabase functions deploy users
+          npx supabase functions deploy daily-digest
+          npx supabase functions deploy check-overdue-tasks
+          npx supabase functions deploy digest-opt-out
+          npx supabase functions deploy capture-dashboard-snapshots
+          npx supabase functions deploy health-check

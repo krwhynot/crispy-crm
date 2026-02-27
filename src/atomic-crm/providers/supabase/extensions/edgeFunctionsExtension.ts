@@ -80,7 +80,7 @@ export function createEdgeFunctionsExtension(
      *   "create-sales",
      *   {
      *     method: "POST",
-     *     body: { email: "test@example.com", password: "secure123" }
+     *     body: { email: "test@example.com", first_name: "John", last_name: "Doe" }
      *   }
      * );
      *
