@@ -203,7 +203,7 @@ export class SalesService {
     try {
       // Edge Function returns { data: { success: true } } on success.
       // If invoke doesn't throw, the reset email was sent successfully.
-      await this.dataProvider.invoke("updatePassword", {
+      await this.dataProvider.invoke("updatepassword", {
         method: "PATCH",
         body: {
           sales_id: id,
@@ -222,12 +222,12 @@ export class SalesService {
   }
 
   /**
-   * Admin-initiated password reset: generates recovery OTP for a target user.
-   * Only admins can use this endpoint. Returns OTP code for admin to share.
+   * Admin-initiated password reset: sends recovery email to a target user.
+   * Only admins can use this endpoint. Supabase sends the recovery email directly.
    * @param targetEmail Email of the user to reset password for
-   * @returns Object containing the 6-digit OTP code
+   * @returns Object with success boolean
    */
-  async resetUserPassword(targetEmail: string): Promise<{ email_otp: string }> {
+  async resetUserPassword(targetEmail: string): Promise<{ success: boolean }> {
     if (!this.dataProvider.invoke) {
       devError("SalesService", "DataProvider missing invoke capability", {
         operation: "resetUserPassword",
@@ -239,20 +239,14 @@ export class SalesService {
     }
 
     try {
-      const result = await this.dataProvider.invoke("updatePassword", {
+      await this.dataProvider.invoke("updatepassword", {
         method: "PATCH",
         body: {
           target_email: targetEmail,
         },
       });
 
-      // createJsonResponse wraps as { data: payload }, invoke returns parsed body
-      const response = result as { data: { success: boolean; email_otp: string } };
-      if (!response?.data?.email_otp) {
-        throw new Error("Password reset succeeded but no OTP code returned");
-      }
-
-      return { email_otp: response.data.email_otp };
+      return { success: true };
     } catch (error: unknown) {
       devError("SalesService", "Failed to reset user password", {
         targetEmail,

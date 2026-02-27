@@ -23,7 +23,7 @@ export interface SalesExtension {
   salesCreate(body: SalesFormData): Promise<Sale>;
   salesUpdate(id: Identifier, data: Partial<SalesFormData>): Promise<Partial<SalesFormData>>;
   updatePassword(id: Identifier): Promise<boolean>;
-  resetUserPassword(targetEmail: string): Promise<{ email_otp: string }>;
+  resetUserPassword(targetEmail: string): Promise<{ success: boolean }>;
 }
 
 /**
@@ -78,9 +78,9 @@ export function createSalesExtension(services: ServiceContainer): SalesExtension
      * Delegates to SalesService. Requires caller to have admin role.
      *
      * @param targetEmail - Email of the user to reset password for
-     * @returns Object containing the 6-digit OTP code
+     * @returns Object with success boolean
      */
-    resetUserPassword: async (targetEmail: string): Promise<{ email_otp: string }> => {
+    resetUserPassword: async (targetEmail: string): Promise<{ success: boolean }> => {
       return services.sales.resetUserPassword(targetEmail);
     },
   };

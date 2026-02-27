@@ -140,20 +140,20 @@ export interface ExtendedDataProvider extends DataProvider {
   /**
    * Admin-initiated password reset for another user
    *
-   * Generates a recovery OTP code for the specified user. Only admins can call this.
-   * Admin shares the OTP code with the user, who enters it on the set-password page.
+   * Sends a recovery email to the specified user. Only admins can call this.
+   * The user receives an email with a link to set a new password.
    *
    * @param targetEmail - Email of the user to reset password for
-   * @returns Object containing the 6-digit OTP code
+   * @returns Object with success boolean
    * @throws Error if caller is not admin or user not found
    *
    * @example
    * ```typescript
-   * const { email_otp } = await dataProvider.resetUserPassword("user@example.com");
-   * // Admin shares the OTP code with the target user
+   * await dataProvider.resetUserPassword("user@example.com");
+   * // User receives password reset email
    * ```
    */
-  resetUserPassword(targetEmail: string): Promise<{ email_otp: string }>;
+  resetUserPassword(targetEmail: string): Promise<{ success: boolean }>;
 
   // ==================== Opportunities Methods ====================
   // Delegate to OpportunitiesService

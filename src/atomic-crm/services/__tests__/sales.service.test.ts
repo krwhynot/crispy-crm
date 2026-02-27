@@ -352,14 +352,14 @@ describe("SalesService", () => {
     });
   });
 
-  describe("updatePassword", () => {
+  describe("updatepassword", () => {
     test("should call Edge Function with PATCH method and sales ID", async () => {
       const salesId = 1;
       mockDataProvider.invoke = vi.fn().mockResolvedValue(true);
 
       const result = await service.updatePassword(salesId);
 
-      expect(mockDataProvider.invoke).toHaveBeenCalledWith("updatePassword", {
+      expect(mockDataProvider.invoke).toHaveBeenCalledWith("updatepassword", {
         method: "PATCH",
         body: { sales_id: salesId },
       });
@@ -425,7 +425,7 @@ describe("SalesService", () => {
       // Numeric ID
       await service.updatePassword(789);
       expect(mockDataProvider.invoke).toHaveBeenCalledWith(
-        "updatePassword",
+        "updatepassword",
         expect.objectContaining({
           body: expect.objectContaining({ sales_id: 789 }),
         })
@@ -434,7 +434,7 @@ describe("SalesService", () => {
       // String ID
       await service.updatePassword("uuid-789");
       expect(mockDataProvider.invoke).toHaveBeenCalledWith(
-        "updatePassword",
+        "updatepassword",
         expect.objectContaining({
           body: expect.objectContaining({ sales_id: "uuid-789" }),
         })
@@ -453,18 +453,18 @@ describe("SalesService", () => {
   });
 
   describe("resetUserPassword", () => {
-    test("should return OTP code on success", async () => {
+    test("should return success on email sent", async () => {
       mockDataProvider.invoke = vi.fn().mockResolvedValue({
-        data: { success: true, email_otp: "123456" },
+        data: { success: true },
       });
 
       const result = await service.resetUserPassword("user@example.com");
 
-      expect(mockDataProvider.invoke).toHaveBeenCalledWith("updatePassword", {
+      expect(mockDataProvider.invoke).toHaveBeenCalledWith("updatepassword", {
         method: "PATCH",
         body: { target_email: "user@example.com" },
       });
-      expect(result).toEqual({ email_otp: "123456" });
+      expect(result).toEqual({ success: true });
     });
 
     test("should throw if dataProvider lacks invoke capability", async () => {
@@ -476,23 +476,13 @@ describe("SalesService", () => {
       );
     });
 
-    test("should throw if OTP is missing from response", async () => {
-      mockDataProvider.invoke = vi.fn().mockResolvedValue({
-        data: { success: true },
-      });
-
-      await expect(service.resetUserPassword("user@example.com")).rejects.toThrow(
-        "no OTP code returned"
-      );
-    });
-
     test("should handle Edge Function errors", async () => {
       mockDataProvider.invoke = vi
         .fn()
-        .mockRejectedValue(new Error("Failed to generate password reset"));
+        .mockRejectedValue(new Error("Failed to send password reset email"));
 
       await expect(service.resetUserPassword("user@example.com")).rejects.toThrow(
-        "Admin password reset failed: Failed to generate password reset"
+        "Admin password reset failed: Failed to send password reset email"
       );
     });
 

@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import {
   useUpdate,
   useDelete,
@@ -32,7 +32,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
-import { KeyRound, Trash2, Copy, Check } from "lucide-react";
+import { KeyRound, Trash2 } from "lucide-react";
 // NOTE: Client-side validation removed (2025-12-12)
 // Edge Function /users PATCH handles validation with patchUserSchema
 // salesService.salesUpdate() filters empty strings before sending to Edge Function
@@ -75,10 +75,8 @@ export function SalesPermissionsTab({
   // FIX [WF-C04]: Show reassign dialog before disabling user
   const [showDisableDialog, setShowDisableDialog] = useState(false);
   const [isResettingPassword, setIsResettingPassword] = useState(false);
-  const [resetOtp, setResetOtp] = useState<string | null>(null);
-  const [copied, setCopied] = useState(false);
   const dataProvider = useDataProvider() as ReturnType<typeof useDataProvider> & {
-    resetUserPassword?: (targetEmail: string) => Promise<{ email_otp: string }>;
+    resetUserPassword?: (targetEmail: string) => Promise<{ success: boolean }>;
   };
 
   // Form state
@@ -104,53 +102,24 @@ export function SalesPermissionsTab({
     onDirtyChange(isDirty);
   }, [formData, record, mode, onDirtyChange]);
 
-  // Clear OTP state on unmount
-  useEffect(() => {
-    return () => {
-      setResetOtp(null);
-    };
-  }, []);
-
   // Prevent editing own account
   const isSelfEdit = record?.id === identity?.id;
 
-  // Admin-initiated password reset: generates OTP code for target user
+  // Admin-initiated password reset: sends recovery email to target user
   const handleResetPassword = async () => {
     if (!record?.email || !dataProvider.resetUserPassword) return;
 
     try {
       setIsResettingPassword(true);
-      const result = await dataProvider.resetUserPassword(record.email);
-      setResetOtp(result.email_otp);
+      await dataProvider.resetUserPassword(record.email);
+      notify(`Password reset email sent to ${record.email}`, { type: "success" });
     } catch (error: unknown) {
-      const message = error instanceof Error ? error.message : "Failed to generate reset code";
+      const message = error instanceof Error ? error.message : "Failed to send reset email";
       notify(message, { type: "error" });
     } finally {
       setIsResettingPassword(false);
     }
   };
-
-  // Copy OTP code to clipboard with fallback
-  const handleCopyOtp = useCallback(async () => {
-    if (!resetOtp) return;
-    try {
-      await navigator.clipboard.writeText(resetOtp);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    } catch {
-      // Fallback for browsers without clipboard API
-      const input = document.createElement("input");
-      input.value = resetOtp;
-      input.style.position = "fixed";
-      input.style.opacity = "0";
-      document.body.appendChild(input);
-      input.select();
-      document.execCommand("copy");
-      document.body.removeChild(input);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    }
-  }, [resetOtp]);
 
   // Remove user (soft-delete handled by Data Provider layer)
   const handleRemoveUser = () => {
@@ -420,8 +389,8 @@ export function SalesPermissionsTab({
           <div className="p-4 border border-border rounded-lg bg-muted/20">
             <h3 className="text-sm font-semibold mb-2">Password Management</h3>
             <p className="text-sm text-muted-foreground mb-4">
-              Generate a password reset code for this user. You will share the code and a link with
-              them to set a new password.
+              Send a password reset email to this user. They will receive a link to set a new
+              password.
             </p>
             <AlertDialog>
               <AlertDialogTrigger asChild>
@@ -430,18 +399,18 @@ export function SalesPermissionsTab({
                   size="sm"
                   disabled={isResettingPassword}
                   isLoading={isResettingPassword}
-                  loadingText="Generating..."
+                  loadingText="Sending..."
                   className="gap-2"
                 >
                   <KeyRound className="h-4 w-4" />
-                  Generate Reset Code
+                  Send Reset Email
                 </AdminButton>
               </AlertDialogTrigger>
               <AlertDialogContent>
                 <AlertDialogHeader>
-                  <AlertDialogTitle>Generate Reset Code</AlertDialogTitle>
+                  <AlertDialogTitle>Send Password Reset Email</AlertDialogTitle>
                   <AlertDialogDescription>
-                    Generate a password reset code for{" "}
+                    Send a password reset email to{" "}
                     <strong>
                       {record?.first_name} {record?.last_name}
                     </strong>{" "}
@@ -450,63 +419,11 @@ export function SalesPermissionsTab({
                 </AlertDialogHeader>
                 <AlertDialogFooter>
                   <AlertDialogCancel>Cancel</AlertDialogCancel>
-                  <AlertDialogAction onClick={handleResetPassword}>Generate Code</AlertDialogAction>
+                  <AlertDialogAction onClick={handleResetPassword}>Send</AlertDialogAction>
                 </AlertDialogFooter>
               </AlertDialogContent>
             </AlertDialog>
           </div>
-
-          {/* OTP Result Dialog */}
-          <AlertDialog
-            open={resetOtp !== null}
-            onOpenChange={(open) => {
-              if (!open) {
-                setResetOtp(null);
-                setCopied(false);
-              }
-            }}
-          >
-            <AlertDialogContent>
-              <AlertDialogHeader>
-                <AlertDialogTitle>Password Reset Code</AlertDialogTitle>
-                <AlertDialogDescription asChild>
-                  <div className="space-y-4">
-                    <p>Share this code with the user:</p>
-                    <div className="flex items-center gap-2 p-3 bg-muted rounded-md">
-                      <code className="text-2xl font-mono tracking-widest flex-1 text-center text-foreground">
-                        {resetOtp}
-                      </code>
-                      <button
-                        type="button"
-                        onClick={handleCopyOtp}
-                        className="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium border border-border rounded-md hover:bg-accent min-h-[44px] min-w-[44px] justify-center"
-                      >
-                        {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
-                        {copied ? "Copied" : "Copy"}
-                      </button>
-                    </div>
-                    <div className="space-y-2 text-sm">
-                      <p>Also share this link:</p>
-                      <code className="block p-2 bg-muted rounded text-xs break-all text-foreground">
-                        {window.location.origin}/#/set-password?flow=recovery
-                      </code>
-                    </div>
-                    <p className="text-xs text-muted-foreground">Code expires in 24 hours.</p>
-                  </div>
-                </AlertDialogDescription>
-              </AlertDialogHeader>
-              <AlertDialogFooter>
-                <AlertDialogAction
-                  onClick={() => {
-                    setResetOtp(null);
-                    setCopied(false);
-                  }}
-                >
-                  Close
-                </AlertDialogAction>
-              </AlertDialogFooter>
-            </AlertDialogContent>
-          </AlertDialog>
         </div>
       )}
 

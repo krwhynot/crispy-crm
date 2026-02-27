@@ -225,13 +225,13 @@ describe("extendWithCustomMethods", () => {
       const extendedProvider = extendWithCustomMethods(config);
 
       vi.mocked(mockServices.sales.resetUserPassword).mockResolvedValue({
-        email_otp: "123456",
+        success: true,
       });
 
       const result = await extendedProvider.resetUserPassword("user@example.com");
 
       expect(mockServices.sales.resetUserPassword).toHaveBeenCalledWith("user@example.com");
-      expect(result).toEqual({ email_otp: "123456" });
+      expect(result).toEqual({ success: true });
     });
   });
 
