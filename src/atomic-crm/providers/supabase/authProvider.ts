@@ -71,6 +71,16 @@ export const authProvider: AuthProvider = {
    * - Now: Session validation happens BEFORE checking if path is public
    */
   checkAuth: async (params) => {
+    // Allow public auth pages without session check
+    // Must match ra-supabase-core's checkAuth behavior (lines 113-127)
+    // Uses hash check because app uses hash routing (window.location.pathname is always "/")
+    if (
+      window.location.hash.includes("#/set-password") ||
+      window.location.hash.includes("#/forgot-password")
+    ) {
+      return;
+    }
+
     // Always check session first - don't trust URL alone
     const {
       data: { session },
@@ -121,8 +131,9 @@ function isPublicPath(pathname: string): boolean {
     "/set-password", // Only accessible via email recovery link
     "/reset-password",
   ];
+  const hash = window.location.hash;
 
-  return publicPaths.some((path) => pathname.startsWith(path));
+  return publicPaths.some((path) => pathname.startsWith(path) || hash.includes(`#${path}`));
 }
 
 interface CachedSale {
