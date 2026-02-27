@@ -125,7 +125,7 @@ const DEVELOPMENT_ORIGINS = [
   "http://127.0.0.1:3000",
 ];
 
-const PRODUCTION_ORIGINS = ["https://crispy-crm.vercel.app", "https://www.crispy-crm.vercel.app"];
+const PRODUCTION_ORIGINS = ["https://crm.kjrcloud.com", "https://crispy-crm.vercel.app", "https://www.crispy-crm.vercel.app"];
 
 function getAllAllowedOrigins(): string[] {
   const envOrigins = Deno.env.get("ALLOWED_ORIGINS");
