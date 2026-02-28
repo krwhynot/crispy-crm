@@ -10,6 +10,7 @@ import type { SubmitHandler } from "react-hook-form";
 import { SalesService } from "../services";
 import type { SalesFormData } from "../types";
 import { createSalesSchema } from "../validation/sales";
+import { createFormResolver } from "@/lib/zodErrorFormatting";
 import { SalesInputs } from "./SalesInputs";
 import { SalesListSkeleton } from "@/components/ui/list-skeleton";
 import { useEffect, useState } from "react";
@@ -137,6 +138,7 @@ export default function SalesCreate() {
           onSubmit={onSubmit}
           defaultValues={formDefaults}
           disabled={isCreating}
+          resolver={createFormResolver(createSalesSchema)}
         >
           <SalesFormContent serverError={serverError} />
         </SimpleForm>
