@@ -65,6 +65,13 @@ export const salesSchema = z.strictObject({
 
   disabled: z.coerce.boolean().default(false),
 
+  // Password (only used during user creation, not stored in sales table)
+  password: z
+    .string()
+    .min(8, "Password must be at least 8 characters")
+    .max(72, "Password too long")
+    .optional(),
+
   // Notification preferences
   digest_opt_in: z.coerce.boolean().default(true), // Default true for backward compatibility
 
@@ -109,7 +116,7 @@ export async function validateSalesForm(data: unknown): Promise<void> {
 }
 
 // Create-specific schema (stricter requirements)
-// Invite-only flow: Admin enters name/email/role, user sets own password via invite email
+// Direct password flow: Admin enters name/email/role/password, user created immediately
 export const createSalesSchema = salesSchema
   .omit({
     id: true,
@@ -122,6 +129,7 @@ export const createSalesSchema = salesSchema
     first_name: true,
     last_name: true,
     email: true,
+    password: true,
   });
 
 // Update-specific schema (more flexible)
@@ -157,15 +165,19 @@ export async function validateUpdateSales(data: unknown): Promise<void> {
 // =====================================================================
 
 /**
- * Schema for inviting a new user
+ * Schema for creating a new user
  * Used by UserInviteForm in the /sales create flow
  * Validation happens at Edge Function (API boundary), NOT in form
  *
- * Invite-only flow: Admin provides name/email/role only
- * User receives invite email and sets their own password
+ * Direct password flow: Admin provides name/email/role/password
+ * User is created immediately, no invite email sent
  */
 export const userInviteSchema = z.strictObject({
   email: z.string().max(254, "Email too long").email("Invalid email format"),
+  password: z
+    .string()
+    .min(8, "Password must be at least 8 characters")
+    .max(72, "Password too long"),
   first_name: z.string().trim().min(1, "First name is required").max(100, "First name too long"),
   last_name: z.string().trim().min(1, "Last name is required").max(100, "Last name too long"),
   role: UserRoleEnum.default("rep"),

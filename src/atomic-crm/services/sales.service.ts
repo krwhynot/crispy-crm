@@ -45,8 +45,8 @@ export class SalesService {
     try {
       // Strip fields the Edge Function's inviteUserSchema doesn't accept (z.strictObject rejects unknown keys).
       // Matches the destructure pattern used in salesUpdate.
-      const { first_name, last_name, email, role, disabled } = body;
-      const invitePayload = { first_name, last_name, email, role, disabled };
+      const { first_name, last_name, email, role, disabled, password } = body;
+      const invitePayload = { first_name, last_name, email, role, disabled, password };
 
       const data = await this.dataProvider.invoke<Sale>("users", {
         method: "POST",
@@ -111,6 +111,9 @@ export class SalesService {
       }
       if (lowerMessage.includes("role")) {
         fieldErrors.role = message;
+      }
+      if (lowerMessage.includes("password")) {
+        fieldErrors.password = message;
       }
 
       // Throw HttpError with body.errors format for React Admin form integration

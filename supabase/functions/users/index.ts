@@ -1,7 +1,7 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import { createClient } from "jsr:@supabase/supabase-js@2";
 import { supabaseAdmin } from "../_shared/supabaseAdmin.ts";
-import { createCorsHeaders, getAllowedOrigins } from "../_shared/cors-config.ts";
+import { createCorsHeaders } from "../_shared/cors-config.ts";
 import { createErrorResponse } from "../_shared/utils.ts";
 import { z } from "npm:zod@3.22.4";
 
@@ -21,11 +21,15 @@ interface Sale {
 // - .max() on all strings (DoS prevention)
 // - z.coerce for type conversion
 
-// Invite-only flow: Admin provides name/email/role
-// User sets their own password via Supabase inviteUserByEmail magic link
+// Direct password flow: Admin provides name/email/role/password
+// User is created immediately with email_confirm: true, no invite email sent
 const inviteUserSchema = z
   .strictObject({
     email: z.string().email("Invalid email format").max(254, "Email too long"),
+    password: z
+      .string()
+      .min(8, "Password must be at least 8 characters")
+      .max(72, "Password too long"),
     first_name: z.string().min(1, "First name required").max(100, "First name too long"),
     last_name: z.string().min(1, "Last name required").max(100, "Last name too long"),
     disabled: z.coerce.boolean().optional().default(false),
@@ -141,28 +145,21 @@ async function inviteUser(
     return createErrorResponse(400, message, corsHeaders);
   }
 
-  const { email, first_name, last_name, disabled, role } = validatedData;
+  const { email, password, first_name, last_name, disabled, role } = validatedData;
 
-  // Build a safe redirectTo URL from the request origin
-  const requestOrigin = req.headers.get("origin");
-  const allowedOrigins = getAllowedOrigins();
-  const inviteOrigin =
-    requestOrigin && allowedOrigins.includes(requestOrigin)
-      ? requestOrigin
-      : Deno.env.get("SITE_URL") || allowedOrigins[0] || "http://localhost:5173";
-  const redirectTo = new URL("/auth-callback.html", inviteOrigin).toString();
-
-  // Single API call: creates user + sends invite email
-  // In local dev, Inbucket captures the email; in production, SMTP delivers it
-  const { data, error: inviteError } = await supabaseAdmin.auth.admin.inviteUserByEmail(email, {
-    data: { first_name, last_name },
-    redirectTo,
+  // Create user directly with password — no invite email sent
+  // email_confirm: true marks email as verified so user can log in immediately
+  const { data, error: createError } = await supabaseAdmin.auth.admin.createUser({
+    email,
+    password,
+    email_confirm: true,
+    user_metadata: { first_name, last_name },
   });
 
-  if (!data?.user || inviteError) {
-    console.error("Error inviting user:", inviteError);
-    const message = inviteError?.message || "Failed to invite user";
-    const status = message.includes("rate limit") ? 429 : message.includes("invalid") ? 400 : 500;
+  if (!data?.user || createError) {
+    console.error("Error creating user:", createError);
+    const message = createError?.message || "Failed to create user";
+    const status = message.includes("already") ? 409 : message.includes("invalid") ? 400 : 500;
     return createErrorResponse(status, message, corsHeaders);
   }
 

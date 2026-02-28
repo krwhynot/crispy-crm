@@ -58,7 +58,7 @@ export default function SalesCreate() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: saleKeys.all });
-      notify("User created. They will soon receive an email to set their password.");
+      notify("User created successfully. Share the login credentials with them.");
       redirect("/sales");
     },
     onError: (error: Error) => {
