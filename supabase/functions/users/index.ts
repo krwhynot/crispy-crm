@@ -161,7 +161,9 @@ async function inviteUser(
 
   if (!data?.user || inviteError) {
     console.error("Error inviting user:", inviteError);
-    return createErrorResponse(500, "Failed to invite user", corsHeaders);
+    const message = inviteError?.message || "Failed to invite user";
+    const status = message.includes("rate limit") ? 429 : message.includes("invalid") ? 400 : 500;
+    return createErrorResponse(status, message, corsHeaders);
   }
 
   try {

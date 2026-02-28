@@ -123,15 +123,29 @@ export function createEdgeFunctionsExtension(
           processedOptions.body = validationResult.data as Record<string, unknown>;
         }
 
-        const { data, error } = await supabaseClient.functions.invoke<T>(functionName, {
+        const { data, error, response } = await supabaseClient.functions.invoke<T>(functionName, {
           method: processedOptions.method || "POST",
           body: processedOptions.body,
           headers: processedOptions.headers,
         });
 
         if (error) {
-          logError("invoke", functionName, { data: processedOptions }, error);
-          throw new Error(`Edge function ${functionName} failed: ${error.message}`);
+          let message = error.message;
+          let statusCode: number | undefined;
+
+          // Extract actual error from Edge Function response body
+          if (response) {
+            statusCode = response.status;
+            try {
+              const body = await response.json();
+              if (body?.message) message = body.message;
+            } catch {
+              // Response wasn't JSON, keep SDK message
+            }
+          }
+
+          logError("invoke", functionName, { data: processedOptions, statusCode }, error);
+          throw new Error(`Edge function ${functionName} failed: ${message}`);
         }
 
         if (!data) {
