@@ -1,7 +1,7 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import { createClient } from "jsr:@supabase/supabase-js@2";
 import { supabaseAdmin } from "../_shared/supabaseAdmin.ts";
-import { createCorsHeaders } from "../_shared/cors-config.ts";
+import { createCorsHeaders, getAllowedOrigins } from "../_shared/cors-config.ts";
 import { createErrorResponse, createJsonResponse } from "../_shared/utils.ts";
 
 Deno.serve(async (req: Request) => {
@@ -51,6 +51,15 @@ Deno.serve(async (req: Request) => {
     return createErrorResponse(400, "Invalid JSON body", corsHeaders);
   }
 
+  // Build a safe redirectTo URL from the request origin
+  const requestOrigin = req.headers.get("origin");
+  const allowedOrigins = getAllowedOrigins();
+  const origin =
+    requestOrigin && allowedOrigins.includes(requestOrigin)
+      ? requestOrigin
+      : Deno.env.get("SITE_URL") || allowedOrigins[0] || "http://localhost:5173";
+  const redirectTo = new URL("/auth-callback.html", origin).toString();
+
   // Admin-initiated reset: body contains target_email
   if (body.target_email) {
     const targetEmail = String(body.target_email);
@@ -69,7 +78,9 @@ Deno.serve(async (req: Request) => {
       return createErrorResponse(403, "Only admins can reset other users' passwords", corsHeaders);
     }
 
-    const { error: resetError } = await supabaseAdmin.auth.resetPasswordForEmail(targetEmail);
+    const { error: resetError } = await supabaseAdmin.auth.resetPasswordForEmail(targetEmail, {
+      redirectTo,
+    });
 
     if (resetError) {
       console.error("Password reset error:", resetError.message);
@@ -84,7 +95,9 @@ Deno.serve(async (req: Request) => {
     return createErrorResponse(400, "No email associated with authenticated user", corsHeaders);
   }
 
-  const { error: resetError } = await supabaseAdmin.auth.resetPasswordForEmail(callerUser.email);
+  const { error: resetError } = await supabaseAdmin.auth.resetPasswordForEmail(callerUser.email, {
+    redirectTo,
+  });
 
   if (resetError) {
     console.error("Password reset error:", resetError.message);

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Form, useNotify, useTranslate } from "ra-core";
 import { useSetPassword, useSupabaseAccessToken } from "ra-supabase-core";
 import { useLocation } from "react-router-dom";
@@ -59,21 +59,41 @@ export const SetPasswordPage = () => {
   const [loading, setLoading] = useState(false);
   const [otpVerified, setOtpVerified] = useState(false);
 
-  const access_token = useSupabaseAccessToken();
+  const access_token = useSupabaseAccessToken({ redirectTo: false });
   const refresh_token = useSupabaseAccessToken({
     parameterName: "refresh_token",
+    redirectTo: false,
   });
+
+  const [sessionCheckState, setSessionCheckState] = useState<
+    "idle" | "checking" | "valid" | "none"
+  >("idle");
 
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const isRecoveryFlow = searchParams.get("flow") === "recovery";
-  const otpType: "recovery" | "invite" = isRecoveryFlow ? "recovery" : "invite";
+  const isRecoveryType = searchParams.get("type") === "recovery";
+  const otpType: "recovery" | "invite" = isRecoveryFlow || isRecoveryType ? "recovery" : "invite";
 
   const notify = useNotify();
   const translate = useTranslate();
   const [, { mutateAsync: setPassword }] = useSetPassword();
 
   const hasTokens = Boolean(access_token && refresh_token);
+
+  // When arriving via PASSWORD_RECOVERY event (flow=recovery) or auth-callback (type=recovery)
+  // without URL tokens, check if Supabase already established a session.
+  useEffect(() => {
+    if ((isRecoveryFlow || isRecoveryType) && !hasTokens && sessionCheckState === "idle") {
+      setSessionCheckState("checking");
+      supabase.auth.getSession().then(({ data }) => {
+        setSessionCheckState(data.session?.user ? "valid" : "none");
+      });
+    }
+  }, [isRecoveryFlow, isRecoveryType, hasTokens, sessionCheckState]);
+
+  const isRecoverySession =
+    (isRecoveryFlow || isRecoveryType) && !hasTokens && sessionCheckState === "valid";
 
   // Token path: submit password using ra-supabase-core hook
   const submitWithToken = async (values: PasswordFormData) => {
@@ -184,6 +204,77 @@ export const SetPasswordPage = () => {
       setLoading(false);
     }
   };
+
+  // Recovery session path: set password using existing session from PASSWORD_RECOVERY event
+  const submitRecoveryPassword = async (values: PasswordFormData) => {
+    const strengthError = validatePasswordStrength(values.password);
+    if (strengthError) {
+      notify(strengthError, { type: "warning" });
+      return;
+    }
+
+    if (values.password !== values.confirmPassword) {
+      notify("Passwords do not match", { type: "warning" });
+      return;
+    }
+
+    try {
+      setLoading(true);
+      const { error } = await supabase.auth.updateUser({
+        password: values.password,
+      });
+
+      if (error) {
+        notify(error.message || "Failed to set password.", { type: "warning" });
+        return;
+      }
+
+      // Sign out to clear recovery session, then redirect to login for clean auth
+      await supabase.auth.signOut();
+      notify("Password set successfully. Redirecting to login...", { type: "success" });
+      setTimeout(() => {
+        window.location.href = "/login";
+      }, 1500);
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : "Failed to set password";
+      notify(message, { type: "warning" });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Loading state: checking for recovery session
+  if ((isRecoveryFlow || isRecoveryType) && !hasTokens && sessionCheckState === "checking") {
+    return (
+      <Layout>
+        <div className="flex flex-col items-center space-y-4 text-center">
+          <p className="text-sm text-muted-foreground">Verifying your reset link...</p>
+        </div>
+      </Layout>
+    );
+  }
+
+  // Path 0: Recovery session — user has a valid session from PASSWORD_RECOVERY event
+  if (isRecoverySession) {
+    return (
+      <Layout>
+        <div className="flex flex-col space-y-2 text-center">
+          <h1 className="text-2xl font-semibold tracking-tight">
+            {translate("ra-supabase.set_password.new_password", { _: "Choose your new password" })}
+          </h1>
+        </div>
+        <Form<PasswordFormData>
+          className="space-y-8"
+          onSubmit={submitRecoveryPassword as SubmitHandler<FieldValues>}
+        >
+          <PasswordFields translate={translate} />
+          <Button type="submit" className="cursor-pointer" disabled={loading}>
+            {translate("ra.action.save")}
+          </Button>
+        </Form>
+      </Layout>
+    );
+  }
 
   // Path 1: Token-based flow (invite link worked)
   if (hasTokens) {

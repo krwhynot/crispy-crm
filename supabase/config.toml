@@ -99,11 +99,11 @@ double_confirm_changes = true
 enable_confirmations = false
 
 [auth.email.template.invite]
-subject = "You've been invited to Atomic CRM"
+subject = "You've been invited to Masterfoods CRM"
 content_path = "./supabase/templates/invite.html"
 
 [auth.email.template.recovery]
-subject = "Reset your Atomic CRM Password"
+subject = "Reset your Masterfoods CRM Password"
 content_path = "./supabase/templates/recovery.html"
 
 # Security notification emails (local dev config)
@@ -111,12 +111,12 @@ content_path = "./supabase/templates/recovery.html"
 # or via Management API: PATCH /v1/projects/{ref}/config/auth
 [auth.email.notification.password_changed]
 enabled = true
-subject = "Your Atomic CRM password has been changed"
+subject = "Your Masterfoods CRM password has been changed"
 content_path = "./templates/password_changed.html"
 
 [auth.email.notification.email_changed]
 enabled = true
-subject = "Your Atomic CRM email address has been changed"
+subject = "Your Masterfoods CRM email address has been changed"
 content_path = "./templates/email_changed.html"
 
 [auth.sms]

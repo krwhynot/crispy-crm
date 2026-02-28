@@ -47,6 +47,7 @@ export const ForgotPasswordPage = () => {
       setLoading(true);
       await resetPassword({
         email: values.email,
+        redirectTo: `${window.location.origin}/auth-callback.html`,
       });
       // Start cooldown after successful submission
       startCooldown();

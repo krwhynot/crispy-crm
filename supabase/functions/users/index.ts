@@ -1,7 +1,7 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import { createClient } from "jsr:@supabase/supabase-js@2";
 import { supabaseAdmin } from "../_shared/supabaseAdmin.ts";
-import { createCorsHeaders } from "../_shared/cors-config.ts";
+import { createCorsHeaders, getAllowedOrigins } from "../_shared/cors-config.ts";
 import { createErrorResponse } from "../_shared/utils.ts";
 import { z } from "npm:zod@3.22.4";
 
@@ -143,10 +143,20 @@ async function inviteUser(
 
   const { email, first_name, last_name, disabled, role } = validatedData;
 
+  // Build a safe redirectTo URL from the request origin
+  const requestOrigin = req.headers.get("origin");
+  const allowedOrigins = getAllowedOrigins();
+  const inviteOrigin =
+    requestOrigin && allowedOrigins.includes(requestOrigin)
+      ? requestOrigin
+      : Deno.env.get("SITE_URL") || allowedOrigins[0] || "http://localhost:5173";
+  const redirectTo = new URL("/auth-callback.html", inviteOrigin).toString();
+
   // Single API call: creates user + sends invite email
   // In local dev, Inbucket captures the email; in production, SMTP delivers it
   const { data, error: inviteError } = await supabaseAdmin.auth.admin.inviteUserByEmail(email, {
     data: { first_name, last_name },
+    redirectTo,
   });
 
   if (!data?.user || inviteError) {
