@@ -33,13 +33,20 @@ $RECYCLE.BIN/
 # .env.local - Local development config (safe Docker keys)
 
 # Ignore these:
-.env                        # Active configuration (copied from .env.local or .env.cloud)
-.env.*                      # Catch-all: .env.production, .env.staging, .env.development, .env.test, etc.
-.env.cloud                  # Cloud config with API keys (not committed)
-!.env.example               # Exception: Keep .env.example (template)
-!.env.local                 # Exception: Keep .env.local (safe Docker keys)
-.env-archive/               # Archived old env files
-supabase/.env               # Supabase configuration
+# Active configuration (copied from .env.local or .env.cloud)
+.env
+# Catch-all: .env.production, .env.staging, .env.development, .env.test, etc.
+.env.*
+# Cloud config with API keys (not committed)
+.env.cloud
+# Exception: Keep .env.example (template)
+!.env.example
+# Exception: Keep .env.local (safe Docker keys)
+!.env.local
+# Archived old env files
+.env-archive/
+# Supabase configuration
+supabase/.env
 supabase/functions/.env
 
 # Backup files - should not be tracked
