@@ -12,7 +12,7 @@
 
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type { BoothVisitorResult } from "./types";
-import type { QuickAddInput } from "../../../validation/quickAdd";
+import type { QuickAddInput } from "@/atomic-crm/validation/quickAdd";
 import { logger } from "@/lib/logger";
 
 /**

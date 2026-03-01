@@ -9,23 +9,23 @@ import type {
   Organization,
   Sale,
   ActivityRecord,
-} from "../../../types";
-import type { Task } from "../../../validation/task";
-import type { ProductFormData } from "../../../validation/products";
-import type { Segment } from "../../../validation/segments";
-import type { ProductDistributor } from "../../../validation/productDistributors";
+} from "@/atomic-crm/types";
+import type { Task } from "@/atomic-crm/validation/task";
+import type { ProductFormData } from "@/atomic-crm/validation/products";
+import type { Segment } from "@/atomic-crm/validation/segments";
+import type { ProductDistributor } from "@/atomic-crm/validation/productDistributors";
 
 // Import all validation schemas
-import { validateCreateContact, validateUpdateContact } from "../../../validation/contacts";
+import { validateCreateContact, validateUpdateContact } from "@/atomic-crm/validation/contacts";
 import {
   validateUpdateOrganization,
   validateCreateOrganization,
-} from "../../../validation/organizations";
+} from "@/atomic-crm/validation/organizations";
 import {
   validateCreateOpportunity,
   validateUpdateOpportunity,
   validateCloseOpportunity,
-} from "../../../validation/opportunities";
+} from "@/atomic-crm/validation/opportunities";
 import {
   validateCreateContactNote,
   validateUpdateContactNote,
@@ -33,28 +33,31 @@ import {
   validateUpdateOpportunityNote,
   validateCreateOrganizationNote,
   validateUpdateOrganizationNote,
-} from "../../../validation/notes";
-import type { OrganizationNote } from "../../../validation/notes";
-import { validateTaskForm } from "../../../validation/task";
+} from "@/atomic-crm/validation/notes";
+import type { OrganizationNote } from "@/atomic-crm/validation/notes";
+import { validateTaskForm } from "@/atomic-crm/validation/task";
 import {
   validateProductFormWithDistributors,
   validateProductUpdateWithDistributors,
-} from "../../../validation/products";
-import { validateCreateTag, validateUpdateTag } from "../../../validation/tags";
-import { validateSalesForm } from "../../../validation/sales";
-import { validateActivitiesForm, validateUpdateActivities } from "../../../validation/activities";
-import { validateCreateSegment } from "../../../validation/segments";
+} from "@/atomic-crm/validation/products";
+import { validateCreateTag, validateUpdateTag } from "@/atomic-crm/validation/tags";
+import { validateSalesForm } from "@/atomic-crm/validation/sales";
+import {
+  validateActivitiesForm,
+  validateUpdateActivities,
+} from "@/atomic-crm/validation/activities";
+import { validateCreateSegment } from "@/atomic-crm/validation/segments";
 import {
   validateCreateProductDistributor,
   validateUpdateProductDistributor,
-} from "../../../validation/productDistributors";
+} from "@/atomic-crm/validation/productDistributors";
 import {
   validateCreateOrganizationDistributor,
   validateOrganizationDistributor,
-} from "../../../validation/organizationDistributors";
-import type { OrganizationDistributor } from "../../../validation/organizationDistributors";
-import { validateCreateFavorite, validateUpdateFavorite } from "../../../validation/favorites";
-import type { Favorite } from "../../../validation/favorites";
+} from "@/atomic-crm/validation/organizationDistributors";
+import type { OrganizationDistributor } from "@/atomic-crm/validation/organizationDistributors";
+import { validateCreateFavorite, validateUpdateFavorite } from "@/atomic-crm/validation/favorites";
+import type { Favorite } from "@/atomic-crm/validation/favorites";
 import { filterableFields, isValidFilterField } from "../filterRegistry";
 import { DEV } from "@/lib/devLogger";
 import { logger } from "@/lib/logger";

@@ -280,5 +280,3 @@ export const HIERARCHY_FILTERS = {
  * 44px minimum ensures reliable touch/click interaction
  */
 export const TOUCH_TARGET_MIN_HEIGHT = "h-11";
-export const BADGE_TOUCH_CLASSES =
-  "text-xs px-3 py-2 min-h-[44px] flex items-center justify-center";

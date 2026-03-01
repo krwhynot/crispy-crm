@@ -17,7 +17,7 @@
 
 import type { DataProvider, RaRecord, CreateParams, UpdateParams, GetListParams } from "ra-core";
 import { ValidationService } from "../services";
-import { getFriendlyErrorMessage } from "../../../validation/utils";
+import { getFriendlyErrorMessage } from "@/atomic-crm/validation/utils";
 
 /**
  * Interface for Zod validation errors

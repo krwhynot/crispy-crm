@@ -16,7 +16,10 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import type { DataProvider } from "ra-core";
 import { createProductDistributorsHandler } from "./productDistributorsHandler";
-import { parseCompositeId, createCompositeId } from "../../../services/productDistributors.service";
+import {
+  parseCompositeId,
+  createCompositeId,
+} from "@/atomic-crm/services/productDistributors.service";
 
 describe("productDistributorsHandler", () => {
   let mockBaseProvider: DataProvider;

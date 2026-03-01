@@ -14,7 +14,7 @@
 import type { Identifier } from "ra-core";
 import type { ServiceContainer } from "../services";
 import type { JunctionParams } from "./types";
-import type { OpportunityParticipant, OpportunityContact } from "../../../types";
+import type { OpportunityParticipant, OpportunityContact } from "@/atomic-crm/types";
 
 /**
  * Junctions extension methods interface

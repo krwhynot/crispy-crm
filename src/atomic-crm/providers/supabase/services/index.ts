@@ -23,7 +23,7 @@ import {
   OpportunitiesService,
   JunctionsService,
   SegmentsService,
-} from "../../../services";
+} from "@/atomic-crm/services";
 
 /**
  * Service container with all business logic services

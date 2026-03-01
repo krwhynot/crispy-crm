@@ -47,12 +47,12 @@ import {
 import { z } from "zod";
 import { withErrorLogging, withValidation, withSkipDelete } from "../wrappers";
 import { opportunitiesCallbacks } from "../callbacks";
-import { OpportunitiesService } from "../../../services/opportunities.service";
+import { OpportunitiesService } from "@/atomic-crm/services/opportunities.service";
 import type { ExtendedDataProvider } from "../typeGuards";
 import {
   opportunityProductSyncHandlerSchema,
   type OpportunityProductSyncHandler,
-} from "../../../validation/opportunities";
+} from "@/atomic-crm/validation/opportunities";
 import { supabase } from "../supabase";
 
 /**

@@ -37,9 +37,12 @@ import {
   productWithDistributorsSchema,
   distributorAssociationSchema,
   transformToRpcParams,
-} from "../../../validation/productWithDistributors";
+} from "@/atomic-crm/validation/productWithDistributors";
 import { z } from "zod";
-import { ProductsService, type ProductDistributorInput } from "../../../services/products.service";
+import {
+  ProductsService,
+  type ProductDistributorInput,
+} from "@/atomic-crm/services/products.service";
 import type { ExtendedDataProvider } from "../typeGuards";
 
 /**

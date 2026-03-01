@@ -29,7 +29,7 @@
 
 import type { RaRecord, GetListParams, DataProvider, DeleteParams, UpdateParams } from "ra-core";
 import { createResourceCallbacks, type ResourceCallbacks } from "./createResourceCallbacks";
-import type { Opportunity } from "../../../types";
+import type { Opportunity } from "@/atomic-crm/types";
 import { supabase } from "../supabase";
 import { logger } from "@/lib/logger";
 import {

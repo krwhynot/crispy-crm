@@ -12,7 +12,7 @@
  */
 
 import type { ServiceContainer } from "../services";
-import type { Opportunity } from "../../../types";
+import type { Opportunity } from "@/atomic-crm/types";
 
 /**
  * Opportunities extension methods interface

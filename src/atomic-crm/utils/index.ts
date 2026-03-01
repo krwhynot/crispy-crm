@@ -99,9 +99,6 @@ export {
   getColumnVisibility,
 } from "./listPatterns";
 
-// Notification utilities
-export { useNotifyWithRetry } from "./useNotifyWithRetry";
-
 // Error message sanitization
 export {
   mapErrorToUserMessage,

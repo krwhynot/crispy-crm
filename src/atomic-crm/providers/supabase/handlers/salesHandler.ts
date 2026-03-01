@@ -23,7 +23,7 @@
 import { withLifecycleCallbacks, type DataProvider } from "react-admin";
 import { withErrorLogging, withValidation, withSkipDelete } from "../wrappers";
 import { salesCallbacks } from "../callbacks/salesCallbacks";
-import { SalesService } from "../../../services/sales.service";
+import { SalesService } from "@/atomic-crm/services/sales.service";
 
 /**
  * Extended DataProvider type with Edge Function invoke capability

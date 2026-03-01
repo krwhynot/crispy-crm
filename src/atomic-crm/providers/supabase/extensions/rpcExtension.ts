@@ -16,7 +16,7 @@ import {
   type RPCFunctionName,
   type LogActivityWithTaskParams,
   type LogActivityWithTaskResponse,
-} from "../../../validation/rpc";
+} from "@/atomic-crm/validation/rpc";
 import { devLog } from "@/lib/devLogger";
 import { HttpError } from "react-admin";
 import { logger } from "@/lib/logger";

@@ -38,7 +38,7 @@ import {
   defaultTitle,
 } from "./defaultConfiguration";
 import { i18nProvider } from "./i18nProvider";
-import { StartPage } from "@/atomic-crm/login/StartPage.tsx";
+import { StartPage } from "@/atomic-crm/login/StartPage";
 import { RESOURCES } from "../../constants/resources";
 
 // Lazy load ReportsPage

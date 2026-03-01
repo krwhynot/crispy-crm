@@ -11,7 +11,7 @@
  */
 
 import type { SupabaseClient } from "@supabase/supabase-js";
-import { edgeFunctionSchemas, type EdgeFunctionName } from "../../../validation/rpc";
+import { edgeFunctionSchemas, type EdgeFunctionName } from "@/atomic-crm/validation/rpc";
 import { logger } from "@/lib/logger";
 
 /**

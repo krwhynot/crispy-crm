@@ -26,8 +26,8 @@ import type {
   Opportunity,
   OpportunityParticipant,
   OpportunityContact,
-} from "../../../../types";
-import type { QuickAddInput } from "../../../../validation/quickAdd";
+} from "@/atomic-crm/types";
+import type { QuickAddInput } from "@/atomic-crm/validation/quickAdd";
 import {
   mockSupabaseRpcResponse,
   mockSupabaseStorageResponse,

@@ -43,11 +43,11 @@ import {
   createCompositeId,
   type ProductDistributor,
   type ProductDistributorUpdateInput,
-} from "../../../services/productDistributors.service";
+} from "@/atomic-crm/services/productDistributors.service";
 import {
   updateProductDistributorSchema,
   createProductDistributorSchema,
-} from "../../../validation/productDistributors";
+} from "@/atomic-crm/validation/productDistributors";
 
 /**
  * Create a fully composed DataProvider for product_distributors

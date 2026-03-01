@@ -1,6 +1,6 @@
 import { HttpError } from "react-admin";
 import { supabase } from "../supabase";
-import type { RAFile } from "../../../types";
+import type { RAFile } from "@/atomic-crm/types";
 import { logger } from "@/lib/logger";
 
 // Type for file metadata returned by Supabase Storage

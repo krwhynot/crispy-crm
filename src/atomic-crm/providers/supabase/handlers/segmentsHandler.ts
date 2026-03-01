@@ -17,8 +17,8 @@
 
 import { z } from "zod";
 import type { DataProvider, CreateParams, RaRecord } from "react-admin";
-import { SegmentsService } from "../../../services/segments.service";
-import type { Segment } from "../../../validation/segments";
+import { SegmentsService } from "@/atomic-crm/services/segments.service";
+import type { Segment } from "@/atomic-crm/validation/segments";
 import { withErrorLogging } from "../wrappers";
 import type { ExtendedDataProvider } from "../extensions/types";
 

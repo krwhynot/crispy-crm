@@ -7,8 +7,8 @@ import type {
   Opportunity,
   Organization,
   Sale,
-} from "../../../types";
-import { processContactAvatar, processOrganizationLogo } from "../../../utils/avatar.utils";
+} from "@/atomic-crm/types";
+import { processContactAvatar, processOrganizationLogo } from "@/atomic-crm/utils/avatar.utils";
 import type { StorageService } from "./StorageService";
 import { logger } from "@/lib/logger";
 

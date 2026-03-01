@@ -32,12 +32,12 @@ import type {
   Opportunity,
   OpportunityParticipant,
   OpportunityContact,
-} from "../../../types";
-import type { QuickAddInput } from "../../../validation/quickAdd";
+} from "@/atomic-crm/types";
+import type { QuickAddInput } from "@/atomic-crm/validation/quickAdd";
 import type {
   LogActivityWithTaskParams,
   LogActivityWithTaskResponse,
-} from "../../../validation/rpc";
+} from "@/atomic-crm/validation/rpc";
 
 /**
  * Junction operation parameters

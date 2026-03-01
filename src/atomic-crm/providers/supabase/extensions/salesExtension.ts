@@ -14,7 +14,7 @@
 
 import type { Identifier } from "ra-core";
 import type { ServiceContainer } from "../services";
-import type { SalesFormData, Sale } from "../../../types";
+import type { SalesFormData, Sale } from "@/atomic-crm/types";
 
 /**
  * Sales extension methods interface
