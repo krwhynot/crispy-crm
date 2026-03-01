@@ -95,6 +95,24 @@ Per official Claude Code guidance, large state databases (search.db, vectors.lan
 **DB:** Postgres 17, RLS (100%), Soft deletes (`deleted_at`), Edge functions (digest/overdue).
 **Security:** pgTAP for unit testing/security validation.
 
+## ⚠️ Caution & Autonomy Zones
+
+**Caution Zones (confirm before modifying):**
+- `supabase/migrations/` — Production schema; requires `supabase db reset` to validate
+- `supabase/functions/` — Edge functions deployed to production
+- `src/atomic-crm/providers/supabase/composedDataProvider.ts` — Handler routing hub; change affects all resources
+- `src/atomic-crm/providers/supabase/authProvider.ts` — Auth flow; mistakes lock out all users
+- `.claude/rules/` — Governance rules; changes affect all future agent behavior
+- `CLAUDE.md` — Project instructions; changes affect all future sessions
+
+**Autonomy Zones (safe to modify freely):**
+- `src/atomic-crm/{contacts,organizations,opportunities,sales,tasks}/` — Feature UI components
+- `src/atomic-crm/validation/` — Zod schemas (type-checked, test-covered)
+- `src/**/*.test.ts{,x}` — Test files
+- `docs/` — Documentation
+- `src/components/ui/` — Tier 1 presentational components
+- `src/components/ra-wrappers/` — Tier 2 React Admin wrappers
+
 ## 📊 Code Health Monitoring (CI/CD Enforced)
 
 **Automated Check:** `just health-check` runs in CI/CD pipeline. **Fails build** if any file exceeds churn threshold.

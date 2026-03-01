@@ -61,8 +61,8 @@ export const RESOURCE_MAPPING = {
  * @see __tests__/ftsOperatorSyntax.contract.test.ts for syntax
  */
 export const FTS_ENABLED_RESOURCES: readonly string[] = [
-  // Phase 1: Start with contacts (most tested)
-  // "contacts",
+  // Phase 1: Contacts (GIN index idx_contacts_search_tsv confirmed)
+  "contacts",
   // Phase 2: Add after contacts validation
   // "organizations",
   // "opportunities",
