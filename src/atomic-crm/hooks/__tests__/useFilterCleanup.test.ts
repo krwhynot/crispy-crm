@@ -19,9 +19,10 @@ import { useFilterCleanup } from "../useFilterCleanup";
 
 // Mock ra-core's useStoreContext and useNotify hooks
 const mockSetItem = vi.fn();
+const mockRemoveItem = vi.fn();
 const mockNotify = vi.fn();
 vi.mock("ra-core", () => ({
-  useStoreContext: () => ({ setItem: mockSetItem }),
+  useStoreContext: () => ({ setItem: mockSetItem, removeItem: mockRemoveItem }),
   useNotify: () => mockNotify,
 }));
 
@@ -36,8 +37,10 @@ import { isValidFilterField } from "../../providers/supabase/filterRegistry";
 describe("useFilterCleanup", () => {
   // Spy on console methods
   // NOTE: devLog() uses console.log, not console.info
+  // logger.debug -> console.debug, logger.warn -> console.warn
   const consoleWarnSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
   const consoleLogSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+  const consoleDebugSpy = vi.spyOn(console, "debug").mockImplementation(() => {});
   const _consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
 
   beforeEach(() => {
@@ -77,7 +80,10 @@ describe("useFilterCleanup", () => {
       // Assert - sort should be reset to default for contacts ("last_seen")
       const stored = JSON.parse(localStorage.getItem("RaStoreCRM.contacts.listParams")!);
       expect(stored.sort).toBe("last_seen");
-      expect(consoleWarnSpy).toHaveBeenCalledWith(expect.stringContaining("stale sort"));
+      expect(consoleDebugSpy).toHaveBeenCalledWith(
+        expect.stringContaining("stale sort"),
+        expect.anything()
+      );
     });
 
     it("should do nothing when no filter and sort field is valid", () => {
@@ -223,10 +229,11 @@ describe("useFilterCleanup", () => {
       // Act
       renderHook(() => useFilterCleanup("contacts"));
 
-      // Assert - warnings logged for each invalid filter
-      expect(consoleWarnSpy).toHaveBeenCalledTimes(2);
-      expect(consoleWarnSpy).toHaveBeenCalledWith(expect.stringContaining("stale1"));
-      expect(consoleWarnSpy).toHaveBeenCalledWith(expect.stringContaining("stale2"));
+      // Assert - debug logs for each invalid filter (logger.debug -> console.debug)
+      expect(consoleDebugSpy).toHaveBeenCalledWith(
+        expect.stringContaining("stale filter"),
+        expect.anything()
+      );
     });
 
     it("should log info message after cleanup", () => {
@@ -275,18 +282,22 @@ describe("useFilterCleanup", () => {
   });
 
   describe("when corrupted JSON in localStorage", () => {
-    it("should handle corrupted JSON and log warning", () => {
+    it("should handle corrupted JSON, remove bad entry, and clear RA store", () => {
       // Arrange - store invalid JSON
       localStorage.setItem("RaStoreCRM.contacts.listParams", "not valid json {{{");
 
       // Act
       renderHook(() => useFilterCleanup("contacts"));
 
-      // Assert - should not throw, should log warning (safeJsonParse returns null, line 77 logs)
-      expect(consoleWarnSpy).toHaveBeenCalledWith(
-        expect.stringContaining("has corrupted localStorage")
+      // Assert - should log debug (logger.debug -> console.debug)
+      expect(consoleDebugSpy).toHaveBeenCalledWith(
+        expect.stringContaining("corrupted localStorage"),
+        expect.anything()
       );
-      expect(mockSetItem).not.toHaveBeenCalled();
+      // Should remove corrupted localStorage entry
+      expect(localStorage.getItem("RaStoreCRM.contacts.listParams")).toBeNull();
+      // Should clear RA's in-memory store via removeItem
+      expect(mockRemoveItem).toHaveBeenCalledWith("contacts.listParams");
     });
 
     it("should not crash the application on corrupted data", () => {

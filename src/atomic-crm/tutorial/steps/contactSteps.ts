@@ -38,7 +38,7 @@ export const contactSteps: TutorialStep[] = [
     },
   },
   {
-    element: '[data-tutorial="contact-filters"]',
+    element: '[data-tutorial="contact-filter-toggle"]',
     popover: {
       title: "Filter Contacts",
       description:

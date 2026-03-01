@@ -18,12 +18,14 @@ export interface CreateButtonProps {
   label?: string;
   resource?: string;
   variant?: ButtonVariant;
+  dataTutorial?: string;
 }
 
 export const CreateButton = ({
   label,
   resource: targetResource,
   variant = "default",
+  dataTutorial,
 }: CreateButtonProps) => {
   const resource = useResourceContext();
   const createPath = useCreatePath();
@@ -71,7 +73,12 @@ export const CreateButton = ({
     type: "create",
   });
   return (
-    <Link className={buttonVariants({ variant })} to={link} onClick={stopPropagation}>
+    <Link
+      className={buttonVariants({ variant })}
+      to={link}
+      onClick={stopPropagation}
+      data-tutorial={dataTutorial}
+    >
       <Plus />
       <Translate i18nKey={i18nKey}>{displayLabel}</Translate>
     </Link>

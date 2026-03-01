@@ -171,6 +171,45 @@ describe("withValidation", () => {
     });
   });
 
+  describe("undefined previousData guard", () => {
+    it("should not crash when previousData is undefined (falls back to empty object)", async () => {
+      const wrappedProvider = withValidation(mockProvider);
+      const updateData = { name: "Updated" };
+
+      await wrappedProvider.update("organizations", {
+        id: 1,
+        data: updateData,
+        previousData: undefined as unknown as RaRecord,
+      });
+
+      // Base provider should be called with previousData set to {}
+      expect(mockProvider.update).toHaveBeenCalledWith("organizations", {
+        id: 1,
+        data: updateData,
+        previousData: {},
+      });
+    });
+
+    it("should preserve previousData when it is defined", async () => {
+      const wrappedProvider = withValidation(mockProvider);
+      const updateData = { name: "Updated" };
+      const previousData = { id: 1, name: "Old" } as RaRecord;
+
+      await wrappedProvider.update("organizations", {
+        id: 1,
+        data: updateData,
+        previousData,
+      });
+
+      // Base provider should be called with original previousData
+      expect(mockProvider.update).toHaveBeenCalledWith("organizations", {
+        id: 1,
+        data: updateData,
+        previousData,
+      });
+    });
+  });
+
   describe("filter validation", () => {
     it("should validate and clean filters on getList", async () => {
       const cleanedFilters = { status: "active" };

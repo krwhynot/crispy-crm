@@ -150,6 +150,7 @@ describe("Filter Registry Completeness", () => {
       "type", // Task type filtering
       "contact_id", // Task relationship filtering
       "opportunity_id", // Task relationship filtering
+      "priority", // Task priority filtering (STI: routed via tasksHandler)
     ];
 
     it("activities filter list should include task filter fields used in STI routing", () => {

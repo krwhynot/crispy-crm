@@ -94,7 +94,7 @@ export function OrganizationRightPanel({
       if (!result.success) {
         const firstError = result.error.issues[0];
         notify(`${firstError.path.join(".")}: ${firstError.message}`, { type: "error" });
-        logger.error("Organization validation failed", result.error, {
+        logger.debug("Organization validation failed", result.error, {
           feature: "OrganizationRightPanel",
           organizationId: record.id,
         });
@@ -135,7 +135,23 @@ export function OrganizationRightPanel({
         organizationId: record.id,
         operation: "handleSave",
       });
-      throw error;
+      // Re-throw only RA-compatible validation errors (.body.errors shape)
+      // so RA Form can display field-level errors.
+      // All other errors are already handled: user notified (line 132), logged (line 133).
+      const body =
+        typeof error === "object" && error !== null && "body" in error
+          ? (error as { body?: unknown }).body
+          : undefined;
+      if (
+        typeof body === "object" &&
+        body !== null &&
+        "errors" in body &&
+        typeof (body as { errors?: unknown }).errors === "object" &&
+        (body as { errors?: unknown }).errors !== null &&
+        !Array.isArray((body as { errors?: unknown }).errors)
+      ) {
+        throw error;
+      }
     }
   };
 

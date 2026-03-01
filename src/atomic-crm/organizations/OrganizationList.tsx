@@ -390,6 +390,9 @@ export const OrganizationList = () => {
             sortFields={["name", "organization_type", "priority", "segment_name", "created_at"]}
             searchPlaceholder="Search organizations..."
             enableRecentSearches
+            sortButtonTutorialId="org-sort-btn"
+            overflowMenuTutorialId="org-export-btn"
+            filterToggleTutorialId="org-filter-toggle"
             viewSwitcher={<OrganizationViewSwitcher view={view} onViewChange={handleViewChange} />}
             overflowActions={
               <>
@@ -397,7 +400,9 @@ export const OrganizationList = () => {
                 <ExportMenuItem />
               </>
             }
-            primaryAction={<CreateButton variant="default" />}
+            primaryAction={
+              <CreateButton variant="default" dataTutorial="create-organization-btn" />
+            }
             emptyState={<OrganizationEmpty />}
             loadingSkeleton={<OrganizationListSkeleton />}
             bulkActions={view === "list" ? <OrganizationBulkButtons /> : undefined}

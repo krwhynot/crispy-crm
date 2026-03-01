@@ -151,7 +151,11 @@ export function withValidation<T extends DataProvider>(
       throw error;
     }
 
-    return provider.update<RecordType>(resource, params);
+    // Guard: ra-data-postgrest getChanges crashes if previousData is undefined.
+    // Fallback to {} forces full update (all fields diff).
+    // Do NOT use params.data — that would cause getChanges to find zero diffs → no-op.
+    const safeParams = params.previousData ? params : { ...params, previousData: {} as RecordType };
+    return provider.update<RecordType>(resource, safeParams);
   };
 
   // Wrap getList with filter and sort validation

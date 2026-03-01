@@ -54,6 +54,8 @@ export const COMPUTED_FIELDS = [
   "nb_contacts",
   "nb_opportunities",
   "nb_notes",
+  // Segment display name from view join (base table uses segment_id)
+  "segment_name",
   // Hierarchy/parent fields
   "parent_organization_name",
   "child_branch_count",

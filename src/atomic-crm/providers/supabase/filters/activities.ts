@@ -33,6 +33,7 @@ export const activitiesFilters = {
     "completed", // Task completion filtering (STI: tasks stored in activities table)
     "due_date", // Task due date filtering (STI: used by useKPIMetrics, TaskListFilter)
     "completed_at", // Task completion date filtering (STI: used by useMyPerformance)
+    "priority", // Task priority (STI: tasks stored in activities table)
     "q", // Special: full-text search parameter
     // Denormalized opportunity fields (via activities_summary view)
     "opportunity_campaign", // Campaign from related opportunity (denormalized in view)

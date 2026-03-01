@@ -151,6 +151,25 @@ describe("organizationsCallbacks", () => {
       expect(result.sector).toBe("Technology");
     });
 
+    it("should strip segment_name from organization data", async () => {
+      const data = {
+        id: 1,
+        name: "Acme Corp",
+        segment_name: "Food Service",
+        segment_id: "some-uuid",
+      };
+
+      const result = await organizationsCallbacks.beforeSave!(
+        data,
+        mockDataProvider,
+        "organizations"
+      );
+
+      expect(result).not.toHaveProperty("segment_name");
+      expect(result.name).toBe("Acme Corp");
+      expect(result.segment_id).toBe("some-uuid");
+    });
+
     it("should preserve required fields", async () => {
       const data = {
         name: "Acme Corp",

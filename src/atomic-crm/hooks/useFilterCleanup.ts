@@ -41,7 +41,7 @@ const DEFAULT_SORT_FIELDS: Record<string, string> = {
  * Returns true if localStorage was modified (callers may want to
  * sync RA's in-memory store via store.setItem in an effect).
  */
-function cleanStaleListParams(resource: string): boolean {
+function cleanStaleListParams(resource: string): boolean | "corrupted" {
   const key = `RaStoreCRM.${resource}.listParams`;
   const storedParams = localStorage.getItem(key);
 
@@ -52,11 +52,12 @@ function cleanStaleListParams(resource: string): boolean {
   const params = safeJsonParse(storedParams, listParamsSchema);
 
   if (!params) {
-    logger.warn("Resource has corrupted localStorage, skipping cleanup", {
+    logger.debug("Resource has corrupted localStorage, removing and resetting", {
       feature: "useFilterCleanup",
       resource,
     });
-    return false;
+    localStorage.removeItem(key);
+    return "corrupted";
   }
 
   try {
@@ -70,7 +71,7 @@ function cleanStaleListParams(resource: string): boolean {
           if (isValidFilterField(resource, filterKey)) {
             cleanedFilter[filterKey] = params.filter[filterKey];
           } else {
-            logger.warn("Found stale filter in localStorage, removing it", {
+            logger.debug("Found stale filter in localStorage, removing it", {
               feature: "useFilterCleanup",
               resource,
               filterKey,
@@ -120,7 +121,7 @@ function cleanStaleListParams(resource: string): boolean {
     if (typeof params.sort === "string" && params.sort) {
       const sortField = params.sort;
       if (!isValidFilterField(resource, sortField)) {
-        logger.warn("Found stale sort field in localStorage, resetting to default", {
+        logger.debug("Found stale sort field in localStorage, resetting to default", {
           feature: "useFilterCleanup",
           resource,
           sortField,
@@ -182,7 +183,7 @@ export const useFilterCleanup = (resource: string) => {
 
   // Phase 1: Synchronous localStorage cleanup before first render.
   // This ensures RA's useListParams reads valid values during render.
-  const cleanedRef = useRef<{ resource: string; cleaned: boolean } | null>(null);
+  const cleanedRef = useRef<{ resource: string; cleaned: boolean | "corrupted" } | null>(null);
   if (!cleanedRef.current || cleanedRef.current.resource !== resource) {
     const cleaned = cleanStaleListParams(resource);
     cleanedRef.current = { resource, cleaned };
@@ -193,7 +194,12 @@ export const useFilterCleanup = (resource: string) => {
   // IMPORTANT: store.setItem() auto-prefixes with "RaStoreCRM.", so pass the
   // unprefixed key (e.g. "sales.listParams" not "RaStoreCRM.sales.listParams").
   useEffect(() => {
-    if (cleanedRef.current?.cleaned) {
+    if (cleanedRef.current?.cleaned === "corrupted") {
+      // Corrupted localStorage entry was removed in Phase 1 — clear RA's in-memory store
+      const storeKey = `${resource}.listParams`;
+      store.removeItem(storeKey);
+      cleanedRef.current = { resource, cleaned: false };
+    } else if (cleanedRef.current?.cleaned) {
       const localStorageKey = `RaStoreCRM.${resource}.listParams`;
       const storeKey = `${resource}.listParams`;
       const storedParams = localStorage.getItem(localStorageKey);

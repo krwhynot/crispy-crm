@@ -152,8 +152,11 @@ export const ContactList = () => {
             sortFields={["first_name", "title", "last_seen"]}
             searchPlaceholder="Search contacts..."
             enableRecentSearches
+            sortButtonTutorialId="contact-sort-btn"
+            overflowMenuTutorialId="contact-export-btn"
+            filterToggleTutorialId="contact-filter-toggle"
             overflowActions={<ExportMenuItem />}
-            primaryAction={<CreateButton variant="default" />}
+            primaryAction={<CreateButton variant="default" dataTutorial="create-contact-btn" />}
             emptyState={<ContactEmpty />}
             loadingSkeleton={<ContactListSkeleton />}
             bulkActions={<ContactBulkButtons />}

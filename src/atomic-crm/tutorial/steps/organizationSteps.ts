@@ -20,7 +20,7 @@ export const organizationSteps: TutorialStep[] = [
   },
   // Step 2: Filter sidebar
   {
-    element: '[data-tutorial="org-filters"]',
+    element: '[data-tutorial="org-filter-toggle"]',
     popover: {
       title: "Filter Organizations",
       description:
