@@ -76,6 +76,7 @@ export function useBulkActionsState({
     setIsProcessing(true);
     let successCount = 0;
     let failureCount = 0;
+    let skippedCount = 0;
 
     try {
       let updateData: Partial<Opportunity> = {};
@@ -89,11 +90,25 @@ export function useBulkActionsState({
         updateData = { [field]: parseInt(selectedOwner) } as Partial<Opportunity>;
       }
 
-      const updatePromises = selectedIds.map((id) =>
+      const resolvedItems = selectedIds
+        .map((id) => ({ id, previous: opportunities.find((opp) => opp.id === id) }))
+        .filter((item): item is { id: (typeof selectedIds)[number]; previous: Opportunity } => {
+          if (!item.previous) {
+            logger.debug("Skipped update: record not in local data", {
+              id: String(item.id),
+              feature: "BulkActions",
+            });
+            skippedCount++;
+            return false;
+          }
+          return true;
+        });
+
+      const updatePromises = resolvedItems.map(({ id, previous }) =>
         dataProvider.update(resource, {
           id,
           data: updateData,
-          previousData: opportunities.find((opp) => opp.id === id),
+          previousData: previous,
         })
       );
 
@@ -106,7 +121,7 @@ export function useBulkActionsState({
           logger.error("Bulk update failed", result.reason, {
             feature: "useBulkActionsState",
             resource,
-            id: selectedIds[index],
+            id: resolvedItems[index].id,
           });
           failureCount++;
         }
@@ -115,10 +130,11 @@ export function useBulkActionsState({
       // NOTE: Activity logging removed - DB trigger handles stage change logging
 
       if (successCount > 0) {
+        const skippedSuffix = skippedCount > 0 ? ` (${skippedCount} skipped)` : "";
         notify(
-          `Successfully updated ${successCount} opportunit${successCount === 1 ? "y" : "ies"}`,
+          `Successfully updated ${successCount} opportunit${successCount === 1 ? "y" : "ies"}${skippedSuffix}`,
           {
-            type: "success",
+            type: skippedCount > 0 ? "warning" : "success",
           }
         );
       }

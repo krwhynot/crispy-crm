@@ -220,7 +220,6 @@ export function SalesPermissionsTab({
       } else {
         notify("An error occurred", { type: "error" });
       }
-      throw error;
     }
   };
 

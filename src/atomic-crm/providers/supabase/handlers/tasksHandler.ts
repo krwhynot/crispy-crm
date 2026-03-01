@@ -125,8 +125,12 @@ export function createTasksHandler(baseProvider: DataProvider): DataProvider {
      * Get list of tasks (filters to activity_type = 'task')
      */
     getList: async (_resource, params: GetListParams) => {
+      const sort =
+        params.sort?.field === "title" ? { ...params.sort, field: "subject" } : params.sort;
+
       const result = await activitiesHandler.getList("activities", {
         ...params,
+        sort,
         filter: {
           ...params.filter,
           activity_type: "task",
@@ -165,8 +169,12 @@ export function createTasksHandler(baseProvider: DataProvider): DataProvider {
      * Get tasks referenced by another resource
      */
     getManyReference: async (_resource, params) => {
+      const sort =
+        params.sort?.field === "title" ? { ...params.sort, field: "subject" } : params.sort;
+
       const result = await activitiesHandler.getManyReference("activities", {
         ...params,
+        sort,
         filter: {
           ...params.filter,
           activity_type: "task",

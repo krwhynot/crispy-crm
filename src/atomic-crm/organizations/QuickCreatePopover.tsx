@@ -221,7 +221,6 @@ function useQuickCreateOrg({
         });
       }
       notify("Failed to create organization", { type: "error" });
-      throw error;
     } finally {
       setIsPending(false);
     }

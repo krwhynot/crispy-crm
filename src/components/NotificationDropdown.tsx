@@ -53,12 +53,15 @@ export const NotificationDropdown = ({ children, onOpenChange }: NotificationDro
   const markAsRead = async (notificationId: number) => {
     if (!identity?.user_id) return;
 
+    const previous = notifications.find((n) => n.id === notificationId);
+    if (!previous) return;
+
     update(
       "notifications",
       {
         id: notificationId,
         data: { read: true },
-        previousData: notifications.find((n) => n.id === notificationId),
+        previousData: previous,
       },
       {
         onSuccess: () => {

@@ -110,6 +110,7 @@ export const BulkReassignButton = <T extends ResourceItem>({
     setIsProcessing(true);
     let successCount = 0;
     let failureCount = 0;
+    let skippedCount = 0;
     let wasCancelled = false;
 
     devLog(
@@ -124,13 +125,23 @@ export const BulkReassignButton = <T extends ResourceItem>({
           break;
         }
 
+        const previous = data?.find((item) => item.id === id);
+        if (!previous) {
+          logger.debug("Skipped reassign: record not in local data", {
+            id: String(id),
+            feature: "BulkReassign",
+          });
+          skippedCount++;
+          continue;
+        }
+
         try {
           await dataProvider.update(resource, {
             id,
             data: {
               [FIELD_MAP[resource]?.[selectedRole] ?? "sales_id"]: parseInt(selectedSalesId),
             },
-            previousData: data?.find((item) => item.id === id),
+            previousData: previous,
           });
           successCount++;
         } catch (error: unknown) {
@@ -161,9 +172,10 @@ export const BulkReassignButton = <T extends ResourceItem>({
             ? formatName(salesRep.first_name, salesRep.last_name)
             : "selected rep";
 
+          const skippedSuffix = skippedCount > 0 ? ` (${skippedCount} skipped)` : "";
           notify(
-            `Successfully reassigned ${successCount} ${resource}${successCount === 1 ? "" : "s"} to ${salesRepName}`,
-            { type: "success" }
+            `Successfully reassigned ${successCount} ${resource}${successCount === 1 ? "" : "s"} to ${salesRepName}${skippedSuffix}`,
+            { type: skippedCount > 0 ? "warning" : "success" }
           );
         }
         if (failureCount > 0) {

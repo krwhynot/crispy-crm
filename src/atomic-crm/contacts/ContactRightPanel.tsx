@@ -9,6 +9,7 @@ import { logger } from "@/lib/logger";
 import { contactBaseSchema } from "../validation/contacts";
 import { notificationMessages } from "@/atomic-crm/constants/notificationMessages";
 import { extractProviderValidationMessage } from "@/atomic-crm/utils/extractProviderValidationMessage";
+import { isReactAdminValidationError } from "@/atomic-crm/utils/isReactAdminValidationError";
 import { ReferenceField } from "@/components/ra-wrappers/reference-field";
 import { TextField } from "@/components/ra-wrappers/text-field";
 import { ArrayField } from "@/components/ra-wrappers/array-field";
@@ -139,7 +140,12 @@ export function ContactRightPanel({
         contactId: record.id,
         operation: "handleSave",
       });
-      throw error;
+      // Re-throw only RA-compatible validation errors (.body.errors shape)
+      // so RA Form can display field-level errors.
+      // All other errors are already handled: user notified, logged above.
+      if (isReactAdminValidationError(error)) {
+        throw error;
+      }
     }
   };
 

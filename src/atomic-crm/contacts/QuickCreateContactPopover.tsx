@@ -252,9 +252,8 @@ export function QuickCreateContactRA({
         queryClient.invalidateQueries({ queryKey: organizationKeys.lists() });
         notify(notificationMessages.created("Contact"), { type: "success" });
         onCreate(result.data); // KEY FIX: Pass real record back to RA
-      } catch (error: unknown) {
+      } catch (_error: unknown) {
         notify("Failed to create contact", { type: "error" });
-        throw error; // Fail-fast
       } finally {
         setIsPending(false);
       }

@@ -141,6 +141,8 @@ export class ClientRateLimiter {
       if (parsed) {
         return parsed;
       }
+      // safeJsonParse already logged warn — just clean up corrupt key
+      sessionStorage.removeItem(this.config.storageKey);
     }
 
     return { requests: [], firstRequest: Date.now() };

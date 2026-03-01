@@ -7,6 +7,7 @@ import { logger } from "@/lib/logger";
 import { organizationSchema } from "@/atomic-crm/validation/organizations";
 import { notificationMessages } from "@/atomic-crm/constants/notificationMessages";
 import { extractProviderValidationMessage } from "@/atomic-crm/utils/extractProviderValidationMessage";
+import { isReactAdminValidationError } from "@/atomic-crm/utils/isReactAdminValidationError";
 import { organizationKeys, segmentKeys } from "@/atomic-crm/queryKeys";
 import { TextInput } from "@/components/ra-wrappers/text-input";
 import { SelectInput } from "@/components/ra-wrappers/select-input";
@@ -137,19 +138,8 @@ export function OrganizationRightPanel({
       });
       // Re-throw only RA-compatible validation errors (.body.errors shape)
       // so RA Form can display field-level errors.
-      // All other errors are already handled: user notified (line 132), logged (line 133).
-      const body =
-        typeof error === "object" && error !== null && "body" in error
-          ? (error as { body?: unknown }).body
-          : undefined;
-      if (
-        typeof body === "object" &&
-        body !== null &&
-        "errors" in body &&
-        typeof (body as { errors?: unknown }).errors === "object" &&
-        (body as { errors?: unknown }).errors !== null &&
-        !Array.isArray((body as { errors?: unknown }).errors)
-      ) {
+      // All other errors are already handled: user notified, logged above.
+      if (isReactAdminValidationError(error)) {
         throw error;
       }
     }

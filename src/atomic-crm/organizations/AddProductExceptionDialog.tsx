@@ -75,7 +75,6 @@ export function AddProductExceptionDialog({
       const errorMessage =
         error instanceof Error ? error.message : "Failed to add product exception";
       notify(errorMessage, { type: "error" });
-      throw error;
     }
   };
 

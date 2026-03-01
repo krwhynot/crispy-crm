@@ -59,19 +59,22 @@ function loadFromStorage(): RecentSearchItem[] {
     const result = recentSearchesSchema.safeParse(parsed);
 
     if (!result.success) {
-      logger.error("Validation failed for recent searches", undefined, {
+      logger.warn("Validation failed for recent searches", {
         feature: "useRecentSearches",
         validationErrors: result.error.flatten(),
       });
+      localStorage.removeItem(STORAGE_KEY);
       return [];
     }
 
     // Sort by timestamp descending (most recent first)
     return result.data.toSorted((a, b) => b.timestamp - a.timestamp);
   } catch (error: unknown) {
-    logger.error("Error reading recent searches from storage", error, {
+    logger.warn("Error reading recent searches from storage", {
       feature: "useRecentSearches",
+      error: error instanceof Error ? error.message : String(error),
     });
+    localStorage.removeItem(STORAGE_KEY);
     return [];
   }
 }
