@@ -60,7 +60,6 @@ Since coverage data isn't available, we can infer testing depth from test counts
 | filters | 54 | 5+ | **Medium** - Filter logic |
 | activities | 52 | 5+ | **Medium** - Activity tracking |
 | tasks | 14 | 3+ | **Low** - Needs more tests |
-| tutorial | 13 | 3+ | **Low** - Onboarding flow |
 
 ## High Priority Coverage Gaps
 
@@ -81,14 +80,6 @@ Based on test distribution analysis, these areas need additional testing:
 - Activity type-specific validation tests
 - Activity aggregation tests for reports
 - Sample/follow-up workflow tests
-
-### 3. Tutorial Feature (13 tests)
-
-**Current:** Basic provider tests
-**Recommended:**
-- Tutorial step completion tests
-- Tutorial persistence tests
-- Tutorial reset functionality
 
 ## Recommended Test Additions
 

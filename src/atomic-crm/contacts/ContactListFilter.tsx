@@ -26,7 +26,7 @@ export const ContactListFilter = () => {
   });
 
   return (
-    <FilterSidebar showSearch={false} data-tutorial="contact-filters">
+    <FilterSidebar showSearch={false}>
       {/* Starred Quick Filter - TOP of sidebar */}
       <StarredFilterToggle entityType="contacts" />
 

@@ -206,26 +206,6 @@ vi.mock("@/atomic-crm/filters/FilterCategory", () => ({
   ),
 }));
 
-// Mock TutorialProvider to avoid context error
-vi.mock("@/atomic-crm/tutorial/TutorialProvider", () => ({
-  useTutorial: () => ({
-    isActive: false,
-    currentChapter: null,
-    currentStep: null,
-    startTutorial: vi.fn(),
-    endTutorial: vi.fn(),
-    nextStep: vi.fn(),
-    previousStep: vi.fn(),
-    skipTutorial: vi.fn(),
-  }),
-  TutorialProvider: ({ children }: { children: React.ReactNode }) => children,
-}));
-
-// Mock PageTutorialTrigger to avoid tutorial context requirement
-vi.mock("@/atomic-crm/tutorial/PageTutorialTrigger", () => ({
-  PageTutorialTrigger: () => null,
-}));
-
 // Mock List component
 vi.mock("@/components/ra-wrappers/list", () => ({
   List: ({ children }: { children: React.ReactNode }) => (

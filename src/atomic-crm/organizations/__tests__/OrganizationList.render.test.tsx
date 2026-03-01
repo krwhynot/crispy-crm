@@ -143,24 +143,6 @@ vi.mock("../OrganizationSlideOver", () => ({
   ),
 }));
 
-vi.mock("@/atomic-crm/tutorial/TutorialProvider", () => ({
-  useTutorial: () => ({
-    isActive: false,
-    currentChapter: null,
-    currentStep: null,
-    startTutorial: vi.fn(),
-    endTutorial: vi.fn(),
-    nextStep: vi.fn(),
-    previousStep: vi.fn(),
-    skipTutorial: vi.fn(),
-  }),
-  TutorialProvider: ({ children }: MockChildrenProps) => children,
-}));
-
-vi.mock("@/atomic-crm/tutorial/PageTutorialTrigger", () => ({
-  PageTutorialTrigger: () => null,
-}));
-
 vi.mock("@/components/ra-wrappers/PremiumDatagrid", () => ({
   PremiumDatagrid: ({ children, onRowClick }: MockLayoutProps) => {
     sortableColumns.length = 0;

@@ -57,8 +57,7 @@ resource.tsx (Entry point)
     │               │       │       ├── CollapsibleSection (Classification)
     │               │       │       └── CollapsibleSection (Additional Details)
     │               │       └── OpportunityCreateFormFooter
-    │               ├── SimilarOpportunitiesDialog
-    │               └── OpportunityCreateFormTutorial
+    │               └── SimilarOpportunitiesDialog
     └── OpportunityEditView (React.lazy + React.Suspense)
             └── OpportunityEdit
 ```
@@ -221,7 +220,6 @@ export const OpportunityViewSwitcher = ({ view, onViewChange }: Props) => (
 - `UnifiedListPageLayout` handles multiple states: loading skeleton, empty (no data/no filters), filtered-empty (filters applied but no results), and data display
 - Props API: `filterComponent`, `filterConfig`, `sortFields`, `primaryAction`, `overflowActions`, `viewSwitcher`, `emptyState`, `filteredEmptyState`, `loadingSkeleton`
 - Slide-over state managed via `useSlideOverState` hook (URL-synced `?view=123` params)
-- Tutorial integration: `data-tutorial` attributes and `OpportunityListTutorial` component for onboarding
 - Stage filter changes synced to localStorage via `saveStagePreferences()` for persistence
 
 **See also:** `OpportunityList.tsx` for the complete implementation with all state handling branches.

@@ -369,7 +369,7 @@ export function DashboardTasksList() {
 
   // --- Main render ---
   return (
-    <Card data-tutorial="dashboard-tasks-list" data-testid="dashboard-tasks-list">
+    <Card data-testid="dashboard-tasks-list">
       {/* Header */}
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
         <div className="flex items-center gap-2">

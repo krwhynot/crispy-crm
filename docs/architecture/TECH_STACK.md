@@ -102,7 +102,6 @@
 |------|---------|
 | **Chart.js + react-chartjs-2** | Dashboard charts and visualizations |
 | **dnd-kit** | Drag and drop (Kanban boards, reordering) |
-| **driver.js** | Onboarding tours and feature walkthroughs |
 | **react-day-picker** | Date picker component |
 
 ### Backend (Where Data Lives)
@@ -228,3 +227,4 @@ These were removed after a dependency audit confirmed zero source imports:
 | `@react-spring/web` | Animation library, never used |
 | `@use-gesture/react` | Gesture library (companion to react-spring), never used |
 | `@hookform/resolvers` | Bypassed by custom `createFormResolver` in `src/lib/zodErrorFormatting` |
+| `driver.js` | Tutorial/onboarding system removed |

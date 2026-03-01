@@ -18,7 +18,7 @@ import { ProductListFilter } from "./ProductListFilter";
 import { ProductSlideOver } from "./ProductSlideOver";
 import { ProductEmpty } from "./ProductEmpty";
 import { PRODUCT_FILTER_CONFIG } from "./productFilterConfig";
-import { PageTutorialTrigger } from "../tutorial";
+
 import { FilterableBadge } from "@/components/ra-wrappers/FilterableBadge";
 import {
   ProductNameHeader,
@@ -53,7 +53,7 @@ export const ProductList = () => {
 
   return (
     <>
-      <div data-tutorial="products-list">
+      <div>
         <List title={false} actions={false} perPage={25} sort={{ field: "name", order: "ASC" }}>
           <ListPageLayout
             resource="products"
@@ -78,7 +78,6 @@ export const ProductList = () => {
         onClose={closeSlideOver}
         onModeToggle={toggleMode}
       />
-      <PageTutorialTrigger chapter="products" position="bottom-left" />
     </>
   );
 };

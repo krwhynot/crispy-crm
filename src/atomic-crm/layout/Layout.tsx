@@ -5,7 +5,6 @@ import type { ReactNode } from "react";
 import { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import Header from "./Header";
-import { TutorialProvider } from "../tutorial/TutorialProvider";
 
 /**
  * Root layout component for the CRM application.
@@ -28,7 +27,7 @@ export const Layout = ({ children }: { children: ReactNode }) => {
   };
 
   return (
-    <TutorialProvider>
+    <>
       <div className="flex flex-col h-dvh">
         <a
           href="#main-content"
@@ -58,6 +57,6 @@ export const Layout = ({ children }: { children: ReactNode }) => {
         </footer>
       </div>
       <Notification />
-    </TutorialProvider>
+    </>
   );
 };

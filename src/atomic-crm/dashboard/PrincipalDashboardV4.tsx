@@ -2,8 +2,6 @@ import { Suspense, lazy } from "react";
 import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { KPISummaryRow } from "./KPISummaryRow";
-import { DashboardTutorial } from "./DashboardTutorial";
-import { DASHBOARD_TUTORIAL_STEPS_V4 } from "./dashboardTutorialStepsV4";
 
 // Lazy-load heavy components for code splitting
 const PrincipalPipelineTable = lazy(() => import("./PrincipalPipelineTable"));
@@ -69,9 +67,6 @@ export function PrincipalDashboardV4() {
           </Suspense>
         </div>
       </main>
-
-      {/* Tutorial button — pass V4 steps explicitly (V3 rollback safe) */}
-      <DashboardTutorial steps={DASHBOARD_TUTORIAL_STEPS_V4} />
     </div>
   );
 }

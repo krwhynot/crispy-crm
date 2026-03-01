@@ -216,26 +216,6 @@ vi.mock("../ProductSlideOver", () => ({
   ),
 }));
 
-// Mock TutorialProvider to avoid context error
-vi.mock("@/atomic-crm/tutorial/TutorialProvider", () => ({
-  useTutorial: () => ({
-    isActive: false,
-    currentChapter: null,
-    currentStep: null,
-    startTutorial: vi.fn(),
-    endTutorial: vi.fn(),
-    nextStep: vi.fn(),
-    previousStep: vi.fn(),
-    skipTutorial: vi.fn(),
-  }),
-  TutorialProvider: ({ children }: { children: React.ReactNode }) => children,
-}));
-
-// Mock PageTutorialTrigger to avoid tutorial context requirement
-vi.mock("@/atomic-crm/tutorial/PageTutorialTrigger", () => ({
-  PageTutorialTrigger: () => null,
-}));
-
 // Track sortable column configuration for testing
 const sortableColumns: { label: string; sortBy: string; sortable: boolean }[] = [];
 

@@ -15,7 +15,6 @@ import { CreateFormFooter } from "@/atomic-crm/components";
 import type { Contact } from "../types";
 import { ContactInputs } from "./ContactInputs";
 import { contactBaseSchema, contactCreateFormSchema } from "../validation/contacts";
-import { ContactFormTutorial } from "./ContactFormTutorial";
 
 const ContactCreate = () => {
   const { defaults, isLoading } = useSmartDefaults();
@@ -84,7 +83,6 @@ const ContactCreate = () => {
           </FormProgressProvider>
         </div>
       </div>
-      <ContactFormTutorial />
     </CreateBase>
   );
 };
@@ -101,7 +99,6 @@ const ContactFormContent = ({ redirect }: ContactFormContentProps) => {
         resourceName="contact"
         redirectPath="/contacts"
         redirect={redirect}
-        tutorialAttribute="contact-save-btn"
         preserveFields={["organization_id", "sales_id"]}
       />
     </>

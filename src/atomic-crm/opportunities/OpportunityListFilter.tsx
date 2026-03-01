@@ -135,9 +135,9 @@ export const OpportunityListFilter = () => {
   const thirtyDaysFromNow = addDays(today, 30);
 
   return (
-    <FilterSidebar showSearch={false} data-tutorial="opp-filters">
+    <FilterSidebar showSearch={false}>
       {/* Quick Filter Presets */}
-      <QuickFilterGroup label="Quick Filters" data-tutorial="opp-quick-filters">
+      <QuickFilterGroup label="Quick Filters">
         <AdminButton
           type="button"
           variant={
@@ -240,11 +240,7 @@ export const OpportunityListFilter = () => {
       </QuickFilterGroup>
 
       {/* Collapsible Filter Sections */}
-      <FilterCategory
-        label="Stage"
-        icon={<Layers className="h-4 w-4" />}
-        data-tutorial="opp-stage-filters"
-      >
+      <FilterCategory label="Stage" icon={<Layers className="h-4 w-4" />}>
         {OPPORTUNITY_STAGES.map((stage) => (
           <ToggleFilterButton
             multiselect

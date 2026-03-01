@@ -158,17 +158,4 @@ describe("EmptyState", () => {
     const wrapper = container.firstChild as HTMLElement;
     expect(wrapper).toHaveClass("custom-class");
   });
-
-  it("applies data-tutorial attribute", () => {
-    const { container } = renderWithAdminContext(
-      <EmptyState
-        title="No Data Found"
-        description="Try adjusting your filters."
-        data-tutorial="empty-state-tutorial"
-      />
-    );
-
-    const wrapper = container.firstChild as HTMLElement;
-    expect(wrapper).toHaveAttribute("data-tutorial", "empty-state-tutorial");
-  });
 });

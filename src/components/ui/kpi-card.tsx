@@ -97,8 +97,6 @@ export interface KPICardProps {
   loading?: boolean;
   onClick?: () => void;
   className?: string;
-  "data-tutorial"?: string;
-
   // 3-axis props
   /** Semantic tone: neutral | positive | warning | critical */
   tone?: KPICardTone;
@@ -122,7 +120,6 @@ export function KPICard({
   loading = false,
   onClick,
   className,
-  "data-tutorial": dataTutorial,
   tone: toneProp,
   emphasis = "default",
   interactive: interactiveProp,
@@ -143,7 +140,6 @@ export function KPICard({
         )}
         aria-busy="true"
         aria-label={`Loading ${title}`}
-        data-tutorial={dataTutorial}
       >
         <CardContent className="px-3 py-2">
           <div className="flex items-center gap-2">
@@ -182,7 +178,6 @@ export function KPICard({
       tabIndex={isInteractive ? 0 : undefined}
       role={isInteractive ? "button" : undefined}
       aria-label={isInteractive ? `${title}: ${value}. Click to view details.` : undefined}
-      data-tutorial={dataTutorial}
     >
       {/* Accent strip -- hidden for neutral tone */}
       <span className={cn("absolute inset-y-0 left-0", stripeStyle)} aria-hidden="true" />

@@ -254,7 +254,7 @@ export const SalesListFilter = () => {
   useListContext();
 
   return (
-    <div className="flex flex-col gap-4" data-tutorial="sales-filters">
+    <div className="flex flex-col gap-4">
       <FilterCategory label="Role" icon={<Users className="h-4 w-4" />}>
         <ToggleFilterButton
           multiselect
@@ -374,7 +374,7 @@ export default function SalesList() {
 
   return (
     <>
-      <div data-tutorial="sales-list">
+      <div>
         <List
           title={false}
           actions={false}
@@ -438,7 +438,7 @@ export default function SalesList() {
 
   return (
     <>
-      <div data-tutorial="sales-list">
+      <div>
         <List
           title={false}
           actions={false}

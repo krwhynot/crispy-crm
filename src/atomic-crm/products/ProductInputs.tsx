@@ -9,14 +9,12 @@ export const ProductInputs = () => {
       label: "Product Details",
       fields: ["name", "principal_id", "category", "status", "description"],
       content: <ProductDetailsInputTab />,
-      dataTutorial: "product-tab-details",
     },
     {
       key: "distribution",
       label: "Distribution",
       fields: ["distributor_ids", "product_distributors"],
       content: <ProductDistributionTab />,
-      dataTutorial: "product-tab-distribution",
     },
   ];
 

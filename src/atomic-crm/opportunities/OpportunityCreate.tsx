@@ -11,7 +11,7 @@ import { createFormResolver } from "@/lib/zodErrorFormatting";
 import { OpportunityCreateFormFooter } from "./OpportunityCreateFormFooter";
 import { SimilarOpportunitiesDialog } from "./SimilarOpportunitiesDialog";
 import { useSimilarOpportunityCheck } from "./useSimilarOpportunityCheck";
-import { OpportunityCreateFormTutorial } from "../tutorial/OpportunityCreateFormTutorial";
+
 import { useUnsavedChangesWarning } from "@/hooks/useUnsavedChangesWarning";
 import { useFormState } from "react-hook-form";
 
@@ -94,9 +94,6 @@ const OpportunityCreate = () => {
         proposedName={proposedName}
         similarOpportunities={similarOpportunities}
       />
-
-      {/* Standalone Form Tutorial - bottom-left floating button */}
-      <OpportunityCreateFormTutorial />
     </CreateBase>
   );
 };
@@ -123,7 +120,6 @@ const OpportunityFormContent = ({
         resetConfirmation={resetConfirmation}
         redirectPath="/opportunities"
         preserveFields={["customer_organization_id", "principal_id"]}
-        tutorialAttribute="opp-save-btn"
       />
     </>
   );

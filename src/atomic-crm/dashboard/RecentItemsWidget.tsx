@@ -87,10 +87,7 @@ export function RecentItemsWidget({ compact = false }: { compact?: boolean }) {
   const displayItems = recentItems.slice(0, compact ? 8 : 5);
 
   return (
-    <Card
-      className={cn(compact && "h-[200px] flex flex-col overflow-hidden")}
-      data-tutorial="dashboard-recent-items-widget"
-    >
+    <Card className={cn(compact && "h-[200px] flex flex-col overflow-hidden")}>
       <CardHeader className={cn(compact ? "py-2 px-3 shrink-0" : "pb-3")}>
         <div className="flex items-center justify-between">
           <CardTitle className={cn("flex items-center gap-2", compact ? "text-sm" : "text-base")}>

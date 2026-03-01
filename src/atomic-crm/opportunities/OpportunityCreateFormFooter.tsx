@@ -29,7 +29,6 @@ interface OpportunityCreateFormFooterProps {
   resetConfirmation: () => void;
   redirectPath?: string;
   preserveFields?: string[];
-  tutorialAttribute?: string;
 }
 
 export function OpportunityCreateFormFooter({
@@ -38,7 +37,6 @@ export function OpportunityCreateFormFooter({
   resetConfirmation,
   redirectPath = "/opportunities",
   preserveFields = ["customer_organization_id", "principal_id"],
-  tutorialAttribute = "opp-save-btn",
 }: OpportunityCreateFormFooterProps) {
   const translate = useTranslate();
   const { success, actionError } = useSafeNotify();
@@ -258,7 +256,6 @@ export function OpportunityCreateFormFooter({
             variant="default"
             disabled={disabled}
             onClick={handleSaveAndClose}
-            data-tutorial={tutorialAttribute}
             className={cn(
               "h-11 min-w-[140px]",
               disabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer"

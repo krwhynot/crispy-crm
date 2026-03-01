@@ -24,7 +24,6 @@ export interface EmptyStateProps {
   actions?: EmptyStateAction[];
   children?: React.ReactNode;
   className?: string;
-  "data-tutorial"?: string;
 }
 
 export function EmptyState({
@@ -37,7 +36,6 @@ export function EmptyState({
   actions,
   children,
   className,
-  "data-tutorial": dataTutorial,
 }: EmptyStateProps) {
   const renderIcon = () => {
     if (image) {
@@ -107,7 +105,7 @@ export function EmptyState({
 
   if (variant === "card") {
     return (
-      <Card className={cn("mx-auto mt-16 max-w-md", className)} data-tutorial={dataTutorial}>
+      <Card className={cn("mx-auto mt-16 max-w-md", className)}>
         <CardContent className="flex flex-col items-center justify-center p-8 text-center">
           {content}
         </CardContent>
@@ -122,7 +120,6 @@ export function EmptyState({
           "flex min-h-[calc(100dvh-4rem)] flex-col items-center justify-center gap-3 text-center",
           className
         )}
-        data-tutorial={dataTutorial}
       >
         {content}
       </div>
@@ -130,10 +127,7 @@ export function EmptyState({
   }
 
   return (
-    <div
-      className={cn("flex flex-col items-center justify-center p-8 text-center", className)}
-      data-tutorial={dataTutorial}
-    >
+    <div className={cn("flex flex-col items-center justify-center p-8 text-center", className)}>
       {content}
     </div>
   );

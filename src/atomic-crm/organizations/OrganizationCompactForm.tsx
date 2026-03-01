@@ -39,7 +39,7 @@ export const OrganizationCompactForm = ({ isRep }: OrganizationCompactFormProps)
         requiredFields={["name", "organization_type", "segment_id"]}
       >
         <CompactFormRow>
-          <div data-tutorial="org-name">
+          <div>
             <FormFieldWrapper name="name" isRequired={isRequired("name")}>
               <TextInput
                 source="name"
@@ -49,7 +49,7 @@ export const OrganizationCompactForm = ({ isRep }: OrganizationCompactFormProps)
               />
             </FormFieldWrapper>
           </div>
-          <div data-tutorial="org-type">
+          <div>
             <FormFieldWrapper
               name="organization_type"
               isRequired={isRequired("organization_type")}
@@ -165,7 +165,7 @@ export const OrganizationCompactForm = ({ isRep }: OrganizationCompactFormProps)
 
       <CollapsibleSection title="Contact & Web">
         <div className="space-y-4">
-          <div data-tutorial="org-website">
+          <div>
             <FormFieldWrapper name="website">
               <TextInput
                 source="website"

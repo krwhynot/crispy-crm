@@ -12,7 +12,6 @@ interface CreateFormFooterProps {
   resourceName: string;
   redirectPath: string;
   redirect?: (resource: string, id: string | number, data: unknown) => string;
-  tutorialAttribute?: string;
   preserveFields?: string[]; // Fields to preserve on "Save & Add Another"
 }
 
@@ -20,7 +19,6 @@ export const CreateFormFooter = ({
   resourceName,
   redirectPath,
   redirect,
-  tutorialAttribute,
   preserveFields = [],
 }: CreateFormFooterProps) => {
   const notify = useNotify();
@@ -59,7 +57,6 @@ export const CreateFormFooter = ({
           type="button"
           label="Save & Close"
           alwaysEnable
-          data-tutorial={tutorialAttribute}
           mutationOptions={{
             onSuccess: (data: { id: string | number }) => {
               notify(notificationMessages.created(ucFirst(resourceName)), { type: "success" });

@@ -2,7 +2,7 @@
  * Tests for ProductInputs component
  *
  * Unit tests for the tabbed form input configuration:
- * - Tab configuration (keys, labels, fields, dataTutorial)
+ * - Tab configuration (keys, labels, fields)
  * - Field configuration per tab
  * - Required field indicators
  *
@@ -20,7 +20,6 @@ interface TabDefinitionTest {
   label: string;
   fields: string[];
   componentName: string;
-  dataTutorial?: string;
 }
 
 /**
@@ -35,14 +34,12 @@ function getProductInputsTabs(): TabDefinitionTest[] {
       label: "Product Details",
       fields: ["name", "principal_id", "category", "status", "description"],
       componentName: "ProductDetailsInputTab",
-      dataTutorial: "product-tab-details",
     },
     {
       key: "distribution",
       label: "Distribution",
       fields: ["distributor_ids", "product_distributors"],
       componentName: "ProductDistributionTab",
-      dataTutorial: "product-tab-distribution",
     },
   ];
 }
@@ -106,15 +103,6 @@ describe("ProductInputs", () => {
         expect(tab.fields).toBeDefined();
         expect(Array.isArray(tab.fields)).toBe(true);
         expect(tab.componentName).toBeDefined();
-      });
-    });
-
-    it("all tabs have dataTutorial attributes", () => {
-      const tabs = getProductInputsTabs();
-
-      tabs.forEach((tab) => {
-        expect(tab.dataTutorial).toBeDefined();
-        expect(tab.dataTutorial).toMatch(/^product-tab-/);
       });
     });
 

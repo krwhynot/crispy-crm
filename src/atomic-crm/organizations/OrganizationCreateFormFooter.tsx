@@ -186,7 +186,6 @@ export const OrganizationCreateFormFooter = ({
             label={buttonLabel("Save & Close")}
             alwaysEnable={!isButtonDisabled}
             disabled={isButtonDisabled}
-            data-tutorial="org-save-btn"
             onClick={(e) => handleSaveClick("close", e as React.MouseEvent<HTMLButtonElement>)}
           />
           <SaveButton

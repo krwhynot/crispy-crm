@@ -452,7 +452,6 @@ interface CreateFormFooterProps {
   resourceName: string;          // e.g., "contact", "task"
   redirectPath: string;          // e.g., "/contacts"
   redirect?: RedirectTo;         // React Admin redirect behavior
-  tutorialAttribute?: string;    // data-tutorial attribute
   preserveFields?: string[];     // Fields to preserve on "Save & Add Another"
 }
 ```

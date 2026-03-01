@@ -156,7 +156,7 @@ export function CompactPerformanceWidget() {
   const { metrics, loading } = useMyPerformance();
 
   return (
-    <Card className="flex flex-col" data-tutorial="dashboard-compact-performance">
+    <Card className="flex flex-col">
       <CardHeader className="py-2 px-3 shrink-0 border-b border-[var(--paper-divider)]">
         <CardTitle className="text-sm font-medium [font-family:var(--font-serif)] tracking-[-0.01em]">
           My Performance

@@ -3,7 +3,6 @@ import { useQueryClient } from "@tanstack/react-query";
 import { dashboardKeys } from "../queryKeys";
 import { DashboardTabPanel } from "./DashboardTabPanel";
 import { TaskCompleteSheet } from "./TaskCompleteSheet";
-import { DashboardTutorial } from "./DashboardTutorial";
 
 /**
  * PrincipalDashboardV3 - Vertically stacked dashboard with Log Activity FAB
@@ -47,9 +46,6 @@ export function PrincipalDashboardV3() {
           onOpenChange={setIsTaskSheetOpen}
           onRefresh={handleRefresh}
         />
-
-        {/* Dashboard Tutorial Button - Fixed bottom-left */}
-        <DashboardTutorial />
       </main>
     </div>
   );

@@ -41,11 +41,7 @@ export function KPISummaryRow() {
   const { metrics, trends, loading } = useKPIMetrics();
 
   return (
-    <section
-      aria-label="Key Performance Indicators"
-      className="grid grid-cols-2 gap-2"
-      data-tutorial="dashboard-kpi-row"
-    >
+    <section aria-label="Key Performance Indicators" className="grid grid-cols-2 gap-2">
       {/* KPI #1: Open Opportunities (count, not $ value) */}
       <KPICard
         title="Open Opportunities"
@@ -55,7 +51,6 @@ export function KPISummaryRow() {
         tone="neutral"
         emphasis="executiveCompact"
         onClick={() => navigate(KPI_NAVIGATION.openOpportunities)}
-        data-tutorial="dashboard-kpi-open-opportunities"
       />
 
       {/* KPI #2: Overdue Tasks (clay accent when > 0) */}
@@ -71,7 +66,6 @@ export function KPISummaryRow() {
         }
         emphasis="executiveCompact"
         onClick={() => navigate(KPI_NAVIGATION.overdueTasks)}
-        data-tutorial="dashboard-kpi-overdue-tasks"
       />
 
       {/* KPI #3: Team Activities This Week */}
@@ -85,7 +79,6 @@ export function KPISummaryRow() {
         subtitle={formatRecentActivitySubtitle(metrics.recentActivityCount)}
         trend={trends.activitiesThisWeek ?? undefined}
         onClick={() => navigate(KPI_NAVIGATION.activitiesThisWeek)}
-        data-tutorial="dashboard-kpi-activities"
       />
 
       {/* KPI #4: Stale Deals (warning when > 0) */}
@@ -99,7 +92,6 @@ export function KPISummaryRow() {
         }
         emphasis="executiveCompact"
         onClick={() => navigate(KPI_NAVIGATION.staleDeals)}
-        data-tutorial="dashboard-kpi-stale-deals"
       />
     </section>
   );

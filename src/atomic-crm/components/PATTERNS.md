@@ -402,12 +402,6 @@ For create forms requiring "Save & Close" and "Save & Add Another" workflows.
   preserveFields={['organization_id', 'tags']}
 />
 
-// With tutorial tracking
-<CreateFormFooter
-  resourceName="contact"
-  redirectPath="/contacts"
-  tutorialAttribute="save-contact-button"
-/>
 ```
 
 **When to use**: All create forms that benefit from rapid successive entry.

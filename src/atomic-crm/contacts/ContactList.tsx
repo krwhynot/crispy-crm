@@ -24,7 +24,7 @@ import { ContactNameHeader, ContactStatusHeader } from "./ContactDatagridHeader"
 import { formatFullName } from "../utils/formatters";
 import { contactExporter } from "./contactExporter";
 import { CONTACT_FILTER_CONFIG } from "./contactFilterConfig";
-import { PageTutorialTrigger } from "../tutorial";
+
 import { FilterableBadge } from "@/components/ra-wrappers/FilterableBadge";
 import { TagsList } from "./TagsList";
 
@@ -137,7 +137,7 @@ export const ContactList = () => {
 
   return (
     <>
-      <div data-tutorial="contacts-list">
+      <div>
         <List
           title={false}
           actions={false}
@@ -152,11 +152,8 @@ export const ContactList = () => {
             sortFields={["first_name", "title", "last_seen"]}
             searchPlaceholder="Search contacts..."
             enableRecentSearches
-            sortButtonTutorialId="contact-sort-btn"
-            overflowMenuTutorialId="contact-export-btn"
-            filterToggleTutorialId="contact-filter-toggle"
             overflowActions={<ExportMenuItem />}
-            primaryAction={<CreateButton variant="default" dataTutorial="create-contact-btn" />}
+            primaryAction={<CreateButton variant="default" />}
             emptyState={<ContactEmpty />}
             loadingSkeleton={<ContactListSkeleton />}
             bulkActions={<ContactBulkButtons />}
@@ -172,7 +169,6 @@ export const ContactList = () => {
         onClose={closeSlideOver}
         onModeToggle={toggleMode}
       />
-      <PageTutorialTrigger chapter="contacts" position="bottom-left" />
     </>
   );
 };

@@ -21,7 +21,7 @@ import { useSlideOverState } from "@/hooks/useSlideOverState";
 import { OpportunitySlideOver } from "./OpportunitySlideOver";
 import { OpportunityListFilter } from "./OpportunityListFilter";
 import { OPPORTUNITY_FILTER_CONFIG } from "./opportunityFilterConfig";
-import { OpportunityListTutorial } from "./OpportunityListTutorial";
+
 import { ListNoResults } from "@/components/ra-wrappers/ListNoResults";
 import { ExportMenuItem } from "@/components/ra-wrappers/export-menu-item";
 import { SORT_BY_CREATED_DESC, FILTER_ACTIVE_RECORDS } from "@/atomic-crm/constants/listDefaults";
@@ -81,7 +81,7 @@ const OpportunityList = () => {
 
   return (
     <>
-      <div data-tutorial="opportunities-list">
+      <div>
         <List
           perPage={25}
           filter={FILTER_ACTIVE_RECORDS}
@@ -99,7 +99,7 @@ const OpportunityList = () => {
             searchPlaceholder="Search opportunities..."
             enableRecentSearches
             viewSwitcher={
-              <span data-tutorial="opp-view-switcher">
+              <span>
                 <OpportunityViewSwitcher view={view} onViewChange={handleViewChange} />
               </span>
             }
@@ -137,7 +137,6 @@ const OpportunityList = () => {
         mode={mode}
         onModeToggle={toggleMode}
       />
-      <OpportunityListTutorial />
     </>
   );
 };

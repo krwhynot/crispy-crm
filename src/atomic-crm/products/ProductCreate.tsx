@@ -7,7 +7,6 @@ import { createFormResolver } from "@/lib/zodErrorFormatting";
 
 import { ProductInputs } from "./ProductInputs";
 import { productSchema } from "../validation/products";
-import { ProductFormTutorial } from "./ProductFormTutorial";
 
 const ProductCreate = () => {
   const { data: identity, isLoading: isIdentityLoading } = useGetIdentity();
@@ -56,7 +55,6 @@ const ProductCreate = () => {
           </FormProgressProvider>
         </div>
       </div>
-      <ProductFormTutorial />
     </CreateBase>
   );
 };
@@ -65,11 +63,7 @@ const ProductFormContent = () => {
   return (
     <>
       <ProductInputs />
-      <CreateFormFooter
-        resourceName="product"
-        redirectPath="/products"
-        tutorialAttribute="product-save-btn"
-      />
+      <CreateFormFooter resourceName="product" redirectPath="/products" />
     </>
   );
 };

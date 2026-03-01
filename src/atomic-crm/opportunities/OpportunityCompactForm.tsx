@@ -116,7 +116,7 @@ export const OpportunityCompactForm = ({ mode = "create" }: OpportunityCompactFo
       >
         {/* Row 1: Name (full width) with regenerate button in edit mode */}
         <div className="relative">
-          <div data-tutorial="opp-name">
+          <div>
             <TextInput source="name" label="Opportunity Name *" helperText={false} />
           </div>
           {mode === "edit" && (
@@ -149,7 +149,7 @@ export const OpportunityCompactForm = ({ mode = "create" }: OpportunityCompactFo
 
         {/* Row 2: Customer | Principal (type-to-create via AutocompleteOrganizationInput) */}
         <CompactFormRow>
-          <div data-tutorial="opp-customer">
+          <div>
             <ReferenceInput
               source="customer_organization_id"
               reference="organizations"
@@ -162,7 +162,7 @@ export const OpportunityCompactForm = ({ mode = "create" }: OpportunityCompactFo
               />
             </ReferenceInput>
           </div>
-          <div data-tutorial="opp-principal">
+          <div>
             <ReferenceInput
               source="principal_organization_id"
               reference="organizations"
@@ -186,10 +186,10 @@ export const OpportunityCompactForm = ({ mode = "create" }: OpportunityCompactFo
       >
         {/* Row 3: Stage | Priority | Close Date */}
         <CompactFormRow columns="md:grid-cols-3">
-          <div data-tutorial="opp-stage">
+          <div>
             <SelectInput source="stage" label="Stage *" choices={stageChoices} helperText={false} />
           </div>
-          <div data-tutorial="opp-priority">
+          <div>
             <SelectInput
               source="priority"
               label="Priority *"
@@ -197,14 +197,14 @@ export const OpportunityCompactForm = ({ mode = "create" }: OpportunityCompactFo
               helperText={false}
             />
           </div>
-          <div data-tutorial="opp-close-date">
+          <div>
             <DateInput source="estimated_close_date" label="Est. Close Date *" helperText={false} />
           </div>
         </CompactFormRow>
 
         {/* Row 4: Primary AM | Secondary AM | Distributor */}
         <CompactFormRow columns="md:grid-cols-3">
-          <div data-tutorial="opp-owner">
+          <div>
             <ReferenceInput
               source="opportunity_owner_id"
               reference="sales"
@@ -218,7 +218,7 @@ export const OpportunityCompactForm = ({ mode = "create" }: OpportunityCompactFo
               />
             </ReferenceInput>
           </div>
-          <div data-tutorial="opp-account-manager">
+          <div>
             <ReferenceInput
               source="account_manager_id"
               reference="sales"
@@ -233,7 +233,7 @@ export const OpportunityCompactForm = ({ mode = "create" }: OpportunityCompactFo
             </ReferenceInput>
           </div>
           <div>
-            <div data-tutorial="opp-distributor">
+            <div>
               <ReferenceInput
                 source="distributor_organization_id"
                 reference="organizations"
@@ -264,7 +264,7 @@ export const OpportunityCompactForm = ({ mode = "create" }: OpportunityCompactFo
                   : "Please select a Customer Organization first"}
               </p>
             </div>
-            <div data-tutorial="opp-contacts">
+            <div>
               {customerOrganizationId ? (
                 <>
                   <ReferenceArrayInput
@@ -318,7 +318,7 @@ export const OpportunityCompactForm = ({ mode = "create" }: OpportunityCompactFo
                   : "At least one product is required (select Principal Organization to filter)"}
               </p>
             </div>
-            <div data-tutorial="opp-products">
+            <div>
               <ArrayInput source="products_to_sync" label={false}>
                 <SimpleFormIterator inline disableReordering>
                   <ReferenceInput
@@ -348,13 +348,13 @@ export const OpportunityCompactForm = ({ mode = "create" }: OpportunityCompactFo
       </CollapsibleSection>
 
       {/* Collapsible: Classification */}
-      <CollapsibleSection title="Classification" data-tutorial="opp-section-classification">
+      <CollapsibleSection title="Classification">
         <div className="space-y-4">
           <CompactFormRow>
-            <div data-tutorial="opp-lead-source">
+            <div>
               <LeadSourceInput />
             </div>
-            <div data-tutorial="opp-campaign">
+            <div>
               <TextInput
                 source="campaign"
                 label="Campaign"
@@ -372,9 +372,9 @@ export const OpportunityCompactForm = ({ mode = "create" }: OpportunityCompactFo
       </CollapsibleSection>
 
       {/* Collapsible: Additional Details */}
-      <CollapsibleSection title="Additional Details" data-tutorial="opp-section-details">
+      <CollapsibleSection title="Additional Details">
         <div className="space-y-4">
-          <div data-tutorial="opp-description">
+          <div>
             <TextInput
               source="description"
               label="Description"
@@ -384,7 +384,7 @@ export const OpportunityCompactForm = ({ mode = "create" }: OpportunityCompactFo
             />
           </div>
           <CompactFormRow>
-            <div data-tutorial="opp-next-action">
+            <div>
               <TextInput
                 source="next_action"
                 label="Next Action"
@@ -392,7 +392,7 @@ export const OpportunityCompactForm = ({ mode = "create" }: OpportunityCompactFo
                 placeholder="e.g., Follow up with decision maker"
               />
             </div>
-            <div data-tutorial="opp-next-action-date">
+            <div>
               <DateInput source="next_action_date" label="Next Action Date" helperText={false} />
             </div>
           </CompactFormRow>

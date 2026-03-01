@@ -12,8 +12,7 @@ List + UnifiedListPageLayout + PremiumDatagrid
     │       ├── RowHoverActions (view / edit)
     │       └── CertificationBadges / CategoryBadge / StatusBadge
     ├── ProductListFilter (sidebar)
-    ├── ProductEmpty (empty-state component)
-    └── PageTutorialTrigger (chapter="products")
+    └── ProductEmpty (empty-state component)
     ↓
 [ProductSlideOver ↔ ProductDetailsTab / ProductRelationshipsTab]
     ↓
@@ -22,8 +21,6 @@ List + UnifiedListPageLayout + PremiumDatagrid
 ProductCreate / ProductEdit (full-page forms)
     ↓
 ProductInputs → ProductDetailsInputTab + ProductDistributionTab
-    ↓
-ProductFormTutorial (onboarding overlay)
 ```
 
 ### Data Flow
@@ -343,118 +340,7 @@ export function ProductDistributorInput() {
 
 ---
 
-## Pattern D: Form Tutorial with Driver.js
-
-Progressive disclosure tutorial for multi-tab forms using data attributes.
-
-```tsx
-import { useRef, useCallback } from "react";
-import { driver, type DriveStep } from "driver.js";
-import "driver.js/dist/driver.css";
-import { HelpCircle } from "lucide-react";
-import { AdminButton } from "@/components/admin/AdminButton";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
-
-const FORM_TUTORIAL_STEPS: DriveStep[] = [
-  {
-    popover: {
-      title: "Create a Product",
-      description: "Let's add a new product. Required fields are marked with *.",
-    },
-  },
-  {
-    element: '[data-tutorial="product-tab-general"]',
-    popover: {
-      title: "General Information",
-      description: "This tab contains basic product details.",
-      side: "bottom",
-      align: "start",
-    },
-  },
-  {
-    element: '[data-tutorial="product-name"]',
-    popover: {
-      title: "Product Name *",
-      description: "Enter the product name. This is how it will appear in searches.",
-      side: "right",
-      align: "start",
-    },
-  },
-  // ... additional steps for each form field
-  {
-    element: '[data-tutorial="product-save-btn"]',
-    popover: {
-      title: "Create Product",
-      description: "Click to save the product.",
-      side: "top",
-      align: "end",
-    },
-  },
-];
-
-export function ProductFormTutorial() {
-  const driverRef = useRef<ReturnType<typeof driver> | null>(null);
-
-  const startTutorial = useCallback(() => {
-    // Clean up any existing instance
-    if (driverRef.current) {
-      driverRef.current.destroy();
-    }
-
-    driverRef.current = driver({
-      showProgress: true,
-      animate: true,
-      smoothScroll: true,
-      overlayOpacity: 0.75,
-      popoverClass: "tutorial-popover",
-      nextBtnText: "Next",
-      prevBtnText: "Back",
-      doneBtnText: "Done",
-      steps: FORM_TUTORIAL_STEPS,
-      onDestroyStarted: () => {
-        driverRef.current?.destroy();
-        driverRef.current = null;
-      },
-    });
-
-    driverRef.current.drive();
-  }, []);
-
-  return (
-    <div className="fixed bottom-4 left-4 z-50">
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <AdminButton
-            variant="default"
-            size="icon"
-            onClick={startTutorial}
-            className="h-11 w-11 rounded-full shadow-lg"
-            aria-label="Start product form tutorial"
-          >
-            <HelpCircle className="h-5 w-5" />
-          </AdminButton>
-        </TooltipTrigger>
-        <TooltipContent side="right">Learn how to create a product</TooltipContent>
-      </Tooltip>
-    </div>
-  );
-}
-```
-
-**When to use**: Complex multi-step forms that benefit from guided onboarding.
-
-**Key points:**
-- Mark form elements with `data-tutorial="field-name"` attributes
-- Fixed position button at `bottom-4 left-4 z-50` for consistent access
-- Touch target: `h-11 w-11` (44x44px minimum)
-- Clean up driver instance to prevent memory leaks
-- Steps guide users through tabs sequentially
-
-**Example:** `src/atomic-crm/products/ProductFormTutorial.tsx`
-
----
-
-## Pattern E: Card View with Selection
+## Pattern D: Card View with Selection
 
 Card component supporting bulk selection via checkbox overlay. Wrapped in `memo()` for
 performance. Uses `Card` from `@/components/ui/card` (not `SectionCard`). Displays
@@ -573,7 +459,6 @@ import { ProductListSkeleton } from "@/components/ui/list-skeleton";
 import { ProductListFilter } from "./ProductListFilter";
 import { ProductEmpty } from "./ProductEmpty";
 import { PRODUCT_FILTER_CONFIG } from "./productFilterConfig";
-import { PageTutorialTrigger } from "../tutorial";
 
 export const ProductList = () => {
   const { slideOverId, isOpen, mode, openSlideOver, closeSlideOver, toggleMode } =
@@ -598,7 +483,6 @@ export const ProductList = () => {
         </UnifiedListPageLayout>
       </List>
       <ProductSlideOver ... />
-      <PageTutorialTrigger chapter="products" position="bottom-left" />
     </>
   );
 };
@@ -1211,8 +1095,7 @@ When adding a new product feature or migrating from another pattern:
 1. [ ] Check for existing patterns in `ContactList`, `OpportunityList`, `OrganizationList`
 2. [ ] Use `COLUMN_VISIBILITY.always` / `ipadPlus` for responsive columns (not the deprecated `alwaysVisible` / `desktopOnly`)
 3. [ ] Wrap badge columns in `FilterableBadge` for click-to-filter
-4. [ ] Add `data-tutorial` attributes to form fields for onboarding
-5. [ ] Use `RecordContextProvider` for nested component contexts
+4. [ ] Use `RecordContextProvider` for nested component contexts
 6. [ ] Implement loading states (`isPending` checks) and empty states using `SidepaneEmptyState` / `EMPTY_STATE_CONTENT`
 7. [ ] Add keyboard navigation via `useListKeyboardNavigation()` gated by `isSlideOverOpen`
 8. [ ] Verify touch targets are 44x44px minimum (`h-11 w-11`)
@@ -1251,5 +1134,4 @@ When adding a new product feature or migrating from another pattern:
 | `productFilterConfig.ts` | Filter config schema (status, category, principal) | G |
 | `ProductsDatagridHeader.tsx` | Column label components for datagrid headers | A |
 | `ProductEmpty.tsx` | Empty-state component (no products) | F |
-| `ProductFormTutorial.tsx` | Driver.js tutorial for create form | D |
 | `__tests__/ProductList.test.tsx` | Vitest tests for ProductList | -- |

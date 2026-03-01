@@ -20,7 +20,7 @@ export const SalesListFilter = () => {
   useListContext();
 
   return (
-    <FilterSidebar showSearch={false} data-tutorial="sales-filters">
+    <FilterSidebar showSearch={false}>
       {/* Role Filter - Multiselect (Admin, Manager, Rep) */}
       <FilterCategory label="Role" icon={<Users className="h-4 w-4" />}>
         <ToggleFilterButton

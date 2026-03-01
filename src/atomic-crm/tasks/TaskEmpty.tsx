@@ -9,7 +9,7 @@ export const TaskEmpty = () => {
       title="No tasks found"
       description="Your task list is empty. Create a task to get started."
     >
-      <span data-tutorial="create-task-btn" className="mt-4">
+      <span className="mt-4">
         <CreateButton label="New Task" />
       </span>
     </EmptyState>

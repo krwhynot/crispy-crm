@@ -54,7 +54,7 @@ const ActivityEditForm = () => {
           </span>
         </div>
         <ActivityInputs />
-        <FormToolbar dataTutorial="activity-save-btn" />
+        <FormToolbar />
       </SectionCard>
     </Form>
   );

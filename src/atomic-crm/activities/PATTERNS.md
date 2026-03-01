@@ -588,20 +588,18 @@ export default function ActivitySinglePage() {
         requiredFields={["type", "subject", "activity_date"]}
       >
         <FormGrid>
-          <div data-tutorial="activity-type">
-            <FormFieldWrapper name="type" isRequired countDefaultAsFilled>
-              <SelectInput
-                source="type"
-                label="Interaction Type"
-                choices={INTERACTION_TYPE_OPTIONS.map((option) => ({
-                  id: option.value,
-                  name: option.label,
-                }))}
-                helperText="Choose how this interaction occurred"
-                isRequired
-              />
-            </FormFieldWrapper>
-          </div>
+          <FormFieldWrapper name="type" isRequired countDefaultAsFilled>
+            <SelectInput
+              source="type"
+              label="Interaction Type"
+              choices={INTERACTION_TYPE_OPTIONS.map((option) => ({
+                id: option.value,
+                name: option.label,
+              }))}
+              helperText="Choose how this interaction occurred"
+              isRequired
+            />
+          </FormFieldWrapper>
 
           {/* WG-001: Sample Status field - only shown when type="sample" */}
           {isSampleActivity && (
@@ -640,17 +638,15 @@ export default function ActivitySinglePage() {
           </FormFieldWrapper>
         </FormGrid>
 
-        <div data-tutorial="activity-description">
-          <FormFieldWrapper name="description">
-            <TextInput
-              source="description"
-              label="Notes"
-              multiline
-              rows={4}
-              helperText="Optional narrative for this interaction"
-            />
-          </FormFieldWrapper>
-        </div>
+        <FormFieldWrapper name="description">
+          <TextInput
+            source="description"
+            label="Notes"
+            multiline
+            rows={4}
+            helperText="Optional narrative for this interaction"
+          />
+        </FormFieldWrapper>
       </FormSectionWithProgress>
 
       {/* Additional sections: Relationships, Follow-up, Outcome */}
@@ -672,7 +668,6 @@ export default function ActivitySinglePage() {
 - `FormSectionWithProgress` provides logical grouping with progress tracking via `id` and `requiredFields` props
 - `FormGrid` creates responsive column layouts
 - `FormFieldWrapper` with `isRequired` and `countDefaultAsFilled`
-- `data-tutorial` attributes for guided tours
 - `sample_status` field conditionally shown when `type="sample"` (uses `useWatch`)
 - `follow_up_required` is a `BooleanInput` with context-sensitive helper text for sample activities
 - All reference inputs use AutocompleteInput

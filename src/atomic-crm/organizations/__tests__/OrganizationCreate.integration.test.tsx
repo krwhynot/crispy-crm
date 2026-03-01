@@ -158,30 +158,6 @@ describe("OrganizationCreate with Progress Tracking", () => {
     });
   });
 
-  it("preserves data-tutorial attributes on fields", async () => {
-    const user = userEvent.setup();
-    const { container } = renderOrganizationCreate();
-
-    // Wait for component to render by finding a known element first
-    await screen.findByText("Company Profile");
-
-    // Check for data-tutorial attributes using querySelector
-    const orgNameTutorial = container.querySelector('[data-tutorial="org-name"]');
-    expect(orgNameTutorial).toBeInTheDocument();
-
-    const orgTypeTutorial = container.querySelector('[data-tutorial="org-type"]');
-    expect(orgTypeTutorial).toBeInTheDocument();
-
-    // Contact & Web is collapsed by default - need to expand it
-    const additionalDetailsButton = screen.getByRole("button", { name: /Contact & Web/i });
-    await user.click(additionalDetailsButton);
-
-    await waitFor(() => {
-      const orgWebsiteTutorial = container.querySelector('[data-tutorial="org-website"]');
-      expect(orgWebsiteTutorial).toBeInTheDocument();
-    });
-  });
-
   it("renders FormProgressProvider wrapper", async () => {
     renderOrganizationCreate();
 

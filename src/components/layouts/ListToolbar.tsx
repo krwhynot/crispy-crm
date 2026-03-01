@@ -40,12 +40,6 @@ export interface ListToolbarProps {
   primaryAction?: ReactNode;
   /** Default filter values to restore on "Clear all" */
   defaultFilters?: Record<string, unknown>;
-  /** data-tutorial ID for the SortButton */
-  sortButtonTutorialId?: string;
-  /** data-tutorial ID for the overflow menu wrapper */
-  overflowMenuTutorialId?: string;
-  /** data-tutorial ID for the filter toggle button */
-  filterToggleTutorialId?: string;
 }
 
 /**
@@ -67,9 +61,6 @@ export function ListToolbar({
   resource,
   primaryAction,
   defaultFilters,
-  sortButtonTutorialId,
-  overflowMenuTutorialId,
-  filterToggleTutorialId,
 }: ListToolbarProps) {
   const { setHasToolbar } = useFilterSidebarContext();
 
@@ -94,21 +85,18 @@ export function ListToolbar({
               enableRecentSearches={enableRecentSearches}
             />
           )}
-          {showFilterToggle && <FilterToggleButton dataTutorial={filterToggleTutorialId} />}
+          {showFilterToggle && <FilterToggleButton />}
           <ActiveFilterPill defaultFilters={defaultFilters} />
         </div>
       </div>
 
       <div className="order-2 ml-auto flex shrink-0 items-center gap-2">
         <div className="hidden shrink-0 md:block">
-          <SortButton fields={sortFields} className="h-11" dataTutorial={sortButtonTutorialId} />
+          <SortButton fields={sortFields} className="h-11" />
         </div>
         {viewSwitcher && <div className="shrink-0">{viewSwitcher}</div>}
         {primaryAction && <div className="shrink-0">{primaryAction}</div>}
-        <div
-          className={showOverflowOnDesktop ? "shrink-0" : "shrink-0 md:hidden"}
-          data-tutorial={overflowMenuTutorialId}
-        >
+        <div className={showOverflowOnDesktop ? "shrink-0" : "shrink-0 md:hidden"}>
           <OverflowMenu sortFields={sortFields} overflowActions={overflowActions} />
         </div>
       </div>
@@ -116,7 +104,7 @@ export function ListToolbar({
   );
 }
 
-function FilterToggleButton({ dataTutorial }: { dataTutorial?: string }) {
+function FilterToggleButton() {
   const { isCollapsed, toggleSidebar, isSheetOpen, setSheetOpen, activeFilterCount } =
     useFilterSidebarContext();
   const hasDockedFilters = useListHasDockedFilters();
@@ -142,7 +130,6 @@ function FilterToggleButton({ dataTutorial }: { dataTutorial?: string }) {
           aria-label={`Filters${activeFilterCount > 0 ? ` (${activeFilterCount} active)` : ""}`}
           aria-expanded={isExpanded}
           aria-controls="filter-sidebar"
-          data-tutorial={dataTutorial}
         >
           <SlidersHorizontal className="size-5" />
           <span className="hidden whitespace-nowrap text-xs text-foreground lg:inline">

@@ -24,8 +24,6 @@ index.tsx (Entry Point / Public API)
 │               │   └── CompactActivityItem (via useTeamActivities)       │
 │               ├── CompactPerformanceWidget (lazy, left row 2) ◄─────────┤
 │               │   └── CompactMetricItem (via useMyPerformance)          │
-│               └── DashboardTutorial (fixed bottom-left)                  │
-│                   └── Driver.js tour (DASHBOARD_TUTORIAL_STEPS_V4)       │
 │                                                                          │
 ├── PrincipalDashboardV3WithProvider (LEGACY, still exported)              │
 │   └── CurrentSaleProvider                                                │
@@ -37,8 +35,7 @@ index.tsx (Entry Point / Public API)
 │               │   ├── MyPerformanceWidget (lazy)                         │
 │               │   ├── ActivityFeedPanel (lazy)                           │
 │               │   └── RecentItemsTabContent                              │
-│               ├── TaskCompleteSheet (bottom Sheet)                       │
-│               └── DashboardTutorial (default V3 steps)                   │
+│               └── TaskCompleteSheet (bottom Sheet)                       │
 │                                                                          │
 └── Shared exports                                                         │
     ├── DashboardErrorBoundary (class component)                           │
@@ -148,8 +145,6 @@ export function PrincipalDashboardV4() {
           </Suspense>
         </div>
       </main>
-
-      <DashboardTutorial steps={DASHBOARD_TUTORIAL_STEPS_V4} />
     </div>
   );
 }
@@ -340,7 +335,7 @@ export function DashboardTasksList() {
   });
 
   return (
-    <Card data-tutorial="dashboard-tasks-list">
+    <Card>
       <CardHeader>
         <CardTitle>My Tasks</CardTitle>
         {overdueCount > 0 && <Badge variant="destructive">{overdueCount}</Badge>}
@@ -771,66 +766,6 @@ export function useEntityData({ form, selectedOrganizationId, selectedContactId,
 
 ---
 
-## Pattern L: Dashboard Tutorial (Driver.js)
-
-### Problem
-
-New users need guided onboarding for the dashboard. The tutorial must work differently for V3 (tabbed) and V4 (3-column) layouts.
-
-### Solution
-
-A standalone floating button that launches a Driver.js tour. The component accepts an optional `steps` prop; V3 uses the default steps, V4 passes `DASHBOARD_TUTORIAL_STEPS_V4` explicitly.
-
-### Implementation
-
-```tsx
-// DashboardTutorial.tsx:27-98
-export function DashboardTutorial({ steps }: DashboardTutorialProps) {
-  const driverRef = useRef<Driver | null>(null);
-
-  const startTutorial = useCallback(() => {
-    driverRef.current = driver({
-      showProgress: true,
-      animate: true,
-      smoothScroll: true,
-      steps: steps ?? DASHBOARD_TUTORIAL_STEPS, // V3 default, V4 explicit
-      onDestroyStarted: () => { setIsActive(false); },
-    });
-    driverRef.current.drive();
-  }, []);
-
-  return (
-    <div className="fixed bottom-4 left-4 z-50">
-      <AdminButton size="icon" className="h-11 w-11 rounded-full"
-        onClick={startTutorial} aria-label="Start dashboard tutorial">
-        <HelpCircle className="h-5 w-5" />
-      </AdminButton>
-    </div>
-  );
-}
-```
-
-```tsx
-// dashboardTutorialStepsV4.ts - V4 step order (left-to-right, top-to-bottom):
-// Row 1: KPIs (left) -> Pipeline (center) -> Tasks (right)
-// Row 2: Performance (left) -> Activity (center)
-
-// V4 differences from V3:
-// - No tabs (removed dashboard-tabs selectors)
-// - No kanban (replaced with dashboard-tasks-list)
-// - No FAB (removed dashboard-log-activity)
-```
-
-**Key points:**
-- V3 and V4 steps are separate files (`dashboardTutorialSteps.ts` vs `dashboardTutorialStepsV4.ts`)
-- Uses `data-tutorial` attributes as selectors, not CSS classes
-- Button hides while tour is active
-- Cleanup on unmount via `driverRef.current.destroy()`
-
-**Example:** `src/atomic-crm/dashboard/DashboardTutorial.tsx`, `src/atomic-crm/dashboard/dashboardTutorialStepsV4.ts`
-
----
-
 ## Anti-Patterns
 
 ### Do not bypass the data provider
@@ -939,7 +874,6 @@ if (result.status === "fulfilled") count = result.value.total || 0;
 | `NotesSection.tsx` | Component | Y | Y | Textarea for activity notes |
 | `FollowUpSection.tsx` | Component | Y | Y | Follow-up toggle + date picker |
 | `ActionButtons.tsx` | Component | Y | Y | Save/Cancel/Save & New buttons |
-| `DashboardTutorial.tsx` | Component | Y | Y | Floating tutorial button (Driver.js) |
 | `DashboardErrorBoundary.tsx` | Component | Y | Y | Error boundary with recovery UI |
 | `CurrentSaleContext.tsx` | Provider | Y | Y | Session-level salesId cache |
 | `useCurrentSale.ts` | Hook | Y | Y | Context + fallback for salesId |
@@ -956,8 +890,6 @@ if (result.status === "fulfilled") count = result.value.total || 0;
 | `useDebouncedSearch.ts` | Hook | Y | Y | Debounced search with deferred value |
 | `taskUtils.ts` | Utility | Y | Y | Task grouping, icons, priority colors |
 | `types.ts` | Types | Y | Y | TaskItem, PipelineRow, API response types |
-| `dashboardTutorialSteps.ts` | Config | Y | - | V3 tutorial steps (tabs + kanban) |
-| `dashboardTutorialStepsV4.ts` | Config | - | Y | V4 tutorial steps (3-column grid) |
 
 ---
 
@@ -987,24 +919,14 @@ When adding a new widget to the V4 dashboard:
    - Use `useGetList()` or `useDataProvider()` for data fetching
    - Return stable object references via `useMemo`
 
-4. [ ] **Add `data-tutorial` attribute** to the widget root
-   ```tsx
-   <Card data-tutorial="dashboard-new-widget">
-   ```
+4. [ ] **Update DashboardSkeleton** in `index.tsx` if grid layout changes
 
-5. [ ] **Add tutorial step** to `dashboardTutorialStepsV4.ts`
-   ```ts
-   { element: '[data-tutorial="dashboard-new-widget"]', popover: { ... } }
-   ```
+5. [ ] **Add loading skeleton** matching widget structure (`aria-busy="true"`)
 
-6. [ ] **Update DashboardSkeleton** in `index.tsx` if grid layout changes
+6. [ ] **Verify touch targets** (44px minimum): `h-11 w-11` or `min-h-[44px]`
 
-7. [ ] **Add loading skeleton** matching widget structure (`aria-busy="true"`)
+7. [ ] **Verify accessibility**: `aria-label` for icon-only buttons, `role="region"` for metric groups
 
-8. [ ] **Verify touch targets** (44px minimum): `h-11 w-11` or `min-h-[44px]`
+8. [ ] **Test mobile layout**: Confirm correct DOM order in single-column mode (no CSS `order-*`)
 
-9. [ ] **Verify accessibility**: `aria-label` for icon-only buttons, `role="region"` for metric groups
-
-10. [ ] **Test mobile layout**: Confirm correct DOM order in single-column mode (no CSS `order-*`)
-
-11. [ ] **Do NOT modify V3** -- V4 widgets are independent. V3 remains frozen for rollback safety.
+9. [ ] **Do NOT modify V3** -- V4 widgets are independent. V3 remains frozen for rollback safety.

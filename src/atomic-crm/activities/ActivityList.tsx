@@ -21,7 +21,7 @@ import { useListKeyboardNavigation } from "@/hooks/useListKeyboardNavigation";
 import { useSlideOverState } from "@/hooks/useSlideOverState";
 import { ExportMenuItem } from "@/components/ra-wrappers/export-menu-item";
 import { COLUMN_VISIBILITY } from "../utils/listPatterns";
-import { PageTutorialTrigger } from "../tutorial";
+
 import type { ActivityRecord, Contact, Opportunity, Organization, Sale } from "../types";
 import { INTERACTION_TYPE_OPTIONS } from "../validation/activities";
 import { ACTIVITY_FILTER_CONFIG } from "./activityFilterConfig";
@@ -116,7 +116,7 @@ export default function ActivityList() {
 
   return (
     <>
-      <div data-tutorial="activities-list">
+      <div>
         <List
           title={false}
           perPage={25}
@@ -151,7 +151,6 @@ export default function ActivityList() {
         onClose={closeSlideOver}
         onModeToggle={toggleMode}
       />
-      <PageTutorialTrigger chapter="activities" position="bottom-left" />
     </>
   );
 }

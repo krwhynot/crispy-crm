@@ -51,11 +51,10 @@ const TestWrapper = ({ children }: { children: React.ReactNode }) => {
 /**
  * Helper to find the Interaction Type select trigger.
  * The Radix Select trigger renders as role="combobox" but without an accessible name
- * linked from the FormLabel. We locate it via the data-tutorial container.
+ * linked from the FormLabel. We locate it via the data-testid container.
  */
 function getInteractionTypeSelect(): HTMLElement {
-  const container = document.querySelector('[data-tutorial="activity-type"]');
-  if (!container) throw new Error("Could not find activity-type container");
+  const container = screen.getByTestId("activity-type");
   const trigger = within(container as HTMLElement).getByRole("combobox");
   return trigger;
 }

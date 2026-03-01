@@ -129,7 +129,7 @@ export const OrganizationListFilter = (): React.ReactElement => {
   );
 
   return (
-    <FilterSidebar showSearch={false} data-tutorial="org-filters">
+    <FilterSidebar showSearch={false}>
       {/* Starred Quick Filter - TOP of sidebar */}
       <StarredFilterToggle entityType="organizations" />
 

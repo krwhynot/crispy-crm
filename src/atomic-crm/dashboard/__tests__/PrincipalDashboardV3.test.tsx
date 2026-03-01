@@ -20,10 +20,6 @@ vi.mock("../TaskCompleteSheet", () => ({
   },
 }));
 
-vi.mock("../DashboardTutorial", () => ({
-  DashboardTutorial: () => <div data-testid="dashboard-tutorial">DashboardTutorial</div>,
-}));
-
 // ---------- Helpers ----------
 
 const createTestQueryClient = () =>
@@ -73,11 +69,6 @@ describe("PrincipalDashboardV3", () => {
   it("renders the TaskCompleteSheet child component", () => {
     renderDashboard();
     expect(screen.getByTestId("task-complete-sheet")).toBeInTheDocument();
-  });
-
-  it("renders the DashboardTutorial child component", () => {
-    renderDashboard();
-    expect(screen.getByTestId("dashboard-tutorial")).toBeInTheDocument();
   });
 
   it("passes open=false to TaskCompleteSheet initially", () => {

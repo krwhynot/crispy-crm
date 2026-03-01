@@ -28,7 +28,7 @@ import { TaskSlideOver } from "./TaskSlideOver";
 import { TaskEmpty } from "./TaskEmpty";
 import { SaleName } from "../sales/SaleName";
 import { TASK_FILTER_CONFIG } from "./taskFilterConfig";
-import { PageTutorialTrigger } from "../tutorial";
+
 import { TaskTitleHeader, TaskPriorityHeader, TaskTypeHeader } from "./TasksDatagridHeader";
 import { ExportMenuItem } from "@/components/ra-wrappers/export-menu-item";
 import { taskKeys, entityTimelineKeys } from "@/atomic-crm/queryKeys";
@@ -123,7 +123,7 @@ export default function TaskList() {
 
   return (
     <>
-      <div data-tutorial="tasks-list">
+      <div>
         <List
           title={false}
           actions={false}
@@ -156,7 +156,6 @@ export default function TaskList() {
         onClose={closeSlideOver}
         onModeToggle={toggleMode}
       />
-      <PageTutorialTrigger chapter="tasks" position="bottom-left" />
     </>
   );
 }

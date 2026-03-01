@@ -146,23 +146,15 @@ export function DashboardTabPanel() {
     <Card className="paper-card flex min-h-0 flex-1 flex-col gap-0 overflow-hidden">
       <Tabs defaultValue="tasks" className="flex min-h-0 flex-1 flex-col gap-0">
         <div className="shrink-0 border-b px-3 py-2 [border-color:color-mix(in_oklch,var(--paper-divider)_50%,transparent)]">
-          <TabsList className="paper-tabs-list overflow-x-auto" data-tutorial="dashboard-tabs">
+          <TabsList className="paper-tabs-list overflow-x-auto">
             {/* Pipeline Tab - 44px touch target */}
-            <TabsTrigger
-              value="pipeline"
-              className="paper-tabs-trigger gap-1.5"
-              data-tutorial="dashboard-tab-pipeline"
-            >
+            <TabsTrigger value="pipeline" className="paper-tabs-trigger gap-1.5">
               <LayoutGrid className="h-4 w-4" />
               <span>Pipeline</span>
             </TabsTrigger>
 
             {/* My Tasks Tab */}
-            <TabsTrigger
-              value="tasks"
-              className="paper-tabs-trigger gap-1.5"
-              data-tutorial="dashboard-tab-tasks"
-            >
+            <TabsTrigger value="tasks" className="paper-tabs-trigger gap-1.5">
               <CheckSquare className="h-4 w-4" />
               <span>My Tasks</span>
               {!isLoading && pendingCount > 0 && (
@@ -173,21 +165,13 @@ export function DashboardTabPanel() {
             </TabsTrigger>
 
             {/* Performance Tab */}
-            <TabsTrigger
-              value="performance"
-              className="paper-tabs-trigger gap-1.5"
-              data-tutorial="dashboard-tab-performance"
-            >
+            <TabsTrigger value="performance" className="paper-tabs-trigger gap-1.5">
               <TrendingUp className="h-4 w-4" />
               <span>Performance</span>
             </TabsTrigger>
 
             {/* Team Activity Tab */}
-            <TabsTrigger
-              value="activity"
-              className="paper-tabs-trigger gap-1.5"
-              data-tutorial="dashboard-tab-activity"
-            >
+            <TabsTrigger value="activity" className="paper-tabs-trigger gap-1.5">
               <Users className="h-4 w-4" />
               <span>Team Activity</span>
             </TabsTrigger>
@@ -196,7 +180,6 @@ export function DashboardTabPanel() {
             <TabsTrigger
               value="recent"
               className="paper-tabs-trigger gap-1.5 ml-auto opacity-60 data-[state=active]:opacity-100"
-              data-tutorial="dashboard-tab-recent"
             >
               <Clock className="h-4 w-4" />
               <span>Recently Viewed</span>

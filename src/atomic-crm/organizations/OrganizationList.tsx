@@ -28,7 +28,7 @@ import {
   OrganizationSegmentHeader,
   OrganizationStateHeader,
 } from "./OrganizationDatagridHeader";
-import { PageTutorialTrigger } from "../tutorial";
+
 import type { Organization, Sale } from "../types";
 import { DEFAULT_LIST_PAGE_SIZE } from "./constants";
 import { SORT_BY_UPDATED_DESC } from "@/atomic-crm/constants/listDefaults";
@@ -375,7 +375,7 @@ export const OrganizationList = () => {
 
   return (
     <>
-      <div data-tutorial="organizations-list">
+      <div>
         <List
           title={false}
           actions={false}
@@ -390,9 +390,6 @@ export const OrganizationList = () => {
             sortFields={["name", "organization_type", "priority", "segment_name", "created_at"]}
             searchPlaceholder="Search organizations..."
             enableRecentSearches
-            sortButtonTutorialId="org-sort-btn"
-            overflowMenuTutorialId="org-export-btn"
-            filterToggleTutorialId="org-filter-toggle"
             viewSwitcher={<OrganizationViewSwitcher view={view} onViewChange={handleViewChange} />}
             overflowActions={
               <>
@@ -400,9 +397,7 @@ export const OrganizationList = () => {
                 <ExportMenuItem />
               </>
             }
-            primaryAction={
-              <CreateButton variant="default" dataTutorial="create-organization-btn" />
-            }
+            primaryAction={<CreateButton variant="default" />}
             emptyState={<OrganizationEmpty />}
             loadingSkeleton={<OrganizationListSkeleton />}
             bulkActions={view === "list" ? <OrganizationBulkButtons /> : undefined}
@@ -422,7 +417,6 @@ export const OrganizationList = () => {
         onClose={closeSlideOver}
         onModeToggle={toggleMode}
       />
-      <PageTutorialTrigger chapter="organizations" position="bottom-left" />
     </>
   );
 };

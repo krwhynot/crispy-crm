@@ -204,7 +204,6 @@ Smart defaults derived from Zod schema with sales context awareness.
 import { createFormResolver } from "@/lib/zodErrorFormatting";
 import { FormProgressProvider, FormProgressBar } from "@/components/ra-wrappers/form";
 import { CreateFormFooter } from "@/atomic-crm/components";
-import { ContactFormTutorial } from "./ContactFormTutorial";
 import { contactBaseSchema } from "../validation/contacts";
 
 // Generate defaults from schema truth
@@ -228,7 +227,6 @@ return (
         <ContactFormContent redirect={redirect} />
       </Form>
     </FormProgressProvider>
-    <ContactFormTutorial />
   </CreateBase>
 );
 
@@ -240,7 +238,6 @@ const ContactFormContent = ({ redirect }) => (
       resourceName="contact"
       redirectPath="/contacts"
       redirect={redirect}
-      tutorialAttribute="contact-save-btn"
       preserveFields={["organization_id", "sales_id"]}
     />
   </>
@@ -1272,7 +1269,7 @@ When adding new contact features:
 | Pattern | Primary Files |
 |---------|--------------|
 | A: Import Pipeline | `contactImport.logic.ts`, `csvProcessor.ts`, `columnAliases.ts`, `ContactImportButton.tsx`, `ContactImportDialog.tsx` |
-| B: Form Defaults | `ContactCompactForm.tsx`, `ContactCreate.tsx`, `ContactEdit.tsx`, `ContactInputs.tsx`, `ContactAdditionalDetails.tsx`, `ContactFormTutorial.tsx` |
+| B: Form Defaults | `ContactCompactForm.tsx`, `ContactCreate.tsx`, `ContactEdit.tsx`, `ContactInputs.tsx`, `ContactAdditionalDetails.tsx` |
 | C: Contact Linking | `LinkOpportunityModal.tsx`, `OpportunitiesTab.tsx`, `SuggestedOpportunityCard.tsx`, `UnlinkConfirmDialog.tsx`, `StageBadgeWithHealth.tsx` |
 | D: Field Mapping | `useColumnMapping.ts`, `columnAliases.ts` |
 | E: Tags System | `TagsListEdit.tsx`, `TagChip.tsx`, `tag-colors.ts` |

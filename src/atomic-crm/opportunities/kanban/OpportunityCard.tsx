@@ -111,7 +111,6 @@ export const OpportunityCard = React.memo(function OpportunityCard({
         ${isDragOverlay ? "shadow-card-3 scale-[1.01]" : ""}
       `}
       data-testid="opportunity-card"
-      data-tutorial="opp-card"
     >
       {/* Row 1: Drag Handle + Principal + Actions */}
       <div className="flex items-center gap-1.5">

@@ -54,7 +54,7 @@ export const ContactCompactForm = ({ disabled = false }: ContactCompactFormProps
         requiredFields={["first_name", "last_name"]}
       >
         <CompactFormRow columns="md:grid-cols-[1fr_1fr_auto]" alignItems="start">
-          <div data-tutorial="contact-first-name">
+          <div>
             <FormFieldWrapper name="first_name" isRequired>
               <TextInput
                 source="first_name"
@@ -65,7 +65,7 @@ export const ContactCompactForm = ({ disabled = false }: ContactCompactFormProps
               />
             </FormFieldWrapper>
           </div>
-          <div data-tutorial="contact-last-name">
+          <div>
             <FormFieldWrapper name="last_name" isRequired>
               <TextInput
                 source="last_name"
@@ -88,7 +88,7 @@ export const ContactCompactForm = ({ disabled = false }: ContactCompactFormProps
         requiredFields={["organization_id", "sales_id"]}
       >
         {/* Organization - full width row */}
-        <div data-tutorial="contact-organization">
+        <div>
           <FormFieldWrapper name="organization_id" isRequired countDefaultAsFilled>
             <OrganizationPicker
               label="Organization"
@@ -99,7 +99,7 @@ export const ContactCompactForm = ({ disabled = false }: ContactCompactFormProps
         </div>
 
         {/* Account Manager - full width row */}
-        <div data-tutorial="contact-account-manager">
+        <div>
           <FormFieldWrapper name="sales_id" isRequired countDefaultAsFilled>
             <ReferenceInput
               reference="sales"
@@ -121,7 +121,7 @@ export const ContactCompactForm = ({ disabled = false }: ContactCompactFormProps
         </div>
 
         {/* Secondary Account Manager - optional */}
-        <div data-tutorial="contact-secondary-manager">
+        <div>
           <FormFieldWrapper name="secondary_sales_id">
             <ReferenceInput
               reference="sales"
@@ -145,7 +145,7 @@ export const ContactCompactForm = ({ disabled = false }: ContactCompactFormProps
 
       <CollapsibleSection title="Contact Methods">
         {/* Email - full width row (optional) */}
-        <div data-tutorial="contact-email">
+        <div>
           <FormFieldWrapper name="email">
             <EmailArrayField
               onEmailPaste={handleEmailPaste}
@@ -156,7 +156,7 @@ export const ContactCompactForm = ({ disabled = false }: ContactCompactFormProps
         </div>
 
         {/* Phone - full width row */}
-        <div data-tutorial="contact-phone">
+        <div>
           <FormFieldWrapper name="phone">
             <PhoneArrayField disabled={disabled} />
           </FormFieldWrapper>

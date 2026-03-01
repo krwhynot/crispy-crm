@@ -16,7 +16,6 @@ import { CanAccess } from "ra-core";
 import { Link, matchPath, useLocation } from "react-router-dom";
 import { useAppBranding } from "../root/ConfigurationContext";
 import { NotificationBell } from "@/components/NotificationBell";
-import { TutorialLauncher } from "../tutorial/TutorialLauncher";
 
 const Header = () => {
   const { darkModeLogo, lightModeLogo, title } = useAppBranding();
@@ -70,32 +69,23 @@ const Header = () => {
                   label="Contacts"
                   to="/contacts"
                   isActive={currentPath === "/contacts"}
-                  dataTutorial="nav-contacts"
                 />
                 <NavigationTab
                   label="Organizations"
                   to="/organizations"
                   isActive={currentPath === "/organizations"}
-                  dataTutorial="nav-organizations"
                 />
                 <NavigationTab
                   label="Opportunities"
                   to="/opportunities"
                   isActive={currentPath === "/opportunities"}
-                  dataTutorial="nav-opportunities"
                 />
                 <NavigationTab
                   label="Products"
                   to="/products"
                   isActive={currentPath === "/products"}
-                  dataTutorial="nav-products"
                 />
-                <NavigationTab
-                  label="Tasks"
-                  to="/tasks"
-                  isActive={currentPath === "/tasks"}
-                  dataTutorial="nav-tasks"
-                />
+                <NavigationTab label="Tasks" to="/tasks" isActive={currentPath === "/tasks"} />
                 <NavigationTab
                   label="Reports"
                   to="/reports"
@@ -109,8 +99,6 @@ const Header = () => {
               <NotificationBell />
               <UserMenu>
                 <ConfigurationMenu />
-                <DropdownMenuSeparator />
-                <TutorialLauncher />
                 <DropdownMenuSeparator />
                 <ThemeMenu />
                 <DropdownMenuSeparator />
@@ -130,16 +118,13 @@ const NavigationTab = ({
   label,
   to,
   isActive,
-  dataTutorial,
 }: {
   label: string;
   to: string;
   isActive: boolean;
-  dataTutorial?: string;
 }) => (
   <Link
     to={to}
-    data-tutorial={dataTutorial}
     className={`px-1.5 lg:px-6 py-3 min-h-11 flex items-center text-xs md:text-sm font-medium transition-colors border-b-2 outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ${
       isActive
         ? "text-secondary-foreground border-secondary-foreground"

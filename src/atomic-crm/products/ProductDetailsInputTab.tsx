@@ -35,7 +35,7 @@ export const ProductDetailsInputTab = () => {
 
   return (
     <div className="space-y-2">
-      <div data-tutorial="product-name">
+      <div>
         <FormFieldWrapper name="name" isRequired>
           <TextInput
             source="name"
@@ -47,7 +47,7 @@ export const ProductDetailsInputTab = () => {
         </FormFieldWrapper>
       </div>
 
-      <div data-tutorial="product-principal">
+      <div>
         <FormFieldWrapper name="principal_id" isRequired>
           <ReferenceInput
             source="principal_id"
@@ -65,7 +65,7 @@ export const ProductDetailsInputTab = () => {
         </FormFieldWrapper>
       </div>
 
-      <div data-tutorial="product-category">
+      <div>
         <FormFieldWrapper name="category" isRequired>
           <AutocompleteInput
             source="category"
@@ -78,7 +78,7 @@ export const ProductDetailsInputTab = () => {
         </FormFieldWrapper>
       </div>
 
-      <div data-tutorial="product-status">
+      <div>
         <FormFieldWrapper name="status">
           <SelectInput source="status" label="Status *" choices={productStatuses} />
         </FormFieldWrapper>

@@ -364,20 +364,6 @@ describe("ContactCreate with Progress Tracking", () => {
   });
 
   describe("Accessibility and UX", () => {
-    test("FormFieldWrapper maintains data-tutorial attributes", async () => {
-      renderContactCreate();
-
-      // Wait for form to render
-      await screen.findByLabelText(/First Name/i);
-
-      // Check that data-tutorial attributes exist in the DOM
-      const firstNameContainer = document.querySelector('[data-tutorial="contact-first-name"]');
-      expect(firstNameContainer).toBeInTheDocument();
-
-      const lastNameContainer = document.querySelector('[data-tutorial="contact-last-name"]');
-      expect(lastNameContainer).toBeInTheDocument();
-    });
-
     test("section titles are semantic headings", async () => {
       renderContactCreate();
 

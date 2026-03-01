@@ -145,7 +145,7 @@ export function PrincipalPipelineTable() {
   }
 
   return (
-    <div className="flex flex-col p-4" data-tutorial="dashboard-pipeline-table">
+    <div className="flex flex-col p-4">
       {/* Header with title and filters */}
       <div className="border-b border-border pb-3">
         <div className="flex flex-wrap items-start justify-between gap-y-2">

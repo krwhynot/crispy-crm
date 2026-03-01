@@ -140,12 +140,7 @@ export default function TaskCreate() {
               resolver={createFormResolver(taskCreateSchema)}
             >
               <TaskInputs />
-              <CreateFormFooter
-                resourceName="task"
-                redirectPath="/tasks"
-                redirect={redirect}
-                tutorialAttribute="task-save-btn"
-              />
+              <CreateFormFooter resourceName="task" redirectPath="/tasks" redirect={redirect} />
             </Form>
           </FormProgressProvider>
         </div>

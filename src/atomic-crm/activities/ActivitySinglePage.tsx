@@ -34,7 +34,7 @@ export default function ActivitySinglePage() {
         requiredFields={["type", "subject", "activity_date"]}
       >
         <FormGrid>
-          <div data-tutorial="activity-type">
+          <div data-testid="activity-type">
             <FormFieldWrapper name="type" isRequired countDefaultAsFilled>
               <SelectInput
                 source="type"
@@ -86,7 +86,7 @@ export default function ActivitySinglePage() {
           </FormFieldWrapper>
         </FormGrid>
 
-        <div data-tutorial="activity-description">
+        <div>
           <FormFieldWrapper name="description">
             <TextInput
               source="description"
@@ -100,7 +100,7 @@ export default function ActivitySinglePage() {
       </FormSectionWithProgress>
 
       <FormSectionWithProgress id="relationships" title="Relationships" requiredFields={[]}>
-        <div data-tutorial="activity-opportunity">
+        <div>
           <FormFieldWrapper name="opportunity_id">
             <ReferenceInput source="opportunity_id" reference="opportunities">
               <AutocompleteInput

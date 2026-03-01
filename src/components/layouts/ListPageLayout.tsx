@@ -44,12 +44,6 @@ export interface ListPageLayoutProps {
   showPageTitle?: boolean;
   /** Show search bar in toolbar. Defaults to auto-detect via isResourceSearchable(). */
   showSearch?: boolean;
-  /** data-tutorial ID for the SortButton */
-  sortButtonTutorialId?: string;
-  /** data-tutorial ID for the overflow menu wrapper */
-  overflowMenuTutorialId?: string;
-  /** data-tutorial ID for the filter toggle button */
-  filterToggleTutorialId?: string;
   children: ReactNode;
   bulkActions?: ReactNode;
 }
@@ -126,9 +120,6 @@ function ListPageLayoutContent({
   defaultFilters,
   showPageTitle,
   showSearch,
-  sortButtonTutorialId,
-  overflowMenuTutorialId,
-  filterToggleTutorialId,
   children,
   bulkActions,
 }: ListPageLayoutProps) {
@@ -204,9 +195,6 @@ function ListPageLayoutContent({
             resource={resource}
             primaryAction={primaryAction}
             defaultFilters={defaultFilters}
-            sortButtonTutorialId={sortButtonTutorialId}
-            overflowMenuTutorialId={overflowMenuTutorialId}
-            filterToggleTutorialId={filterToggleTutorialId}
           />
         )}
 

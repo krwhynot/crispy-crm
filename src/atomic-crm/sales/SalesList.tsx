@@ -38,7 +38,7 @@ export default function SalesList() {
 
   return (
     <>
-      <div data-tutorial="sales-list">
+      <div>
         <List
           title={false}
           actions={false}

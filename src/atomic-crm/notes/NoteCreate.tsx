@@ -119,7 +119,6 @@ const NoteCreateButton = ({
       <SaveButton
         type="button"
         label="Add this note"
-        data-tutorial="add-note-btn"
         transform={(data) => ({
           ...data,
           [foreignKeyMapping[reference]]: record.id,
