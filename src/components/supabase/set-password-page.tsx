@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Form, useNotify, useTranslate } from "ra-core";
 import { useSetPassword, useSupabaseAccessToken } from "ra-supabase-core";
 import { useLocation } from "react-router-dom";
@@ -65,6 +65,13 @@ export const SetPasswordPage = () => {
     redirectTo: false,
   });
 
+  const isMountedRef = useRef(true);
+  useEffect(() => {
+    return () => {
+      isMountedRef.current = false;
+    };
+  }, []);
+
   const [sessionCheckState, setSessionCheckState] = useState<
     "idle" | "checking" | "valid" | "none"
   >("idle");
@@ -86,9 +93,18 @@ export const SetPasswordPage = () => {
   useEffect(() => {
     if ((isRecoveryFlow || isRecoveryType) && !hasTokens && sessionCheckState === "idle") {
       setSessionCheckState("checking");
-      supabase.auth.getSession().then(({ data }) => {
-        setSessionCheckState(data.session?.user ? "valid" : "none");
-      });
+      supabase.auth
+        .getSession()
+        .then(({ data }) => {
+          if (isMountedRef.current) {
+            setSessionCheckState(data.session?.user ? "valid" : "none");
+          }
+        })
+        .catch(() => {
+          if (isMountedRef.current) {
+            setSessionCheckState("none");
+          }
+        });
     }
   }, [isRecoveryFlow, isRecoveryType, hasTokens, sessionCheckState]);
 

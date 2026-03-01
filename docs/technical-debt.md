@@ -1,7 +1,7 @@
 # Technical Debt Tracker
 
 **Generated:** 2025-12-26
-**Last Verified:** 2026-01-24
+**Last Verified:** 2026-03-01
 **Source:** Consolidated from 40+ audit reports + TODO/FIXME scan
 
 ---
@@ -11,10 +11,10 @@
 | Priority | Open Items | Resolved |
 |----------|------------|----------|
 | P0 - Critical | 0 | 13 |
-| P1 - High | 2 | 37 |
+| P1 - High | 0 | 39 |
 | P2 - Medium | 16 | 40 |
-| P3 - Low | 9 | 32 |
-| **Total** | **27** | **122** |
+| P3 - Low | 8 | 33 |
+| **Total** | **24** | **125** |
 
 ---
 
@@ -37,7 +37,7 @@
 
 | ID | Category | Issue | File(s) | Status |
 |----|----------|-------|---------|--------|
-| ASYNC-01 | Race Condition | Custom useEffect fetches may lack AbortController cleanup | Multiple custom hooks - needs audit | Open |
+| ASYNC-01 | Race Condition | Custom useEffect fetches may lack AbortController cleanup | `src/components/supabase/set-password-page.tsx:86-93` | Resolved |
 | ASYNC-02 | Loading State | Slide-over saves lack loading indicator during save operations | `src/atomic-crm/organizations/slideOverTabs/OrganizationDetailsTab.tsx:40`, `src/atomic-crm/contacts/ContactDetailsTab.tsx:47`, `src/atomic-crm/tasks/TaskSlideOverDetailsTab.tsx:55` | Resolved |
 
 ### Error Handling
@@ -52,7 +52,7 @@
 
 | ID | Category | Issue | File(s) | Status |
 |----|----------|-------|---------|--------|
-| FEAT-01 | Missing RPC | Stale leads feature requires server-side RPC (get_stale_opportunities). Previous client-side implementation used perPage: 1000 which was a performance risk. | `src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx:148` | Open |
+| FEAT-01 | Missing RPC | Stale leads feature requires server-side RPC (get_stale_opportunities). Previous client-side implementation used perPage: 1000 which was a performance risk. | `supabase/migrations/20260224100000_*.sql` | Resolved |
 
 ### P1 Dependencies
 - **ASYNC-01**: Blocks nothing | Blocked by: None | Related: useEffect cleanup patterns
@@ -144,7 +144,7 @@
 | ASYNC-04 | Unsaved Changes | Extend useInAppUnsavedChanges to all slide-over edit forms | All slide-over edit tabs | Open |
 | ASYNC-05 | Retry Option | Add explicit retry button on fetch errors | List components | Open |
 | ASYNC-06 | Optimistic Lock | Implement updated_at version check for opportunities | Data provider, opportunity forms | Open |
-| ASYNC-07 | AbortController | Add to EntityCombobox search | `src/atomic-crm/dashboard/EntityCombobox.tsx` | Open |
+| ASYNC-07 | AbortController | Add to EntityCombobox search | `src/atomic-crm/dashboard/EntityCombobox.tsx` | Resolved |
 | EC-01 | i18n | RTL text support missing (dir="auto") - only textarea.tsx | `src/components/ui/textarea.tsx` (input.tsx already fixed) | Open |
 | CFG-01 | Config | DEFAULT_SEGMENT_ID hardcoded - consider environment variable | `src/atomic-crm/constants.ts:4` | Open |
 
@@ -163,7 +163,7 @@
 
 ## Resolved Items Summary
 
-**Total Resolved: 120 items**
+**Total Resolved: 125 items**
 
 ### Error Handling Verification (Jan 24, 2026)
 
