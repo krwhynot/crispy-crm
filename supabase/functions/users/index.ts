@@ -41,7 +41,7 @@ const inviteUserSchema = z
     const role = data.role ?? (data.administrator ? "admin" : "rep");
     const { administrator: _, ...rest } = data;
     // Generate random password if not provided (user will set their own via recovery link)
-    const password = rest.password ?? (crypto.randomUUID() + "Aa1!");
+    const password = rest.password ?? crypto.randomUUID() + "Aa1!";
     return { ...rest, password, role };
   });
 
@@ -150,8 +150,10 @@ async function inviteUser(
 
   const { email, password, first_name, last_name, disabled, role } = validatedData;
 
-  // Create user directly with password — no invite email sent
-  // email_confirm: true marks email as verified so user can log in immediately
+  // Idempotent find-or-create: handles orphaned auth users from prior failed attempts
+  let userId: string;
+  let isNewUser = false;
+
   const { data, error: createError } = await supabaseAdmin.auth.admin.createUser({
     email,
     password,
@@ -159,41 +161,74 @@ async function inviteUser(
     user_metadata: { first_name, last_name },
   });
 
-  if (!data?.user || createError) {
-    console.error("Error creating user:", createError);
-    const message = createError?.message || "Failed to create user";
-    const status = message.includes("already") ? 409 : message.includes("invalid") ? 400 : 500;
-    return createErrorResponse(status, message, corsHeaders);
+  if (createError) {
+    if (!createError.message?.includes("already")) {
+      console.error("Error creating user:", createError);
+      const message = createError.message || "Failed to create user";
+      const status = message.includes("invalid") ? 400 : 500;
+      return createErrorResponse(status, message, corsHeaders);
+    }
+
+    // Email already exists in auth — check if orphan or true duplicate
+    const { data: listData } = await supabaseAdmin.auth.admin.listUsers({ perPage: 1000 });
+    const existingUser = listData?.users?.find((u) => u.email === email);
+
+    if (!existingUser) {
+      return createErrorResponse(
+        409,
+        "A user with this email address has already been registered",
+        corsHeaders
+      );
+    }
+
+    // Check if a sales record already exists for this auth user
+    const { data: existingSale } = await supabaseClient
+      .rpc("get_sale_by_user_id", { target_user_id: existingUser.id })
+      .maybeSingle();
+
+    if (existingSale && !existingSale.deleted_at) {
+      // True duplicate — both auth user AND active sales record exist
+      return createErrorResponse(
+        409,
+        "A user with this email address has already been registered",
+        corsHeaders
+      );
+    }
+
+    // Orphan recovery: auth user exists but no sales record (or soft-deleted)
+    await supabaseAdmin.auth.admin.updateUserById(existingUser.id, {
+      user_metadata: { first_name, last_name },
+    });
+    userId = existingUser.id;
+  } else if (!data?.user) {
+    return createErrorResponse(500, "Failed to create user", corsHeaders);
+  } else {
+    userId = data.user.id;
+    isNewUser = true;
   }
 
   try {
-    const sale = await updateSaleViaRPC(supabaseClient, data.user.id, {
+    const sale = await updateSaleViaRPC(supabaseClient, userId, {
       role,
       disabled,
     });
 
     // Generate a recovery link so the new user can set their own password.
-    // Explicit redirectTo prevents environment-dependent behavior
-    // (mirrors updatepassword/index.ts pattern).
     let recoveryUrl: string | null = null;
     try {
       const requestOrigin = req.headers.get("origin");
-      const allowedOrigins = [
-        Deno.env.get("SITE_URL"),
-        "http://localhost:5173",
-      ].filter(Boolean);
+      const allowedOrigins = [Deno.env.get("SITE_URL"), "http://localhost:5173"].filter(Boolean);
       const origin =
         requestOrigin && allowedOrigins.includes(requestOrigin)
           ? requestOrigin
           : allowedOrigins[0] || "http://localhost:5173";
       const redirectTo = new URL("/auth-callback.html", origin).toString();
 
-      const { data: linkData, error: linkError } =
-        await supabaseAdmin.auth.admin.generateLink({
-          type: "recovery",
-          email,
-          options: { redirectTo },
-        });
+      const { data: linkData, error: linkError } = await supabaseAdmin.auth.admin.generateLink({
+        type: "recovery",
+        email,
+        options: { redirectTo },
+      });
       if (linkError) {
         console.error("Failed to generate recovery link:", linkError.message);
       } else {
@@ -201,7 +236,6 @@ async function inviteUser(
       }
     } catch (linkErr) {
       console.error("Error generating recovery link:", linkErr);
-      // Non-critical: user was created, admin can use "Reset Password" later
     }
 
     return new Response(
@@ -215,10 +249,12 @@ async function inviteUser(
     );
   } catch (e) {
     console.error("Error patching sale:", e);
-    // Compensating rollback: delete the orphaned auth user since RPC failed
-    await supabaseAdmin.auth.admin.deleteUser(data.user.id).catch((deleteErr) => {
-      console.error("Failed to rollback auth user after RPC failure:", deleteErr);
-    });
+    // Only rollback auth user if we just created it (not orphan recovery)
+    if (isNewUser) {
+      await supabaseAdmin.auth.admin.deleteUser(userId).catch((deleteErr) => {
+        console.error("Failed to rollback auth user after RPC failure:", deleteErr);
+      });
+    }
     return createErrorResponse(500, "Internal Server Error", corsHeaders);
   }
 }
