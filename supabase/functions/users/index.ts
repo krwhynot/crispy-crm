@@ -182,8 +182,11 @@ async function inviteUser(
     }
 
     // Check if a sales record already exists for this auth user
-    const { data: existingSale } = await supabaseClient
-      .rpc("get_sale_by_user_id", { target_user_id: existingUser.id })
+    // Use supabaseAdmin because get_sale_by_user_id enforces self-access only
+    const { data: existingSale } = await supabaseAdmin
+      .from("sales")
+      .select("id, deleted_at")
+      .eq("user_id", existingUser.id)
       .maybeSingle();
 
     if (existingSale && !existingSale.deleted_at) {
