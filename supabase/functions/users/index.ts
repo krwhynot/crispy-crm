@@ -21,15 +21,16 @@ interface Sale {
 // - .max() on all strings (DoS prevention)
 // - z.coerce for type conversion
 
-// Direct password flow: Admin provides name/email/role/password
-// User is created immediately with email_confirm: true, no invite email sent
+// Recovery link flow: Password is optional — if not provided, a random one is generated
+// After creation, a recovery link is generated for the user to set their own password
 const inviteUserSchema = z
   .strictObject({
     email: z.string().email("Invalid email format").max(254, "Email too long"),
     password: z
       .string()
       .min(8, "Password must be at least 8 characters")
-      .max(72, "Password too long"),
+      .max(72, "Password too long")
+      .optional(),
     first_name: z.string().min(1, "First name required").max(100, "First name too long"),
     last_name: z.string().min(1, "Last name required").max(100, "Last name too long"),
     disabled: z.coerce.boolean().optional().default(false),
@@ -39,7 +40,9 @@ const inviteUserSchema = z
   .transform((data) => {
     const role = data.role ?? (data.administrator ? "admin" : "rep");
     const { administrator: _, ...rest } = data;
-    return { ...rest, role };
+    // Generate random password if not provided (user will set their own via recovery link)
+    const password = rest.password ?? (crypto.randomUUID() + "Aa1!");
+    return { ...rest, password, role };
   });
 
 const patchUserSchema = z
@@ -169,9 +172,42 @@ async function inviteUser(
       disabled,
     });
 
+    // Generate a recovery link so the new user can set their own password.
+    // Explicit redirectTo prevents environment-dependent behavior
+    // (mirrors updatepassword/index.ts pattern).
+    let recoveryUrl: string | null = null;
+    try {
+      const requestOrigin = req.headers.get("origin");
+      const allowedOrigins = [
+        Deno.env.get("SITE_URL"),
+        "http://localhost:5173",
+      ].filter(Boolean);
+      const origin =
+        requestOrigin && allowedOrigins.includes(requestOrigin)
+          ? requestOrigin
+          : allowedOrigins[0] || "http://localhost:5173";
+      const redirectTo = new URL("/auth-callback.html", origin).toString();
+
+      const { data: linkData, error: linkError } =
+        await supabaseAdmin.auth.admin.generateLink({
+          type: "recovery",
+          email,
+          options: { redirectTo },
+        });
+      if (linkError) {
+        console.error("Failed to generate recovery link:", linkError.message);
+      } else {
+        recoveryUrl = linkData?.properties?.action_link ?? null;
+      }
+    } catch (linkErr) {
+      console.error("Error generating recovery link:", linkErr);
+      // Non-critical: user was created, admin can use "Reset Password" later
+    }
+
     return new Response(
       JSON.stringify({
         data: sale,
+        recoveryUrl,
       }),
       {
         headers: { "Content-Type": "application/json", ...corsHeaders },
