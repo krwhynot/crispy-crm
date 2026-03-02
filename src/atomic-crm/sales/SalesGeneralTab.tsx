@@ -3,8 +3,8 @@ import { TextInput } from "@/components/ra-wrappers/text-input";
 /**
  * SalesGeneralTab - Basic info fields for Create form
  *
- * Direct password flow: Admin enters name, email, and a temporary password.
- * User is created immediately — admin shares credentials manually.
+ * Recovery link flow: Admin enters name and email only.
+ * A password recovery link is generated server-side after creation.
  */
 export const SalesGeneralTab = () => {
   return (
@@ -22,13 +22,6 @@ export const SalesGeneralTab = () => {
         autoComplete="family-name"
       />
       <TextInput source="email" label="Email *" helperText="Required field" autoComplete="email" />
-      <TextInput
-        source="password"
-        label="Temporary Password *"
-        type="password"
-        helperText="Min 8 characters. Share this with the user so they can log in."
-        autoComplete="new-password"
-      />
     </div>
   );
 };

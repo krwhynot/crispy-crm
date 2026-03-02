@@ -116,7 +116,7 @@ export async function validateSalesForm(data: unknown): Promise<void> {
 }
 
 // Create-specific schema (stricter requirements)
-// Direct password flow: Admin enters name/email/role/password, user created immediately
+// Recovery link flow: Admin enters name/email/role, user sets own password via recovery link
 export const createSalesSchema = salesSchema
   .omit({
     id: true,
@@ -129,7 +129,6 @@ export const createSalesSchema = salesSchema
     first_name: true,
     last_name: true,
     email: true,
-    password: true,
   });
 
 // Update-specific schema (more flexible)
@@ -169,15 +168,16 @@ export async function validateUpdateSales(data: unknown): Promise<void> {
  * Used by UserInviteForm in the /sales create flow
  * Validation happens at Edge Function (API boundary), NOT in form
  *
- * Direct password flow: Admin provides name/email/role/password
- * User is created immediately, no invite email sent
+ * Recovery link flow: Admin provides name/email/role
+ * Edge Function creates user with random password and returns recovery link
  */
 export const userInviteSchema = z.strictObject({
   email: z.string().max(254, "Email too long").email("Invalid email format"),
   password: z
     .string()
     .min(8, "Password must be at least 8 characters")
-    .max(72, "Password too long"),
+    .max(72, "Password too long")
+    .optional(),
   first_name: z.string().trim().min(1, "First name is required").max(100, "First name too long"),
   last_name: z.string().trim().min(1, "Last name is required").max(100, "Last name too long"),
   role: UserRoleEnum.default("rep"),
