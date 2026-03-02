@@ -55,7 +55,7 @@ describe("SalesService", () => {
   });
 
   describe("salesCreate", () => {
-    test("should call Edge Function with POST method and sales form data", async () => {
+    test("should call Edge Function and return SalesCreateResult (new format)", async () => {
       const mockCreatedSale: Sale = {
         id: 1,
         user_id: "uuid-123",
@@ -67,22 +67,46 @@ describe("SalesService", () => {
         avatar: { src: mockSalesFormData.avatar_url },
       };
 
-      mockDataProvider.invoke = vi.fn().mockResolvedValue(mockCreatedSale);
+      // New Edge Function response format
+      mockDataProvider.invoke = vi.fn().mockResolvedValue({
+        data: mockCreatedSale,
+        recoveryUrl: "https://example.com/recovery-link",
+      });
 
       const result = await service.salesCreate(mockSalesFormData);
 
-      // Only the 5 fields accepted by the Edge Function's inviteUserSchema are sent
       expect(mockDataProvider.invoke).toHaveBeenCalledWith("users", {
         method: "POST",
         body: {
           first_name: mockSalesFormData.first_name,
           last_name: mockSalesFormData.last_name,
           email: mockSalesFormData.email,
-          role: undefined, // not set in mockSalesFormData
+          role: undefined,
           disabled: mockSalesFormData.disabled,
         },
       });
-      expect(result).toEqual(mockCreatedSale);
+      expect(result.sale).toEqual(mockCreatedSale);
+      expect(result.recoveryUrl).toBe("https://example.com/recovery-link");
+    });
+
+    test("should handle old Edge Function response format (backward compat)", async () => {
+      const mockCreatedSale: Sale = {
+        id: 1,
+        user_id: "uuid-123",
+        email: mockSalesFormData.email,
+        first_name: mockSalesFormData.first_name,
+        last_name: mockSalesFormData.last_name,
+        administrator: mockSalesFormData.administrator,
+        disabled: mockSalesFormData.disabled,
+      };
+
+      // Old format: returns Sale directly (no data/recoveryUrl wrapper)
+      mockDataProvider.invoke = vi.fn().mockResolvedValue(mockCreatedSale);
+
+      const result = await service.salesCreate(mockSalesFormData);
+
+      expect(result.sale).toEqual(mockCreatedSale);
+      expect(result.recoveryUrl).toBeNull();
     });
 
     test("should throw if dataProvider lacks invoke capability", async () => {
@@ -150,12 +174,14 @@ describe("SalesService", () => {
         disabled: false,
       };
 
-      mockDataProvider.invoke = vi.fn().mockResolvedValue(mockCreatedAdmin);
+      mockDataProvider.invoke = vi.fn().mockResolvedValue({
+        data: mockCreatedAdmin,
+        recoveryUrl: null,
+      });
 
       const result = await service.salesCreate(adminFormData);
 
-      expect(result.administrator).toBe(true);
-      // administrator is stripped; role: "admin" is passed instead
+      expect(result.sale.administrator).toBe(true);
       expect(mockDataProvider.invoke).toHaveBeenCalledWith(
         "users",
         expect.objectContaining({
@@ -167,9 +193,9 @@ describe("SalesService", () => {
     test("should create disabled users when disabled is true", async () => {
       const disabledFormData = { ...mockSalesFormData, disabled: true };
       mockDataProvider.invoke = vi.fn().mockResolvedValue({
-        id: 1,
-        disabled: true,
-      } as Sale);
+        data: { id: 1, disabled: true } as Sale,
+        recoveryUrl: null,
+      });
 
       await service.salesCreate(disabledFormData);
 
@@ -506,12 +532,13 @@ describe("SalesService", () => {
   });
 
   describe("Error Handling Edge Cases", () => {
-    test("should handle malformed Edge Function responses", async () => {
+    test("should handle malformed Edge Function responses via backward compat", async () => {
       mockDataProvider.invoke = vi.fn().mockResolvedValue({ invalid: "response" });
 
-      // Service accepts any response structure, so this will succeed
+      // Falls through to backward-compat path: treated as old Sale object
       const result = await service.salesCreate(mockSalesFormData);
-      expect(result).toEqual({ invalid: "response" });
+      expect(result.sale).toEqual({ invalid: "response" });
+      expect(result.recoveryUrl).toBeNull();
     });
 
     test("should handle network errors", async () => {
@@ -559,7 +586,7 @@ describe("SalesService", () => {
       };
       mockDataProvider.invoke = vi
         .fn()
-        .mockResolvedValueOnce(createResponse)
+        .mockResolvedValueOnce({ data: createResponse, recoveryUrl: null })
         .mockResolvedValueOnce(createResponse)
         .mockResolvedValueOnce(true);
 

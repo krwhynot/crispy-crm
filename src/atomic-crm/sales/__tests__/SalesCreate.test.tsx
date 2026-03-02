@@ -5,9 +5,10 @@
  * 1. Renders without throwing errors (smoke test)
  * 2. Shows skeleton while checking permissions
  * 3. Renders form fields when authorized
- * 4. Password validation via createSalesSchema
+ * 4. Schema validation (password now optional)
  * 5. Mutation error handler maps HttpError to notify calls
  * 6. Email conflict (duplicate) errors produce correct user message
+ * 7. Recovery URL dialog shown on successful creation
  */
 
 import { describe, test, expect, vi, beforeEach } from "vitest";
@@ -149,8 +150,24 @@ vi.mock("../SalesInputs", () => ({
       <input data-testid="input-first_name" name="first_name" />
       <input data-testid="input-last_name" name="last_name" />
       <input data-testid="input-email" name="email" />
-      <input data-testid="input-password" name="password" type="password" />
     </div>
+  ),
+}));
+
+// Mock Dialog components
+vi.mock("@/components/ui/dialog", () => ({
+  Dialog: ({ children, open }: { children: React.ReactNode; open: boolean }) =>
+    open ? <div data-testid="recovery-dialog">{children}</div> : null,
+  DialogContent: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
+  DialogHeader: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
+  DialogTitle: ({ children }: { children: React.ReactNode }) => <h2>{children}</h2>,
+  DialogDescription: ({ children }: { children: React.ReactNode }) => <p>{children}</p>,
+  DialogFooter: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
+}));
+
+vi.mock("@/components/ui/button", () => ({
+  Button: ({ children, onClick, ...props }: { children: React.ReactNode; onClick?: () => void; [key: string]: unknown }) => (
+    <button onClick={onClick} {...props}>{children}</button>
   ),
 }));
 
@@ -213,24 +230,18 @@ describe("SalesCreate", () => {
     });
   });
 
-  describe("password validation (createSalesSchema)", () => {
-    test("rejects password shorter than 8 characters", () => {
+  describe("schema validation (createSalesSchema)", () => {
+    test("accepts form data without password (recovery link flow)", () => {
       const result = createSalesSchema.safeParse({
         first_name: "John",
         last_name: "Doe",
         email: "john@example.com",
-        password: "short",
       });
 
-      expect(result.success).toBe(false);
-      if (!result.success) {
-        const passwordError = result.error.issues.find((i) => i.path.includes("password"));
-        expect(passwordError).toBeDefined();
-        expect(passwordError?.message).toBe("Password must be at least 8 characters");
-      }
+      expect(result.success).toBe(true);
     });
 
-    test("accepts valid password of 8+ characters", () => {
+    test("still accepts password if provided", () => {
       const result = createSalesSchema.safeParse({
         first_name: "John",
         last_name: "Doe",
@@ -323,6 +334,45 @@ describe("SalesCreate", () => {
       expect(mockNotify).toHaveBeenCalledWith("An error occurred while creating the user.", {
         type: "error",
       });
+    });
+  });
+
+  describe("recovery URL dialog", () => {
+    function getOnSuccess(): (result: { sale: unknown; recoveryUrl: string | null }) => void {
+      mockCanAccess.mockReturnValue({ isPending: false, canAccess: true });
+      renderWithAdminContext(<SalesCreate />);
+
+      expect(capturedMutationConfig.current).not.toBeNull();
+      const onSuccess = capturedMutationConfig.current?.onSuccess as (result: { sale: unknown; recoveryUrl: string | null }) => void;
+      expect(typeof onSuccess).toBe("function");
+      return onSuccess;
+    }
+
+    test("shows recovery URL dialog when recoveryUrl is returned", async () => {
+      const onSuccess = getOnSuccess();
+
+      act(() => {
+        onSuccess({ sale: { id: 1 }, recoveryUrl: "https://example.com/recovery" });
+      });
+
+      await waitFor(() => {
+        expect(screen.getByTestId("recovery-dialog")).toBeDefined();
+        expect(screen.getByText("User Created Successfully")).toBeDefined();
+      });
+    });
+
+    test("redirects when no recovery URL returned (fallback path)", () => {
+      const onSuccess = getOnSuccess();
+
+      act(() => {
+        onSuccess({ sale: { id: 1 }, recoveryUrl: null });
+      });
+
+      expect(mockNotify).toHaveBeenCalledWith(
+        "User created. Use 'Reset Password' on their profile to generate a login link.",
+        { type: "success" }
+      );
+      expect(mockRedirect).toHaveBeenCalledWith("/sales");
     });
   });
 });

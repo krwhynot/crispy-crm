@@ -177,21 +177,24 @@ describe("extendWithCustomMethods", () => {
         last_name: "User",
         administrator: false,
       };
-      const expectedSale: Sale = {
-        id: 1,
-        email: "test@example.com",
-        first_name: "Test",
-        last_name: "User",
-        user_id: "user-123",
-        administrator: false,
+      const expectedResult = {
+        sale: {
+          id: 1,
+          email: "test@example.com",
+          first_name: "Test",
+          last_name: "User",
+          user_id: "user-123",
+          administrator: false,
+        } as Sale,
+        recoveryUrl: "https://example.com/recovery",
       };
 
-      vi.mocked(mockServices.sales.salesCreate).mockResolvedValue(expectedSale);
+      vi.mocked(mockServices.sales.salesCreate).mockResolvedValue(expectedResult);
 
       const result = await extendedProvider.salesCreate(formData);
 
       expect(mockServices.sales.salesCreate).toHaveBeenCalledWith(formData);
-      expect(result).toEqual(expectedSale);
+      expect(result).toEqual(expectedResult);
     });
 
     it("should delegate salesUpdate to SalesService", async () => {
