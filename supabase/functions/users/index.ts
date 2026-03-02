@@ -210,6 +210,7 @@ async function inviteUser(
       }
 
       // Orphan recovery: auth user exists but no sales record (or soft-deleted)
+      // Update auth metadata first
       const { error: updateError } = await supabaseAdmin.auth.admin.updateUserById(
         existingUser.id,
         { user_metadata: { first_name, last_name } }
@@ -219,6 +220,25 @@ async function inviteUser(
         return createErrorResponse(500, "Failed to update existing auth user", corsHeaders);
       }
       userId = existingUser.id;
+
+      // Restore or create the sales record via admin RPC (bypasses service_role DML limits)
+      const { error: restoreError } = await supabaseClient
+        .rpc("admin_restore_sale", {
+          target_user_id: userId,
+          new_email: email,
+          new_first_name: first_name,
+          new_last_name: last_name,
+        })
+        .single();
+
+      if (restoreError) {
+        console.error("admin_restore_sale failed:", restoreError);
+        return createErrorResponse(
+          500,
+          `Failed to restore sales record: ${restoreError.message}`,
+          corsHeaders
+        );
+      }
     } catch (orphanErr) {
       console.error("Orphan recovery failed:", orphanErr);
       return createErrorResponse(500, "Orphan recovery failed", corsHeaders);
@@ -279,7 +299,7 @@ async function inviteUser(
         console.error("Failed to rollback auth user after RPC failure:", deleteErr);
       });
     }
-    return createErrorResponse(500, "Internal Server Error", corsHeaders);
+    return createErrorResponse(500, `Sale creation failed: ${errMsg}`, corsHeaders);
   }
 }
 
