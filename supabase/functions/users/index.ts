@@ -169,40 +169,60 @@ async function inviteUser(
       return createErrorResponse(status, message, corsHeaders);
     }
 
-    // Email already exists in auth — check if orphan or true duplicate
-    const { data: listData } = await supabaseAdmin.auth.admin.listUsers({ perPage: 1000 });
-    const existingUser = listData?.users?.find((u) => u.email === email);
+    // Email already exists in auth — attempt orphan recovery
+    try {
+      const { data: listData, error: listError } = await supabaseAdmin.auth.admin.listUsers({
+        perPage: 1000,
+      });
+      if (listError) {
+        console.error("listUsers failed:", listError);
+        return createErrorResponse(500, "Failed to look up existing users", corsHeaders);
+      }
+      const existingUser = listData?.users?.find((u) => u.email === email);
 
-    if (!existingUser) {
-      return createErrorResponse(
-        409,
-        "A user with this email address has already been registered",
-        corsHeaders
+      if (!existingUser) {
+        return createErrorResponse(
+          409,
+          "A user with this email address has already been registered",
+          corsHeaders
+        );
+      }
+
+      // Check if a sales record already exists for this auth user
+      const { data: existingSale, error: saleCheckError } = await supabaseAdmin
+        .from("sales")
+        .select("id, deleted_at")
+        .eq("user_id", existingUser.id)
+        .maybeSingle();
+
+      if (saleCheckError) {
+        console.error("Sale lookup failed:", saleCheckError);
+        return createErrorResponse(500, "Failed to check existing sales record", corsHeaders);
+      }
+
+      if (existingSale && !existingSale.deleted_at) {
+        // True duplicate — both auth user AND active sales record exist
+        return createErrorResponse(
+          409,
+          "A user with this email address has already been registered",
+          corsHeaders
+        );
+      }
+
+      // Orphan recovery: auth user exists but no sales record (or soft-deleted)
+      const { error: updateError } = await supabaseAdmin.auth.admin.updateUserById(
+        existingUser.id,
+        { user_metadata: { first_name, last_name } }
       );
+      if (updateError) {
+        console.error("updateUserById failed:", updateError);
+        return createErrorResponse(500, "Failed to update existing auth user", corsHeaders);
+      }
+      userId = existingUser.id;
+    } catch (orphanErr) {
+      console.error("Orphan recovery failed:", orphanErr);
+      return createErrorResponse(500, "Orphan recovery failed", corsHeaders);
     }
-
-    // Check if a sales record already exists for this auth user
-    // Use supabaseAdmin because get_sale_by_user_id enforces self-access only
-    const { data: existingSale } = await supabaseAdmin
-      .from("sales")
-      .select("id, deleted_at")
-      .eq("user_id", existingUser.id)
-      .maybeSingle();
-
-    if (existingSale && !existingSale.deleted_at) {
-      // True duplicate — both auth user AND active sales record exist
-      return createErrorResponse(
-        409,
-        "A user with this email address has already been registered",
-        corsHeaders
-      );
-    }
-
-    // Orphan recovery: auth user exists but no sales record (or soft-deleted)
-    await supabaseAdmin.auth.admin.updateUserById(existingUser.id, {
-      user_metadata: { first_name, last_name },
-    });
-    userId = existingUser.id;
   } else if (!data?.user) {
     return createErrorResponse(500, "Failed to create user", corsHeaders);
   } else {
@@ -251,7 +271,8 @@ async function inviteUser(
       }
     );
   } catch (e) {
-    console.error("Error patching sale:", e);
+    const errMsg = e instanceof Error ? e.message : String(e);
+    console.error("Error patching sale:", errMsg, e);
     // Only rollback auth user if we just created it (not orphan recovery)
     if (isNewUser) {
       await supabaseAdmin.auth.admin.deleteUser(userId).catch((deleteErr) => {
