@@ -14,13 +14,14 @@
 
 import type { Identifier } from "ra-core";
 import type { ServiceContainer } from "../services";
-import type { SalesFormData, Sale } from "@/atomic-crm/types";
+import type { SalesFormData } from "@/atomic-crm/types";
+import type { SalesCreateResult } from "./types";
 
 /**
  * Sales extension methods interface
  */
 export interface SalesExtension {
-  salesCreate(body: SalesFormData): Promise<Sale>;
+  salesCreate(body: SalesFormData): Promise<SalesCreateResult>;
   salesUpdate(id: Identifier, data: Partial<SalesFormData>): Promise<Partial<SalesFormData>>;
   updatePassword(id: Identifier): Promise<boolean>;
   resetUserPassword(targetEmail: string): Promise<{ success: boolean }>;
@@ -43,7 +44,7 @@ export function createSalesExtension(services: ServiceContainer): SalesExtension
      * @param body - Sales form data with email, profile info
      * @returns Created sale record with user_id
      */
-    salesCreate: async (body: SalesFormData): Promise<Sale> => {
+    salesCreate: async (body: SalesFormData): Promise<SalesCreateResult> => {
       return services.sales.salesCreate(body);
     },
 

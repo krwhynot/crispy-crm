@@ -1,6 +1,7 @@
 import type { DataProvider, Identifier } from "ra-core";
 import { HttpError } from "react-admin";
 import type { Sale, SalesFormData } from "../types";
+import type { SalesCreateResult } from "../providers/supabase/extensions/types";
 import { devError } from "@/lib/devLogger";
 import { getErrorMessage } from "@/lib/type-guards";
 
@@ -26,12 +27,13 @@ export class SalesService {
   ) {}
 
   /**
-   * Create a new sales account manager via Edge function
-   * @param body Sales form data including credentials and profile info
-   * @returns Created sale record
+   * Create a new sales account manager via Edge function.
+   * Returns sale record + recovery URL for the admin to share.
+   *
+   * Backward-compatible: handles both old { data: Sale } and new { data: Sale, recoveryUrl } responses
+   * to support rolling deploys (frontend may ship before Edge Function).
    */
-  async salesCreate(body: SalesFormData): Promise<Sale> {
-    // Use the extended invoke capability from unifiedDataProvider
+  async salesCreate(body: SalesFormData): Promise<SalesCreateResult> {
     if (!this.dataProvider.invoke) {
       devError("SalesService", "DataProvider missing invoke capability", {
         operation: "salesCreate",
@@ -43,34 +45,49 @@ export class SalesService {
     }
 
     try {
-      // Strip fields the Edge Function's inviteUserSchema doesn't accept (z.strictObject rejects unknown keys).
-      // Matches the destructure pattern used in salesUpdate.
-      const { first_name, last_name, email, role, disabled, password } = body;
-      const invitePayload = { first_name, last_name, email, role, disabled, password };
+      // Strip fields the Edge Function's inviteUserSchema doesn't accept
+      const { first_name, last_name, email, role, disabled } = body;
+      const invitePayload = { first_name, last_name, email, role, disabled };
 
-      const data = await this.dataProvider.invoke<Sale>("users", {
+      const response = await this.dataProvider.invoke<
+        | { data: Sale; recoveryUrl?: string | null } // New format
+        | Sale // Old format (backward compat)
+      >("users", {
         method: "POST",
         body: invitePayload as Record<string, unknown>,
       });
 
-      if (!data) {
-        devError("SalesService", "Create account manager returned no data", {
-          body,
-        });
+      if (!response) {
+        devError("SalesService", "Create account manager returned no data", { body });
         throw new Error(`Sales creation failed: No data returned from Edge Function`);
       }
 
-      return data;
-    } catch (error: unknown) {
-      devError("SalesService", "Failed to create account manager", {
-        body,
-        error,
-      });
+      // Backward-compatible parsing: old Edge Function returns Sale directly,
+      // new Edge Function returns { data: Sale, recoveryUrl: string | null }
+      const isNewFormat =
+        response &&
+        typeof response === "object" &&
+        "data" in response &&
+        "recoveryUrl" in response;
 
-      // Extract message from error using type guards
+      if (isNewFormat) {
+        const typed = response as { data: Sale; recoveryUrl: string | null };
+        if (!typed.data) {
+          devError("SalesService", "Create account manager returned no data in new format", {
+            body,
+          });
+          throw new Error(`Sales creation failed: No data returned from Edge Function`);
+        }
+        return { sale: typed.data, recoveryUrl: typed.recoveryUrl ?? null };
+      }
+
+      // Old format: response IS the Sale object
+      return { sale: response as Sale, recoveryUrl: null };
+    } catch (error: unknown) {
+      devError("SalesService", "Failed to create account manager", { body, error });
+
       const message = getErrorMessage(error);
 
-      // Determine appropriate HTTP status code
       let status = 500;
       if (error instanceof HttpError) {
         status = error.status;
@@ -78,50 +95,35 @@ export class SalesService {
         message.toLowerCase().includes("already exists") ||
         message.toLowerCase().includes("duplicate")
       ) {
-        status = 409; // Conflict
+        status = 409;
       } else if (
         message.toLowerCase().includes("validation") ||
         message.toLowerCase().includes("invalid")
       ) {
-        status = 400; // Bad Request
+        status = 400;
       } else if (
         message.toLowerCase().includes("forbidden") ||
         message.toLowerCase().includes("permission")
       ) {
-        status = 403; // Forbidden
+        status = 403;
       } else if (
         message.toLowerCase().includes("not authenticated") ||
         message.toLowerCase().includes("unauthorized")
       ) {
-        status = 401; // Unauthorized
+        status = 401;
       }
 
-      // Map error messages to field-specific errors per React Admin server-side validation format
       const fieldErrors: Record<string, string> = {};
       const lowerMessage = message.toLowerCase();
-
-      if (lowerMessage.includes("email")) {
-        fieldErrors.email = message;
-      }
-      if (lowerMessage.includes("first_name") || lowerMessage.includes("first name")) {
+      if (lowerMessage.includes("email")) fieldErrors.email = message;
+      if (lowerMessage.includes("first_name") || lowerMessage.includes("first name"))
         fieldErrors.first_name = message;
-      }
-      if (lowerMessage.includes("last_name") || lowerMessage.includes("last name")) {
+      if (lowerMessage.includes("last_name") || lowerMessage.includes("last name"))
         fieldErrors.last_name = message;
-      }
-      if (lowerMessage.includes("role")) {
-        fieldErrors.role = message;
-      }
-      if (lowerMessage.includes("password")) {
-        fieldErrors.password = message;
-      }
+      if (lowerMessage.includes("role")) fieldErrors.role = message;
 
-      // Throw HttpError with body.errors format for React Admin form integration
       throw new HttpError(message, status, {
-        errors: {
-          root: { serverError: message },
-          ...fieldErrors,
-        },
+        errors: { root: { serverError: message }, ...fieldErrors },
       });
     }
   }

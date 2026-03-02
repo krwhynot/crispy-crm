@@ -39,6 +39,12 @@ import type {
   LogActivityWithTaskResponse,
 } from "@/atomic-crm/validation/rpc";
 
+/** Result of salesCreate — includes recovery URL for new user onboarding */
+export interface SalesCreateResult {
+  sale: Sale;
+  recoveryUrl: string | null;
+}
+
 /**
  * Junction operation parameters
  *
@@ -102,7 +108,7 @@ export interface ExtendedDataProvider extends DataProvider {
    * });
    * ```
    */
-  salesCreate(body: SalesFormData): Promise<Sale>;
+  salesCreate(body: SalesFormData): Promise<SalesCreateResult>;
 
   /**
    * Update account manager profile via Edge Function
