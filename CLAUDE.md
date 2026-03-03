@@ -99,8 +99,8 @@
    - If trend accelerates, move to Investigate
 
 2. **Investigate State** (16+ edits - triggers CI/CD failure):
-   - Run: `npm run lint && npx tsc --noEmit` to see violating files
-   - Identify implicit contracts (run `npm run lint && npx tsc --noEmit` for analysis)
+   - Run the churn check (see Manual Check below) to see violating files
+   - Identify implicit contracts from co-changing file clusters
    - Extract to config file (pattern: `organizationFormConfig.ts`)
    - Submit PR that reduces churn
 
@@ -124,9 +124,6 @@ When a file cluster churns together (3+ files with 8+ co-changes):
 **Manual Check:**
 ```bash
 # View churn report
-npm run lint && npx tsc --noEmit
-
-# Or manually:
 git log --name-only --since="14 days ago" --pretty=format: -- 'src/**/*.ts' 'src/**/*.tsx' \
   | grep -v '^$' | sort | uniq -c | sort -rn | head -20
 ```
