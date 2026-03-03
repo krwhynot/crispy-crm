@@ -11,8 +11,13 @@ import path from "path";
 // Load environment variables
 dotenv.config();
 
-const supabaseUrl = process.env.VITE_SUPABASE_URL || "http://localhost:54321";
+const supabaseUrl = process.env.VITE_SUPABASE_URL;
 const supabaseKey = process.env.VITE_SUPABASE_ANON_KEY;
+
+if (!supabaseUrl) {
+  console.error(chalk.red("Error: VITE_SUPABASE_URL environment variable is required"));
+  process.exit(1);
+}
 
 if (!supabaseKey) {
   console.error(chalk.red("Error: VITE_SUPABASE_ANON_KEY environment variable is required"));

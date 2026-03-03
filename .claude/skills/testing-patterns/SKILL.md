@@ -73,7 +73,7 @@ it('calculates total with tax', () => {
 ### TDD in Watch Mode
 
 ```bash
-just test:watch
+npm run test:watch
 # 1. Write failing test -> See RED in terminal
 # 2. Write code -> See GREEN
 # 3. Refactor -> Confirm still GREEN
@@ -101,7 +101,7 @@ This skill activates automatically for implementation tasks. When you see:
 2. Run test to confirm it fails
 3. Implement minimal code (Green phase)
 4. Refactor while tests pass
-5. Verify with `just test` before claiming complete
+5. Verify with `npm test` before claiming complete
 
 ### Integration with verification-before-completion
 
@@ -115,10 +115,10 @@ Testing is now enforced at completion time:
 ### Running Tests
 
 ```bash
-just test              # All unit tests
-just test:watch        # Watch mode for TDD
-just test:coverage     # Generate coverage report
-just test:ui           # Vitest UI for debugging
+npm test              # All unit tests
+npm run test:watch        # Watch mode for TDD
+npm run test:coverage     # Generate coverage report
+npm run test:ui           # Vitest UI for debugging
 npx playwright test    # E2E tests
 npx supabase test db   # Database tests
 ```

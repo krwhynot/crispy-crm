@@ -135,8 +135,6 @@ After 2 failed attempts:
 
 ## Anti-Patterns (RED FLAGS)
 
-See [ANTI-PATTERNS.md](ANTI-PATTERNS.md) for detailed patterns. Summary:
-
 **If you catch yourself thinking any of these, RESTART Phase 1:**
 
 | Anti-Pattern | The Thought | Why It's Wrong |

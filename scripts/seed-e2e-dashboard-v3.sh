@@ -26,12 +26,10 @@ GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 NC='\033[0m' # No Color
 
-# Default to local
-TARGET="local"
-
 # Parse arguments
-if [ "$1" = "--cloud" ]; then
-  TARGET="cloud"
+SKIP_CONFIRM=false
+if [ "$1" = "--yes" ] || [ "$1" = "-y" ]; then
+  SKIP_CONFIRM=true
 fi
 
 echo ""
@@ -40,8 +38,8 @@ echo "Dashboard V3 E2E Test Data Seed"
 echo "=========================================="
 echo ""
 
-# Confirm target
-if [ "$TARGET" = "cloud" ]; then
+# Confirm before seeding cloud database
+if [ "$SKIP_CONFIRM" != "true" ]; then
   echo -e "${YELLOW}WARNING: You are about to seed the CLOUD database!${NC}"
   echo ""
   read -p "Are you sure you want to continue? (yes/no): " -r
@@ -50,38 +48,32 @@ if [ "$TARGET" = "cloud" ]; then
     echo "Aborted."
     exit 1
   fi
-  DB_URL=$(npx supabase status --linked | grep "DB URL" | awk '{print $3}')
-else
-  # Check if local Supabase is running
-  if ! npx supabase status > /dev/null 2>&1; then
-    echo -e "${RED}Error: Local Supabase is not running.${NC}"
-    echo ""
-    echo "Start it with:"
-    echo "  npx supabase start"
-    echo ""
-    exit 1
-  fi
-
-  DB_URL=$(npx supabase status | grep "DB URL" | awk '{print $3}')
 fi
 
-echo "Target: $TARGET"
+DB_URL=$(npx supabase status --linked | grep "DB URL" | awk '{print $3}')
+
+if [ -z "$DB_URL" ]; then
+  echo -e "${RED}Error: Could not get DB URL. Make sure Supabase CLI is linked.${NC}"
+  echo ""
+  echo "Link with:"
+  echo "  npx supabase link --project-ref <your-project-ref>"
+  echo ""
+  exit 1
+fi
+
+echo "Target: cloud"
 echo "DB URL: ${DB_URL:0:40}..."
 echo ""
 
 # Verify migration is applied
 echo "Checking migration status..."
-MIGRATION_STATUS=$(npx supabase migration list $([ "$TARGET" = "cloud" ] && echo "--linked") | grep "20251118050755" || true)
+MIGRATION_STATUS=$(npx supabase migration list --linked | grep "20251118050755" || true)
 
 if [ -z "$MIGRATION_STATUS" ]; then
   echo -e "${RED}Error: Migration 20251118050755 not applied!${NC}"
   echo ""
   echo "Apply it with:"
-  if [ "$TARGET" = "cloud" ]; then
-    echo "  npm run db:cloud:push"
-  else
-    echo "  npx supabase db reset"
-  fi
+  echo "  npx supabase db push"
   echo ""
   exit 1
 fi

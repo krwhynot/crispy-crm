@@ -36,8 +36,8 @@ Unlike Playwright automated tests, manual tests provide:
 
 ## Prerequisites
 
-- [ ] Dev server running (`just dev`)
-- [ ] Database seeded (`just seed-e2e`)
+- [ ] Dev server running (`npm run dev`)
+- [ ] Database seeded (`npm run seed:e2e:dashboard-v3`)
 - [ ] Logged in as: `admin@test.com`
 - [ ] DevTools Console open (F12)
 
@@ -246,8 +246,8 @@ Test just these critical validations:
 - **Target URL:** http://localhost:5173
 - **Mode:** Full testing (create, update, delete allowed)
 - **Prerequisites:**
-  - Dev server: `just dev`
-  - Database seeded: `just seed-e2e`
+  - Dev server: `npm run dev`
+  - Database seeded: `npm run seed:e2e:dashboard-v3`
   - Credentials: admin@test.com / password123
 ```
 
@@ -282,7 +282,7 @@ Test just these critical validations:
 
 ## Prerequisites
 
-- [ ] Dev server running (`just dev`)
+- [ ] Dev server running (`npm run dev`)
 - [ ] Logged in as admin@test.com
 - [ ] DevTools Console open (F12)
 

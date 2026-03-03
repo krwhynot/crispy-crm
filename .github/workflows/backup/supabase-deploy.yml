@@ -47,13 +47,15 @@ jobs:
         with:
           version: latest
 
-      - name: 🚀 Start local Supabase
+      # NOTE: supabase start/stop here is for the CI environment only,
+      # not local Docker development (which has been removed).
+      - name: 🚀 Start local Supabase (CI only)
         run: npx supabase start
 
       - name: 🔍 Run validation framework
         run: npm run validate:pre-migration
 
-      - name: 🛑 Stop Supabase
+      - name: 🛑 Stop Supabase (CI only)
         if: always()
         run: npx supabase stop
 

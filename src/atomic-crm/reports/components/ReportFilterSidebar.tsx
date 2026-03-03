@@ -6,7 +6,7 @@
  * - Tab-local filters based on activeTab prop
  *
  * Uses useStore directly (NOT useReportFilterState) to avoid URL-seeding
- * side effects. Per PATTERNS.md, only tab content owns URL seeding.
+ * side effects. Only tab content owns URL seeding.
  */
 
 import { useCallback, useEffect, useMemo, useRef } from "react";

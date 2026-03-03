@@ -1,5 +1,7 @@
 # Storage Service Investigation
 
+> **NOTE**: Local Supabase (Docker) has been removed from the project. Development now uses Supabase cloud only. The Docker-specific details below are historical context.
+
 **Investigation Date**: 2025-10-15
 **Timebox**: 30 minutes
 **Investigator**: Claude Code (Sonnet 4.5)

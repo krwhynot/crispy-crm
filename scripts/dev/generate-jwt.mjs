@@ -27,7 +27,7 @@ const header = {
 // Function to generate JWT
 function generateJWT(role) {
   const payload = {
-    iss: "http://127.0.0.1:54321/auth/v1",
+    iss: "supabase",
     role: role,
     exp: 1983812996, // Year 2032
   };

@@ -247,11 +247,7 @@
       "status": "excluded",
       "issue": "DELETE FROM statements in test and seed files",
       "description": "32 DELETE FROM statements found in supabase/seed-parts/, supabase/tests/database/, and scripts/dev/",
-      "files": [
-        "supabase/seed-parts/*.sql (10 files)",
-        "supabase/tests/database/*.sql (15 files)",
-        "scripts/dev/reset-environment.sh (2 instances)"
-      ],
+      "files": ["supabase/seed-parts/*.sql (10 files)", "supabase/tests/database/*.sql (15 files)"],
       "pattern": "DELETE FROM",
       "reason": "Test data setup and teardown - hard delete acceptable in non-production contexts",
       "impact": "None - test/development context only",

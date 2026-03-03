@@ -197,16 +197,16 @@ it('shows data after fetch', async () => {
 
 ```bash
 # All unit tests
-just test
+npm test
 
 # Watch mode
-just test:watch
+npm run test:watch
 
 # Specific file
 npx vitest src/atomic-crm/contacts/__tests__/ContactEdit.test.tsx
 
 # With coverage
-just test:coverage
+npm run test:coverage
 
 # E2E tests
 npx playwright test
@@ -219,10 +219,10 @@ npx supabase test db
 
 | Command | Purpose |
 |---------|---------|
-| `just test` | Run all unit tests |
-| `just test:watch` | Watch mode for TDD |
-| `just test:coverage` | Generate coverage report |
-| `just test:ui` | Vitest UI for debugging |
+| `npm test` | Run all unit tests |
+| `npm run test:watch` | Watch mode for TDD |
+| `npm run test:coverage` | Generate coverage report |
+| `npm run test:ui` | Vitest UI for debugging |
 | `npx playwright test` | Run E2E tests |
 | `npx playwright test --ui` | Playwright UI mode |
 | `npx supabase test db` | Run pgTAP tests |

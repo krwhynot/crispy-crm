@@ -50,9 +50,8 @@ describe("opportunities_summary RLS Integration Tests", () => {
   let authSession: Session | null = null;
   let supabaseAvailable = false;
 
-  // HARDCODED local Supabase URLs - these tests MUST run against local instance
-  // Do NOT use process.env as vitest.config.ts overrides with test values
-  const SUPABASE_URL = "http://127.0.0.1:54321";
+  // CI fallback: localhost used when running tests in CI with local Supabase
+  const SUPABASE_URL = process.env.VITE_SUPABASE_URL || "http://127.0.0.1:54321";
   const SUPABASE_ANON_KEY =
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.-7wL35-YnDVohXfRR7EKrOSmJvPesV5Tk0pxmMmNVxE";
 

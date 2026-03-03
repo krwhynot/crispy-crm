@@ -43,9 +43,6 @@ jobs:
       - name: Type Check
         run: npx tsc --noEmit
 
-      - name: Discovery Freshness Check
-        run: npx tsx scripts/discover/index.ts --check
-
   health-check:
     name: Code Health Check
     runs-on: ubuntu-latest
@@ -54,12 +51,21 @@ jobs:
         with:
           fetch-depth: 0  # Required for git log
 
-      - uses: extractions/setup-just@v2
-        with:
-          just-version: '1.16.0'
-
       - name: Health Check
-        run: just health-check
+        run: |
+          echo "=== Code Health Check (CI/CD Enforced) ==="
+          echo "Checking for high-churn files (14 days, threshold: 16 edits)..."
+          HIGH_CHURN=$(git log --name-only --since="14 days ago" --pretty=format: -- 'src/**/*.ts' 'src/**/*.tsx' \
+            | grep -v '^$' | sort | uniq -c | sort -rn \
+            | awk '$1 >= 16 {print $1, $2}')
+          if [ -n "$HIGH_CHURN" ]; then
+            echo "CHURN THRESHOLD EXCEEDED:"
+            echo "$HIGH_CHURN"
+            echo "Action Required: Files with 16+ edits in 14 days need architectural review."
+            exit 1
+          else
+            echo "All files below churn threshold"
+          fi
 
   ui-patterns:
     name: UI Pattern Compliance

@@ -3,7 +3,7 @@
 -- Creates 6 test opportunities for visual verification of conditional row styling
 --
 -- Run with: npx supabase db execute --file scripts/seed-row-styling-test.sql
--- Or paste directly into Supabase SQL Editor (http://localhost:54323)
+-- Or paste directly into Supabase SQL Editor (cloud Supabase Studio)
 -- ============================================
 
 DO $$

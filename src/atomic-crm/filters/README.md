@@ -239,7 +239,7 @@ See `FilterChipBar.test.tsx` for comprehensive test coverage:
 
 **Run tests:**
 ```bash
-just test-ci  # Run all tests
+npm run test:ci  # Run all tests
 ```
 
 ## Common Patterns

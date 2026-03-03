@@ -8,7 +8,7 @@ import { describe, it, expect } from "vitest";
 
 // Regex patterns from track-test-run.ts
 const TEST_COMMAND_REGEX =
-  /(?:npx\s+)?(?:vitest|playwright|jest)|(?:npm|pnpm|yarn|bun)\s+(?:run\s+)?test|just\s+test/i;
+  /(?:npx\s+)?(?:vitest|playwright|jest)|(?:npm|pnpm|yarn|bun)\s+(?:run\s+)?test/i;
 const MANUAL_OVERRIDE_REGEX = /claude[:\s]+mark[:\s]+tests[:\s]+passed/i;
 
 function isTestCommand(command: string): boolean {
@@ -75,17 +75,6 @@ describe("track-test-run: Test Command Detection", () => {
     });
   });
 
-  describe("just commands", () => {
-    it("detects just test", () => {
-      expect(isTestCommand("just test")).toBe(true);
-    });
-
-    it("detects just test variants", () => {
-      expect(isTestCommand("just test-ci")).toBe(true);
-      expect(isTestCommand("just test-cov")).toBe(true);
-    });
-  });
-
   describe("playwright and jest", () => {
     it("detects playwright commands", () => {
       expect(isTestCommand("playwright test")).toBe(true);
@@ -106,7 +95,6 @@ describe("track-test-run: Test Command Detection", () => {
 
     it("rejects dev commands", () => {
       expect(isTestCommand("npm run dev")).toBe(false);
-      expect(isTestCommand("just dev")).toBe(false);
     });
 
     it("rejects git commands", () => {

@@ -26,7 +26,7 @@ const __dirname = dirname(__filename);
 
 // Load environment variables
 dotenv.config({ path: resolve(__dirname, "../.env") });
-dotenv.config({ path: resolve(__dirname, "../.env.local") });
+dotenv.config({ path: resolve(__dirname, "../.env.development") });
 
 const { Client } = pg;
 
@@ -78,9 +78,6 @@ function getConnectionString(): string {
     return process.env.DATABASE_URL;
   }
 
-  // For local Supabase development
-  const localUrl = "postgresql://postgres:postgres@127.0.0.1:54322/postgres";
-
   // Check if we can construct from Supabase URL
   const supabaseUrl = process.env.VITE_SUPABASE_URL;
   const dbPassword = process.env.SUPABASE_DB_PASSWORD;
@@ -95,10 +92,11 @@ function getConnectionString(): string {
     }
   }
 
-  // Check if local URL seems valid (try to ping it)
-  console.log("⚠️  No DATABASE_URL found. Using local Supabase default.");
-  console.log(`   Connection: ${localUrl}\n`);
-  return localUrl;
+  throw new Error(
+    "No database connection configured. Set either:\n" +
+      "  1. DATABASE_URL in .env\n" +
+      "  2. VITE_SUPABASE_URL and SUPABASE_DB_PASSWORD for cloud connection"
+  );
 }
 
 async function connectToDatabase(): Promise<pg.Client> {
@@ -118,9 +116,8 @@ async function connectToDatabase(): Promise<pg.Client> {
     console.error("❌ Failed to connect to database");
     console.error(`   Error: ${err.message}`);
     console.error("\n💡 Make sure either:");
-    console.error("   1. Local Supabase is running: npm run db:local:start");
-    console.error("   2. DATABASE_URL is set in .env");
-    console.error("   3. VITE_SUPABASE_URL and SUPABASE_DB_PASSWORD are set for cloud\n");
+    console.error("   1. DATABASE_URL is set in .env");
+    console.error("   2. VITE_SUPABASE_URL and SUPABASE_DB_PASSWORD are set for cloud\n");
     process.exit(1);
   }
 }
@@ -364,7 +361,7 @@ function generateMarkdown(
 To regenerate this documentation:
 
 \`\`\`bash
-# With local Supabase running
+# With DATABASE_URL or VITE_SUPABASE_URL configured
 npm run docs:schema
 
 # Or directly
@@ -372,9 +369,8 @@ npx tsx scripts/generate-schema-docs.ts
 \`\`\`
 
 Make sure either:
-1. Local Supabase is running (\`npm run db:local:start\`)
-2. \`DATABASE_URL\` is set in your \`.env\` file
-3. \`VITE_SUPABASE_URL\` and \`SUPABASE_DB_PASSWORD\` are set for cloud connection
+1. \`DATABASE_URL\` is set in your \`.env\` file
+2. \`VITE_SUPABASE_URL\` and \`SUPABASE_DB_PASSWORD\` are set for cloud connection
 `;
 
   return md;

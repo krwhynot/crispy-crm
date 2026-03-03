@@ -18,12 +18,18 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Supabase connection
-const supabaseUrl = process.env.SUPABASE_URL || "http://127.0.0.1:54321";
+const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+if (!supabaseUrl) {
+  console.error("❌ SUPABASE_URL environment variable is required");
+  console.error("   Get it from: npx supabase status --linked");
+  process.exit(1);
+}
 
 if (!supabaseKey) {
   console.error("❌ SUPABASE_SERVICE_ROLE_KEY environment variable is required");
-  console.error("   Get it from: npx supabase status");
+  console.error("   Get it from: npx supabase status --linked");
   process.exit(1);
 }
 

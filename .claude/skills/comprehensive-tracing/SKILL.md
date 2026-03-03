@@ -20,10 +20,6 @@ triggers:
     - "search for *"
     - "find where * is defined"
     - "find all references to *"
-  tool_triggers:
-    - mcp__crispy-code-intel__search_code
-    - mcp__crispy-code-intel__go_to_definition
-    - mcp__crispy-code-intel__find_references
 enforcement: suggest
 ---
 

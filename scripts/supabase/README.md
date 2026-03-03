@@ -4,7 +4,6 @@
 - [Script Inventory](#script-inventory)
 - [Common Workflows](#common-workflows)
   - [Daily Development Setup](#daily-development-setup)
-  - [Pushing Local Data to Cloud](#pushing-local-data-to-cloud)
   - [Resetting Environments](#resetting-environments)
   - [Creating Test Users](#creating-test-users)
   - [Safe Migration Deployment](#safe-migration-deployment)
@@ -18,9 +17,7 @@
 |------------|---------|-------|----------|
 | **create-test-users-http.mjs** ⭐ | Creates 3 test users with role-specific data via HTTP Auth Admin API | `npm run dev:users:create` | `scripts/dev/` |
 | **generate-jwt.mjs** | Generates custom-signed JWTs for local Supabase instance | `node scripts/dev/generate-jwt.mjs` | `scripts/dev/` |
-| **sync-local-to-cloud.sh** | Synchronizes local development data to cloud Supabase instance | `./scripts/dev/sync-local-to-cloud.sh` | `scripts/dev/` |
-| **verify-environment.sh** | Validates environment setup and data integrity | `./scripts/dev/verify-environment.sh [local\|cloud]` | `scripts/dev/` |
-| **reset-environment.sh** | Resets database to clean state with fresh migrations | `npx supabase db reset` | Built-in command |
+| **create-test-users.sh** | Creates test users via psql with deterministic UUIDs | `./scripts/dev/create-test-users.sh` | `scripts/dev/` |
 | **backup.sh** | Creates database backups before major operations | `./scripts/migration/backup.sh [environment]` | `scripts/migration/` |
 | **deploy-safe.sh** | Deploys migrations with validation and rollback capability | `./scripts/migration/deploy-safe.sh` | `scripts/migration/` |
 
@@ -34,16 +31,10 @@ Start your local development environment with test data:
 
 ```bash
 # 1. Start local Supabase
-npm run supabase:local:start
+npx supabase start
 
-# 2. Verify local environment is running
-npm run supabase:local:status
-
-# 3. Create test users with role-specific sample data
+# 2. Create test users with role-specific sample data
 npm run dev:users:create
-
-# 4. Verify setup
-./scripts/dev/verify-environment.sh local
 ```
 
 **Expected Output:**
@@ -53,58 +44,6 @@ npm run dev:users:create
    Sales Director:  director@test.local (60 contacts, 30 orgs, 40 opportunities, 120 activities)
    Account Manager: manager@test.local (40 contacts, 20 orgs, 25 opportunities, 80 activities)
    Password:        TestPass123!
-
-✓ Supabase local instance running on port 54321
-✓ All 3 test users created with role-specific data volumes
-✓ Data successfully inserted into local database
-```
-
-### Pushing Local Data to Cloud
-
-**Prerequisites:**
-- PostgreSQL client tools (`pg_dump`, `psql`) must be installed:
-  ```bash
-  # Ubuntu/Debian
-  sudo apt-get install postgresql-client
-
-  # macOS
-  brew install postgresql
-  ```
-- `.env.production` configured with cloud credentials
-- Local Supabase running with test data
-- **IPv6 network access** (Supabase uses IPv6-only database connections)
-
-**Known Limitation - WSL2/IPv6:**
-- Supabase cloud databases use IPv6-only addresses
-- WSL2 doesn't enable IPv6 by default, causing connection failures
-- **Workaround**: Enable IPv6 in `/etc/wsl.conf` or run sync from cloud CI/CD
-- **Alternative**: Use Supabase CLI (`npx supabase db push`) for schema sync (already working)
-
-Synchronize your local development data to the cloud instance:
-
-```bash
-# 1. Ensure .env.production is configured
-cat .env.production | grep SUPABASE
-
-# 2. Create backup of cloud data
-./scripts/migration/backup.sh cloud
-
-# 3. Sync local to cloud (requires --force flag for safety)
-./scripts/dev/sync-local-to-cloud.sh --force
-
-# 4. Verify cloud environment
-./scripts/dev/verify-environment.sh cloud
-```
-
-**Expected Output:**
-```
-✓ Backup created: backups/cloud_2025_01_26_143022.sql
-✓ Syncing data from local to cloud...
-✓ Users synced: 3
-✓ Contacts synced: 15
-✓ Organizations synced: 8
-✓ Opportunities synced: 10
-✓ Cloud environment verified successfully
 ```
 
 ### Resetting Environments
@@ -197,16 +136,16 @@ psql $DATABASE_URL < backups/production_latest.sql
 
 **Problem:** Cannot connect to Supabase instance
 ```
-Error: connection to server at "localhost" (127.0.0.1), port 54322 failed
+Error: Cannot connect to cloud database
 ```
 
 **Solution:**
 ```bash
-# Check if local Supabase is running
-docker ps | grep supabase
+# Verify Supabase CLI is linked
+npx supabase status --linked
 
-# Check .env.production for cloud connection
-cat .env.production | grep SUPABASE_URL
+# Check .env for cloud connection
+cat .env | grep SUPABASE_URL
 
 # Verify service role key is set
 echo $SUPABASE_SERVICE_ROLE_KEY
@@ -228,7 +167,7 @@ npx supabase migration repair
 psql $DATABASE_URL -c "SELECT tgname FROM pg_trigger WHERE tgname LIKE 'sync_%';"
 
 # Rerun sync after fix
-./scripts/dev/sync-local-to-cloud.sh
+npx supabase db push
 ```
 
 ### Permission Errors
@@ -260,7 +199,7 @@ Warning: Expected 15 contacts, found 12
 **Solution:**
 ```bash
 # Run detailed verification
-./scripts/dev/verify-environment.sh local --verbose
+npx supabase db reset local --verbose
 
 # Check for orphaned records
 psql $DATABASE_URL -c "
@@ -347,7 +286,7 @@ jobs:
     steps:
       - name: Validate Environment
         if: ${{ !inputs.skip_validation }}
-        run: ./scripts/dev/verify-environment.sh production
+        run: npx supabase db reset production
 
       - name: Create Backup
         run: ./scripts/migration/backup.sh production
@@ -425,7 +364,7 @@ ls -la backups/production_*.sql | tail -1
 psql $DATABASE_URL < backups/production_2025_01_26_143022.sql
 
 # 3. Verify restoration
-./scripts/dev/verify-environment.sh production
+npx supabase db reset production
 ```
 
 #### Migration-Specific Rollback
@@ -466,7 +405,7 @@ Post-deployment checks:
 npx supabase logs --db-url $DATABASE_URL --since 1h
 
 # 2. Monitor real-time metrics
-watch -n 5 './scripts/dev/verify-environment.sh production --metrics'
+watch -n 5 'npx supabase db reset production --metrics'
 
 # 3. Test critical user flows
 npm run test:e2e:production
@@ -501,11 +440,11 @@ This pattern is used for:
 
 **Schema Verification:**
 ```bash
-# Verify local schema matches cloud
-docker exec supabase_db_crispy-crm psql -U postgres -d postgres -c "\d public.organizations"
+# Verify schema structure
+psql $DATABASE_URL -c "\d public.organizations"
 
 # Check enum values
-docker exec supabase_db_crispy-crm psql -U postgres -d postgres -c \
+psql $DATABASE_URL -c \
   "SELECT enumlabel FROM pg_enum WHERE enumtypid = 'organization_type'::regtype;"
 ```
 

@@ -15,7 +15,7 @@ if git diff-tree -r --name-only --no-commit-id HEAD@{1} HEAD 2>/dev/null | grep 
   echo ""
   echo "Run: ${YELLOW}npm run db:migrate${NC}"
   echo ""
-  echo "${RED}NOTE: This will reset your local Docker database.${NC}"
+  echo "${RED}NOTE: This will apply pending migrations to your database.${NC}"
   echo "${YELLOW}========================================================${NC}"
   echo ""
 fi

@@ -16,9 +16,8 @@ STAGED_FILES=$(git diff --cached --name-only --diff-filter=ACM)
 # Usage: SKIP_SLOW_HOOKS=1 git commit -m "message"
 # ═══════════════════════════════════════════════════════════════
 if [ "$SKIP_SLOW_HOOKS" = "1" ]; then
-  echo -e "${YELLOW}⚡ Fast mode: skipping type-check, discovery, and drift checks${NC}"
+  echo -e "${YELLOW}⚡ Fast mode: skipping type-check and drift checks${NC}"
   SKIP_TYPECHECK=1
-  SKIP_DISCOVERY=1
   SKIP_DRIFT=1
 fi
 
@@ -98,23 +97,7 @@ if [ -n "$ts_files" ] && [ "$SKIP_TYPECHECK" != "1" ]; then
 fi
 
 # ═══════════════════════════════════════════════════════════════
-# 4. DISCOVERY: Fast hash-only staleness check (CI enforces full check)
-# ═══════════════════════════════════════════════════════════════
-# Only run if component/hook files are staged (performance optimization)
-discovery_files=$(echo "$STAGED_FILES" | grep -E '\.(ts|tsx)$' | grep -E 'src/atomic-crm/' || true)
-
-if [ -n "$discovery_files" ] && [ "$SKIP_DISCOVERY" != "1" ]; then
-  echo "🔍 Checking discovery freshness (hash-only)..."
-  if ! npx tsx scripts/discover/check-staleness.ts 2>/dev/null; then
-    echo -e "${YELLOW}⚠ Discovery index may be stale. Run 'just discover' after commit.${NC}"
-    # Don't auto-regenerate - let CI enforce freshness
-  else
-    echo -e "${GREEN}✓ Discovery files are fresh${NC}"
-  fi
-fi
-
-# ═══════════════════════════════════════════════════════════════
-# 5. SEMANTIC COLORS: Prevent theme drift (P0 - 243 fix commits)
+# 4. SEMANTIC COLORS: Prevent theme drift (P0 - 243 fix commits)
 # ═══════════════════════════════════════════════════════════════
 # Only check staged TSX files for performance
 tsx_files=$(echo "$STAGED_FILES" | grep -E '\.tsx$' || true)
@@ -130,7 +113,7 @@ if [ -n "$tsx_files" ]; then
 fi
 
 # ═══════════════════════════════════════════════════════════════
-# 6. MIGRATIONS: Validate SQL migrations (P1 - 176 schema commits)
+# 5. MIGRATIONS: Validate SQL migrations (P1 - 176 schema commits)
 # ═══════════════════════════════════════════════════════════════
 # Only check staged SQL files in migrations directory
 migration_files=$(echo "$STAGED_FILES" | grep -E '^supabase/migrations/.*\.sql$' || true)
@@ -150,7 +133,7 @@ if [ -n "$migration_files" ]; then
 fi
 
 # ═══════════════════════════════════════════════════════════════
-# 7. MIGRATION DRIFT: Detect local vs cloud schema divergence
+# 6. MIGRATION DRIFT: Detect local vs cloud schema divergence
 # ═══════════════════════════════════════════════════════════════
 # Only run when migration files are staged to catch drift early
 # This prevents the scenario where local and cloud schemas diverge

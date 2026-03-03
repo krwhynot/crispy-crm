@@ -13,8 +13,8 @@ interface TableSchema {
 }
 
 // Real Supabase client for schema validation testing
-// These tests need to connect to actual local Supabase instance, not mock
-const SUPABASE_URL = "http://localhost:54321";
+// CI fallback: localhost used when running tests in CI with local Supabase
+const SUPABASE_URL = process.env.VITE_SUPABASE_URL ?? "http://localhost:54321";
 const SUPABASE_ANON_KEY =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.CRXP1A7WOeoJeXxjNni43kdQwgnWNReilDMblYTn_I0";
 

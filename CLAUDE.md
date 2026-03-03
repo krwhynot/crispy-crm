@@ -26,38 +26,8 @@
 - **Debug:** `Root cause: stale cache [60%]`.
 - **Arch/Est:** `Recommend handler [90%]`, `~2 hours [65%]`, `Breaking risk [40%]`.
 
-## 🛠 Tooling & Discovery
-**Discovery:** `just discover` (full) | `just discover --incremental` | `just mcp-test`
-**Intel:** JSON Inventories (metadata) | `search.db` (FTS5+SCIP) | `vectors.lance` (semantic) | LSP (36 wildcard patterns).
-**MCP Tools:** `search_code` (hybrid), `go_to_definition`, `find_references`.
-**CLI Prefs:** `just` (runner), `rg --type ts` (search), `fd -e tsx` (find), `bat` (read), `gh --json` (git).
-
-## 🔄 State Management & Discovery
-
-**Rebuild Triggers:** After major refactoring, deleting files, or if search/intelligence seems stale.
-
-| State Source | Purpose | Rebuild Command | Frequency |
-|-------------|---------|-----------------|-----------|
-| search.db (77MB) | Full-text search | `just discover` | Weekly or after bulk changes |
-| index.scip (27MB) | LSP/SCIP code intel | `just discover-scip` | After TS changes |
-| vectors.lance (7.6MB) | Semantic search | `just discover` | Weekly |
-| *-inventory/*.json | Component metadata | `just discover` | After file creation/deletion |
-
-**Quick Check:** `ls -lh .claude/state/search.db` - if older than 7 days, consider rebuild.
-**MCP Tools:** Verify connectivity with `just mcp-test` after server restarts.
-
-**Architecture Note (Best Practice):**
-Per official Claude Code guidance, large state databases (search.db, vectors.lance) should ideally be stored OUTSIDE the `.claude/` folder in gitignored project-local directories like `.indexes/` or `.vscode/.search/`. This separates configuration (tracked in `.claude/settings.json`) from state (gitignored elsewhere). Current setup works but doesn't follow recommended pattern. Consider migration in future if state management becomes complex.
-
-**State Drift Prevention:**
-- No PostToolUse hooks currently update these sources incrementally
-- Manual rebuild required after significant codebase changes
-- Watch for stale search results as a signal to rebuild
-
-**Orphan Cleanup:** If deletion hook flags `.prune-needed`:
-- Dry run: `./.claude/hooks/prune-stale-inventory.sh ".claude/state/component-inventory" true`
-- Execute: `./.claude/hooks/prune-stale-inventory.sh ".claude/state/component-inventory" false`
-- Archived to: `.claude/state/archive/YYYYMMDD-HHMMSS/`
+## 🛠 Tooling
+**CLI Prefs:** `npm run` (scripts), `rg --type ts` (search), `fd -e tsx` (find), `bat` (read), `gh --json` (git).
 
 ## 🏗 Architecture & Structure
 **Critical:** All DB access via `src/atomic-crm/providers/supabase/composedDataProvider.ts`.
@@ -91,7 +61,7 @@ Per official Claude Code guidance, large state databases (search.db, vectors.lan
 **Filters:** `src/components/admin/column-filters/`. Debounced text (300ms), Checkbox popovers. Use `useListContext`.
 
 ## 🧪 Testing & Database
-**Test:** Vitest (`renderWithAdminContext`). Mock Supabase (`setup.ts`). E2E: Manual via Claude Chrome. Seed: `just seed-e2e`.
+**Test:** Vitest (`renderWithAdminContext`). Mock Supabase (`setup.ts`). E2E: Manual via Claude Chrome. Seed: `npm run seed:e2e:dashboard-v3`.
 **DB:** Postgres 17, RLS (100%), Soft deletes (`deleted_at`), Edge functions (digest/overdue).
 **Security:** pgTAP for unit testing/security validation.
 
@@ -115,7 +85,7 @@ Per official Claude Code guidance, large state databases (search.db, vectors.lan
 
 ## 📊 Code Health Monitoring (CI/CD Enforced)
 
-**Automated Check:** `just health-check` runs in CI/CD pipeline. **Fails build** if any file exceeds churn threshold.
+**Automated Check:** The health-check script runs in CI/CD pipeline. **Fails build** if any file exceeds churn threshold.
 
 **Churn Thresholds (14 days):**
 - 0-10 edits: ✅ Normal (stable file)
@@ -129,8 +99,8 @@ Per official Claude Code guidance, large state databases (search.db, vectors.lan
    - If trend accelerates, move to Investigate
 
 2. **Investigate State** (16+ edits - triggers CI/CD failure):
-   - Run: `just health-check` to see violating files
-   - Identify implicit contracts (run `/health-summary` for analysis)
+   - Run: `npm run lint && npx tsc --noEmit` to see violating files
+   - Identify implicit contracts (run `npm run lint && npx tsc --noEmit` for analysis)
    - Extract to config file (pattern: `organizationFormConfig.ts`)
    - Submit PR that reduces churn
 
@@ -154,7 +124,7 @@ When a file cluster churns together (3+ files with 8+ co-changes):
 **Manual Check:**
 ```bash
 # View churn report
-just health-check
+npm run lint && npx tsc --noEmit
 
 # Or manually:
 git log --name-only --since="14 days ago" --pretty=format: -- 'src/**/*.ts' 'src/**/*.tsx' \
@@ -175,11 +145,11 @@ git log --name-only --since="14 days ago" --pretty=format: -- 'src/**/*.ts' 'src
 
 **Protocol:** Use `ref` MCP. Ask multiple-choice if context missing.
 
- The Correct Workflow Should Be:                                                                                                               
-  1. Write migration SQL to supabase/migrations/ folder                                                                                         
-  2. Run supabase db reset or supabase migration up locally                                                                                     
-  3. Test locally to verify behavior                                                                                                            
-  4. Only then push to cloud via supabase db push or MCP
+ The Correct Workflow (Cloud-Only Dev):
+  1. Write migration SQL to supabase/migrations/ folder
+  2. Dry-run: `npx supabase db push --dry-run` to verify
+  3. Push to cloud: `npx supabase db push`
+  4. Verify in Supabase Studio or via the app
 
 ## 🤖 Agent Routing
 

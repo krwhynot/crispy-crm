@@ -20,11 +20,15 @@ DIRECTOR_EMAIL="${TEST_DIRECTOR_EMAIL:-director@test.local}"
 MANAGER_EMAIL="${TEST_MANAGER_EMAIL:-manager@test.local}"
 TEST_PASSWORD="${TEST_USER_PASSWORD:-TestPass123!}"
 
-# Database configuration - accept as first argument or use default
-DB_URL="${1:-postgresql://postgres:postgres@localhost:54322/postgres}"
+# Database configuration - accept as first argument or require env var
+DB_URL="${1:-${DATABASE_URL:-}}"
 
-# Docker container name for local Supabase
-CONTAINER_NAME="supabase_db_crispy-crm"
+if [ -z "$DB_URL" ]; then
+    echo -e "${RED}❌ Error: No database URL provided.${NC}" >&2
+    echo "   Pass as argument or set DATABASE_URL env var." >&2
+    echo "   Example: ./create-test-users.sh \$DATABASE_URL" >&2
+    exit 1
+fi
 
 # Colors for output
 RED='\033[0;31m'
@@ -71,22 +75,10 @@ if ! command -v node &> /dev/null; then
 fi
 
 # Check database connectivity
-# Try Docker first if URL is localhost
-if [[ "$DB_URL" == *"localhost"* ]] || [[ "$DB_URL" == *"127.0.0.1"* ]]; then
-    # Check if Docker container is running
-    if docker ps --format '{{.Names}}' | grep -q "^${CONTAINER_NAME}$"; then
-        info_msg "Using Docker container: ${CONTAINER_NAME}"
-        PSQL_CMD="docker exec -i ${CONTAINER_NAME} psql -U postgres -d postgres"
-    else
-        error_exit "Docker container ${CONTAINER_NAME} is not running. Start it with: npm run supabase:local:start"
-    fi
-else
-    # For remote databases, use psql directly
-    if ! command -v psql &> /dev/null; then
-        error_exit "psql is required for remote database connections but not installed."
-    fi
-    PSQL_CMD="psql $DB_URL"
+if ! command -v psql &> /dev/null; then
+    error_exit "psql is required but not installed."
 fi
+PSQL_CMD="psql $DB_URL"
 
 # Test database connection
 info_msg "Testing database connection..."
@@ -284,8 +276,14 @@ echo ""
 echo "4️⃣  Generating test data..."
 
 # Set environment variables for local Supabase connection
-export VITE_SUPABASE_URL="${VITE_SUPABASE_URL:-http://localhost:54321}"
-export VITE_SUPABASE_ANON_KEY="${VITE_SUPABASE_ANON_KEY:-eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.CRXP1A7WOeoJeXxjNni43kdQwgnWNReilDMblYTn_I0}"
+if [ -z "$VITE_SUPABASE_URL" ]; then
+    error_exit "VITE_SUPABASE_URL environment variable is required"
+fi
+if [ -z "$VITE_SUPABASE_ANON_KEY" ]; then
+    error_exit "VITE_SUPABASE_ANON_KEY environment variable is required"
+fi
+export VITE_SUPABASE_URL
+export VITE_SUPABASE_ANON_KEY
 
 # Admin gets most data (50 orgs, 100 contacts, 75 opportunities)
 echo ""
@@ -392,5 +390,5 @@ echo "   Admin:    100 contacts, 50 orgs, 75 opportunities, 200 activities"
 echo "   Director:  60 contacts, 30 orgs, 40 opportunities, 120 activities"
 echo "   Manager:   40 contacts, 20 orgs, 25 opportunities, 80 activities"
 echo ""
-echo "🔗 Access the app at: http://localhost:5173"
+echo "🔗 Access the app at: http://localhost:5173 (or your configured dev URL)"
 echo ""

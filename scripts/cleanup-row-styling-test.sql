@@ -3,7 +3,7 @@
 -- Run after manual testing is complete
 --
 -- Run with: npx supabase db execute --file scripts/cleanup-row-styling-test.sql
--- Or paste directly into Supabase SQL Editor (http://localhost:54323)
+-- Or paste directly into Supabase SQL Editor (cloud Supabase Studio)
 -- ============================================
 
 -- Show what will be deleted

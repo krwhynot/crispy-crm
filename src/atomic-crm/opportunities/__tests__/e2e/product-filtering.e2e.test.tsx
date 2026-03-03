@@ -14,7 +14,7 @@
  *
  * Prerequisites:
  *   1. Local Supabase running: `supabase start`
- *   2. Database seeded with test data: `just seed-e2e`
+ *   2. Database seeded with test data: `npm run seed:e2e:dashboard-v3`
  *   3. Environment variables configured for local DB
  *
  * Engineering Constitution: These are TRUE integration tests that verify the database
@@ -26,6 +26,7 @@ import { createClient } from "@supabase/supabase-js";
 
 // Create a dedicated test client - NOT using the app's singleton
 // This ensures we're testing against the actual database, not mocks
+// CI fallback: localhost used when running tests in CI with local Supabase
 const supabaseUrl = process.env.VITE_SUPABASE_URL || "http://localhost:54321";
 const supabaseKey =
   process.env.VITE_SUPABASE_ANON_KEY ||

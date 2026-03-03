@@ -62,7 +62,11 @@ if [[ "$TARGET" == "cloud" ]]; then
         exit 1
     fi
 else
-    export DATABASE_URL="postgresql://postgres:postgres@localhost:54322/postgres"
+    export DATABASE_URL="${DATABASE_URL:-}"
+    if [[ -z "$DATABASE_URL" ]]; then
+        print_error "DATABASE_URL environment variable is required for local target"
+        exit 1
+    fi
     LABEL="LOCAL"
 fi
 

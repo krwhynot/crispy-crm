@@ -10,7 +10,6 @@
       "Bash(git status*)",
       "Bash(git log*)",
       "Bash(git diff*)",
-      "Bash(just *)",
       "Bash(curl *)",
       "Bash(grep *)",
       "Bash(cat .env*)",

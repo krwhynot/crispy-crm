@@ -5,7 +5,7 @@
 --          Principal -> Distributor -> Customer -> Opportunity -> Closed Won
 --
 -- Run AFTER: npx supabase db reset (which runs seed.sql)
--- Run WITH: psql postgresql://postgres:postgres@127.0.0.1:54322/postgres -f supabase/seed-complete-flow.sql
+-- Run WITH: psql $DATABASE_URL -f supabase/seed-complete-flow.sql
 --
 -- Data Model (HIGH IDs to avoid conflicts):
 --   Organizations: 10001-10003 (Principal, Distributor, Customer)

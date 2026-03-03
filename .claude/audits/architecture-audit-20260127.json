@@ -86,7 +86,7 @@
       "analysis": {
         "legitimate_uses": [
           "Service role policies (service_role bypass)",
-          "Team-shared access documented in PATTERNS.md",
+          "Team-shared access (shared model)",
           "Small team shared model (20251018203500 migration)",
           "Reference data tables (with TO authenticated clause)"
         ],

@@ -22,15 +22,17 @@ const __dirname = join(__filename, "..");
 const projectRoot = join(__dirname, "..");
 
 // Load environment variables
-config({ path: join(projectRoot, ".env.local") });
+config({ path: join(projectRoot, ".env.development") });
 config({ path: join(projectRoot, ".env") });
 
 const DATABASE_URL = process.env.DATABASE_URL || process.env.SUPABASE_DB_URL;
 
 if (!DATABASE_URL) {
   console.error("Error: Missing DATABASE_URL or SUPABASE_DB_URL");
-  console.error("Add DATABASE_URL to your .env.local file");
-  console.error("Format: postgresql://postgres:[PASSWORD]@127.0.0.1:54322/postgres");
+  console.error("Add DATABASE_URL to your .env.development file");
+  console.error(
+    "Format: postgresql://postgres.[PROJECT_REF]:[PASSWORD]@aws-0-us-east-1.pooler.supabase.com:6543/postgres"
+  );
   process.exit(1);
 }
 

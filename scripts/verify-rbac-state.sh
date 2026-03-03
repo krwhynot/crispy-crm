@@ -69,23 +69,13 @@ echo ""
 
 echo -e "${YELLOW}[2/7]${NC} Checking local Supabase status..."
 
-# Check if port 54322 is listening
-if command -v nc &> /dev/null; then
-    if ! nc -z 127.0.0.1 54322 2>/dev/null; then
-        echo -e "${RED}❌ Local Supabase not running. Run: npm run supabase:local:start${NC}"
-        exit 1
-    fi
-elif command -v lsof &> /dev/null; then
-    if ! lsof -i:54322 &> /dev/null; then
-        echo -e "${RED}❌ Local Supabase not running. Run: npm run supabase:local:start${NC}"
-        exit 1
-    fi
-else
-    echo -e "${YELLOW}⚠️  Cannot verify if Supabase is running (nc/lsof not found)${NC}"
-    echo -e "${YELLOW}   Attempting to connect anyway...${NC}"
+# Verify LOCAL_DB is reachable by attempting a quick query
+if ! psql "$LOCAL_DB" -c "SELECT 1" &> /dev/null; then
+    echo -e "${RED}❌ Cannot connect to local database. Check DATABASE_URL in .env.local${NC}"
+    exit 1
 fi
 
-echo -e "${GREEN}✅ Local Supabase is running${NC}"
+echo -e "${GREEN}✅ Local database is reachable${NC}"
 echo ""
 
 # =============================================================================
@@ -104,8 +94,8 @@ cat > "$REPORT_FILE" <<'EOF'
 This report compares RBAC state between LOCAL and CLOUD Supabase databases.
 
 **Environments:**
-- **LOCAL:** `127.0.0.1:54322/postgres` (Docker)
-- **CLOUD:** `aaqnanddcqvfiwhshndl.supabase.co` (Supabase Cloud)
+- **LOCAL:** Local development database (from .env.local DATABASE_URL)
+- **CLOUD:** Supabase Cloud database (from .env.cloud CLOUD_DB)
 
 ---
 
