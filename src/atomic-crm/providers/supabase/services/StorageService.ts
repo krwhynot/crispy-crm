@@ -3,6 +3,24 @@ import { supabase } from "../supabase";
 import type { RAFile } from "@/atomic-crm/types";
 import { logger } from "@/lib/logger";
 
+/** Allowlisted MIME types mapped to valid file extensions. */
+export const ALLOWED_MIME_TO_EXT: Record<string, readonly string[]> = {
+  "image/jpeg": ["jpg", "jpeg"],
+  "image/png": ["png"],
+  "image/gif": ["gif"],
+  "image/webp": ["webp"],
+  "image/svg+xml": ["svg"],
+  "application/pdf": ["pdf"],
+  "application/msword": ["doc"],
+  "application/vnd.openxmlformats-officedocument.wordprocessingml.document": ["docx"],
+  "application/vnd.ms-excel": ["xls"],
+  "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": ["xlsx"],
+  "text/plain": ["txt"],
+  "text/csv": ["csv"],
+} as const;
+
+const ATTACHMENT_MIME_TYPES = new Set(Object.keys(ALLOWED_MIME_TO_EXT));
+
 // Type for file metadata returned by Supabase Storage
 interface StorageFileObject {
   name: string;
@@ -21,6 +39,29 @@ interface StorageFileObject {
  * in the monolithic unifiedDataProvider (was ~200 lines)
  */
 export class StorageService {
+  /**
+   * Validate that a blob has an allowed MIME type and consistent extension.
+   * Throws HttpError(415) on rejection.
+   */
+  private validateUpload(blob: Blob | File, context: string): void {
+    if (!ATTACHMENT_MIME_TYPES.has(blob.type)) {
+      throw new HttpError(`Unsupported file type "${blob.type}" for ${context}`, 415);
+    }
+
+    // If the blob is a File with a name, verify extension matches MIME
+    if ("name" in blob && typeof (blob as File).name === "string") {
+      const name = (blob as File).name;
+      const ext = name.split(".").pop()?.toLowerCase();
+      const allowedExts = ALLOWED_MIME_TO_EXT[blob.type];
+      if (ext && allowedExts && !allowedExts.includes(ext)) {
+        throw new HttpError(
+          `MIME/extension mismatch: type "${blob.type}" does not match extension ".${ext}"`,
+          415
+        );
+      }
+    }
+  }
+
   /**
    * Internal helper for uploading files to storage buckets
    * @param fi - RAFile object containing file data
@@ -45,9 +86,29 @@ export class StorageService {
 
     const dataContent = fi.src ? await fetch(fi.src).then((res) => res.blob()) : fi.rawFile;
 
+    if (dataContent) {
+      this.validateUpload(dataContent, "attachments");
+
+      // When content comes from fetch (blob URL), also validate rawFile extension against MIME
+      if (fi.rawFile?.name && !("name" in dataContent && (dataContent as File).name)) {
+        const ext = fi.rawFile.name.split(".").pop()?.toLowerCase();
+        const allowedExts = ALLOWED_MIME_TO_EXT[dataContent.type];
+        if (ext && allowedExts && !allowedExts.includes(ext)) {
+          throw new HttpError(
+            `MIME/extension mismatch: type "${dataContent.type}" does not match extension ".${ext}"`,
+            415
+          );
+        }
+      }
+    }
+
     const file = fi.rawFile;
-    const fileExt = file.name.split(".").pop();
-    const fileName = `${Math.random()}.${fileExt}`;
+    const rawExt = file?.name?.split(".").pop() ?? "bin";
+    const safeExt = rawExt
+      .replace(/[^a-zA-Z0-9]/g, "")
+      .toLowerCase()
+      .slice(0, 10);
+    const fileName = `${crypto.randomUUID()}.${safeExt}`;
     const filePath = `${fileName}`;
 
     const { error: uploadError, data: _data } = await supabase.storage
