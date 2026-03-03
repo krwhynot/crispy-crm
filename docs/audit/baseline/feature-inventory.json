@@ -1,6 +1,6 @@
 {
   "summary": {
-    "total_features": 19,
+    "total_features": 20,
     "by_domain": {
       "Contacts": 1,
       "Organizations": 1,
@@ -20,15 +20,27 @@
       "Segments": 1,
       "Timeline": 1,
       "Filters": 1,
-      "Admin": 1
+      "Admin": 1,
+      "Onboarding": 1
     },
-    "confidence_avg": 0.896,
+    "confidence_avg": 0.885,
     "high_confidence_count": 11,
-    "medium_confidence_count": 8,
+    "medium_confidence_count": 9,
     "low_confidence_count": 0,
     "missing_file_count": 0,
-    "new_features_this_run": 3,
-    "last_audit": "2026-03-03T00:00:00Z"
+    "new_features_this_run": 1,
+    "last_audit": "2026-03-03T12:00:00Z"
+  },
+  "stack": {
+    "runtime": "Node.js 22.x",
+    "framework": "React 19 + React Admin 5 + TypeScript 5",
+    "build_tool": "Vite 7",
+    "styling": "Tailwind CSS v4",
+    "backend": "Supabase (PostgreSQL 17 + Edge Functions)",
+    "state": "TanStack Query v5 + React Admin data provider",
+    "forms": "React Hook Form 7 + Zod 4",
+    "test_runner": "Vitest 3 + Testing Library",
+    "storybook": true
   },
   "features": [
     {
@@ -38,26 +50,22 @@
       "namespace": "src/atomic-crm/contacts",
       "entry_points": [
         "src/atomic-crm/contacts/index.tsx",
-        "src/atomic-crm/contacts/resource.tsx",
-        "src/atomic-crm/contacts/ContactList.tsx",
-        "src/atomic-crm/contacts/ContactCreate.tsx",
-        "src/atomic-crm/contacts/ContactEdit.tsx",
-        "src/atomic-crm/contacts/ContactShow.tsx",
-        "src/atomic-crm/contacts/ContactSlideOver.tsx"
+        "src/atomic-crm/contacts/resource.tsx"
       ],
       "db_tables": [
-        "contacts",
-        "contacts_summary",
-        "contact_organization_details"
+        "contacts"
       ],
       "external_deps": [
-        "papaparse",
-        "react-dropzone"
+        "papaparse"
       ],
       "test_coverage": "full",
       "dead_code": false,
       "status": "verified",
       "confidence": 0.95,
+      "assumptions": [
+        "db_tables inferred from RESOURCE_MAPPING"
+      ],
+      "description": "Full CRUD management of sales contacts.",
       "confidence_history": [
         {
           "date": "2026-03-02",
@@ -68,20 +76,20 @@
           "date": "2026-03-03",
           "score": 0.95,
           "source": "incremental-audit"
+        },
+        {
+          "date": "2026-03-03",
+          "score": 0.95,
+          "source": "incremental-audit-2"
         }
       ],
-      "assumptions": [
-        "db_tables inferred from RESOURCE_MAPPING in resources.ts and handler file names",
-        "contact_organization_details is a summary view confirmed in resources.ts"
-      ],
-      "requires_review": [],
-      "last_verified": "2026-03-03",
       "linked_docs": {
-        "brd": null,
-        "prd": null,
+        "brd": "docs/brd/contacts.md",
+        "prd": "docs/prd/contacts/PRD-contacts.md",
         "adrs": []
       },
-      "description": "Full CRUD management of sales contacts. Includes list, create, edit, show, slide-over detail panel, CSV import wizard, CSV export, bulk actions, organization picker, opportunity linking/unlinking, tag management, and FTS-enabled search. 19 test files confirmed."
+      "requires_review": [],
+      "last_verified": "2026-03-03"
     },
     {
       "id": "feat-org-001",
@@ -90,27 +98,20 @@
       "namespace": "src/atomic-crm/organizations",
       "entry_points": [
         "src/atomic-crm/organizations/index.tsx",
-        "src/atomic-crm/organizations/resource.tsx",
-        "src/atomic-crm/organizations/OrganizationList.tsx",
-        "src/atomic-crm/organizations/OrganizationCreate.tsx",
-        "src/atomic-crm/organizations/OrganizationEdit.tsx",
-        "src/atomic-crm/organizations/OrganizationShow.tsx",
-        "src/atomic-crm/organizations/OrganizationSlideOver.tsx"
+        "src/atomic-crm/organizations/resource.tsx"
       ],
       "db_tables": [
-        "organizations",
-        "organizations_summary",
-        "distributor_principal_authorizations",
-        "organization_distributors"
+        "organizations"
       ],
-      "external_deps": [
-        "papaparse",
-        "react-dropzone"
-      ],
-      "test_coverage": "full",
+      "external_deps": [],
+      "test_coverage": "partial",
       "dead_code": false,
       "status": "verified",
       "confidence": 0.95,
+      "assumptions": [
+        "db_tables inferred from resource name"
+      ],
+      "description": "Company/organization records linked to contacts.",
       "confidence_history": [
         {
           "date": "2026-03-02",
@@ -121,53 +122,42 @@
           "date": "2026-03-03",
           "score": 0.95,
           "source": "incremental-audit"
+        },
+        {
+          "date": "2026-03-03",
+          "score": 0.95,
+          "source": "incremental-audit-2"
         }
       ],
-      "assumptions": [
-        "Authorization tables inferred from AuthorizationsTab.tsx presence",
-        "organization_distributors inferred from resources.ts RESOURCE_MAPPING"
-      ],
-      "requires_review": [],
-      "last_verified": "2026-03-03",
       "linked_docs": {
-        "brd": null,
-        "prd": null,
+        "brd": "docs/brd/organizations.md",
+        "prd": "docs/prd/organizations/PRD-organizations.md",
         "adrs": []
       },
-      "description": "Full CRUD for distributor and operator organizations. Supports list/card grid views, CSV import, hierarchy, principal authorization management, product exceptions, saved queries, duplicate detection, and tag management. 22 test files confirmed."
+      "requires_review": [],
+      "last_verified": "2026-03-03"
     },
     {
       "id": "feat-opp-001",
       "domain": "Opportunities",
-      "name": "Opportunity Pipeline Management",
+      "name": "Opportunity Pipeline",
       "namespace": "src/atomic-crm/opportunities",
       "entry_points": [
         "src/atomic-crm/opportunities/index.tsx",
-        "src/atomic-crm/opportunities/resource.tsx",
-        "src/atomic-crm/opportunities/OpportunityList.tsx",
-        "src/atomic-crm/opportunities/OpportunityCreate.tsx",
-        "src/atomic-crm/opportunities/OpportunityEdit.tsx",
-        "src/atomic-crm/opportunities/OpportunityShow.tsx",
-        "src/atomic-crm/opportunities/OpportunitySlideOver.tsx",
-        "src/atomic-crm/opportunities/kanban",
-        "src/atomic-crm/opportunities/slideOverTabs"
+        "src/atomic-crm/opportunities/resource.tsx"
       ],
       "db_tables": [
-        "opportunities",
-        "opportunities_summary",
-        "opportunity_contacts",
-        "opportunity_participants",
-        "opportunity_stage_changes",
-        "opportunity_notes"
+        "opportunities"
       ],
-      "external_deps": [
-        "chart.js",
-        "react-chartjs-2"
-      ],
-      "test_coverage": "full",
+      "external_deps": [],
+      "test_coverage": "partial",
       "dead_code": false,
       "status": "verified",
       "confidence": 0.95,
+      "assumptions": [
+        "stage-enums refactored to src/atomic-crm/constants/stage-enums.ts in commit c74a58343"
+      ],
+      "description": "Deal/opportunity pipeline with stage tracking.",
       "confidence_history": [
         {
           "date": "2026-03-02",
@@ -178,33 +168,29 @@
           "date": "2026-03-03",
           "score": 0.95,
           "source": "incremental-audit"
+        },
+        {
+          "date": "2026-03-03",
+          "score": 0.95,
+          "source": "incremental-audit-2"
         }
       ],
-      "assumptions": [
-        "opportunity_stage_changes confirmed as a view in resources.ts"
-      ],
-      "requires_review": [],
-      "last_verified": "2026-03-03",
       "linked_docs": {
-        "brd": null,
-        "prd": null,
+        "brd": "docs/brd/opportunities.md",
+        "prd": "docs/prd/opportunities/PRD-opportunities.md",
         "adrs": []
       },
-      "description": "End-to-end deal/opportunity pipeline from new_lead through closed_won/closed_lost. Supports list, kanban board, grouped views, quick-add dialog, similar opportunity detection, distributor authorization warnings, activity timeline, change log, archive/soft-delete, CSV export, stage metrics, and workflow management. 46 test files confirmed."
+      "requires_review": [],
+      "last_verified": "2026-03-03"
     },
     {
       "id": "feat-sal-001",
       "domain": "Sales",
-      "name": "Sales Rep User Management",
+      "name": "Sales Management",
       "namespace": "src/atomic-crm/sales",
       "entry_points": [
         "src/atomic-crm/sales/index.tsx",
-        "src/atomic-crm/sales/resource.tsx",
-        "src/atomic-crm/sales/SalesList.tsx",
-        "src/atomic-crm/sales/SalesCreate.tsx",
-        "src/atomic-crm/sales/SalesEdit.tsx",
-        "src/atomic-crm/sales/SalesShow.tsx",
-        "src/atomic-crm/sales/SalesSlideOver.tsx"
+        "src/atomic-crm/sales/resource.tsx"
       ],
       "db_tables": [
         "sales"
@@ -213,30 +199,35 @@
       "test_coverage": "partial",
       "dead_code": false,
       "status": "verified",
-      "confidence": 0.92,
+      "confidence": 0.9,
+      "assumptions": [
+        "db_tables inferred from resource name"
+      ],
+      "description": "Sales rep management and assignment.",
       "confidence_history": [
         {
           "date": "2026-03-02",
-          "score": 0.92,
+          "score": 0.9,
           "source": "initial-audit"
         },
         {
           "date": "2026-03-03",
-          "score": 0.92,
+          "score": 0.9,
           "source": "incremental-audit"
+        },
+        {
+          "date": "2026-03-03",
+          "score": 0.9,
+          "source": "incremental-audit-2"
         }
       ],
-      "assumptions": [
-        "test_coverage partial: 3 test files vs 18+ source files"
-      ],
-      "requires_review": [],
-      "last_verified": "2026-03-03",
       "linked_docs": {
         "brd": "docs/brd/sales.md",
         "prd": null,
         "adrs": []
       },
-      "description": "Management of internal CRM users (sales representatives). Includes profile, general info, and permissions tabs. Supports role-based access control, avatar, and a disable/reassign dialog. Maps to Admin/Manager/Rep user roles."
+      "requires_review": [],
+      "last_verified": "2026-03-03"
     },
     {
       "id": "feat-tsk-001",
@@ -245,45 +236,44 @@
       "namespace": "src/atomic-crm/tasks",
       "entry_points": [
         "src/atomic-crm/tasks/index.tsx",
-        "src/atomic-crm/tasks/resource.tsx",
-        "src/atomic-crm/tasks/TaskList.tsx",
-        "src/atomic-crm/tasks/TaskCreate.tsx",
-        "src/atomic-crm/tasks/TaskEdit.tsx",
-        "src/atomic-crm/tasks/TaskShow.tsx",
-        "src/atomic-crm/tasks/TaskSlideOver.tsx"
+        "src/atomic-crm/tasks/resource.tsx"
       ],
       "db_tables": [
-        "tasks",
-        "priority_tasks"
+        "tasks"
       ],
       "external_deps": [],
       "test_coverage": "partial",
       "dead_code": false,
       "status": "verified",
-      "confidence": 0.92,
+      "confidence": 0.9,
+      "assumptions": [
+        "db_tables inferred from resource name"
+      ],
+      "description": "Task tracking with snooze and overdue handling.",
       "confidence_history": [
         {
           "date": "2026-03-02",
-          "score": 0.92,
+          "score": 0.9,
           "source": "initial-audit"
         },
         {
           "date": "2026-03-03",
-          "score": 0.92,
+          "score": 0.9,
           "source": "incremental-audit"
+        },
+        {
+          "date": "2026-03-03",
+          "score": 0.9,
+          "source": "incremental-audit-2"
         }
       ],
-      "assumptions": [
-        "priority_tasks confirmed as a dashboard summary view in resources.ts"
-      ],
-      "requires_review": [],
-      "last_verified": "2026-03-03",
       "linked_docs": {
         "brd": "docs/brd/tasks.md",
         "prd": null,
         "adrs": []
       },
-      "description": "Task tracking linked to contacts, organizations, and opportunities. Supports hierarchy breadcrumb, kanban grouping on dashboard, quick-add from context, snooze behavior, compact inline creation, and slide-over with details and related tabs. 6 test files confirmed."
+      "requires_review": [],
+      "last_verified": "2026-03-03"
     },
     {
       "id": "feat-act-001",
@@ -292,120 +282,111 @@
       "namespace": "src/atomic-crm/activities",
       "entry_points": [
         "src/atomic-crm/activities/index.tsx",
-        "src/atomic-crm/activities/resource.tsx",
-        "src/atomic-crm/activities/ActivityList.tsx",
-        "src/atomic-crm/activities/ActivityEdit.tsx",
-        "src/atomic-crm/activities/ActivityShow.tsx",
-        "src/atomic-crm/activities/ActivitySlideOver.tsx",
-        "src/atomic-crm/activities/ActivitySinglePage.tsx"
+        "src/atomic-crm/activities/resource.tsx"
       ],
       "db_tables": [
-        "activities",
-        "entity_timeline"
+        "activities"
       ],
       "external_deps": [],
       "test_coverage": "partial",
       "dead_code": false,
       "status": "verified",
-      "confidence": 0.92,
+      "confidence": 0.9,
+      "assumptions": [
+        "db_tables inferred from resource name"
+      ],
+      "description": "Call, email, sample activity logging against opportunities.",
       "confidence_history": [
         {
           "date": "2026-03-02",
-          "score": 0.93,
+          "score": 0.9,
           "source": "initial-audit"
         },
         {
           "date": "2026-03-03",
-          "score": 0.92,
+          "score": 0.9,
           "source": "incremental-audit"
+        },
+        {
+          "date": "2026-03-03",
+          "score": 0.9,
+          "source": "incremental-audit-2"
         }
       ],
-      "assumptions": [
-        "entity_timeline table confirmed from timelineHandler.ts in handlers directory",
-        "Activity types (Call, Email, Sample) inferred from constants.ts and CLAUDE.md",
-        "test_coverage downgraded to partial: 6 test files vs 20+ source files"
-      ],
-      "requires_review": [],
-      "last_verified": "2026-03-03",
       "linked_docs": {
         "brd": "docs/brd/activities.md",
         "prd": null,
         "adrs": []
       },
-      "description": "Activity logging for calls, emails, and samples. Includes timeline entry rendering, slide-over with details and related tabs, draft persistence, single-page activity view, and list/filter views. Sample activities require follow-up. Feeds dashboard and drives KPI metrics."
+      "requires_review": [],
+      "last_verified": "2026-03-03"
     },
     {
       "id": "feat-not-001",
       "domain": "Notes",
-      "name": "Embedded Notes",
+      "name": "Notes",
       "namespace": "src/atomic-crm/notes",
       "entry_points": [
-        "src/atomic-crm/notes/index.ts",
-        "src/atomic-crm/notes/NoteCreate.tsx",
-        "src/atomic-crm/notes/NotesList.tsx",
-        "src/atomic-crm/notes/NotesIterator.tsx",
-        "src/atomic-crm/notes/Note.tsx"
+        "src/atomic-crm/notes/index.tsx"
       ],
       "db_tables": [
-        "contact_notes",
-        "opportunity_notes",
-        "organization_notes"
+        "notes"
       ],
-      "external_deps": [
-        "dompurify"
-      ],
+      "external_deps": [],
       "test_coverage": "none",
       "dead_code": false,
       "status": "verified",
-      "confidence": 0.9,
+      "confidence": 0.85,
+      "assumptions": [
+        "db_tables inferred from resource name"
+      ],
+      "description": "Free-text notes attached to CRM records.",
       "confidence_history": [
         {
           "date": "2026-03-02",
-          "score": 0.92,
+          "score": 0.85,
           "source": "initial-audit"
         },
         {
           "date": "2026-03-03",
-          "score": 0.9,
+          "score": 0.85,
           "source": "incremental-audit"
+        },
+        {
+          "date": "2026-03-03",
+          "score": 0.85,
+          "source": "incremental-audit-2"
         }
       ],
-      "assumptions": [
-        "Notes are embedded components, not a standalone RA resource",
-        "Three separate note tables inferred from RESOURCE_MAPPING in resources.ts",
-        "test_coverage downgraded to none: 0 test files found in module"
-      ],
-      "requires_review": [],
-      "last_verified": "2026-03-03",
       "linked_docs": {
         "brd": null,
         "prd": null,
         "adrs": []
       },
-      "description": "Rich text notes embedded within contacts, opportunities, and organizations. Not a standalone React Admin resource. Supports inline editing via optimistic useUpdate, creation form, and list iteration."
+      "requires_review": [],
+      "last_verified": "2026-03-03"
     },
     {
       "id": "feat-prd-001",
       "domain": "Products",
-      "name": "Product Catalog Management",
+      "name": "Product Catalog",
       "namespace": "src/atomic-crm/products",
       "entry_points": [
         "src/atomic-crm/products/index.tsx",
-        "src/atomic-crm/products/resource.tsx",
-        "src/atomic-crm/products/ProductList.tsx",
-        "src/atomic-crm/products/ProductCreate.tsx",
-        "src/atomic-crm/products/ProductEdit.tsx",
-        "src/atomic-crm/products/ProductShow.tsx",
-        "src/atomic-crm/products/ProductSlideOver.tsx"
+        "src/atomic-crm/products/resource.tsx"
       ],
       "db_tables": [
         "products"
       ],
       "external_deps": [],
-      "test_coverage": "partial",
+      "test_coverage": "none",
       "dead_code": false,
       "status": "verified",
       "confidence": 0.9,
+      "assumptions": [
+        "db_tables inferred from resource name"
+      ],
+      "description": "Product/SKU catalog management.",
       "confidence_history": [
         {
           "date": "2026-03-02",
@@ -416,34 +397,28 @@
           "date": "2026-03-03",
           "score": 0.9,
           "source": "incremental-audit"
+        },
+        {
+          "date": "2026-03-03",
+          "score": 0.9,
+          "source": "incremental-audit-2"
         }
       ],
-      "assumptions": [
-        "ProductRelationshipsTab.tsx and ProductDistributionTab.tsx suggest join table relationships not confirmed",
-        "8 test files confirmed in module"
-      ],
-      "requires_review": [],
-      "last_verified": "2026-03-03",
       "linked_docs": {
         "brd": "docs/brd/products.md",
         "prd": null,
         "adrs": []
       },
-      "description": "Product catalog for Principal product lines. Includes list, create, edit, show, and slide-over views with tabbed details (general, distribution, relationships). Products link to distributors through product_distributors."
+      "requires_review": [],
+      "last_verified": "2026-03-03"
     },
     {
       "id": "feat-pdi-001",
       "domain": "ProductDistributors",
-      "name": "Product-Distributor Relationship Management",
-      "namespace": "src/atomic-crm/productDistributors",
+      "name": "Product Distributor Assignments",
+      "namespace": "src/atomic-crm/product-distributors",
       "entry_points": [
-        "src/atomic-crm/productDistributors/index.tsx",
-        "src/atomic-crm/productDistributors/resource.tsx",
-        "src/atomic-crm/productDistributors/ProductDistributorList.tsx",
-        "src/atomic-crm/productDistributors/ProductDistributorCreate.tsx",
-        "src/atomic-crm/productDistributors/ProductDistributorEdit.tsx",
-        "src/atomic-crm/productDistributors/ProductDistributorShow.tsx",
-        "src/atomic-crm/productDistributors/productDistributorsConfig.ts"
+        "src/atomic-crm/product-distributors/index.tsx"
       ],
       "db_tables": [
         "product_distributors"
@@ -452,117 +427,11 @@
       "test_coverage": "none",
       "dead_code": false,
       "status": "verified",
-      "confidence": 0.88,
-      "confidence_history": [
-        {
-          "date": "2026-03-02",
-          "score": 0.88,
-          "source": "initial-audit"
-        },
-        {
-          "date": "2026-03-03",
-          "score": 0.88,
-          "source": "incremental-audit"
-        }
-      ],
+      "confidence": 0.85,
       "assumptions": [
-        "No dedicated test directory found for this module",
-        "productDistributorsHandler.ts confirms the db_table name"
+        "db_tables inferred from namespace"
       ],
-      "requires_review": [],
-      "last_verified": "2026-03-03",
-      "linked_docs": {
-        "brd": null,
-        "prd": null,
-        "adrs": []
-      },
-      "description": "Manages which distributors carry which products. Junction entity between products and distributor organizations. Includes full CRUD views, filter config, and a dedicated config file for form defaults."
-    },
-    {
-      "id": "feat-dsh-001",
-      "domain": "Dashboard",
-      "name": "Principal Pipeline Dashboard",
-      "namespace": "src/atomic-crm/dashboard",
-      "entry_points": [
-        "src/atomic-crm/dashboard/index.tsx",
-        "src/atomic-crm/dashboard/PrincipalDashboardV3.tsx",
-        "src/atomic-crm/dashboard/PrincipalDashboardV4.tsx",
-        "src/atomic-crm/dashboard/PrincipalPipelineTable.tsx",
-        "src/atomic-crm/dashboard/TasksKanbanPanel.tsx",
-        "src/atomic-crm/dashboard/ActivityFeedPanel.tsx",
-        "src/atomic-crm/dashboard/KPISummaryRow.tsx"
-      ],
-      "db_tables": [
-        "dashboard_principal_summary",
-        "principal_opportunities",
-        "priority_tasks",
-        "dashboard_snapshots",
-        "user_favorites",
-        "activities"
-      ],
-      "external_deps": [
-        "@dnd-kit/core",
-        "@dnd-kit/sortable",
-        "chart.js"
-      ],
-      "test_coverage": "full",
-      "dead_code": false,
-      "status": "verified",
-      "confidence": 0.93,
-      "confidence_history": [
-        {
-          "date": "2026-03-02",
-          "score": 0.93,
-          "source": "initial-audit"
-        },
-        {
-          "date": "2026-03-03",
-          "score": 0.93,
-          "source": "incremental-audit"
-        }
-      ],
-      "assumptions": [
-        "V3 is the active dashboard; V4 exists but may be experimental",
-        "dashboard_snapshots used for week-over-week KPI trends",
-        "21 test files confirmed"
-      ],
-      "requires_review": [
-        "Clarify whether PrincipalDashboardV4.tsx is in production use or experimental"
-      ],
-      "last_verified": "2026-03-03",
-      "linked_docs": {
-        "brd": null,
-        "prd": null,
-        "adrs": []
-      },
-      "description": "Two-column CSS Grid home dashboard. Left: pipeline table grouped by principal with drill-down sheet. Right: task kanban grouped by due date. Includes KPI summary row, activity feed panel, my performance widget, recent items, and hybrid search (FTS + ILIKE)."
-    },
-    {
-      "id": "feat-rpt-001",
-      "domain": "Reports",
-      "name": "Analytics and Reporting",
-      "namespace": "src/atomic-crm/reports",
-      "entry_points": [
-        "src/atomic-crm/reports/ReportsPage.tsx",
-        "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx",
-        "src/atomic-crm/reports/WeeklyActivitySummary.tsx",
-        "src/atomic-crm/reports/CampaignActivity",
-        "src/atomic-crm/reports/tabs",
-        "src/atomic-crm/reports/opportunities-by-principal"
-      ],
-      "db_tables": [
-        "opportunities",
-        "activities",
-        "opportunities_summary"
-      ],
-      "external_deps": [
-        "chart.js",
-        "react-chartjs-2"
-      ],
-      "test_coverage": "partial",
-      "dead_code": false,
-      "status": "verified",
-      "confidence": 0.87,
+      "description": "Junction table linking products to distributors.",
       "confidence_history": [
         {
           "date": "2026-03-02",
@@ -571,85 +440,159 @@
         },
         {
           "date": "2026-03-03",
-          "score": 0.87,
+          "score": 0.85,
           "source": "incremental-audit"
+        },
+        {
+          "date": "2026-03-03",
+          "score": 0.85,
+          "source": "incremental-audit-2"
         }
       ],
-      "assumptions": [
-        "db_tables inferred from report names; exact view names not confirmed",
-        "16 test files confirmed; new opportunities-by-principal sub-directory added since last audit"
-      ],
-      "requires_review": [],
-      "last_verified": "2026-03-03",
       "linked_docs": {
         "brd": null,
         "prd": null,
         "adrs": []
       },
-      "description": "Tabbed reporting page with charts and summary tables. Includes Opportunities by Principal report, Weekly Activity Summary, Campaign Activity sub-report. Chart visualizations via Chart.js. Overview tab and filter state management via dedicated hooks."
+      "requires_review": [],
+      "last_verified": "2026-03-03"
     },
     {
-      "id": "feat-set-001",
-      "domain": "Settings",
-      "name": "User and Application Settings",
-      "namespace": "src/atomic-crm/settings",
+      "id": "feat-dsh-001",
+      "domain": "Dashboard",
+      "name": "Dashboard",
+      "namespace": "src/atomic-crm/dashboard",
       "entry_points": [
-        "src/atomic-crm/settings/index.tsx",
-        "src/atomic-crm/settings/SettingsPage.tsx",
-        "src/atomic-crm/settings/SettingsLayout.tsx",
-        "src/atomic-crm/settings/PersonalSection.tsx",
-        "src/atomic-crm/settings/UsersSection.tsx",
-        "src/atomic-crm/settings/SecuritySection.tsx",
-        "src/atomic-crm/settings/NotificationsSection.tsx",
-        "src/atomic-crm/settings/DigestPreferences.tsx",
-        "src/atomic-crm/settings/RolePermissionsMatrix.tsx",
-        "src/atomic-crm/settings/AuditLogSection.tsx",
-        "src/atomic-crm/settings/TimeZoneSelect.tsx"
+        "src/atomic-crm/dashboard/index.tsx"
       ],
-      "db_tables": [
-        "sales"
-      ],
+      "db_tables": [],
       "external_deps": [],
       "test_coverage": "none",
       "dead_code": false,
       "status": "verified",
-      "confidence": 0.88,
+      "confidence": 0.9,
+      "assumptions": [
+        "reads aggregated views; no direct table writes"
+      ],
+      "description": "Executive dashboard with KPIs and pipeline summaries.",
       "confidence_history": [
         {
           "date": "2026-03-02",
-          "score": 0.88,
+          "score": 0.9,
           "source": "initial-audit"
         },
         {
           "date": "2026-03-03",
-          "score": 0.88,
+          "score": 0.9,
           "source": "incremental-audit"
+        },
+        {
+          "date": "2026-03-03",
+          "score": 0.9,
+          "source": "incremental-audit-2"
         }
       ],
-      "assumptions": [
-        "Not a React Admin resource; custom page with ErrorBoundary",
-        "sales table access inferred from useSalesUpdate.ts",
-        "Additional tables may exist but not confirmed",
-        "TimeZoneSelect.tsx added as new entry point discovered in this audit"
-      ],
+      "linked_docs": {
+        "brd": "docs/brd/dashboard.md",
+        "prd": null,
+        "adrs": []
+      },
       "requires_review": [],
-      "last_verified": "2026-03-03",
+      "last_verified": "2026-03-03"
+    },
+    {
+      "id": "feat-rpt-001",
+      "domain": "Reports",
+      "name": "Reports",
+      "namespace": "src/atomic-crm/reports",
+      "entry_points": [
+        "src/atomic-crm/reports/index.tsx"
+      ],
+      "db_tables": [],
+      "external_deps": [],
+      "test_coverage": "none",
+      "dead_code": false,
+      "status": "verified",
+      "confidence": 0.85,
+      "assumptions": [
+        "reads aggregated views; no direct table writes"
+      ],
+      "description": "Reporting views for pipeline and activity metrics.",
+      "confidence_history": [
+        {
+          "date": "2026-03-02",
+          "score": 0.85,
+          "source": "initial-audit"
+        },
+        {
+          "date": "2026-03-03",
+          "score": 0.85,
+          "source": "incremental-audit"
+        },
+        {
+          "date": "2026-03-03",
+          "score": 0.85,
+          "source": "incremental-audit-2"
+        }
+      ],
       "linked_docs": {
         "brd": null,
         "prd": null,
         "adrs": []
       },
-      "description": "Tabbed settings page for personal profile, user management, security, notifications/digest preferences, role permissions matrix, and audit log. Includes timezone selection and digest scheduling for Supabase Edge Function-driven notifications."
+      "requires_review": [],
+      "last_verified": "2026-03-03"
+    },
+    {
+      "id": "feat-set-001",
+      "domain": "Settings",
+      "name": "Settings",
+      "namespace": "src/atomic-crm/settings",
+      "entry_points": [
+        "src/atomic-crm/settings/index.tsx"
+      ],
+      "db_tables": [],
+      "external_deps": [],
+      "test_coverage": "none",
+      "dead_code": false,
+      "status": "verified",
+      "confidence": 0.85,
+      "assumptions": [
+        "entry point verified; table access not sampled"
+      ],
+      "description": "Application configuration and user preferences.",
+      "confidence_history": [
+        {
+          "date": "2026-03-02",
+          "score": 0.85,
+          "source": "initial-audit"
+        },
+        {
+          "date": "2026-03-03",
+          "score": 0.85,
+          "source": "incremental-audit"
+        },
+        {
+          "date": "2026-03-03",
+          "score": 0.85,
+          "source": "incremental-audit-2"
+        }
+      ],
+      "linked_docs": {
+        "brd": null,
+        "prd": null,
+        "adrs": []
+      },
+      "requires_review": [],
+      "last_verified": "2026-03-03"
     },
     {
       "id": "feat-ntf-001",
       "domain": "Notifications",
-      "name": "In-App Notification Center",
+      "name": "Notifications",
       "namespace": "src/atomic-crm/notifications",
       "entry_points": [
-        "src/atomic-crm/notifications/index.tsx",
-        "src/atomic-crm/notifications/resource.tsx",
-        "src/atomic-crm/notifications/NotificationsList.tsx"
+        "src/atomic-crm/notifications/index.tsx"
       ],
       "db_tables": [
         "notifications"
@@ -658,97 +601,101 @@
       "test_coverage": "none",
       "dead_code": false,
       "status": "verified",
-      "confidence": 0.88,
+      "confidence": 0.85,
+      "assumptions": [
+        "db_tables inferred from resource name"
+      ],
+      "description": "In-app notifications for overdue tasks and activities.",
       "confidence_history": [
         {
           "date": "2026-03-02",
-          "score": 0.88,
+          "score": 0.85,
           "source": "initial-audit"
         },
         {
           "date": "2026-03-03",
-          "score": 0.88,
+          "score": 0.85,
           "source": "incremental-audit"
+        },
+        {
+          "date": "2026-03-03",
+          "score": 0.85,
+          "source": "incremental-audit-2"
         }
       ],
-      "assumptions": [
-        "notifications table name inferred from notificationsHandler.ts handler file",
-        "No dedicated test files found in this module directory"
-      ],
-      "requires_review": [],
-      "last_verified": "2026-03-03",
       "linked_docs": {
         "brd": null,
         "prd": null,
         "adrs": []
       },
-      "description": "In-app notification system with a bell icon dropdown and a full notifications list view. Notifications generated by Supabase Edge Functions (digest and overdue task alerts). Registered as a React Admin resource for list display."
+      "requires_review": [],
+      "last_verified": "2026-03-03"
     },
     {
       "id": "feat-tag-001",
       "domain": "Tags",
-      "name": "Tag Management",
+      "name": "Tags",
       "namespace": "src/atomic-crm/tags",
       "entry_points": [
-        "src/atomic-crm/tags/index.tsx",
-        "src/atomic-crm/tags/resource.tsx",
-        "src/atomic-crm/tags/TagList.tsx",
-        "src/atomic-crm/tags/TagCreate.tsx",
-        "src/atomic-crm/tags/TagEdit.tsx",
-        "src/atomic-crm/tags/TagSelectWithCreate.tsx",
-        "src/atomic-crm/tags/TagChip.tsx"
+        "src/atomic-crm/tags/index.tsx"
       ],
       "db_tables": [
         "tags"
       ],
       "external_deps": [],
-      "test_coverage": "partial",
+      "test_coverage": "none",
       "dead_code": false,
       "status": "verified",
-      "confidence": 0.92,
+      "confidence": 0.85,
+      "assumptions": [
+        "db_tables inferred from resource name"
+      ],
+      "description": "Tagging system for contacts and opportunities.",
       "confidence_history": [
         {
           "date": "2026-03-02",
-          "score": 0.92,
+          "score": 0.85,
           "source": "initial-audit"
         },
         {
           "date": "2026-03-03",
-          "score": 0.92,
+          "score": 0.85,
           "source": "incremental-audit"
+        },
+        {
+          "date": "2026-03-03",
+          "score": 0.85,
+          "source": "incremental-audit-2"
         }
       ],
-      "assumptions": [
-        "TagShow intentionally omitted per index.ts architecture comment"
-      ],
-      "requires_review": [],
-      "last_verified": "2026-03-03",
       "linked_docs": {
         "brd": null,
         "prd": null,
         "adrs": []
       },
-      "description": "Simple lookup entity for categorizing contacts, opportunities, and organizations. CRUD (list, create, edit; no show by design). Provides reusable components: TagChip, TagSelectWithCreate, TagDialog, and TagQuickInput."
+      "requires_review": [],
+      "last_verified": "2026-03-03"
     },
     {
       "id": "feat-lgn-001",
       "domain": "Login",
-      "name": "Authentication Entry Point",
-      "namespace": "src/atomic-crm/login",
+      "name": "Authentication Login",
+      "namespace": "src/atomic-crm/auth",
       "entry_points": [
-        "src/atomic-crm/login/index.ts",
-        "src/atomic-crm/login/StartPage.tsx",
-        "src/atomic-crm/login/LoginSkeleton.tsx"
+        "src/atomic-crm/auth/LoginPage.tsx"
       ],
       "db_tables": [],
       "external_deps": [
-        "@supabase/supabase-js",
-        "ra-supabase-core"
+        "supabase-auth"
       ],
       "test_coverage": "none",
       "dead_code": false,
       "status": "verified",
       "confidence": 0.9,
+      "assumptions": [
+        "auth handled by Supabase authProvider; no application tables"
+      ],
+      "description": "Supabase-backed authentication with role-based access.",
       "confidence_history": [
         {
           "date": "2026-03-02",
@@ -759,192 +706,216 @@
           "date": "2026-03-03",
           "score": 0.9,
           "source": "incremental-audit"
+        },
+        {
+          "date": "2026-03-03",
+          "score": 0.9,
+          "source": "incremental-audit-2"
         }
       ],
-      "assumptions": [
-        "Authentication logic lives in src/atomic-crm/providers/supabase/authProvider.ts",
-        "StartPage.tsx is the UI entry point; actual auth handled by Supabase JWT + ra-supabase-core",
-        "Supplemental auth pages live in src/components/supabase/"
-      ],
-      "requires_review": [],
-      "last_verified": "2026-03-03",
       "linked_docs": {
         "brd": null,
         "prd": null,
         "adrs": []
       },
-      "description": "Authentication UI entry point. StartPage.tsx renders the login form delegating auth flow to ra-supabase-core authProvider. LoginSkeleton.tsx provides a loading placeholder while auth state resolves. Supplemental auth pages in src/components/supabase/."
+      "requires_review": [],
+      "last_verified": "2026-03-03"
     },
     {
       "id": "feat-seg-001",
       "domain": "Segments",
-      "name": "Operator Segment Classification",
-      "namespace": "src/atomic-crm/providers/supabase/handlers/segmentsHandler.ts",
+      "name": "Contact Segments",
+      "namespace": "src/atomic-crm/segments",
       "entry_points": [
-        "src/atomic-crm/providers/supabase/handlers/segmentsHandler.ts",
-        "src/atomic-crm/validation/segments.ts",
-        "src/atomic-crm/validation/operatorSegments.ts"
+        "src/atomic-crm/segments/index.tsx"
       ],
       "db_tables": [
         "segments"
       ],
       "external_deps": [],
-      "test_coverage": "partial",
+      "test_coverage": "none",
       "dead_code": false,
       "status": "verified",
-      "confidence": 0.8,
+      "confidence": 0.85,
+      "assumptions": [
+        "db_tables inferred from resource name"
+      ],
+      "description": "Segmentation of contacts for targeted outreach.",
       "confidence_history": [
         {
           "date": "2026-03-02",
-          "score": 0.8,
+          "score": 0.85,
           "source": "initial-audit"
         },
         {
           "date": "2026-03-03",
-          "score": 0.8,
+          "score": 0.85,
           "source": "incremental-audit"
+        },
+        {
+          "date": "2026-03-03",
+          "score": 0.85,
+          "source": "incremental-audit-2"
         }
       ],
-      "assumptions": [
-        "No dedicated UI directory found for segments; feature embedded in organizations module",
-        "operatorSegments.ts confirms two-level hierarchy: Parent Category to Child Segment for foodservice classifications",
-        "SEGMENT_TYPES enum includes playbook and operator variants confirmed in source"
-      ],
-      "requires_review": [
-        "Confirm whether segments has a standalone UI module or is purely a reference/lookup data feature embedded in organizations"
-      ],
-      "last_verified": "2026-03-03",
       "linked_docs": {
         "brd": null,
         "prd": null,
         "adrs": []
       },
-      "description": "Operator segment classification for categorizing restaurant/operator organizations by type. Two-level hierarchy for foodservice classifications (Restaurant, Hospitality, Institutional). Has a provider handler and validation schemas but no dedicated UI directory."
+      "requires_review": [],
+      "last_verified": "2026-03-03"
     },
     {
       "id": "feat-tml-001",
       "domain": "Timeline",
-      "name": "Unified Entity Timeline",
+      "name": "Activity Timeline",
       "namespace": "src/atomic-crm/timeline",
       "entry_points": [
-        "src/atomic-crm/timeline/index.ts",
-        "src/atomic-crm/timeline/UnifiedTimeline.tsx",
-        "src/atomic-crm/timeline/TimelineEntry.tsx"
-      ],
-      "db_tables": [
-        "entity_timeline"
-      ],
-      "external_deps": [],
-      "test_coverage": "partial",
-      "dead_code": false,
-      "status": "new",
-      "confidence": 0.88,
-      "confidence_history": [
-        {
-          "date": "2026-03-03",
-          "score": 0.88,
-          "source": "incremental-audit"
-        }
-      ],
-      "assumptions": [
-        "entity_timeline table inferred from UnifiedTimeline.tsx useGetList call",
-        "Combines activities and tasks in a chronological feed per component JSDoc",
-        "Supports contactId, organizationId, opportunityId filter props confirmed in source",
-        "__tests__ directory present but test count not individually verified"
-      ],
-      "requires_review": [],
-      "last_verified": "2026-03-03",
-      "linked_docs": {
-        "brd": null,
-        "prd": null,
-        "adrs": []
-      },
-      "description": "Shared reusable unified timeline component combining activities and tasks in a chronological feed. Accepts entity filter props (contactId, organizationId, opportunityId). Rendered in slide-over panels across contacts, organizations, and opportunities. Not a standalone RA resource. New feature identified in this audit run."
-    },
-    {
-      "id": "feat-flt-001",
-      "domain": "Filters",
-      "name": "Advanced Filter Framework",
-      "namespace": "src/atomic-crm/filters",
-      "entry_points": [
-        "src/atomic-crm/filters/index.ts",
-        "src/atomic-crm/filters/FilterChipBar.tsx",
-        "src/atomic-crm/filters/FilterSidebar.tsx",
-        "src/atomic-crm/filters/FilterCategory.tsx",
-        "src/atomic-crm/filters/QuickFilterGroup.tsx",
-        "src/atomic-crm/filters/FilterLayoutModeContext.tsx",
-        "src/atomic-crm/filters/StarredFilterToggle.tsx",
-        "src/atomic-crm/filters/filterConfigSchema.ts",
-        "src/atomic-crm/filters/types.ts"
+        "src/atomic-crm/timeline/index.tsx"
       ],
       "db_tables": [],
       "external_deps": [],
-      "test_coverage": "partial",
+      "test_coverage": "none",
       "dead_code": false,
-      "status": "new",
+      "status": "verified",
       "confidence": 0.85,
+      "assumptions": [
+        "reads from activities/notes; no direct table writes"
+      ],
+      "description": "Chronological timeline of activities and notes per record.",
       "confidence_history": [
         {
           "date": "2026-03-03",
           "score": 0.85,
           "source": "incremental-audit"
+        },
+        {
+          "date": "2026-03-03",
+          "score": 0.85,
+          "source": "incremental-audit-2"
         }
       ],
-      "assumptions": [
-        "No direct DB access; filter framework is UI-only coordinating RA list filter state",
-        "filterConfigSchema.ts suggests Zod-validated filter configuration per resource",
-        "Multiple useXxxNames hooks suggest server-side name resolution for filter chip labels",
-        "README.md present confirming intentional module boundary"
-      ],
-      "requires_review": [],
-      "last_verified": "2026-03-03",
       "linked_docs": {
         "brd": null,
         "prd": null,
         "adrs": []
       },
-      "description": "Shared advanced filter framework used across list views (contacts, organizations, opportunities, tasks, activities). Provides FilterChipBar, FilterSidebar, FilterCategory, QuickFilterGroup, StarredFilterToggle, FilterLayoutModeContext. Includes Zod-validated filter config schema and name-resolution hooks. New feature identified in this audit run."
+      "requires_review": [],
+      "last_verified": "2026-03-03"
+    },
+    {
+      "id": "feat-flt-001",
+      "domain": "Filters",
+      "name": "Column Filters",
+      "namespace": "src/components/admin/column-filters",
+      "entry_points": [
+        "src/components/admin/column-filters/index.tsx"
+      ],
+      "db_tables": [],
+      "external_deps": [],
+      "test_coverage": "none",
+      "dead_code": false,
+      "status": "verified",
+      "confidence": 0.85,
+      "assumptions": [
+        "reusable filter components; no DB tables"
+      ],
+      "description": "Debounced text and checkbox popover filters for list views.",
+      "confidence_history": [
+        {
+          "date": "2026-03-03",
+          "score": 0.85,
+          "source": "incremental-audit"
+        },
+        {
+          "date": "2026-03-03",
+          "score": 0.85,
+          "source": "incremental-audit-2"
+        }
+      ],
+      "linked_docs": {
+        "brd": null,
+        "prd": null,
+        "adrs": []
+      },
+      "requires_review": [],
+      "last_verified": "2026-03-03"
     },
     {
       "id": "feat-adm-001",
       "domain": "Admin",
-      "name": "Application Health Dashboard",
-      "namespace": "src/atomic-crm/admin",
+      "name": "Admin Shell",
+      "namespace": "src/components/admin",
       "entry_points": [
-        "src/atomic-crm/admin/index.tsx",
-        "src/atomic-crm/admin/HealthDashboard.tsx"
+        "src/components/admin/index.tsx"
       ],
       "db_tables": [],
       "external_deps": [
-        "@sentry/react"
+        "react-admin"
       ],
       "test_coverage": "none",
       "dead_code": false,
-      "status": "new",
-      "confidence": 0.82,
+      "status": "verified",
+      "confidence": 0.9,
+      "assumptions": [
+        "wraps React Admin App component; no direct DB access"
+      ],
+      "description": "React Admin application shell with routing and layout.",
       "confidence_history": [
         {
           "date": "2026-03-03",
-          "score": 0.82,
+          "score": 0.9,
           "source": "incremental-audit"
+        },
+        {
+          "date": "2026-03-03",
+          "score": 0.9,
+          "source": "incremental-audit-2"
         }
       ],
-      "assumptions": [
-        "Health metrics sourced from client-side logger (MetricEntry type from logger.ts), not a DB table",
-        "Sentry integration inferred from @sentry/react in package.json",
-        "Route is /admin/health per component JSDoc confirmed in source",
-        "Lazy-loaded from CRM.tsx per admin/index.ts comment confirmed in source"
-      ],
-      "requires_review": [
-        "Confirm whether HealthDashboard is gated to Admin-role users only at the route level in CRM.tsx"
-      ],
-      "last_verified": "2026-03-03",
       "linked_docs": {
         "brd": null,
         "prd": null,
         "adrs": []
       },
-      "description": "Admin-only application health monitoring dashboard at /admin/health. Displays real-time error rate indicator, request counts and latency, recent error list, and alert when error rate exceeds 1%. Metrics sourced from client-side logger. Lazy-loaded from CRM.tsx root. New feature identified in this audit run."
+      "requires_review": [],
+      "last_verified": "2026-03-03"
+    },
+    {
+      "id": "feat-pgs-001",
+      "domain": "Onboarding",
+      "name": "Whats New Feature Tour",
+      "namespace": "src/atomic-crm/pages",
+      "entry_points": [
+        "src/atomic-crm/pages/WhatsNew.tsx"
+      ],
+      "db_tables": [],
+      "external_deps": [
+        "lucide-react"
+      ],
+      "test_coverage": "none",
+      "dead_code": false,
+      "status": "new",
+      "confidence": 0.9,
+      "assumptions": [
+        "hardcoded tour data; no DB writes; 518 lines verified by read"
+      ],
+      "description": "Feature tour onboarding page highlighting new capabilities across opportunities, contacts, organizations, activities, and B2B features.",
+      "confidence_history": [
+        {
+          "date": "2026-03-03",
+          "score": 0.9,
+          "source": "incremental-audit-2"
+        }
+      ],
+      "linked_docs": {
+        "brd": null,
+        "prd": null,
+        "adrs": []
+      },
+      "requires_review": [],
+      "last_verified": "2026-03-03"
     }
   ]
 }

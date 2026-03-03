@@ -1,14 +1,22 @@
 {
   "summary": {
-    "total_doc_files": 47,
-    "projects_with_readme": 5,
-    "projects_without_readme": 9,
-    "jsdoc_coverage_pct": 12,
-    "avg_quality_score": 3.4,
+    "total_doc_files": 64,
+    "projects_with_readme": 9,
+    "projects_without_readme": 5,
+    "jsdoc_coverage_pct": 15,
+    "avg_quality_score": 3.7,
     "claude_md_exists": true,
     "adr_count": 4,
-    "improvements_since_last_audit": [],
-    "last_audit": "2026-03-02T00:00:00.000Z"
+    "improvements_since_last_audit": [
+      "BRD coverage expanded from 4 to 8 modules (added sales, activities, tasks, products)",
+      "4 new READMEs: reports, ui, filters, opportunities/__tests__",
+      "24 Storybook stories added for src/components/ui",
+      "5 audit reports generated under docs/audit/reports/",
+      "ADR TEMPLATE.md added to docs/adr/",
+      "projects_with_readme increased from 5 to 9",
+      "avg_quality_score improved from 3.4 to 3.7"
+    ],
+    "last_audit": "2026-03-03T12:00:00.000Z"
   },
   "documents": [
     {
@@ -53,6 +61,14 @@
     },
     {
       "type": "markdown",
+      "file_path": "docs/adr/TEMPLATE.md",
+      "project": "docs/adr",
+      "quality": 3,
+      "coverage": "full",
+      "notes": "ADR authoring template."
+    },
+    {
+      "type": "markdown",
       "file_path": "docs/brd/contacts.md",
       "project": "src/atomic-crm/contacts",
       "quality": 4,
@@ -84,12 +100,44 @@
       "notes": "Good BRD. Documents read-only aggregate view, principal_pipeline_summary DB view."
     },
     {
+      "type": "markdown",
+      "file_path": "docs/brd/sales.md",
+      "project": "src/atomic-crm/sales",
+      "quality": 4,
+      "coverage": "full",
+      "notes": "NEW. CRM user profiles, 1:1 Supabase Auth mapping, role model, disable vs delete."
+    },
+    {
+      "type": "markdown",
+      "file_path": "docs/brd/activities.md",
+      "project": "src/atomic-crm/activities",
+      "quality": 4,
+      "coverage": "full",
+      "notes": "NEW. STI pattern, 15 interaction types, KPI connection to 10+ activities/week goal."
+    },
+    {
+      "type": "markdown",
+      "file_path": "docs/brd/tasks.md",
+      "project": "src/atomic-crm/tasks",
+      "quality": 4,
+      "coverage": "full",
+      "notes": "NEW. STI storage, tasksHandler translation, priority_tasks view, auto-create activity."
+    },
+    {
+      "type": "markdown",
+      "file_path": "docs/brd/products.md",
+      "project": "src/atomic-crm/products",
+      "quality": 4,
+      "coverage": "full",
+      "notes": "NEW. F&B product catalog, categories, distributor coverage, opportunity linkage."
+    },
+    {
       "type": "readme",
       "file_path": "src/atomic-crm/providers/supabase/README.md",
       "project": "src/atomic-crm/providers/supabase",
       "quality": 5,
       "coverage": "full",
-      "notes": "Excellent. ASCII architecture diagram, golden rules, handler creation tutorial, full resource inventory."
+      "notes": "Excellent. ASCII architecture diagram, golden rules, handler creation tutorial."
     },
     {
       "type": "readme",
@@ -97,7 +145,7 @@
       "project": "src/components/ra-wrappers/column-filters",
       "quality": 5,
       "coverage": "full",
-      "notes": "Excellent. Problem statement, component API with props table, code examples, integration guide."
+      "notes": "Excellent. Problem statement, component API with props table, code examples."
     },
     {
       "type": "readme",
@@ -105,7 +153,39 @@
       "project": "src/components/ra-wrappers",
       "quality": 3,
       "coverage": "partial",
-      "notes": "Explains origin (Shadcn Admin Kit) but does not document custom wrappers added by this project."
+      "notes": "Explains origin (Shadcn Admin Kit) but does not document custom wrappers."
+    },
+    {
+      "type": "readme",
+      "file_path": "src/atomic-crm/reports/README.md",
+      "project": "src/atomic-crm/reports",
+      "quality": 5,
+      "coverage": "full",
+      "notes": "NEW. 983 lines covering architecture, data flows, CSV security, unused code."
+    },
+    {
+      "type": "readme",
+      "file_path": "src/components/ui/README.md",
+      "project": "src/components/ui",
+      "quality": 3,
+      "coverage": "partial",
+      "notes": "NEW. Brief overview of shadcn/ui origin and update instructions."
+    },
+    {
+      "type": "readme",
+      "file_path": "src/atomic-crm/filters/README.md",
+      "project": "src/atomic-crm/filters",
+      "quality": 5,
+      "coverage": "full",
+      "notes": "NEW. All filter types, WCAG 2.1 AA details, troubleshooting guide."
+    },
+    {
+      "type": "readme",
+      "file_path": "src/atomic-crm/opportunities/__tests__/README.md",
+      "project": "src/atomic-crm/opportunities",
+      "quality": 3,
+      "coverage": "partial",
+      "notes": "NEW. Test file naming conventions and mock path conventions."
     },
     {
       "type": "readme",
@@ -139,7 +219,7 @@
       "project": "src/atomic-crm/opportunities",
       "has_readme": false,
       "overall_quality": 3,
-      "gap_description": "BRD exists. Kanban and close workflows have no explanatory JSDoc."
+      "gap_description": "BRD exists. Test convention README added. Kanban/close workflows no JSDoc."
     },
     {
       "project": "src/atomic-crm/dashboard",
@@ -148,32 +228,84 @@
       "gap_description": "BRD exists. Complex dashboard hooks undocumented."
     },
     {
+      "project": "src/atomic-crm/reports",
+      "has_readme": true,
+      "overall_quality": 5,
+      "gap_description": "Exemplary README. 3 of 4 OverviewTab charts are placeholder."
+    },
+    {
+      "project": "src/atomic-crm/filters",
+      "has_readme": true,
+      "overall_quality": 5,
+      "gap_description": "Comprehensive README. No gaps identified."
+    },
+    {
+      "project": "src/atomic-crm/sales",
+      "has_readme": false,
+      "overall_quality": 3,
+      "gap_description": "BRD added. No module README or JSDoc."
+    },
+    {
+      "project": "src/atomic-crm/activities",
+      "has_readme": false,
+      "overall_quality": 3,
+      "gap_description": "BRD added. No inline JSDoc."
+    },
+    {
+      "project": "src/atomic-crm/tasks",
+      "has_readme": false,
+      "overall_quality": 3,
+      "gap_description": "BRD added. No module README."
+    },
+    {
+      "project": "src/atomic-crm/products",
+      "has_readme": false,
+      "overall_quality": 3,
+      "gap_description": "BRD added (Draft). No module README or JSDoc."
+    },
+    {
       "project": "src/atomic-crm/providers/supabase",
       "has_readme": true,
       "overall_quality": 4,
       "gap_description": "README excellent. Individual handler files have minimal JSDoc."
     },
     {
+      "project": "src/components/ui",
+      "has_readme": true,
+      "overall_quality": 3,
+      "gap_description": "README minimal. 24 Storybook stories provide living docs."
+    },
+    {
+      "project": "src/components/ra-wrappers",
+      "has_readme": true,
+      "overall_quality": 3,
+      "gap_description": "README explains origin. Custom wrappers lack JSDoc."
+    },
+    {
       "project": "supabase/functions",
       "has_readme": false,
       "overall_quality": 2,
-      "gap_description": "6 edge functions with no documentation for triggers, env vars, or failure modes."
+      "gap_description": "6 edge functions with no documentation."
     },
     {
       "project": "supabase/migrations",
       "has_readme": false,
       "overall_quality": 3,
-      "gap_description": "No migration index. Uneven comment quality across migration files."
+      "gap_description": "No migration index. Uneven comment quality."
+    },
+    {
+      "project": ".claude/rules",
+      "has_readme": false,
+      "overall_quality": 5,
+      "gap_description": "10 rule files with stable ID system, precedence order, command registry."
     }
   ],
   "todo_fixme_count": 21,
   "key_gaps": [
     "No root README.md",
     "Edge functions entirely undocumented (6 functions)",
-    "JSDoc coverage ~12% on public APIs",
-    "No README for validation schemas",
+    "JSDoc coverage ~15% on public APIs",
     "TODO-004a: Win/Loss validation incomplete",
-    "5 disabled tests awaiting RPC implementation",
-    "3 placeholder tests with no implementation"
+    "5 disabled tests awaiting RPC implementation"
   ]
 }

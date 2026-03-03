@@ -1,206 +1,210 @@
 {
-  "features": [
-    {
-      "domain": "Contacts",
-      "has_brd": true,
-      "has_prd": false,
-      "related_adrs": [
-        "001-supabase-provider-pattern",
-        "002-soft-delete-convention",
-        "004-validation-at-provider-boundary",
-        "003-three-tier-ui-architecture"
-      ]
-    },
-    {
-      "domain": "Organizations",
-      "has_brd": true,
-      "has_prd": false,
-      "related_adrs": [
-        "001-supabase-provider-pattern",
-        "002-soft-delete-convention",
-        "004-validation-at-provider-boundary",
-        "003-three-tier-ui-architecture"
-      ]
-    },
-    {
-      "domain": "Opportunities",
-      "has_brd": true,
-      "has_prd": false,
-      "related_adrs": [
-        "001-supabase-provider-pattern",
-        "002-soft-delete-convention",
-        "004-validation-at-provider-boundary",
-        "003-three-tier-ui-architecture"
-      ]
-    },
-    {
-      "domain": "Sales",
-      "has_brd": true,
-      "has_prd": false,
-      "related_adrs": [
-        "001-supabase-provider-pattern",
-        "002-soft-delete-convention",
-        "004-validation-at-provider-boundary"
-      ],
-      "brd_path": "docs/brd/sales.md"
-    },
-    {
-      "domain": "Tasks",
-      "has_brd": true,
-      "has_prd": false,
-      "related_adrs": [
-        "001-supabase-provider-pattern",
-        "002-soft-delete-convention",
-        "004-validation-at-provider-boundary"
-      ]
-    },
-    {
-      "domain": "Activities",
-      "has_brd": true,
-      "has_prd": false,
-      "related_adrs": [
-        "001-supabase-provider-pattern",
-        "002-soft-delete-convention",
-        "004-validation-at-provider-boundary"
-      ]
-    },
-    {
-      "domain": "Notes",
-      "has_brd": false,
-      "has_prd": false,
-      "related_adrs": []
-    },
-    {
-      "domain": "Products",
-      "has_brd": true,
-      "has_prd": false,
-      "related_adrs": [
-        "001-supabase-provider-pattern",
-        "002-soft-delete-convention",
-        "004-validation-at-provider-boundary"
-      ]
-    },
-    {
-      "domain": "ProductDistributors",
-      "has_brd": false,
-      "has_prd": false,
-      "related_adrs": [
-        "001-supabase-provider-pattern",
-        "002-soft-delete-convention",
-        "004-validation-at-provider-boundary"
-      ]
-    },
-    {
-      "domain": "Dashboard",
-      "has_brd": true,
-      "has_prd": false,
-      "related_adrs": [
-        "003-three-tier-ui-architecture"
-      ]
-    },
-    {
-      "domain": "Reports",
-      "has_brd": false,
-      "has_prd": false,
-      "related_adrs": [
-        "003-three-tier-ui-architecture"
-      ]
-    },
-    {
-      "domain": "Settings",
-      "has_brd": false,
-      "has_prd": false,
-      "related_adrs": []
-    },
-    {
-      "domain": "Notifications",
-      "has_brd": false,
-      "has_prd": false,
-      "related_adrs": [
-        "003-three-tier-ui-architecture"
-      ]
-    },
-    {
-      "domain": "Tags",
-      "has_brd": false,
-      "has_prd": false,
-      "related_adrs": [
-        "003-three-tier-ui-architecture"
-      ]
-    },
-    {
-      "domain": "Login",
-      "has_brd": false,
-      "has_prd": false,
-      "related_adrs": []
-    },
-    {
-      "domain": "Segments",
-      "has_brd": false,
-      "has_prd": false,
-      "related_adrs": []
-    },
-    {
-      "domain": "Timeline",
-      "has_brd": false,
-      "has_prd": false,
-      "related_adrs": []
-    },
-    {
-      "domain": "Filters",
-      "has_brd": false,
-      "has_prd": false,
-      "related_adrs": []
-    },
-    {
-      "domain": "Admin",
-      "has_brd": false,
-      "has_prd": false,
-      "related_adrs": []
-    }
-  ],
-  "gaps": {
-    "missing_brd": [
-      "Notes",
-      "ProductDistributors",
-      "Reports",
-      "Settings",
-      "Notifications",
-      "Tags",
-      "Login",
-      "Segments",
-      "Timeline",
-      "Filters",
-      "Admin"
-    ],
-    "missing_prd": [
-      "Contacts",
-      "Organizations",
-      "Opportunities",
-      "Sales",
-      "Tasks",
-      "Activities",
-      "Notes",
-      "Products",
-      "ProductDistributors",
-      "Dashboard",
-      "Reports",
-      "Settings",
-      "Notifications",
-      "Tags",
-      "Login",
-      "Segments",
-      "Timeline",
-      "Filters",
-      "Admin"
-    ],
-    "missing_adr_coverage": []
-  },
   "summary": {
-    "total_features": 19,
+    "total_features": 20,
     "features_with_brd": 8,
-    "features_with_prd": 0,
-    "adrs_count": 4,
-    "coverage_pct": 42
-  }
+    "features_with_prd": 3,
+    "features_with_adr": 0,
+    "brd_coverage_pct": 40,
+    "prd_coverage_pct": 15,
+    "adr_count": 4,
+    "adr_topics": [
+      "supabase-provider-pattern",
+      "soft-delete-convention",
+      "three-tier-ui-architecture",
+      "validation-at-provider-boundary"
+    ],
+    "gaps_priority": [
+      {
+        "feature": "feat-rpt-001",
+        "domain": "Reports",
+        "risk": "high",
+        "missing": [
+          "brd",
+          "prd"
+        ],
+        "note": "High-risk module with no BRD despite complex architecture"
+      },
+      {
+        "feature": "feat-ntf-001",
+        "domain": "Notifications",
+        "risk": "medium",
+        "missing": [
+          "brd",
+          "prd"
+        ],
+        "note": "Cross-cutting feature used by digest and overdue-tasks"
+      },
+      {
+        "feature": "feat-pdi-001",
+        "domain": "ProductDistributors",
+        "risk": "medium",
+        "missing": [
+          "brd",
+          "prd"
+        ],
+        "note": "Junction table with authorization implications"
+      },
+      {
+        "feature": "feat-not-001",
+        "domain": "Notes",
+        "risk": "medium",
+        "missing": [
+          "brd",
+          "prd"
+        ]
+      }
+    ],
+    "last_audit": "2026-03-03T18:00:00.000Z"
+  },
+  "linkage": [
+    {
+      "feature_id": "feat-cnt-001",
+      "domain": "Contacts",
+      "brd": "docs/brd/contacts.md",
+      "prd": "docs/prd/contacts/PRD-contacts.md",
+      "adr": null,
+      "gaps": [
+        "ADR needed: document architectural decisions for this feature (import wizard multi-step flow, CSV formula injection sanitization, contact hierarchy self-referential constraint, wrapper composition order)"
+      ]
+    },
+    {
+      "feature_id": "feat-org-001",
+      "domain": "Organizations",
+      "brd": "docs/brd/organizations.md",
+      "prd": "docs/prd/organizations/PRD-organizations.md",
+      "adr": null,
+      "gaps": [
+        "ADR needed: document architectural decisions for this feature (self-referential hierarchy constraint, wrapper composition order, import wizard flow, CSV column alias strategy)"
+      ]
+    },
+    {
+      "feature_id": "feat-opp-001",
+      "domain": "Opportunities",
+      "brd": "docs/brd/opportunities.md",
+      "prd": "docs/prd/opportunities/PRD-opportunities.md",
+      "adr": null,
+      "gaps": [
+        "ADR needed: document architectural decisions for this feature (Strangler Fig pattern, wrapper composition order, product sync via RPC, Quick Add redirect)"
+      ]
+    },
+    {
+      "feature_id": "feat-sal-001",
+      "domain": "Sales",
+      "brd": "docs/brd/sales.md",
+      "prd": null,
+      "adr": null
+    },
+    {
+      "feature_id": "feat-tsk-001",
+      "domain": "Tasks",
+      "brd": "docs/brd/tasks.md",
+      "prd": null,
+      "adr": null
+    },
+    {
+      "feature_id": "feat-act-001",
+      "domain": "Activities",
+      "brd": "docs/brd/activities.md",
+      "prd": null,
+      "adr": null
+    },
+    {
+      "feature_id": "feat-not-001",
+      "domain": "Notes",
+      "brd": null,
+      "prd": null,
+      "adr": null
+    },
+    {
+      "feature_id": "feat-prd-001",
+      "domain": "Products",
+      "brd": "docs/brd/products.md",
+      "prd": null,
+      "adr": null
+    },
+    {
+      "feature_id": "feat-pdi-001",
+      "domain": "ProductDistributors",
+      "brd": null,
+      "prd": null,
+      "adr": null
+    },
+    {
+      "feature_id": "feat-dsh-001",
+      "domain": "Dashboard",
+      "brd": "docs/brd/dashboard.md",
+      "prd": null,
+      "adr": null
+    },
+    {
+      "feature_id": "feat-rpt-001",
+      "domain": "Reports",
+      "brd": null,
+      "prd": null,
+      "adr": null
+    },
+    {
+      "feature_id": "feat-set-001",
+      "domain": "Settings",
+      "brd": null,
+      "prd": null,
+      "adr": null
+    },
+    {
+      "feature_id": "feat-ntf-001",
+      "domain": "Notifications",
+      "brd": null,
+      "prd": null,
+      "adr": null
+    },
+    {
+      "feature_id": "feat-tag-001",
+      "domain": "Tags",
+      "brd": null,
+      "prd": null,
+      "adr": null
+    },
+    {
+      "feature_id": "feat-lgn-001",
+      "domain": "Login",
+      "brd": null,
+      "prd": null,
+      "adr": null
+    },
+    {
+      "feature_id": "feat-seg-001",
+      "domain": "Segments",
+      "brd": null,
+      "prd": null,
+      "adr": null
+    },
+    {
+      "feature_id": "feat-tml-001",
+      "domain": "Timeline",
+      "brd": null,
+      "prd": null,
+      "adr": null
+    },
+    {
+      "feature_id": "feat-flt-001",
+      "domain": "Filters",
+      "brd": null,
+      "prd": null,
+      "adr": null
+    },
+    {
+      "feature_id": "feat-adm-001",
+      "domain": "Admin",
+      "brd": null,
+      "prd": null,
+      "adr": null
+    },
+    {
+      "feature_id": "feat-pgs-001",
+      "domain": "Onboarding",
+      "brd": null,
+      "prd": null,
+      "adr": null
+    }
+  ]
 }

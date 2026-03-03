@@ -1,32 +1,42 @@
 {
   "summary": {
-    "total_integrations": 12,
+    "total_integrations": 21,
     "by_category": {
       "auth": 2,
-      "api": 4,
+      "api": 5,
       "database": 2,
-      "edge_functions": 6,
-      "monitoring": 1,
-      "file_based": 1,
-      "storage": 2
+      "edge_functions": 7,
+      "monitoring": 2,
+      "file_based": 0,
+      "storage": 1,
+      "cicd": 2
     },
-    "security_issues_count": 6,
-    "hardcoded_credentials_count": 2,
-    "changes_since_last_audit": [],
-    "last_audit": "2026-03-03T00:00:00.000Z"
+    "security_issues_count": 7,
+    "hardcoded_credentials_count": 3,
+    "changes_since_last_audit": [
+      "CORRECTED: total_integrations count fixed from 12 to 21",
+      "NEW int-monitor-002: Sentry source map upload API (sentryVitePlugin)",
+      "NEW int-api-006: Chromatic visual regression testing service",
+      "NEW int-cicd-001: GitHub Actions CI workflow",
+      "NEW int-cicd-002: GitHub Actions Supabase deploy workflow",
+      "NEW sec-007: Production CSP contains unsafe-inline in style-src",
+      "UPDATED sec-005: supabase/functions/.env now contains ES256 JWT tokens",
+      "CONFIRMED: StorageService Math.random() (sec-003) still unresolved",
+      "CONFIRMED: .env.development and .env.production with live keys (sec-001, sec-002)"
+    ],
+    "last_audit": "2026-03-03T12:00:00.000Z"
   },
   "integrations": [
     {
       "id": "int-auth-001",
       "category": "auth",
-      "name": "Supabase Auth (Client)",
+      "name": "Supabase Auth (Client SDK)",
       "provider": "Supabase",
       "files": [
         "src/atomic-crm/providers/supabase/supabase.ts",
-        "src/atomic-crm/providers/supabase/authProvider.ts",
-        "src/atomic-crm/providers/supabase/index.ts"
+        "src/atomic-crm/providers/supabase/authProvider.ts"
       ],
-      "protocol": "REST + WebSocket (Realtime)",
+      "protocol": "REST + WebSocket",
       "auth_method": "api_key",
       "confidence": 0.99
     },
@@ -49,10 +59,7 @@
       "category": "database",
       "name": "Supabase PostgreSQL (Data Provider)",
       "provider": "Supabase",
-      "files": [
-        "src/atomic-crm/providers/supabase/composedDataProvider.ts",
-        "src/atomic-crm/providers/supabase/handlers"
-      ],
+      "files": ["src/atomic-crm/providers/supabase/composedDataProvider.ts"],
       "protocol": "REST (PostgREST)",
       "auth_method": "api_key",
       "confidence": 0.99
@@ -60,14 +67,9 @@
     {
       "id": "int-db-002",
       "category": "database",
-      "name": "Supabase PostgreSQL (Edge Function Admin Client)",
+      "name": "Supabase PostgreSQL (Edge Function Admin)",
       "provider": "Supabase",
-      "files": [
-        "supabase/functions/_shared/supabaseAdmin.ts",
-        "supabase/functions/daily-digest/index.ts",
-        "supabase/functions/check-overdue-tasks/index.ts",
-        "supabase/functions/capture-dashboard-snapshots/index.ts"
-      ],
+      "files": ["supabase/functions/_shared/supabaseAdmin.ts"],
       "protocol": "REST (PostgREST)",
       "auth_method": "api_key",
       "confidence": 0.99
@@ -138,11 +140,22 @@
     {
       "id": "int-monitor-001",
       "category": "monitoring",
-      "name": "Sentry Error Monitoring and Session Replay",
+      "name": "Sentry Error Monitoring (Runtime)",
       "provider": "Sentry",
       "files": ["src/main.tsx", "vite.config.ts"],
       "protocol": "HTTPS",
+      "auth_method": "api_key",
       "confidence": 0.99
+    },
+    {
+      "id": "int-monitor-002",
+      "category": "monitoring",
+      "name": "Sentry Source Map Upload (Build-time)",
+      "provider": "Sentry",
+      "files": ["vite.config.ts"],
+      "protocol": "HTTPS",
+      "auth_method": "api_key",
+      "confidence": 0.97
     },
     {
       "id": "int-api-001",
@@ -151,6 +164,7 @@
       "provider": "Gravatar (Automattic)",
       "files": ["src/atomic-crm/utils/avatar.utils.ts"],
       "protocol": "HTTPS",
+      "auth_method": "none",
       "confidence": 0.97
     },
     {
@@ -160,43 +174,78 @@
       "provider": "favicon.show",
       "files": ["src/atomic-crm/utils/avatar.utils.ts"],
       "protocol": "HTTPS",
+      "auth_method": "none",
       "confidence": 0.97
     },
     {
       "id": "int-api-003",
       "category": "api",
-      "name": "ui-avatars.com Fallback Avatar Service",
-      "provider": "ui-avatars.com",
+      "name": "Direct Domain Favicon Fetch",
+      "provider": "Target Domain",
       "files": ["src/atomic-crm/utils/avatar.utils.ts"],
       "protocol": "HTTPS",
+      "auth_method": "none",
       "confidence": 0.97
     },
     {
       "id": "int-api-004",
       "category": "api",
+      "name": "ui-avatars.com Fallback",
+      "provider": "ui-avatars.com",
+      "files": ["src/atomic-crm/utils/avatar.utils.ts"],
+      "protocol": "HTTPS",
+      "auth_method": "none",
+      "confidence": 0.97
+    },
+    {
+      "id": "int-api-005",
+      "category": "api",
       "name": "Google Fonts CDN",
       "provider": "Google",
       "files": ["src/config/csp-config.ts"],
       "protocol": "HTTPS",
+      "auth_method": "none",
       "confidence": 0.95
+    },
+    {
+      "id": "int-api-006",
+      "category": "api",
+      "name": "Chromatic Visual Regression Testing",
+      "provider": "Chromatic",
+      "files": ["package.json"],
+      "protocol": "HTTPS",
+      "auth_method": "api_key",
+      "confidence": 0.92
+    },
+    {
+      "id": "int-cicd-001",
+      "category": "cicd",
+      "name": "GitHub Actions CI Pipeline",
+      "provider": "GitHub",
+      "files": [".github/workflows/ci.yml", ".github/workflows/security.yml"],
+      "protocol": "HTTPS",
+      "auth_method": "oauth",
+      "confidence": 0.97
+    },
+    {
+      "id": "int-cicd-002",
+      "category": "cicd",
+      "name": "GitHub Actions Supabase Deploy",
+      "provider": "Supabase + GitHub",
+      "files": [".github/workflows/supabase-deploy.yml"],
+      "protocol": "HTTPS",
+      "auth_method": "api_key",
+      "confidence": 0.99
     },
     {
       "id": "int-storage-001",
       "category": "storage",
-      "name": "Supabase Storage (Attachments Bucket)",
+      "name": "Supabase Storage (Attachments)",
       "provider": "Supabase",
       "files": ["src/atomic-crm/providers/supabase/services/StorageService.ts"],
       "protocol": "HTTPS (S3-compatible)",
-      "confidence": 0.95
-    },
-    {
-      "id": "int-storage-002",
-      "category": "storage",
-      "name": "GitHub Pages Static Hosting",
-      "provider": "GitHub",
-      "files": ["scripts/ghpages-deploy.mjs", "package.json"],
-      "protocol": "HTTPS",
-      "confidence": 0.9
+      "auth_method": "api_key",
+      "confidence": 0.97
     }
   ],
   "security_observations": [
@@ -205,92 +254,91 @@
       "severity": "high",
       "type": "hardcoded_credential",
       "file_path": ".env.development",
-      "description": "VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY hardcoded in committed file.",
-      "recommendation": "Move to .gitignore. Inject via CI/CD."
+      "description": "Live dev Supabase URL + anon key committed to version control."
     },
     {
       "id": "sec-002",
       "severity": "high",
       "type": "hardcoded_credential",
       "file_path": ".env.production",
-      "description": "Production VITE_SUPABASE_URL and anon key committed to git.",
-      "recommendation": "Remove from version control. Rotate key if repo is public."
+      "description": "Live production Supabase URL + anon key committed to version control."
     },
     {
       "id": "sec-003",
       "severity": "medium",
       "type": "unvalidated_input",
       "file_path": "src/atomic-crm/providers/supabase/services/StorageService.ts",
-      "description": "Math.random() for filenames, no MIME allowlist validation. Violates CORE-019.",
-      "recommendation": "Use crypto.randomUUID(). Add MIME allowlist."
+      "description": "Math.random() filenames, no MIME allowlist, public URLs instead of signed."
     },
     {
       "id": "sec-004",
       "severity": "medium",
       "type": "unvalidated_input",
       "file_path": "supabase/functions/users/index.ts",
-      "description": "redirectTo URL origin fallback behavior relies on ALLOWED_ORIGINS completeness.",
-      "recommendation": "Require SITE_URL env var. Fail fast if absent."
+      "description": "SITE_URL fallback to localhost if env var missing in production."
     },
     {
       "id": "sec-005",
-      "severity": "medium",
+      "severity": "high",
       "type": "hardcoded_credential",
       "file_path": "supabase/functions/.env",
-      "description": "LOCAL_SERVICE_ROLE_KEY committed to git. Full RLS bypass capability.",
-      "recommendation": "Add to .gitignore. Provide .env.example instead."
+      "description": "ES256 service role JWT in version control."
     },
     {
       "id": "sec-006",
       "severity": "low",
       "type": "unencrypted",
       "file_path": "supabase/.env",
-      "description": "SUPABASE_AUTH_ENCRYPTION_KEY set to static placeholder string.",
-      "recommendation": "Add to .gitignore. Generate real key with openssl rand -base64 32."
+      "description": "Static auth encryption key placeholder committed."
+    },
+    {
+      "id": "sec-007",
+      "severity": "medium",
+      "type": "misconfiguration",
+      "file_path": "src/config/csp-config.ts",
+      "description": "unsafe-inline in production style-src CSP directive."
     }
   ],
   "ai_guardrails": [
     {
       "path": "src/atomic-crm/providers/supabase/authProvider.ts",
-      "review_required": "security_team",
-      "auto_modify": false
-    },
-    {
-      "path": "src/atomic-crm/providers/supabase/supabase.ts",
-      "review_required": "security_team",
+      "reason": "Auth flow — mistakes lock out all users",
       "auto_modify": false
     },
     {
       "path": "src/atomic-crm/providers/supabase/composedDataProvider.ts",
-      "review_required": "lead_developer",
+      "reason": "Handler routing hub — affects all resources",
       "auto_modify": false
     },
     {
       "path": "supabase/functions/users/index.ts",
-      "review_required": "security_team",
+      "reason": "User management with Auth Admin API",
       "auto_modify": false
     },
     {
       "path": "supabase/functions/_shared/supabaseAdmin.ts",
-      "review_required": "security_team",
+      "reason": "Service role client — full RLS bypass",
       "auto_modify": false
     },
     {
-      "path": "supabase/functions/_shared/cors-config.ts",
-      "review_required": "security_team",
+      "path": "supabase/migrations/",
+      "reason": "Production schema — irreversible without db reset",
       "auto_modify": false
     },
-    { "path": "supabase/migrations/", "review_required": "lead_developer", "auto_modify": false },
     {
       "path": "src/atomic-crm/providers/supabase/services/StorageService.ts",
-      "review_required": "lead_developer",
+      "reason": "Open security observations (sec-003)",
       "auto_modify": false
     },
     {
       "path": "src/config/csp-config.ts",
-      "review_required": "security_team",
+      "reason": "CSP — affects XSS protection posture",
       "auto_modify": false
     },
-    { "path": "vite.config.ts", "review_required": "lead_developer", "auto_modify": false }
+    {
+      "path": ".github/workflows/supabase-deploy.yml",
+      "reason": "Production deployment pipeline",
+      "auto_modify": false
+    }
   ]
 }
