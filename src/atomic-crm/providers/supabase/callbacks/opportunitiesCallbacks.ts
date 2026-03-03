@@ -36,7 +36,7 @@ import {
   isValidOpportunityStageTransition,
   type OpportunityStageValue,
 } from "@/atomic-crm/validation/opportunities";
-import { isClosedStage } from "@/atomic-crm/opportunities/constants/stage-enums";
+import { isClosedStage } from "@/atomic-crm/constants";
 
 /**
  * Type-safe computed fields that exist on the Opportunity type

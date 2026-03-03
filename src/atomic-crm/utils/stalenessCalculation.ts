@@ -16,13 +16,10 @@
 
 import { z } from "zod";
 import { parseDateSafely } from "@/lib/date-utils";
-import { STAGE, ACTIVE_STAGES, CLOSED_STAGES } from "@/atomic-crm/opportunities/constants";
+import { STAGE, ACTIVE_STAGES, CLOSED_STAGES } from "@/atomic-crm/constants";
 
 // Re-export for backward compatibility with existing imports
-export {
-  ACTIVE_STAGES as ACTIVE_PIPELINE_STAGES,
-  CLOSED_STAGES,
-} from "@/atomic-crm/opportunities/constants";
+export { ACTIVE_STAGES as ACTIVE_PIPELINE_STAGES, CLOSED_STAGES } from "@/atomic-crm/constants";
 
 // Derive types from the canonical source
 export type ActivePipelineStage = (typeof ACTIVE_STAGES)[number];
