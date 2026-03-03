@@ -119,6 +119,13 @@ tsconfig.tsbuildinfo
 
 # Temp/test output
 test-output.txt
+tmp-*
+placeholder
+
+# Agent skill installations
+.agent/
+.claude/skills/
+skills-lock.json
 
 # Windows /dev/null artifact
 nul
