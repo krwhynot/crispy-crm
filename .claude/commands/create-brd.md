@@ -1,8 +1,5 @@
 ---
-description: |
-  Generate a Business Requirements Document for a specific domain or topic.
-  Interactive: disambiguates vague inputs, shows features in the domain,
-  and verifies confidence before generating.
+description: "Generate a Business Requirements Document for a specific domain or topic. Interactive: disambiguates vague inputs, shows features in the domain, and verifies confidence before generating."
 argument-hint: <domain or topic>
 allowed-tools: Read, Grep, Glob, Write, Bash
 ---

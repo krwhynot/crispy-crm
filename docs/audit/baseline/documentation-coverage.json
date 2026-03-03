@@ -1,0 +1,179 @@
+{
+  "summary": {
+    "total_doc_files": 47,
+    "projects_with_readme": 5,
+    "projects_without_readme": 9,
+    "jsdoc_coverage_pct": 12,
+    "avg_quality_score": 3.4,
+    "claude_md_exists": true,
+    "adr_count": 4,
+    "improvements_since_last_audit": [],
+    "last_audit": "2026-03-02T00:00:00.000Z"
+  },
+  "documents": [
+    {
+      "type": "claude_md",
+      "file_path": "CLAUDE.md",
+      "project": "root",
+      "quality": 5,
+      "coverage": "full",
+      "notes": "Comprehensive project guide covering stack, architecture, engineering principles, domain model, agent routing, design system, testing, CI/CD, and business context."
+    },
+    {
+      "type": "adr",
+      "file_path": "docs/adr/001-supabase-provider-pattern.md",
+      "project": "src/atomic-crm/providers/supabase",
+      "quality": 5,
+      "coverage": "full",
+      "notes": "Covers context, decision, wrapper chain, consequences, and two alternatives considered."
+    },
+    {
+      "type": "adr",
+      "file_path": "docs/adr/002-soft-delete-convention.md",
+      "project": "src/atomic-crm/providers/supabase",
+      "quality": 5,
+      "coverage": "full",
+      "notes": "Covers all three implementation layers (DB/Provider/UI), hard-delete exceptions, storage tradeoffs."
+    },
+    {
+      "type": "adr",
+      "file_path": "docs/adr/003-three-tier-ui-architecture.md",
+      "project": "src/components",
+      "quality": 5,
+      "coverage": "full",
+      "notes": "Defines tier contracts, import direction rules, enforcement via CMD-007."
+    },
+    {
+      "type": "adr",
+      "file_path": "docs/adr/004-validation-at-provider-boundary.md",
+      "project": "src/atomic-crm/providers/supabase",
+      "quality": 5,
+      "coverage": "full",
+      "notes": "Covers schema registry, withValidation wrapper, form resolver distinction, schema conventions."
+    },
+    {
+      "type": "markdown",
+      "file_path": "docs/brd/contacts.md",
+      "project": "src/atomic-crm/contacts",
+      "quality": 4,
+      "coverage": "full",
+      "notes": "Good BRD. Covers schema fields, business rules, enums, CRUD operations, wrapper chain, UI views."
+    },
+    {
+      "type": "markdown",
+      "file_path": "docs/brd/organizations.md",
+      "project": "src/atomic-crm/organizations",
+      "quality": 4,
+      "coverage": "full",
+      "notes": "Good BRD. Covers org types, priority/status enums, hierarchy, dual account management."
+    },
+    {
+      "type": "markdown",
+      "file_path": "docs/brd/opportunities.md",
+      "project": "src/atomic-crm/opportunities",
+      "quality": 4,
+      "coverage": "full",
+      "notes": "Good BRD. Covers 7-stage pipeline, product line tracking, duplicate detection, close workflows."
+    },
+    {
+      "type": "markdown",
+      "file_path": "docs/brd/dashboard.md",
+      "project": "src/atomic-crm/dashboard",
+      "quality": 4,
+      "coverage": "full",
+      "notes": "Good BRD. Documents read-only aggregate view, principal_pipeline_summary DB view."
+    },
+    {
+      "type": "readme",
+      "file_path": "src/atomic-crm/providers/supabase/README.md",
+      "project": "src/atomic-crm/providers/supabase",
+      "quality": 5,
+      "coverage": "full",
+      "notes": "Excellent. ASCII architecture diagram, golden rules, handler creation tutorial, full resource inventory."
+    },
+    {
+      "type": "readme",
+      "file_path": "src/components/ra-wrappers/column-filters/README.md",
+      "project": "src/components/ra-wrappers/column-filters",
+      "quality": 5,
+      "coverage": "full",
+      "notes": "Excellent. Problem statement, component API with props table, code examples, integration guide."
+    },
+    {
+      "type": "readme",
+      "file_path": "src/components/ra-wrappers/Readme.md",
+      "project": "src/components/ra-wrappers",
+      "quality": 3,
+      "coverage": "partial",
+      "notes": "Explains origin (Shadcn Admin Kit) but does not document custom wrappers added by this project."
+    },
+    {
+      "type": "readme",
+      "file_path": "eslint-local-rules/README.md",
+      "project": "eslint-local-rules",
+      "quality": 4,
+      "coverage": "full",
+      "notes": "Documents the no-legacy-tailwind-colors custom rule with examples."
+    }
+  ],
+  "per_project": [
+    {
+      "project": "root",
+      "has_readme": false,
+      "overall_quality": 5,
+      "gap_description": "No root README.md. CLAUDE.md serves AI sessions, not human onboarding."
+    },
+    {
+      "project": "src/atomic-crm/contacts",
+      "has_readme": false,
+      "overall_quality": 3,
+      "gap_description": "BRD exists. No JSDoc on public APIs. No README."
+    },
+    {
+      "project": "src/atomic-crm/organizations",
+      "has_readme": false,
+      "overall_quality": 3,
+      "gap_description": "BRD exists. Hierarchy and authorization components undocumented."
+    },
+    {
+      "project": "src/atomic-crm/opportunities",
+      "has_readme": false,
+      "overall_quality": 3,
+      "gap_description": "BRD exists. Kanban and close workflows have no explanatory JSDoc."
+    },
+    {
+      "project": "src/atomic-crm/dashboard",
+      "has_readme": false,
+      "overall_quality": 3,
+      "gap_description": "BRD exists. Complex dashboard hooks undocumented."
+    },
+    {
+      "project": "src/atomic-crm/providers/supabase",
+      "has_readme": true,
+      "overall_quality": 4,
+      "gap_description": "README excellent. Individual handler files have minimal JSDoc."
+    },
+    {
+      "project": "supabase/functions",
+      "has_readme": false,
+      "overall_quality": 2,
+      "gap_description": "6 edge functions with no documentation for triggers, env vars, or failure modes."
+    },
+    {
+      "project": "supabase/migrations",
+      "has_readme": false,
+      "overall_quality": 3,
+      "gap_description": "No migration index. Uneven comment quality across migration files."
+    }
+  ],
+  "todo_fixme_count": 21,
+  "key_gaps": [
+    "No root README.md",
+    "Edge functions entirely undocumented (6 functions)",
+    "JSDoc coverage ~12% on public APIs",
+    "No README for validation schemas",
+    "TODO-004a: Win/Loss validation incomplete",
+    "5 disabled tests awaiting RPC implementation",
+    "3 placeholder tests with no implementation"
+  ]
+}

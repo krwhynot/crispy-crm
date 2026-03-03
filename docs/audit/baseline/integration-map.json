@@ -1,0 +1,296 @@
+{
+  "summary": {
+    "total_integrations": 12,
+    "by_category": {
+      "auth": 2,
+      "api": 4,
+      "database": 2,
+      "edge_functions": 6,
+      "monitoring": 1,
+      "file_based": 1,
+      "storage": 2
+    },
+    "security_issues_count": 6,
+    "hardcoded_credentials_count": 2,
+    "changes_since_last_audit": [],
+    "last_audit": "2026-03-03T00:00:00.000Z"
+  },
+  "integrations": [
+    {
+      "id": "int-auth-001",
+      "category": "auth",
+      "name": "Supabase Auth (Client)",
+      "provider": "Supabase",
+      "files": [
+        "src/atomic-crm/providers/supabase/supabase.ts",
+        "src/atomic-crm/providers/supabase/authProvider.ts",
+        "src/atomic-crm/providers/supabase/index.ts"
+      ],
+      "protocol": "REST + WebSocket (Realtime)",
+      "auth_method": "api_key",
+      "confidence": 0.99
+    },
+    {
+      "id": "int-auth-002",
+      "category": "auth",
+      "name": "Supabase Auth Admin API (Edge Functions)",
+      "provider": "Supabase",
+      "files": [
+        "supabase/functions/users/index.ts",
+        "supabase/functions/updatepassword/index.ts",
+        "supabase/functions/_shared/supabaseAdmin.ts"
+      ],
+      "protocol": "REST",
+      "auth_method": "api_key",
+      "confidence": 0.99
+    },
+    {
+      "id": "int-db-001",
+      "category": "database",
+      "name": "Supabase PostgreSQL (Data Provider)",
+      "provider": "Supabase",
+      "files": [
+        "src/atomic-crm/providers/supabase/composedDataProvider.ts",
+        "src/atomic-crm/providers/supabase/handlers"
+      ],
+      "protocol": "REST (PostgREST)",
+      "auth_method": "api_key",
+      "confidence": 0.99
+    },
+    {
+      "id": "int-db-002",
+      "category": "database",
+      "name": "Supabase PostgreSQL (Edge Function Admin Client)",
+      "provider": "Supabase",
+      "files": [
+        "supabase/functions/_shared/supabaseAdmin.ts",
+        "supabase/functions/daily-digest/index.ts",
+        "supabase/functions/check-overdue-tasks/index.ts",
+        "supabase/functions/capture-dashboard-snapshots/index.ts"
+      ],
+      "protocol": "REST (PostgREST)",
+      "auth_method": "api_key",
+      "confidence": 0.99
+    },
+    {
+      "id": "int-edge-001",
+      "category": "edge_functions",
+      "name": "Edge Function: daily-digest",
+      "provider": "Supabase Edge Runtime (Deno)",
+      "files": ["supabase/functions/daily-digest/index.ts"],
+      "protocol": "HTTP (pg_cron 07:00 UTC)",
+      "confidence": 0.99
+    },
+    {
+      "id": "int-edge-002",
+      "category": "edge_functions",
+      "name": "Edge Function: check-overdue-tasks",
+      "provider": "Supabase Edge Runtime (Deno)",
+      "files": ["supabase/functions/check-overdue-tasks/index.ts"],
+      "protocol": "HTTP (pg_cron 09:00 UTC)",
+      "confidence": 0.99
+    },
+    {
+      "id": "int-edge-003",
+      "category": "edge_functions",
+      "name": "Edge Function: users",
+      "provider": "Supabase Edge Runtime (Deno)",
+      "files": ["supabase/functions/users/index.ts"],
+      "protocol": "HTTP REST",
+      "confidence": 0.99
+    },
+    {
+      "id": "int-edge-004",
+      "category": "edge_functions",
+      "name": "Edge Function: updatepassword",
+      "provider": "Supabase Edge Runtime (Deno)",
+      "files": ["supabase/functions/updatepassword/index.ts"],
+      "protocol": "HTTP REST",
+      "confidence": 0.99
+    },
+    {
+      "id": "int-edge-005",
+      "category": "edge_functions",
+      "name": "Edge Function: digest-opt-out",
+      "provider": "Supabase Edge Runtime (Deno)",
+      "files": ["supabase/functions/digest-opt-out/index.ts"],
+      "protocol": "HTTP REST (unauthenticated)",
+      "confidence": 0.99
+    },
+    {
+      "id": "int-edge-006",
+      "category": "edge_functions",
+      "name": "Edge Function: capture-dashboard-snapshots",
+      "provider": "Supabase Edge Runtime (Deno)",
+      "files": ["supabase/functions/capture-dashboard-snapshots/index.ts"],
+      "protocol": "HTTP (pg_cron 23:00 UTC)",
+      "confidence": 0.99
+    },
+    {
+      "id": "int-edge-007",
+      "category": "edge_functions",
+      "name": "Edge Function: health-check",
+      "provider": "Supabase Edge Runtime (Deno)",
+      "files": ["supabase/functions/health-check/index.ts"],
+      "protocol": "HTTP REST (public)",
+      "confidence": 0.99
+    },
+    {
+      "id": "int-monitor-001",
+      "category": "monitoring",
+      "name": "Sentry Error Monitoring and Session Replay",
+      "provider": "Sentry",
+      "files": ["src/main.tsx", "vite.config.ts"],
+      "protocol": "HTTPS",
+      "confidence": 0.99
+    },
+    {
+      "id": "int-api-001",
+      "category": "api",
+      "name": "Gravatar Avatar Service",
+      "provider": "Gravatar (Automattic)",
+      "files": ["src/atomic-crm/utils/avatar.utils.ts"],
+      "protocol": "HTTPS",
+      "confidence": 0.97
+    },
+    {
+      "id": "int-api-002",
+      "category": "api",
+      "name": "favicon.show Favicon Service",
+      "provider": "favicon.show",
+      "files": ["src/atomic-crm/utils/avatar.utils.ts"],
+      "protocol": "HTTPS",
+      "confidence": 0.97
+    },
+    {
+      "id": "int-api-003",
+      "category": "api",
+      "name": "ui-avatars.com Fallback Avatar Service",
+      "provider": "ui-avatars.com",
+      "files": ["src/atomic-crm/utils/avatar.utils.ts"],
+      "protocol": "HTTPS",
+      "confidence": 0.97
+    },
+    {
+      "id": "int-api-004",
+      "category": "api",
+      "name": "Google Fonts CDN",
+      "provider": "Google",
+      "files": ["src/config/csp-config.ts"],
+      "protocol": "HTTPS",
+      "confidence": 0.95
+    },
+    {
+      "id": "int-storage-001",
+      "category": "storage",
+      "name": "Supabase Storage (Attachments Bucket)",
+      "provider": "Supabase",
+      "files": ["src/atomic-crm/providers/supabase/services/StorageService.ts"],
+      "protocol": "HTTPS (S3-compatible)",
+      "confidence": 0.95
+    },
+    {
+      "id": "int-storage-002",
+      "category": "storage",
+      "name": "GitHub Pages Static Hosting",
+      "provider": "GitHub",
+      "files": ["scripts/ghpages-deploy.mjs", "package.json"],
+      "protocol": "HTTPS",
+      "confidence": 0.9
+    }
+  ],
+  "security_observations": [
+    {
+      "id": "sec-001",
+      "severity": "high",
+      "type": "hardcoded_credential",
+      "file_path": ".env.development",
+      "description": "VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY hardcoded in committed file.",
+      "recommendation": "Move to .gitignore. Inject via CI/CD."
+    },
+    {
+      "id": "sec-002",
+      "severity": "high",
+      "type": "hardcoded_credential",
+      "file_path": ".env.production",
+      "description": "Production VITE_SUPABASE_URL and anon key committed to git.",
+      "recommendation": "Remove from version control. Rotate key if repo is public."
+    },
+    {
+      "id": "sec-003",
+      "severity": "medium",
+      "type": "unvalidated_input",
+      "file_path": "src/atomic-crm/providers/supabase/services/StorageService.ts",
+      "description": "Math.random() for filenames, no MIME allowlist validation. Violates CORE-019.",
+      "recommendation": "Use crypto.randomUUID(). Add MIME allowlist."
+    },
+    {
+      "id": "sec-004",
+      "severity": "medium",
+      "type": "unvalidated_input",
+      "file_path": "supabase/functions/users/index.ts",
+      "description": "redirectTo URL origin fallback behavior relies on ALLOWED_ORIGINS completeness.",
+      "recommendation": "Require SITE_URL env var. Fail fast if absent."
+    },
+    {
+      "id": "sec-005",
+      "severity": "medium",
+      "type": "hardcoded_credential",
+      "file_path": "supabase/functions/.env",
+      "description": "LOCAL_SERVICE_ROLE_KEY committed to git. Full RLS bypass capability.",
+      "recommendation": "Add to .gitignore. Provide .env.example instead."
+    },
+    {
+      "id": "sec-006",
+      "severity": "low",
+      "type": "unencrypted",
+      "file_path": "supabase/.env",
+      "description": "SUPABASE_AUTH_ENCRYPTION_KEY set to static placeholder string.",
+      "recommendation": "Add to .gitignore. Generate real key with openssl rand -base64 32."
+    }
+  ],
+  "ai_guardrails": [
+    {
+      "path": "src/atomic-crm/providers/supabase/authProvider.ts",
+      "review_required": "security_team",
+      "auto_modify": false
+    },
+    {
+      "path": "src/atomic-crm/providers/supabase/supabase.ts",
+      "review_required": "security_team",
+      "auto_modify": false
+    },
+    {
+      "path": "src/atomic-crm/providers/supabase/composedDataProvider.ts",
+      "review_required": "lead_developer",
+      "auto_modify": false
+    },
+    {
+      "path": "supabase/functions/users/index.ts",
+      "review_required": "security_team",
+      "auto_modify": false
+    },
+    {
+      "path": "supabase/functions/_shared/supabaseAdmin.ts",
+      "review_required": "security_team",
+      "auto_modify": false
+    },
+    {
+      "path": "supabase/functions/_shared/cors-config.ts",
+      "review_required": "security_team",
+      "auto_modify": false
+    },
+    { "path": "supabase/migrations/", "review_required": "lead_developer", "auto_modify": false },
+    {
+      "path": "src/atomic-crm/providers/supabase/services/StorageService.ts",
+      "review_required": "lead_developer",
+      "auto_modify": false
+    },
+    {
+      "path": "src/config/csp-config.ts",
+      "review_required": "security_team",
+      "auto_modify": false
+    },
+    { "path": "vite.config.ts", "review_required": "lead_developer", "auto_modify": false }
+  ]
+}

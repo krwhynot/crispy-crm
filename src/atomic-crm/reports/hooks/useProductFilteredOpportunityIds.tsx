@@ -102,7 +102,9 @@ export function ProductTruncationAlert({ isTruncated }: { isTruncated: boolean }
   return (
     <Alert>
       <AlertDescription>
-        {"Product filter limited to first 2,000 linked opportunities. Some results may be excluded. Narrow filters for complete data."}
+        {
+          "Product filter limited to first 2,000 linked opportunities. Some results may be excluded. Narrow filters for complete data."
+        }
       </AlertDescription>
     </Alert>
   );

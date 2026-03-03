@@ -1,8 +1,5 @@
 ---
-description: |
-  Find a feature in the codebase by name, domain, or keyword. Interactive:
-  always asks if the developer wants a quick scan or a deep scan with 95%+
-  confidence verification.
+description: "Find a feature in the codebase by name, domain, or keyword. Interactive: always asks if the developer wants a quick scan or a deep scan with 95%+ confidence verification."
 argument-hint: <feature name or keyword>
 allowed-tools: Read, Grep, Glob, Bash
 ---
@@ -17,7 +14,7 @@ list mode:
 
 Category keywords:
 - "UI", "UX", "forms", "screens", "views", "windows" -> list all UI components (forms, pages, views, routes)
-- "API", "endpoints", "services", "REST", "SOAP" -> list all service integrations
+- "API", "endpoints", "services", "REST", "providers" -> list all service integrations
 - "database", "tables", "SQL", "data" -> list all data access components
 - "tests", "testing", "coverage" -> list test coverage by module
 - "security", "auth", "credentials" -> list security-related findings
@@ -107,7 +104,7 @@ Finally ask:
 **Step 5: Feature Not Found**
 
 If the feature is NOT in the baseline JSON, search the live codebase:
-- Grep for "$1" across all .cs and .vb files
+- Grep for "$1" across all .ts and .tsx files
 - Glob for files with "$1" in their name
 - Present findings with a note: "This feature was not found in the audit
   baseline. Run /audit to include it in the next scan."

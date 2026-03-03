@@ -1,0 +1,201 @@
+{
+  "features": [
+    {
+      "domain": "Contacts",
+      "has_brd": true,
+      "has_prd": false,
+      "related_adrs": [
+        "001-supabase-provider-pattern",
+        "002-soft-delete-convention",
+        "004-validation-at-provider-boundary",
+        "003-three-tier-ui-architecture"
+      ]
+    },
+    {
+      "domain": "Organizations",
+      "has_brd": true,
+      "has_prd": false,
+      "related_adrs": [
+        "001-supabase-provider-pattern",
+        "002-soft-delete-convention",
+        "004-validation-at-provider-boundary",
+        "003-three-tier-ui-architecture"
+      ]
+    },
+    {
+      "domain": "Opportunities",
+      "has_brd": true,
+      "has_prd": false,
+      "related_adrs": [
+        "001-supabase-provider-pattern",
+        "002-soft-delete-convention",
+        "004-validation-at-provider-boundary",
+        "003-three-tier-ui-architecture"
+      ]
+    },
+    {
+      "domain": "Sales",
+      "has_brd": false,
+      "has_prd": false,
+      "related_adrs": [
+        "001-supabase-provider-pattern",
+        "002-soft-delete-convention",
+        "004-validation-at-provider-boundary"
+      ]
+    },
+    {
+      "domain": "Tasks",
+      "has_brd": false,
+      "has_prd": false,
+      "related_adrs": [
+        "001-supabase-provider-pattern",
+        "002-soft-delete-convention",
+        "004-validation-at-provider-boundary"
+      ]
+    },
+    {
+      "domain": "Activities",
+      "has_brd": false,
+      "has_prd": false,
+      "related_adrs": [
+        "001-supabase-provider-pattern",
+        "002-soft-delete-convention",
+        "004-validation-at-provider-boundary"
+      ]
+    },
+    {
+      "domain": "Notes",
+      "has_brd": false,
+      "has_prd": false,
+      "related_adrs": []
+    },
+    {
+      "domain": "Products",
+      "has_brd": false,
+      "has_prd": false,
+      "related_adrs": [
+        "001-supabase-provider-pattern",
+        "002-soft-delete-convention",
+        "004-validation-at-provider-boundary"
+      ]
+    },
+    {
+      "domain": "ProductDistributors",
+      "has_brd": false,
+      "has_prd": false,
+      "related_adrs": [
+        "001-supabase-provider-pattern",
+        "002-soft-delete-convention",
+        "004-validation-at-provider-boundary"
+      ]
+    },
+    {
+      "domain": "Dashboard",
+      "has_brd": true,
+      "has_prd": false,
+      "related_adrs": ["003-three-tier-ui-architecture"]
+    },
+    {
+      "domain": "Reports",
+      "has_brd": false,
+      "has_prd": false,
+      "related_adrs": ["003-three-tier-ui-architecture"]
+    },
+    {
+      "domain": "Settings",
+      "has_brd": false,
+      "has_prd": false,
+      "related_adrs": []
+    },
+    {
+      "domain": "Notifications",
+      "has_brd": false,
+      "has_prd": false,
+      "related_adrs": ["003-three-tier-ui-architecture"]
+    },
+    {
+      "domain": "Tags",
+      "has_brd": false,
+      "has_prd": false,
+      "related_adrs": ["003-three-tier-ui-architecture"]
+    },
+    {
+      "domain": "Login",
+      "has_brd": false,
+      "has_prd": false,
+      "related_adrs": []
+    },
+    {
+      "domain": "Segments",
+      "has_brd": false,
+      "has_prd": false,
+      "related_adrs": []
+    },
+    {
+      "domain": "Timeline",
+      "has_brd": false,
+      "has_prd": false,
+      "related_adrs": []
+    },
+    {
+      "domain": "Filters",
+      "has_brd": false,
+      "has_prd": false,
+      "related_adrs": []
+    },
+    {
+      "domain": "Admin",
+      "has_brd": false,
+      "has_prd": false,
+      "related_adrs": []
+    }
+  ],
+  "gaps": {
+    "missing_brd": [
+      "Sales",
+      "Tasks",
+      "Activities",
+      "Notes",
+      "Products",
+      "ProductDistributors",
+      "Reports",
+      "Settings",
+      "Notifications",
+      "Tags",
+      "Login",
+      "Segments",
+      "Timeline",
+      "Filters",
+      "Admin"
+    ],
+    "missing_prd": [
+      "Contacts",
+      "Organizations",
+      "Opportunities",
+      "Sales",
+      "Tasks",
+      "Activities",
+      "Notes",
+      "Products",
+      "ProductDistributors",
+      "Dashboard",
+      "Reports",
+      "Settings",
+      "Notifications",
+      "Tags",
+      "Login",
+      "Segments",
+      "Timeline",
+      "Filters",
+      "Admin"
+    ],
+    "missing_adr_coverage": []
+  },
+  "summary": {
+    "total_features": 19,
+    "features_with_brd": 4,
+    "features_with_prd": 0,
+    "adrs_count": 4,
+    "coverage_pct": 21
+  }
+}

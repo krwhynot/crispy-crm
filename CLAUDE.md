@@ -26,9 +26,6 @@
 - **Debug:** `Root cause: stale cache [60%]`.
 - **Arch/Est:** `Recommend handler [90%]`, `~2 hours [65%]`, `Breaking risk [40%]`.
 
-## 🛠 Tooling
-**CLI Prefs:** `npm run` (scripts), `rg --type ts` (search), `fd -e tsx` (find), `bat` (read), `gh --json` (git).
-
 ## 🏗 Architecture & Structure
 **Critical:** All DB access via `src/atomic-crm/providers/supabase/composedDataProvider.ts`.
 - **Rules:** NO direct Supabase imports. Zod schemas at API boundary (provider), NOT forms.
@@ -52,8 +49,6 @@
 - `Opportunity.archived_at` → Use `deleted_at`.
 - Direct Supabase imports → Use `composedDataProvider`.
 - Form-level validation → Move to API boundary.
-
-**Accessibility (A11y):** `aria-invalid`, `aria-describedby`, `role="alert"`. Targets ≥44px (`h-11 w-11`).
 
 ## 🎨 Design System
 **Tailwind v4 Semantic:** ✅ `text-muted-foreground`, `bg-primary` | ❌ `text-gray-500`, `hex/oklch`.
@@ -82,51 +77,6 @@
 - `docs/` — Documentation
 - `src/components/ui/` — Tier 1 presentational components
 - `src/components/ra-wrappers/` — Tier 2 React Admin wrappers
-
-## 📊 Code Health Monitoring (CI/CD Enforced)
-
-**Automated Check:** The health-check script runs in CI/CD pipeline. **Fails build** if any file exceeds churn threshold.
-
-**Churn Thresholds (14 days):**
-- 0-10 edits: ✅ Normal (stable file)
-- 11-15 edits: ⚠️ Watch (monitor one more week)
-- 16+ edits: ❌ **CI/CD FAILS** - Architectural review required
-
-**Response Strategy (Boy Scout Rule):**
-
-1. **Watch State** (11-15 edits):
-   - Monitor for one more week
-   - If trend accelerates, move to Investigate
-
-2. **Investigate State** (16+ edits - triggers CI/CD failure):
-   - Run the churn check (see Manual Check below) to see violating files
-   - Identify implicit contracts from co-changing file clusters
-   - Extract to config file (pattern: `organizationFormConfig.ts`)
-   - Submit PR that reduces churn
-
-**Pattern: Implicit Contract Extraction**
-
-When a file cluster churns together (3+ files with 8+ co-changes):
-1. Identify what changes together (defaults, required fields, validation rules)
-2. Create config file in appropriate layer (validation/ or feature/)
-3. Update dependent files to reference config
-4. Document the contract in config file comments
-5. Verify churn drops in next measurement period
-
-**Example:** Organization form cluster (52 edits → <10 edits after config extraction)
-
-**Why CI/CD Enforcement:**
-- Prevents "boiling frog" syndrome (gradual degradation)
-- Forces architectural review before code quality degrades
-- Makes health thresholds non-negotiable (not optional documentation)
-- Implements "Boy Scout Rule" automatically
-
-**Manual Check:**
-```bash
-# View churn report
-git log --name-only --since="14 days ago" --pretty=format: -- 'src/**/*.ts' 'src/**/*.tsx' \
-  | grep -v '^$' | sort | uniq -c | sort -rn | head -20
-```
 
 ## 💼 Business Domain (MFB)
 **Model:** Principal (Manufacturer) → Distributor → Operator (Restaurant). Broker: MFB.
@@ -202,11 +152,6 @@ Subagent spawn limits per task:
 - Complex task (5+ files or multi-domain): max 2 subagents sequentially.
 - Justify in thinking before spawning >2 subagents for any task.
 
-Never spawn a subagent for:
-- Reading a single file (use Read tool directly)
-- Running a single command (use Bash directly)
-- Making a one-line edit (use Edit directly)
-- Answering a question from context already available
 </spawn_caps>
 
 <verification_protocol>

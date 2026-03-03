@@ -166,8 +166,18 @@ vi.mock("@/components/ui/dialog", () => ({
 }));
 
 vi.mock("@/components/ui/button", () => ({
-  Button: ({ children, onClick, ...props }: { children: React.ReactNode; onClick?: () => void; [key: string]: unknown }) => (
-    <button onClick={onClick} {...props}>{children}</button>
+  Button: ({
+    children,
+    onClick,
+    ...props
+  }: {
+    children: React.ReactNode;
+    onClick?: () => void;
+    [key: string]: unknown;
+  }) => (
+    <button onClick={onClick} {...props}>
+      {children}
+    </button>
   ),
 }));
 
@@ -343,7 +353,10 @@ describe("SalesCreate", () => {
       renderWithAdminContext(<SalesCreate />);
 
       expect(capturedMutationConfig.current).not.toBeNull();
-      const onSuccess = capturedMutationConfig.current?.onSuccess as (result: { sale: unknown; recoveryUrl: string | null }) => void;
+      const onSuccess = capturedMutationConfig.current?.onSuccess as (result: {
+        sale: unknown;
+        recoveryUrl: string | null;
+      }) => void;
       expect(typeof onSuccess).toBe("function");
       return onSuccess;
     }

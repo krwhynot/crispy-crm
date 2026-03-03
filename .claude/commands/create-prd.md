@@ -1,8 +1,5 @@
 ---
-description: |
-  Generate a Product Requirements Document for a specific feature. Interactive:
-  disambiguates vague inputs, verifies confidence before generating, and
-  offers deep scan if confidence is below 90%.
+description: "Generate a Product Requirements Document for a specific feature. Interactive: disambiguates vague inputs, verifies confidence before generating, and offers deep scan if confidence is below 90%."
 argument-hint: <feature name or keyword>
 allowed-tools: Read, Grep, Glob, Write, Bash
 ---

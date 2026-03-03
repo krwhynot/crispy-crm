@@ -1,1202 +1,1202 @@
 ﻿[
-    {
-        "itemId":  "L001",
-        "sourceFile":  "CODE_QUALITY.md",
-        "line":  5,
-        "type":  "heading",
-        "text":  "Production Noise Prevention",
-        "key":  "code_quality.md|heading|production noise prevention"
-    },
-    {
-        "itemId":  "L002",
-        "sourceFile":  "CODE_QUALITY.md",
-        "line":  11,
-        "type":  "heading",
-        "text":  "Banned Patterns",
-        "key":  "code_quality.md|heading|banned patterns"
-    },
-    {
-        "itemId":  "L003",
-        "sourceFile":  "CODE_QUALITY.md",
-        "line":  20,
-        "type":  "heading",
-        "text":  "Allowed Exceptions",
-        "key":  "code_quality.md|heading|allowed exceptions"
-    },
-    {
-        "itemId":  "L004",
-        "sourceFile":  "CODE_QUALITY.md",
-        "line":  27,
-        "type":  "heading",
-        "text":  "Replacement Patterns",
-        "key":  "code_quality.md|heading|replacement patterns"
-    },
-    {
-        "itemId":  "L005",
-        "sourceFile":  "CODE_QUALITY.md",
-        "line":  54,
-        "type":  "heading",
-        "text":  "Type Safety Baseline",
-        "key":  "code_quality.md|heading|type safety baseline"
-    },
-    {
-        "itemId":  "L006",
-        "sourceFile":  "CODE_QUALITY.md",
-        "line":  67,
-        "type":  "heading",
-        "text":  "Banned Patterns (ALL code â€” production AND tests)",
-        "key":  "code_quality.md|heading|banned patterns (all code â€” production and tests)"
-    },
-    {
-        "itemId":  "L007",
-        "sourceFile":  "CODE_QUALITY.md",
-        "line":  76,
-        "type":  "heading",
-        "text":  "Type-Safe Alternatives",
-        "key":  "code_quality.md|heading|type-safe alternatives"
-    },
-    {
-        "itemId":  "L008",
-        "sourceFile":  "CODE_QUALITY.md",
-        "line":  86,
-        "type":  "heading",
-        "text":  "Type Safety Checklist",
-        "key":  "code_quality.md|heading|type safety checklist"
-    },
-    {
-        "itemId":  "L009",
-        "sourceFile":  "CODE_QUALITY.md",
-        "line":  88,
-        "type":  "checklist",
-        "text":  "No `: any` types in production (use generic constraints, unknown with guards)",
-        "key":  "code_quality.md|checklist|no `: any` types in production (use generic constraints, unknown with guards)"
-    },
-    {
-        "itemId":  "L010",
-        "sourceFile":  "CODE_QUALITY.md",
-        "line":  89,
-        "type":  "checklist",
-        "text":  "No `as any` casts in production (use type guards)",
-        "key":  "code_quality.md|checklist|no `as any` casts in production (use type guards)"
-    },
-    {
-        "itemId":  "L011",
-        "sourceFile":  "CODE_QUALITY.md",
-        "line":  90,
-        "type":  "checklist",
-        "text":  "`as unknown as T` only with runtime guards (`segmentsHandler.ts` pattern)",
-        "key":  "code_quality.md|checklist|`as unknown as t` only with runtime guards (`segmentshandler.ts` pattern)"
-    },
-    {
-        "itemId":  "L012",
-        "sourceFile":  "CODE_QUALITY.md",
-        "line":  91,
-        "type":  "checklist",
-        "text":  "API boundaries use Zod schemas with `z.infer`",
-        "key":  "code_quality.md|checklist|api boundaries use zod schemas with `z.infer`"
-    },
-    {
-        "itemId":  "L013",
-        "sourceFile":  "CODE_QUALITY.md",
-        "line":  92,
-        "type":  "checklist",
-        "text":  "Test mocks use typed factories from `src/tests/utils/typed-mocks.ts`",
-        "key":  "code_quality.md|checklist|test mocks use typed factories from `src/tests/utils/typed-mocks.ts`"
-    },
-    {
-        "itemId":  "L014",
-        "sourceFile":  "CODE_QUALITY.md",
-        "line":  93,
-        "type":  "checklist",
-        "text":  "Zero `any` in test files (cleaned Jan 2026)",
-        "key":  "code_quality.md|checklist|zero `any` in test files (cleaned jan 2026)"
-    },
-    {
-        "itemId":  "L015",
-        "sourceFile":  "CODE_QUALITY.md",
-        "line":  95,
-        "type":  "heading",
-        "text":  "Form Standards (React Admin)",
-        "key":  "code_quality.md|heading|form standards (react admin)"
-    },
-    {
-        "itemId":  "L016",
-        "sourceFile":  "CODE_QUALITY.md",
-        "line":  99,
-        "type":  "heading",
-        "text":  "Resolver Pattern",
-        "key":  "code_quality.md|heading|resolver pattern"
-    },
-    {
-        "itemId":  "L017",
-        "sourceFile":  "CODE_QUALITY.md",
-        "line":  109,
-        "type":  "heading",
-        "text":  "Storage Hygiene",
-        "key":  "code_quality.md|heading|storage hygiene"
-    },
-    {
-        "itemId":  "L018",
-        "sourceFile":  "CODE_QUALITY.md",
-        "line":  122,
-        "type":  "heading",
-        "text":  "Accessibility Requirements",
-        "key":  "code_quality.md|heading|accessibility requirements"
-    },
-    {
-        "itemId":  "L019",
-        "sourceFile":  "CODE_QUALITY.md",
-        "line":  128,
-        "type":  "heading",
-        "text":  "Required Patterns",
-        "key":  "code_quality.md|heading|required patterns"
-    },
-    {
-        "itemId":  "L020",
-        "sourceFile":  "CODE_QUALITY.md",
-        "line":  141,
-        "type":  "heading",
-        "text":  "Framework-Specific: Radix UI \u0026 React Admin",
-        "key":  "code_quality.md|heading|framework-specific: radix ui \u0026 react admin"
-    },
-    {
-        "itemId":  "L021",
-        "sourceFile":  "CODE_QUALITY.md",
-        "line":  186,
-        "type":  "heading",
-        "text":  "Form Validation Focus Management",
-        "key":  "code_quality.md|heading|form validation focus management"
-    },
-    {
-        "itemId":  "L022",
-        "sourceFile":  "CODE_QUALITY.md",
-        "line":  202,
-        "type":  "heading",
-        "text":  "Live Validation Feedback",
-        "key":  "code_quality.md|heading|live validation feedback"
-    },
-    {
-        "itemId":  "L023",
-        "sourceFile":  "CODE_QUALITY.md",
-        "line":  215,
-        "type":  "heading",
-        "text":  "Pre-Commit Verification",
-        "key":  "code_quality.md|heading|pre-commit verification"
-    },
-    {
-        "itemId":  "L024",
-        "sourceFile":  "CODE_QUALITY.md",
-        "line":  219,
-        "type":  "heading",
-        "text":  "Quick Check Commands",
-        "key":  "code_quality.md|heading|quick check commands"
-    },
-    {
-        "itemId":  "L025",
-        "sourceFile":  "DATABASE_LAYER.md",
-        "line":  5,
-        "type":  "heading",
-        "text":  "View Duality (Performance)",
-        "key":  "database_layer.md|heading|view duality (performance)"
-    },
-    {
-        "itemId":  "L026",
-        "sourceFile":  "DATABASE_LAYER.md",
-        "line":  18,
-        "type":  "heading",
-        "text":  "Soft Delete Enforcement (Security)",
-        "key":  "database_layer.md|heading|soft delete enforcement (security)"
-    },
-    {
-        "itemId":  "L027",
-        "sourceFile":  "DATABASE_LAYER.md",
-        "line":  29,
-        "type":  "heading",
-        "text":  "Storage Layer (Files \u0026 Assets)",
-        "key":  "database_layer.md|heading|storage layer (files \u0026 assets)"
-    },
-    {
-        "itemId":  "L028",
-        "sourceFile":  "DATABASE_LAYER.md",
-        "line":  42,
-        "type":  "heading",
-        "text":  "Access Control Patterns",
-        "key":  "database_layer.md|heading|access control patterns"
-    },
-    {
-        "itemId":  "L029",
-        "sourceFile":  "DATABASE_LAYER.md",
-        "line":  57,
-        "type":  "heading",
-        "text":  "Permissive Policy Hole",
-        "key":  "database_layer.md|heading|permissive policy hole"
-    },
-    {
-        "itemId":  "L030",
-        "sourceFile":  "DATABASE_LAYER.md",
-        "line":  108,
-        "type":  "heading",
-        "text":  "Junction Table Security",
-        "key":  "database_layer.md|heading|junction table security"
-    },
-    {
-        "itemId":  "L031",
-        "sourceFile":  "DATABASE_LAYER.md",
-        "line":  150,
-        "type":  "heading",
-        "text":  "ON DELETE Convention for Sales References",
-        "key":  "database_layer.md|heading|on delete convention for sales references"
-    },
-    {
-        "itemId":  "L032",
-        "sourceFile":  "DATABASE_LAYER.md",
-        "line":  161,
-        "type":  "heading",
-        "text":  "Immutable Fields (Data Integrity)",
-        "key":  "database_layer.md|heading|immutable fields (data integrity)"
-    },
-    {
-        "itemId":  "L033",
-        "sourceFile":  "DATABASE_LAYER.md",
-        "line":  170,
-        "type":  "heading",
-        "text":  "Violation Fixes",
-        "key":  "database_layer.md|heading|violation fixes"
-    },
-    {
-        "itemId":  "L034",
-        "sourceFile":  "DATABASE_LAYER.md",
-        "line":  172,
-        "type":  "heading",
-        "text":  "Leaky Delete",
-        "key":  "database_layer.md|heading|leaky delete"
-    },
-    {
-        "itemId":  "L035",
-        "sourceFile":  "DATABASE_LAYER.md",
-        "line":  188,
-        "type":  "heading",
-        "text":  "Slow Dashboard",
-        "key":  "database_layer.md|heading|slow dashboard"
-    },
-    {
-        "itemId":  "L036",
-        "sourceFile":  "DATABASE_LAYER.md",
-        "line":  205,
-        "type":  "heading",
-        "text":  "Audit Command",
-        "key":  "database_layer.md|heading|audit command"
-    },
-    {
-        "itemId":  "L037",
-        "sourceFile":  "DATABASE_LAYER.md",
-        "line":  211,
-        "type":  "heading",
-        "text":  "Checklist",
-        "key":  "database_layer.md|heading|checklist"
-    },
-    {
-        "itemId":  "L038",
-        "sourceFile":  "DATABASE_LAYER.md",
-        "line":  213,
-        "type":  "checklist",
-        "text":  "List views have `_summary` SQL views with pre-calculated fields",
-        "key":  "database_layer.md|checklist|list views have `_summary` sql views with pre-calculated fields"
-    },
-    {
-        "itemId":  "L039",
-        "sourceFile":  "DATABASE_LAYER.md",
-        "line":  214,
-        "type":  "checklist",
-        "text":  "`SELECT` policies enforce `deleted_at IS NULL`",
-        "key":  "database_layer.md|checklist|`select` policies enforce `deleted_at is null`"
-    },
-    {
-        "itemId":  "L040",
-        "sourceFile":  "DATABASE_LAYER.md",
-        "line":  215,
-        "type":  "checklist",
-        "text":  "Soft-delete cascades handled by triggers/policies",
-        "key":  "database_layer.md|checklist|soft-delete cascades handled by triggers/policies"
-    },
-    {
-        "itemId":  "L041",
-        "sourceFile":  "DATABASE_LAYER.md",
-        "line":  216,
-        "type":  "checklist",
-        "text":  "`created_at`/`updated_at` managed by triggers (not frontend)",
-        "key":  "database_layer.md|checklist|`created_at`/`updated_at` managed by triggers (not frontend)"
-    },
-    {
-        "itemId":  "L042",
-        "sourceFile":  "DATABASE_LAYER.md",
-        "line":  217,
-        "type":  "checklist",
-        "text":  "Computed columns auto-generated",
-        "key":  "database_layer.md|checklist|computed columns auto-generated"
-    },
-    {
-        "itemId":  "L043",
-        "sourceFile":  "DATABASE_LAYER.md",
-        "line":  218,
-        "type":  "checklist",
-        "text":  "No `USING (true)` policies except `service_role`",
-        "key":  "database_layer.md|checklist|no `using (true)` policies except `service_role`"
-    },
-    {
-        "itemId":  "L044",
-        "sourceFile":  "DATABASE_LAYER.md",
-        "line":  219,
-        "type":  "checklist",
-        "text":  "All policies verify `auth.uid()` or `company_id`",
-        "key":  "database_layer.md|checklist|all policies verify `auth.uid()` or `company_id`"
-    },
-    {
-        "itemId":  "L045",
-        "sourceFile":  "DATABASE_LAYER.md",
-        "line":  220,
-        "type":  "checklist",
-        "text":  "Junction table policies check both foreign key sides",
-        "key":  "database_layer.md|checklist|junction table policies check both foreign key sides"
-    },
-    {
-        "itemId":  "L046",
-        "sourceFile":  "DATABASE_LAYER.md",
-        "line":  221,
-        "type":  "checklist",
-        "text":  "Junction table foreign keys have indexes for `EXISTS` query performance",
-        "key":  "database_layer.md|checklist|junction table foreign keys have indexes for `exists` query performance"
-    },
-    {
-        "itemId":  "L047",
-        "sourceFile":  "DOMAIN_INTEGRITY.md",
-        "line":  5,
-        "type":  "heading",
-        "text":  "Schema Rules",
-        "key":  "domain_integrity.md|heading|schema rules"
-    },
-    {
-        "itemId":  "L048",
-        "sourceFile":  "DOMAIN_INTEGRITY.md",
-        "line":  19,
-        "type":  "heading",
-        "text":  "Strict vs Passthrough: Choose Explicitly for Updates",
-        "key":  "domain_integrity.md|heading|strict vs passthrough: choose explicitly for updates"
-    },
-    {
-        "itemId":  "L049",
-        "sourceFile":  "DOMAIN_INTEGRITY.md",
-        "line":  56,
-        "type":  "heading",
-        "text":  "Constants",
-        "key":  "domain_integrity.md|heading|constants"
-    },
-    {
-        "itemId":  "L050",
-        "sourceFile":  "DOMAIN_INTEGRITY.md",
-        "line":  66,
-        "type":  "heading",
-        "text":  "Type Export Pattern",
-        "key":  "domain_integrity.md|heading|type export pattern"
-    },
-    {
-        "itemId":  "L051",
-        "sourceFile":  "DOMAIN_INTEGRITY.md",
-        "line":  82,
-        "type":  "heading",
-        "text":  "TypeScript Safety",
-        "key":  "domain_integrity.md|heading|typescript safety"
-    },
-    {
-        "itemId":  "L052",
-        "sourceFile":  "DOMAIN_INTEGRITY.md",
-        "line":  96,
-        "type":  "heading",
-        "text":  "Broken Test Types",
-        "key":  "domain_integrity.md|heading|broken test types"
-    },
-    {
-        "itemId":  "L053",
-        "sourceFile":  "DOMAIN_INTEGRITY.md",
-        "line":  144,
-        "type":  "heading",
-        "text":  "React Admin Hook Mocks",
-        "key":  "domain_integrity.md|heading|react admin hook mocks"
-    },
-    {
-        "itemId":  "L054",
-        "sourceFile":  "DOMAIN_INTEGRITY.md",
-        "line":  171,
-        "type":  "heading",
-        "text":  "Checklist",
-        "key":  "domain_integrity.md|heading|checklist"
-    },
-    {
-        "itemId":  "L055",
-        "sourceFile":  "DOMAIN_INTEGRITY.md",
-        "line":  173,
-        "type":  "checklist",
-        "text":  "Every table in `supabase/migrations/` has matching `z.object` in `validation/`",
-        "key":  "domain_integrity.md|checklist|every table in `supabase/migrations/` has matching `z.object` in `validation/`"
-    },
-    {
-        "itemId":  "L056",
-        "sourceFile":  "DOMAIN_INTEGRITY.md",
-        "line":  174,
-        "type":  "checklist",
-        "text":  "Exporting `z.infer\u003c...\u003e` types (not manual interfaces)",
-        "key":  "domain_integrity.md|checklist|exporting `z.infer\u003c...\u003e` types (not manual interfaces)"
-    },
-    {
-        "itemId":  "L057",
-        "sourceFile":  "DOMAIN_INTEGRITY.md",
-        "line":  175,
-        "type":  "checklist",
-        "text":  "Create schemas use `.strict()` to block illegal fields",
-        "key":  "domain_integrity.md|checklist|create schemas use `.strict()` to block illegal fields"
-    },
-    {
-        "itemId":  "L058",
-        "sourceFile":  "DOMAIN_INTEGRITY.md",
-        "line":  176,
-        "type":  "checklist",
-        "text":  "Update schemas pick one strategy explicitly: strict+round-trip coverage OR passthrough+explicit sanitize before write",
-        "key":  "domain_integrity.md|checklist|update schemas pick one strategy explicitly: strict+round-trip coverage or passthrough+explicit sanitize before write"
-    },
-    {
-        "itemId":  "L059",
-        "sourceFile":  "DOMAIN_INTEGRITY.md",
-        "line":  177,
-        "type":  "checklist",
-        "text":  "Form inputs use `z.coerce` for type conversion",
-        "key":  "domain_integrity.md|checklist|form inputs use `z.coerce` for type conversion"
-    },
-    {
-        "itemId":  "L060",
-        "sourceFile":  "DOMAIN_INTEGRITY.md",
-        "line":  178,
-        "type":  "checklist",
-        "text":  "No `as any` or `as unknown as` casts (use type guards or typed test data)",
-        "key":  "domain_integrity.md|checklist|no `as any` or `as unknown as` casts (use type guards or typed test data)"
-    },
-    {
-        "itemId":  "L061",
-        "sourceFile":  "DOMAIN_INTEGRITY.md",
-        "line":  179,
-        "type":  "checklist",
-        "text":  "React Admin hook mocks use generic factories from `src/tests/utils/typed-mocks.ts`",
-        "key":  "domain_integrity.md|checklist|react admin hook mocks use generic factories from `src/tests/utils/typed-mocks.ts`"
-    },
-    {
-        "itemId":  "L062",
-        "sourceFile":  "MODULE_CHECKLIST.md",
-        "line":  5,
-        "type":  "heading",
-        "text":  "File Structure (Rule #6)",
-        "key":  "module_checklist.md|heading|file structure (rule #6)"
-    },
-    {
-        "itemId":  "L063",
-        "sourceFile":  "MODULE_CHECKLIST.md",
-        "line":  17,
-        "type":  "heading",
-        "text":  "Data Access (Rule #5)",
-        "key":  "module_checklist.md|heading|data access (rule #5)"
-    },
-    {
-        "itemId":  "L064",
-        "sourceFile":  "MODULE_CHECKLIST.md",
-        "line":  29,
-        "type":  "heading",
-        "text":  "Forms",
-        "key":  "module_checklist.md|heading|forms"
-    },
-    {
-        "itemId":  "L065",
-        "sourceFile":  "MODULE_CHECKLIST.md",
-        "line":  39,
-        "type":  "heading",
-        "text":  "Component Tiers (Rule #4)",
-        "key":  "module_checklist.md|heading|component tiers (rule #4)"
-    },
-    {
-        "itemId":  "L066",
-        "sourceFile":  "MODULE_CHECKLIST.md",
-        "line":  51,
-        "type":  "heading",
-        "text":  "Styling (Rule #8)",
-        "key":  "module_checklist.md|heading|styling (rule #8)"
-    },
-    {
-        "itemId":  "L067",
-        "sourceFile":  "MODULE_CHECKLIST.md",
-        "line":  61,
-        "type":  "heading",
-        "text":  "Safety",
-        "key":  "module_checklist.md|heading|safety"
-    },
-    {
-        "itemId":  "L068",
-        "sourceFile":  "MODULE_CHECKLIST.md",
-        "line":  70,
-        "type":  "heading",
-        "text":  "Transformation Example",
-        "key":  "module_checklist.md|heading|transformation example"
-    },
-    {
-        "itemId":  "L069",
-        "sourceFile":  "MODULE_CHECKLIST.md",
-        "line":  106,
-        "type":  "heading",
-        "text":  "Checklist",
-        "key":  "module_checklist.md|heading|checklist"
-    },
-    {
-        "itemId":  "L070",
-        "sourceFile":  "MODULE_CHECKLIST.md",
-        "line":  108,
-        "type":  "checklist",
-        "text":  "Standard file structure (`index.tsx`, `[Entity]List.tsx`, etc.)",
-        "key":  "module_checklist.md|checklist|standard file structure (`index.tsx`, `[entity]list.tsx`, etc.)"
-    },
-    {
-        "itemId":  "L071",
-        "sourceFile":  "MODULE_CHECKLIST.md",
-        "line":  109,
-        "type":  "checklist",
-        "text":  "No direct Supabase imports",
-        "key":  "module_checklist.md|checklist|no direct supabase imports"
-    },
-    {
-        "itemId":  "L072",
-        "sourceFile":  "MODULE_CHECKLIST.md",
-        "line":  110,
-        "type":  "checklist",
-        "text":  "List/getMany reads follow `_summary` view mapping",
-        "key":  "module_checklist.md|checklist|list/getmany reads follow `_summary` view mapping"
-    },
-    {
-        "itemId":  "L073",
-        "sourceFile":  "MODULE_CHECKLIST.md",
-        "line":  111,
-        "type":  "checklist",
-        "text":  "Form `mode=\"onSubmit\"` or `onBlur`",
-        "key":  "module_checklist.md|checklist|form `mode=\"onsubmit\"` or `onblur`"
-    },
-    {
-        "itemId":  "L074",
-        "sourceFile":  "MODULE_CHECKLIST.md",
-        "line":  112,
-        "type":  "checklist",
-        "text":  "No inline `validate` functions",
-        "key":  "module_checklist.md|checklist|no inline `validate` functions"
-    },
-    {
-        "itemId":  "L075",
-        "sourceFile":  "MODULE_CHECKLIST.md",
-        "line":  113,
-        "type":  "checklist",
-        "text":  "Inputs in `[Entity]Inputs.tsx`",
-        "key":  "module_checklist.md|checklist|inputs in `[entity]inputs.tsx`"
-    },
-    {
-        "itemId":  "L076",
-        "sourceFile":  "MODULE_CHECKLIST.md",
-        "line":  114,
-        "type":  "checklist",
-        "text":  "Using Tier 2 Admin components",
-        "key":  "module_checklist.md|checklist|using tier 2 admin components"
-    },
-    {
-        "itemId":  "L077",
-        "sourceFile":  "MODULE_CHECKLIST.md",
-        "line":  115,
-        "type":  "checklist",
-        "text":  "Business logic in hooks/utils",
-        "key":  "module_checklist.md|checklist|business logic in hooks/utils"
-    },
-    {
-        "itemId":  "L078",
-        "sourceFile":  "MODULE_CHECKLIST.md",
-        "line":  116,
-        "type":  "checklist",
-        "text":  "Semantic colors (no hex codes)",
-        "key":  "module_checklist.md|checklist|semantic colors (no hex codes)"
-    },
-    {
-        "itemId":  "L079",
-        "sourceFile":  "MODULE_CHECKLIST.md",
-        "line":  117,
-        "type":  "checklist",
-        "text":  "Touch targets \u003e= `h-11`",
-        "key":  "module_checklist.md|checklist|touch targets \u003e= `h-11`"
-    },
-    {
-        "itemId":  "L080",
-        "sourceFile":  "MODULE_CHECKLIST.md",
-        "line":  118,
-        "type":  "checklist",
-        "text":  "Standard `DeleteButton`",
-        "key":  "module_checklist.md|checklist|standard `deletebutton`"
-    },
-    {
-        "itemId":  "L081",
-        "sourceFile":  "MODULE_CHECKLIST.md",
-        "line":  119,
-        "type":  "checklist",
-        "text":  "Unused imports removed",
-        "key":  "module_checklist.md|checklist|unused imports removed"
-    },
-    {
-        "itemId":  "L082",
-        "sourceFile":  "PROVIDER_RULES.md",
-        "line":  7,
-        "type":  "heading",
-        "text":  "Composed Architecture",
-        "key":  "provider_rules.md|heading|composed architecture"
-    },
-    {
-        "itemId":  "L083",
-        "sourceFile":  "PROVIDER_RULES.md",
-        "line":  18,
-        "type":  "heading",
-        "text":  "View/Table Duality",
-        "key":  "provider_rules.md|heading|view/table duality"
-    },
-    {
-        "itemId":  "L084",
-        "sourceFile":  "PROVIDER_RULES.md",
-        "line":  32,
-        "type":  "heading",
-        "text":  "Validation at Boundary",
-        "key":  "provider_rules.md|heading|validation at boundary"
-    },
-    {
-        "itemId":  "L085",
-        "sourceFile":  "PROVIDER_RULES.md",
-        "line":  47,
-        "type":  "heading",
-        "text":  "Edit Round-Trip Contract",
-        "key":  "provider_rules.md|heading|edit round-trip contract"
-    },
-    {
-        "itemId":  "L086",
-        "sourceFile":  "PROVIDER_RULES.md",
-        "line":  59,
-        "type":  "heading",
-        "text":  "Storage Operations",
-        "key":  "provider_rules.md|heading|storage operations"
-    },
-    {
-        "itemId":  "L087",
-        "sourceFile":  "PROVIDER_RULES.md",
-        "line":  71,
-        "type":  "heading",
-        "text":  "Service Layer",
-        "key":  "provider_rules.md|heading|service layer"
-    },
-    {
-        "itemId":  "L088",
-        "sourceFile":  "PROVIDER_RULES.md",
-        "line":  82,
-        "type":  "heading",
-        "text":  "Soft Deletes",
-        "key":  "provider_rules.md|heading|soft deletes"
-    },
-    {
-        "itemId":  "L089",
-        "sourceFile":  "PROVIDER_RULES.md",
-        "line":  92,
-        "type":  "heading",
-        "text":  "Error Handling \u0026 Side-Effects",
-        "key":  "provider_rules.md|heading|error handling \u0026 side-effects"
-    },
-    {
-        "itemId":  "L090",
-        "sourceFile":  "PROVIDER_RULES.md",
-        "line":  107,
-        "type":  "heading",
-        "text":  "Side-Effect Error Handling",
-        "key":  "provider_rules.md|heading|side-effect error handling"
-    },
-    {
-        "itemId":  "L091",
-        "sourceFile":  "PROVIDER_RULES.md",
-        "line":  153,
-        "type":  "heading",
-        "text":  "Transaction Boundaries",
-        "key":  "provider_rules.md|heading|transaction boundaries"
-    },
-    {
-        "itemId":  "L092",
-        "sourceFile":  "PROVIDER_RULES.md",
-        "line":  191,
-        "type":  "heading",
-        "text":  "Hierarchical Integrity",
-        "key":  "provider_rules.md|heading|hierarchical integrity"
-    },
-    {
-        "itemId":  "L093",
-        "sourceFile":  "PROVIDER_RULES.md",
-        "line":  217,
-        "type":  "heading",
-        "text":  "Hierarchical Constraints",
-        "key":  "provider_rules.md|heading|hierarchical constraints"
-    },
-    {
-        "itemId":  "L094",
-        "sourceFile":  "PROVIDER_RULES.md",
-        "line":  223,
-        "type":  "heading",
-        "text":  "Wrapper Composition Order",
-        "key":  "provider_rules.md|heading|wrapper composition order"
-    },
-    {
-        "itemId":  "L095",
-        "sourceFile":  "PROVIDER_RULES.md",
-        "line":  247,
-        "type":  "heading",
-        "text":  "Code Review Checklist",
-        "key":  "provider_rules.md|heading|code review checklist"
-    },
-    {
-        "itemId":  "L096",
-        "sourceFile":  "PROVIDER_RULES.md",
-        "line":  249,
-        "type":  "checklist",
-        "text":  "File in `handlers/` (not `unifiedDataProvider`)",
-        "key":  "provider_rules.md|checklist|file in `handlers/` (not `unifieddataprovider`)"
-    },
-    {
-        "itemId":  "L097",
-        "sourceFile":  "PROVIDER_RULES.md",
-        "line":  250,
-        "type":  "checklist",
-        "text":  "Registered in `composedDataProvider.ts`",
-        "key":  "provider_rules.md|checklist|registered in `composeddataprovider.ts`"
-    },
-    {
-        "itemId":  "L098",
-        "sourceFile":  "PROVIDER_RULES.md",
-        "line":  251,
-        "type":  "checklist",
-        "text":  "List/getMany reads use `_summary` view mapping; writes target base table",
-        "key":  "provider_rules.md|checklist|list/getmany reads use `_summary` view mapping; writes target base table"
-    },
-    {
-        "itemId":  "L099",
-        "sourceFile":  "PROVIDER_RULES.md",
-        "line":  252,
-        "type":  "checklist",
-        "text":  "`COMPUTED_FIELDS` defined in callbacks",
-        "key":  "provider_rules.md|checklist|`computed_fields` defined in callbacks"
-    },
-    {
-        "itemId":  "L100",
-        "sourceFile":  "PROVIDER_RULES.md",
-        "line":  253,
-        "type":  "checklist",
-        "text":  "Zod schema registered in `ValidationService`",
-        "key":  "provider_rules.md|checklist|zod schema registered in `validationservice`"
-    },
-    {
-        "itemId":  "L101",
-        "sourceFile":  "PROVIDER_RULES.md",
-        "line":  254,
-        "type":  "checklist",
-        "text":  "Edit round-trip verified (`getOne -\u003e defaultValues -\u003e resolver -\u003e update`)",
-        "key":  "provider_rules.md|checklist|edit round-trip verified (`getone -\u003e defaultvalues -\u003e resolver -\u003e update`)"
-    },
-    {
-        "itemId":  "L102",
-        "sourceFile":  "PROVIDER_RULES.md",
-        "line":  255,
-        "type":  "checklist",
-        "text":  "`supportsSoftDelete: true` enabled",
-        "key":  "provider_rules.md|checklist|`supportssoftdelete: true` enabled"
-    },
-    {
-        "itemId":  "L103",
-        "sourceFile":  "PROVIDER_RULES.md",
-        "line":  256,
-        "type":  "checklist",
-        "text":  "`withErrorLogging` is outermost wrapper",
-        "key":  "provider_rules.md|checklist|`witherrorlogging` is outermost wrapper"
-    },
-    {
-        "itemId":  "L104",
-        "sourceFile":  "PROVIDER_RULES.md",
-        "line":  257,
-        "type":  "checklist",
-        "text":  "External side-effects wrapped in try/catch with logging",
-        "key":  "provider_rules.md|checklist|external side-effects wrapped in try/catch with logging"
-    },
-    {
-        "itemId":  "L105",
-        "sourceFile":  "PROVIDER_RULES.md",
-        "line":  258,
-        "type":  "checklist",
-        "text":  "Non-critical side-effects don\u0027t block critical transactions",
-        "key":  "provider_rules.md|checklist|non-critical side-effects don\u0027t block critical transactions"
-    },
-    {
-        "itemId":  "L106",
-        "sourceFile":  "PROVIDER_RULES.md",
-        "line":  259,
-        "type":  "checklist",
-        "text":  "All async operations properly awaited or explicitly voided with error handlers",
-        "key":  "provider_rules.md|checklist|all async operations properly awaited or explicitly voided with error handlers"
-    },
-    {
-        "itemId":  "L107",
-        "sourceFile":  "STALE_STATE_STRATEGY.md",
-        "line":  5,
-        "type":  "heading",
-        "text":  "Query Key Factory Pattern",
-        "key":  "stale_state_strategy.md|heading|query key factory pattern"
-    },
-    {
-        "itemId":  "L108",
-        "sourceFile":  "STALE_STATE_STRATEGY.md",
-        "line":  9,
-        "type":  "heading",
-        "text":  "Hierarchical Keys",
-        "key":  "stale_state_strategy.md|heading|hierarchical keys"
-    },
-    {
-        "itemId":  "L109",
-        "sourceFile":  "STALE_STATE_STRATEGY.md",
-        "line":  31,
-        "type":  "heading",
-        "text":  "Invalidation Rules",
-        "key":  "stale_state_strategy.md|heading|invalidation rules"
-    },
-    {
-        "itemId":  "L110",
-        "sourceFile":  "STALE_STATE_STRATEGY.md",
-        "line":  33,
-        "type":  "heading",
-        "text":  "After Mutations",
-        "key":  "stale_state_strategy.md|heading|after mutations"
-    },
-    {
-        "itemId":  "L111",
-        "sourceFile":  "STALE_STATE_STRATEGY.md",
-        "line":  41,
-        "type":  "heading",
-        "text":  "Cross-Resource Dependencies",
-        "key":  "stale_state_strategy.md|heading|cross-resource dependencies"
-    },
-    {
-        "itemId":  "L112",
-        "sourceFile":  "STALE_STATE_STRATEGY.md",
-        "line":  53,
-        "type":  "heading",
-        "text":  "Junction Table Invalidation",
-        "key":  "stale_state_strategy.md|heading|junction table invalidation"
-    },
-    {
-        "itemId":  "L113",
-        "sourceFile":  "STALE_STATE_STRATEGY.md",
-        "line":  63,
-        "type":  "heading",
-        "text":  "Stale Time Defaults",
-        "key":  "stale_state_strategy.md|heading|stale time defaults"
-    },
-    {
-        "itemId":  "L114",
-        "sourceFile":  "STALE_STATE_STRATEGY.md",
-        "line":  73,
-        "type":  "heading",
-        "text":  "When to Use Short Stale Time",
-        "key":  "stale_state_strategy.md|heading|when to use short stale time"
-    },
-    {
-        "itemId":  "L115",
-        "sourceFile":  "STALE_STATE_STRATEGY.md",
-        "line":  81,
-        "type":  "heading",
-        "text":  "Refetch Patterns",
-        "key":  "stale_state_strategy.md|heading|refetch patterns"
-    },
-    {
-        "itemId":  "L116",
-        "sourceFile":  "STALE_STATE_STRATEGY.md",
-        "line":  83,
-        "type":  "heading",
-        "text":  "Approved Pattern: Dashboard Refresh on Tab Return",
-        "key":  "stale_state_strategy.md|heading|approved pattern: dashboard refresh on tab return"
-    },
-    {
-        "itemId":  "L117",
-        "sourceFile":  "STALE_STATE_STRATEGY.md",
-        "line":  115,
-        "type":  "heading",
-        "text":  "Standard Refetch Patterns",
-        "key":  "stale_state_strategy.md|heading|standard refetch patterns"
-    },
-    {
-        "itemId":  "L118",
-        "sourceFile":  "STALE_STATE_STRATEGY.md",
-        "line":  128,
-        "type":  "heading",
-        "text":  "Anti-Patterns (BANNED)",
-        "key":  "stale_state_strategy.md|heading|anti-patterns (banned)"
-    },
-    {
-        "itemId":  "L119",
-        "sourceFile":  "STALE_STATE_STRATEGY.md",
-        "line":  130,
-        "type":  "heading",
-        "text":  "Nuclear Invalidation",
-        "key":  "stale_state_strategy.md|heading|nuclear invalidation"
-    },
-    {
-        "itemId":  "L120",
-        "sourceFile":  "STALE_STATE_STRATEGY.md",
-        "line":  144,
-        "type":  "heading",
-        "text":  "Hardcoded Keys",
-        "key":  "stale_state_strategy.md|heading|hardcoded keys"
-    },
-    {
-        "itemId":  "L121",
-        "sourceFile":  "STALE_STATE_STRATEGY.md",
-        "line":  158,
-        "type":  "heading",
-        "text":  "Direct Cache Manipulation",
-        "key":  "stale_state_strategy.md|heading|direct cache manipulation"
-    },
-    {
-        "itemId":  "L122",
-        "sourceFile":  "STALE_STATE_STRATEGY.md",
-        "line":  172,
-        "type":  "heading",
-        "text":  "Window Focus Refetch Without staleTime Guard",
-        "key":  "stale_state_strategy.md|heading|window focus refetch without staletime guard"
-    },
-    {
-        "itemId":  "L123",
-        "sourceFile":  "STALE_STATE_STRATEGY.md",
-        "line":  203,
-        "type":  "heading",
-        "text":  "Checklist",
-        "key":  "stale_state_strategy.md|heading|checklist"
-    },
-    {
-        "itemId":  "L124",
-        "sourceFile":  "STALE_STATE_STRATEGY.md",
-        "line":  205,
-        "type":  "checklist",
-        "text":  "Mutation handlers call `queryClient.invalidateQueries()` with proper keys",
-        "key":  "stale_state_strategy.md|checklist|mutation handlers call `queryclient.invalidatequeries()` with proper keys"
-    },
-    {
-        "itemId":  "L125",
-        "sourceFile":  "STALE_STATE_STRATEGY.md",
-        "line":  206,
-        "type":  "checklist",
-        "text":  "Cross-resource dependencies invalidated (see table above)",
-        "key":  "stale_state_strategy.md|checklist|cross-resource dependencies invalidated (see table above)"
-    },
-    {
-        "itemId":  "L126",
-        "sourceFile":  "STALE_STATE_STRATEGY.md",
-        "line":  207,
-        "type":  "checklist",
-        "text":  "Using `queryKeys` factory, not hardcoded strings",
-        "key":  "stale_state_strategy.md|checklist|using `querykeys` factory, not hardcoded strings"
-    },
-    {
-        "itemId":  "L127",
-        "sourceFile":  "STALE_STATE_STRATEGY.md",
-        "line":  208,
-        "type":  "checklist",
-        "text":  "Dashboard/volatile data uses `SHORT_STALE_TIME_MS`",
-        "key":  "stale_state_strategy.md|checklist|dashboard/volatile data uses `short_stale_time_ms`"
-    },
-    {
-        "itemId":  "L128",
-        "sourceFile":  "STALE_STATE_STRATEGY.md",
-        "line":  209,
-        "type":  "checklist",
-        "text":  "No `refetchOnWindowFocus: true` without explicit `staleTime`",
-        "key":  "stale_state_strategy.md|checklist|no `refetchonwindowfocus: true` without explicit `staletime`"
-    },
-    {
-        "itemId":  "L129",
-        "sourceFile":  "STALE_STATE_STRATEGY.md",
-        "line":  210,
-        "type":  "checklist",
-        "text":  "No `queryClient.setQueryData()` (except optimistic updates with rollback)",
-        "key":  "stale_state_strategy.md|checklist|no `queryclient.setquerydata()` (except optimistic updates with rollback)"
-    },
-    {
-        "itemId":  "L130",
-        "sourceFile":  "STALE_STATE_STRATEGY.md",
-        "line":  211,
-        "type":  "checklist",
-        "text":  "Junction table changes invalidate both related resources",
-        "key":  "stale_state_strategy.md|checklist|junction table changes invalidate both related resources"
-    },
-    {
-        "itemId":  "L131",
-        "sourceFile":  "UI_STANDARDS.md",
-        "line":  7,
-        "type":  "heading",
-        "text":  "Tier 1: Atoms (`src/components/ui/`)",
-        "key":  "ui_standards.md|heading|tier 1: atoms (`src/components/ui/`)"
-    },
-    {
-        "itemId":  "L132",
-        "sourceFile":  "UI_STANDARDS.md",
-        "line":  23,
-        "type":  "heading",
-        "text":  "Tier 2: Molecules (`src/components/ra-wrappers/`)",
-        "key":  "ui_standards.md|heading|tier 2: molecules (`src/components/ra-wrappers/`)"
-    },
-    {
-        "itemId":  "L133",
-        "sourceFile":  "UI_STANDARDS.md",
-        "line":  39,
-        "type":  "heading",
-        "text":  "Prop Hygiene Pattern",
-        "key":  "ui_standards.md|heading|prop hygiene pattern"
-    },
-    {
-        "itemId":  "L134",
-        "sourceFile":  "UI_STANDARDS.md",
-        "line":  58,
-        "type":  "heading",
-        "text":  "File Handling (Tier 2)",
-        "key":  "ui_standards.md|heading|file handling (tier 2)"
-    },
-    {
-        "itemId":  "L135",
-        "sourceFile":  "UI_STANDARDS.md",
-        "line":  70,
-        "type":  "heading",
-        "text":  "Global Styling (`src/index.css`)",
-        "key":  "ui_standards.md|heading|global styling (`src/index.css`)"
-    },
-    {
-        "itemId":  "L136",
-        "sourceFile":  "UI_STANDARDS.md",
-        "line":  81,
-        "type":  "heading",
-        "text":  "Violation Fixes",
-        "key":  "ui_standards.md|heading|violation fixes"
-    },
-    {
-        "itemId":  "L137",
-        "sourceFile":  "UI_STANDARDS.md",
-        "line":  83,
-        "type":  "heading",
-        "text":  "Raw Card (Tier 1 Leak)",
-        "key":  "ui_standards.md|heading|raw card (tier 1 leak)"
-    },
-    {
-        "itemId":  "L138",
-        "sourceFile":  "UI_STANDARDS.md",
-        "line":  115,
-        "type":  "heading",
-        "text":  "Hardcoded Button",
-        "key":  "ui_standards.md|heading|hardcoded button"
-    },
-    {
-        "itemId":  "L139",
-        "sourceFile":  "UI_STANDARDS.md",
-        "line":  135,
-        "type":  "heading",
-        "text":  "Audit Command",
-        "key":  "ui_standards.md|heading|audit command"
-    },
-    {
-        "itemId":  "L140",
-        "sourceFile":  "UI_STANDARDS.md",
-        "line":  144,
-        "type":  "heading",
-        "text":  "Checklist",
-        "key":  "ui_standards.md|heading|checklist"
-    },
-    {
-        "itemId":  "L141",
-        "sourceFile":  "UI_STANDARDS.md",
-        "line":  146,
-        "type":  "checklist",
-        "text":  "Tier 1 has no `react-admin` or `@supabase` imports",
-        "key":  "ui_standards.md|checklist|tier 1 has no `react-admin` or `@supabase` imports"
-    },
-    {
-        "itemId":  "L142",
-        "sourceFile":  "UI_STANDARDS.md",
-        "line":  147,
-        "type":  "checklist",
-        "text":  "Tier 1 has no business logic",
-        "key":  "ui_standards.md|checklist|tier 1 has no business logic"
-    },
-    {
-        "itemId":  "L143",
-        "sourceFile":  "UI_STANDARDS.md",
-        "line":  148,
-        "type":  "checklist",
-        "text":  "Tier 1 uses semantic classes (no hex codes)",
-        "key":  "ui_standards.md|checklist|tier 1 uses semantic classes (no hex codes)"
-    },
-    {
-        "itemId":  "L144",
-        "sourceFile":  "UI_STANDARDS.md",
-        "line":  149,
-        "type":  "checklist",
-        "text":  "Tier 2 wrappers exist for common layouts",
-        "key":  "ui_standards.md|checklist|tier 2 wrappers exist for common layouts"
-    },
-    {
-        "itemId":  "L145",
-        "sourceFile":  "UI_STANDARDS.md",
-        "line":  150,
-        "type":  "checklist",
-        "text":  "Custom inputs wrap `useInput` properly",
-        "key":  "ui_standards.md|checklist|custom inputs wrap `useinput` properly"
-    },
-    {
-        "itemId":  "L146",
-        "sourceFile":  "UI_STANDARDS.md",
-        "line":  151,
-        "type":  "checklist",
-        "text":  "CSS variables defined in `:root`",
-        "key":  "ui_standards.md|checklist|css variables defined in `:root`"
-    },
-    {
-        "itemId":  "L147",
-        "sourceFile":  "UI_STANDARDS.md",
-        "line":  152,
-        "type":  "checklist",
-        "text":  "No magic numbers in Tailwind config",
-        "key":  "ui_standards.md|checklist|no magic numbers in tailwind config"
-    },
-    {
-        "itemId":  "L148",
-        "sourceFile":  "UI_STANDARDS.md",
-        "line":  153,
-        "type":  "checklist",
-        "text":  "All Dialogs/Modals include `\u003cDialogTitle\u003e` (or sr-only equivalent)",
-        "key":  "ui_standards.md|checklist|all dialogs/modals include `\u003cdialogtitle\u003e` (or sr-only equivalent)"
-    },
-    {
-        "itemId":  "L149",
-        "sourceFile":  "UI_STANDARDS.md",
-        "line":  154,
-        "type":  "checklist",
-        "text":  "No raw `Datagrid` imports from `react-admin` â€” use `PremiumDatagrid`",
-        "key":  "ui_standards.md|checklist|no raw `datagrid` imports from `react-admin` â€” use `premiumdatagrid`"
-    },
-    {
-        "itemId":  "L150",
-        "sourceFile":  "UI_STANDARDS.md",
-        "line":  155,
-        "type":  "checklist",
-        "text":  "Wrapper components destructure custom props before DOM spread",
-        "key":  "ui_standards.md|checklist|wrapper components destructure custom props before dom spread"
-    }
+  {
+    "itemId": "L001",
+    "sourceFile": "CODE_QUALITY.md",
+    "line": 5,
+    "type": "heading",
+    "text": "Production Noise Prevention",
+    "key": "code_quality.md|heading|production noise prevention"
+  },
+  {
+    "itemId": "L002",
+    "sourceFile": "CODE_QUALITY.md",
+    "line": 11,
+    "type": "heading",
+    "text": "Banned Patterns",
+    "key": "code_quality.md|heading|banned patterns"
+  },
+  {
+    "itemId": "L003",
+    "sourceFile": "CODE_QUALITY.md",
+    "line": 20,
+    "type": "heading",
+    "text": "Allowed Exceptions",
+    "key": "code_quality.md|heading|allowed exceptions"
+  },
+  {
+    "itemId": "L004",
+    "sourceFile": "CODE_QUALITY.md",
+    "line": 27,
+    "type": "heading",
+    "text": "Replacement Patterns",
+    "key": "code_quality.md|heading|replacement patterns"
+  },
+  {
+    "itemId": "L005",
+    "sourceFile": "CODE_QUALITY.md",
+    "line": 54,
+    "type": "heading",
+    "text": "Type Safety Baseline",
+    "key": "code_quality.md|heading|type safety baseline"
+  },
+  {
+    "itemId": "L006",
+    "sourceFile": "CODE_QUALITY.md",
+    "line": 67,
+    "type": "heading",
+    "text": "Banned Patterns (ALL code â€” production AND tests)",
+    "key": "code_quality.md|heading|banned patterns (all code â€” production and tests)"
+  },
+  {
+    "itemId": "L007",
+    "sourceFile": "CODE_QUALITY.md",
+    "line": 76,
+    "type": "heading",
+    "text": "Type-Safe Alternatives",
+    "key": "code_quality.md|heading|type-safe alternatives"
+  },
+  {
+    "itemId": "L008",
+    "sourceFile": "CODE_QUALITY.md",
+    "line": 86,
+    "type": "heading",
+    "text": "Type Safety Checklist",
+    "key": "code_quality.md|heading|type safety checklist"
+  },
+  {
+    "itemId": "L009",
+    "sourceFile": "CODE_QUALITY.md",
+    "line": 88,
+    "type": "checklist",
+    "text": "No `: any` types in production (use generic constraints, unknown with guards)",
+    "key": "code_quality.md|checklist|no `: any` types in production (use generic constraints, unknown with guards)"
+  },
+  {
+    "itemId": "L010",
+    "sourceFile": "CODE_QUALITY.md",
+    "line": 89,
+    "type": "checklist",
+    "text": "No `as any` casts in production (use type guards)",
+    "key": "code_quality.md|checklist|no `as any` casts in production (use type guards)"
+  },
+  {
+    "itemId": "L011",
+    "sourceFile": "CODE_QUALITY.md",
+    "line": 90,
+    "type": "checklist",
+    "text": "`as unknown as T` only with runtime guards (`segmentsHandler.ts` pattern)",
+    "key": "code_quality.md|checklist|`as unknown as t` only with runtime guards (`segmentshandler.ts` pattern)"
+  },
+  {
+    "itemId": "L012",
+    "sourceFile": "CODE_QUALITY.md",
+    "line": 91,
+    "type": "checklist",
+    "text": "API boundaries use Zod schemas with `z.infer`",
+    "key": "code_quality.md|checklist|api boundaries use zod schemas with `z.infer`"
+  },
+  {
+    "itemId": "L013",
+    "sourceFile": "CODE_QUALITY.md",
+    "line": 92,
+    "type": "checklist",
+    "text": "Test mocks use typed factories from `src/tests/utils/typed-mocks.ts`",
+    "key": "code_quality.md|checklist|test mocks use typed factories from `src/tests/utils/typed-mocks.ts`"
+  },
+  {
+    "itemId": "L014",
+    "sourceFile": "CODE_QUALITY.md",
+    "line": 93,
+    "type": "checklist",
+    "text": "Zero `any` in test files (cleaned Jan 2026)",
+    "key": "code_quality.md|checklist|zero `any` in test files (cleaned jan 2026)"
+  },
+  {
+    "itemId": "L015",
+    "sourceFile": "CODE_QUALITY.md",
+    "line": 95,
+    "type": "heading",
+    "text": "Form Standards (React Admin)",
+    "key": "code_quality.md|heading|form standards (react admin)"
+  },
+  {
+    "itemId": "L016",
+    "sourceFile": "CODE_QUALITY.md",
+    "line": 99,
+    "type": "heading",
+    "text": "Resolver Pattern",
+    "key": "code_quality.md|heading|resolver pattern"
+  },
+  {
+    "itemId": "L017",
+    "sourceFile": "CODE_QUALITY.md",
+    "line": 109,
+    "type": "heading",
+    "text": "Storage Hygiene",
+    "key": "code_quality.md|heading|storage hygiene"
+  },
+  {
+    "itemId": "L018",
+    "sourceFile": "CODE_QUALITY.md",
+    "line": 122,
+    "type": "heading",
+    "text": "Accessibility Requirements",
+    "key": "code_quality.md|heading|accessibility requirements"
+  },
+  {
+    "itemId": "L019",
+    "sourceFile": "CODE_QUALITY.md",
+    "line": 128,
+    "type": "heading",
+    "text": "Required Patterns",
+    "key": "code_quality.md|heading|required patterns"
+  },
+  {
+    "itemId": "L020",
+    "sourceFile": "CODE_QUALITY.md",
+    "line": 141,
+    "type": "heading",
+    "text": "Framework-Specific: Radix UI \u0026 React Admin",
+    "key": "code_quality.md|heading|framework-specific: radix ui \u0026 react admin"
+  },
+  {
+    "itemId": "L021",
+    "sourceFile": "CODE_QUALITY.md",
+    "line": 186,
+    "type": "heading",
+    "text": "Form Validation Focus Management",
+    "key": "code_quality.md|heading|form validation focus management"
+  },
+  {
+    "itemId": "L022",
+    "sourceFile": "CODE_QUALITY.md",
+    "line": 202,
+    "type": "heading",
+    "text": "Live Validation Feedback",
+    "key": "code_quality.md|heading|live validation feedback"
+  },
+  {
+    "itemId": "L023",
+    "sourceFile": "CODE_QUALITY.md",
+    "line": 215,
+    "type": "heading",
+    "text": "Pre-Commit Verification",
+    "key": "code_quality.md|heading|pre-commit verification"
+  },
+  {
+    "itemId": "L024",
+    "sourceFile": "CODE_QUALITY.md",
+    "line": 219,
+    "type": "heading",
+    "text": "Quick Check Commands",
+    "key": "code_quality.md|heading|quick check commands"
+  },
+  {
+    "itemId": "L025",
+    "sourceFile": "DATABASE_LAYER.md",
+    "line": 5,
+    "type": "heading",
+    "text": "View Duality (Performance)",
+    "key": "database_layer.md|heading|view duality (performance)"
+  },
+  {
+    "itemId": "L026",
+    "sourceFile": "DATABASE_LAYER.md",
+    "line": 18,
+    "type": "heading",
+    "text": "Soft Delete Enforcement (Security)",
+    "key": "database_layer.md|heading|soft delete enforcement (security)"
+  },
+  {
+    "itemId": "L027",
+    "sourceFile": "DATABASE_LAYER.md",
+    "line": 29,
+    "type": "heading",
+    "text": "Storage Layer (Files \u0026 Assets)",
+    "key": "database_layer.md|heading|storage layer (files \u0026 assets)"
+  },
+  {
+    "itemId": "L028",
+    "sourceFile": "DATABASE_LAYER.md",
+    "line": 42,
+    "type": "heading",
+    "text": "Access Control Patterns",
+    "key": "database_layer.md|heading|access control patterns"
+  },
+  {
+    "itemId": "L029",
+    "sourceFile": "DATABASE_LAYER.md",
+    "line": 57,
+    "type": "heading",
+    "text": "Permissive Policy Hole",
+    "key": "database_layer.md|heading|permissive policy hole"
+  },
+  {
+    "itemId": "L030",
+    "sourceFile": "DATABASE_LAYER.md",
+    "line": 108,
+    "type": "heading",
+    "text": "Junction Table Security",
+    "key": "database_layer.md|heading|junction table security"
+  },
+  {
+    "itemId": "L031",
+    "sourceFile": "DATABASE_LAYER.md",
+    "line": 150,
+    "type": "heading",
+    "text": "ON DELETE Convention for Sales References",
+    "key": "database_layer.md|heading|on delete convention for sales references"
+  },
+  {
+    "itemId": "L032",
+    "sourceFile": "DATABASE_LAYER.md",
+    "line": 161,
+    "type": "heading",
+    "text": "Immutable Fields (Data Integrity)",
+    "key": "database_layer.md|heading|immutable fields (data integrity)"
+  },
+  {
+    "itemId": "L033",
+    "sourceFile": "DATABASE_LAYER.md",
+    "line": 170,
+    "type": "heading",
+    "text": "Violation Fixes",
+    "key": "database_layer.md|heading|violation fixes"
+  },
+  {
+    "itemId": "L034",
+    "sourceFile": "DATABASE_LAYER.md",
+    "line": 172,
+    "type": "heading",
+    "text": "Leaky Delete",
+    "key": "database_layer.md|heading|leaky delete"
+  },
+  {
+    "itemId": "L035",
+    "sourceFile": "DATABASE_LAYER.md",
+    "line": 188,
+    "type": "heading",
+    "text": "Slow Dashboard",
+    "key": "database_layer.md|heading|slow dashboard"
+  },
+  {
+    "itemId": "L036",
+    "sourceFile": "DATABASE_LAYER.md",
+    "line": 205,
+    "type": "heading",
+    "text": "Audit Command",
+    "key": "database_layer.md|heading|audit command"
+  },
+  {
+    "itemId": "L037",
+    "sourceFile": "DATABASE_LAYER.md",
+    "line": 211,
+    "type": "heading",
+    "text": "Checklist",
+    "key": "database_layer.md|heading|checklist"
+  },
+  {
+    "itemId": "L038",
+    "sourceFile": "DATABASE_LAYER.md",
+    "line": 213,
+    "type": "checklist",
+    "text": "List views have `_summary` SQL views with pre-calculated fields",
+    "key": "database_layer.md|checklist|list views have `_summary` sql views with pre-calculated fields"
+  },
+  {
+    "itemId": "L039",
+    "sourceFile": "DATABASE_LAYER.md",
+    "line": 214,
+    "type": "checklist",
+    "text": "`SELECT` policies enforce `deleted_at IS NULL`",
+    "key": "database_layer.md|checklist|`select` policies enforce `deleted_at is null`"
+  },
+  {
+    "itemId": "L040",
+    "sourceFile": "DATABASE_LAYER.md",
+    "line": 215,
+    "type": "checklist",
+    "text": "Soft-delete cascades handled by triggers/policies",
+    "key": "database_layer.md|checklist|soft-delete cascades handled by triggers/policies"
+  },
+  {
+    "itemId": "L041",
+    "sourceFile": "DATABASE_LAYER.md",
+    "line": 216,
+    "type": "checklist",
+    "text": "`created_at`/`updated_at` managed by triggers (not frontend)",
+    "key": "database_layer.md|checklist|`created_at`/`updated_at` managed by triggers (not frontend)"
+  },
+  {
+    "itemId": "L042",
+    "sourceFile": "DATABASE_LAYER.md",
+    "line": 217,
+    "type": "checklist",
+    "text": "Computed columns auto-generated",
+    "key": "database_layer.md|checklist|computed columns auto-generated"
+  },
+  {
+    "itemId": "L043",
+    "sourceFile": "DATABASE_LAYER.md",
+    "line": 218,
+    "type": "checklist",
+    "text": "No `USING (true)` policies except `service_role`",
+    "key": "database_layer.md|checklist|no `using (true)` policies except `service_role`"
+  },
+  {
+    "itemId": "L044",
+    "sourceFile": "DATABASE_LAYER.md",
+    "line": 219,
+    "type": "checklist",
+    "text": "All policies verify `auth.uid()` or `company_id`",
+    "key": "database_layer.md|checklist|all policies verify `auth.uid()` or `company_id`"
+  },
+  {
+    "itemId": "L045",
+    "sourceFile": "DATABASE_LAYER.md",
+    "line": 220,
+    "type": "checklist",
+    "text": "Junction table policies check both foreign key sides",
+    "key": "database_layer.md|checklist|junction table policies check both foreign key sides"
+  },
+  {
+    "itemId": "L046",
+    "sourceFile": "DATABASE_LAYER.md",
+    "line": 221,
+    "type": "checklist",
+    "text": "Junction table foreign keys have indexes for `EXISTS` query performance",
+    "key": "database_layer.md|checklist|junction table foreign keys have indexes for `exists` query performance"
+  },
+  {
+    "itemId": "L047",
+    "sourceFile": "DOMAIN_INTEGRITY.md",
+    "line": 5,
+    "type": "heading",
+    "text": "Schema Rules",
+    "key": "domain_integrity.md|heading|schema rules"
+  },
+  {
+    "itemId": "L048",
+    "sourceFile": "DOMAIN_INTEGRITY.md",
+    "line": 19,
+    "type": "heading",
+    "text": "Strict vs Passthrough: Choose Explicitly for Updates",
+    "key": "domain_integrity.md|heading|strict vs passthrough: choose explicitly for updates"
+  },
+  {
+    "itemId": "L049",
+    "sourceFile": "DOMAIN_INTEGRITY.md",
+    "line": 56,
+    "type": "heading",
+    "text": "Constants",
+    "key": "domain_integrity.md|heading|constants"
+  },
+  {
+    "itemId": "L050",
+    "sourceFile": "DOMAIN_INTEGRITY.md",
+    "line": 66,
+    "type": "heading",
+    "text": "Type Export Pattern",
+    "key": "domain_integrity.md|heading|type export pattern"
+  },
+  {
+    "itemId": "L051",
+    "sourceFile": "DOMAIN_INTEGRITY.md",
+    "line": 82,
+    "type": "heading",
+    "text": "TypeScript Safety",
+    "key": "domain_integrity.md|heading|typescript safety"
+  },
+  {
+    "itemId": "L052",
+    "sourceFile": "DOMAIN_INTEGRITY.md",
+    "line": 96,
+    "type": "heading",
+    "text": "Broken Test Types",
+    "key": "domain_integrity.md|heading|broken test types"
+  },
+  {
+    "itemId": "L053",
+    "sourceFile": "DOMAIN_INTEGRITY.md",
+    "line": 144,
+    "type": "heading",
+    "text": "React Admin Hook Mocks",
+    "key": "domain_integrity.md|heading|react admin hook mocks"
+  },
+  {
+    "itemId": "L054",
+    "sourceFile": "DOMAIN_INTEGRITY.md",
+    "line": 171,
+    "type": "heading",
+    "text": "Checklist",
+    "key": "domain_integrity.md|heading|checklist"
+  },
+  {
+    "itemId": "L055",
+    "sourceFile": "DOMAIN_INTEGRITY.md",
+    "line": 173,
+    "type": "checklist",
+    "text": "Every table in `supabase/migrations/` has matching `z.object` in `validation/`",
+    "key": "domain_integrity.md|checklist|every table in `supabase/migrations/` has matching `z.object` in `validation/`"
+  },
+  {
+    "itemId": "L056",
+    "sourceFile": "DOMAIN_INTEGRITY.md",
+    "line": 174,
+    "type": "checklist",
+    "text": "Exporting `z.infer\u003c...\u003e` types (not manual interfaces)",
+    "key": "domain_integrity.md|checklist|exporting `z.infer\u003c...\u003e` types (not manual interfaces)"
+  },
+  {
+    "itemId": "L057",
+    "sourceFile": "DOMAIN_INTEGRITY.md",
+    "line": 175,
+    "type": "checklist",
+    "text": "Create schemas use `.strict()` to block illegal fields",
+    "key": "domain_integrity.md|checklist|create schemas use `.strict()` to block illegal fields"
+  },
+  {
+    "itemId": "L058",
+    "sourceFile": "DOMAIN_INTEGRITY.md",
+    "line": 176,
+    "type": "checklist",
+    "text": "Update schemas pick one strategy explicitly: strict+round-trip coverage OR passthrough+explicit sanitize before write",
+    "key": "domain_integrity.md|checklist|update schemas pick one strategy explicitly: strict+round-trip coverage or passthrough+explicit sanitize before write"
+  },
+  {
+    "itemId": "L059",
+    "sourceFile": "DOMAIN_INTEGRITY.md",
+    "line": 177,
+    "type": "checklist",
+    "text": "Form inputs use `z.coerce` for type conversion",
+    "key": "domain_integrity.md|checklist|form inputs use `z.coerce` for type conversion"
+  },
+  {
+    "itemId": "L060",
+    "sourceFile": "DOMAIN_INTEGRITY.md",
+    "line": 178,
+    "type": "checklist",
+    "text": "No `as any` or `as unknown as` casts (use type guards or typed test data)",
+    "key": "domain_integrity.md|checklist|no `as any` or `as unknown as` casts (use type guards or typed test data)"
+  },
+  {
+    "itemId": "L061",
+    "sourceFile": "DOMAIN_INTEGRITY.md",
+    "line": 179,
+    "type": "checklist",
+    "text": "React Admin hook mocks use generic factories from `src/tests/utils/typed-mocks.ts`",
+    "key": "domain_integrity.md|checklist|react admin hook mocks use generic factories from `src/tests/utils/typed-mocks.ts`"
+  },
+  {
+    "itemId": "L062",
+    "sourceFile": "MODULE_CHECKLIST.md",
+    "line": 5,
+    "type": "heading",
+    "text": "File Structure (Rule #6)",
+    "key": "module_checklist.md|heading|file structure (rule #6)"
+  },
+  {
+    "itemId": "L063",
+    "sourceFile": "MODULE_CHECKLIST.md",
+    "line": 17,
+    "type": "heading",
+    "text": "Data Access (Rule #5)",
+    "key": "module_checklist.md|heading|data access (rule #5)"
+  },
+  {
+    "itemId": "L064",
+    "sourceFile": "MODULE_CHECKLIST.md",
+    "line": 29,
+    "type": "heading",
+    "text": "Forms",
+    "key": "module_checklist.md|heading|forms"
+  },
+  {
+    "itemId": "L065",
+    "sourceFile": "MODULE_CHECKLIST.md",
+    "line": 39,
+    "type": "heading",
+    "text": "Component Tiers (Rule #4)",
+    "key": "module_checklist.md|heading|component tiers (rule #4)"
+  },
+  {
+    "itemId": "L066",
+    "sourceFile": "MODULE_CHECKLIST.md",
+    "line": 51,
+    "type": "heading",
+    "text": "Styling (Rule #8)",
+    "key": "module_checklist.md|heading|styling (rule #8)"
+  },
+  {
+    "itemId": "L067",
+    "sourceFile": "MODULE_CHECKLIST.md",
+    "line": 61,
+    "type": "heading",
+    "text": "Safety",
+    "key": "module_checklist.md|heading|safety"
+  },
+  {
+    "itemId": "L068",
+    "sourceFile": "MODULE_CHECKLIST.md",
+    "line": 70,
+    "type": "heading",
+    "text": "Transformation Example",
+    "key": "module_checklist.md|heading|transformation example"
+  },
+  {
+    "itemId": "L069",
+    "sourceFile": "MODULE_CHECKLIST.md",
+    "line": 106,
+    "type": "heading",
+    "text": "Checklist",
+    "key": "module_checklist.md|heading|checklist"
+  },
+  {
+    "itemId": "L070",
+    "sourceFile": "MODULE_CHECKLIST.md",
+    "line": 108,
+    "type": "checklist",
+    "text": "Standard file structure (`index.tsx`, `[Entity]List.tsx`, etc.)",
+    "key": "module_checklist.md|checklist|standard file structure (`index.tsx`, `[entity]list.tsx`, etc.)"
+  },
+  {
+    "itemId": "L071",
+    "sourceFile": "MODULE_CHECKLIST.md",
+    "line": 109,
+    "type": "checklist",
+    "text": "No direct Supabase imports",
+    "key": "module_checklist.md|checklist|no direct supabase imports"
+  },
+  {
+    "itemId": "L072",
+    "sourceFile": "MODULE_CHECKLIST.md",
+    "line": 110,
+    "type": "checklist",
+    "text": "List/getMany reads follow `_summary` view mapping",
+    "key": "module_checklist.md|checklist|list/getmany reads follow `_summary` view mapping"
+  },
+  {
+    "itemId": "L073",
+    "sourceFile": "MODULE_CHECKLIST.md",
+    "line": 111,
+    "type": "checklist",
+    "text": "Form `mode=\"onSubmit\"` or `onBlur`",
+    "key": "module_checklist.md|checklist|form `mode=\"onsubmit\"` or `onblur`"
+  },
+  {
+    "itemId": "L074",
+    "sourceFile": "MODULE_CHECKLIST.md",
+    "line": 112,
+    "type": "checklist",
+    "text": "No inline `validate` functions",
+    "key": "module_checklist.md|checklist|no inline `validate` functions"
+  },
+  {
+    "itemId": "L075",
+    "sourceFile": "MODULE_CHECKLIST.md",
+    "line": 113,
+    "type": "checklist",
+    "text": "Inputs in `[Entity]Inputs.tsx`",
+    "key": "module_checklist.md|checklist|inputs in `[entity]inputs.tsx`"
+  },
+  {
+    "itemId": "L076",
+    "sourceFile": "MODULE_CHECKLIST.md",
+    "line": 114,
+    "type": "checklist",
+    "text": "Using Tier 2 Admin components",
+    "key": "module_checklist.md|checklist|using tier 2 admin components"
+  },
+  {
+    "itemId": "L077",
+    "sourceFile": "MODULE_CHECKLIST.md",
+    "line": 115,
+    "type": "checklist",
+    "text": "Business logic in hooks/utils",
+    "key": "module_checklist.md|checklist|business logic in hooks/utils"
+  },
+  {
+    "itemId": "L078",
+    "sourceFile": "MODULE_CHECKLIST.md",
+    "line": 116,
+    "type": "checklist",
+    "text": "Semantic colors (no hex codes)",
+    "key": "module_checklist.md|checklist|semantic colors (no hex codes)"
+  },
+  {
+    "itemId": "L079",
+    "sourceFile": "MODULE_CHECKLIST.md",
+    "line": 117,
+    "type": "checklist",
+    "text": "Touch targets \u003e= `h-11`",
+    "key": "module_checklist.md|checklist|touch targets \u003e= `h-11`"
+  },
+  {
+    "itemId": "L080",
+    "sourceFile": "MODULE_CHECKLIST.md",
+    "line": 118,
+    "type": "checklist",
+    "text": "Standard `DeleteButton`",
+    "key": "module_checklist.md|checklist|standard `deletebutton`"
+  },
+  {
+    "itemId": "L081",
+    "sourceFile": "MODULE_CHECKLIST.md",
+    "line": 119,
+    "type": "checklist",
+    "text": "Unused imports removed",
+    "key": "module_checklist.md|checklist|unused imports removed"
+  },
+  {
+    "itemId": "L082",
+    "sourceFile": "PROVIDER_RULES.md",
+    "line": 7,
+    "type": "heading",
+    "text": "Composed Architecture",
+    "key": "provider_rules.md|heading|composed architecture"
+  },
+  {
+    "itemId": "L083",
+    "sourceFile": "PROVIDER_RULES.md",
+    "line": 18,
+    "type": "heading",
+    "text": "View/Table Duality",
+    "key": "provider_rules.md|heading|view/table duality"
+  },
+  {
+    "itemId": "L084",
+    "sourceFile": "PROVIDER_RULES.md",
+    "line": 32,
+    "type": "heading",
+    "text": "Validation at Boundary",
+    "key": "provider_rules.md|heading|validation at boundary"
+  },
+  {
+    "itemId": "L085",
+    "sourceFile": "PROVIDER_RULES.md",
+    "line": 47,
+    "type": "heading",
+    "text": "Edit Round-Trip Contract",
+    "key": "provider_rules.md|heading|edit round-trip contract"
+  },
+  {
+    "itemId": "L086",
+    "sourceFile": "PROVIDER_RULES.md",
+    "line": 59,
+    "type": "heading",
+    "text": "Storage Operations",
+    "key": "provider_rules.md|heading|storage operations"
+  },
+  {
+    "itemId": "L087",
+    "sourceFile": "PROVIDER_RULES.md",
+    "line": 71,
+    "type": "heading",
+    "text": "Service Layer",
+    "key": "provider_rules.md|heading|service layer"
+  },
+  {
+    "itemId": "L088",
+    "sourceFile": "PROVIDER_RULES.md",
+    "line": 82,
+    "type": "heading",
+    "text": "Soft Deletes",
+    "key": "provider_rules.md|heading|soft deletes"
+  },
+  {
+    "itemId": "L089",
+    "sourceFile": "PROVIDER_RULES.md",
+    "line": 92,
+    "type": "heading",
+    "text": "Error Handling \u0026 Side-Effects",
+    "key": "provider_rules.md|heading|error handling \u0026 side-effects"
+  },
+  {
+    "itemId": "L090",
+    "sourceFile": "PROVIDER_RULES.md",
+    "line": 107,
+    "type": "heading",
+    "text": "Side-Effect Error Handling",
+    "key": "provider_rules.md|heading|side-effect error handling"
+  },
+  {
+    "itemId": "L091",
+    "sourceFile": "PROVIDER_RULES.md",
+    "line": 153,
+    "type": "heading",
+    "text": "Transaction Boundaries",
+    "key": "provider_rules.md|heading|transaction boundaries"
+  },
+  {
+    "itemId": "L092",
+    "sourceFile": "PROVIDER_RULES.md",
+    "line": 191,
+    "type": "heading",
+    "text": "Hierarchical Integrity",
+    "key": "provider_rules.md|heading|hierarchical integrity"
+  },
+  {
+    "itemId": "L093",
+    "sourceFile": "PROVIDER_RULES.md",
+    "line": 217,
+    "type": "heading",
+    "text": "Hierarchical Constraints",
+    "key": "provider_rules.md|heading|hierarchical constraints"
+  },
+  {
+    "itemId": "L094",
+    "sourceFile": "PROVIDER_RULES.md",
+    "line": 223,
+    "type": "heading",
+    "text": "Wrapper Composition Order",
+    "key": "provider_rules.md|heading|wrapper composition order"
+  },
+  {
+    "itemId": "L095",
+    "sourceFile": "PROVIDER_RULES.md",
+    "line": 247,
+    "type": "heading",
+    "text": "Code Review Checklist",
+    "key": "provider_rules.md|heading|code review checklist"
+  },
+  {
+    "itemId": "L096",
+    "sourceFile": "PROVIDER_RULES.md",
+    "line": 249,
+    "type": "checklist",
+    "text": "File in `handlers/` (not `unifiedDataProvider`)",
+    "key": "provider_rules.md|checklist|file in `handlers/` (not `unifieddataprovider`)"
+  },
+  {
+    "itemId": "L097",
+    "sourceFile": "PROVIDER_RULES.md",
+    "line": 250,
+    "type": "checklist",
+    "text": "Registered in `composedDataProvider.ts`",
+    "key": "provider_rules.md|checklist|registered in `composeddataprovider.ts`"
+  },
+  {
+    "itemId": "L098",
+    "sourceFile": "PROVIDER_RULES.md",
+    "line": 251,
+    "type": "checklist",
+    "text": "List/getMany reads use `_summary` view mapping; writes target base table",
+    "key": "provider_rules.md|checklist|list/getmany reads use `_summary` view mapping; writes target base table"
+  },
+  {
+    "itemId": "L099",
+    "sourceFile": "PROVIDER_RULES.md",
+    "line": 252,
+    "type": "checklist",
+    "text": "`COMPUTED_FIELDS` defined in callbacks",
+    "key": "provider_rules.md|checklist|`computed_fields` defined in callbacks"
+  },
+  {
+    "itemId": "L100",
+    "sourceFile": "PROVIDER_RULES.md",
+    "line": 253,
+    "type": "checklist",
+    "text": "Zod schema registered in `ValidationService`",
+    "key": "provider_rules.md|checklist|zod schema registered in `validationservice`"
+  },
+  {
+    "itemId": "L101",
+    "sourceFile": "PROVIDER_RULES.md",
+    "line": 254,
+    "type": "checklist",
+    "text": "Edit round-trip verified (`getOne -\u003e defaultValues -\u003e resolver -\u003e update`)",
+    "key": "provider_rules.md|checklist|edit round-trip verified (`getone -\u003e defaultvalues -\u003e resolver -\u003e update`)"
+  },
+  {
+    "itemId": "L102",
+    "sourceFile": "PROVIDER_RULES.md",
+    "line": 255,
+    "type": "checklist",
+    "text": "`supportsSoftDelete: true` enabled",
+    "key": "provider_rules.md|checklist|`supportssoftdelete: true` enabled"
+  },
+  {
+    "itemId": "L103",
+    "sourceFile": "PROVIDER_RULES.md",
+    "line": 256,
+    "type": "checklist",
+    "text": "`withErrorLogging` is outermost wrapper",
+    "key": "provider_rules.md|checklist|`witherrorlogging` is outermost wrapper"
+  },
+  {
+    "itemId": "L104",
+    "sourceFile": "PROVIDER_RULES.md",
+    "line": 257,
+    "type": "checklist",
+    "text": "External side-effects wrapped in try/catch with logging",
+    "key": "provider_rules.md|checklist|external side-effects wrapped in try/catch with logging"
+  },
+  {
+    "itemId": "L105",
+    "sourceFile": "PROVIDER_RULES.md",
+    "line": 258,
+    "type": "checklist",
+    "text": "Non-critical side-effects don\u0027t block critical transactions",
+    "key": "provider_rules.md|checklist|non-critical side-effects don\u0027t block critical transactions"
+  },
+  {
+    "itemId": "L106",
+    "sourceFile": "PROVIDER_RULES.md",
+    "line": 259,
+    "type": "checklist",
+    "text": "All async operations properly awaited or explicitly voided with error handlers",
+    "key": "provider_rules.md|checklist|all async operations properly awaited or explicitly voided with error handlers"
+  },
+  {
+    "itemId": "L107",
+    "sourceFile": "STALE_STATE_STRATEGY.md",
+    "line": 5,
+    "type": "heading",
+    "text": "Query Key Factory Pattern",
+    "key": "stale_state_strategy.md|heading|query key factory pattern"
+  },
+  {
+    "itemId": "L108",
+    "sourceFile": "STALE_STATE_STRATEGY.md",
+    "line": 9,
+    "type": "heading",
+    "text": "Hierarchical Keys",
+    "key": "stale_state_strategy.md|heading|hierarchical keys"
+  },
+  {
+    "itemId": "L109",
+    "sourceFile": "STALE_STATE_STRATEGY.md",
+    "line": 31,
+    "type": "heading",
+    "text": "Invalidation Rules",
+    "key": "stale_state_strategy.md|heading|invalidation rules"
+  },
+  {
+    "itemId": "L110",
+    "sourceFile": "STALE_STATE_STRATEGY.md",
+    "line": 33,
+    "type": "heading",
+    "text": "After Mutations",
+    "key": "stale_state_strategy.md|heading|after mutations"
+  },
+  {
+    "itemId": "L111",
+    "sourceFile": "STALE_STATE_STRATEGY.md",
+    "line": 41,
+    "type": "heading",
+    "text": "Cross-Resource Dependencies",
+    "key": "stale_state_strategy.md|heading|cross-resource dependencies"
+  },
+  {
+    "itemId": "L112",
+    "sourceFile": "STALE_STATE_STRATEGY.md",
+    "line": 53,
+    "type": "heading",
+    "text": "Junction Table Invalidation",
+    "key": "stale_state_strategy.md|heading|junction table invalidation"
+  },
+  {
+    "itemId": "L113",
+    "sourceFile": "STALE_STATE_STRATEGY.md",
+    "line": 63,
+    "type": "heading",
+    "text": "Stale Time Defaults",
+    "key": "stale_state_strategy.md|heading|stale time defaults"
+  },
+  {
+    "itemId": "L114",
+    "sourceFile": "STALE_STATE_STRATEGY.md",
+    "line": 73,
+    "type": "heading",
+    "text": "When to Use Short Stale Time",
+    "key": "stale_state_strategy.md|heading|when to use short stale time"
+  },
+  {
+    "itemId": "L115",
+    "sourceFile": "STALE_STATE_STRATEGY.md",
+    "line": 81,
+    "type": "heading",
+    "text": "Refetch Patterns",
+    "key": "stale_state_strategy.md|heading|refetch patterns"
+  },
+  {
+    "itemId": "L116",
+    "sourceFile": "STALE_STATE_STRATEGY.md",
+    "line": 83,
+    "type": "heading",
+    "text": "Approved Pattern: Dashboard Refresh on Tab Return",
+    "key": "stale_state_strategy.md|heading|approved pattern: dashboard refresh on tab return"
+  },
+  {
+    "itemId": "L117",
+    "sourceFile": "STALE_STATE_STRATEGY.md",
+    "line": 115,
+    "type": "heading",
+    "text": "Standard Refetch Patterns",
+    "key": "stale_state_strategy.md|heading|standard refetch patterns"
+  },
+  {
+    "itemId": "L118",
+    "sourceFile": "STALE_STATE_STRATEGY.md",
+    "line": 128,
+    "type": "heading",
+    "text": "Anti-Patterns (BANNED)",
+    "key": "stale_state_strategy.md|heading|anti-patterns (banned)"
+  },
+  {
+    "itemId": "L119",
+    "sourceFile": "STALE_STATE_STRATEGY.md",
+    "line": 130,
+    "type": "heading",
+    "text": "Nuclear Invalidation",
+    "key": "stale_state_strategy.md|heading|nuclear invalidation"
+  },
+  {
+    "itemId": "L120",
+    "sourceFile": "STALE_STATE_STRATEGY.md",
+    "line": 144,
+    "type": "heading",
+    "text": "Hardcoded Keys",
+    "key": "stale_state_strategy.md|heading|hardcoded keys"
+  },
+  {
+    "itemId": "L121",
+    "sourceFile": "STALE_STATE_STRATEGY.md",
+    "line": 158,
+    "type": "heading",
+    "text": "Direct Cache Manipulation",
+    "key": "stale_state_strategy.md|heading|direct cache manipulation"
+  },
+  {
+    "itemId": "L122",
+    "sourceFile": "STALE_STATE_STRATEGY.md",
+    "line": 172,
+    "type": "heading",
+    "text": "Window Focus Refetch Without staleTime Guard",
+    "key": "stale_state_strategy.md|heading|window focus refetch without staletime guard"
+  },
+  {
+    "itemId": "L123",
+    "sourceFile": "STALE_STATE_STRATEGY.md",
+    "line": 203,
+    "type": "heading",
+    "text": "Checklist",
+    "key": "stale_state_strategy.md|heading|checklist"
+  },
+  {
+    "itemId": "L124",
+    "sourceFile": "STALE_STATE_STRATEGY.md",
+    "line": 205,
+    "type": "checklist",
+    "text": "Mutation handlers call `queryClient.invalidateQueries()` with proper keys",
+    "key": "stale_state_strategy.md|checklist|mutation handlers call `queryclient.invalidatequeries()` with proper keys"
+  },
+  {
+    "itemId": "L125",
+    "sourceFile": "STALE_STATE_STRATEGY.md",
+    "line": 206,
+    "type": "checklist",
+    "text": "Cross-resource dependencies invalidated (see table above)",
+    "key": "stale_state_strategy.md|checklist|cross-resource dependencies invalidated (see table above)"
+  },
+  {
+    "itemId": "L126",
+    "sourceFile": "STALE_STATE_STRATEGY.md",
+    "line": 207,
+    "type": "checklist",
+    "text": "Using `queryKeys` factory, not hardcoded strings",
+    "key": "stale_state_strategy.md|checklist|using `querykeys` factory, not hardcoded strings"
+  },
+  {
+    "itemId": "L127",
+    "sourceFile": "STALE_STATE_STRATEGY.md",
+    "line": 208,
+    "type": "checklist",
+    "text": "Dashboard/volatile data uses `SHORT_STALE_TIME_MS`",
+    "key": "stale_state_strategy.md|checklist|dashboard/volatile data uses `short_stale_time_ms`"
+  },
+  {
+    "itemId": "L128",
+    "sourceFile": "STALE_STATE_STRATEGY.md",
+    "line": 209,
+    "type": "checklist",
+    "text": "No `refetchOnWindowFocus: true` without explicit `staleTime`",
+    "key": "stale_state_strategy.md|checklist|no `refetchonwindowfocus: true` without explicit `staletime`"
+  },
+  {
+    "itemId": "L129",
+    "sourceFile": "STALE_STATE_STRATEGY.md",
+    "line": 210,
+    "type": "checklist",
+    "text": "No `queryClient.setQueryData()` (except optimistic updates with rollback)",
+    "key": "stale_state_strategy.md|checklist|no `queryclient.setquerydata()` (except optimistic updates with rollback)"
+  },
+  {
+    "itemId": "L130",
+    "sourceFile": "STALE_STATE_STRATEGY.md",
+    "line": 211,
+    "type": "checklist",
+    "text": "Junction table changes invalidate both related resources",
+    "key": "stale_state_strategy.md|checklist|junction table changes invalidate both related resources"
+  },
+  {
+    "itemId": "L131",
+    "sourceFile": "UI_STANDARDS.md",
+    "line": 7,
+    "type": "heading",
+    "text": "Tier 1: Atoms (`src/components/ui/`)",
+    "key": "ui_standards.md|heading|tier 1: atoms (`src/components/ui/`)"
+  },
+  {
+    "itemId": "L132",
+    "sourceFile": "UI_STANDARDS.md",
+    "line": 23,
+    "type": "heading",
+    "text": "Tier 2: Molecules (`src/components/ra-wrappers/`)",
+    "key": "ui_standards.md|heading|tier 2: molecules (`src/components/ra-wrappers/`)"
+  },
+  {
+    "itemId": "L133",
+    "sourceFile": "UI_STANDARDS.md",
+    "line": 39,
+    "type": "heading",
+    "text": "Prop Hygiene Pattern",
+    "key": "ui_standards.md|heading|prop hygiene pattern"
+  },
+  {
+    "itemId": "L134",
+    "sourceFile": "UI_STANDARDS.md",
+    "line": 58,
+    "type": "heading",
+    "text": "File Handling (Tier 2)",
+    "key": "ui_standards.md|heading|file handling (tier 2)"
+  },
+  {
+    "itemId": "L135",
+    "sourceFile": "UI_STANDARDS.md",
+    "line": 70,
+    "type": "heading",
+    "text": "Global Styling (`src/index.css`)",
+    "key": "ui_standards.md|heading|global styling (`src/index.css`)"
+  },
+  {
+    "itemId": "L136",
+    "sourceFile": "UI_STANDARDS.md",
+    "line": 81,
+    "type": "heading",
+    "text": "Violation Fixes",
+    "key": "ui_standards.md|heading|violation fixes"
+  },
+  {
+    "itemId": "L137",
+    "sourceFile": "UI_STANDARDS.md",
+    "line": 83,
+    "type": "heading",
+    "text": "Raw Card (Tier 1 Leak)",
+    "key": "ui_standards.md|heading|raw card (tier 1 leak)"
+  },
+  {
+    "itemId": "L138",
+    "sourceFile": "UI_STANDARDS.md",
+    "line": 115,
+    "type": "heading",
+    "text": "Hardcoded Button",
+    "key": "ui_standards.md|heading|hardcoded button"
+  },
+  {
+    "itemId": "L139",
+    "sourceFile": "UI_STANDARDS.md",
+    "line": 135,
+    "type": "heading",
+    "text": "Audit Command",
+    "key": "ui_standards.md|heading|audit command"
+  },
+  {
+    "itemId": "L140",
+    "sourceFile": "UI_STANDARDS.md",
+    "line": 144,
+    "type": "heading",
+    "text": "Checklist",
+    "key": "ui_standards.md|heading|checklist"
+  },
+  {
+    "itemId": "L141",
+    "sourceFile": "UI_STANDARDS.md",
+    "line": 146,
+    "type": "checklist",
+    "text": "Tier 1 has no `react-admin` or `@supabase` imports",
+    "key": "ui_standards.md|checklist|tier 1 has no `react-admin` or `@supabase` imports"
+  },
+  {
+    "itemId": "L142",
+    "sourceFile": "UI_STANDARDS.md",
+    "line": 147,
+    "type": "checklist",
+    "text": "Tier 1 has no business logic",
+    "key": "ui_standards.md|checklist|tier 1 has no business logic"
+  },
+  {
+    "itemId": "L143",
+    "sourceFile": "UI_STANDARDS.md",
+    "line": 148,
+    "type": "checklist",
+    "text": "Tier 1 uses semantic classes (no hex codes)",
+    "key": "ui_standards.md|checklist|tier 1 uses semantic classes (no hex codes)"
+  },
+  {
+    "itemId": "L144",
+    "sourceFile": "UI_STANDARDS.md",
+    "line": 149,
+    "type": "checklist",
+    "text": "Tier 2 wrappers exist for common layouts",
+    "key": "ui_standards.md|checklist|tier 2 wrappers exist for common layouts"
+  },
+  {
+    "itemId": "L145",
+    "sourceFile": "UI_STANDARDS.md",
+    "line": 150,
+    "type": "checklist",
+    "text": "Custom inputs wrap `useInput` properly",
+    "key": "ui_standards.md|checklist|custom inputs wrap `useinput` properly"
+  },
+  {
+    "itemId": "L146",
+    "sourceFile": "UI_STANDARDS.md",
+    "line": 151,
+    "type": "checklist",
+    "text": "CSS variables defined in `:root`",
+    "key": "ui_standards.md|checklist|css variables defined in `:root`"
+  },
+  {
+    "itemId": "L147",
+    "sourceFile": "UI_STANDARDS.md",
+    "line": 152,
+    "type": "checklist",
+    "text": "No magic numbers in Tailwind config",
+    "key": "ui_standards.md|checklist|no magic numbers in tailwind config"
+  },
+  {
+    "itemId": "L148",
+    "sourceFile": "UI_STANDARDS.md",
+    "line": 153,
+    "type": "checklist",
+    "text": "All Dialogs/Modals include `\u003cDialogTitle\u003e` (or sr-only equivalent)",
+    "key": "ui_standards.md|checklist|all dialogs/modals include `\u003cdialogtitle\u003e` (or sr-only equivalent)"
+  },
+  {
+    "itemId": "L149",
+    "sourceFile": "UI_STANDARDS.md",
+    "line": 154,
+    "type": "checklist",
+    "text": "No raw `Datagrid` imports from `react-admin` â€” use `PremiumDatagrid`",
+    "key": "ui_standards.md|checklist|no raw `datagrid` imports from `react-admin` â€” use `premiumdatagrid`"
+  },
+  {
+    "itemId": "L150",
+    "sourceFile": "UI_STANDARDS.md",
+    "line": 155,
+    "type": "checklist",
+    "text": "Wrapper components destructure custom props before DOM spread",
+    "key": "ui_standards.md|checklist|wrapper components destructure custom props before dom spread"
+  }
 ]

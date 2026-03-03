@@ -1,9 +1,5 @@
 ---
-description: |
-  Run a full Three Pillars codebase audit. Deploys 6 specialized agents in
-  phases, validates JSON output, cross-references findings, and produces
-  standardized reports. On subsequent runs, loads previous baselines and
-  improves confidence incrementally.
+description: "Run a full Three Pillars codebase audit. Deploys 6 specialized agents in phases, validates JSON output, cross-references findings, and produces standardized reports. On subsequent runs, loads previous baselines and improves confidence incrementally."
 allowed-tools: Read, Write, Grep, Glob, Bash
 ---
 
@@ -30,7 +26,7 @@ and your subagents should create or update are in docs/audit/.
 mkdir -p docs/audit/baseline docs/audit/reports
 ```
 
-Scan the top-level directory structure. Count projects, solutions, and folders.
+Scan the top-level directory structure. Count modules, packages, and directories.
 Check if previous baselines exist in docs/audit/baseline/:
 - If yes: this is an incremental run. Note the previous audit date from audit-meta.json.
 - If no: this is a first run. All agents will create baselines from scratch.
@@ -60,9 +56,9 @@ Wait for all three to complete.
 After Phase 1 completes, validate each JSON file:
 
 ```bash
-python3 -m json.tool docs/audit/baseline/feature-inventory.json > /dev/null 2>&1 && echo "feature-inventory: VALID" || echo "feature-inventory: INVALID"
-python3 -m json.tool docs/audit/baseline/dependency-map.json > /dev/null 2>&1 && echo "dependency-map: VALID" || echo "dependency-map: INVALID"
-python3 -m json.tool docs/audit/baseline/documentation-coverage.json > /dev/null 2>&1 && echo "documentation-coverage: VALID" || echo "documentation-coverage: INVALID"
+node -e "JSON.parse(require('fs').readFileSync(process.argv[1],'utf8'))" docs/audit/baseline/feature-inventory.json > /dev/null 2>&1 && echo "feature-inventory: VALID" || echo "feature-inventory: INVALID"
+node -e "JSON.parse(require('fs').readFileSync(process.argv[1],'utf8'))" docs/audit/baseline/dependency-map.json > /dev/null 2>&1 && echo "dependency-map: VALID" || echo "dependency-map: INVALID"
+node -e "JSON.parse(require('fs').readFileSync(process.argv[1],'utf8'))" docs/audit/baseline/documentation-coverage.json > /dev/null 2>&1 && echo "documentation-coverage: VALID" || echo "documentation-coverage: INVALID"
 ```
 
 If any file is INVALID:
@@ -88,8 +84,8 @@ Wait for both to complete.
 **JSON Validation Gate**
 
 ```bash
-python3 -m json.tool docs/audit/baseline/risk-assessment.json > /dev/null 2>&1 && echo "risk-assessment: VALID" || echo "risk-assessment: INVALID"
-python3 -m json.tool docs/audit/baseline/integration-map.json > /dev/null 2>&1 && echo "integration-map: VALID" || echo "integration-map: INVALID"
+node -e "JSON.parse(require('fs').readFileSync(process.argv[1],'utf8'))" docs/audit/baseline/risk-assessment.json > /dev/null 2>&1 && echo "risk-assessment: VALID" || echo "risk-assessment: INVALID"
+node -e "JSON.parse(require('fs').readFileSync(process.argv[1],'utf8'))" docs/audit/baseline/integration-map.json > /dev/null 2>&1 && echo "integration-map: VALID" || echo "integration-map: INVALID"
 ```
 
 Same fallback logic as Phase 1 if invalid.
@@ -134,9 +130,9 @@ After Phase 4, print a summary:
 
 <scaling_rules>
 Scale effort to codebase size:
-- Small (< 10 projects): agents can read most files directly
-- Medium (10-30 projects): agents sample 3-5 files per project, read critical ones fully
-- Large (30+ projects): agents read summaries and samples, drill into specifics only for high-risk modules
+- Small (< 10 modules): agents can read most files directly
+- Medium (10-30 modules): agents sample 3-5 files per module, read critical ones fully
+- Large (30+ modules): agents read summaries and samples, drill into specifics only for high-risk modules
 </scaling_rules>
 
 <context_awareness>

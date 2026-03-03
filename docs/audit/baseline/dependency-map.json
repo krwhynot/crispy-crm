@@ -1,0 +1,1154 @@
+{
+  "summary": {
+    "total_projects": 1,
+    "total_npm_packages": 115,
+    "total_npm_prod_packages": 67,
+    "total_npm_dev_packages": 48,
+    "total_internal_modules": 34,
+    "total_project_references": 0,
+    "circular_references": 2,
+    "god_classes": 1,
+    "shared_mutable_state_count": 7,
+    "most_coupled_modules": [
+      {
+        "module": "validation",
+        "fan_in": 91,
+        "fan_out": 2,
+        "role": "shared_dependency"
+      },
+      {
+        "module": "utils",
+        "fan_in": 73,
+        "fan_out": 2,
+        "role": "shared_dependency"
+      },
+      {
+        "module": "constants",
+        "fan_in": 72,
+        "fan_out": 0,
+        "role": "shared_dependency"
+      },
+      {
+        "module": "opportunities",
+        "fan_in": 19,
+        "fan_out": 10,
+        "role": "high_coupling"
+      },
+      {
+        "module": "contacts",
+        "fan_in": 0,
+        "fan_out": 10,
+        "role": "high_fan_out"
+      }
+    ],
+    "changes_since_last_audit": [
+      {
+        "type": "circular_reference_resolved",
+        "description": "validation->providers circular resolved in production code. Only schema-drift.test.ts still references providers, CORE-022 exempt.",
+        "previous": "3 circular references",
+        "current": "2 circular references",
+        "severity": "improvement"
+      },
+      {
+        "type": "module_file_count_change",
+        "module": "config",
+        "description": "config reduced from 2 to 1 file (featureFlags.ts only). No atomic-crm module imports from config.",
+        "previous": 2,
+        "current": 1
+      },
+      {
+        "type": "new_top_level_files",
+        "description": "Two new top-level files: consts.ts (5 lines) and searchability.ts (35 lines). searchability.ts imported by src/components/layouts/ListPageLayout.tsx. consts.ts has no consumers.",
+        "files": ["src/atomic-crm/consts.ts", "src/atomic-crm/searchability.ts"]
+      }
+    ],
+    "last_audit": "2026-03-03T00:00:00.000Z"
+  },
+  "npm_packages": {
+    "prod": [
+      {
+        "name": "@dnd-kit/core",
+        "version": "^6.3.1"
+      },
+      {
+        "name": "@dnd-kit/sortable",
+        "version": "^10.0.0"
+      },
+      {
+        "name": "@dnd-kit/utilities",
+        "version": "^3.2.2"
+      },
+      {
+        "name": "@radix-ui/react-accordion",
+        "version": "^1.2.12"
+      },
+      {
+        "name": "@radix-ui/react-alert-dialog",
+        "version": "^1.1.15"
+      },
+      {
+        "name": "@radix-ui/react-avatar",
+        "version": "^1.1.10"
+      },
+      {
+        "name": "@radix-ui/react-checkbox",
+        "version": "^1.3.3"
+      },
+      {
+        "name": "@radix-ui/react-collapsible",
+        "version": "^1.1.12"
+      },
+      {
+        "name": "@radix-ui/react-dialog",
+        "version": "^1.1.15"
+      },
+      {
+        "name": "@radix-ui/react-dropdown-menu",
+        "version": "^2.1.16"
+      },
+      {
+        "name": "@radix-ui/react-label",
+        "version": "^2.1.8"
+      },
+      {
+        "name": "@radix-ui/react-popover",
+        "version": "^1.1.15"
+      },
+      {
+        "name": "@radix-ui/react-progress",
+        "version": "^1.1.7"
+      },
+      {
+        "name": "@radix-ui/react-radio-group",
+        "version": "^1.3.8"
+      },
+      {
+        "name": "@radix-ui/react-scroll-area",
+        "version": "^1.2.10"
+      },
+      {
+        "name": "@radix-ui/react-select",
+        "version": "^2.2.6"
+      },
+      {
+        "name": "@radix-ui/react-separator",
+        "version": "^1.1.7"
+      },
+      {
+        "name": "@radix-ui/react-slot",
+        "version": "^1.2.4"
+      },
+      {
+        "name": "@radix-ui/react-switch",
+        "version": "^1.2.6"
+      },
+      {
+        "name": "@radix-ui/react-tabs",
+        "version": "^1.1.12"
+      },
+      {
+        "name": "@radix-ui/react-toggle-group",
+        "version": "^1.1.11"
+      },
+      {
+        "name": "@radix-ui/react-tooltip",
+        "version": "^1.2.8"
+      },
+      {
+        "name": "@sentry/react",
+        "version": "^10.27.0"
+      },
+      {
+        "name": "@sentry/vite-plugin",
+        "version": "^4.6.1"
+      },
+      {
+        "name": "@supabase/supabase-js",
+        "version": "^2.75.1"
+      },
+      {
+        "name": "@tailwindcss/vite",
+        "version": "^4.1.11"
+      },
+      {
+        "name": "@tanstack/react-query",
+        "version": "^5.85.9"
+      },
+      {
+        "name": "@vitejs/plugin-react",
+        "version": "^4.6.0"
+      },
+      {
+        "name": "chart.js",
+        "version": "^4.5.1"
+      },
+      {
+        "name": "class-variance-authority",
+        "version": "^0.7.1"
+      },
+      {
+        "name": "clsx",
+        "version": "^2.1.1"
+      },
+      {
+        "name": "cmdk",
+        "version": "^1.1.1"
+      },
+      {
+        "name": "date-fns",
+        "version": "^4.1.0"
+      },
+      {
+        "name": "diacritic",
+        "version": "^0.0.2"
+      },
+      {
+        "name": "dompurify",
+        "version": "^3.2.7"
+      },
+      {
+        "name": "es-toolkit",
+        "version": "^1.42.0"
+      },
+      {
+        "name": "inflection",
+        "version": "^3.0.2"
+      },
+      {
+        "name": "jsonexport",
+        "version": "^3.2.0"
+      },
+      {
+        "name": "lru-cache",
+        "version": "^11.2.2"
+      },
+      {
+        "name": "lucide-react",
+        "version": "^0.542.0"
+      },
+      {
+        "name": "next-themes",
+        "version": "^0.4.6"
+      },
+      {
+        "name": "papaparse",
+        "version": "^5.5.3"
+      },
+      {
+        "name": "query-string",
+        "version": "^9.2.2"
+      },
+      {
+        "name": "ra-core",
+        "version": "^5.10.0"
+      },
+      {
+        "name": "ra-i18n-polyglot",
+        "version": "^5.10.0"
+      },
+      {
+        "name": "ra-language-english",
+        "version": "^5.10.0"
+      },
+      {
+        "name": "ra-supabase-core",
+        "version": "^3.5.1"
+      },
+      {
+        "name": "ra-supabase-language-english",
+        "version": "^3.5.0"
+      },
+      {
+        "name": "react",
+        "version": "^19.1.0"
+      },
+      {
+        "name": "react-admin",
+        "version": "^5.10.0"
+      },
+      {
+        "name": "react-chartjs-2",
+        "version": "^5.3.1"
+      },
+      {
+        "name": "react-cropper",
+        "version": "^2.3.3"
+      },
+      {
+        "name": "react-day-picker",
+        "version": "^9.11.1"
+      },
+      {
+        "name": "react-dom",
+        "version": "^19.1.0"
+      },
+      {
+        "name": "react-dropzone",
+        "version": "^14.3.8"
+      },
+      {
+        "name": "react-error-boundary",
+        "version": "^6.0.0"
+      },
+      {
+        "name": "react-hook-form",
+        "version": "^7.66.1"
+      },
+      {
+        "name": "react-router-dom",
+        "version": "^6.30.3"
+      },
+      {
+        "name": "rollup-plugin-visualizer",
+        "version": "^6.0.3"
+      },
+      {
+        "name": "sonner",
+        "version": "^2.0.7"
+      },
+      {
+        "name": "tailwind-merge",
+        "version": "^3.3.1"
+      },
+      {
+        "name": "tailwindcss",
+        "version": "^4.1.11"
+      },
+      {
+        "name": "tw-animate-css",
+        "version": "^1.3.8"
+      },
+      {
+        "name": "vaul",
+        "version": "^1.1.2"
+      },
+      {
+        "name": "vite",
+        "version": "^7.0.4"
+      },
+      {
+        "name": "vite-plugin-simple-html",
+        "version": "^1.0.1"
+      },
+      {
+        "name": "zod",
+        "version": "^4.1.12"
+      }
+    ],
+    "dev": [
+      {
+        "name": "@chromatic-com/storybook",
+        "version": "^4.1.1"
+      },
+      {
+        "name": "@eslint/js",
+        "version": "^9.22.0"
+      },
+      {
+        "name": "@faker-js/faker",
+        "version": "^9.9.0"
+      },
+      {
+        "name": "@inquirer/prompts",
+        "version": "^8.0.1"
+      },
+      {
+        "name": "@storybook/addon-a11y",
+        "version": "^9.1.10"
+      },
+      {
+        "name": "@storybook/addon-docs",
+        "version": "^9.1.10"
+      },
+      {
+        "name": "@storybook/addon-onboarding",
+        "version": "^9.1.10"
+      },
+      {
+        "name": "@storybook/react-vite",
+        "version": "^9.1.10"
+      },
+      {
+        "name": "@testing-library/jest-dom",
+        "version": "^6.6.3"
+      },
+      {
+        "name": "@testing-library/react",
+        "version": "^16.3.0"
+      },
+      {
+        "name": "@testing-library/user-event",
+        "version": "^14.6.1"
+      },
+      {
+        "name": "@types/chart.js",
+        "version": "^2.9.41"
+      },
+      {
+        "name": "@types/dompurify",
+        "version": "^3.0.5"
+      },
+      {
+        "name": "@types/jsonexport",
+        "version": "^3.0.5"
+      },
+      {
+        "name": "@types/node",
+        "version": "^25.0.3"
+      },
+      {
+        "name": "@types/papaparse",
+        "version": "^5.5.2"
+      },
+      {
+        "name": "@types/pg",
+        "version": "^8.15.6"
+      },
+      {
+        "name": "@types/react",
+        "version": "^19.2.7"
+      },
+      {
+        "name": "@types/react-dom",
+        "version": "^19.2.3"
+      },
+      {
+        "name": "@vitest/coverage-v8",
+        "version": "^3.2.4"
+      },
+      {
+        "name": "@vitest/ui",
+        "version": "^3.2.4"
+      },
+      {
+        "name": "baseline-browser-mapping",
+        "version": "^2.9.14"
+      },
+      {
+        "name": "chalk",
+        "version": "^5.3.0"
+      },
+      {
+        "name": "chromatic",
+        "version": "^11.18.1"
+      },
+      {
+        "name": "debug",
+        "version": "^4.4.3"
+      },
+      {
+        "name": "dotenv",
+        "version": "^16.6.1"
+      },
+      {
+        "name": "eslint",
+        "version": "^9.22.0"
+      },
+      {
+        "name": "eslint-plugin-jsx-a11y",
+        "version": "^6.10.2"
+      },
+      {
+        "name": "eslint-plugin-react-hooks",
+        "version": "^5.2.0"
+      },
+      {
+        "name": "eslint-plugin-react-refresh",
+        "version": "^0.4.19"
+      },
+      {
+        "name": "eslint-plugin-storybook",
+        "version": "^9.0.13"
+      },
+      {
+        "name": "eslint-plugin-tailwindcss",
+        "version": "^4.0.0-beta.0"
+      },
+      {
+        "name": "execa",
+        "version": "^9.6.1"
+      },
+      {
+        "name": "gh-pages",
+        "version": "^6.3.0"
+      },
+      {
+        "name": "globals",
+        "version": "^16.3.0"
+      },
+      {
+        "name": "husky",
+        "version": "^9.1.7"
+      },
+      {
+        "name": "jsdom",
+        "version": "^27.0.0"
+      },
+      {
+        "name": "ora",
+        "version": "^8.2.0"
+      },
+      {
+        "name": "pg",
+        "version": "^8.16.3"
+      },
+      {
+        "name": "prettier",
+        "version": "^3.6.2"
+      },
+      {
+        "name": "storybook",
+        "version": "^9.1.10"
+      },
+      {
+        "name": "supabase",
+        "version": "^2.63.1"
+      },
+      {
+        "name": "terser",
+        "version": "^5.44.0"
+      },
+      {
+        "name": "ts-node",
+        "version": "^1.7.1"
+      },
+      {
+        "name": "typescript",
+        "version": "^5.9.3"
+      },
+      {
+        "name": "typescript-eslint",
+        "version": "^8.35.1"
+      },
+      {
+        "name": "vite-bundle-visualizer",
+        "version": "^1.2.1"
+      },
+      {
+        "name": "vitest",
+        "version": "^3.2.4"
+      }
+    ],
+    "overrides": [
+      {
+        "name": "react-router",
+        "version": "6.30.3"
+      },
+      {
+        "name": "jose",
+        "version": "6.1.3"
+      }
+    ]
+  },
+  "projects": [
+    {
+      "name": "activities",
+      "path": "src/atomic-crm/activities/",
+      "type": "typescript",
+      "file_count": 24,
+      "fan_out": 5,
+      "fan_in": 1,
+      "references": ["constants", "layout", "types", "utils", "validation"],
+      "referenced_by": ["timeline"],
+      "npm_dependencies": []
+    },
+    {
+      "name": "admin",
+      "path": "src/atomic-crm/admin/",
+      "type": "typescript",
+      "file_count": 2,
+      "fan_out": 1,
+      "fan_in": 0,
+      "references": ["constants"],
+      "referenced_by": [],
+      "npm_dependencies": []
+    },
+    {
+      "name": "components",
+      "path": "src/atomic-crm/components/",
+      "type": "typescript",
+      "file_count": 7,
+      "fan_out": 4,
+      "fan_in": 7,
+      "references": ["constants", "queryKeys", "utils", "validation"],
+      "referenced_by": ["contacts", "opportunities", "organizations", "tags", "tasks"],
+      "npm_dependencies": []
+    },
+    {
+      "name": "config",
+      "path": "src/atomic-crm/config/",
+      "type": "typescript",
+      "file_count": 1,
+      "fan_out": 0,
+      "fan_in": 0,
+      "references": [],
+      "referenced_by": [],
+      "npm_dependencies": [],
+      "note": "featureFlags.ts only. Reduced from 2 files. No atomic-crm module imports from config."
+    },
+    {
+      "name": "constants",
+      "path": "src/atomic-crm/constants/",
+      "type": "typescript",
+      "file_count": 4,
+      "fan_out": 0,
+      "fan_in": 72,
+      "references": [],
+      "referenced_by": [
+        "activities",
+        "admin",
+        "components",
+        "contacts",
+        "dashboard",
+        "hooks",
+        "notes",
+        "opportunities",
+        "organizations",
+        "products",
+        "reports",
+        "sales",
+        "settings",
+        "tags",
+        "tasks"
+      ],
+      "npm_dependencies": []
+    },
+    {
+      "name": "contacts",
+      "path": "src/atomic-crm/contacts/",
+      "type": "typescript",
+      "file_count": 80,
+      "fan_out": 10,
+      "fan_in": 0,
+      "references": [
+        "components",
+        "constants",
+        "filters",
+        "hooks",
+        "opportunities",
+        "organizations",
+        "queryKeys",
+        "types",
+        "utils",
+        "validation"
+      ],
+      "referenced_by": [],
+      "npm_dependencies": []
+    },
+    {
+      "name": "contexts",
+      "path": "src/atomic-crm/contexts/",
+      "type": "typescript",
+      "file_count": 7,
+      "fan_out": 0,
+      "fan_in": 7,
+      "references": [],
+      "referenced_by": ["consumers: AppBrandingContext, FormOptionsContext, PipelineConfigContext"],
+      "npm_dependencies": []
+    },
+    {
+      "name": "dashboard",
+      "path": "src/atomic-crm/dashboard/",
+      "type": "typescript",
+      "file_count": 62,
+      "fan_out": 6,
+      "fan_in": 0,
+      "references": ["constants", "opportunities", "queryKeys", "tasks", "utils", "validation"],
+      "referenced_by": [],
+      "npm_dependencies": []
+    },
+    {
+      "name": "filters",
+      "path": "src/atomic-crm/filters/",
+      "type": "typescript",
+      "file_count": 36,
+      "fan_out": 2,
+      "fan_in": 1,
+      "references": ["opportunities", "validation"],
+      "referenced_by": ["contacts"],
+      "npm_dependencies": []
+    },
+    {
+      "name": "hooks",
+      "path": "src/atomic-crm/hooks/",
+      "type": "typescript",
+      "file_count": 14,
+      "fan_out": 1,
+      "fan_in": 13,
+      "references": ["constants"],
+      "referenced_by": ["contacts", "opportunities", "organizations", "settings", "tags"],
+      "npm_dependencies": []
+    },
+    {
+      "name": "layout",
+      "path": "src/atomic-crm/layout/",
+      "type": "typescript",
+      "file_count": 5,
+      "fan_out": 0,
+      "fan_in": 5,
+      "references": [],
+      "referenced_by": ["activities"],
+      "npm_dependencies": []
+    },
+    {
+      "name": "login",
+      "path": "src/atomic-crm/login/",
+      "type": "typescript",
+      "file_count": 3,
+      "fan_out": 0,
+      "fan_in": 3,
+      "references": [],
+      "referenced_by": ["root"],
+      "npm_dependencies": []
+    },
+    {
+      "name": "notes",
+      "path": "src/atomic-crm/notes/",
+      "type": "typescript",
+      "file_count": 7,
+      "fan_out": 1,
+      "fan_in": 7,
+      "references": ["constants"],
+      "referenced_by": [],
+      "npm_dependencies": []
+    },
+    {
+      "name": "notifications",
+      "path": "src/atomic-crm/notifications/",
+      "type": "typescript",
+      "file_count": 3,
+      "fan_out": 1,
+      "fan_in": 3,
+      "references": ["queryKeys"],
+      "referenced_by": [],
+      "npm_dependencies": []
+    },
+    {
+      "name": "opportunities",
+      "path": "src/atomic-crm/opportunities/",
+      "type": "typescript",
+      "file_count": 152,
+      "fan_out": 10,
+      "fan_in": 19,
+      "references": [
+        "components",
+        "constants",
+        "hooks",
+        "organizations",
+        "providers",
+        "queryKeys",
+        "services",
+        "types",
+        "utils",
+        "validation"
+      ],
+      "referenced_by": [
+        "contacts",
+        "dashboard",
+        "filters",
+        "providers",
+        "reports",
+        "root",
+        "utils"
+      ],
+      "npm_dependencies": []
+    },
+    {
+      "name": "organizations",
+      "path": "src/atomic-crm/organizations/",
+      "type": "typescript",
+      "file_count": 97,
+      "fan_out": 6,
+      "fan_in": 3,
+      "references": ["components", "constants", "hooks", "queryKeys", "utils", "validation"],
+      "referenced_by": ["contacts", "opportunities"],
+      "npm_dependencies": []
+    },
+    {
+      "name": "pages",
+      "path": "src/atomic-crm/pages/",
+      "type": "typescript",
+      "file_count": 2,
+      "fan_out": 0,
+      "fan_in": 2,
+      "references": [],
+      "referenced_by": [],
+      "npm_dependencies": []
+    },
+    {
+      "name": "productDistributors",
+      "path": "src/atomic-crm/productDistributors/",
+      "type": "typescript",
+      "file_count": 11,
+      "fan_out": 1,
+      "fan_in": 11,
+      "references": ["utils"],
+      "referenced_by": [],
+      "npm_dependencies": []
+    },
+    {
+      "name": "products",
+      "path": "src/atomic-crm/products/",
+      "type": "typescript",
+      "file_count": 27,
+      "fan_out": 4,
+      "fan_in": 0,
+      "references": ["constants", "queryKeys", "utils", "validation"],
+      "referenced_by": [],
+      "npm_dependencies": []
+    },
+    {
+      "name": "providers",
+      "path": "src/atomic-crm/providers/",
+      "type": "typescript",
+      "file_count": 115,
+      "fan_out": 5,
+      "fan_in": 6,
+      "references": ["opportunities", "services", "types", "utils", "validation"],
+      "referenced_by": ["opportunities", "validation"],
+      "npm_dependencies": ["@supabase/supabase-js", "ra-supabase-core"]
+    },
+    {
+      "name": "queryKeys",
+      "path": "src/atomic-crm/queryKeys.ts",
+      "type": "typescript",
+      "file_count": 1,
+      "fan_out": 0,
+      "fan_in": 34,
+      "references": [],
+      "referenced_by": [
+        "components",
+        "dashboard",
+        "notifications",
+        "opportunities",
+        "organizations",
+        "products",
+        "reports",
+        "sales",
+        "settings",
+        "tags",
+        "tasks"
+      ],
+      "npm_dependencies": []
+    },
+    {
+      "name": "reports",
+      "path": "src/atomic-crm/reports/",
+      "type": "typescript",
+      "file_count": 58,
+      "fan_out": 6,
+      "fan_in": 5,
+      "references": ["constants", "opportunities", "queryKeys", "types", "utils", "validation"],
+      "referenced_by": [],
+      "npm_dependencies": []
+    },
+    {
+      "name": "root",
+      "path": "src/atomic-crm/root/",
+      "type": "typescript",
+      "file_count": 6,
+      "fan_out": 2,
+      "fan_in": 6,
+      "references": ["login", "opportunities"],
+      "referenced_by": [],
+      "npm_dependencies": []
+    },
+    {
+      "name": "sales",
+      "path": "src/atomic-crm/sales/",
+      "type": "typescript",
+      "file_count": 20,
+      "fan_out": 5,
+      "fan_in": 0,
+      "references": ["constants", "queryKeys", "types", "utils", "validation"],
+      "referenced_by": [],
+      "npm_dependencies": []
+    },
+    {
+      "name": "services",
+      "path": "src/atomic-crm/services/",
+      "type": "typescript",
+      "file_count": 15,
+      "fan_out": 0,
+      "fan_in": 8,
+      "references": [],
+      "referenced_by": ["opportunities", "providers"],
+      "npm_dependencies": []
+    },
+    {
+      "name": "settings",
+      "path": "src/atomic-crm/settings/",
+      "type": "typescript",
+      "file_count": 12,
+      "fan_out": 3,
+      "fan_in": 0,
+      "references": ["constants", "hooks", "queryKeys"],
+      "referenced_by": [],
+      "npm_dependencies": []
+    },
+    {
+      "name": "shared",
+      "path": "src/atomic-crm/shared/",
+      "type": "typescript",
+      "file_count": 1,
+      "fan_out": 0,
+      "fan_in": 1,
+      "references": [],
+      "referenced_by": [],
+      "npm_dependencies": []
+    },
+    {
+      "name": "tags",
+      "path": "src/atomic-crm/tags/",
+      "type": "typescript",
+      "file_count": 18,
+      "fan_out": 4,
+      "fan_in": 0,
+      "references": ["components", "constants", "hooks", "queryKeys"],
+      "referenced_by": [],
+      "npm_dependencies": []
+    },
+    {
+      "name": "tasks",
+      "path": "src/atomic-crm/tasks/",
+      "type": "typescript",
+      "file_count": 29,
+      "fan_out": 5,
+      "fan_in": 3,
+      "references": ["components", "constants", "queryKeys", "utils", "validation"],
+      "referenced_by": ["dashboard"],
+      "npm_dependencies": []
+    },
+    {
+      "name": "tests",
+      "path": "src/atomic-crm/tests/",
+      "type": "typescript",
+      "file_count": 5,
+      "fan_out": 0,
+      "fan_in": 5,
+      "references": [],
+      "referenced_by": [],
+      "npm_dependencies": []
+    },
+    {
+      "name": "timeline",
+      "path": "src/atomic-crm/timeline/",
+      "type": "typescript",
+      "file_count": 5,
+      "fan_out": 1,
+      "fan_in": 5,
+      "references": ["utils"],
+      "referenced_by": ["activities"],
+      "npm_dependencies": []
+    },
+    {
+      "name": "types",
+      "path": "src/atomic-crm/types.ts",
+      "type": "typescript",
+      "file_count": 1,
+      "fan_out": 0,
+      "fan_in": 34,
+      "references": [],
+      "referenced_by": ["activities", "opportunities", "providers", "reports", "sales"],
+      "npm_dependencies": []
+    },
+    {
+      "name": "utils",
+      "path": "src/atomic-crm/utils/",
+      "type": "typescript",
+      "file_count": 37,
+      "fan_out": 2,
+      "fan_in": 73,
+      "references": ["constants", "opportunities"],
+      "referenced_by": [
+        "activities",
+        "components",
+        "contacts",
+        "dashboard",
+        "organizations",
+        "productDistributors",
+        "products",
+        "reports",
+        "sales",
+        "tasks",
+        "timeline"
+      ],
+      "npm_dependencies": []
+    },
+    {
+      "name": "validation",
+      "path": "src/atomic-crm/validation/",
+      "type": "typescript",
+      "file_count": 96,
+      "fan_out": 2,
+      "fan_in": 91,
+      "references": ["opportunities", "providers"],
+      "referenced_by": [
+        "activities",
+        "components",
+        "contacts",
+        "dashboard",
+        "filters",
+        "opportunities",
+        "organizations",
+        "products",
+        "providers",
+        "reports",
+        "sales",
+        "tasks"
+      ],
+      "npm_dependencies": ["zod"],
+      "note": "validation->providers reference now only in test files. Production circular resolved."
+    }
+  ],
+  "circular_references": [
+    {
+      "cycle": ["opportunities", "providers", "opportunities"],
+      "description": "opportunities imports providers/supabase/extensions/types; providers/callbacks/opportunitiesCallbacks.ts imports from opportunities/constants/stage-enums. Bi-directional coupling across the provider boundary.",
+      "files": [
+        "src/atomic-crm/opportunities/ArchiveActions.tsx -> src/atomic-crm/providers/supabase/extensions/types",
+        "src/atomic-crm/opportunities/slideOverTabs/OpportunityContactsTab.tsx -> src/atomic-crm/providers/supabase/extensions/types",
+        "src/atomic-crm/providers/supabase/callbacks/opportunitiesCallbacks.ts -> src/atomic-crm/opportunities/constants/stage-enums"
+      ],
+      "severity": "high",
+      "rule_violation": "PRV-006: handlers do transport/plumbing only; stage-enum constants in providers indicates business logic crossing the layer boundary"
+    },
+    {
+      "cycle": ["utils", "opportunities", "utils"],
+      "description": "utils/stalenessCalculation.ts imports STAGE, ACTIVE_STAGES, CLOSED_STAGES from opportunities/constants; opportunities imports utilities from utils.",
+      "files": [
+        "src/atomic-crm/utils/stalenessCalculation.ts -> src/atomic-crm/opportunities/constants",
+        "src/atomic-crm/opportunities/*.tsx -> src/atomic-crm/utils"
+      ],
+      "severity": "medium",
+      "rule_violation": "Stage constants should live in src/atomic-crm/constants/ so utils does not import from a feature module"
+    }
+  ],
+  "god_classes": [
+    {
+      "class_name": "composedDataProvider",
+      "file_path": "src/atomic-crm/providers/supabase/composedDataProvider.ts",
+      "lines": 260,
+      "import_count": 4,
+      "handler_references": 48,
+      "dependency_count": 48,
+      "reason": "Central handler routing hub for all resource CRUD. Every feature module write passes through this single file. Designated Caution Zone in CLAUDE.md. 47 handler reference sites routing all resources."
+    }
+  ],
+  "shared_mutable_state": [
+    {
+      "type": "module_variable",
+      "class_name": "cachedSnapshot",
+      "file_path": "src/atomic-crm/hooks/useRecentSearches.ts",
+      "description": "Module-level mutable let variable holding snapshot of recent search items. Shared across all hook invocations in the module scope."
+    },
+    {
+      "type": "module_variable",
+      "class_name": "cachedSale",
+      "file_path": "src/atomic-crm/providers/supabase/authProvider.ts",
+      "description": "Module-level mutable let variable caching the authenticated sale record. Shared across all auth provider calls."
+    },
+    {
+      "type": "module_variable",
+      "class_name": "cacheTimestamp",
+      "file_path": "src/atomic-crm/providers/supabase/authProvider.ts",
+      "description": "Module-level mutable let variable storing auth cache timestamp. Companion to cachedSale."
+    },
+    {
+      "type": "context_provider",
+      "class_name": "AppBrandingContext",
+      "file_path": "src/atomic-crm/contexts/AppBrandingContext.tsx",
+      "description": "React context providing app branding config across the entire component tree."
+    },
+    {
+      "type": "context_provider",
+      "class_name": "FormOptionsContext",
+      "file_path": "src/atomic-crm/contexts/FormOptionsContext.tsx",
+      "description": "React context providing form configuration options shared across feature forms."
+    },
+    {
+      "type": "context_provider",
+      "class_name": "PipelineConfigContext",
+      "file_path": "src/atomic-crm/contexts/PipelineConfigContext.tsx",
+      "description": "React context providing pipeline/stage configuration consumed by opportunities and dashboard."
+    },
+    {
+      "type": "context_provider",
+      "class_name": "ConfigurationContext",
+      "file_path": "src/atomic-crm/root/ConfigurationContext.tsx",
+      "description": "Root-level React context distributing global app configuration (data provider, auth, i18n) to all children."
+    }
+  ],
+  "loosely_coupled": [
+    {
+      "module": "config",
+      "path": "src/atomic-crm/config/",
+      "fan_in": 0,
+      "fan_out": 0,
+      "note": "Single file (featureFlags.ts). No atomic-crm module imports from config as of this audit."
+    },
+    {
+      "module": "admin",
+      "path": "src/atomic-crm/admin/",
+      "fan_in": 0,
+      "fan_out": 1,
+      "note": "Zero modules import from admin; only imports from constants."
+    },
+    {
+      "module": "dashboard",
+      "path": "src/atomic-crm/dashboard/",
+      "fan_in": 0,
+      "fan_out": 6,
+      "note": "Zero internal consumers; consumer-only leaf module."
+    },
+    {
+      "module": "notifications",
+      "path": "src/atomic-crm/notifications/",
+      "fan_in": 0,
+      "fan_out": 1,
+      "note": "Zero internal consumers; leaf module."
+    },
+    {
+      "module": "pages",
+      "path": "src/atomic-crm/pages/",
+      "fan_in": 0,
+      "fan_out": 0,
+      "note": "Zero imports and zero internal consumers; effectively isolated."
+    },
+    {
+      "module": "products",
+      "path": "src/atomic-crm/products/",
+      "fan_in": 0,
+      "fan_out": 4,
+      "note": "Zero internal consumers; leaf module."
+    },
+    {
+      "module": "sales",
+      "path": "src/atomic-crm/sales/",
+      "fan_in": 0,
+      "fan_out": 5,
+      "note": "Zero internal consumers; leaf module."
+    },
+    {
+      "module": "settings",
+      "path": "src/atomic-crm/settings/",
+      "fan_in": 0,
+      "fan_out": 3,
+      "note": "Zero internal consumers; leaf module."
+    },
+    {
+      "module": "shared",
+      "path": "src/atomic-crm/shared/",
+      "fan_in": 1,
+      "fan_out": 0,
+      "note": "Single file, no outbound imports, one consumer."
+    },
+    {
+      "module": "tags",
+      "path": "src/atomic-crm/tags/",
+      "fan_in": 0,
+      "fan_out": 4,
+      "note": "Zero internal consumers; leaf module."
+    }
+  ]
+}

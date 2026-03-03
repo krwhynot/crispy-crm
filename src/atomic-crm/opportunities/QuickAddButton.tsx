@@ -24,11 +24,7 @@ export const QuickAddButton = () => {
 
   return (
     <>
-      <AdminButton
-        onClick={() => setOpen(true)}
-        variant="default"
-        size="default"
-      >
+      <AdminButton onClick={() => setOpen(true)} variant="default" size="default">
         <Plus aria-hidden="true" /> Add Opportunity
       </AdminButton>
       <QuickAddDialog open={open} onOpenChange={setOpen} />

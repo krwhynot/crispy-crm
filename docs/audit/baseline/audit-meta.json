@@ -1,0 +1,68 @@
+{
+  "run_timestamp": "2026-03-03T12:00:00Z",
+  "run_type": "incremental",
+  "previous_run": "2026-03-03T00:00:00Z",
+  "agents_deployed": 5,
+  "agents_succeeded": 5,
+  "agents_failed": 0,
+  "baselines_written": 5,
+  "baselines_valid": 5,
+  "confidence_deltas": {
+    "feature_inventory": {
+      "previous_avg": 0.896,
+      "current_avg": 0.896,
+      "new_features": 3,
+      "decayed": 0
+    },
+    "risk_assessment": {
+      "modules_added": 1,
+      "risk_upgrades": 0,
+      "risk_downgrades": 0,
+      "churn_alerts": 2
+    },
+    "documentation": {
+      "note": "Used previous baseline (agent was read-only). Agent found 74 docs (up from 47), 10 READMEs (up from 5)."
+    },
+    "integration_map": {
+      "note": "Used previous baseline. Agent corrected count from 12 to 20 integrations, added Vercel hosting + Chromatic."
+    },
+    "dependency_map": {
+      "circular_refs_resolved": 1,
+      "circular_refs_remaining": 2,
+      "new_files": 2
+    }
+  },
+  "cross_references": {
+    "high_coupling_high_risk": [
+      "providers (fan_in:91 via validation, risk:high)",
+      "opportunities (fan_in:19, risk:high)"
+    ],
+    "undocumented_high_risk": [
+      "providers (README exists but handler JSDoc sparse)",
+      "organizations (no README, risk:high)",
+      "contacts (no README, risk:high)",
+      "dashboard (no README, risk:high)"
+    ],
+    "churn_exceeding_threshold": [
+      "sales (17 commits/14d)",
+      "providers (20 commits/14d)",
+      "src/components (20 commits/14d)"
+    ],
+    "security_priority": [
+      "sec-001: .env.development committed (high)",
+      "sec-002: .env.production committed (high)",
+      "sec-003: Math.random filenames (medium)"
+    ]
+  },
+  "summary": {
+    "total_features": 19,
+    "total_modules_assessed": 25,
+    "high_risk_modules": 6,
+    "security_issues": 6,
+    "brd_coverage_pct": 21,
+    "prd_coverage_pct": 0,
+    "adr_count": 4,
+    "circular_dependencies": 2,
+    "god_classes": 1
+  }
+}

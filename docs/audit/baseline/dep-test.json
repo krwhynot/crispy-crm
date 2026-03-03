@@ -1,0 +1,22 @@
+{
+  "summary": {
+    "total_projects": 1,
+    "total_npm_packages": 115,
+    "total_npm_prod_packages": 66,
+    "total_npm_dev_packages": 49,
+    "total_internal_modules": 33,
+    "total_project_references": 0,
+    "circular_references": 3,
+    "god_classes": 1,
+    "shared_mutable_state_count": 7,
+    "most_coupled_modules": [
+      { "module": "validation", "fan_in": 91, "fan_out": 2, "role": "shared_dependency" },
+      { "module": "utils", "fan_in": 73, "fan_out": 2, "role": "shared_dependency" },
+      { "module": "constants", "fan_in": 72, "fan_out": 0, "role": "shared_dependency" },
+      { "module": "opportunities", "fan_in": 19, "fan_out": 10, "role": "high_coupling" },
+      { "module": "contacts", "fan_in": 0, "fan_out": 10, "role": "high_fan_out" }
+    ],
+    "changes_since_last_audit": [],
+    "last_audit": "2026-03-02T00:00:00.000Z"
+  }
+}

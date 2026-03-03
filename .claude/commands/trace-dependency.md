@@ -1,8 +1,5 @@
 ---
-description: |
-  Trace a project or NuGet package through the dependency graph. Shows upstream
-  and downstream impact, risk levels of affected projects, CVE warnings, and
-  a change checklist based on phase boundary recommendations.
+description: "Trace a module or npm package through the dependency graph. Shows upstream and downstream impact, risk levels of affected projects, CVE warnings, and a change checklist based on risk level."
 argument-hint: <project name or package name>
 allowed-tools: Read, Grep, Glob
 ---
@@ -12,8 +9,8 @@ Trace "$1" through the dependency graph from the audit baselines.
 **Step 0: Disambiguate**
 
 Search `docs/audit/baseline/dependency-map.json` for projects and packages
-matching "$1". If multiple items match (e.g., "json" matches Newtonsoft.Json,
-System.Text.Json, json config files), present a numbered list and ask the
+matching "$1". If multiple items match (e.g., "date" matches date-fns,
+react-day-picker, date utility files), present a numbered list and ask the
 developer to choose. Never assume which one they meant.
 
 If exactly one item matches, proceed directly to Step 1.
@@ -28,11 +25,11 @@ Read these JSON files:
 If no baselines exist, tell the developer: "No audit baseline found.
 Run /audit first to generate dependency data."
 
-**Step 2: Determine if target is a project or NuGet package**
+**Step 2: Determine if target is a module or npm package**
 
 Search dependency-map.json:
 - Check `projects[].name` for a project match
-- Check `projects[].nuget_packages[].name` for a package match
+- Check `modules[].npm_dependencies[].name` for a package match
 - If both match, present both
 
 **Step 3: Present trace results**
@@ -62,7 +59,7 @@ For a PROJECT:
 - Whether senior review is required
 - Entry/exit criteria from phase_boundaries
 
-For a NUGET PACKAGE:
+For an NPM PACKAGE:
 
 **Package:** [name] [version]
 **CVE Status:** [if any security_observations reference this package]
@@ -80,6 +77,6 @@ For a NUGET PACKAGE:
 - Whether this package has known CVEs (from integration-map security_observations)
 
 If the target is not found in the baseline, search project files directly
-(package.json, .csproj, etc.) with Grep to trace it live. Note that results are from live scan, not baseline.
+(package.json, tsconfig.json) with Grep to trace it live. Note that results are from live scan, not baseline.
 
 Keep responses concise and actionable.

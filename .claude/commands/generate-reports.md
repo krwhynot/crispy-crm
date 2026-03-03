@@ -1,8 +1,5 @@
 ---
-description: |
-  Regenerate all Markdown reports from current JSON baselines without
-  re-running the audit. Useful after manually editing a JSON baseline,
-  after creating new PRDs/BRDs/ADRs, or after deep scans update confidence.
+description: "Regenerate all Markdown reports from current JSON baselines without re-running the audit. Useful after manually editing a JSON baseline, after creating new PRDs/BRDs/ADRs, or after deep scans update confidence."
 allowed-tools: Read, Write, Grep, Glob, Bash
 ---
 

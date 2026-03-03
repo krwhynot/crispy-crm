@@ -10,12 +10,13 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  # Fast parallel jobs - run simultaneously
-  lint:
-    name: Lint
+  quality:
+    name: Quality
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - uses: actions/setup-node@v4
         with:
@@ -27,31 +28,10 @@ jobs:
       - name: Lint
         run: npm run lint
 
-  typecheck:
-    name: Type Check
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '22'
-          cache: 'npm'
-
-      - run: npm ci
-
       - name: Type Check
         run: npx tsc --noEmit
 
-  health-check:
-    name: Code Health Check
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0  # Required for git log
-
-      - name: Health Check
+      - name: Code Health Check
         run: |
           echo "=== Code Health Check (CI/CD Enforced) ==="
           echo "Checking for high-churn files (14 days, threshold: 16 edits)..."
@@ -67,13 +47,7 @@ jobs:
             echo "All files below churn threshold"
           fi
 
-  ui-patterns:
-    name: UI Pattern Compliance
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Check for native select elements
+      - name: UI Pattern Compliance — native select
         run: |
           echo "Checking for native <select> elements in src/atomic-crm/..."
           if grep -rn '<select' src/atomic-crm/ --include="*.tsx" --include="*.ts" | grep -v '\.test\.' | grep -v '__tests__'; then
@@ -84,7 +58,7 @@ jobs:
           fi
           echo "No native <select> violations found."
 
-      - name: Check for hardcoded colors
+      - name: UI Pattern Compliance — hardcoded colors
         run: |
           echo "Checking for hardcoded color classes in src/atomic-crm/..."
           VIOLATIONS=$(grep -rn -E '(border-neutral-|bg-gray-|text-gray-|border-gray-|bg-neutral-|text-neutral-)' src/atomic-crm/ --include="*.tsx" --include="*.ts" | grep -v '\.test\.' | grep -v '__tests__' || true)
@@ -92,15 +66,12 @@ jobs:
             echo "$VIOLATIONS"
             echo ""
             echo "ERROR: Hardcoded color classes found in src/atomic-crm/"
-            echo "Use semantic Tailwind classes instead:"
-            echo "  - text-muted-foreground instead of text-gray-*"
-            echo "  - bg-muted instead of bg-gray-*"
-            echo "  - border-border instead of border-gray-*"
+            echo "Use semantic Tailwind classes instead."
             exit 1
           fi
           echo "No hardcoded color violations found."
 
-      - name: Check for direct react-admin input imports
+      - name: UI Pattern Compliance — direct RA input imports
         run: |
           echo "Checking for direct react-admin input imports in src/atomic-crm/..."
           VIOLATIONS=$(grep -rn "import.*\(TextInput\|SelectInput\|NumberInput\|DateInput\|BooleanInput\|AutocompleteInput\).*from 'react-admin'" src/atomic-crm/ --include="*.tsx" --include="*.ts" | grep -v '\.test\.' | grep -v '__tests__' || true)
@@ -113,33 +84,16 @@ jobs:
           fi
           echo "No direct react-admin input import violations found."
 
-  guardrails:
-    name: Guardrails (Baseline)
-    runs-on: ubuntu-latest
-    continue-on-error: true
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '22'
-          cache: 'npm'
-
-      - run: npm ci
-
-      - name: Mutation Integrity
-        run: npm run guardrail:mutation-integrity
-
-      - name: Schema Strip
-        run: npm run guardrail:schema-strip
-
-      - name: Handler Chain
-        run: npm run guardrail:handler-chain
+      - name: Guardrails (Baseline)
+        continue-on-error: true
+        run: |
+          npm run guardrail:mutation-integrity
+          npm run guardrail:schema-strip
+          npm run guardrail:handler-chain
 
   test:
     name: Tests
     runs-on: ubuntu-latest
-    continue-on-error: true
     steps:
       - uses: actions/checkout@v4
 
@@ -153,10 +107,9 @@ jobs:
       - name: Run Tests
         run: npm run test:ci
 
-  # Build runs after typecheck and ui-patterns pass (lint can fail independently)
   build:
     name: Build
-    needs: [typecheck, ui-patterns]
+    needs: [quality]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

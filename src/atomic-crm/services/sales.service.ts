@@ -65,10 +65,7 @@ export class SalesService {
       // Backward-compatible parsing: old Edge Function returns Sale directly,
       // new Edge Function returns { data: Sale, recoveryUrl: string | null }
       const isNewFormat =
-        response &&
-        typeof response === "object" &&
-        "data" in response &&
-        "recoveryUrl" in response;
+        response && typeof response === "object" && "data" in response && "recoveryUrl" in response;
 
       if (isNewFormat) {
         const typed = response as { data: Sale; recoveryUrl: string | null };

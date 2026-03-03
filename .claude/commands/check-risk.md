@@ -1,8 +1,5 @@
 ---
-description: |
-  Check the risk level of a module or project before making changes. Returns
-  risk rating, phase assignment, LOC, dependents, test requirements, and
-  integration warnings from the audit baseline.
+description: "Check the risk level of a module or project before making changes. Returns risk rating, phase assignment, LOC, dependents, test requirements, and integration warnings from the audit baseline."
 argument-hint: <project or module name>
 allowed-tools: Read, Grep, Glob
 ---
@@ -12,14 +9,14 @@ Look up the risk profile for "$1" from the audit baselines.
 **Step 0: Disambiguate**
 
 Search `docs/audit/baseline/risk-assessment.json` for modules matching "$1".
-If multiple modules match (e.g., "data" matches DataAccessLibrary, DataModels,
-DataAgCorp), present a numbered list with risk levels and ask the developer
+If multiple modules match (e.g., "data" matches composedDataProvider, validation,
+dashboard), present a numbered list with risk levels and ask the developer
 to choose. Never assume which one they meant.
 
 If exactly one module matches, proceed directly to Step 1.
 
 If zero modules match, search `docs/audit/baseline/feature-inventory.json`
-for features matching "$1". If still no match, search project files live (package.json, .csproj, etc.).
+for features matching "$1". If still no match, search project files live (package.json, tsconfig.json).
 
 **Step 1: Load data**
 

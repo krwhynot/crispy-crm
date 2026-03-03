@@ -1,8 +1,5 @@
 ---
-description: |
-  Generate an Architecture Decision Record for a specific topic. Interactive:
-  disambiguates vague inputs, shows related audit findings, and verifies
-  the decision scope before generating.
+description: "Generate an Architecture Decision Record for a specific topic. Interactive: disambiguates vague inputs, shows related audit findings, and verifies the decision scope before generating."
 argument-hint: <topic or decision>
 allowed-tools: Read, Grep, Glob, Write, Bash
 ---
@@ -23,14 +20,14 @@ If "$1" is vague or could map to multiple decisions, present options:
 ```
 "$1" could relate to several architectural decisions:
   [1] Credential rotation strategy (9 security findings)
-  [2] Authentication for SOAP services (sec-008: 9 services without TLS)
-  [3] Payment processing architecture (PCI scope, triPOS integration)
+  [2] Supabase RLS policy strategy (sec-008: 9 tables without row-level security)
+  [3] Edge Function architecture (daily-digest, check-overdue-tasks)
 Which decision should the ADR document?
 ```
 
 Wait for the developer's choice.
 
-If "$1" is specific enough (e.g., "Newtonsoft.Json upgrade strategy"):
+If "$1" is specific enough (e.g., "React Admin v5 migration strategy"):
 proceed directly.
 
 **Step 1: Show Context**

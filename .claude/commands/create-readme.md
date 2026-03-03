@@ -1,7 +1,5 @@
 ---
-description: |
-  Generate a README.md for a specific project. Interactive: disambiguates
-  vague inputs and shows what will be included before generating.
+description: "Generate a README.md for a specific project. Interactive: disambiguates vague inputs and shows what will be included before generating."
 argument-hint: <project name>
 allowed-tools: Read, Grep, Glob, Write, Bash
 ---
@@ -15,12 +13,12 @@ matching "$1".
 
 If no baseline exists: "No audit baseline found. Run /audit first."
 
-If multiple projects match (e.g., "business" matches BusinessLogic and
-BusinessLogic.Tests), present a numbered list:
+If multiple projects match (e.g., "contact" matches contacts and
+contacts.test), present a numbered list:
 ```
 "$1" matches [N] projects:
-  [1] HungerRush.Pos.BusinessLogic (MEDIUM risk, Phase 1)
-  [2] HungerRush.Pos.BusinessLogic.Tests (LOW risk)
+  [1] contacts (MEDIUM risk, core module)
+  [2] contacts.test (LOW risk)
 Which project needs a README?
 Or [A] All matching projects
 ```
@@ -35,7 +33,7 @@ README for [Project Name]:
   - Language: [detected from project files]
   - Risk: [level], Phase: [N]
   - Features: [N] features in this project
-  - Dependencies: [N] project refs, [N] NuGet packages
+  - Dependencies: [N] internal imports, [N] npm packages
   - Integrations: [N] external touchpoints
   - Test project: [name or None]
   - Existing README: [Yes (will overwrite) / No]

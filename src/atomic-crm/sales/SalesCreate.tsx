@@ -63,10 +63,9 @@ export default function SalesCreate() {
       if (result.recoveryUrl) {
         setRecoveryUrl(result.recoveryUrl);
       } else {
-        notify(
-          "User created. Use 'Reset Password' on their profile to generate a login link.",
-          { type: "success" }
-        );
+        notify("User created. Use 'Reset Password' on their profile to generate a login link.", {
+          type: "success",
+        });
         redirect("/sales");
       }
     },
@@ -173,9 +172,9 @@ export default function SalesCreate() {
               </Button>
             </div>
             <p className="text-xs text-muted-foreground">
-              Note: Some email or chat tools may consume the link when generating a preview.
-              If the link doesn&apos;t work, use &quot;Reset Password&quot; on the user&apos;s
-              profile page.
+              Note: Some email or chat tools may consume the link when generating a preview. If the
+              link doesn&apos;t work, use &quot;Reset Password&quot; on the user&apos;s profile
+              page.
             </p>
           </div>
           <DialogFooter>
