@@ -42,7 +42,7 @@ Related evidence from the audit:
   - [finding/metric from baseline]
 
 Related features: [list from feature-inventory.json]
-Related existing ADRs: [list from docs/adrs/]
+Related existing ADRs: [list from docs/adr/]
 
   [1] Proceed with ADR generation
   [2] I want to narrow or change the scope
@@ -57,7 +57,7 @@ Deploy the **adr-generator** agent with:
 - Related findings from the baselines
 
 The agent will:
-1. Create `docs/adrs/` directory if needed
+1. Create `docs/adr/` directory if needed
 2. Read existing ADRs to match style
 3. Write ADR-{NNN}-{topic}.md
 4. Update document-linkage.json for related features
@@ -67,7 +67,7 @@ The agent will:
 **Step 3: Post-Generation**
 
 ```
-ADR created: docs/adrs/ADR-{NNN}-{topic}.md
+ADR created: docs/adr/ADR-{NNN}-{topic}.md
 Status: Proposed (needs team review to accept)
 Linked to: [N] features, [N] PRDs, [N] BRDs
 

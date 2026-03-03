@@ -101,7 +101,7 @@ Cross-reference:
 - Documentation gaps against risk levels (undocumented high-risk = priority)
 
 Scan for document linkage:
-- List all files in docs/brds/, docs/prds/, docs/adrs/
+- List all files in docs/brd/, docs/prd/, docs/adr/
 - For each feature in feature-inventory.json, check if BRD/PRD/ADR exists
 - Write linkage data to docs/audit/baseline/document-linkage.json
 

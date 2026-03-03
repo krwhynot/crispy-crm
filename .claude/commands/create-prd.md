@@ -68,7 +68,7 @@ Deploy the **prd-generator** agent with:
 - The verified confidence level
 
 The agent will:
-1. Create `docs/prds/{domain}/` directory
+1. Create `docs/prd/{domain}/` directory
 2. Write the PRD using the standard template
 3. Update document-linkage.json and feature-inventory.json
 4. Validate all JSON files
@@ -79,7 +79,7 @@ After the PRD is created, check document-linkage.json:
 
 If no BRD exists for this feature's domain:
 ```
-PRD created: docs/prds/{domain}/PRD-{name}.md
+PRD created: docs/prd/{domain}/PRD-{name}.md
 
 Note: No BRD exists for the [Domain] domain.
 A BRD defines the business context for this feature.
@@ -89,7 +89,7 @@ A BRD defines the business context for this feature.
 
 If a BRD already exists:
 ```
-PRD created: docs/prds/{domain}/PRD-{name}.md
+PRD created: docs/prd/{domain}/PRD-{name}.md
 Linked to: BRD-{NNN} and [N] ADRs
 Document chain: BRD -> PRD -> [ADR status]
 ```
