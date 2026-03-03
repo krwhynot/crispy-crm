@@ -1,33 +1,6 @@
 {
   "version": "1.1",
   "description": "Lightweight skill activation index - full definitions in SKILL.md folders. Built-in skills (vercel-react-best-practices) are system-level and not indexed here.",
-  "agents": {
-    "sienna-ux": {
-      "description": "UI/UX Auditor agent - audits components for accessibility, design system compliance, and UX violations",
-      "requiredSkills": [
-        "ui-ux-design-principles",
-        "enforcing-principles"
-      ],
-      "promptTriggers": {
-        "keywords": [
-          "sienna",
-          "sienna-ux",
-          "ui audit",
-          "ux audit",
-          "accessibility audit",
-          "design audit",
-          "component audit",
-          "review component",
-          "audit component"
-        ],
-        "intentPatterns": [
-          "(use|invoke|ask|have).*?sienna",
-          "(audit|review|check|analyze).*?(component|ui|ux|accessibility|design)",
-          "sienna.*?(audit|review|check)"
-        ]
-      }
-    }
-  },
   "skills": {
     "verification-before-completion": {
       "priority": "critical",
@@ -244,7 +217,7 @@
         "(where|what|who).*?(calls?|sets?|creates?|passes?).*?this"
       ]
     },
-    "supabase": {
+    "supabase-postgres-best-practices": {
       "priority": "critical",
       "keywords": [
         "supabase",
@@ -310,35 +283,7 @@
         "(index|schema|RLS).*?(design|optimization|tuning)"
       ]
     },
-    "discovery-first": {
-      "priority": "high",
-      "keywords": [
-        "inventory",
-        "what exists",
-        "list all",
-        "how many",
-        "which components",
-        "what hooks",
-        "what schemas",
-        "what forms",
-        "what types",
-        "codebase structure",
-        "component hierarchy",
-        "call graph",
-        "who calls",
-        "what calls",
-        "dependencies"
-      ],
-      "intentPatterns": [
-        "(what|which|list|show).*?(component|hook|schema|form|type)s?.*?(exist|available|defined|have)",
-        "how many.*?(component|hook|schema|form|type)s?",
-        "(list|show|display).*?all.*?(component|hook|schema|form|type)s?",
-        "(codebase|code|project).*?(structure|hierarchy|overview)",
-        "(who|what).*?calls?.*?(function|hook|component)",
-        "inventory.*?(component|hook|schema|form|type)"
-      ]
-    },
-    "troubleshooting": {
+"troubleshooting": {
       "priority": "high",
       "keywords": [
         "build error",
@@ -590,45 +535,6 @@
         "why.*?(stale|cache|refetch|invalidate)"
       ]
     },
-    "extract-implicit-contract": {
-      "priority": "high",
-      "keywords": [
-        "extract contract",
-        "implicit contract",
-        "extract config",
-        "config extraction",
-        "reduce churn",
-        "high churn",
-        "Boy Scout",
-        "Boy Scout cleanup",
-        "code churn",
-        "churn threshold",
-        "form patterns",
-        "repeated patterns",
-        "co-churn",
-        "coupling",
-        "centralize patterns",
-        "form config",
-        "default values",
-        "scattered defaults",
-        "field labels",
-        "column definitions",
-        "duplicated code",
-        "form variants"
-      ],
-      "intentPatterns": [
-        "(extract|centralize|consolidate).*?(contract|config|pattern|default)",
-        "(reduce|lower|decrease).*?churn",
-        "(high|over).*?(churn|threshold|edit)",
-        "Boy Scout.*?(cleanup|rule|refactor)",
-        "(find|detect|identify).*?(implicit.*?contract|repeated.*?pattern|duplication)",
-        "(form|field|column).*?(config|pattern|definition)",
-        "(co-churn|co churn|coupling|change.*?together)",
-        "(scattered|duplicated|repeated).*?(default|validation|pattern)",
-        "(centralize|extract).*?(label|field|column|route)",
-        "why.*?(churn|change.*?together|edit.*?multiple)"
-      ]
-    },
     "soft-delete-rls-audit": {
       "priority": "critical",
       "keywords": [
@@ -702,30 +608,29 @@
   },
   "keywordOwnership": {
     "postgres": {
-      "primary": "supabase",
+      "primary": "supabase-postgres-best-practices",
       "context": {
-        "optimization": "supabase",
-        "EXPLAIN": "supabase",
-        "index strategy": "supabase",
-        "CRM": "supabase",
-        "RLS": "supabase",
-        "migration": "supabase"
+        "optimization": "supabase-postgres-best-practices",
+        "EXPLAIN": "supabase-postgres-best-practices",
+        "index strategy": "supabase-postgres-best-practices",
+        "CRM": "supabase-postgres-best-practices",
+        "RLS": "supabase-postgres-best-practices",
+        "migration": "supabase-postgres-best-practices"
       }
     },
     "query optimization": {
-      "primary": "supabase",
+      "primary": "supabase-postgres-best-practices",
       "context": {
-        "CRM": "supabase",
+        "CRM": "supabase-postgres-best-practices",
         "data provider": "crispy-data-provider"
       }
     },
     "schema": {
       "primary": "enforcing-principles",
       "context": {
-        "migration": "supabase",
+        "migration": "supabase-postgres-best-practices",
         "zod": "enforcing-principles",
-        "data provider": "crispy-data-provider",
-        "inventory": "discovery-first"
+        "data provider": "crispy-data-provider"
       }
     },
     "validation": {
@@ -747,13 +652,12 @@
     "component": {
       "primary": "ui-ux-design-principles",
       "context": {
-        "inventory": "discovery-first",
         "test": "testing-patterns",
         "props": "enforcing-principles"
       }
     },
     "edge function": {
-      "primary": "supabase",
+      "primary": "supabase-postgres-best-practices",
       "context": {
         "deploy": "troubleshooting"
       }
@@ -767,34 +671,12 @@
         "flow": "comprehensive-tracing"
       }
     },
-    "soft delete": {
-      "primary": "crispy-data-provider",
-      "context": {
-        "audit": "data-integrity-guards",
-        "RLS": "supabase"
-      }
-    },
     "cache": {
       "primary": "cache-invalidation-audit",
       "context": {
         "audit": "cache-invalidation-audit",
         "strategy": "cache-invalidation-audit",
         "stale": "cache-invalidation-audit"
-      }
-    },
-    "churn": {
-      "primary": "extract-implicit-contract",
-      "context": {
-        "reduce": "extract-implicit-contract",
-        "high": "extract-implicit-contract",
-        "threshold": "extract-implicit-contract"
-      }
-    },
-    "implicit contract": {
-      "primary": "extract-implicit-contract",
-      "context": {
-        "extract": "extract-implicit-contract",
-        "config": "extract-implicit-contract"
       }
     },
     "query keys": {

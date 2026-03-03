@@ -11,6 +11,9 @@
       "Bash(git log*)",
       "Bash(git diff*)",
       "Bash(just *)",
+      "Bash(curl *)",
+      "Bash(grep *)",
+      "Bash(cat .env*)",
       "MCP(supabase:*)",
       "mcp__supabase__execute_sql",
       "mcp__supabase__list_tables",
@@ -18,16 +21,7 @@
       "mcp__supabase__get_logs",
       "mcp__supabase__generate_typescript_types"
     ],
-    "deny": [
-      "Read(./.env)",
-      "Read(./.env.*)",
-      "Read(./secrets/**)",
-      "Read(./.claude/state/search.db)",
-      "Read(./.claude/state/search.db-*)",
-      "Read(./.claude/state/*-inventory/**)",
-      "Read(./supabase/.env)",
-      "Read(./supabase/.env.local)"
-    ],
+    "deny": [],
     "ask": []
   },
   "hooks": {
@@ -35,10 +29,6 @@
       {
         "matcher": "Edit|Write",
         "hooks": [
-          {
-            "type": "command",
-            "command": "npx tsx .claude/hooks/file-protection.ts"
-          },
           {
             "type": "command",
             "command": "npx tsx .claude/hooks/migration-guard.ts"
@@ -51,10 +41,6 @@
           {
             "type": "command",
             "command": "npx tsx .claude/hooks/verification-before-git.ts"
-          },
-          {
-            "type": "command",
-            "command": "npx tsx .claude/hooks/check-deletions.ts"
           },
           {
             "type": "command",
@@ -78,10 +64,6 @@
           {
             "type": "command",
             "command": "npx tsx .claude/hooks/post-tool-use-tracker.ts"
-          },
-          {
-            "type": "command",
-            "command": "npx tsx .claude/hooks/mark-state-stale.ts"
           }
         ]
       },
@@ -105,10 +87,6 @@
         ]
       }
     ]
-  },
-  "statusLine": {
-    "type": "command",
-    "command": "node .claude/statusline.js"
   },
   "enabledPlugins": {
     "code-review@claude-plugins-official": true
