@@ -65,7 +65,7 @@ Deploy the **brd-generator** agent with:
 - Links to any existing PRDs and ADRs for cross-referencing
 
 The agent will:
-1. Write the BRD to `docs/brd/BRD-{NNN}-{domain}.md`
+1. Write the BRD to `docs/brd/{domain}.md`
 2. Update document-linkage.json for all features in this domain
 3. Update feature-inventory.json linked_docs for all features
 4. Validate all JSON files
@@ -74,7 +74,7 @@ The agent will:
 
 After the BRD is created, check for PRD gaps:
 ```
-BRD created: docs/brd/BRD-{NNN}-{domain}.md
+BRD created: docs/brd/{domain}.md
 Covers [N] features in the [Domain] domain.
 
 Document chain status:
