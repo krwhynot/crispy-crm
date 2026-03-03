@@ -6,7 +6,7 @@
 
 ## 1. Domain Overview
 
-The Sales domain manages internal CRM users — the account managers and representatives who operate the system. A "sales" record is a CRM user profile that maps 1:1 to a Supabase Auth account. Every contact, opportunity, and activity in the system is owned by a sales user via foreign key relationships.
+The Sales domain manages internal CRM users — the account managers and representatives who operate the system. A "sales" record is a CRM user profile with an active 1:1 mapping to a Supabase Auth account. Historical soft-deleted sales rows may exist with `user_id = NULL` after user deletion. On re-invite, the prior sales identity is restored by email match. Retired duplicates have tombstone emails (`__retired__<id>__<original_email>`). Every contact, opportunity, and activity in the system is owned by a sales user via foreign key relationships.
 
 **Business role:** Control who has access to the CRM, what role they hold (Admin / Manager / Rep), and maintain a stable roster of account managers for attribution and reporting. Disabling a user preserves all historical data they created. [INFERRED]
 
@@ -139,7 +139,7 @@ Source: `docs/audit/baseline/feature-inventory.json` — `feat-sal-001.entry_poi
 | `sales_id` FK on opportunities | 1:N | opportunities | Opportunity owner |
 | `sales_id` FK on activities | 1:N | activities | Activity logger |
 | `sales_id` FK on tasks | 1:N | tasks | Task assignee |
-| Supabase Auth | 1:1 | auth.users | Linked via `user_id` UUID |
+| Supabase Auth | 1:1 (active) | auth.users | Linked via `user_id` UUID. On auth deletion: sales row soft-deleted, `user_id` set NULL. On re-invite: restored by email match. |
 
 ---
 
