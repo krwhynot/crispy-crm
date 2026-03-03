@@ -163,6 +163,47 @@ describe("authProvider", () => {
       window.location = originalLocation;
     });
 
+    it("should bypass checkAuth for recovery tokens in hash", async () => {
+      const originalLocation = window.location;
+      // @ts-expect-error - intentionally deleting for test isolation
+      delete window.location;
+      // @ts-expect-error - intentionally reassigning for test
+      window.location = {
+        ...originalLocation,
+        hash: "#access_token=abc123&type=recovery",
+      } as Location;
+
+      await expect(authProvider.checkAuth({})).resolves.toBeUndefined();
+
+      // Should NOT call getSession — early return before any async work
+      expect(mockGetSession).not.toHaveBeenCalled();
+
+      window.location = originalLocation;
+    });
+
+    it("should NOT bypass checkAuth for non-recovery tokens in hash", async () => {
+      mockGetSession.mockResolvedValue({
+        data: { session: null },
+        error: null,
+      });
+
+      const originalLocation = window.location;
+      // @ts-expect-error - intentionally deleting for test isolation
+      delete window.location;
+      // @ts-expect-error - intentionally reassigning for test
+      window.location = {
+        ...originalLocation,
+        pathname: "/",
+        hash: "#access_token=abc123&type=signup",
+      } as Location;
+
+      await expect(authProvider.checkAuth({})).rejects.toThrow("Not authenticated");
+
+      expect(mockGetSession).toHaveBeenCalled();
+
+      window.location = originalLocation;
+    });
+
     it("should recognize all public paths", async () => {
       const publicPaths = ["/login", "/forgot-password", "/set-password", "/reset-password"];
 

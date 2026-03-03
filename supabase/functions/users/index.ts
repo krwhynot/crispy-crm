@@ -282,18 +282,38 @@ async function inviteUser(
         : (productionOrigins[0] ?? allowedOrigins[0]);
 
     // Generate a recovery link so the new user can set their own password.
+    // Uses direct GoTrue REST call instead of SDK's generateLink() because the
+    // SDK sends redirect_to as a query param while GoTrue reads it from the
+    // request body — causing the stored redirect to fall back to SITE_URL.
     let recoveryUrl: string | null = null;
     try {
       const redirectTo = new URL("/auth-callback.html", redirectOrigin).toString();
-      const { data: linkData, error: linkError } = await supabaseAdmin.auth.admin.generateLink({
-        type: "recovery",
-        email,
-        options: { redirectTo },
+      const supabaseUrl = Deno.env.get("LOCAL_SUPABASE_URL") || Deno.env.get("SUPABASE_URL");
+      const serviceKey =
+        Deno.env.get("LOCAL_SERVICE_ROLE_KEY") ||
+        Deno.env.get("SERVICE_ROLE_KEY") ||
+        Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
+
+      const linkResponse = await fetch(`${supabaseUrl}/auth/v1/admin/generate_link`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${serviceKey}`,
+          apikey: serviceKey!,
+        },
+        body: JSON.stringify({
+          type: "recovery",
+          email,
+          redirect_to: redirectTo,
+        }),
       });
-      if (linkError) {
-        console.error("Failed to generate recovery link:", linkError.message);
+
+      if (!linkResponse.ok) {
+        const errBody = await linkResponse.text();
+        console.error("Failed to generate recovery link:", errBody);
       } else {
-        recoveryUrl = linkData?.properties?.action_link ?? null;
+        const payload = await linkResponse.json();
+        recoveryUrl = payload.action_link ?? payload.properties?.action_link ?? null;
       }
     } catch (linkErr) {
       console.error("Error generating recovery link:", linkErr);

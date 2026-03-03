@@ -74,9 +74,11 @@ export const authProvider: AuthProvider = {
     // Allow public auth pages without session check
     // Must match ra-supabase-core's checkAuth behavior (lines 113-127)
     // Uses hash check because app uses hash routing (window.location.pathname is always "/")
+    const hash = window.location.hash || "";
     if (
-      window.location.hash.includes("#/set-password") ||
-      window.location.hash.includes("#/forgot-password")
+      hash.includes("#/set-password") ||
+      hash.includes("#/forgot-password") ||
+      (hash.includes("type=recovery") && hash.includes("access_token"))
     ) {
       return;
     }
