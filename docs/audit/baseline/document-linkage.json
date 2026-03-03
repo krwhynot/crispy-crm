@@ -35,17 +35,18 @@
     },
     {
       "domain": "Sales",
-      "has_brd": false,
+      "has_brd": true,
       "has_prd": false,
       "related_adrs": [
         "001-supabase-provider-pattern",
         "002-soft-delete-convention",
         "004-validation-at-provider-boundary"
-      ]
+      ],
+      "brd_path": "docs/brd/sales.md"
     },
     {
       "domain": "Tasks",
-      "has_brd": false,
+      "has_brd": true,
       "has_prd": false,
       "related_adrs": [
         "001-supabase-provider-pattern",
@@ -55,7 +56,7 @@
     },
     {
       "domain": "Activities",
-      "has_brd": false,
+      "has_brd": true,
       "has_prd": false,
       "related_adrs": [
         "001-supabase-provider-pattern",
@@ -71,7 +72,7 @@
     },
     {
       "domain": "Products",
-      "has_brd": false,
+      "has_brd": true,
       "has_prd": false,
       "related_adrs": [
         "001-supabase-provider-pattern",
@@ -93,13 +94,17 @@
       "domain": "Dashboard",
       "has_brd": true,
       "has_prd": false,
-      "related_adrs": ["003-three-tier-ui-architecture"]
+      "related_adrs": [
+        "003-three-tier-ui-architecture"
+      ]
     },
     {
       "domain": "Reports",
       "has_brd": false,
       "has_prd": false,
-      "related_adrs": ["003-three-tier-ui-architecture"]
+      "related_adrs": [
+        "003-three-tier-ui-architecture"
+      ]
     },
     {
       "domain": "Settings",
@@ -111,13 +116,17 @@
       "domain": "Notifications",
       "has_brd": false,
       "has_prd": false,
-      "related_adrs": ["003-three-tier-ui-architecture"]
+      "related_adrs": [
+        "003-three-tier-ui-architecture"
+      ]
     },
     {
       "domain": "Tags",
       "has_brd": false,
       "has_prd": false,
-      "related_adrs": ["003-three-tier-ui-architecture"]
+      "related_adrs": [
+        "003-three-tier-ui-architecture"
+      ]
     },
     {
       "domain": "Login",
@@ -152,11 +161,7 @@
   ],
   "gaps": {
     "missing_brd": [
-      "Sales",
-      "Tasks",
-      "Activities",
       "Notes",
-      "Products",
       "ProductDistributors",
       "Reports",
       "Settings",
@@ -193,9 +198,9 @@
   },
   "summary": {
     "total_features": 19,
-    "features_with_brd": 4,
+    "features_with_brd": 8,
     "features_with_prd": 0,
     "adrs_count": 4,
-    "coverage_pct": 21
+    "coverage_pct": 42
   }
 }

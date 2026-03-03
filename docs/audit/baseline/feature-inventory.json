@@ -45,8 +45,15 @@
         "src/atomic-crm/contacts/ContactShow.tsx",
         "src/atomic-crm/contacts/ContactSlideOver.tsx"
       ],
-      "db_tables": ["contacts", "contacts_summary", "contact_organization_details"],
-      "external_deps": ["papaparse", "react-dropzone"],
+      "db_tables": [
+        "contacts",
+        "contacts_summary",
+        "contact_organization_details"
+      ],
+      "external_deps": [
+        "papaparse",
+        "react-dropzone"
+      ],
       "test_coverage": "full",
       "dead_code": false,
       "status": "verified",
@@ -96,7 +103,10 @@
         "distributor_principal_authorizations",
         "organization_distributors"
       ],
-      "external_deps": ["papaparse", "react-dropzone"],
+      "external_deps": [
+        "papaparse",
+        "react-dropzone"
+      ],
       "test_coverage": "full",
       "dead_code": false,
       "status": "verified",
@@ -150,7 +160,10 @@
         "opportunity_stage_changes",
         "opportunity_notes"
       ],
-      "external_deps": ["chart.js", "react-chartjs-2"],
+      "external_deps": [
+        "chart.js",
+        "react-chartjs-2"
+      ],
       "test_coverage": "full",
       "dead_code": false,
       "status": "verified",
@@ -167,7 +180,9 @@
           "source": "incremental-audit"
         }
       ],
-      "assumptions": ["opportunity_stage_changes confirmed as a view in resources.ts"],
+      "assumptions": [
+        "opportunity_stage_changes confirmed as a view in resources.ts"
+      ],
       "requires_review": [],
       "last_verified": "2026-03-03",
       "linked_docs": {
@@ -191,7 +206,9 @@
         "src/atomic-crm/sales/SalesShow.tsx",
         "src/atomic-crm/sales/SalesSlideOver.tsx"
       ],
-      "db_tables": ["sales"],
+      "db_tables": [
+        "sales"
+      ],
       "external_deps": [],
       "test_coverage": "partial",
       "dead_code": false,
@@ -209,11 +226,13 @@
           "source": "incremental-audit"
         }
       ],
-      "assumptions": ["test_coverage partial: 3 test files vs 18+ source files"],
+      "assumptions": [
+        "test_coverage partial: 3 test files vs 18+ source files"
+      ],
       "requires_review": [],
       "last_verified": "2026-03-03",
       "linked_docs": {
-        "brd": null,
+        "brd": "docs/brd/sales.md",
         "prd": null,
         "adrs": []
       },
@@ -233,7 +252,10 @@
         "src/atomic-crm/tasks/TaskShow.tsx",
         "src/atomic-crm/tasks/TaskSlideOver.tsx"
       ],
-      "db_tables": ["tasks", "priority_tasks"],
+      "db_tables": [
+        "tasks",
+        "priority_tasks"
+      ],
       "external_deps": [],
       "test_coverage": "partial",
       "dead_code": false,
@@ -251,11 +273,13 @@
           "source": "incremental-audit"
         }
       ],
-      "assumptions": ["priority_tasks confirmed as a dashboard summary view in resources.ts"],
+      "assumptions": [
+        "priority_tasks confirmed as a dashboard summary view in resources.ts"
+      ],
       "requires_review": [],
       "last_verified": "2026-03-03",
       "linked_docs": {
-        "brd": null,
+        "brd": "docs/brd/tasks.md",
         "prd": null,
         "adrs": []
       },
@@ -275,7 +299,10 @@
         "src/atomic-crm/activities/ActivitySlideOver.tsx",
         "src/atomic-crm/activities/ActivitySinglePage.tsx"
       ],
-      "db_tables": ["activities", "entity_timeline"],
+      "db_tables": [
+        "activities",
+        "entity_timeline"
+      ],
       "external_deps": [],
       "test_coverage": "partial",
       "dead_code": false,
@@ -301,7 +328,7 @@
       "requires_review": [],
       "last_verified": "2026-03-03",
       "linked_docs": {
-        "brd": null,
+        "brd": "docs/brd/activities.md",
         "prd": null,
         "adrs": []
       },
@@ -319,8 +346,14 @@
         "src/atomic-crm/notes/NotesIterator.tsx",
         "src/atomic-crm/notes/Note.tsx"
       ],
-      "db_tables": ["contact_notes", "opportunity_notes", "organization_notes"],
-      "external_deps": ["dompurify"],
+      "db_tables": [
+        "contact_notes",
+        "opportunity_notes",
+        "organization_notes"
+      ],
+      "external_deps": [
+        "dompurify"
+      ],
       "test_coverage": "none",
       "dead_code": false,
       "status": "verified",
@@ -365,7 +398,9 @@
         "src/atomic-crm/products/ProductShow.tsx",
         "src/atomic-crm/products/ProductSlideOver.tsx"
       ],
-      "db_tables": ["products"],
+      "db_tables": [
+        "products"
+      ],
       "external_deps": [],
       "test_coverage": "partial",
       "dead_code": false,
@@ -390,7 +425,7 @@
       "requires_review": [],
       "last_verified": "2026-03-03",
       "linked_docs": {
-        "brd": null,
+        "brd": "docs/brd/products.md",
         "prd": null,
         "adrs": []
       },
@@ -410,7 +445,9 @@
         "src/atomic-crm/productDistributors/ProductDistributorShow.tsx",
         "src/atomic-crm/productDistributors/productDistributorsConfig.ts"
       ],
-      "db_tables": ["product_distributors"],
+      "db_tables": [
+        "product_distributors"
+      ],
       "external_deps": [],
       "test_coverage": "none",
       "dead_code": false,
@@ -463,7 +500,11 @@
         "user_favorites",
         "activities"
       ],
-      "external_deps": ["@dnd-kit/core", "@dnd-kit/sortable", "chart.js"],
+      "external_deps": [
+        "@dnd-kit/core",
+        "@dnd-kit/sortable",
+        "chart.js"
+      ],
       "test_coverage": "full",
       "dead_code": false,
       "status": "verified",
@@ -509,8 +550,15 @@
         "src/atomic-crm/reports/tabs",
         "src/atomic-crm/reports/opportunities-by-principal"
       ],
-      "db_tables": ["opportunities", "activities", "opportunities_summary"],
-      "external_deps": ["chart.js", "react-chartjs-2"],
+      "db_tables": [
+        "opportunities",
+        "activities",
+        "opportunities_summary"
+      ],
+      "external_deps": [
+        "chart.js",
+        "react-chartjs-2"
+      ],
       "test_coverage": "partial",
       "dead_code": false,
       "status": "verified",
@@ -558,7 +606,9 @@
         "src/atomic-crm/settings/AuditLogSection.tsx",
         "src/atomic-crm/settings/TimeZoneSelect.tsx"
       ],
-      "db_tables": ["sales"],
+      "db_tables": [
+        "sales"
+      ],
       "external_deps": [],
       "test_coverage": "none",
       "dead_code": false,
@@ -601,7 +651,9 @@
         "src/atomic-crm/notifications/resource.tsx",
         "src/atomic-crm/notifications/NotificationsList.tsx"
       ],
-      "db_tables": ["notifications"],
+      "db_tables": [
+        "notifications"
+      ],
       "external_deps": [],
       "test_coverage": "none",
       "dead_code": false,
@@ -646,7 +698,9 @@
         "src/atomic-crm/tags/TagSelectWithCreate.tsx",
         "src/atomic-crm/tags/TagChip.tsx"
       ],
-      "db_tables": ["tags"],
+      "db_tables": [
+        "tags"
+      ],
       "external_deps": [],
       "test_coverage": "partial",
       "dead_code": false,
@@ -664,7 +718,9 @@
           "source": "incremental-audit"
         }
       ],
-      "assumptions": ["TagShow intentionally omitted per index.ts architecture comment"],
+      "assumptions": [
+        "TagShow intentionally omitted per index.ts architecture comment"
+      ],
       "requires_review": [],
       "last_verified": "2026-03-03",
       "linked_docs": {
@@ -685,7 +741,10 @@
         "src/atomic-crm/login/LoginSkeleton.tsx"
       ],
       "db_tables": [],
-      "external_deps": ["@supabase/supabase-js", "ra-supabase-core"],
+      "external_deps": [
+        "@supabase/supabase-js",
+        "ra-supabase-core"
+      ],
       "test_coverage": "none",
       "dead_code": false,
       "status": "verified",
@@ -726,7 +785,9 @@
         "src/atomic-crm/validation/segments.ts",
         "src/atomic-crm/validation/operatorSegments.ts"
       ],
-      "db_tables": ["segments"],
+      "db_tables": [
+        "segments"
+      ],
       "external_deps": [],
       "test_coverage": "partial",
       "dead_code": false,
@@ -770,7 +831,9 @@
         "src/atomic-crm/timeline/UnifiedTimeline.tsx",
         "src/atomic-crm/timeline/TimelineEntry.tsx"
       ],
-      "db_tables": ["entity_timeline"],
+      "db_tables": [
+        "entity_timeline"
+      ],
       "external_deps": [],
       "test_coverage": "partial",
       "dead_code": false,
@@ -852,7 +915,9 @@
         "src/atomic-crm/admin/HealthDashboard.tsx"
       ],
       "db_tables": [],
-      "external_deps": ["@sentry/react"],
+      "external_deps": [
+        "@sentry/react"
+      ],
       "test_coverage": "none",
       "dead_code": false,
       "status": "new",
