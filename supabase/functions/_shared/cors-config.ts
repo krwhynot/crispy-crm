@@ -84,12 +84,6 @@ export function createCorsHeaders(requestOrigin?: string | null): Record<string,
 }
 
 /**
- * Legacy export for backward compatibility
- * @deprecated Use createCorsHeaders() instead for proper origin validation
- */
-export const corsHeaders = createCorsHeaders();
-
-/**
  * Get allowed origins for debugging/logging purposes
  */
 export function getAllowedOrigins(): string[] {

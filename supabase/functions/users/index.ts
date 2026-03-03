@@ -1,7 +1,7 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import { createClient } from "jsr:@supabase/supabase-js@2";
 import { supabaseAdmin } from "../_shared/supabaseAdmin.ts";
-import { createCorsHeaders } from "../_shared/cors-config.ts";
+import { createCorsHeaders, getAllowedOrigins } from "../_shared/cors-config.ts";
 import { createErrorResponse } from "../_shared/utils.ts";
 import { z } from "npm:zod@3.22.4";
 
@@ -256,17 +256,35 @@ async function inviteUser(
       disabled,
     });
 
+    // Origin validation — fail-fast on misconfiguration (sec-004)
+    const requestOrigin = req.headers.get("origin");
+    const allowedOrigins = getAllowedOrigins();
+    if (allowedOrigins.length === 0) {
+      return new Response(
+        JSON.stringify({ error: "Server misconfiguration: no allowed origins" }),
+        { status: 500, headers: corsHeaders }
+      );
+    }
+    const productionOrigins = allowedOrigins.filter(
+      (o) => !o.startsWith("http://localhost") && !o.startsWith("http://127.0.0.1")
+    );
+    if (Deno.env.get("SITE_URL") && productionOrigins.length === 0) {
+      return new Response(
+        JSON.stringify({
+          error: "Server misconfiguration: SITE_URL set but no production origins",
+        }),
+        { status: 500, headers: corsHeaders }
+      );
+    }
+    const redirectOrigin =
+      requestOrigin && allowedOrigins.includes(requestOrigin)
+        ? requestOrigin
+        : (productionOrigins[0] ?? allowedOrigins[0]);
+
     // Generate a recovery link so the new user can set their own password.
     let recoveryUrl: string | null = null;
     try {
-      const requestOrigin = req.headers.get("origin");
-      const allowedOrigins = [Deno.env.get("SITE_URL"), "http://localhost:5173"].filter(Boolean);
-      const origin =
-        requestOrigin && allowedOrigins.includes(requestOrigin)
-          ? requestOrigin
-          : allowedOrigins[0] || "http://localhost:5173";
-      const redirectTo = new URL("/auth-callback.html", origin).toString();
-
+      const redirectTo = new URL("/auth-callback.html", redirectOrigin).toString();
       const { data: linkData, error: linkError } = await supabaseAdmin.auth.admin.generateLink({
         type: "recovery",
         email,
