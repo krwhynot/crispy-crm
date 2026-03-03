@@ -16,25 +16,9 @@ default:
 dev:
     npm run dev
 
-# Full local dev: start Supabase + reset DB + Vite
-dev-local:
-    npm run dev:local
-
-# Start local dev without DB reset
-dev-local-quick:
-    npm run dev:local:skip-reset
-
-# Stop local Supabase
-dev-stop:
-    npm run dev:local:stop
-
 # Check Supabase connection status
 dev-check:
     npm run dev:check
-
-# Start dev against cloud Supabase
-dev-cloud:
-    npm run dev:cloud
 
 # ─────────────────────────────────────────────────────────────
 # 🧪 Testing
@@ -144,26 +128,6 @@ preview:
 # 🗄️ Database
 # ─────────────────────────────────────────────────────────────
 
-# Start local Supabase
-db-start:
-    npm run db:local:start
-
-# Stop local Supabase
-db-stop:
-    npm run db:local:stop
-
-# Restart local Supabase
-db-restart:
-    npm run db:local:restart
-
-# Reset local database (runs migrations + seed)
-db-reset:
-    npm run db:local:reset
-
-# Check local Supabase status
-db-status:
-    npm run db:local:status
-
 # Create new migration file
 db-migrate name:
     npx supabase migration new {{name}}
@@ -221,224 +185,8 @@ storage-audit-json:
     npx tsx scripts/storage-hygiene.ts --json
 
 # ─────────────────────────────────────────────────────────────
-# 🔍 Discovery (Codebase Analysis)
-# ─────────────────────────────────────────────────────────────
-
-# Run full codebase discovery (SCIP + extractors)
-discover:
-    npx tsx scripts/discover/index.ts
-    node -e "require('fs').rmSync('.claude/state/.state-stale',{force:true})"
-    @echo "State refreshed, staleness marker cleared"
-
-# Generate SCIP index from TypeScript codebase
-discover-scip:
-    @echo "Generating SCIP index..."
-    npx tsx scripts/discover/scip/generate.ts --verbose
-    @echo "SCIP index generated at .claude/state/index.scip"
-
-# Populate SQLite FTS5 database from SCIP index
-discover-scip-db:
-    @echo "Populating SQLite database..."
-    npx tsx scripts/discover/scip/populate.ts --verbose
-    @echo "Database populated at .claude/state/search.db"
-
-# Verify SCIP index and database integrity
-discover-scip-verify:
-    @echo "Verifying SCIP index..."
-    npx tsx scripts/discover/scip/verify.ts --verbose
-
-# Full SCIP pipeline: generate index + populate DB + verify
-discover-scip-full: discover-scip discover-scip-db discover-scip-verify
-    @echo "Full SCIP pipeline complete"
-
-# Start discovery services (Ollama only - LanceDB is file-based)
-[unix]
-discover-services:
-    @echo "Starting discovery services..."
-    docker compose up -d ollama
-    @echo "Waiting for Ollama to be healthy..."
-    @sleep 3
-    @curl -s http://localhost:11434/api/version > /dev/null && echo "Ollama: http://localhost:11434" || echo "Ollama not ready"
-    @echo "LanceDB requires no server (file-based storage)"
-
-# Start discovery services (Ollama only - LanceDB is file-based)
-[windows]
-discover-services:
-    @echo "Starting discovery services..."
-    docker compose up -d ollama
-    @echo "Waiting for Ollama to be healthy..."
-    node -e "setTimeout(()=>{},3000)"
-    node -e "fetch('http://localhost:11434/api/version').then(()=>console.log('Ollama: http://localhost:11434')).catch(()=>console.log('Ollama not ready'))"
-    @echo "LanceDB requires no server (file-based storage)"
-
-# Stop discovery services (Ollama only - LanceDB is file-based)
-discover-services-stop:
-    docker compose stop ollama
-
-# Pull embedding model for Ollama
-discover-pull-model:
-    docker exec crispy-crm-ollama-1 ollama pull nomic-embed-text
-
-# Check health of all discovery services
-discover-health:
-    npx tsx scripts/discover/embeddings/health-check.ts
-
-# Index codebase for semantic search (requires services running)
-discover-embeddings:
-    npx tsx scripts/discover/embeddings/indexer.ts
-
-# Semantic search CLI (supports --limit, --type, --no-preview flags)
-discover-search query *args:
-    npx tsx scripts/discover/embeddings/search-cli.ts "{{query}}" {{args}}
-
-# Full semantic discovery: services + SCIP + embeddings
-discover-full: discover-services discover-scip discover-embeddings
-    @echo "Full discovery complete"
-
-# Run priority extractors only (components + hooks)
-discover-priority:
-    npx tsx scripts/discover/index.ts --only=components,hooks
-
-# Check if discoveries are stale (for CI/pre-commit) - full check
-discover-check:
-    npx tsx scripts/discover/index.ts --check
-
-# Fast staleness check for CI (uses unified manifest)
-discover-staleness:
-    npx tsx scripts/discover/check-staleness.ts
-
-# Generate unified manifest for staleness tracking
-discover-staleness-generate:
-    npx tsx scripts/discover/check-staleness.ts --generate
-
-# Extract Zod schemas only
-discover-schemas:
-    npx tsx scripts/discover/index.ts --only=schemas
-
-# Extract TypeScript types only
-discover-types:
-    npx tsx scripts/discover/index.ts --only=types
-
-# Extract form components only
-discover-forms:
-    npx tsx scripts/discover/index.ts --only=forms
-
-# Run all new extractors (schemas, types, forms)
-discover-new:
-    npx tsx scripts/discover/index.ts --only=schemas,types,forms
-
-# Extract call graph only
-discover-callgraph:
-    npx tsx scripts/discover/index.ts --only=callGraph
-
-# Incremental discovery (only changed chunks)
-discover-incr:
-    npx tsx scripts/discover/index.ts --incremental
-
-# Watch mode for development (auto-regenerates on file changes)
-discover-watch:
-    npx tsx scripts/discover/watch.ts
-
-# Generate call graph visualizations
-callgraph-viz:
-    npx tsx scripts/discover/generate-viz.ts
-
-# Render call graph DOT to SVG/PNG (requires graphviz)
-[unix]
-callgraph-render:
-    @mkdir -p docs/architecture/call-graphs
-    dot -Tsvg .claude/state/call-graph-inventory/_visualization/full-graph.dot -o docs/architecture/call-graphs/full-graph.svg
-    dot -Tpng .claude/state/call-graph-inventory/_visualization/full-graph.dot -o docs/architecture/call-graphs/full-graph.png
-    @echo "Rendered to docs/architecture/call-graphs/"
-
-# Render call graph DOT to SVG/PNG (requires graphviz)
-[windows]
-callgraph-render:
-    node -e "require('fs').mkdirSync('docs/architecture/call-graphs',{recursive:true})"
-    dot -Tsvg .claude/state/call-graph-inventory/_visualization/full-graph.dot -o docs/architecture/call-graphs/full-graph.svg
-    dot -Tpng .claude/state/call-graph-inventory/_visualization/full-graph.dot -o docs/architecture/call-graphs/full-graph.png
-    @echo "Rendered to docs/architecture/call-graphs/"
-
-# ─────────────────────────────────────────────────────────────
-# 🔌 MCP Server
-# ─────────────────────────────────────────────────────────────
-
-# Start MCP server (for testing)
-mcp-start:
-    npx tsx scripts/mcp/server.ts
-
-# Test MCP tools/list endpoint
-[unix]
-mcp-test:
-    @echo '{"jsonrpc":"2.0","id":1,"method":"tools/list"}' | npx tsx scripts/mcp/server.ts 2>/dev/null | head -1
-
-# Test MCP tools/list endpoint
-[windows]
-mcp-test:
-    echo '{"jsonrpc":"2.0","id":1,"method":"tools/list"}' | npx tsx scripts/mcp/server.ts 2>$null | Select-Object -First 1
-
-# Interactive MCP testing with inspector
-mcp-inspect:
-    npx @modelcontextprotocol/inspector npx tsx scripts/mcp/server.ts
-
-# View MCP tool usage logs (live tail)
-[unix]
-mcp-logs:
-    @echo "MCP Tool Usage Log (Ctrl+C to exit)"
-    @echo "─────────────────────────────────────"
-    @tail -f .claude/state/usage.log 2>/dev/null || echo "No usage log yet. Use Claude's search_code/go_to_definition/find_references tools to generate entries."
-
-# View MCP tool usage logs (live tail)
-[windows]
-mcp-logs:
-    @echo "MCP Tool Usage Log (Ctrl+C to exit)"
-    @echo "-------------------------------------"
-    if (Test-Path .claude/state/usage.log) { Get-Content -Wait .claude/state/usage.log } else { echo "No usage log yet. Use Claude's search_code/go_to_definition/find_references tools to generate entries." }
-
-# Show recent MCP tool calls
-[unix]
-mcp-recent count="20":
-    @echo "Recent MCP Tool Calls (last {{count}})"
-    @echo "─────────────────────────────────────"
-    @tail -n {{count}} .claude/state/usage.log 2>/dev/null || echo "No usage log yet."
-
-# Show recent MCP tool calls
-[windows]
-mcp-recent count="20":
-    @echo "Recent MCP Tool Calls (last {{count}})"
-    @echo "-------------------------------------"
-    if (Test-Path .claude/state/usage.log) { Get-Content .claude/state/usage.log | Select-Object -Last {{count}} } else { echo "No usage log yet." }
-
-# Show MCP usage stats summary
-[unix]
-mcp-stats:
-    @echo "MCP Tool Usage Statistics"
-    @echo "─────────────────────────────────────"
-    @if [ -f .claude/state/usage.log ]; then \
-        echo "Total calls: $$(wc -l < .claude/state/usage.log)"; \
-        echo ""; \
-        echo "By tool:"; \
-        grep -oE '(search_code|go_to_definition|find_references)' .claude/state/usage.log | sort | uniq -c | sort -rn; \
-        echo ""; \
-        echo "Last 5 calls:"; \
-        tail -5 .claude/state/usage.log; \
-    else \
-        echo "No usage log yet."; \
-    fi
-
-# Show MCP usage stats summary
-[windows]
-mcp-stats:
-    @echo "MCP Tool Usage Statistics"
-    @echo "-------------------------------------"
-    if (Test-Path .claude/state/usage.log) { $lines = Get-Content .claude/state/usage.log; echo "Total calls: $($lines.Count)"; echo ""; echo "By tool:"; $lines | Select-String -Pattern '(search_code|go_to_definition|find_references)' -AllMatches | ForEach-Object { $_.Matches.Value } | Group-Object | Sort-Object Count -Descending | ForEach-Object { echo "$($_.Count) $($_.Name)" }; echo ""; echo "Last 5 calls:"; $lines | Select-Object -Last 5 } else { echo "No usage log yet." }
-
-# ─────────────────────────────────────────────────────────────
 # 📦 Composite Commands
 # ─────────────────────────────────────────────────────────────
-
-# Fresh start: reset DB + generate types + start dev
-fresh: db-reset db-types dev
 
 # Pre-commit check: format, lint, typecheck, test
 pre-commit: fmt check test-ci
@@ -453,40 +201,10 @@ push-check: typecheck lint test-ci
 # 🔍 Audits (Claude Code Commands)
 # ─────────────────────────────────────────────────────────────
 
-# Run UX blockers audit (quick scan, user-blocking issues only)
+# Run full Three Pillars codebase audit
 audit:
-    @echo "Run /audit/ux-blockers in Claude Code"
+    @echo "Run /audit in Claude Code"
 
-# Run UX blockers with automatic deep dives on failures
-audit-deep:
-    @echo "Run /audit/ux-blockers --deep in Claude Code"
-
-# Run forms deep dive
-audit-forms:
-    @echo "Run /audit/deep/forms in Claude Code"
-
-# Run filters deep dive
-audit-filters:
-    @echo "Run /audit/deep/filters in Claude Code"
-
-# Run actions deep dive
-audit-actions:
-    @echo "Run /audit/deep/actions in Claude Code"
-
-# Run data flow deep dive
-audit-data:
-    @echo "Run /audit/deep/data-flow in Claude Code"
-
-# Run navigation deep dive
-audit-nav:
-    @echo "Run /audit/deep/navigation in Claude Code"
-
-# Run fault lines deep dive (stack-specific architecture risks)
-audit-faults:
-    @echo "Run /audit/deep/fault-lines in Claude Code"
-
-# List all audit commands
+# List audit commands
 audit-list:
-    @echo "UX Blockers:  /audit/ux-blockers [--quick | --deep | --category=X]"
-    @echo "Deep Dives:   /audit/deep/{forms,filters,actions,data-flow,navigation,fault-lines}"
-    @echo "Engineering:  /audit/{data-integrity,workflow-gaps,stale-state,error-handling,forms}"
+    @echo "Full audit:   /audit in Claude Code"
