@@ -1,7 +1,7 @@
 {
-  "run_timestamp": "2026-03-03T18:00:00Z",
+  "run_timestamp": "2026-03-03T23:00:00Z",
   "run_type": "incremental",
-  "previous_run": "2026-03-03T12:00:00Z",
+  "previous_run": "2026-03-03T20:00:00Z",
   "agents_deployed": 5,
   "agents_succeeded": 5,
   "agents_failed": 0,
@@ -9,54 +9,49 @@
   "baselines_valid": 6,
   "confidence_deltas": {
     "feature_inventory": {
-      "previous_avg": 0.896,
-      "current_avg": 0.885,
-      "new_features": 1,
+      "previous_avg": 0.922,
+      "current_avg": 0.912,
+      "new_features": 7,
       "decayed": 0,
-      "note": "feat-pgs-001 (WhatsNew) added. Slight avg drop reflects more honest medium-confidence entries."
+      "note": "7 new infrastructure features added (Hooks, Constants, Root, AppLayout, Utils, Contexts, SharedComponents). Total features 25→32. Avg confidence stable at 0.912."
     },
     "risk_assessment": {
-      "modules_added": 3,
-      "modules_total": 28,
-      "high_risk": 8,
-      "medium_risk": 12,
-      "low_risk": 8,
-      "risk_upgrades": 0,
-      "risk_downgrades": 0,
-      "note": "supabase/, utils/, constants/ newly tracked. supabase/ elevated to Phase 3 high-risk."
+      "modules_added": 5,
+      "modules_total": 33,
+      "high_risk_count": 8,
+      "medium_risk_count": 12,
+      "low_risk_count": 13,
+      "note": "filters module promoted to regression priority 5 (0→16 commits, 0 tests). 5 new modules tracked (admin, config, root, shared, tests). sales and src/components above CI/CD threshold for 3rd consecutive audit."
     },
     "dependency_map": {
-      "circular_references_previous": 2,
-      "circular_references_current": 0,
-      "note": "Both circular deps resolved via stage-enums refactor to shared constants."
+      "npm_packages": 115,
+      "internal_modules": 34,
+      "circular_references": 0,
+      "god_classes": 1,
+      "note": "No structural changes. authProvider.ts recovery link hardened. Module dependency graph unchanged."
     },
     "documentation_coverage": {
-      "total_docs_previous": 47,
-      "total_docs_current": 64,
-      "readmes_previous": 5,
-      "readmes_current": 9,
-      "brds_previous": 4,
-      "brds_current": 8,
-      "quality_previous": 3.4,
-      "quality_current": 3.7
+      "previous_total": 64,
+      "current_total": 175,
+      "previous_avg_quality": 3.7,
+      "current_avg_quality": 4.2,
+      "note": "Major improvement: 37 READMEs added, 3 PRDs added, ~70 skill docs added. All high-risk modules now documented."
     },
     "integration_map": {
-      "integrations_previous": 12,
-      "integrations_current": 21,
-      "security_issues": 7,
-      "note": "Count corrected from 12 to 21. 3 new integrations discovered (Sentry source maps, Chromatic, CI/CD)."
+      "total_integrations": 21,
+      "security_issues": 8,
+      "note": "sec-003 and sec-004 severity downgraded. New sec-008 (hardcoded prod domains). sec-007 scoped to style-src only."
     }
   },
-  "document_linkage": {
-    "features_with_brd": 8,
-    "features_without_brd": 12,
-    "brd_coverage_pct": 40,
-    "prd_count": 0,
-    "adr_count": 4,
-    "priority_gaps": [
-      "Reports (high-risk, no BRD)",
-      "Notifications (cross-cutting, no BRD)",
-      "ProductDistributors (junction auth, no BRD)"
-    ]
+  "synthesis_cross_references": {
+    "high_coupling_high_risk": [
+      "validation (fan_in=91, high risk)",
+      "providers (fan_in=N/A but god-class, high risk)",
+      "opportunities (fan_in=19, high risk)"
+    ],
+    "high_risk_no_prd": ["dashboard", "validation", "providers", "src/components", "supabase"],
+    "high_coupling_no_adr": ["opportunities", "contacts"],
+    "new_regression_priority": "filters (0→16 commits, 0 tests, consumed by all list views)",
+    "undocumented_high_risk_count": 0
   }
 }

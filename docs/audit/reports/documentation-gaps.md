@@ -1,186 +1,188 @@
 # Documentation Gaps Report
 
-**Generated:** 2026-03-03
-**Run type:** Incremental (builds on 2026-03-03T12:00:00Z baseline)
-**Sources:** `docs/audit/baseline/documentation-coverage.json`, `docs/audit/baseline/document-linkage.json`, `docs/audit/baseline/feature-inventory.json`
-[Confidence: 94%]
+**Generated:** 2026-03-03T23:30:00Z
+**Baseline sources:** `docs/audit/baseline/documentation-coverage.json`, `docs/audit/baseline/document-linkage.json`
+**Audit type:** Incremental (last audit: 2026-03-03T20:00:00Z)
 
 ---
 
 ## Summary
 
-| Metric | Value | Delta vs Previous |
-|--------|-------|-------------------|
-| Total doc files | 64 | +17 |
-| Projects with README | 9 | +4 |
-| Projects without README | 5 | -4 |
-| BRD coverage | 40% (8/20 features) | +19 pp (was 21%, 4/19) |
-| PRD coverage | 0% | no change |
-| ADR count | 4 | no change |
-| Avg documentation quality score | 3.7 / 5 | +0.3 |
-| JSDoc coverage | ~15% | no change |
-| TODO/FIXME count | 21 | not tracked previously |
+| Metric | Previous | Current | Delta |
+|---|---|---|---|
+| Total documentation files | 64 | 175 | +111 |
+| Modules with README | 9 | 37 | +28 |
+| Modules without README | — | 4 | — |
+| Average quality score | 3.7 | 4.2 | +0.5 |
+| ADR count | — | 4 | — |
+| Features with PRD | 2 | 7 | +5 |
+| Features with BRD | 5 | 8 | +3 |
+| Features missing all docs | 1 | 0 | Gap closed |
+| JSDoc coverage (est.) | — | ~20% | Low |
+| TODO/FIXME count | — | 21 | Stable |
 
 ---
 
-## Improvements This Run
+## Improvements This Cycle
 
-The following documentation was added since the 2026-03-03T12:00:00Z baseline:
+The following documentation was added between the previous and current audit runs:
 
-| Type | File | Quality | Notes |
-|------|------|---------|-------|
-| BRD | `docs/brd/sales.md` | 4/5 | CRM user profiles, 1:1 Supabase Auth mapping, role model, disable vs delete |
-| BRD | `docs/brd/activities.md` | 4/5 | STI pattern, 15 interaction types, KPI connection to 10+ activities/week goal |
-| BRD | `docs/brd/tasks.md` | 4/5 | STI storage, tasksHandler translation, priority_tasks view, auto-create activity |
-| BRD | `docs/brd/products.md` | 4/5 | F&B product catalog, categories, distributor coverage, opportunity linkage |
-| README | `src/atomic-crm/reports/README.md` | 5/5 | 983 lines covering architecture, data flows, CSV security, unused code |
-| README | `src/components/ui/README.md` | 3/5 | Brief overview of shadcn/ui origin and update instructions |
-| README | `src/atomic-crm/filters/README.md` | 5/5 | All filter types, WCAG 2.1 AA details, troubleshooting guide |
-| README | `src/atomic-crm/opportunities/__tests__/README.md` | 3/5 | Test file naming conventions and mock path conventions |
-| Storybook | `src/components/ui/` | — | 24 stories added, serving as living documentation |
-| Template | `docs/adr/TEMPLATE.md` | 3/5 | ADR authoring template |
+- 37 new module READMEs added across `src/atomic-crm/` and `src/components/`
+- `supabase/README.md` added — covers schema, edge functions, security-sensitive RPCs, migration workflow
+- 3 new PRDs added: `docs/prd/contacts/`, `docs/prd/organizations/`, `docs/prd/opportunities/`
+- 5 total PRDs created this run (dashboard, validation, providers, components, supabase)
+- `projects_with_readme` increased from 9 to 37 — near-complete module coverage achieved
+- `avg_quality_score` improved from 3.7 to 4.2
+- ~70 new `.claude/skills` markdown documents added
+- JSDoc density in provider handlers improved from minimal to light (112 JSDoc blocks across 31 handler files)
 
 ---
 
-## BRD Coverage by Feature
+## Modules Missing README
 
-| Feature ID | Domain | BRD | PRD | ADR | Risk Level | Priority |
-|------------|--------|-----|-----|-----|------------|----------|
-| feat-cnt-001 | Contacts | `docs/brd/contacts.md` | — | — | High | — |
-| feat-org-001 | Organizations | `docs/brd/organizations.md` | — | — | High | — |
-| feat-opp-001 | Opportunities | `docs/brd/opportunities.md` | — | — | High | — |
-| feat-sal-001 | Sales | `docs/brd/sales.md` | — | — | High | — |
-| feat-tsk-001 | Tasks | `docs/brd/tasks.md` | — | — | Medium | — |
-| feat-act-001 | Activities | `docs/brd/activities.md` | — | — | Medium | — |
-| feat-prd-001 | Products | `docs/brd/products.md` | — | — | Medium | — |
-| feat-dsh-001 | Dashboard | `docs/brd/dashboard.md` | — | — | High | — |
-| feat-not-001 | Notes | MISSING | — | — | Medium | ⚠️ P2 |
-| feat-pdi-001 | ProductDistributors | MISSING | — | — | Medium | ⚠️ P1 |
-| feat-rpt-001 | Reports | MISSING | — | — | High | ⚠️ P1 |
-| feat-set-001 | Settings | MISSING | — | — | Low | P3 |
-| feat-ntf-001 | Notifications | MISSING | — | — | Medium | ⚠️ P1 |
-| feat-tag-001 | Tags | MISSING | — | — | Low | P3 |
-| feat-lgn-001 | Login | MISSING | — | — | Low | P3 |
-| feat-seg-001 | Segments | MISSING | — | — | Low | P3 |
-| feat-tml-001 | Timeline | MISSING | — | — | Medium | P2 |
-| feat-flt-001 | Filters | MISSING | — | — | Medium | P2 |
-| feat-adm-001 | Admin | MISSING | — | — | Medium | P2 |
-| feat-pgs-001 | Onboarding (WhatsNew) | MISSING | — | — | Low | P3 |
+Only 4 modules currently lack a README. Two are feature modules; two are newly identified feature areas.
 
-**BRD coverage: 8/20 (40%). PRD coverage: 0/20 (0%).**
+| Module | Path | Risk Level | Status |
+|---|---|---|---|
+| `segments` | `src/atomic-crm/segments/` (inferred) | low | No README found |
+| `FormWizard` / onboarding | (inferred from linkage) | low | No README found |
+| `validation` submodules | Individual Zod schema files | — | README exists at module level, not per-file |
+| root-level project | `/` | — | No `README.md` for human contributor onboarding (`CLAUDE.md` is AI-only) |
 
-Priority key: P1 = immediate (high-risk or cross-cutting), P2 = short-term, P3 = medium-term.
+Source: `document-linkage.json` (readme: null entries), `documentation-coverage.json`
 
 ---
 
-## Modules Missing READMEs
+## README Quality Distribution
 
-| Module | Path | Has README | Quality | Gap Description |
-|--------|------|-----------|---------|-----------------|
-| root | / | No | 5 | CLAUDE.md serves AI sessions. No human onboarding README. |
-| contacts | `src/atomic-crm/contacts/` | No | 3 | BRD exists. No JSDoc on public APIs. No README. |
-| organizations | `src/atomic-crm/organizations/` | No | 3 | BRD exists. Hierarchy and authorization components undocumented. |
-| opportunities | `src/atomic-crm/opportunities/` | No | 3 | BRD exists. Test convention README added. Kanban/close workflows have no JSDoc. |
-| dashboard | `src/atomic-crm/dashboard/` | No | 3 | BRD exists. Complex dashboard hooks undocumented. |
-| sales | `src/atomic-crm/sales/` | No | 3 | BRD added. No module README or JSDoc. |
-| activities | `src/atomic-crm/activities/` | No | 3 | BRD added. No inline JSDoc. |
-| tasks | `src/atomic-crm/tasks/` | No | 3 | BRD added. No module README. |
-| products | `src/atomic-crm/products/` | No | 3 | BRD added (Draft). No module README or JSDoc. |
-| supabase/functions | `supabase/functions/` | No | 2 | 6 edge functions with no documentation. Triggers, env vars, and failure modes undocumented. |
-| supabase/migrations | `supabase/migrations/` | No | 3 | No migration index. Uneven comment quality across 14 migration files. |
+| Quality Score | Count | Modules |
+|---|---|---|
+| 5 (full, exemplary) | 13 | providers/supabase, providers, supabase, activities, sales, opportunities, validation, src/components, tasks, column-filters, reports, filters, src/atomic-crm/components |
+| 4 (full, good) | 20 | services, hooks, constants, productDistributors, timeline, products, notes, settings, login, notifications, admin, layout, root, shared, tests, utils, tags, contexts, config, src/components/ra-wrappers |
+| 3 (partial) | 4 | contacts, organizations, dashboard, pages |
+| Missing | 4 | segments, FormWizard, root README, — |
+
+Contacts, organizations, and dashboard READMEs are shorter than their peers and would benefit from expansion.
 
 ---
 
-## ADR Coverage
+## Feature Document Linkage — Full Coverage Table
 
-4 ADRs exist. All score 5/5 quality.
-
-| ADR | File | Project Coverage | Quality |
-|-----|------|-----------------|---------|
-| 001 - Supabase Provider Pattern | `docs/adr/001-supabase-provider-pattern.md` | `src/atomic-crm/providers/supabase` | 5/5 |
-| 002 - Soft Delete Convention | `docs/adr/002-soft-delete-convention.md` | `src/atomic-crm/providers/supabase` | 5/5 |
-| 003 - Three-Tier UI Architecture | `docs/adr/003-three-tier-ui-architecture.md` | `src/components` | 5/5 |
-| 004 - Validation at Provider Boundary | `docs/adr/004-validation-at-provider-boundary.md` | `src/atomic-crm/providers/supabase` | 5/5 |
-
-No ADRs exist for decisions in: state management strategy, query key design, CSV import architecture, or database view strategy. These are all areas with non-obvious implementation patterns that would benefit from documented rationale.
-
-**ADR gaps to consider:**
-- State management and stale-time strategy (TanStack Query patterns)
-- CSV import bulk-operation approach
-- Dashboard dual-version (V3/V4) decision and migration plan
-- Edge function scheduling and failure handling
-- Self-referential organization hierarchy design
+| Feature | Risk | BRD | PRD | ADR | README | Gaps |
+|---|---|---|---|---|---|---|
+| Contacts | high | `docs/brd/contacts.md` | `docs/prd/contacts/PRD-contacts.md` | — | `src/atomic-crm/contacts/README.md` | ADR recommended (10 fan-out, no ADR) |
+| Organizations | high | `docs/brd/organizations.md` | `docs/prd/organizations/PRD-organizations.md` | — | `src/atomic-crm/organizations/README.md` | ADR recommended (self-referential hierarchy) |
+| Opportunities | high | `docs/brd/opportunities.md` | `docs/prd/opportunities/PRD-opportunities.md` | — | `src/atomic-crm/opportunities/README.md` | ADR recommended (19 fan-in, no ADR) |
+| Dashboard | high | `docs/brd/dashboard.md` | `docs/prd/dashboard/PRD-dashboard.md` | — | `src/atomic-crm/dashboard/README.md` | ADR needed: V3 vs V4 strategy and pipeline caching |
+| Validation | high | — | `docs/prd/validation/PRD-validation.md` | `docs/adr/004-validation-at-provider-boundary.md` | `src/atomic-crm/validation/README.md` | BRD gap (system-layer; architecture note preferred) |
+| Providers | high | — | `docs/prd/providers/PRD-providers.md` | `docs/adr/001-supabase-provider-pattern.md` | `src/atomic-crm/providers/README.md` | BRD gap; ADR needed for authProvider caching and StorageService signed URL |
+| Components | high | — | `docs/prd/components/PRD-components.md` | `docs/adr/003-three-tier-ui-architecture.md` | `src/components/README.md` | BRD gap (tier-separation architecture note preferred) |
+| Supabase | high | — | `docs/prd/supabase/PRD-supabase.md` | `docs/adr/002-soft-delete-convention.md` | `supabase/README.md` | BRD gap; ADR needed for storage RLS gaps and SECURITY DEFINER RPC inventory |
+| Sales | medium | `docs/brd/sales.md` | — | — | `src/atomic-crm/sales/README.md` | PRD missing |
+| Tasks | medium | `docs/brd/tasks.md` | — | — | `src/atomic-crm/tasks/README.md` | PRD missing |
+| Activities | medium | `docs/brd/activities.md` | — | — | `src/atomic-crm/activities/README.md` | PRD missing |
+| Products | medium | `docs/brd/products.md` | — | — | `src/atomic-crm/products/README.md` | PRD missing |
+| Reports | medium | — | — | — | `src/atomic-crm/reports/README.md` | BRD and PRD missing |
+| Filters | medium | — | — | — | `src/atomic-crm/filters/README.md` | BRD and PRD missing; test coverage also 0 |
+| Timeline | medium | — | — | — | `src/atomic-crm/timeline/README.md` | BRD and PRD missing |
+| Services | medium | — | `docs/prd/providers/PRD-providers.md` | — | `src/atomic-crm/services/README.md` | BRD gap; ADR needed for service layer constructor injection |
+| ProductDistributors | medium | — | — | — | `src/atomic-crm/productDistributors/README.md` | BRD and PRD missing |
+| Hooks | medium | — | — | — | `src/atomic-crm/hooks/README.md` | No formal docs |
+| Constants | medium | — | — | — | `src/atomic-crm/constants/README.md` | No formal docs |
+| Utils | medium | — | — | — | `src/atomic-crm/utils/README.md` | No formal docs |
+| Settings | low | — | — | — | `src/atomic-crm/settings/README.md` | — |
+| Notifications | low | — | — | — | `src/atomic-crm/notifications/README.md` | — |
+| Tags | low | — | — | — | `src/atomic-crm/tags/README.md` | — |
+| Login | low | — | — | — | `src/atomic-crm/login/README.md` | — |
+| Notes | low | — | — | — | `src/atomic-crm/notes/README.md` | — |
+| Segments | low | — | — | — | — | README, BRD, PRD all missing |
+| Root | low | — | — | — | `src/atomic-crm/root/README.md` | — |
+| AppLayout | low | — | — | — | `src/atomic-crm/layout/README.md` | — |
+| Contexts | low | — | — | — | `src/atomic-crm/contexts/README.md` | — |
+| Admin | low | — | — | — | `src/atomic-crm/admin/README.md` | — |
+| SharedComponents | low | — | — | — | `src/atomic-crm/shared/README.md` | — |
+| FormWizard | low | — | — | — | — | README missing |
 
 ---
 
-## JSDoc Coverage by Module
+## High-Risk Modules Without ADR
 
-Overall coverage is approximately 15% of public APIs. No per-module breakdown exists in the current baseline.
+Two high-coupling modules lack ADRs despite significant architectural surface:
 
-Modules with confirmed JSDoc gaps (from `documentation-coverage.json` per_project notes):
+| Module | Fan-In | Fan-Out | Gap |
+|---|---|---|---|
+| `opportunities` | 19 | 10 | No ADR documenting 7-stage pipeline transitions, duplicate detection, Kanban layout decisions |
+| `contacts` | 0 | 10 | No ADR documenting CSV import wizard design, junction table strategy |
 
-| Module | JSDoc Gap |
-|--------|-----------|
-| contacts | No JSDoc on public APIs |
-| organizations | Hierarchy and authorization components undocumented |
-| opportunities | Kanban and close workflow components have no JSDoc |
-| dashboard | Complex dashboard hooks undocumented |
-| providers | Individual handler files have minimal JSDoc |
-| ra-wrappers | Custom wrappers lack JSDoc |
-| activities | No inline JSDoc |
-| products | No JSDoc |
-| sales | No JSDoc |
+Source: `document-linkage.json` `cross_references.high_coupling_no_adr`
+
+---
+
+## Medium-Risk Modules Missing BRD
+
+These medium-risk modules have READMEs but no BRD capturing business context:
+
+| Module | Risk | Has README | Has PRD | Has ADR |
+|---|---|---|---|---|
+| reports | medium | yes | no | no |
+| filters | medium | yes | no | no |
+| timeline | medium | yes | no | no |
+| services | medium | yes | partial (providers PRD) | no |
+| hooks | medium | yes | no | no |
+| constants | medium | yes | no | no |
+| utils | medium | yes | no | no |
+| productDistributors | medium | yes | no | no |
+
+Source: `document-linkage.json` `cross_references.medium_risk_no_brd`
+
+---
+
+## JSDoc Coverage
+
+Current estimated JSDoc coverage is approximately 20% of TypeScript source files.
+
+| Area | JSDoc Status | Notes |
+|---|---|---|
+| Provider handlers (`src/atomic-crm/providers/supabase/handlers/`) | Light (improved) | 112 JSDoc blocks added across 31 handler files this cycle |
+| Feature UI components | Minimal | Most `.tsx` files have no JSDoc |
+| Validation schemas | None | Zod schemas are self-documenting by type; JSDoc would add value for non-obvious rules |
+| Utility functions | Sparse | High-priority given 73 fan-in |
+| Service layer | Sparse | Partial coverage |
+| Edge functions (Deno) | None | No per-function documentation |
 
 ---
 
 ## TODO/FIXME Hotspots
 
-21 TODO/FIXME comments found across the codebase. Key items flagged in `documentation-coverage.json`:
+21 TODO/FIXME items tracked. Count is stable since last audit.
 
-| Issue | Description |
-|-------|-------------|
-| TODO-004a | Win/Loss validation incomplete |
-| 5 disabled tests | Awaiting RPC implementation |
+| Category | Count | Detail |
+|---|---|---|
+| Disabled tests | 6 | Located in `CampaignActivityReport`; tests marked as skipped/disabled |
+| Other TODOs | 15 | Distributed across codebase; specific files not enumerated in baseline |
 
-> Run `rg "TODO|FIXME" src/ supabase/ --type ts` to get the full list.
+Source: `documentation-coverage.json` `todo_fixme_count: 21`
 
----
-
-## Priority Gaps Requiring Immediate Attention
-
-These are sourced from `document-linkage.json` `gaps_priority` and cross-referenced with risk levels:
-
-| Priority | Feature | Domain | Risk | Gap | Rationale |
-|----------|---------|--------|------|-----|-----------|
-| P1 | feat-rpt-001 | Reports | High | No BRD | High-risk module with complex architecture and no business requirements documented |
-| P1 | feat-ntf-001 | Notifications | Medium | No BRD | Cross-cutting; used by daily-digest and check-overdue-tasks edge functions |
-| P1 | feat-pdi-001 | ProductDistributors | Medium | No BRD | Junction table with authorization implications; RLS coverage unverified |
-| P2 | feat-not-001 | Notes | Medium | No BRD | dompurify XSS boundary undocumented |
-| P2 | feat-tml-001 | Timeline | Medium | No BRD | Renders data from activities/notes; cross-entity audit trail |
-| P2 | feat-flt-001 | Filters | Medium | No BRD | README exists; BRD business rules undocumented |
-| P2 | feat-adm-001 | Admin | Medium | No BRD | React Admin shell routing and layout not documented |
+The 6 disabled tests in `CampaignActivityReport` are the highest-priority TODO items — disabled tests represent untested code paths.
 
 ---
 
-## Documentation Quality Scores
+## Remaining Coverage Gaps (Prioritized)
 
-| Project | Has README | Quality | Coverage |
-|---------|-----------|---------|----------|
-| `CLAUDE.md` (root) | — | 5/5 | full |
-| `docs/adr/001-004` | — | 5/5 | full |
-| `src/atomic-crm/providers/supabase/README.md` | Yes | 5/5 | full |
-| `src/components/ra-wrappers/column-filters/README.md` | Yes | 5/5 | full |
-| `src/atomic-crm/reports/README.md` | Yes | 5/5 | full |
-| `src/atomic-crm/filters/README.md` | Yes | 5/5 | full |
-| `eslint-local-rules/README.md` | Yes | 4/5 | full |
-| `docs/brd/*.md` (8 files) | — | 4/5 | full |
-| `src/components/ra-wrappers/Readme.md` | Yes | 3/5 | partial |
-| `src/components/ui/README.md` | Yes | 3/5 | partial |
-| `src/atomic-crm/opportunities/__tests__/README.md` | Yes | 3/5 | partial |
-| `docs/adr/TEMPLATE.md` | — | 3/5 | full |
-| `supabase/functions/` | No | 2/5 | none |
-| All other modules | No | 2-3/5 | none-partial |
+| Priority | Gap | Recommended Action |
+|---|---|---|
+| P1 | No root-level `README.md` for human onboarding | Create a developer-facing README separate from CLAUDE.md |
+| P1 | 6 disabled tests in `CampaignActivityReport` | Re-enable or delete; dead test code creates false coverage signals |
+| P2 | No per-function documentation for supabase edge functions | Add per-function README or JSDoc to each `supabase/functions/*/index.ts` |
+| P2 | No migration index document | Create `supabase/migrations/MIGRATIONS.md` cataloguing all migrations and their purpose |
+| P2 | ADRs needed: `opportunities`, `contacts`, `dashboard`, `supabase` | Write ADRs for key architectural decisions in high-risk modules |
+| P3 | JSDoc coverage ~20% | Prioritize `utils/` and provider handlers given fan-in counts |
+| P3 | `contacts`, `organizations`, `dashboard` README quality 3 | Expand these READMEs to match quality-5 peers |
 
 ---
 
-*Source: `docs/audit/baseline/documentation-coverage.json` and `docs/audit/baseline/document-linkage.json`. [Confidence: 94%]*
+## Confidence Statement
+
+Documentation coverage data sourced from `documentation-coverage.json` and `document-linkage.json`. JSDoc coverage is an estimate derived from baseline observations, not a line-by-line count. README quality scores reflect agent assessment on a 1-5 scale.
+
+[Confidence: 90%]

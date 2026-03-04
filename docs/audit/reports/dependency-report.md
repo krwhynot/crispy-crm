@@ -1,202 +1,171 @@
 # Dependency Report — Module Coupling and Dependency Analysis
 
-**Generated:** 2026-03-03
-**Run type:** Incremental (builds on 2026-03-03T12:00:00Z baseline)
-**Sources:** `docs/audit/baseline/dependency-map.json`, `docs/audit/baseline/audit-meta.json`
-[Confidence: 93%]
+**Generated:** 2026-03-03T23:30:00Z
+**Baseline source:** `docs/audit/baseline/dependency-map.json`
+**Audit type:** Incremental (last audit: 2026-03-03T12:00:00Z)
 
 ---
 
 ## Summary
 
-| Metric | Value | Delta vs Previous |
-|--------|-------|-------------------|
-| Total npm packages | 115 (67 prod / 48 dev) | no change |
-| Total internal modules | 34 | no change |
-| Circular references | 0 | -2 (both resolved this run) |
-| God classes | 1 (composedDataProvider) | no change |
-| Shared mutable state instances | 7 | no change |
-| Most coupled module (fan-in) | validation (91) | no change |
-| Most coupled module (both) | opportunities (19 in / 10 out) | no change |
-
----
-
-## Circular References
-
-**All circular references have been resolved as of this audit run.**
-
-### Resolved This Run
-
-| Previous Circular Reference | Resolution | Commit |
-|-----------------------------|------------|--------|
-| `opportunities -> providers -> opportunities` | `opportunitiesCallbacks.ts` now imports stage enums from `constants` instead of `opportunities/constants/stage-enums`. Providers module no longer imports from opportunities. | c74a58343 |
-| `utils -> opportunities -> utils` | `stalenessCalculation.ts` now imports `STAGE`, `ACTIVE_STAGES`, `CLOSED_STAGES` from `constants`, not `opportunities/constants`. | c74a58343 |
-
-**Before refactor:**
-```
-opportunities -> providers -> opportunities  (high severity)
-utils -> opportunities -> utils              (medium severity)
-```
-
-**After refactor:**
-```
-opportunities -> providers  (one-way, type import only)
-utils -> constants          (no dependency on opportunities)
-```
-
-Both circular chains were broken by moving stage enum constants to `src/atomic-crm/constants/stage-enums.ts`. The `opportunities/constants/stage-enums.ts` file is retained as a re-export shim to preserve backward compatibility.
+| Metric | Value |
+|---|---|
+| Total NPM packages | 115 (67 prod / 48 dev) |
+| Total internal modules | 34 |
+| Circular references | 0 |
+| God classes | 1 |
+| Shared mutable state instances | 7 |
+| TypeScript project references | 0 |
 
 ---
 
 ## High-Coupling Modules
 
-### By Fan-In (most depended upon)
+Modules with fan-in >= 10 or fan-out >= 8 warrant special attention: changes here cascade broadly.
 
-| Module | Path | Fan-In | Fan-Out | Role |
-|--------|------|--------|---------|------|
-| validation | `src/atomic-crm/validation/` | 91 | 2 | Shared dependency — canonical Zod schemas |
-| utils | `src/atomic-crm/utils/` | 73 | 1 | Shared dependency — formatting and calculation utilities |
-| constants | `src/atomic-crm/constants/` | 72 | 0 | Shared dependency — pipeline stage enums and app constants |
-| queryKeys | `src/atomic-crm/queryKeys.ts` | 34 | 0 | Shared dependency — TanStack Query key factory |
-| types | `src/atomic-crm/types.ts` | 34 | 0 | Shared dependency — global TypeScript types |
-| hooks | `src/atomic-crm/hooks/` | 13 | 1 | Shared hooks consumed by multiple features |
-| productDistributors | `src/atomic-crm/productDistributors/` | 11 | 1 | Junction entity — high fan-in relative to 508 LOC |
+| Module | Path | Fan-In | Fan-Out | Role | Notes |
+|---|---|---|---|---|---|
+| `validation` | `src/atomic-crm/validation/` | 91 | 2 | shared_dependency | Most depended-upon module. All Zod schemas live here. Any change cascades to 91 consumers. |
+| `utils` | `src/atomic-crm/utils/` | 73 | 1 | shared_dependency | Second-most depended-upon. fan_out reduced from 2 to 1 this cycle (no longer imports from opportunities). |
+| `constants` | `src/atomic-crm/constants/` | 72 | 0 | shared_dependency | Pure leaf — no outbound imports. 72 consumers depend on enum and constant definitions. |
+| `opportunities` | `src/atomic-crm/opportunities/` | 19 | 10 | high_coupling | Highest bidirectional coupling in codebase. Imported by contacts, dashboard, filters, reports, root, utils. |
+| `contacts` | `src/atomic-crm/contacts/` | 0 | 10 | high_fan_out | Leaf module with 10 outbound dependencies. Imports from filters, hooks, opportunities, organizations, etc. |
 
-### By Coupling (both fan-in and fan-out)
-
-| Module | Path | Fan-In | Fan-Out | Risk |
-|--------|------|--------|---------|------|
-| opportunities | `src/atomic-crm/opportunities/` | 19 | 10 | Highest coupling in codebase |
-| contacts | `src/atomic-crm/contacts/` | 0 | 10 | High fan-out; 10 dependencies |
-| validation | `src/atomic-crm/validation/` | 91 | 2 | Extreme fan-in; schema changes cascade everywhere |
-| reports | `src/atomic-crm/reports/` | 5 | 6 | Aggregates across multiple entities |
-| dashboard | `src/atomic-crm/dashboard/` | 0 | 6 | Consumer-only; 6 dependencies |
+Source: `dependency-map.json` `summary.most_coupled_modules`
 
 ---
 
-## Dependency Graph Summary
+## Full Module Dependency Graph
 
-### Module Reference Map
+| Module | Files | Fan-In | Fan-Out | References (outbound) | Referenced By (inbound) |
+|---|---|---|---|---|---|
+| activities | 24 | 1 | 5 | constants, layout, types, utils, validation | timeline |
+| admin | 2 | 0 | 1 | constants | — |
+| components (atomic-crm) | 7 | 7 | 4 | constants, queryKeys, utils, validation | contacts, opportunities, organizations, tags, tasks |
+| config | 1 | 0 | 0 | — | — |
+| constants | 5 | 72 | 0 | — | activities, admin, components, contacts, dashboard, hooks, notes, opportunities, organizations, products, reports, sales, settings, tags, tasks |
+| contacts | 80 | 0 | 10 | components, constants, filters, hooks, opportunities, organizations, queryKeys, types, utils, validation | — |
+| contexts | 7 | 7 | 0 | — | — |
+| dashboard | 62 | 0 | 6 | constants, opportunities, queryKeys, tasks, utils, validation | — |
+| filters | 36 | 1 | 2 | opportunities, validation | contacts |
+| hooks | 14 | 13 | 1 | constants | contacts, opportunities, organizations, settings, tags |
+| layout | 5 | 5 | 0 | — | activities |
+| login | 4 | 3 | 0 | — | root |
+| notes | 7 | 7 | 1 | constants | — |
+| notifications | 4 | 3 | 1 | queryKeys | — |
+| opportunities | 152 | 19 | 10 | components, constants, hooks, organizations, providers, queryKeys, services, types, utils, validation | contacts, dashboard, filters, reports, root, utils |
+| organizations | 97 | 3 | 6 | components, constants, hooks, queryKeys, utils, validation | contacts, opportunities |
+| pages | 2 | 2 | 0 | — | — |
+| productDistributors | 12 | 11 | 1 | utils | — |
+| products | 27 | 0 | 4 | constants, queryKeys, utils, validation | — |
+| providers | 116 | 6 | 4 | services, types, utils, validation | opportunities, validation |
+| queryKeys | 1 | 34 | 0 | — | components, dashboard, notifications, opportunities, organizations, products, reports, sales, settings, tags, tasks |
+| reports | 58 | 5 | 6 | constants, opportunities, queryKeys, types, utils, validation | — |
+| root | 6 | 6 | 2 | login, opportunities | — |
+| sales | 20 | 0 | 5 | constants, queryKeys, types, utils, validation | — |
+| services | 15 | 8 | 0 | — | opportunities, providers |
+| settings | 13 | 0 | 3 | constants, hooks, queryKeys | — |
+| shared | 1 | 1 | 0 | — | — |
+| tags | 18 | 0 | 4 | components, constants, hooks, queryKeys | — |
+| tasks | 29 | 3 | 5 | components, constants, queryKeys, utils, validation | dashboard |
+| tests | 5 | 5 | 0 | — | — |
+| timeline | 5 | 5 | 1 | utils | activities |
+| types | 1 | 34 | 0 | — | activities, opportunities, providers, reports, sales |
+| utils | 37 | 73 | 1 | constants | activities, components, contacts, dashboard, organizations, productDistributors, products, reports, sales, tasks, timeline |
+| validation | 96 | 91 | 2 | opportunities, providers | activities, components, contacts, dashboard, filters, opportunities, organizations, products, providers, reports, sales, tasks |
 
-| Module | References (fan-out) | Referenced By (fan-in) |
-|--------|---------------------|----------------------|
-| activities | constants, layout, types, utils, validation | timeline |
-| admin | constants | (none) |
-| components (atomic) | constants, queryKeys, utils, validation | contacts, opportunities, organizations, tags, tasks |
-| config | (none) | (none) |
-| constants | (none) | activities, admin, components, contacts, dashboard, hooks, notes, opportunities, organizations, products, reports, sales, settings, tags, tasks |
-| contacts | components, constants, filters, hooks, opportunities, organizations, queryKeys, types, utils, validation | (none) |
-| contexts | (none) | (none listed) |
-| dashboard | constants, opportunities, queryKeys, tasks, utils, validation | (none) |
-| filters | opportunities, validation | contacts |
-| hooks | constants | contacts, opportunities, organizations, settings, tags |
-| layout | (none) | activities |
-| login | (none) | root |
-| notes | constants | (none) |
-| notifications | queryKeys | (none) |
-| opportunities | components, constants, hooks, organizations, providers, queryKeys, services, types, utils, validation | contacts, dashboard, filters, reports, root, utils |
-| organizations | components, constants, hooks, queryKeys, utils, validation | contacts, opportunities |
-| pages | (none) | (none) |
-| productDistributors | utils | (none) |
-| products | constants, queryKeys, utils, validation | (none) |
-| providers | services, types, utils, validation | opportunities, validation |
-| queryKeys | (none) | components, dashboard, notifications, opportunities, organizations, products, reports, sales, settings, tags, tasks |
-| reports | constants, opportunities, queryKeys, types, utils, validation | (none) |
-| root | login, opportunities | (none) |
-| sales | constants, queryKeys, types, utils, validation | (none) |
-| services | (none) | opportunities, providers |
-| settings | constants, hooks, queryKeys | (none) |
-| shared | (none) | (none) |
-| tags | components, constants, hooks, queryKeys | (none) |
-| tasks | components, constants, queryKeys, utils, validation | dashboard |
-| tests | (none) | (none) |
-| timeline | utils | activities |
-| types | (none) | activities, opportunities, providers, reports, sales |
-| utils | constants | activities, components, contacts, dashboard, organizations, productDistributors, products, reports, sales, tasks, timeline |
-| validation | opportunities, providers | activities, components, contacts, dashboard, filters, opportunities, organizations, products, providers, reports, sales, tasks |
+---
+
+## Circular References
+
+No circular references detected in this audit cycle.
+
+Previous cycle resolved: `utils -> opportunities -> utils` (now resolved: utils no longer imports opportunities).
+
+Source: `dependency-map.json` `circular_references: []`
 
 ---
 
 ## God Classes
 
-| Class | File | Lines | Handler References | Risk |
-|-------|------|-------|-------------------|------|
-| composedDataProvider | `src/atomic-crm/providers/supabase/composedDataProvider.ts` | 260 | 48 | All feature module writes pass through this single file. Any change affects all resources simultaneously. Designated Caution Zone in CLAUDE.md. |
+| Class | File | Lines | Handler References | Reason |
+|---|---|---|---|---|
+| `composedDataProvider` | `src/atomic-crm/providers/supabase/composedDataProvider.ts` | 260 | 48 | Central handler routing hub. Every feature module write passes through this single file. Designated Caution Zone in CLAUDE.md. Auto-modify: disabled. |
 
-**Recommendation:** Do not split `composedDataProvider.ts` without careful migration. Instead, ensure per-handler unit tests exist (one test file per handler) so that regressions are caught at the handler level rather than discovered at the god-class level.
+This file has 48 handler references and routes all resource CRUD operations. It must not be modified without lead engineer review.
 
 ---
 
 ## Shared Mutable State
 
-7 instances of shared mutable state identified. These represent state that exists outside the React render cycle or is shared globally.
+Seven instances of shared mutable state identified. Module-level `let` variables and React contexts are the primary forms.
 
-| Instance | File | Type | Description | Risk |
-|----------|------|------|-------------|------|
-| `cachedSnapshot` | `src/atomic-crm/hooks/useRecentSearches.ts` | module_variable | Module-level mutable `let` holding snapshot of recent search items. | Medium — stale search results if not invalidated |
-| `cachedSale` | `src/atomic-crm/providers/supabase/authProvider.ts` | module_variable | Module-level mutable `let` caching the authenticated sale (user) record. | High — stale auth identity if not refreshed |
-| `cacheTimestamp` | `src/atomic-crm/providers/supabase/authProvider.ts` | module_variable | Companion timestamp for `cachedSale` expiry. | High — determines auth cache staleness |
-| `AppBrandingContext` | `src/atomic-crm/contexts/AppBrandingContext.tsx` | context_provider | React context providing app branding config across the entire component tree. | Low — read-only config, low mutation risk |
-| `FormOptionsContext` | `src/atomic-crm/contexts/FormOptionsContext.tsx` | context_provider | React context providing form configuration shared across feature forms. | Medium — form misconfiguration propagates broadly |
-| `PipelineConfigContext` | `src/atomic-crm/contexts/PipelineConfigContext.tsx` | context_provider | React context providing pipeline/stage configuration consumed by opportunities and dashboard. | Medium — pipeline config change affects kanban and dashboard simultaneously |
-| `ConfigurationContext` | `src/atomic-crm/root/ConfigurationContext.tsx` | context_provider | Root-level React context distributing global app configuration to all children. | Low — read-only global config |
+| Type | Name | File | Description |
+|---|---|---|---|
+| module_variable | `cachedSnapshot` | `src/atomic-crm/hooks/useRecentSearches.ts` | Module-level mutable let variable holding snapshot of recent search items. |
+| module_variable | `cachedSale` | `src/atomic-crm/providers/supabase/authProvider.ts` | Module-level mutable let variable caching the authenticated sale record. |
+| module_variable | `cacheTimestamp` | `src/atomic-crm/providers/supabase/authProvider.ts` | Module-level mutable let variable storing auth cache timestamp. Companion to cachedSale. |
+| context_provider | `AppBrandingContext` | `src/atomic-crm/contexts/AppBrandingContext.tsx` | React context providing app branding config across the entire component tree. |
+| context_provider | `FormOptionsContext` | `src/atomic-crm/contexts/FormOptionsContext.tsx` | React context providing form configuration options shared across feature forms. |
+| context_provider | `PipelineConfigContext` | `src/atomic-crm/contexts/PipelineConfigContext.tsx` | React context providing pipeline/stage configuration consumed by opportunities and dashboard. |
+| context_provider | `ConfigurationContext` | `src/atomic-crm/contexts/ConfigurationContext.tsx` (root) | Root-level React context distributing global app configuration to all children. |
 
-**Note on `cachedSale` and `cacheTimestamp`:** These two module-level variables in `authProvider.ts` are the highest-risk shared mutable state instances. A stale `cachedSale` could serve incorrect user identity or role data to RLS-dependent queries. Verify that the cache TTL and invalidation logic are correct on auth state changes (sign-in, sign-out, token refresh).
+The three module-level `let` variables in `authProvider.ts` (`cachedSale`, `cacheTimestamp`) are the highest-concern instances: they are mutated by auth state transitions and could produce stale data under concurrent tab scenarios.
 
 ---
 
 ## Loosely Coupled Components
 
-The following modules have zero or near-zero internal consumers, making them safe to modify without risk of breaking other modules.
+These modules have zero or near-zero inbound consumers and are safe to modify in isolation.
 
-| Module | Path | Fan-In | Fan-Out | Note |
-|--------|------|--------|---------|------|
-| config | `src/atomic-crm/config/` | 0 | 0 | Single file (featureFlags.ts). Completely isolated. |
-| admin | `src/atomic-crm/admin/` | 0 | 1 | Zero modules import from admin. Only imports from constants. |
-| dashboard | `src/atomic-crm/dashboard/` | 0 | 6 | Consumer-only leaf module. Nothing imports from dashboard. |
-| notifications | `src/atomic-crm/notifications/` | 0 | 1 | Zero internal consumers. Leaf module. |
-| pages | `src/atomic-crm/pages/` | 0 | 0 | Zero imports and zero internal consumers. Effectively isolated. |
-| products | `src/atomic-crm/products/` | 0 | 4 | Zero internal consumers. Leaf module. |
-| sales | `src/atomic-crm/sales/` | 0 | 5 | Zero internal consumers. Leaf module. |
-| settings | `src/atomic-crm/settings/` | 0 | 3 | Zero internal consumers. Leaf module. |
-| shared | `src/atomic-crm/shared/` | 1 | 0 | Single file, one consumer. |
-| tags | `src/atomic-crm/tags/` | 0 | 4 | Zero internal consumers. Leaf module. |
-
----
-
-## npm Package Highlights
-
-**Production dependencies (67 total):** Notable packages with security or version implications:
-
-| Package | Version | Note |
-|---------|---------|------|
-| `@supabase/supabase-js` | ^2.75.1 | Core backend SDK. Keep updated for security patches. |
-| `zod` | ^4.1.12 | Schema validation. Zod 4 is a major version — verify all schemas migrated from v3. |
-| `react` | ^19.1.0 | React 19 — confirm all third-party packages support React 19. |
-| `react-admin` | ^5.10.0 | React Admin 5. |
-| `dompurify` | ^3.2.7 | HTML sanitization. Keep updated for XSS patch coverage. |
-| `@sentry/react` | ^10.27.0 | Error monitoring. |
-| `vite` | ^7.0.4 | Build tool. Major version 7. |
-
-**Version overrides (2):**
-
-| Package | Pinned To | Reason |
-|---------|-----------|--------|
-| `react-router` | 6.30.3 | Pinned — likely to prevent breaking change from v7 |
-| `jose` | 6.1.3 | Pinned — JWT library, security-sensitive |
+| Module | Path | Fan-In | Fan-Out | Notes |
+|---|---|---|---|---|
+| config | `src/atomic-crm/config/` | 0 | 0 | Single file `featureFlags.ts`. No atomic-crm module imports from config. |
+| admin | `src/atomic-crm/admin/` | 0 | 1 | Zero modules import from admin; only imports from constants. |
+| dashboard | `src/atomic-crm/dashboard/` | 0 | 6 | Zero internal consumers; consumer-only leaf module. |
+| notifications | `src/atomic-crm/notifications/` | 0 | 1 | Zero internal consumers; leaf module. |
+| pages | `src/atomic-crm/pages/` | 0 | 0 | Zero imports and zero internal consumers; effectively isolated. |
+| products | `src/atomic-crm/products/` | 0 | 4 | Zero internal consumers; leaf module. |
+| sales | `src/atomic-crm/sales/` | 0 | 5 | Zero internal consumers; leaf module. |
+| settings | `src/atomic-crm/settings/` | 0 | 3 | Zero internal consumers; leaf module. |
+| shared | `src/atomic-crm/shared/` | 1 | 0 | Single file, no outbound imports, one consumer. |
+| tags | `src/atomic-crm/tags/` | 0 | 4 | Zero internal consumers; leaf module. |
 
 ---
 
-## Changes Since Previous Audit
+## Changes Since Last Audit
 
-| Change | Type | Detail |
-|--------|------|--------|
-| Circular reference resolved: opportunities/providers | Improvement | Stage enums moved to constants; providers no longer imports from opportunities |
-| Circular reference resolved: utils/opportunities | Improvement | stalenessCalculation.ts now imports from constants |
-| constants module added to tracking | New | 5 files, 72 fan-in, 325 LOC. stage-enums.ts canonical home. |
-| utils fan_out reduced 2 to 1 | Improvement | No longer imports from opportunities |
-| providers references updated | Updated | opportunities removed from providers reference list |
+| Type | Module | Description |
+|---|---|---|
+| bug_fix | providers | `authProvider.ts`: hardened recovery link redirect. Hash check now also passes when URL contains `type=recovery` and `access_token` tokens. No new module imports added; module dependency graph unchanged. |
+
+No structural dependency changes occurred this cycle. The module graph is stable.
 
 ---
 
-*Source: `docs/audit/baseline/dependency-map.json`. [Confidence: 93%]*
+## NPM Production Dependencies (67 packages)
+
+Key runtime dependencies by category:
+
+| Category | Packages |
+|---|---|
+| UI Framework | react 19, react-dom 19, react-admin 5.10, ra-core 5.10 |
+| Backend | @supabase/supabase-js 2.75, ra-supabase-core 3.5 |
+| State / Query | @tanstack/react-query 5.85 |
+| Forms | react-hook-form 7.66, zod 4.1 |
+| UI Components | @radix-ui/* (22 packages), lucide-react 0.542, sonner 2.0, vaul 1.1 |
+| Styling | tailwindcss 4.1, tailwind-merge 3.3, class-variance-authority 0.7 |
+| Charts / DnD | chart.js 4.5, react-chartjs-2 5.3, @dnd-kit/* (3 packages) |
+| Utilities | date-fns 4.1, es-toolkit 1.42, dompurify 3.2, papaparse 5.5 |
+| Monitoring | @sentry/react 10.27, @sentry/vite-plugin 4.6 |
+| Build | vite 7.0, @vitejs/plugin-react 4.6 |
+
+Full package list with versions: `docs/audit/baseline/dependency-map.json` `npm_packages`
+
+---
+
+## Confidence Statement
+
+Dependency data sourced entirely from `dependency-map.json`. Fan-in/fan-out counts reflect static import analysis. Circular reference detection confirmed zero cycles. Shared mutable state identified via manual audit of module-level variables and React context providers.
+
+[Confidence: 93%]

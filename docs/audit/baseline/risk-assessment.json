@@ -1,115 +1,125 @@
 {
   "summary": {
-    "total_modules": 28,
+    "total_modules": 33,
     "high_risk_count": 8,
     "medium_risk_count": 12,
-    "low_risk_count": 8,
+    "low_risk_count": 13,
     "highest_risk_module": "providers",
     "safest_module": "login",
     "git_history_available": true,
+    "last_audit": "2026-03-03T22:00:00Z",
     "changes_since_last_audit": [
       {
-        "type": "module_added",
-        "module": "supabase",
-        "description": "supabase newly tracked. 16K LOC, 54 commits in 30d, 641 in 6mo. Caution Zone.",
-        "severity": "new_entry"
-      },
-      {
-        "type": "module_added",
-        "module": "utils",
-        "description": "utils newly tracked. 5858 LOC, 73 fan-in, 153 commits in 6mo.",
-        "severity": "new_entry"
-      },
-      {
-        "type": "module_added",
-        "module": "constants",
-        "description": "constants newly tracked. 325 LOC, 72 fan-in. Stage enums moved here to resolve circular dep.",
-        "severity": "new_entry"
+        "type": "churn_elevated",
+        "module": "filters",
+        "description": "filters 30d commits jumped from 0 to 16. Active list architecture refactoring: Excel-style header filters, preset filters. Zero test coverage.",
+        "previous_commits_30d": 0,
+        "current_commits_30d": 16,
+        "severity": "watch"
       },
       {
         "type": "churn_elevated",
-        "module": "sales",
-        "description": "sales 14d=18 commits, above 16+ threshold for second consecutive audit.",
-        "current_commits_14d": 18,
-        "previous_commits_14d": 17,
+        "module": "layout",
+        "description": "layout 30d commits increased from 0 to 7 via list architecture unification.",
+        "previous_commits_30d": 0,
+        "current_commits_30d": 7,
         "severity": "watch"
       },
       {
-        "type": "churn_increase",
-        "module": "providers",
-        "description": "providers 30d up from 38 to 39. 14d up from 20 to 21.",
-        "current_commits_30d": 39,
-        "previous_commits_30d": 38,
-        "severity": "watch"
-      },
-      {
-        "type": "circular_resolved_confirmed",
-        "module": "opportunities/providers",
-        "description": "Circular reference confirmed resolved. Stage enums now in constants.",
+        "type": "doc_improvement",
+        "module": "multiple",
+        "description": "37 new module READMEs added. JSDoc improved in 31 provider handler files. avg_quality_score improved from 3.7 to 4.2.",
         "severity": "improvement"
       },
       {
-        "type": "churn_stable",
-        "module": "src/components",
-        "description": "src/components 14d commits stable at 20. Still above 16+ threshold.",
+        "type": "new_modules_identified",
+        "module": "admin, config, root, shared, tests",
+        "description": "Five sub-modules now tracked: admin, config, root, shared, tests.",
+        "severity": "informational"
+      },
+      {
+        "type": "uncommitted_work",
+        "module": "supabase",
+        "description": "Uncommitted migration 20260303110000_fix_admin_restore_sale_race.sql persists in working tree.",
         "severity": "watch"
+      },
+      {
+        "type": "stable",
+        "module": "providers",
+        "description": "providers 30d stable at 41, 14d stable at 22.",
+        "severity": "informational"
       }
-    ],
-    "last_audit": "2026-03-03T12:00:00Z"
+    ]
   },
   "modules": [
     {
       "name": "providers",
       "path": "src/atomic-crm/providers/",
-      "loc": 24720,
-      "file_count": 115,
+      "loc": 24967,
+      "file_count": 116,
       "dependents": 6,
       "dependencies": 5,
       "test_coverage": "full",
       "git_change_frequency": "high",
-      "git_commits_30d": 39,
-      "git_commits_14d": 21,
-      "git_commits_6mo": 578,
+      "git_commits_30d": 41,
+      "git_commits_14d": 22,
+      "git_commits_6mo": 581,
       "risk_level": "high",
-      "risk_score": 9,
+      "risk_score": 95,
       "risk_factors": [
-        "24.7K LOC largest provider module",
-        "39 commits in 30d 578 in 6mo extremely high churn",
-        "Contains authProvider.ts authentication and RLS enforcement",
-        "Contains composedDataProvider.ts all DB access routes here",
-        "God class composedDataProvider registers all resource handlers",
-        "Auth mistakes lock out all users per CLAUDE.md Caution Zone"
+        "24.9K LOC largest provider module",
+        "41 commits in 30d, 581 in 6mo, extremely high churn",
+        "22 commits in 14d above CI/CD review threshold (16+)",
+        "authProvider.ts has 14+ commits in 14d alone, auth flow under active development",
+        "authProvider.ts and authProvider.test.ts both have uncommitted working tree modifications",
+        "Contains authProvider.ts: authentication and RLS enforcement, mistakes lock out all users",
+        "Contains composedDataProvider.ts: god class routing all DB access, change affects all resources",
+        "Caution Zone per CLAUDE.md: composedDataProvider.ts and authProvider.ts"
       ],
       "phase_assignment": 3,
       "confidence": 0.97,
-      "notes": "Circular dependency with opportunities resolved."
+      "notes": "authProvider.ts is the single most active Caution Zone file this audit cycle: recovery link redirect, set-password flow, admin password reset, OTP invite fallback, PASSWORD_RECOVERY event handler all added in 14 days.",
+      "recommendations": [],
+      "factors": {
+        "complexity": 90,
+        "coupling": 75,
+        "test_coverage": 20,
+        "doc_quality": 15
+      }
     },
     {
       "name": "opportunities",
       "path": "src/atomic-crm/opportunities/",
-      "loc": 26828,
+      "loc": 26753,
       "file_count": 152,
       "dependents": 19,
       "dependencies": 10,
       "test_coverage": "full",
       "git_change_frequency": "medium",
       "git_commits_30d": 37,
-      "git_commits_14d": 11,
-      "git_commits_6mo": 771,
+      "git_commits_14d": 10,
+      "git_commits_6mo": 773,
       "risk_level": "high",
-      "risk_score": 9,
+      "risk_score": 93,
       "risk_factors": [
-        "26.8K LOC largest feature module",
-        "37 commits in 30d 771 in 6mo highest historical churn",
-        "19 fan-in and 10 fan-out highest coupling in codebase",
-        "7-stage pipeline transitions duplicate detection auth warnings",
+        "26.7K LOC largest feature module",
+        "37 commits in 30d, 773 in 6mo highest historical churn",
+        "19 fan-in and 10 fan-out: highest coupling in codebase",
+        "7-stage pipeline transitions, duplicate detection, auth warnings",
         "Kanban and slideOverTabs subdirectories add structural complexity",
         "6 DB tables including junction and audit tables",
-        "Business-critical directly drives MFB revenue pipeline KPIs"
+        "Business-critical: directly drives MFB revenue pipeline KPIs"
       ],
       "phase_assignment": 3,
       "confidence": 0.96,
-      "notes": "Circular reference with providers resolved. Stage enum imports now sourced from constants."
+      "notes": "Circular reference with providers resolved in prior cycle. Stage enum imports sourced from constants.",
+      "recommendations": [],
+      "factors": {
+        "complexity": 95,
+        "coupling": 95,
+        "test_coverage": 20,
+        "doc_quality": 10
+      }
     },
     {
       "name": "src/components",
@@ -121,48 +131,65 @@
       "test_coverage": "partial",
       "git_change_frequency": "high",
       "git_commits_30d": 49,
-      "git_commits_14d": 20,
-      "git_commits_6mo": 0,
+      "git_commits_14d": 19,
+      "git_commits_6mo": 606,
       "risk_level": "high",
-      "risk_score": 8,
+      "risk_score": 88,
       "risk_factors": [
-        "41.9K LOC largest module by line count in entire codebase",
-        "20 commits in 14d CI/CD architectural review threshold exceeded (16+)",
+        "41.9K LOC: largest module by line count in entire codebase",
+        "19 commits in 14d still above CI/CD architectural review threshold (16+), third consecutive audit",
         "49 commits in 30d",
-        "Spans three tiers: ui Tier1 ra-wrappers Tier2 layouts supabase auth pages",
-        "Broadly consumed by all feature modules high blast radius",
-        "Tier boundary violations UI-001 UI-002 risk spreading when mixed",
-        "ListToolbar.tsx and AdaptiveFilterContainer.tsx are active hotspots"
+        "Spans three tiers: ui (Tier 1), ra-wrappers (Tier 2), layouts, supabase auth pages",
+        "Broadly consumed by all feature modules, high blast radius",
+        "Tier boundary violations (UI-001, UI-002) risk spreading when mixed",
+        "ListToolbar.tsx and AdaptiveFilterContainer.tsx remain active hotspots"
       ],
       "phase_assignment": 3,
-      "confidence": 0.88
+      "confidence": 0.88,
+      "recommendations": [],
+      "factors": {
+        "complexity": 95,
+        "coupling": 80,
+        "test_coverage": 55,
+        "doc_quality": 20
+      }
     },
     {
       "name": "supabase",
       "path": "supabase/",
-      "loc": 16051,
-      "file_count": 30,
+      "loc": 17070,
+      "file_count": 31,
       "dependents": 0,
       "dependencies": 0,
       "test_coverage": "partial",
       "git_change_frequency": "high",
-      "git_commits_30d": 54,
-      "git_commits_14d": 27,
-      "git_commits_6mo": 641,
+      "git_commits_30d": 57,
+      "git_commits_14d": 29,
+      "git_commits_6mo": 644,
       "risk_level": "high",
-      "risk_score": 9,
+      "risk_score": 92,
       "risk_factors": [
-        "13.9K LOC SQL migrations 14 files plus 2.1K LOC Edge Functions",
-        "54 commits in 30d 641 in 6mo very high churn for production schema",
-        "Production schema changes require supabase db push no rollback path",
+        "17K LOC SQL migrations (15 files) plus Edge Functions, grew 1K from last audit",
+        "57 commits in 30d, 644 in 6mo: highest churn module in the codebase",
+        "29 commits in 14d far above CI/CD review threshold",
+        "Uncommitted migration 20260303110000_fix_admin_restore_sale_race.sql in working tree",
+        "Uncommitted modification to supabase/functions/users/index.ts in working tree",
+        "Production schema changes require supabase db push, no rollback path",
         "RLS policies govern all data access and tenant isolation",
-        "Edge functions digest/overdue run server-side with service_role privileges",
+        "Edge functions run server-side with service_role privileges",
         "Caution Zone per CLAUDE.md: supabase/migrations/ and supabase/functions/",
-        "pgTAP tests exist but coverage scope unclear"
+        "users/index.ts has 8 commits in 14d covering invite, orphan recovery, and admin password reset flows"
       ],
       "phase_assignment": 3,
-      "confidence": 0.94,
-      "notes": "Added to risk tracking this audit cycle. Previously unscored despite being a Caution Zone."
+      "confidence": 0.95,
+      "notes": "Highest overall churn module this cycle. Two items in working tree not yet committed: new migration and modified edge function. supabase/functions/users/index.ts is co-active with authProvider.ts on the same auth/invite rework.",
+      "recommendations": [],
+      "factors": {
+        "complexity": 80,
+        "coupling": 50,
+        "test_coverage": 50,
+        "doc_quality": 15
+      }
     },
     {
       "name": "validation",
@@ -177,16 +204,23 @@
       "git_commits_14d": 10,
       "git_commits_6mo": 431,
       "risk_level": "high",
-      "risk_score": 8,
+      "risk_score": 85,
       "risk_factors": [
-        "91 fan-in dependents most depended-upon module",
-        "33 commits in 30d high churn for a shared schema module",
+        "91 fan-in dependents: most depended-upon module in codebase",
+        "33 commits in 30d: high churn for a shared schema module",
         "19.7K LOC across 96 files",
         "Schema changes cascade to all 91 dependent modules",
         "Source-of-truth for all Zod schemas and TypeScript types"
       ],
       "phase_assignment": 2,
-      "confidence": 0.95
+      "confidence": 0.95,
+      "recommendations": [],
+      "factors": {
+        "complexity": 70,
+        "coupling": 100,
+        "test_coverage": 20,
+        "doc_quality": 20
+      }
     },
     {
       "name": "contacts",
@@ -197,21 +231,28 @@
       "dependencies": 10,
       "test_coverage": "full",
       "git_change_frequency": "medium",
-      "git_commits_30d": 31,
+      "git_commits_30d": 32,
       "git_commits_14d": 10,
-      "git_commits_6mo": 0,
+      "git_commits_6mo": 561,
       "risk_level": "high",
-      "risk_score": 7,
+      "risk_score": 78,
       "risk_factors": [
         "15.9K LOC across 80 files",
-        "31 commits in 30d high churn",
+        "32 commits in 30d, 561 in 6mo",
         "10 fan-out dependencies",
-        "CSV import wizard multi-step flow is complex",
+        "CSV import wizard: multi-step flow with papaparse and react-dropzone",
         "Junction table contact_organizations plus summary views",
-        "Touches papaparse and react-dropzone external dependencies"
+        "Touches external dependencies: papaparse, react-dropzone"
       ],
       "phase_assignment": 3,
-      "confidence": 0.93
+      "confidence": 0.93,
+      "recommendations": [],
+      "factors": {
+        "complexity": 80,
+        "coupling": 60,
+        "test_coverage": 20,
+        "doc_quality": 15
+      }
     },
     {
       "name": "organizations",
@@ -221,22 +262,29 @@
       "dependents": 3,
       "dependencies": 6,
       "test_coverage": "full",
-      "git_change_frequency": "medium",
-      "git_commits_30d": 36,
+      "git_change_frequency": "high",
+      "git_commits_30d": 37,
       "git_commits_14d": 14,
-      "git_commits_6mo": 0,
+      "git_commits_6mo": 594,
       "risk_level": "high",
-      "risk_score": 7,
+      "risk_score": 80,
       "risk_factors": [
-        "18.5K LOC across 97 files second-largest feature module",
-        "36 commits in 30d highest 30d churn among feature modules",
-        "Hierarchy parent-child adds self-referential complexity",
-        "Principal authorization with distributor_principal_authorizations table",
+        "18.5K LOC across 97 files: second-largest feature module",
+        "37 commits in 30d, 594 in 6mo: high churn among feature modules",
+        "Self-referential parent-child hierarchy with cycle prevention (PRV-013)",
+        "Principal authorization via distributor_principal_authorizations table",
         "Product exception management adds cross-module coupling",
         "3 fan-in dependents (opportunities depends on organizations)"
       ],
       "phase_assignment": 3,
-      "confidence": 0.93
+      "confidence": 0.93,
+      "recommendations": [],
+      "factors": {
+        "complexity": 85,
+        "coupling": 55,
+        "test_coverage": 20,
+        "doc_quality": 15
+      }
     },
     {
       "name": "dashboard",
@@ -247,21 +295,28 @@
       "dependencies": 6,
       "test_coverage": "full",
       "git_change_frequency": "low",
-      "git_commits_30d": 29,
+      "git_commits_30d": 30,
       "git_commits_14d": 6,
       "git_commits_6mo": 0,
       "risk_level": "high",
-      "risk_score": 7,
+      "risk_score": 75,
       "risk_factors": [
         "13.5K LOC across 62 files",
-        "29 commits in 30d",
-        "Two competing versions PrincipalDashboardV3 and PrincipalDashboardV4",
+        "30 commits in 30d",
+        "Two competing versions: PrincipalDashboardV3 and PrincipalDashboardV4",
         "6 DB tables including dashboard_snapshots and user_favorites",
         "DnD-kit drag-and-drop adds interaction complexity",
-        "Aggregates data from activities tasks and principal_opportunities"
+        "Aggregates data from activities, tasks, and principal_opportunities"
       ],
       "phase_assignment": 3,
-      "confidence": 0.91
+      "confidence": 0.91,
+      "recommendations": [],
+      "factors": {
+        "complexity": 80,
+        "coupling": 50,
+        "test_coverage": 30,
+        "doc_quality": 25
+      }
     },
     {
       "name": "utils",
@@ -276,40 +331,53 @@
       "git_commits_14d": 6,
       "git_commits_6mo": 153,
       "risk_level": "medium",
-      "risk_score": 6,
+      "risk_score": 65,
       "risk_factors": [
-        "73 fan-in dependents second-most depended-upon module in codebase",
+        "73 fan-in dependents: second-most depended-upon module",
         "5.9K LOC moderate size",
         "14 commits in 30d",
-        "Previously had circular dependency with opportunities now resolved",
-        "Partial test coverage utility regressions propagate to 73 consumers"
+        "Partial test coverage: utility regressions propagate to 73 consumers",
+        "Circular dependency with opportunities resolved in prior cycle"
       ],
       "phase_assignment": 2,
       "confidence": 0.88,
-      "notes": "Added to risk tracking this audit cycle. Circular dependency with opportunities resolved. fan_out reduced from 2 to 1."
+      "recommendations": [],
+      "factors": {
+        "complexity": 55,
+        "coupling": 90,
+        "test_coverage": 55,
+        "doc_quality": 20
+      }
     },
     {
       "name": "reports",
       "path": "src/atomic-crm/reports/",
-      "loc": 9555,
+      "loc": 9557,
       "file_count": 58,
       "dependents": 5,
       "dependencies": 6,
       "test_coverage": "full",
       "git_change_frequency": "low",
-      "git_commits_30d": 25,
+      "git_commits_30d": 26,
       "git_commits_14d": 4,
       "git_commits_6mo": 0,
       "risk_level": "medium",
-      "risk_score": 6,
+      "risk_score": 60,
       "risk_factors": [
         "9.6K LOC across 58 files",
-        "25 commits in 30d",
+        "26 commits in 30d",
         "5 fan-in dependents and 6 dependencies",
-        "Aggregates across multiple entities cross-module read complexity"
+        "Aggregates across multiple entities: cross-module read complexity"
       ],
       "phase_assignment": 2,
-      "confidence": 0.88
+      "confidence": 0.88,
+      "recommendations": [],
+      "factors": {
+        "complexity": 70,
+        "coupling": 55,
+        "test_coverage": 20,
+        "doc_quality": 25
+      }
     },
     {
       "name": "sales",
@@ -321,25 +389,32 @@
       "test_coverage": "partial",
       "git_change_frequency": "high",
       "git_commits_30d": 25,
-      "git_commits_14d": 18,
-      "git_commits_6mo": 0,
+      "git_commits_14d": 17,
+      "git_commits_6mo": 126,
       "risk_level": "medium",
-      "risk_score": 5,
+      "risk_score": 58,
       "risk_factors": [
-        "18 commits in 14d CI/CD architectural review threshold exceeded (16+) for second consecutive audit",
-        "SalesPermissionsTab.tsx remains active hotspot",
+        "17 commits in 14d: CI/CD architectural review threshold exceeded 16+ for third consecutive audit",
+        "SalesPermissionsTab.tsx remains an active hotspot",
         "3.2K LOC across 20 files",
         "Partial test coverage (3 test files for 20 source files)",
         "Manages CRM user accounts and RBAC inputs",
         "Disable and reassign dialog is a high-consequence operation"
       ],
       "phase_assignment": 2,
-      "confidence": 0.87
+      "confidence": 0.87,
+      "recommendations": [],
+      "factors": {
+        "complexity": 45,
+        "coupling": 40,
+        "test_coverage": 55,
+        "doc_quality": 20
+      }
     },
     {
       "name": "services",
       "path": "src/atomic-crm/services/",
-      "loc": 4637,
+      "loc": 4634,
       "file_count": 18,
       "dependents": 8,
       "dependencies": 0,
@@ -347,42 +422,62 @@
       "git_change_frequency": "medium",
       "git_commits_30d": 14,
       "git_commits_14d": 11,
-      "git_commits_6mo": 0,
+      "git_commits_6mo": 121,
       "risk_level": "medium",
-      "risk_score": 5,
+      "risk_score": 55,
       "risk_factors": [
         "4.6K LOC",
         "8 fan-in dependents relied upon by multiple modules",
         "sales.service.ts is a high-churn file",
         "Business workflow logic lives here per PRV-006",
         "StorageService and ValidationService are shared infrastructure",
-        "Partial test coverage sales.service.test.ts exists but other services lack tests"
+        "Partial test coverage: sales.service.test.ts exists other services lack tests"
       ],
       "phase_assignment": 2,
-      "confidence": 0.8
+      "confidence": 0.8,
+      "recommendations": [],
+      "factors": {
+        "complexity": 55,
+        "coupling": 50,
+        "test_coverage": 55,
+        "doc_quality": 20
+      }
     },
     {
       "name": "filters",
-      "path": "src/components/admin/column-filters/",
-      "loc": 4991,
+      "path": "src/atomic-crm/filters/",
+      "loc": 6209,
       "file_count": 22,
       "dependents": 1,
       "dependencies": 2,
       "test_coverage": "none",
-      "git_change_frequency": "low",
-      "git_commits_30d": 0,
+      "git_change_frequency": "medium",
+      "git_commits_30d": 16,
       "git_commits_14d": 4,
-      "git_commits_6mo": 0,
+      "git_commits_6mo": 129,
       "risk_level": "medium",
-      "risk_score": 5,
+      "risk_score": 55,
       "risk_factors": [
-        "4.9K LOC",
-        "No test files found",
-        "Filter components used across list views regressions hard to detect",
-        "Debounced inputs and checkbox popovers add async complexity"
+        "6.2K LOC: grew from 4.9K with filter architecture unification this cycle",
+        "16 commits in 30d: jumped from 0 -- active refactoring cycle",
+        "No test files: regressions across all list views hard to detect",
+        "Preset filter and Excel-style header filters are new untested surfaces",
+        "Debounced inputs and checkbox popovers add async state complexity"
       ],
       "phase_assignment": 2,
-      "confidence": 0.78
+      "confidence": 0.78,
+      "factors": {
+        "complexity": 65,
+        "coupling": 30,
+        "test_coverage": 100,
+        "doc_quality": 40
+      },
+      "recommendations": [
+        "Add Vitest unit tests for debounce behavior and filter state management",
+        "Add tests for preset filter loading and persistence",
+        "Test Excel-style header filters with edge case values",
+        "Document the AdaptiveFilterContainer implicit contract from recent refactoring"
+      ]
     },
     {
       "name": "activities",
@@ -397,16 +492,23 @@
       "git_commits_14d": 5,
       "git_commits_6mo": 0,
       "risk_level": "medium",
-      "risk_score": 5,
+      "risk_score": 50,
       "risk_factors": [
         "4.5K LOC across 24 files",
         "20 commits in 30d",
         "Draft persistence via localStorage is a stale-state risk",
-        "Activities drive 10 or more activities per week KPI business critical metric",
+        "Activities drive 10+ activities/week/principal KPI: business-critical metric",
         "Sample activity follow-up requirement adds branching logic"
       ],
       "phase_assignment": 2,
-      "confidence": 0.88
+      "confidence": 0.88,
+      "recommendations": [],
+      "factors": {
+        "complexity": 55,
+        "coupling": 40,
+        "test_coverage": 20,
+        "doc_quality": 20
+      }
     },
     {
       "name": "products",
@@ -421,16 +523,23 @@
       "git_commits_14d": 6,
       "git_commits_6mo": 0,
       "risk_level": "medium",
-      "risk_score": 5,
+      "risk_score": 48,
       "risk_factors": [
         "4.3K LOC across 27 files",
         "19 commits in 30d",
         "Partial test coverage (8 test files)",
         "Junction table relationships to product_distributors",
-        "BRD added this audit cycle documentation gap partially closed"
+        "BRD added last audit cycle: documentation gap partially closed"
       ],
       "phase_assignment": 2,
-      "confidence": 0.87
+      "confidence": 0.87,
+      "recommendations": [],
+      "factors": {
+        "complexity": 55,
+        "coupling": 35,
+        "test_coverage": 45,
+        "doc_quality": 25
+      }
     },
     {
       "name": "tasks",
@@ -445,16 +554,23 @@
       "git_commits_14d": 7,
       "git_commits_6mo": 0,
       "risk_level": "medium",
-      "risk_score": 5,
+      "risk_score": 50,
       "risk_factors": [
         "3.8K LOC across 29 files",
-        "27 commits in 30d high churn relative to module size",
+        "27 commits in 30d: high churn relative to module size",
         "Partial test coverage (6 test files)",
         "Snooze behavior adds temporal state complexity",
         "Dashboard kanban grouping creates cross-module surface"
       ],
       "phase_assignment": 2,
-      "confidence": 0.87
+      "confidence": 0.87,
+      "recommendations": [],
+      "factors": {
+        "complexity": 50,
+        "coupling": 40,
+        "test_coverage": 45,
+        "doc_quality": 25
+      }
     },
     {
       "name": "hooks",
@@ -467,40 +583,55 @@
       "git_change_frequency": "low",
       "git_commits_30d": 9,
       "git_commits_14d": 6,
-      "git_commits_6mo": 0,
+      "git_commits_6mo": 84,
       "risk_level": "medium",
-      "risk_score": 4,
+      "risk_score": 48,
       "risk_factors": [
-        "13 fan-in dependents broadly consumed",
-        "useFilterCleanup.ts has active edits",
-        "useFilterCleanup.test.ts provides some coverage but full suite unknown",
-        "7 shared mutable state instances in dependency map"
+        "13 fan-in dependents: broadly consumed",
+        "useFilterCleanup.ts has recent active edits",
+        "useFilterCleanup.test.ts provides some coverage but full suite scope unknown",
+        "7 shared mutable state instances reported in dependency-map"
       ],
       "phase_assignment": 1,
-      "confidence": 0.8
+      "confidence": 0.8,
+      "recommendations": [],
+      "factors": {
+        "complexity": 40,
+        "coupling": 65,
+        "test_coverage": 55,
+        "doc_quality": 20
+      }
     },
     {
       "name": "productDistributors",
       "path": "src/atomic-crm/productDistributors/",
-      "loc": 508,
-      "file_count": 11,
+      "loc": 626,
+      "file_count": 12,
       "dependents": 11,
       "dependencies": 1,
-      "test_coverage": "none",
+      "test_coverage": "partial",
       "git_change_frequency": "low",
-      "git_commits_30d": 10,
-      "git_commits_14d": 4,
+      "git_commits_30d": 11,
+      "git_commits_14d": 5,
       "git_commits_6mo": 0,
       "risk_level": "medium",
-      "risk_score": 4,
+      "risk_score": 42,
       "risk_factors": [
-        "11 fan-in dependents high for a 508 LOC module",
-        "No test files zero coverage",
-        "Junction entity RLS must validate both FK sides per DB-008",
-        "Permissive junction policies are a known risk per DB-007"
+        "11 fan-in dependents: high for a 626 LOC module",
+        "New __tests__/ProductDistributorList.test.tsx added this cycle (upgraded from none to partial)",
+        "Junction entity: RLS must validate both FK sides per DB-008",
+        "Permissive junction policies remain a known risk per DB-007"
       ],
       "phase_assignment": 2,
-      "confidence": 0.82
+      "confidence": 0.84,
+      "notes": "test_coverage upgraded from none to partial this audit cycle. LOC grew from 508 to 626.",
+      "recommendations": [],
+      "factors": {
+        "complexity": 25,
+        "coupling": 65,
+        "test_coverage": 55,
+        "doc_quality": 25
+      }
     },
     {
       "name": "timeline",
@@ -511,11 +642,11 @@
       "dependencies": 1,
       "test_coverage": "none",
       "git_change_frequency": "low",
-      "git_commits_30d": 0,
+      "git_commits_30d": 9,
       "git_commits_14d": 0,
       "git_commits_6mo": 0,
       "risk_level": "medium",
-      "risk_score": 4,
+      "risk_score": 42,
       "risk_factors": [
         "5 fan-in dependents consuming shared timeline rendering",
         "No test files found",
@@ -523,7 +654,14 @@
         "Rendering bugs affect contacts organizations and opportunities simultaneously"
       ],
       "phase_assignment": 2,
-      "confidence": 0.8
+      "confidence": 0.8,
+      "recommendations": [],
+      "factors": {
+        "complexity": 35,
+        "coupling": 50,
+        "test_coverage": 100,
+        "doc_quality": 25
+      }
     },
     {
       "name": "constants",
@@ -538,9 +676,9 @@
       "git_commits_14d": 1,
       "git_commits_6mo": 8,
       "risk_level": "medium",
-      "risk_score": 4,
+      "risk_score": 45,
       "risk_factors": [
-        "72 fan-in dependents third-most depended-upon module",
+        "72 fan-in dependents: third-most depended-upon module",
         "stage-enums.ts is canonical home for pipeline stage constants after circular resolution",
         "No test files",
         "Any enum rename or value change cascades to 72 consumers",
@@ -548,7 +686,13 @@
       ],
       "phase_assignment": 2,
       "confidence": 0.9,
-      "notes": "Added to risk tracking this audit cycle. stage-enums.ts added as canonical home for pipeline stage constants."
+      "recommendations": [],
+      "factors": {
+        "complexity": 10,
+        "coupling": 95,
+        "test_coverage": 100,
+        "doc_quality": 20
+      }
     },
     {
       "name": "tags",
@@ -563,14 +707,21 @@
       "git_commits_14d": 4,
       "git_commits_6mo": 0,
       "risk_level": "low",
-      "risk_score": 3,
+      "risk_score": 28,
       "risk_factors": [
-        "932 LOC small module",
-        "1 test file minimal coverage",
+        "932 LOC: small module",
+        "1 test file: minimal coverage",
         "Tags used across contacts and organizations but module itself is simple"
       ],
       "phase_assignment": 1,
-      "confidence": 0.88
+      "confidence": 0.88,
+      "recommendations": [],
+      "factors": {
+        "complexity": 20,
+        "coupling": 25,
+        "test_coverage": 55,
+        "doc_quality": 25
+      }
     },
     {
       "name": "notes",
@@ -585,38 +736,52 @@
       "git_commits_14d": 4,
       "git_commits_6mo": 0,
       "risk_level": "low",
-      "risk_score": 3,
+      "risk_score": 30,
       "risk_factors": [
         "7 fan-in dependents for a 530 LOC module",
-        "dompurify for HTML sanitization XSS risk if misconfigured",
+        "dompurify for HTML sanitization: XSS risk if misconfigured",
         "No dedicated test files",
         "Optimistic useUpdate requires careful query invalidation"
       ],
       "phase_assignment": 1,
-      "confidence": 0.85
+      "confidence": 0.85,
+      "recommendations": [],
+      "factors": {
+        "complexity": 20,
+        "coupling": 45,
+        "test_coverage": 55,
+        "doc_quality": 25
+      }
     },
     {
       "name": "settings",
       "path": "src/atomic-crm/settings/",
-      "loc": 820,
-      "file_count": 12,
+      "loc": 951,
+      "file_count": 13,
       "dependents": 0,
       "dependencies": 3,
-      "test_coverage": "none",
+      "test_coverage": "partial",
       "git_change_frequency": "low",
-      "git_commits_30d": 2,
-      "git_commits_14d": 1,
+      "git_commits_30d": 3,
+      "git_commits_14d": 2,
       "git_commits_6mo": 0,
       "risk_level": "low",
-      "risk_score": 3,
+      "risk_score": 22,
       "risk_factors": [
-        "820 LOC small module",
-        "No test files",
-        "No fan-in dependents isolated blast radius",
-        "Low churn (2 commits in 30d)"
+        "951 LOC: small module grew from 820 with useSalesUpdate.ts addition",
+        "No fan-in dependents: isolated blast radius",
+        "test_coverage upgraded from none to partial this cycle"
       ],
       "phase_assignment": 1,
-      "confidence": 0.88
+      "confidence": 0.88,
+      "notes": "test_coverage upgraded from none to partial. useSalesUpdate.ts production hook added.",
+      "recommendations": [],
+      "factors": {
+        "complexity": 20,
+        "coupling": 15,
+        "test_coverage": 55,
+        "doc_quality": 25
+      }
     },
     {
       "name": "components",
@@ -631,60 +796,84 @@
       "git_commits_14d": 0,
       "git_commits_6mo": 0,
       "risk_level": "low",
-      "risk_score": 3,
+      "risk_score": 32,
       "risk_factors": [
         "7 fan-in dependents",
-        "No test files shared components untested",
+        "No test files: shared components untested",
         "MOD-002 concern: nested components folder inside feature area",
-        "1.2K LOC manageable size"
+        "1.2K LOC: manageable size"
       ],
       "phase_assignment": 1,
-      "confidence": 0.78
+      "confidence": 0.78,
+      "recommendations": [],
+      "factors": {
+        "complexity": 20,
+        "coupling": 45,
+        "test_coverage": 100,
+        "doc_quality": 25
+      }
     },
     {
       "name": "notifications",
       "path": "src/atomic-crm/notifications/",
-      "loc": 257,
-      "file_count": 3,
+      "loc": 400,
+      "file_count": 4,
       "dependents": 3,
       "dependencies": 1,
-      "test_coverage": "none",
+      "test_coverage": "partial",
       "git_change_frequency": "low",
-      "git_commits_30d": 7,
+      "git_commits_30d": 8,
       "git_commits_14d": 4,
       "git_commits_6mo": 0,
       "risk_level": "low",
-      "risk_score": 2,
+      "risk_score": 20,
       "risk_factors": [
-        "257 LOC very small module",
-        "No test files",
+        "400 LOC: very small module grew from 257 with test file",
         "3 fan-in dependents",
+        "test_coverage upgraded from none to partial this cycle",
         "Low complexity"
       ],
       "phase_assignment": 1,
-      "confidence": 0.85
+      "confidence": 0.85,
+      "notes": "test_coverage upgraded from none to partial this audit cycle.",
+      "recommendations": [],
+      "factors": {
+        "complexity": 15,
+        "coupling": 20,
+        "test_coverage": 55,
+        "doc_quality": 25
+      }
     },
     {
       "name": "login",
       "path": "src/atomic-crm/login/",
-      "loc": 27,
-      "file_count": 3,
+      "loc": 116,
+      "file_count": 4,
       "dependents": 3,
       "dependencies": 0,
-      "test_coverage": "none",
+      "test_coverage": "partial",
       "git_change_frequency": "low",
-      "git_commits_30d": 0,
+      "git_commits_30d": 1,
       "git_commits_14d": 0,
       "git_commits_6mo": 0,
       "risk_level": "low",
-      "risk_score": 1,
+      "risk_score": 12,
       "risk_factors": [
-        "27 LOC minimal module thin wrapper over authProvider",
+        "116 LOC: minimal module thin wrapper over authProvider",
         "Auth logic lives in providers/authProvider.ts",
-        "0 commits in 30d stable"
+        "test_coverage upgraded from none to partial this cycle",
+        "0 commits in 14d: stable"
       ],
       "phase_assignment": 1,
-      "confidence": 0.9
+      "confidence": 0.9,
+      "notes": "test_coverage upgraded from none to partial. File count grew from 3 to 4.",
+      "recommendations": [],
+      "factors": {
+        "complexity": 5,
+        "coupling": 15,
+        "test_coverage": 55,
+        "doc_quality": 25
+      }
     },
     {
       "name": "layout",
@@ -695,19 +884,26 @@
       "dependencies": 0,
       "test_coverage": "none",
       "git_change_frequency": "low",
-      "git_commits_30d": 0,
+      "git_commits_30d": 7,
       "git_commits_14d": 1,
       "git_commits_6mo": 0,
       "risk_level": "low",
-      "risk_score": 2,
+      "risk_score": 22,
       "risk_factors": [
-        "318 LOC small presentational module",
+        "318 LOC: small presentational module",
         "5 fan-in dependents",
         "No test files but layout is low logic density",
-        "0 commits in 30d stable"
+        "0 commits in 30d: stable"
       ],
       "phase_assignment": 1,
-      "confidence": 0.82
+      "confidence": 0.82,
+      "recommendations": [],
+      "factors": {
+        "complexity": 15,
+        "coupling": 30,
+        "test_coverage": 100,
+        "doc_quality": 25
+      }
     },
     {
       "name": "contexts",
@@ -722,15 +918,177 @@
       "git_commits_14d": 2,
       "git_commits_6mo": 0,
       "risk_level": "low",
-      "risk_score": 2,
+      "risk_score": 25,
       "risk_factors": [
-        "238 LOC small context module",
+        "238 LOC: small context module",
         "7 fan-in dependents",
         "Shared mutable state via React context",
-        "0 commits in 30d stable"
+        "0 commits in 30d: stable"
       ],
       "phase_assignment": 1,
-      "confidence": 0.8
+      "confidence": 0.8,
+      "recommendations": [],
+      "factors": {
+        "complexity": 10,
+        "coupling": 40,
+        "test_coverage": 100,
+        "doc_quality": 25
+      }
+    },
+    {
+      "name": "root",
+      "path": "src/atomic-crm/root/",
+      "loc": 450,
+      "file_count": 6,
+      "dependents": 0,
+      "dependencies": 3,
+      "test_coverage": "partial",
+      "git_change_frequency": "low",
+      "git_commits_30d": 8,
+      "git_commits_14d": 1,
+      "git_commits_6mo": 0,
+      "risk_level": "low",
+      "risk_score": 22,
+      "factors": {
+        "complexity": 15,
+        "coupling": 20,
+        "test_coverage": 45,
+        "doc_quality": 25
+      },
+      "risk_factors": [
+        "App shell CRM.tsx and CRM.test.tsx entry point",
+        "8 commits in 30d: touched during list architecture unification",
+        "i18nProvider and defaultConfiguration live here"
+      ],
+      "phase_assignment": 1,
+      "confidence": 0.78,
+      "recommendations": [
+        "Verify CRM.test.tsx covers app boot and resource registration",
+        "Add test for i18nProvider fallback behavior"
+      ]
+    },
+    {
+      "name": "admin",
+      "path": "src/atomic-crm/admin/",
+      "loc": 120,
+      "file_count": 2,
+      "dependents": 0,
+      "dependencies": 1,
+      "test_coverage": "none",
+      "git_change_frequency": "low",
+      "git_commits_30d": 0,
+      "git_commits_14d": 0,
+      "git_commits_6mo": 0,
+      "risk_level": "low",
+      "risk_score": 15,
+      "factors": {
+        "complexity": 10,
+        "coupling": 10,
+        "test_coverage": 100,
+        "doc_quality": 30
+      },
+      "risk_factors": [
+        "HealthDashboard.tsx: admin-only view",
+        "0 commits in 30d: stable"
+      ],
+      "phase_assignment": 1,
+      "confidence": 0.75,
+      "recommendations": [
+        "Add test verifying HealthDashboard is not accessible to non-admin roles"
+      ]
+    },
+    {
+      "name": "config",
+      "path": "src/atomic-crm/config/",
+      "loc": 60,
+      "file_count": 1,
+      "dependents": 0,
+      "dependencies": 0,
+      "test_coverage": "none",
+      "git_change_frequency": "low",
+      "git_commits_30d": 1,
+      "git_commits_14d": 0,
+      "git_commits_6mo": 0,
+      "risk_level": "low",
+      "risk_score": 10,
+      "factors": {
+        "complexity": 5,
+        "coupling": 5,
+        "test_coverage": 100,
+        "doc_quality": 30
+      },
+      "risk_factors": [
+        "Single configuration file: minimal surface",
+        "README added this cycle"
+      ],
+      "phase_assignment": 1,
+      "confidence": 0.72,
+      "recommendations": [
+        "Document all configuration options in module README"
+      ]
+    },
+    {
+      "name": "shared",
+      "path": "src/atomic-crm/shared/",
+      "loc": 80,
+      "file_count": 1,
+      "dependents": 0,
+      "dependencies": 0,
+      "test_coverage": "none",
+      "git_change_frequency": "low",
+      "git_commits_30d": 1,
+      "git_commits_14d": 0,
+      "git_commits_6mo": 0,
+      "risk_level": "low",
+      "risk_score": 10,
+      "factors": {
+        "complexity": 5,
+        "coupling": 5,
+        "test_coverage": 100,
+        "doc_quality": 30
+      },
+      "risk_factors": [
+        "Single file: minimal surface",
+        "MOD-002: evaluate if shared/ belongs in src/components/ instead"
+      ],
+      "phase_assignment": 1,
+      "confidence": 0.7,
+      "recommendations": [
+        "Evaluate if src/atomic-crm/shared/ should be consolidated into src/components/ per MOD-002"
+      ]
+    },
+    {
+      "name": "tests",
+      "path": "src/atomic-crm/tests/",
+      "loc": 3311,
+      "file_count": 5,
+      "dependents": 0,
+      "dependencies": 3,
+      "test_coverage": "full",
+      "git_change_frequency": "low",
+      "git_commits_30d": 3,
+      "git_commits_14d": 1,
+      "git_commits_6mo": 0,
+      "risk_level": "low",
+      "risk_score": 15,
+      "factors": {
+        "complexity": 20,
+        "coupling": 15,
+        "test_coverage": 0,
+        "doc_quality": 25
+      },
+      "risk_factors": [
+        "Integration test suite: dataProviderSchemaValidation httpErrorPatterns opportunitiesSummaryRLS unifiedDataProvider",
+        "3.3K LOC across 5 test files",
+        "opportunitiesSummaryRLS.test.ts provides RLS security coverage",
+        "Test-only module: production risk is low"
+      ],
+      "phase_assignment": 1,
+      "confidence": 0.85,
+      "recommendations": [
+        "Keep opportunitiesSummaryRLS.test.ts in sync with every RLS policy change",
+        "Run integration tests as part of CI before any migration push"
+      ]
     }
   ],
   "phase_boundaries": {
@@ -744,10 +1102,15 @@
         "login",
         "layout",
         "contexts",
-        "components"
+        "components",
+        "root",
+        "admin",
+        "config",
+        "shared",
+        "tests"
       ],
       "risk": "low",
-      "rationale": "Low LOC, low churn, isolated blast radius. Safe to refactor without broad regression risk.",
+      "rationale": "Low LOC low churn isolated blast radius. settings notifications login all gained partial test coverage in prior cycle. New small modules (admin config shared root tests) are stable and low-complexity.",
       "entry_criteria": [
         "Local build verified: npm install and npx tsc --noEmit passes",
         "npm run lint passes with zero errors",
@@ -776,7 +1139,7 @@
         "productDistributors"
       ],
       "risk": "medium",
-      "rationale": "Moderate LOC, partial test coverage, or notable coupling. validation (91 fan-in), utils (73 fan-in), and constants (72 fan-in) changes must be verified broadly. services layer is partially tested. productDistributors has RLS exposure. constants newly added but has extreme blast radius. sales exceeds CI/CD churn threshold two consecutive audits.",
+      "rationale": "Moderate LOC partial test coverage or notable coupling. validation (91 fan-in) utils (73 fan-in) and constants (72 fan-in) changes must be verified broadly. productDistributors now has partial test coverage but RLS exposure remains. sales exceeds CI/CD churn threshold 16+ commits in 14d for third consecutive audit.",
       "entry_criteria": [
         "Phase 1 complete and exit criteria verified",
         "Developer has reviewed dependency-map.json for fan-in counts",
@@ -789,7 +1152,7 @@
         "Zero TypeScript errors",
         "SQL dry-run passes: npx supabase db push --dry-run",
         "RLS policy audit run: CMD-006",
-        "Code review by two developers for validation, utils, or constants changes"
+        "Code review by two developers for validation utils or constants changes"
       ]
     },
     "phase_3": {
@@ -803,14 +1166,15 @@
         "dashboard"
       ],
       "risk": "high",
-      "rationale": "Large LOC (13K-42K), very high churn, business-critical logic, auth/security, or production schema. supabase newly elevated: 16K LOC production SQL, 641 commits in 6mo, no rollback path. composedDataProvider and authProvider are Caution Zones per CLAUDE.md. opportunities has highest historical coupling (19 fan-in, 10 fan-out). src/components at 20 commits/14d above CI/CD threshold.",
+      "rationale": "Large LOC 13K-42K very high churn business-critical logic auth/security or production schema. supabase is the highest-churn module this cycle 57 commits in 30d two uncommitted items in working tree. providers/authProvider.ts had 14+ commits in 14 days on auth flow rework co-active with supabase/functions/users/index.ts. opportunities has highest historical coupling. src/components above CI/CD review threshold three consecutive audits.",
       "entry_criteria": [
         "Phase 2 complete and exit criteria verified",
         "Playwright E2E smoke tests pass on staging",
         "Tech lead review for changes to composedDataProvider.ts or authProvider.ts",
         "RLS audit complete: CMD-006",
         "Staging database snapshot taken before migration work",
-        "Supabase dry-run verified: npx supabase db push --dry-run"
+        "Supabase dry-run verified: npx supabase db push --dry-run",
+        "Uncommitted migration 20260303110000_fix_admin_restore_sale_race.sql reviewed before push"
       ],
       "exit_criteria": [
         "Playwright E2E full suite passes on staging",
@@ -818,7 +1182,8 @@
         "RLS policy review completed if auth or access-control changes",
         "Zero TypeScript errors and zero lint errors",
         "Performance baseline verified: under 2s for principal dashboard queries",
-        "pgTAP security tests pass if RLS policies changed"
+        "pgTAP security tests pass if RLS policies changed",
+        "authProvider.ts and users/index.ts uncommitted changes committed and reviewed together"
       ]
     }
   },
@@ -826,107 +1191,121 @@
     {
       "area": "Auth and data access",
       "path": "src/atomic-crm/providers/supabase/authProvider.ts",
-      "reason": "Authentication flow and RLS policy enforcement. Mistakes lock out all users. Caution Zone per CLAUDE.md.",
+      "reason": "14+ commits in 14 days covering recovery link redirect set-password page admin password reset OTP invite fallback PASSWORD_RECOVERY event handler and idempotent invite flow. Uncommitted working tree modifications. Mistakes lock out all users. Caution Zone per CLAUDE.md.",
       "recommended_test_type": "Vitest unit + Playwright E2E",
       "priority": 1
     },
     {
-      "area": "Composed data provider routing",
-      "path": "src/atomic-crm/providers/supabase/composedDataProvider.ts",
-      "reason": "God class - all DB access routes through this file. 39 commits in 30d. Any change affects all resources simultaneously.",
-      "recommended_test_type": "Vitest unit tests per handler + integration smoke test",
+      "area": "Edge function: user management",
+      "path": "supabase/functions/users/index.ts",
+      "reason": "8 commits in 14d co-active with authProvider.ts on the same auth/invite rework. Uncommitted modification in working tree. Runs with service_role privileges. Invite orphan recovery and admin password reset flows all changed simultaneously.",
+      "recommended_test_type": "Vitest unit + manual staging verification",
       "priority": 2
     },
     {
       "area": "Production schema and RLS",
       "path": "supabase/migrations/",
-      "reason": "Production schema changes with no rollback path. 54 commits in 30d, 641 in 6mo. RLS governs all data access and tenant isolation.",
+      "reason": "57 commits in 30d 644 in 6mo: highest-churn module in the codebase. New uncommitted migration 20260303110000_fix_admin_restore_sale_race.sql in working tree. RLS governs all data access and tenant isolation. No rollback path.",
       "recommended_test_type": "pgTAP RLS tests + supabase db push --dry-run before every push",
       "priority": 3
     },
     {
+      "area": "Composed data provider routing",
+      "path": "src/atomic-crm/providers/supabase/composedDataProvider.ts",
+      "reason": "God class: all DB access routes through this file. 41 commits in 30d. Any change affects all resources simultaneously.",
+      "recommended_test_type": "Vitest unit tests per handler + integration smoke test",
+      "priority": 4
+    },
+    {
+      "area": "Filter architecture (new risk this cycle)",
+      "path": "src/atomic-crm/filters/",
+      "reason": "Jumped from 0 to 16 commits in 30d with active list architecture refactoring. Zero test coverage. New surfaces: Excel-style header filters preset filters adaptive filter sidebar. Used across all list views.",
+      "recommended_test_type": "Vitest unit tests for filter state + Playwright E2E for list views",
+      "priority": 5
+    },
+    {
       "area": "Shared component infrastructure",
       "path": "src/components/",
-      "reason": "41.9K LOC, 20 commits in 14d (CI/CD threshold exceeded). Broadly consumed by all feature modules.",
-      "recommended_test_type": "Vitest unit tests for ra-wrappers, visual regression for layout components",
-      "priority": 4
+      "reason": "41.9K LOC 19 commits in 14d CI/CD threshold exceeded for third consecutive audit. Broadly consumed by all feature modules.",
+      "recommended_test_type": "Vitest unit tests for ra-wrappers visual regression for layout components",
+      "priority": 6
     },
     {
       "area": "Opportunity pipeline",
       "path": "src/atomic-crm/opportunities/",
-      "reason": "Highest coupling in codebase (19 fan-in, 10 fan-out). 771 commits in 6 months. Business-critical revenue pipeline.",
+      "reason": "Highest coupling in codebase 19 fan-in 10 fan-out. 773 commits in 6 months. Business-critical revenue pipeline.",
       "recommended_test_type": "Vitest unit + Playwright E2E for stage transitions and kanban board",
-      "priority": 5
+      "priority": 7
     },
     {
       "area": "Validation schemas",
       "path": "src/atomic-crm/validation/",
       "reason": "91 fan-in dependents. Schema shape changes cascade to every resource. Create schema strictness per CORE-005 must be maintained.",
       "recommended_test_type": "Vitest unit tests for all schema boundaries",
-      "priority": 6
+      "priority": 8
     },
     {
       "area": "Utility functions",
       "path": "src/atomic-crm/utils/",
       "reason": "73 fan-in dependents. Partial test coverage. Regressions in staleness calculation or formatting utilities propagate broadly.",
       "recommended_test_type": "Vitest unit tests for all utility functions",
-      "priority": 7
+      "priority": 9
     },
     {
       "area": "Sales module and permissions",
       "path": "src/atomic-crm/sales/",
-      "reason": "18 commits in 14d exceeds CI/CD threshold (16+) for second consecutive audit. RBAC inputs and disable/reassign dialog are high-consequence operations.",
+      "reason": "17 commits in 14d exceeds CI/CD threshold 16+ for third consecutive audit. RBAC inputs and disable/reassign dialog are high-consequence operations.",
       "recommended_test_type": "Vitest unit for permission rules + Playwright E2E for disable/reassign flow",
-      "priority": 8
+      "priority": 10
     },
     {
       "area": "Organization hierarchy and authorization",
       "path": "src/atomic-crm/organizations/",
-      "reason": "Self-referential hierarchy, principal authorization management, and distributor_principal_authorizations table. RLS must enforce both FK sides per DB-008.",
+      "reason": "Self-referential hierarchy principal authorization management and distributor_principal_authorizations table. RLS must enforce both FK sides per DB-008. 594 commits in 6mo.",
       "recommended_test_type": "Vitest + pgTAP for RLS on authorization tables",
-      "priority": 9
+      "priority": 11
     },
     {
       "area": "Contact CSV import",
       "path": "src/atomic-crm/contacts/",
-      "reason": "Multi-step CSV import wizard. Data integrity risk on bulk operations. 31 commits in 30d.",
+      "reason": "Multi-step CSV import wizard. Data integrity risk on bulk operations. 32 commits in 30d 561 in 6mo.",
       "recommended_test_type": "Vitest unit for import steps + Playwright E2E for wizard flow",
-      "priority": 10
+      "priority": 12
     },
     {
       "area": "Pipeline stage constants",
       "path": "src/atomic-crm/constants/",
-      "reason": "72 fan-in dependents. stage-enums.ts is newly canonical home for pipeline stage constants. Any enum rename breaks all consumers.",
+      "reason": "72 fan-in dependents. stage-enums.ts is canonical home for pipeline stage constants. Any enum rename breaks all consumers.",
       "recommended_test_type": "Vitest unit tests validating enum values are stable",
-      "priority": 11
+      "priority": 13
     },
     {
       "area": "Services layer",
       "path": "src/atomic-crm/services/",
-      "reason": "8 fan-in dependents, partial test coverage. Business workflow logic per PRV-006.",
+      "reason": "8 fan-in dependents partial test coverage. Business workflow logic per PRV-006.",
       "recommended_test_type": "Vitest unit tests for StorageService and ValidationService",
-      "priority": 12
+      "priority": 14
     },
     {
       "area": "ProductDistributors RLS",
       "path": "src/atomic-crm/productDistributors/",
-      "reason": "Junction table with 11 fan-in dependents. Zero test coverage. RLS must validate both FK sides per DB-008 and DB-009.",
+      "reason": "Junction table with 11 fan-in dependents. Now has partial test coverage but RLS must still validate both FK sides per DB-008 and DB-009.",
       "recommended_test_type": "pgTAP RLS tests for product_distributors policies",
-      "priority": 13
+      "priority": 15
     },
     {
       "area": "Notes XSS boundary",
       "path": "src/atomic-crm/notes/",
       "reason": "dompurify used for HTML sanitization. Misconfigured sanitization allows XSS. 7 fan-in consumers.",
       "recommended_test_type": "Vitest unit tests for sanitization boundary",
-      "priority": 14
+      "priority": 16
     },
     {
       "area": "Dashboard data aggregation",
       "path": "src/atomic-crm/dashboard/",
-      "reason": "Dual versions (V3/V4) create ambiguity. 6 DB tables aggregated. DnD-kit state complexity.",
+      "reason": "Dual versions V3/V4 create ambiguity. 6 DB tables aggregated. DnD-kit state complexity.",
       "recommended_test_type": "Vitest unit for KPI calculations + Playwright E2E for dashboard render",
-      "priority": 15
+      "priority": 17
     }
   ]
 }

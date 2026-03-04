@@ -118,14 +118,65 @@ Update audit metadata:
 
 Wait for completion.
 
+**Phase 5 - Update CLAUDE.md**
+
+Check if CLAUDE.md exists in the project root.
+
+If CLAUDE.md exists, check if it already contains a "## Three Pillars Audit" section.
+- If the section exists, replace it with the updated version below.
+- If the section does not exist, append the section to the end of the file.
+
+If CLAUDE.md does not exist, create it with the section below.
+
+Section to write:
+
+```markdown
+## Three Pillars Audit
+
+This project uses the Three Pillars Developer Toolkit for codebase analysis,
+documentation generation, and change planning. Audit baselines are updated
+incrementally on each run and should be consulted before making changes.
+
+### Baseline Files (machine-readable, used by agents)
+- `docs/audit/baseline/feature-inventory.json` - Feature catalog with confidence scores
+- `docs/audit/baseline/dependency-map.json` - Project dependency graph and package catalog
+- `docs/audit/baseline/documentation-coverage.json` - Documentation quality ratings
+- `docs/audit/baseline/risk-assessment.json` - Module risk scores and phase boundaries
+- `docs/audit/baseline/integration-map.json` - External integrations and security findings
+- `docs/audit/baseline/document-linkage.json` - BRD/PRD/ADR relationships and gap flags
+- `docs/audit/baseline/audit-meta.json` - Audit run history and confidence deltas
+
+### Reports (human-readable, generated from baselines)
+- `docs/audit/reports/three-pillars-report.md` - Executive summary and all findings
+- `docs/audit/reports/confidence-changelog.md` - Changes since last audit run
+
+### Before Modifying Code
+Run these commands to understand impact before making changes:
+- `/find-feature <keyword>` - Locate features and understand implementation
+- `/check-risk <module>` - Risk level, phase assignment, and change checklist
+- `/trace-dependency <name>` - Impact radius for projects or packages
+
+### Last Audit
+- **Date:** [INSERT CURRENT DATE]
+- **Features:** [INSERT TOTAL FROM feature-inventory.json SUMMARY]
+- **Avg Confidence:** [INSERT FROM feature-inventory.json SUMMARY]
+- **High Risk Modules:** [INSERT COUNT FROM risk-assessment.json SUMMARY]
+- **Security Issues:** [INSERT COUNT FROM integration-map.json SUMMARY]
+```
+
+The orchestrator should populate the "Last Audit" values by reading the summary
+sections from the JSON baselines it just created. Replace the bracket placeholders
+with actual values.
+
 **Final Summary**
 
-After Phase 4, print a summary:
+After Phase 5, print a summary:
 - Confidence changes (items upgraded, decayed, new, unchanged)
 - Document coverage (BRDs, PRDs, ADRs found vs. gaps)
 - Security issues count
 - High risk module count
 - Location of reports
+- CLAUDE.md updated with audit reference section.
 </workflow>
 
 <scaling_rules>

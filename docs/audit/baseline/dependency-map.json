@@ -44,53 +44,14 @@
     ],
     "changes_since_last_audit": [
       {
-        "type": "circular_reference_resolved",
-        "description": "opportunities <-> providers circular resolved. opportunitiesCallbacks.ts now imports stage enums from constants not opportunities/constants/stage-enums.",
-        "previous": "opportunities -> providers -> opportunities (high severity)",
-        "current": "opportunities -> providers (one-way, type import only)",
-        "severity": "improvement"
-      },
-      {
-        "type": "circular_reference_resolved",
-        "description": "utils <-> opportunities circular resolved. stalenessCalculation.ts now imports STAGE ACTIVE_STAGES CLOSED_STAGES from constants not opportunities/constants.",
-        "previous": "utils -> opportunities -> utils (medium severity)",
-        "current": "no dependency between utils and opportunities",
-        "severity": "improvement"
-      },
-      {
-        "type": "module_file_count_change",
-        "module": "constants",
-        "description": "constants grew from 4 to 5 files. New stage-enums.ts is canonical home for stage constants. opportunities/constants/stage-enums.ts retained as re-export shim.",
-        "previous": 4,
-        "current": 5
-      },
-      {
-        "type": "fan_out_change",
-        "module": "utils",
-        "description": "utils fan_out reduced from 2 to 1. No longer imports from opportunities.",
-        "previous": 2,
-        "current": 1
-      },
-      {
-        "type": "references_change",
+        "type": "bug_fix",
         "module": "providers",
-        "description": "providers no longer imports from opportunities feature module. Stage enums now sourced from constants.",
-        "previous": [
-          "opportunities",
-          "services",
-          "types",
-          "utils",
-          "validation"
-        ],
-        "current": [
-          "services",
-          "types",
-          "utils",
-          "validation"
-        ]
+        "description": "authProvider.ts: hardened recovery link redirect. Hash check now also passes when URL contains type=recovery and access_token tokens. No new module imports added; module dependency graph unchanged.",
+        "file": "src/atomic-crm/providers/supabase/authProvider.ts",
+        "commit_range": "HEAD~3..HEAD"
       }
     ],
-    "last_audit": "2026-03-03T00:00:00.000Z"
+    "last_audit": "2026-03-03T12:00:00.000Z"
   },
   "npm_packages": {
     "prod": [
@@ -764,7 +725,7 @@
       "name": "login",
       "path": "src/atomic-crm/login/",
       "type": "typescript",
-      "file_count": 3,
+      "file_count": 4,
       "fan_out": 0,
       "fan_in": 3,
       "references": [],
@@ -790,7 +751,7 @@
       "name": "notifications",
       "path": "src/atomic-crm/notifications/",
       "type": "typescript",
-      "file_count": 3,
+      "file_count": 4,
       "fan_out": 1,
       "fan_in": 3,
       "references": [
@@ -864,7 +825,7 @@
       "name": "productDistributors",
       "path": "src/atomic-crm/productDistributors/",
       "type": "typescript",
-      "file_count": 11,
+      "file_count": 12,
       "fan_out": 1,
       "fan_in": 11,
       "references": [
@@ -893,7 +854,7 @@
       "name": "providers",
       "path": "src/atomic-crm/providers/",
       "type": "typescript",
-      "file_count": 115,
+      "file_count": 116,
       "fan_out": 4,
       "fan_in": 6,
       "references": [
@@ -1001,7 +962,7 @@
       "name": "settings",
       "path": "src/atomic-crm/settings/",
       "type": "typescript",
-      "file_count": 12,
+      "file_count": 13,
       "fan_out": 3,
       "fan_in": 0,
       "references": [

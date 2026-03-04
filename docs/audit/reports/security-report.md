@@ -1,142 +1,143 @@
 # Security Report — Integration and Security Observations
 
-**Generated:** 2026-03-03
-**Run type:** Incremental (builds on 2026-03-03T12:00:00Z baseline)
-**Sources:** `docs/audit/baseline/integration-map.json`, `docs/audit/baseline/audit-meta.json`
-[Confidence: 97%]
+**Generated:** 2026-03-03T23:30:00Z
+**Baseline source:** `docs/audit/baseline/integration-map.json`
+**Audit type:** Incremental (last audit: 2026-03-03T20:00:00Z)
 
 ---
 
 ## Summary
 
-| Category | Count | Change vs Previous |
-|----------|-------|-------------------|
-| Total integrations mapped | 21 | +9 (count corrected + 3 new) |
-| Open security observations | 7 | +1 (sec-007 added this run) |
-| High severity | 3 | no change |
-| Medium severity | 3 | +1 (sec-007) |
-| Low severity | 1 | no change |
-| Hardcoded credentials | 3 | no change |
-| AI guardrail files | 8 | +1 (csp-config.ts added) |
+| Metric | Value |
+|---|---|
+| Total integrations mapped | 21 |
+| Security issues open | 8 |
+| High severity | 3 |
+| Low severity | 5 |
+| Hardcoded credentials found | 3 files |
+| AI guardrail-protected paths | 10 |
 
 ---
 
-## Security Observations — Full Matrix
+## Security Observations — Full List
 
 ### High Severity
 
-| ID | File | Type | Description | Status | Action Required |
-|----|------|------|-------------|--------|-----------------|
-| sec-001 | `.env.development` | hardcoded_credential | Live Supabase dev URL and anon key committed to version control. | Unresolved (carry-forward) | Remove from git history. Add `.env*` to `.gitignore`. Rotate dev anon key in Supabase dashboard. |
-| sec-002 | `.env.production` | hardcoded_credential | Live production Supabase URL and anon key committed to version control. If this repository has ever been public or shared, the key is compromised. | Unresolved (carry-forward) | Rotate production anon key immediately. Run `git log --all -- .env.production` to assess exposure window. Use GitHub secret scanning or `git filter-repo` to purge from history. |
-| sec-005 | `supabase/functions/.env` | hardcoded_credential | ES256 service role JWT in version control. Service role bypasses all RLS policies — full database access if extracted. | Updated this run (ES256 token confirmed) | Rotate service role key immediately. Remove file from git. Use Supabase vault or CI/CD secrets for Edge Function environment. |
+| ID | Type | File | Description | Status |
+|---|---|---|---|---|
+| sec-001 | hardcoded_credential | `.env.development` | Live development Supabase project URL and anon key committed to version control. | ⚠️ Confirmed open |
+| sec-002 | hardcoded_credential | `.env.production` | Live production Supabase project URL and anon key committed to version control. | ⚠️ Confirmed open |
+| sec-005 | hardcoded_credential | `supabase/functions/.env` | ES256-signed local service role JWT and anon JWT committed to version control. | ⚠️ Confirmed open |
 
-> These three issues must be resolved before any external sharing of this repository. [Confidence: 99%]
-
-### Medium Severity
-
-| ID | File | Type | Description | Status | Action Required |
-|----|------|------|-------------|--------|-----------------|
-| sec-003 | `src/atomic-crm/providers/supabase/services/StorageService.ts` | unvalidated_input | `Math.random()` used for filenames (predictable, guessable), no MIME type allowlist enforced, public URLs returned instead of signed URLs. Violates CORE-019 and PRV-007. | Unresolved (carry-forward) | Replace `Math.random()` with `crypto.randomUUID()`. Add MIME allowlist (e.g., image/jpeg, image/png, application/pdf). Switch to signed URLs per PRV-008. |
-| sec-004 | `supabase/functions/users/index.ts` | unvalidated_input | `SITE_URL` env var has a `localhost` fallback. In production, if `SITE_URL` is not set, redirect URLs point to localhost — allowing auth redirect hijacking. | Unresolved (carry-forward) | Make `SITE_URL` a required env var. Add startup assertion: `if (!Deno.env.get('SITE_URL')) throw new Error('SITE_URL required')`. |
-| sec-007 | `src/config/csp-config.ts` | misconfiguration | Production Content Security Policy includes `unsafe-inline` in `style-src`. This weakens XSS protection by permitting inline styles, which can be exploited in certain XSS vectors. | NEW this run | Migrate to CSS classes or a nonce-based CSP. Remove `unsafe-inline` from `style-src`. Re-test UI rendering after removal. |
+All three high-severity items involve credentials committed to the git repository. Even if the repository is private, committed credentials create rotation risk and CI/CD exposure. Immediate action required.
 
 ### Low Severity
 
-| ID | File | Type | Description | Status | Action Required |
-|----|------|------|-------------|--------|-----------------|
-| sec-006 | `supabase/.env` | unencrypted | Static placeholder `SUPABASE_AUTH_ENCRYPTION_KEY` committed. Placeholder value is not the production key, but its presence normalizes committing secrets to this path. | Unresolved (carry-forward) | Replace with a `.env.example` file containing placeholder documentation. Add `supabase/.env` to `.gitignore`. |
+| ID | Type | File | Description | Status |
+|---|---|---|---|---|
+| sec-003 | unencrypted | `src/atomic-crm/providers/supabase/services/StorageService.ts` | PARTIAL RESOLUTION: `crypto.randomUUID()` and MIME allowlist added. Public URLs still used instead of signed URLs (PRV-008 gap). | Partially resolved — downgraded from medium |
+| sec-004 | unvalidated_input | `supabase/functions/users/index.ts` | IMPROVED: Origin validation hardened with fail-fast guard. `SITE_URL` env var still optional. | Improved — downgraded from medium |
+| sec-006 | unencrypted | `supabase/.env` | Placeholder auth encryption key committed. Local-only development placeholder. | Low risk; local only |
+| sec-007 | misconfiguration | `vite.config.ts` | `unsafe-inline` persists in production `style-src`. `csp-config.ts` diverges from enforced CSP in `vite.config.ts` (missing `https://*.sentry.io` in `connectSrc`). | Open |
+| sec-008 | hardcoded_credential | `supabase/functions/_shared/cors-config.ts` | Production domain hostnames hardcoded in version-controlled source file. | New this cycle |
 
 ---
 
-## Integration Security Posture
+## Changes Since Last Audit
 
-### Integration Map (21 total)
-
-| ID | Category | Name | Auth Method | Security Notes |
-|----|----------|------|-------------|----------------|
-| int-auth-001 | auth | Supabase Auth Client SDK | api_key | Standard anon key. RLS enforces access. |
-| int-auth-002 | auth | Supabase Auth Admin API (Edge) | api_key | Service role — full RLS bypass. Guarded by guardrail list. |
-| int-db-001 | database | Supabase PostgreSQL (Data Provider) | api_key | All reads/writes via composedDataProvider. RLS active. |
-| int-db-002 | database | Supabase PostgreSQL (Edge Admin) | api_key | Service role access from edge functions. |
-| int-edge-001 | edge_functions | daily-digest | (pg_cron 07:00 UTC) | Server-side, scheduled. Needs env var validation. |
-| int-edge-002 | edge_functions | check-overdue-tasks | (pg_cron 09:00 UTC) | Server-side, scheduled. |
-| int-edge-003 | edge_functions | users | HTTP REST | Manages auth users. See sec-004. |
-| int-edge-004 | edge_functions | updatepassword | HTTP REST | Password reset flow. |
-| int-edge-005 | edge_functions | digest-opt-out | HTTP REST (unauthenticated) | ⚠️ Unauthenticated endpoint — verify rate limiting and CSRF protection. |
-| int-edge-006 | edge_functions | capture-dashboard-snapshots | (pg_cron 23:00 UTC) | Server-side, scheduled. |
-| int-edge-007 | edge_functions | health-check | HTTP REST (public) | Public endpoint — ensure it does not leak internal state. |
-| int-monitor-001 | monitoring | Sentry Error Monitoring | api_key | Runtime error reporting. |
-| int-monitor-002 | monitoring | Sentry Source Map Upload | api_key | Build-time only. NEW this run. Auth token scoped to source maps. |
-| int-api-001 | api | Gravatar | none | Outbound only. Contact email hashed before send. |
-| int-api-002 | api | favicon.show | none | Outbound only. Domain name only, no PII. |
-| int-api-003 | api | Direct Domain Favicon Fetch | none | Outbound only. Domain name only. |
-| int-api-004 | api | ui-avatars.com | none | Outbound only. Initials only. |
-| int-api-005 | api | Google Fonts CDN | none | Whitelist in CSP. Covered by style-src. |
-| int-api-006 | api | Chromatic Visual Regression | api_key | NEW this run. Dev/CI only, not production. |
-| int-cicd-001 | cicd | GitHub Actions CI | oauth | CI pipeline. Secrets stored in GitHub repo secrets. |
-| int-cicd-002 | cicd | GitHub Actions Supabase Deploy | api_key | NEW this run. Deploys migrations to production. Key must be in GitHub secrets, not code. |
+| Change | Detail |
+|---|---|
+| RESOLVED (partial) | sec-003: StorageService now uses `crypto.randomUUID()` and enforces MIME allowlist. Public URLs still used — downgraded to low. |
+| IMPROVED | sec-004: `users/index.ts` origin validation hardened with fail-fast guard; severity downgraded to low. |
+| NEW | sec-008: Production domain hostnames hardcoded in version-controlled `cors-config.ts`. |
+| NEW | sec-009 (tracked as sec-007): `csp-config.ts` `connectSrc` missing `https://*.sentry.io` — diverges from enforced CSP in `vite.config.ts`. |
+| UPDATED | sec-007: Production `script-src` no longer uses `unsafe-inline`. `unsafe-inline` persists in `style-src` only. |
+| UPDATED | int-cicd-002: `supabase-deploy.yml` now deploys `health-check` function. |
+| CONFIRMED | sec-001, sec-002, sec-005: credentials still committed; no rotation performed. |
 
 ---
 
-## Unauthenticated Endpoints
+## Remediation Roadmap
 
-Two Edge Functions expose unauthenticated HTTP endpoints. These require specific scrutiny:
+| Priority | Issue | Recommended Action |
+|---|---|---|
+| P0 | sec-001, sec-002 | Add `.env.development` and `.env.production` to `.gitignore`. Rotate the exposed Supabase anon keys. Use GitHub Actions secrets or Doppler for CI/CD environment injection. |
+| P0 | sec-005 | Remove `supabase/functions/.env` from version control. Rotate the committed JWT tokens. Store secrets in Supabase Vault or GitHub secrets. |
+| P1 | sec-007 | Add `https://*.sentry.io` to `connectSrc` in `csp-config.ts`. Reconcile `csp-config.ts` with `vite.config.ts` so one is the single source of truth. |
+| P2 | sec-003 | Replace public storage URLs with signed URLs (`StorageService.ts`). Implement PRV-008 fully. |
+| P2 | sec-008 | Move production domain constants to environment variables rather than hardcoded strings in `cors-config.ts`. |
+| P3 | sec-004 | Make `SITE_URL` a required environment variable with a startup assertion rather than optional. |
+| P3 | sec-006 | Document that `supabase/.env` is local-only and add a note in `supabase/README.md`. |
 
-| Function | Path | Risk | Verification Needed |
-|----------|------|------|---------------------|
-| digest-opt-out | `supabase/functions/digest-opt-out/index.ts` | Medium | Verify rate limiting. Confirm opt-out token is unguessable (not sequential). Check for CSRF exposure. |
-| health-check | `supabase/functions/health-check/index.ts` | Low | Confirm response body does not expose internal version strings, env var names, or infrastructure details. |
+---
+
+## Integration Map — All 21 Integrations
+
+| ID | Category | Name | Provider | Confidence |
+|---|---|---|---|---|
+| int-auth-001 | auth | Supabase Auth (Client SDK) | Supabase | 99% |
+| int-auth-002 | auth | Supabase Auth Admin API (Edge Functions) | Supabase | 99% |
+| int-db-001 | database | Supabase PostgreSQL (Data Provider) | Supabase | 99% |
+| int-db-002 | database | Supabase PostgreSQL (Edge Function Admin) | Supabase | 99% |
+| int-edge-001 | edge_function | daily-digest | Supabase Edge Runtime (Deno) | 99% |
+| int-edge-002 | edge_function | check-overdue-tasks | Supabase Edge Runtime (Deno) | 99% |
+| int-edge-003 | edge_function | users | Supabase Edge Runtime (Deno) | 99% |
+| int-edge-004 | edge_function | updatepassword | Supabase Edge Runtime (Deno) | 99% |
+| int-edge-005 | edge_function | digest-opt-out | Supabase Edge Runtime (Deno) | 99% |
+| int-edge-006 | edge_function | capture-dashboard-snapshots | Supabase Edge Runtime (Deno) | 99% |
+| int-edge-007 | edge_function | health-check | Supabase Edge Runtime (Deno) | 99% |
+| int-monitor-001 | monitoring | Sentry Error Monitoring (Runtime) | Sentry | 99% |
+| int-monitor-002 | monitoring | Sentry Source Map Upload (Build-time) | Sentry | 97% |
+| int-api-001 | api | Gravatar Avatar Service | Gravatar (Automattic) | 97% |
+| int-api-002 | api | favicon.show Favicon Service | favicon.show | 97% |
+| int-api-003 | api | Direct Domain Favicon Fetch | Target Domain | 97% |
+| int-api-004 | api | ui-avatars.com Fallback | ui-avatars.com | 97% |
+| int-api-005 | api | Google Fonts CDN | Google | 95% |
+| int-api-006 | api (dev) | Chromatic Visual Regression Testing | Chromatic | 92% |
+| int-cicd-001 | cicd | GitHub Actions CI Pipeline | GitHub | 97% |
+| int-cicd-002 | cicd | GitHub Actions Supabase Deploy | Supabase + GitHub | 99% |
+| int-storage-001 | storage | Supabase Storage (Attachments) | Supabase | 97% |
 
 ---
 
 ## AI Guardrail Recommendations
 
-The following files are flagged for human review before any automated modification. They are designated `auto_modify: false` in `integration-map.json`.
+The following files are flagged as requiring human review before any AI-assisted modification. Auto-modification is disabled for all of these paths.
 
-| File | Reason |
-|------|--------|
-| `src/atomic-crm/providers/supabase/authProvider.ts` | Auth flow — mistakes lock out all users |
-| `src/atomic-crm/providers/supabase/composedDataProvider.ts` | Handler routing hub — changes affect all resources simultaneously |
-| `supabase/functions/users/index.ts` | User management with Auth Admin API |
-| `supabase/functions/_shared/supabaseAdmin.ts` | Service role client — full RLS bypass |
-| `supabase/migrations/` | Production schema — irreversible without `db reset` |
-| `src/atomic-crm/providers/supabase/services/StorageService.ts` | Open security observation sec-003 |
-| `src/config/csp-config.ts` | CSP — affects XSS protection posture (NEW this run) |
-| `.github/workflows/supabase-deploy.yml` | Production deployment pipeline |
+| Path | Review Required By | Reason |
+|---|---|---|
+| `src/atomic-crm/providers/supabase/authProvider.ts` | security_team | Auth flow; mistakes lock out all users. Active auth rework in progress. |
+| `src/atomic-crm/providers/supabase/composedDataProvider.ts` | lead_engineer | God class routing all DB access. Change affects all resources. |
+| `supabase/functions/users/index.ts` | security_team | Admin Auth API. Manages user invite, password reset, and orphan recovery. |
+| `supabase/functions/_shared/supabaseAdmin.ts` | security_team | Service role client shared across edge functions. |
+| `supabase/functions/_shared/cors-config.ts` | security_team | Hardcoded production domains. Incorrect CORS allows cross-origin auth abuse. |
+| `supabase/migrations/` | lead_engineer | Production schema. No rollback path. |
+| `src/atomic-crm/providers/supabase/services/StorageService.ts` | security_team | File upload service. MIME allowlist and URL signing logic. |
+| `src/config/csp-config.ts` | security_team | Content Security Policy config. Divergence from `vite.config.ts` identified. |
+| `.github/workflows/supabase-deploy.yml` | lead_engineer | Production deployment pipeline. |
+| `src/main.tsx` | security_team | Sentry initialization and root app entrypoint. |
 
 ---
 
 ## RLS Policy Coverage
 
-RLS is described as 100% enabled across all tables in CLAUDE.md. The following areas require audit verification via CMD-006 (`rg "CREATE POLICY" supabase/migrations`):
+RLS is enforced at the PostgreSQL level on all tenant tables. Per `CLAUDE.md` and `DATABASE_LAYER.md`:
 
-| Area | Rule | Risk if Missing |
-|------|------|-----------------|
-| Junction tables (product_distributors, contact_organizations) | DB-008: Policies must validate both FK sides | Unauthorized cross-tenant data access |
-| Junction table FK indexes | DB-009: Authorization queries backed by FK indexes | Full table scans on authorization check |
-| Soft-delete visibility | DB-003: All reads must hide `deleted_at IS NOT NULL` rows | Soft-deleted records visible to users |
-| `USING (true)` policies | DB-007: Banned except approved service/public cases | Open read access to all rows |
-| Storage objects | DB-005: `storage.objects` must have RLS enabled | Private files accessible without auth |
+- `USING (true)` is banned except for approved `service_role` or public reference-data policies (DB-007).
+- All read policies must enforce `deleted_at` soft-delete visibility (DB-003).
+- Junction-table policies must validate authorization for both linked FK records (DB-008).
+- Junction-table authorization queries must be backed by FK indexes (DB-009).
 
-> Run CMD-006 after any migration change: `rg "CREATE POLICY" supabase/migrations`
+Current known gaps:
+- Storage bucket RLS policies: existence not confirmed in migration files reviewed (sec-003, see `feature-inventory.json` `feat-db-001` assumptions).
+- `get_sale_by_id` and `get_sale_by_user_id` SECURITY DEFINER RPCs: role restriction confirmation pending pgTAP coverage.
 
----
-
-## Changes Since Previous Audit
-
-| Change | Type | Detail |
-|--------|------|--------|
-| sec-007 added | New observation | `unsafe-inline` in production CSP `style-src` at `src/config/csp-config.ts` |
-| sec-005 updated | Severity confirmed | ES256 JWT token confirmed (previously "service role key placeholder") |
-| sec-003 confirmed | Carry-forward | StorageService Math.random() still unresolved |
-| sec-001, sec-002 confirmed | Carry-forward | .env files with live keys still in version control |
-| int-monitor-002 added | New integration | Sentry source map upload via sentryVitePlugin in vite.config.ts |
-| int-api-006 added | New integration | Chromatic visual regression testing service |
-| int-cicd-002 added | New integration | GitHub Actions Supabase deploy workflow |
-| csp-config.ts added to guardrails | Guardrail expanded | File added due to sec-007 finding |
-| Integration count corrected | Baseline correction | 12 to 21; 9 integrations were previously uncounted |
+Run `CMD-006` (`rg "CREATE POLICY" supabase/migrations`) to audit all active RLS policies.
 
 ---
 
-*Source: `docs/audit/baseline/integration-map.json`. [Confidence: 97%]*
+## Confidence Statement
+
+Security findings sourced from `integration-map.json`. Severity ratings reflect agent assessment at time of last audit run (2026-03-03T20:00:00Z). High-severity findings (sec-001, sec-002, sec-005) are confirmed present in the working repository. All three require human action — no automated remediation is safe for credential rotation.
+
+[Confidence: 95%]

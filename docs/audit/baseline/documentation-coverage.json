@@ -1,22 +1,23 @@
 {
   "summary": {
-    "total_doc_files": 64,
-    "projects_with_readme": 9,
-    "projects_without_readme": 5,
-    "jsdoc_coverage_pct": 15,
-    "avg_quality_score": 3.7,
+    "total_doc_files": 175,
+    "projects_with_readme": 37,
+    "projects_without_readme": 4,
+    "jsdoc_coverage_pct": 20,
+    "avg_quality_score": 4.2,
     "claude_md_exists": true,
     "adr_count": 4,
     "improvements_since_last_audit": [
-      "BRD coverage expanded from 4 to 8 modules (added sales, activities, tasks, products)",
-      "4 new READMEs: reports, ui, filters, opportunities/__tests__",
-      "24 Storybook stories added for src/components/ui",
-      "5 audit reports generated under docs/audit/reports/",
-      "ADR TEMPLATE.md added to docs/adr/",
-      "projects_with_readme increased from 5 to 9",
-      "avg_quality_score improved from 3.4 to 3.7"
+      "37 new module READMEs added across src/atomic-crm/ and src/components/",
+      "supabase/README.md added — covers schema, edge functions, security-sensitive RPCs, migration workflow",
+      "3 PRDs added: docs/prd/contacts/, docs/prd/organizations/, docs/prd/opportunities/",
+      "projects_with_readme increased from 9 to 37 — near-complete module coverage achieved",
+      "avg_quality_score improved from 3.7 to 4.2 — new READMEs are consistently quality 4-5",
+      "~70 new .claude/skills markdown documents added",
+      "JSDoc density in provider handlers improved from minimal to light (112 JSDoc blocks across 31 handler files)",
+      "total_doc_files increased from 64 to 175"
     ],
-    "last_audit": "2026-03-03T12:00:00.000Z"
+    "last_audit": "2026-03-03T20:00:00.000Z"
   },
   "documents": [
     {
@@ -24,288 +25,374 @@
       "file_path": "CLAUDE.md",
       "project": "root",
       "quality": 5,
-      "coverage": "full",
-      "notes": "Comprehensive project guide covering stack, architecture, engineering principles, domain model, agent routing, design system, testing, CI/CD, and business context."
+      "coverage": "full"
     },
     {
       "type": "adr",
       "file_path": "docs/adr/001-supabase-provider-pattern.md",
       "project": "src/atomic-crm/providers/supabase",
       "quality": 5,
-      "coverage": "full",
-      "notes": "Covers context, decision, wrapper chain, consequences, and two alternatives considered."
+      "coverage": "full"
     },
     {
       "type": "adr",
       "file_path": "docs/adr/002-soft-delete-convention.md",
       "project": "src/atomic-crm/providers/supabase",
       "quality": 5,
-      "coverage": "full",
-      "notes": "Covers all three implementation layers (DB/Provider/UI), hard-delete exceptions, storage tradeoffs."
+      "coverage": "full"
     },
     {
       "type": "adr",
       "file_path": "docs/adr/003-three-tier-ui-architecture.md",
       "project": "src/components",
       "quality": 5,
-      "coverage": "full",
-      "notes": "Defines tier contracts, import direction rules, enforcement via CMD-007."
+      "coverage": "full"
     },
     {
       "type": "adr",
       "file_path": "docs/adr/004-validation-at-provider-boundary.md",
       "project": "src/atomic-crm/providers/supabase",
       "quality": 5,
-      "coverage": "full",
-      "notes": "Covers schema registry, withValidation wrapper, form resolver distinction, schema conventions."
-    },
-    {
-      "type": "markdown",
-      "file_path": "docs/adr/TEMPLATE.md",
-      "project": "docs/adr",
-      "quality": 3,
-      "coverage": "full",
-      "notes": "ADR authoring template."
+      "coverage": "full"
     },
     {
       "type": "markdown",
       "file_path": "docs/brd/contacts.md",
       "project": "src/atomic-crm/contacts",
       "quality": 4,
-      "coverage": "full",
-      "notes": "Good BRD. Covers schema fields, business rules, enums, CRUD operations, wrapper chain, UI views."
+      "coverage": "full"
     },
     {
       "type": "markdown",
       "file_path": "docs/brd/organizations.md",
       "project": "src/atomic-crm/organizations",
       "quality": 4,
-      "coverage": "full",
-      "notes": "Good BRD. Covers org types, priority/status enums, hierarchy, dual account management."
+      "coverage": "full"
     },
     {
       "type": "markdown",
       "file_path": "docs/brd/opportunities.md",
       "project": "src/atomic-crm/opportunities",
       "quality": 4,
-      "coverage": "full",
-      "notes": "Good BRD. Covers 7-stage pipeline, product line tracking, duplicate detection, close workflows."
+      "coverage": "full"
     },
     {
       "type": "markdown",
       "file_path": "docs/brd/dashboard.md",
       "project": "src/atomic-crm/dashboard",
       "quality": 4,
-      "coverage": "full",
-      "notes": "Good BRD. Documents read-only aggregate view, principal_pipeline_summary DB view."
+      "coverage": "full"
     },
     {
       "type": "markdown",
       "file_path": "docs/brd/sales.md",
       "project": "src/atomic-crm/sales",
       "quality": 4,
-      "coverage": "full",
-      "notes": "NEW. CRM user profiles, 1:1 Supabase Auth mapping, role model, disable vs delete."
+      "coverage": "full"
     },
     {
       "type": "markdown",
       "file_path": "docs/brd/activities.md",
       "project": "src/atomic-crm/activities",
       "quality": 4,
-      "coverage": "full",
-      "notes": "NEW. STI pattern, 15 interaction types, KPI connection to 10+ activities/week goal."
+      "coverage": "full"
     },
     {
       "type": "markdown",
       "file_path": "docs/brd/tasks.md",
       "project": "src/atomic-crm/tasks",
       "quality": 4,
-      "coverage": "full",
-      "notes": "NEW. STI storage, tasksHandler translation, priority_tasks view, auto-create activity."
+      "coverage": "full"
     },
     {
       "type": "markdown",
       "file_path": "docs/brd/products.md",
       "project": "src/atomic-crm/products",
       "quality": 4,
-      "coverage": "full",
-      "notes": "NEW. F&B product catalog, categories, distributor coverage, opportunity linkage."
+      "coverage": "full"
+    },
+    {
+      "type": "markdown",
+      "file_path": "docs/prd/opportunities/PRD-opportunities.md",
+      "project": "src/atomic-crm/opportunities",
+      "quality": 4,
+      "coverage": "full"
+    },
+    {
+      "type": "markdown",
+      "file_path": "docs/prd/organizations/PRD-organizations.md",
+      "project": "src/atomic-crm/organizations",
+      "quality": 4,
+      "coverage": "full"
+    },
+    {
+      "type": "markdown",
+      "file_path": "docs/prd/contacts/PRD-contacts.md",
+      "project": "src/atomic-crm/contacts",
+      "quality": 4,
+      "coverage": "full"
     },
     {
       "type": "readme",
       "file_path": "src/atomic-crm/providers/supabase/README.md",
       "project": "src/atomic-crm/providers/supabase",
       "quality": 5,
-      "coverage": "full",
-      "notes": "Excellent. ASCII architecture diagram, golden rules, handler creation tutorial."
+      "coverage": "full"
+    },
+    {
+      "type": "readme",
+      "file_path": "src/atomic-crm/providers/README.md",
+      "project": "src/atomic-crm/providers",
+      "quality": 5,
+      "coverage": "full"
+    },
+    {
+      "type": "readme",
+      "file_path": "supabase/README.md",
+      "project": "supabase",
+      "quality": 5,
+      "coverage": "full"
+    },
+    {
+      "type": "readme",
+      "file_path": "src/atomic-crm/activities/README.md",
+      "project": "src/atomic-crm/activities",
+      "quality": 5,
+      "coverage": "full"
+    },
+    {
+      "type": "readme",
+      "file_path": "src/atomic-crm/sales/README.md",
+      "project": "src/atomic-crm/sales",
+      "quality": 5,
+      "coverage": "full"
+    },
+    {
+      "type": "readme",
+      "file_path": "src/atomic-crm/opportunities/README.md",
+      "project": "src/atomic-crm/opportunities",
+      "quality": 5,
+      "coverage": "full"
+    },
+    {
+      "type": "readme",
+      "file_path": "src/atomic-crm/validation/README.md",
+      "project": "src/atomic-crm/validation",
+      "quality": 5,
+      "coverage": "full"
+    },
+    {
+      "type": "readme",
+      "file_path": "src/components/README.md",
+      "project": "src/components",
+      "quality": 5,
+      "coverage": "full"
+    },
+    {
+      "type": "readme",
+      "file_path": "src/atomic-crm/services/README.md",
+      "project": "src/atomic-crm/services",
+      "quality": 4,
+      "coverage": "full"
+    },
+    {
+      "type": "readme",
+      "file_path": "src/atomic-crm/hooks/README.md",
+      "project": "src/atomic-crm/hooks",
+      "quality": 4,
+      "coverage": "full"
+    },
+    {
+      "type": "readme",
+      "file_path": "src/atomic-crm/constants/README.md",
+      "project": "src/atomic-crm/constants",
+      "quality": 4,
+      "coverage": "full"
+    },
+    {
+      "type": "readme",
+      "file_path": "src/atomic-crm/productDistributors/README.md",
+      "project": "src/atomic-crm/productDistributors",
+      "quality": 4,
+      "coverage": "full"
+    },
+    {
+      "type": "readme",
+      "file_path": "src/atomic-crm/timeline/README.md",
+      "project": "src/atomic-crm/timeline",
+      "quality": 4,
+      "coverage": "full"
+    },
+    {
+      "type": "readme",
+      "file_path": "src/atomic-crm/contacts/README.md",
+      "project": "src/atomic-crm/contacts",
+      "quality": 3,
+      "coverage": "partial"
+    },
+    {
+      "type": "readme",
+      "file_path": "src/atomic-crm/organizations/README.md",
+      "project": "src/atomic-crm/organizations",
+      "quality": 3,
+      "coverage": "partial"
+    },
+    {
+      "type": "readme",
+      "file_path": "src/atomic-crm/dashboard/README.md",
+      "project": "src/atomic-crm/dashboard",
+      "quality": 3,
+      "coverage": "partial"
+    },
+    {
+      "type": "readme",
+      "file_path": "src/atomic-crm/tasks/README.md",
+      "project": "src/atomic-crm/tasks",
+      "quality": 5,
+      "coverage": "full"
+    },
+    {
+      "type": "readme",
+      "file_path": "src/atomic-crm/products/README.md",
+      "project": "src/atomic-crm/products",
+      "quality": 4,
+      "coverage": "full"
+    },
+    {
+      "type": "readme",
+      "file_path": "src/atomic-crm/notes/README.md",
+      "project": "src/atomic-crm/notes",
+      "quality": 4,
+      "coverage": "full"
+    },
+    {
+      "type": "readme",
+      "file_path": "src/atomic-crm/settings/README.md",
+      "project": "src/atomic-crm/settings",
+      "quality": 4,
+      "coverage": "full"
+    },
+    {
+      "type": "readme",
+      "file_path": "src/atomic-crm/login/README.md",
+      "project": "src/atomic-crm/login",
+      "quality": 4,
+      "coverage": "full"
+    },
+    {
+      "type": "readme",
+      "file_path": "src/atomic-crm/notifications/README.md",
+      "project": "src/atomic-crm/notifications",
+      "quality": 4,
+      "coverage": "full"
+    },
+    {
+      "type": "readme",
+      "file_path": "src/atomic-crm/admin/README.md",
+      "project": "src/atomic-crm/admin",
+      "quality": 4,
+      "coverage": "full"
+    },
+    {
+      "type": "readme",
+      "file_path": "src/atomic-crm/layout/README.md",
+      "project": "src/atomic-crm/layout",
+      "quality": 4,
+      "coverage": "full"
+    },
+    {
+      "type": "readme",
+      "file_path": "src/atomic-crm/root/README.md",
+      "project": "src/atomic-crm/root",
+      "quality": 4,
+      "coverage": "full"
+    },
+    {
+      "type": "readme",
+      "file_path": "src/atomic-crm/shared/README.md",
+      "project": "src/atomic-crm/shared",
+      "quality": 4,
+      "coverage": "full"
+    },
+    {
+      "type": "readme",
+      "file_path": "src/atomic-crm/tests/README.md",
+      "project": "src/atomic-crm/tests",
+      "quality": 4,
+      "coverage": "full"
+    },
+    {
+      "type": "readme",
+      "file_path": "src/atomic-crm/utils/README.md",
+      "project": "src/atomic-crm/utils",
+      "quality": 4,
+      "coverage": "full"
+    },
+    {
+      "type": "readme",
+      "file_path": "src/atomic-crm/tags/README.md",
+      "project": "src/atomic-crm/tags",
+      "quality": 4,
+      "coverage": "full"
+    },
+    {
+      "type": "readme",
+      "file_path": "src/atomic-crm/contexts/README.md",
+      "project": "src/atomic-crm/contexts",
+      "quality": 4,
+      "coverage": "full"
+    },
+    {
+      "type": "readme",
+      "file_path": "src/atomic-crm/config/README.md",
+      "project": "src/atomic-crm/config",
+      "quality": 4,
+      "coverage": "full"
+    },
+    {
+      "type": "readme",
+      "file_path": "src/atomic-crm/pages/README.md",
+      "project": "src/atomic-crm/pages",
+      "quality": 3,
+      "coverage": "partial"
+    },
+    {
+      "type": "readme",
+      "file_path": "src/atomic-crm/components/README.md",
+      "project": "src/atomic-crm/components",
+      "quality": 5,
+      "coverage": "full"
     },
     {
       "type": "readme",
       "file_path": "src/components/ra-wrappers/column-filters/README.md",
       "project": "src/components/ra-wrappers/column-filters",
       "quality": 5,
-      "coverage": "full",
-      "notes": "Excellent. Problem statement, component API with props table, code examples."
-    },
-    {
-      "type": "readme",
-      "file_path": "src/components/ra-wrappers/Readme.md",
-      "project": "src/components/ra-wrappers",
-      "quality": 3,
-      "coverage": "partial",
-      "notes": "Explains origin (Shadcn Admin Kit) but does not document custom wrappers."
+      "coverage": "full"
     },
     {
       "type": "readme",
       "file_path": "src/atomic-crm/reports/README.md",
       "project": "src/atomic-crm/reports",
       "quality": 5,
-      "coverage": "full",
-      "notes": "NEW. 983 lines covering architecture, data flows, CSV security, unused code."
-    },
-    {
-      "type": "readme",
-      "file_path": "src/components/ui/README.md",
-      "project": "src/components/ui",
-      "quality": 3,
-      "coverage": "partial",
-      "notes": "NEW. Brief overview of shadcn/ui origin and update instructions."
+      "coverage": "full"
     },
     {
       "type": "readme",
       "file_path": "src/atomic-crm/filters/README.md",
       "project": "src/atomic-crm/filters",
       "quality": 5,
-      "coverage": "full",
-      "notes": "NEW. All filter types, WCAG 2.1 AA details, troubleshooting guide."
-    },
-    {
-      "type": "readme",
-      "file_path": "src/atomic-crm/opportunities/__tests__/README.md",
-      "project": "src/atomic-crm/opportunities",
-      "quality": 3,
-      "coverage": "partial",
-      "notes": "NEW. Test file naming conventions and mock path conventions."
-    },
-    {
-      "type": "readme",
-      "file_path": "eslint-local-rules/README.md",
-      "project": "eslint-local-rules",
-      "quality": 4,
-      "coverage": "full",
-      "notes": "Documents the no-legacy-tailwind-colors custom rule with examples."
+      "coverage": "full"
     }
   ],
-  "per_project": [
-    {
-      "project": "root",
-      "has_readme": false,
-      "overall_quality": 5,
-      "gap_description": "No root README.md. CLAUDE.md serves AI sessions, not human onboarding."
-    },
-    {
-      "project": "src/atomic-crm/contacts",
-      "has_readme": false,
-      "overall_quality": 3,
-      "gap_description": "BRD exists. No JSDoc on public APIs. No README."
-    },
-    {
-      "project": "src/atomic-crm/organizations",
-      "has_readme": false,
-      "overall_quality": 3,
-      "gap_description": "BRD exists. Hierarchy and authorization components undocumented."
-    },
-    {
-      "project": "src/atomic-crm/opportunities",
-      "has_readme": false,
-      "overall_quality": 3,
-      "gap_description": "BRD exists. Test convention README added. Kanban/close workflows no JSDoc."
-    },
-    {
-      "project": "src/atomic-crm/dashboard",
-      "has_readme": false,
-      "overall_quality": 3,
-      "gap_description": "BRD exists. Complex dashboard hooks undocumented."
-    },
-    {
-      "project": "src/atomic-crm/reports",
-      "has_readme": true,
-      "overall_quality": 5,
-      "gap_description": "Exemplary README. 3 of 4 OverviewTab charts are placeholder."
-    },
-    {
-      "project": "src/atomic-crm/filters",
-      "has_readme": true,
-      "overall_quality": 5,
-      "gap_description": "Comprehensive README. No gaps identified."
-    },
-    {
-      "project": "src/atomic-crm/sales",
-      "has_readme": false,
-      "overall_quality": 3,
-      "gap_description": "BRD added. No module README or JSDoc."
-    },
-    {
-      "project": "src/atomic-crm/activities",
-      "has_readme": false,
-      "overall_quality": 3,
-      "gap_description": "BRD added. No inline JSDoc."
-    },
-    {
-      "project": "src/atomic-crm/tasks",
-      "has_readme": false,
-      "overall_quality": 3,
-      "gap_description": "BRD added. No module README."
-    },
-    {
-      "project": "src/atomic-crm/products",
-      "has_readme": false,
-      "overall_quality": 3,
-      "gap_description": "BRD added (Draft). No module README or JSDoc."
-    },
-    {
-      "project": "src/atomic-crm/providers/supabase",
-      "has_readme": true,
-      "overall_quality": 4,
-      "gap_description": "README excellent. Individual handler files have minimal JSDoc."
-    },
-    {
-      "project": "src/components/ui",
-      "has_readme": true,
-      "overall_quality": 3,
-      "gap_description": "README minimal. 24 Storybook stories provide living docs."
-    },
-    {
-      "project": "src/components/ra-wrappers",
-      "has_readme": true,
-      "overall_quality": 3,
-      "gap_description": "README explains origin. Custom wrappers lack JSDoc."
-    },
-    {
-      "project": "supabase/functions",
-      "has_readme": false,
-      "overall_quality": 2,
-      "gap_description": "6 edge functions with no documentation."
-    },
-    {
-      "project": "supabase/migrations",
-      "has_readme": false,
-      "overall_quality": 3,
-      "gap_description": "No migration index. Uneven comment quality."
-    },
-    {
-      "project": ".claude/rules",
-      "has_readme": false,
-      "overall_quality": 5,
-      "gap_description": "10 rule files with stable ID system, precedence order, command registry."
-    }
+  "coverage_gaps": [
+    "No root-level README.md for human onboarding (CLAUDE.md serves AI only)",
+    "JSDoc coverage ~20% on UI components and feature TypeScript files",
+    "timeline, notes, contexts, shared, admin, config modules have no test coverage",
+    "TODO/FIXME count stable at 21 — 6 disabled tests in CampaignActivityReport",
+    "contacts/README.md, organizations/README.md, dashboard/README.md shorter than peers (quality 3)",
+    "No per-function README for supabase edge functions",
+    "No migration index document"
   ],
-  "todo_fixme_count": 21,
-  "key_gaps": [
-    "No root README.md",
-    "Edge functions entirely undocumented (6 functions)",
-    "JSDoc coverage ~15% on public APIs",
-    "TODO-004a: Win/Loss validation incomplete",
-    "5 disabled tests awaiting RPC implementation"
-  ]
+  "todo_fixme_count": 21
 }
