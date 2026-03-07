@@ -34,115 +34,108 @@ function createParams(filter: Record<string, unknown>): GetListParams {
 
 describe("Q-Search ILIKE Characterization Tests", () => {
   describe("1. Multi-word queries", () => {
-    it("should produce OR-joined ILIKE for all searchable fields with single word", () => {
+    it("should produce FTS search_tsv filter for single word (contacts is FTS-enabled)", () => {
       const params = createParams({ q: "john" });
       const result = applySearchParams("contacts", params);
 
       // q should be removed
       expect(result.filter).not.toHaveProperty("q");
 
-      // Should have or@ with ILIKE conditions
-      expect(result.filter).toHaveProperty("or@");
+      // Contacts is FTS-enabled: should have search_tsv, not or@
+      expect(result.filter).not.toHaveProperty("or@");
+      expect(result.filter).toHaveProperty("search_tsv");
 
       // Snapshot the exact format
-      expect(result.filter["or@"]).toMatchInlineSnapshot(
-        `"(first_name.ilike.*john*,last_name.ilike.*john*,company_name.ilike.*john*,title.ilike.*john*)"`
-      );
+      expect(result.filter["search_tsv"]).toMatchInlineSnapshot(`"wfts(english).john"`);
     });
 
-    it("should handle multi-word query with proper quoting", () => {
+    it("should handle multi-word query via FTS", () => {
       const params = createParams({ q: "john smith" });
       const result = applySearchParams("contacts", params);
 
       expect(result.filter).not.toHaveProperty("q");
-      expect(result.filter).toHaveProperty("or@");
+      expect(result.filter).not.toHaveProperty("or@");
+      expect(result.filter).toHaveProperty("search_tsv");
 
-      // Multi-word values need quoting for PostgREST
-      expect(result.filter["or@"]).toMatchInlineSnapshot(
-        `"(first_name.ilike."*john smith*",last_name.ilike."*john smith*",company_name.ilike."*john smith*",title.ilike."*john smith*")"`
-      );
+      // Multi-word values use FTS web search syntax
+      expect(result.filter["search_tsv"]).toMatchInlineSnapshot(`"wfts(english).john smith"`);
     });
 
-    it("should handle three-word query", () => {
+    it("should handle three-word query via FTS", () => {
       const params = createParams({ q: "john doe jr" });
       const result = applySearchParams("contacts", params);
 
-      expect(result.filter["or@"]).toMatchInlineSnapshot(
-        `"(first_name.ilike."*john doe jr*",last_name.ilike."*john doe jr*",company_name.ilike."*john doe jr*",title.ilike."*john doe jr*")"`
-      );
+      expect(result.filter["search_tsv"]).toMatchInlineSnapshot(`"wfts(english).john doe jr"`);
     });
   });
 
-  describe("2. Special characters (ILIKE wildcards and SQL injection prevention)", () => {
-    describe("ILIKE wildcard escaping", () => {
-      it("should escape % character in search", () => {
+  describe("2. Special characters (FTS sanitization for contacts, ILIKE for others)", () => {
+    describe("FTS sanitization for contacts (ILIKE escaping not applicable)", () => {
+      it("should preserve % character in FTS search", () => {
         const params = createParams({ q: "100%" });
         const result = applySearchParams("contacts", params);
 
-        // % must be escaped to prevent unintended wildcard matching
-        expect(result.filter["or@"]).toMatchInlineSnapshot(
-          `"(first_name.ilike.*100\\%*,last_name.ilike.*100\\%*,company_name.ilike.*100\\%*,title.ilike.*100\\%*)"`
-        );
+        // FTS does not escape %; buildWebSearchFilter only removes '"()
+        expect(result.filter).not.toHaveProperty("or@");
+        expect(result.filter["search_tsv"]).toMatchInlineSnapshot(`"wfts(english).100%"`);
       });
 
-      it("should escape _ character in search", () => {
+      it("should preserve _ character in FTS search", () => {
         const params = createParams({ q: "file_name" });
         const result = applySearchParams("contacts", params);
 
-        // _ must be escaped to prevent single-character wildcard matching
-        expect(result.filter["or@"]).toMatchInlineSnapshot(
-          `"(first_name.ilike.*file\\_name*,last_name.ilike.*file\\_name*,company_name.ilike.*file\\_name*,title.ilike.*file\\_name*)"`
-        );
+        // FTS does not escape _
+        expect(result.filter).not.toHaveProperty("or@");
+        expect(result.filter["search_tsv"]).toMatchInlineSnapshot(`"wfts(english).file_name"`);
       });
 
-      it("should escape backslash character", () => {
+      it("should preserve backslash character in FTS search", () => {
         const params = createParams({ q: "path\\test" });
         const result = applySearchParams("contacts", params);
 
-        // Backslash is the escape character, must be escaped first
-        expect(result.filter["or@"]).toMatchInlineSnapshot(
-          `"(first_name.ilike.*path\\\\test*,last_name.ilike.*path\\\\test*,company_name.ilike.*path\\\\test*,title.ilike.*path\\\\test*)"`
-        );
+        // FTS does not escape backslash
+        expect(result.filter).not.toHaveProperty("or@");
+        expect(result.filter["search_tsv"]).toMatchInlineSnapshot(`"wfts(english).path\\test"`);
       });
 
-      it("should escape multiple ILIKE special characters", () => {
+      it("should preserve multiple special characters in FTS search", () => {
         const params = createParams({ q: "50%_discount" });
         const result = applySearchParams("contacts", params);
 
-        expect(result.filter["or@"]).toMatchInlineSnapshot(
-          `"(first_name.ilike.*50\\%\\_discount*,last_name.ilike.*50\\%\\_discount*,company_name.ilike.*50\\%\\_discount*,title.ilike.*50\\%\\_discount*)"`
-        );
+        expect(result.filter).not.toHaveProperty("or@");
+        expect(result.filter["search_tsv"]).toMatchInlineSnapshot(`"wfts(english).50%_discount"`);
       });
     });
 
-    describe("apostrophes and quotes", () => {
-      it("should handle apostrophe in names (O'Reilly)", () => {
+    describe("apostrophes and quotes (FTS sanitizes to spaces)", () => {
+      it("should sanitize apostrophe in names (O'Reilly) for FTS", () => {
         const params = createParams({ q: "o'reilly" });
         const result = applySearchParams("contacts", params);
 
-        // Apostrophe triggers PostgREST quoting
-        expect(result.filter["or@"]).toMatchInlineSnapshot(
-          `"(first_name.ilike."*o'reilly*",last_name.ilike."*o'reilly*",company_name.ilike."*o'reilly*",title.ilike."*o'reilly*")"`
-        );
+        // FTS sanitizes single quotes to spaces
+        expect(result.filter).not.toHaveProperty("or@");
+        expect(result.filter["search_tsv"]).toMatchInlineSnapshot(`"wfts(english).o reilly"`);
       });
 
-      it("should handle double apostrophe (McDonald's Inc's)", () => {
+      it("should sanitize double apostrophe (McDonald's Inc's) for FTS", () => {
         const params = createParams({ q: "McDonald's Inc's" });
         const result = applySearchParams("contacts", params);
 
-        expect(result.filter["or@"]).toMatchInlineSnapshot(
-          `"(first_name.ilike."*McDonald's Inc's*",last_name.ilike."*McDonald's Inc's*",company_name.ilike."*McDonald's Inc's*",title.ilike."*McDonald's Inc's*")"`
+        expect(result.filter).not.toHaveProperty("or@");
+        expect(result.filter["search_tsv"]).toMatchInlineSnapshot(
+          `"wfts(english).McDonald s Inc s"`
         );
       });
     });
 
     describe("email and URL characters", () => {
-      it("should handle @ and . in email addresses", () => {
+      it("should handle @ and . in email addresses via FTS", () => {
         const params = createParams({ q: "test@example.com" });
         const result = applySearchParams("contacts", params);
 
-        expect(result.filter["or@"]).toMatchInlineSnapshot(
-          `"(first_name.ilike."*test@example.com*",last_name.ilike."*test@example.com*",company_name.ilike."*test@example.com*",title.ilike."*test@example.com*")"`
+        expect(result.filter).not.toHaveProperty("or@");
+        expect(result.filter["search_tsv"]).toMatchInlineSnapshot(
+          `"wfts(english).test@example.com"`
         );
       });
 
@@ -168,13 +161,13 @@ describe("Q-Search ILIKE Characterization Tests", () => {
     });
 
     describe("comma handling", () => {
-      it("should handle comma in search (name suffix)", () => {
+      it("should handle comma in search (name suffix) via FTS", () => {
         const params = createParams({ q: "Smith, Jr." });
         const result = applySearchParams("contacts", params);
 
-        expect(result.filter["or@"]).toMatchInlineSnapshot(
-          `"(first_name.ilike."*Smith, Jr.*",last_name.ilike."*Smith, Jr.*",company_name.ilike."*Smith, Jr.*",title.ilike."*Smith, Jr.*")"`
-        );
+        // FTS preserves commas and periods (only removes '"())
+        expect(result.filter).not.toHaveProperty("or@");
+        expect(result.filter["search_tsv"]).toMatchInlineSnapshot(`"wfts(english).Smith, Jr."`);
       });
     });
   });
@@ -206,8 +199,9 @@ describe("Q-Search ILIKE Characterization Tests", () => {
       const params = createParams({ q: "test" });
       const result = applySearchParams("contacts", params, false);
 
-      // Should have both or@ and deleted_at filter
-      expect(result.filter).toHaveProperty("or@");
+      // Contacts is FTS-enabled: should have search_tsv and deleted_at filter
+      expect(result.filter).not.toHaveProperty("or@");
+      expect(result.filter).toHaveProperty("search_tsv");
       expect(result.filter).toHaveProperty("deleted_at@is");
       expect(result.filter["deleted_at@is"]).toBe(null);
     });
@@ -220,8 +214,9 @@ describe("Q-Search ILIKE Characterization Tests", () => {
       });
       const result = applySearchParams("contacts", params);
 
-      // q transformed to or@
-      expect(result.filter).toHaveProperty("or@");
+      // q transformed to search_tsv (contacts is FTS-enabled)
+      expect(result.filter).not.toHaveProperty("or@");
+      expect(result.filter).toHaveProperty("search_tsv");
 
       // Array filters transformed to PostgREST operators
       expect(result.filter).toHaveProperty("tags@cs");
@@ -229,7 +224,7 @@ describe("Q-Search ILIKE Characterization Tests", () => {
 
       expect(result.filter).toMatchInlineSnapshot(`
         {
-          "or@": "(first_name.ilike.*test*,last_name.ilike.*test*,company_name.ilike.*test*,title.ilike.*test*)",
+          "search_tsv": "wfts(english).test",
           "status@in": "(active,pending)",
           "tags@cs": "{1,2,3}",
         }
@@ -312,62 +307,62 @@ describe("Q-Search ILIKE Characterization Tests", () => {
         const params = createParams({ q: "  john  " });
         const result = applySearchParams("contacts", params);
 
-        // Should search for trimmed value
-        expect(result.filter["or@"]).toMatchInlineSnapshot(
-          `"(first_name.ilike.*john*,last_name.ilike.*john*,company_name.ilike.*john*,title.ilike.*john*)"`
-        );
+        // Contacts is FTS-enabled: should search for trimmed value via FTS
+        expect(result.filter).not.toHaveProperty("or@");
+        expect(result.filter["search_tsv"]).toMatchInlineSnapshot(`"wfts(english).john"`);
       });
     });
 
     describe("long queries", () => {
-      it("should handle very long query (500+ chars)", () => {
+      it("should handle very long query (500+ chars) via FTS", () => {
         const longQuery = "a".repeat(500);
         const params = createParams({ q: longQuery });
         const result = applySearchParams("contacts", params);
 
-        expect(result.filter).toHaveProperty("or@");
+        // Contacts is FTS-enabled
+        expect(result.filter).not.toHaveProperty("or@");
+        expect(result.filter).toHaveProperty("search_tsv");
 
-        // Verify the pattern is correct (contains all searchable fields)
-        const orFilter = result.filter["or@"] as string;
-        expect(orFilter).toContain("first_name.ilike.");
-        expect(orFilter).toContain("last_name.ilike.");
-        expect(orFilter).toContain(`*${"a".repeat(500)}*`);
+        // Verify the FTS filter contains the full query
+        const ftsFilter = result.filter["search_tsv"] as string;
+        expect(ftsFilter).toContain("wfts(english).");
+        expect(ftsFilter).toContain("a".repeat(500));
       });
 
-      it("should handle query at 1000 characters", () => {
+      it("should handle query at 1000 characters via FTS", () => {
         const longQuery = "search".repeat(166); // ~996 chars
         const params = createParams({ q: longQuery });
         const result = applySearchParams("contacts", params);
 
-        expect(result.filter).toHaveProperty("or@");
+        expect(result.filter).not.toHaveProperty("or@");
+        expect(result.filter).toHaveProperty("search_tsv");
       });
     });
 
     describe("unicode and special characters", () => {
-      it("should handle unicode characters", () => {
+      it("should handle unicode characters via FTS", () => {
         const params = createParams({ q: "Muller" });
         const result = applySearchParams("contacts", params);
 
-        expect(result.filter["or@"]).toMatchInlineSnapshot(
-          `"(first_name.ilike.*Muller*,last_name.ilike.*Muller*,company_name.ilike.*Muller*,title.ilike.*Muller*)"`
-        );
+        expect(result.filter).not.toHaveProperty("or@");
+        expect(result.filter["search_tsv"]).toMatchInlineSnapshot(`"wfts(english).Muller"`);
       });
 
-      it("should handle CJK characters", () => {
+      it("should handle CJK characters via FTS", () => {
         const params = createParams({ q: "customer" });
         const result = applySearchParams("contacts", params);
 
-        expect(result.filter["or@"]).toMatchInlineSnapshot(
-          `"(first_name.ilike.*customer*,last_name.ilike.*customer*,company_name.ilike.*customer*,title.ilike.*customer*)"`
-        );
+        expect(result.filter).not.toHaveProperty("or@");
+        expect(result.filter["search_tsv"]).toMatchInlineSnapshot(`"wfts(english).customer"`);
       });
 
-      it("should handle emoji (edge case)", () => {
+      it("should handle emoji (edge case) via FTS", () => {
         const params = createParams({ q: "test star" });
         const result = applySearchParams("contacts", params);
 
-        // Emoji should be preserved (PostgREST/Postgres handles unicode)
-        expect(result.filter).toHaveProperty("or@");
+        // Contacts is FTS-enabled
+        expect(result.filter).not.toHaveProperty("or@");
+        expect(result.filter).toHaveProperty("search_tsv");
       });
     });
 
@@ -391,13 +386,12 @@ describe("Q-Search ILIKE Characterization Tests", () => {
     });
 
     describe("numeric search terms", () => {
-      it("should handle numeric-only search", () => {
+      it("should handle numeric-only search via FTS", () => {
         const params = createParams({ q: "12345" });
         const result = applySearchParams("contacts", params);
 
-        expect(result.filter["or@"]).toMatchInlineSnapshot(
-          `"(first_name.ilike.*12345*,last_name.ilike.*12345*,company_name.ilike.*12345*,title.ilike.*12345*)"`
-        );
+        expect(result.filter).not.toHaveProperty("or@");
+        expect(result.filter["search_tsv"]).toMatchInlineSnapshot(`"wfts(english).12345"`);
       });
 
       it("should handle phone number format", () => {
@@ -412,17 +406,14 @@ describe("Q-Search ILIKE Characterization Tests", () => {
   });
 
   describe("5. Resource-specific search field configurations", () => {
-    it("should use correct fields for contacts", () => {
+    it("should use FTS search_tsv for contacts (FTS-enabled resource)", () => {
       const params = createParams({ q: "test" });
       const result = applySearchParams("contacts", params);
 
-      const orFilter = result.filter["or@"] as string;
-      expect(orFilter).toContain("first_name.ilike.");
-      expect(orFilter).toContain("last_name.ilike.");
-      expect(orFilter).toContain("company_name.ilike.");
-      expect(orFilter).toContain("title.ilike.");
-      // Should NOT contain fields from other resources
-      expect(orFilter).not.toContain("website.ilike.");
+      // Contacts is FTS-enabled: uses search_tsv instead of per-field ILIKE
+      expect(result.filter).not.toHaveProperty("or@");
+      expect(result.filter).toHaveProperty("search_tsv");
+      expect(result.filter["search_tsv"]).toContain("wfts(english).");
     });
 
     it("should use correct fields for organizations", () => {

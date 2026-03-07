@@ -1,5 +1,4 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { HttpError } from "react-admin";
 
 // Mock supabase before importing StorageService
 vi.mock("../../supabase", () => ({

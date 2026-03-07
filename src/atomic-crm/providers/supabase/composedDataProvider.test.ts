@@ -223,7 +223,9 @@ describe("composedDataProvider", () => {
     it("should route create to handler for contacts", async () => {
       const provider = createComposedDataProvider(mockBaseProvider);
 
-      await provider.create("contacts", { data: { first_name: "John" } });
+      await provider.create("contacts", {
+        data: { first_name: "John", last_name: "Doe", sales_id: 1, organization_id: 1 },
+      });
 
       expect(mockBaseProvider.create).toHaveBeenCalled();
     });

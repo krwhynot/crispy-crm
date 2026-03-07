@@ -38,7 +38,7 @@ import {
 import { AlertTriangle, User, Building2, Briefcase, CheckSquare } from "lucide-react";
 import type { Sale } from "../types";
 import { formatName } from "../utils/formatName";
-import { DEFAULT_PAGE_SIZE } from "@/atomic-crm/constants/appConstants";
+import { DEFAULT_PAGE_SIZE, MAX_PAGE_SIZE } from "@/atomic-crm/constants/appConstants";
 
 interface AffectedRecordCounts {
   opportunities: number;
@@ -91,6 +91,36 @@ async function batchReassign<T extends RaRecord>(
   }
 
   return { success, failed };
+}
+
+/**
+ * Fetch ALL records matching a filter across pages.
+ * Required for data integrity — partial fetches cause orphaned records.
+ */
+async function fetchAllRecords<T extends RaRecord>(
+  dataProvider: DataProvider,
+  resource: string,
+  filter: Record<string, unknown>,
+  signal: AbortSignal
+): Promise<T[]> {
+  const allRecords: T[] = [];
+  let page = 1;
+  let hasMore = true;
+
+  while (hasMore) {
+    if (signal.aborted) throw new DOMException("Aborted", "AbortError");
+    const { data, total } = await dataProvider.getList<T>(resource, {
+      pagination: { page, perPage: MAX_PAGE_SIZE },
+      sort: { field: "id", order: "ASC" },
+      filter,
+    });
+    if (data.length === 0) break;
+    allRecords.push(...data);
+    hasMore = total != null && allRecords.length < total;
+    page++;
+  }
+
+  return allRecords;
 }
 
 interface UserDisableReassignDialogProps {
@@ -278,36 +308,37 @@ export function UserDisableReassignDialog({
     try {
       setProgressMessage("Fetching records to reassign...");
 
-      const [oppsResult, contactsResult, orgsResult, tasksResult] = await Promise.all([
+      // Fetch ALL records across pages to prevent orphaned records
+      const [oppsData, contactsData, orgsData, tasksData] = await Promise.all([
         counts.opportunities > 0
-          ? dataProvider.getList("opportunities", {
-              pagination: { page: 1, perPage: DEFAULT_PAGE_SIZE },
-              sort: { field: "id", order: "ASC" },
-              filter: { opportunity_owner_id: user.id },
-            })
-          : Promise.resolve({ data: [] }),
+          ? fetchAllRecords(
+              dataProvider,
+              "opportunities",
+              { opportunity_owner_id: user.id },
+              signal
+            )
+          : Promise.resolve([]),
         counts.contacts > 0
-          ? dataProvider.getList("contacts", {
-              pagination: { page: 1, perPage: DEFAULT_PAGE_SIZE },
-              sort: { field: "id", order: "ASC" },
-              filter: { sales_id: user.id },
-            })
-          : Promise.resolve({ data: [] }),
+          ? fetchAllRecords(dataProvider, "contacts", { sales_id: user.id }, signal)
+          : Promise.resolve([]),
         counts.organizations > 0
-          ? dataProvider.getList("organizations", {
-              pagination: { page: 1, perPage: DEFAULT_PAGE_SIZE },
-              sort: { field: "id", order: "ASC" },
-              filter: { sales_id: user.id },
-            })
-          : Promise.resolve({ data: [] }),
+          ? fetchAllRecords(dataProvider, "organizations", { sales_id: user.id }, signal)
+          : Promise.resolve([]),
         counts.tasks > 0
-          ? dataProvider.getList("tasks", {
-              pagination: { page: 1, perPage: DEFAULT_PAGE_SIZE },
-              sort: { field: "id", order: "ASC" },
-              filter: { sales_id: user.id },
-            })
-          : Promise.resolve({ data: [] }),
+          ? fetchAllRecords(dataProvider, "tasks", { sales_id: user.id }, signal)
+          : Promise.resolve([]),
       ]);
+
+      // Fail-fast guard: abort if fetched count doesn't match expected total
+      const fetchedTotal =
+        oppsData.length + contactsData.length + orgsData.length + tasksData.length;
+      const expectedTotal =
+        counts.opportunities + counts.contacts + counts.organizations + counts.tasks;
+      if (fetchedTotal < expectedTotal) {
+        notify("Could not fetch all records. Disable aborted for safety.", { type: "error" });
+        setStep("reassign");
+        return;
+      }
 
       if (signal.aborted) throw new DOMException("Aborted", "AbortError");
 
@@ -315,30 +346,16 @@ export function UserDisableReassignDialog({
 
       const [oppResult, contactResult, orgResult, taskResult] = await Promise.all([
         batchReassign(
-          oppsResult.data,
+          oppsData,
           targetSalesId,
           "opportunities",
           dataProvider,
           "opportunity_owner_id",
           signal
         ),
-        batchReassign(
-          contactsResult.data,
-          targetSalesId,
-          "contacts",
-          dataProvider,
-          "sales_id",
-          signal
-        ),
-        batchReassign(
-          orgsResult.data,
-          targetSalesId,
-          "organizations",
-          dataProvider,
-          "sales_id",
-          signal
-        ),
-        batchReassign(tasksResult.data, targetSalesId, "tasks", dataProvider, "sales_id", signal),
+        batchReassign(contactsData, targetSalesId, "contacts", dataProvider, "sales_id", signal),
+        batchReassign(orgsData, targetSalesId, "organizations", dataProvider, "sales_id", signal),
+        batchReassign(tasksData, targetSalesId, "tasks", dataProvider, "sales_id", signal),
       ]);
 
       const totalReassigned =

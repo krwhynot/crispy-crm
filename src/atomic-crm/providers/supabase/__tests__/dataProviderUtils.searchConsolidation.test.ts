@@ -59,7 +59,7 @@ describe("Search Consolidation - Central SEARCHABLE_RESOURCES", () => {
   });
 
   describe("existing resources still work (regression)", () => {
-    it("should transform q for contacts", () => {
+    it("should transform q for contacts (FTS-enabled)", () => {
       const params = {
         pagination: { page: 1, perPage: 10 },
         sort: { field: "id", order: "ASC" as const },
@@ -69,7 +69,9 @@ describe("Search Consolidation - Central SEARCHABLE_RESOURCES", () => {
       const result = applySearchParams("contacts", params);
 
       expect(result.filter).not.toHaveProperty("q");
-      expect(result.filter).toHaveProperty("or@");
+      // Contacts is FTS-enabled: uses search_tsv instead of or@
+      expect(result.filter).not.toHaveProperty("or@");
+      expect(result.filter).toHaveProperty("search_tsv");
     });
 
     it("should transform q for organizations", () => {

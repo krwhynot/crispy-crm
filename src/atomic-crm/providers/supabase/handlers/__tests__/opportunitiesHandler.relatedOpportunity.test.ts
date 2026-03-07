@@ -350,7 +350,8 @@ describe("opportunitiesHandler - related_opportunity_id validation", () => {
     });
 
     it("should skip validation when related_opportunity_id unchanged", async () => {
-      // Update without changing related_opportunity_id
+      // Update without changing related_opportunity_id — only stage changed
+      // previousData must include stage for opportunitiesBeforeUpdate callback
       await handler.update("opportunities", {
         id: 10,
         data: {
@@ -362,6 +363,7 @@ describe("opportunitiesHandler - related_opportunity_id validation", () => {
           id: 10,
           principal_organization_id: 100,
           related_opportunity_id: 50,
+          stage: "new_lead",
         } as RaRecord,
       });
 
@@ -426,10 +428,13 @@ describe("opportunitiesHandler - related_opportunity_id validation", () => {
 
     it("should pass through non-opportunities resources without validation", async () => {
       // Create on different resource should not trigger related opportunity validation
+      // Include required fields to pass contacts validation
       await handler.create("contacts", {
         data: {
           first_name: "John",
           last_name: "Doe",
+          sales_id: 1,
+          organization_id: 1,
         },
       });
 

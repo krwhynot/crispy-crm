@@ -129,7 +129,7 @@ describe("createOpportunitiesHandler", () => {
     });
 
     it("should pass through non-opportunities resources to base provider", async () => {
-      const contactData = { first_name: "John", last_name: "Doe" };
+      const contactData = { first_name: "John", last_name: "Doe", sales_id: 1, organization_id: 1 };
 
       await handler.create("contacts", { data: contactData });
 
@@ -172,7 +172,7 @@ describe("createOpportunitiesHandler", () => {
       await handler.update("opportunities", {
         id: 123,
         data: updateData,
-        previousData: { id: 123 } as RaRecord,
+        previousData: { id: 123, stage: "initial_outreach" } as RaRecord,
       });
 
       expect(mockUpdateWithProducts).not.toHaveBeenCalled();
@@ -348,8 +348,9 @@ describe("opportunitiesCallbacks - view field stripping", () => {
       expect(result).toHaveProperty("opportunity_owner_id", "owner-456");
     });
 
-    // FIX [WF-E2E-001]: Test for UPDATE_ONLY_STRIP_FIELDS behavior
-    it("should strip opportunity_owner_id during UPDATE (isUpdate=true)", () => {
+    // UPDATE_ONLY_STRIP_FIELDS is now empty — opportunity_owner_id passes through
+    // on both CREATE and UPDATE (see opportunitiesCallbacks.ts:80-92)
+    it("should preserve opportunity_owner_id during UPDATE (isUpdate=true)", () => {
       const data = {
         id: 1,
         name: "Updated Opportunity",
@@ -360,8 +361,8 @@ describe("opportunitiesCallbacks - view field stripping", () => {
       // UPDATE operation: isUpdate=true
       const result = stripComputedFields(data, true);
 
-      // Should strip opportunity_owner_id for UPDATE
-      expect(result).not.toHaveProperty("opportunity_owner_id");
+      // opportunity_owner_id passes through — UPDATE_ONLY_STRIP_FIELDS is empty
+      expect(result).toHaveProperty("opportunity_owner_id", "owner-456");
 
       // Should keep other fields
       expect(result).toHaveProperty("id", 1);

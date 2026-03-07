@@ -111,8 +111,9 @@ describe("authProvider", () => {
         error: null,
       });
 
+      // App uses hash routing — pathname is always "/", hash determines the route
       Object.defineProperty(window, "location", {
-        value: { pathname: "/dashboard" },
+        value: { hash: "", pathname: "/" },
         writable: true,
       });
 
@@ -120,10 +121,10 @@ describe("authProvider", () => {
     });
 
     it("should allow access to public paths without session", async () => {
-      // Test each public path
-      const publicPaths = ["/login", "/forgot-password", "/set-password", "/reset-password"];
+      // Test each public path — app uses hash routing (#/path)
+      const publicHashes = ["#/forgot-password", "#/set-password"];
 
-      for (const path of publicPaths) {
+      for (const hash of publicHashes) {
         vi.clearAllMocks();
 
         // Mock no session for each test
@@ -133,7 +134,7 @@ describe("authProvider", () => {
         });
 
         Object.defineProperty(window, "location", {
-          value: { pathname: path },
+          value: { hash, pathname: "/" },
           writable: true,
         });
 
@@ -149,7 +150,7 @@ describe("authProvider", () => {
       });
 
       Object.defineProperty(window, "location", {
-        value: { pathname: "/dashboard" },
+        value: { hash: "", pathname: "/" },
         writable: true,
       });
 

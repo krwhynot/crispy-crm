@@ -22,7 +22,7 @@ vi.mock("ra-core", async () => {
     }),
     Form: ({
       children,
-      onSubmit,
+      onSubmit: _onSubmit,
     }: {
       children: React.ReactNode;
       onSubmit?: unknown;
@@ -45,7 +45,7 @@ vi.mock("@tanstack/react-query", async () => {
   return {
     ...actual,
     useMutation: ({
-      mutationFn,
+      mutationFn: _mutationFn,
     }: {
       mutationFn: () => Promise<unknown>;
       [key: string]: unknown;

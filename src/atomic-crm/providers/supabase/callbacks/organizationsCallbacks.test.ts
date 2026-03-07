@@ -214,10 +214,10 @@ describe("organizationsCallbacks", () => {
   });
 
   describe("afterRead - data normalization", () => {
-    it("should not define afterRead (no transformation needed)", () => {
-      // Organizations don't need afterRead transformation
-      // Using factory pattern with no afterReadTransform means afterRead is not created
-      expect(organizationsCallbacks.afterRead).toBeUndefined();
+    it("should define afterRead for JSONB array normalization", () => {
+      // Organizations use afterReadTransform: normalizeOrgJsonbArrays
+      // to normalize JSONB array fields (tags, etc.) after reading from DB
+      expect(organizationsCallbacks.afterRead).toBeDefined();
     });
 
     it("should handle null sector gracefully (no transformation)", () => {

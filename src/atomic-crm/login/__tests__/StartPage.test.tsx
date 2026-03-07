@@ -11,7 +11,7 @@ vi.mock("ra-core", async () => {
     useNotify: () => vi.fn(),
     Form: ({
       children,
-      onSubmit,
+      onSubmit: _onSubmit,
     }: {
       children: React.ReactNode;
       onSubmit?: unknown;

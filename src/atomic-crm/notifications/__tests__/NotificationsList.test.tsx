@@ -96,7 +96,7 @@ vi.mock("@/components/admin/AdminButton", () => ({
     children,
     onClick,
     "aria-label": ariaLabel,
-    ...rest
+    ..._rest
   }: {
     children: React.ReactNode;
     onClick?: () => void;
