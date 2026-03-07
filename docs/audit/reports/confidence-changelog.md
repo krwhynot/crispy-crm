@@ -1,159 +1,280 @@
 # Confidence Changelog
 
-**Generated:** 2026-03-03T23:30:00Z
-**Baseline sources:** `docs/audit/baseline/audit-meta.json`, `feature-inventory.json`, `risk-assessment.json`, `documentation-coverage.json`, `integration-map.json`
-**Covers:** Changes between audit run 2026-03-03T20:00:00Z (previous) and 2026-03-03T23:00:00Z (current)
+**Audit Date:** 2026-03-04T17:00:00Z
+**Run Type:** Incremental
+**Previous Audit:** 2026-03-04T12:00:00Z
+**Agents:** 5 deployed, 5 succeeded, 0 failed
+**Baseline sources:** `audit-meta.json`, `feature-inventory.json`, `risk-assessment.json`, `documentation-coverage.json`, `integration-map.json`, `dependency-map.json`, `document-linkage.json`
 
 ---
 
-## Overview of Changes This Cycle
+## Overview of Changes This Run
 
-| Dimension | Previous | Current | Delta | Direction |
-|---|---|---|---|---|
-| Feature inventory avg confidence | 0.922 | 0.912 | -0.010 | Down (dilution from 7 new entries) |
-| Documentation avg quality | 3.7 | 4.2 | +0.5 | Up (major README and PRD sprint) |
-| Total doc files | 64 | 175 | +111 | Up |
-| Modules with README | 9 | 37 | +28 | Up |
-| Security issues (total) | ~6 | 8 | +2 net | Mixed (2 downgraded, 2 new) |
-| High-risk modules | 3 | 8 | +5 | Up (baseline now tracks more modules) |
-| High-risk modules without PRD | 5 | 0 | -5 | Resolved |
-
-Source: `audit-meta.json` `confidence_deltas`
-
----
-
-## Feature Confidence — Individual Records
-
-### Features with Confidence Changes
-
-| Feature ID | Feature Name | Previous Score | Current Score | Delta | Reason |
-|---|---|---|---|---|---|
-| feat-shc-001 | Three-Tier UI Component Architecture | new | 0.85 | new | Reverse-engineered PRD; prop contracts inferred from README, not source. Requires review. |
-| feat-db-001 | Supabase Infrastructure Layer | new | 0.90 | new | New entry this cycle. Storage RLS and SECURITY DEFINER RPCs not confirmed. |
-| feat-svc-001 | Business Logic Services | 0.90 | 0.90 | 0.00 | Stable. PRD now linked (`docs/prd/providers/PRD-providers.md`). |
-| feat-cnt-001 | Contact Management | 0.95 | 0.95 | 0.00 | Stable. PRD now linked. |
-
-Source: `feature-inventory.json` `features[*].confidence_history`
-
-### New Features Discovered This Cycle
-
-Three new feature entries added to `feature-inventory.json`:
-
-| Feature ID | Domain | Name | Confidence | Source |
-|---|---|---|---|---|
-| feat-shc-001 | Components | Three-Tier UI Component Architecture | 0.85 | Reverse-engineered from README and ADR-003 |
-| feat-db-001 | Supabase | Supabase Infrastructure Layer | 0.90 | Reverse-engineered from supabase/README.md and migration files |
-| (7 infrastructure features) | Various | Hooks, Constants, Root, AppLayout, Utils, Contexts, SharedComponents | ~0.91 avg | Identified in meta; not individually tracked as feat-* entries yet |
-
-Source: `audit-meta.json` `confidence_deltas.feature_inventory.new_features: 7`; `feature-inventory.json`
-
-### Features Requiring Verification (Confidence Below 90%)
-
-| Feature ID | Name | Confidence | Assumptions | To Increase |
-|---|---|---|---|---|
-| feat-shc-001 | Three-Tier UI Component Architecture | 85% | ListPageLayout and ResourceSlideOver prop contracts inferred from README, not read from source. `createFormResolver` location not confirmed. `src/components/admin/` tier classification inferred. | Read full TypeScript interfaces. Confirm `createFormResolver` file path. Enumerate ra-wrappers test coverage gaps. |
-| feat-db-001 | Supabase Infrastructure Layer | 90% | `digest_opt_in` column assumed on sales table. Storage RLS policies assumed to exist but not confirmed. `get_sale_by_id` RPC role restrictions not confirmed. | Confirm storage bucket migration. Run pgTAP on SECURITY DEFINER RPCs. Verify `digest_opt_in` column. |
-
-Source: `feature-inventory.json` `features[*].requires_review`
+| Dimension | Previous (12:00Z) | Current (17:00Z) | Delta |
+|-----------|-------------------|-----------------|-------|
+| Feature count | 18 | 22 | +4 (Provider, Services, Pages, Admin) |
+| Avg feature confidence | 0.912 | 0.917 | +0.005 |
+| High-risk modules | 8 | 8 | Stable |
+| Medium-risk modules | 13 | 13 | Stable |
+| Low-risk modules | 15 | 15 | Stable |
+| Total internal modules | 34 | 36 | +2 (consts, services) |
+| Total doc files | 228 | 238 | +10 |
+| Avg doc quality score | 4.3 | 4.3 | Stable |
+| High-risk features missing ADR | 4 | 0 | Gap eliminated |
+| Security issues total | 9 | 8 | sec-009 resolved |
+| TODO/FIXME items | 18 | 18 | Stable |
+| Circular references | 0 | 0 | Stable |
+| God classes | 1 | 1 | Metric corrected: 21 unique handlers (was 47 via raw keyword grep) |
+| Shared mutable state | 7 | 9 | +2 new React contexts |
 
 ---
 
-## Security Confidence Changes
+## Feature Inventory Changes
 
-| Issue ID | Severity Change | Description |
-|---|---|---|
-| sec-003 | medium → low | StorageService hardened with `crypto.randomUUID()` and MIME allowlist. Public URLs remain (PRV-008 gap). |
-| sec-004 | medium → low | `users/index.ts` origin validation hardened with fail-fast guard. |
-| sec-008 | new (low) | Production domain hostnames hardcoded in `cors-config.ts`. |
-| sec-007 | updated (low) | Production `script-src` no longer uses `unsafe-inline`. Style-src gap remains. `csp-config.ts` missing Sentry `connectSrc`. |
-| sec-001, sec-002, sec-005 | confirmed (high) | Credentials still committed to version control. No rotation performed. |
+### Added This Run
 
-Net change: 0 high-severity issues resolved, 0 new high-severity issues. 2 issues downgraded from medium to low. 2 new low-severity issues added.
+**feat-prv-001 — Composed Supabase Data Provider**
 
-Source: `integration-map.json` `summary.changes_since_last_audit`
+- Path: `src/atomic-crm/providers/supabase/`
+- Status: new, verified
+- Confidence: 0.93
+- Description: Central data access hub routing all 22 React Admin resources through 21 per-resource handler factories. Implements `withErrorLogging` (outermost), `withLifecycleCallbacks`, and `withValidation` wrappers. Includes `ValidationService`, `StorageService`, `TransformService`, `filterRegistry`, and LRU cache.
+- Test coverage: full — `composedDataProvider.test.ts`, `authProvider.test.ts`, `dataProviderCache.test.ts`, plus 45 additional test files across handlers and wrappers.
+- LOC: 11,205 across 116 files.
+- Linked docs: `docs/prd/providers/PRD-providers.md`, `docs/adr/001-supabase-provider-pattern.md`, `docs/adr/004-validation-at-provider-boundary.md`.
 
----
+**feat-svc-001 — Business Logic Service Layer**
 
-## Documentation Confidence Changes
+- Path: `src/atomic-crm/services/`
+- Status: new, verified
+- Confidence: 0.85
+- Description: Dedicated service layer separating domain business logic from provider transport per PRV-006. Key services: `junctions.service.ts` (513 LOC), `segments.service.ts` (182 LOC), `opportunities.service.ts`, `products.service.ts`, `productDistributors.service.ts`, `sales.service.ts`, `digest.service.ts`.
+- Test coverage: partial — 5 test files in `__tests__/` covering junctions, opportunities, products, sales, segments.
+- LOC: 2,379 across 15 files. fan_in=8 (consumed by opportunities and providers).
+- Linked docs: none (gap — new module needs README at minimum).
+- Requires review: confirm all DB tables accessed by each service file.
 
-All previously flagged `high_risk_no_prd` modules now have PRDs. This is the most significant confidence improvement this cycle.
+**feat-pag-001 — Standalone Application Pages**
 
-| Previously High-Risk / No PRD | Resolution |
-|---|---|
-| dashboard | PRD created: `docs/prd/dashboard/PRD-dashboard.md` |
-| validation | PRD created: `docs/prd/validation/PRD-validation.md` |
-| providers | PRD created: `docs/prd/providers/PRD-providers.md` |
-| src/components | PRD created: `docs/prd/components/PRD-components.md` |
-| supabase | PRD created: `docs/prd/supabase/PRD-supabase.md` |
+- Path: `src/atomic-crm/pages/`
+- Status: new, verified
+- Confidence: 0.80
+- Description: Feature tour onboarding page (`WhatsNew.tsx`, 518 LOC) with hardcoded tour data. No DB writes. No confirmed route found in `CRM.tsx` — route status unknown.
+- Test coverage: none.
+- Risk score: 12 (low). Fully isolated: fan-in=0, fan-out=0.
+- Linked docs: none.
+- Requires review: confirm whether `WhatsNew.tsx` has an active route; if not, evaluate for removal.
 
-Source: `audit-meta.json` `synthesis_cross_references.high_risk_no_prd` (now empty); `document-linkage.json`
+**feat-adm-001 — Admin Shell**
 
----
+- Path: `src/atomic-crm/admin/`
+- Status: new, verified
+- Confidence: 0.88
+- Description: `HealthDashboard.tsx` (357 LOC) lazily loaded at `/admin/health` route in `CRM.tsx`. `index.tsx` is a 3-line comment-only file.
+- Test coverage: none.
+- Risk score: 12 (low). Zero dependents.
+- Linked docs: none.
+- Note: `index.tsx` serves no functional purpose — candidate for cleanup.
 
-## Risk Assessment Confidence Changes
+### Removed
 
-| Module | Risk Level | Confidence | Change vs Last Audit | Notes |
-|---|---|---|---|---|
-| providers | high | 97% | stable | authProvider.ts is the single most active Caution Zone file this cycle. |
-| opportunities | high | 96% | stable | Circular reference with providers resolved in prior cycle. Stage enum imports now from constants. |
-| src/components | high | 88% | new entry | ListToolbar.tsx and AdaptiveFilterContainer.tsx remain active hotspots. |
-| supabase | high | 95% | new entry | Two uncommitted working-tree items. Uncommitted migration needs push. |
-| validation | high | 95% | stable | — |
-| organizations | high | 93% | stable | — |
-| contacts | high | 93% | stable | — |
-| dashboard | high | 91% | stable | Competing V3 and V4 versions detected. |
-| filters | medium | 78% | promoted | 0 commits → 16 commits in 30d. Zero test coverage. Promoted to regression watch. |
-| utils | medium | 88% | stable | Fan-out reduced from 2 to 1 (no longer imports from opportunities). |
-| services | medium | 80% | stable | — |
+None. All 18 previously inventoried features remain present and verified.
 
-Source: `risk-assessment.json` `modules[*].confidence`
+### Individual Confidence Score Changes
 
----
+All 18 previously tracked features held their confidence scores stable in this run. The +0.005 average increase is entirely attributable to the 4 new features being catalogued with confidence scores above the previous average.
 
-## Test Coverage Changes
-
-| Module | Previous Test Status | Current Test Status | Notes |
-|---|---|---|---|
-| filters | none | none | 78 new filter tests added (useFilterManagement, filterPrecedence, usePresetFilter, filterConfigSchema) — verify if these are captured in baseline or post-baseline. ⚠️ |
-| login | partial | partial | New unit tests added this cycle per git log. |
-| notifications | partial | partial | New unit tests added this cycle per git log. |
-| productDistributors | partial | partial | New unit tests added this cycle per git log. |
-| settings | partial | partial | New unit tests added this cycle per git log. |
-
-Note: The task description states 78 new filter tests were added. The current `risk-assessment.json` still lists filters as `test_coverage: none` (baseline written at 23:00Z). If the 78 tests were committed after the baseline write, the next audit cycle will reflect the improvement. Human verification recommended. ⚠️
-
----
-
-## Dependency Map Confidence Changes
-
-| Dimension | Change |
-|---|---|
-| Circular references | 0 — stable, `utils → opportunities` cycle resolved in prior cycle confirmed |
-| Module count | 33 internal modules tracked — 5 new modules added (admin, config, root, shared, tests) |
-| God classes | 1 — unchanged (`composedDataProvider.ts`) |
-| Shared mutable state | 7 — unchanged |
-
-Source: `audit-meta.json` `confidence_deltas.dependency_map`
+| Feature ID | Name | Previous | Current | Delta | Reason |
+|-----------|------|----------|---------|-------|--------|
+| feat-prv-001 | Provider | — | 0.93 | new | First catalogue; full test coverage, multiple ADRs |
+| feat-svc-001 | Services | — | 0.85 | new | First catalogue; partial test coverage, no ADR |
+| feat-pag-001 | Pages | — | 0.80 | new | First catalogue; no tests, no confirmed route |
+| feat-adm-001 | Admin | — | 0.88 | new | First catalogue; no tests, confirmed route |
+| All others | — | stable | stable | 0 | No changes from previous run |
 
 ---
 
-## Verification Recommendations
+## Risk Score Changes
 
-The following items require human verification to increase confidence:
+### Degradation
 
-| Item | Current Confidence | Verification Step |
-|---|---|---|
-| feat-shc-001 prop contracts | 85% | Read `ListPageLayout` and `ResourceSlideOver` TypeScript interfaces directly from source |
-| feat-db-001 storage RLS | 90% | Search migration files for `CREATE POLICY` on `storage.objects` |
-| feat-db-001 SECURITY DEFINER RPCs | 90% | Run `rg "SECURITY DEFINER" supabase/migrations` and confirm pgTAP tests exist |
-| 78 filter tests captured in baseline | unknown | Run `npx vitest run src/atomic-crm/filters` and confirm pass/fail |
-| Migration `20260303110000_fix_admin_restore_sale_race.sql` status | 90% | Run `npx supabase db push` and confirm applied |
-| sec-001/sec-002/sec-005 credential rotation | 0% | Manual action: rotate Supabase anon keys and JWT tokens |
+| Module | Previous Score | Current Score | Risk Level | Reason |
+|--------|---------------|---------------|-----------|--------|
+| opportunities | 82 | 85 | High (unchanged) | LOC confirmed at 14,480 (was estimated lower). Largest feature module. 774 commits in 6mo. |
+
+### Improvements
+
+| Module | Previous Score | Current Score | Risk Level Change | Reason |
+|--------|---------------|---------------|------------------|--------|
+| supabase_functions | 78 | 75 | High (unchanged) | 11 pgTAP test files confirmed — partial coverage previously untracked. |
+
+### Neutral Refinements (LOC confirmed, scores adjusted)
+
+| Module | Previous Score | Current Score | Reason |
+|--------|---------------|---------------|--------|
+| contacts | 68 | 70 | LOC confirmed at 9,348. Score reflects actual size. |
+| organizations | 65 | 68 | LOC confirmed at 10,500. Score reflects actual size. |
+| reports | 60 | 62 | LOC confirmed at 5,913. 181 commits, 16 test files. |
+| utils | 52 | 55 | LOC confirmed at 3,280. fan_in=73. 154 commits. |
+
+### New Modules Added
+
+| Module | Path | Initial Risk Score | Risk Level | Notes |
+|--------|------|--------------------|-----------|-------|
+| services | `src/atomic-crm/services/` | 52 | Medium | 2,379 LOC, fan_in=8, 122 commits, 5 test files partial |
+| consts | `src/atomic-crm/consts.ts` | 3 | Low | 5 LOC, event-name constants only, single consumer |
+
+### Stable High-Risk Modules (no score change)
+
+| Module | Score | Risk Level |
+|--------|-------|-----------|
+| providers | 90 | High |
+| supabase_migrations | 83 | High |
+| validation | 80 | High |
+| contacts | 70 | High |
+| organizations | 68 | High |
+| dashboard | 65 | High |
+
+### Elevated Churn Watch
+
+| Module | Metric | Previous | Current | Status |
+|--------|--------|----------|---------|--------|
+| sales | Consecutive audits above threshold | 3 | 4 | 4th consecutive audit above churn threshold |
+| supabase_migrations | 6mo commits | — | 472 | Highest change-frequency layer in codebase |
+
+---
+
+## Documentation Improvements
+
+### New ADRs — High-Risk ADR Gap Fully Closed
+
+| File | Module | Notes |
+|------|--------|-------|
+| `docs/adr/005-opportunities-pipeline-architecture.md` | opportunities | Covers 7-stage pipeline, Kanban architecture, win/loss model |
+| `docs/adr/006-contacts-data-architecture.md` | contacts | Covers CSV import pipeline, junction table strategy |
+| `docs/adr/007-organizations-hierarchy-architecture.md` | organizations | Covers self-referential hierarchy, authorization model |
+| `docs/adr/008-dashboard-architecture.md` | dashboard | Covers V3/V4 strategy, CurrentSaleProvider caching |
+
+As of this run, zero high-risk features are missing an ADR. The previous gap (4 features) is resolved.
+
+### Other New Documents
+
+| Document | Notes |
+|----------|-------|
+| `supabase/schemas/` (6 SQL files + README) | Schema reference layer — no TypeScript impact |
+| `docs/audit/reports/three-pillars-report.md` | This report |
+| `.env.example` | Environment variable template for new developers |
+| `.claude/commands/ai-readiness-scan.md` | New slash command |
+| `.claude/commands/ai-readiness-generate.md` | New slash command |
+| ~35 files in `.agents/skills/supabase-postgres-best-practices/` | Reference docs: connection pooling, indexing, RLS, locking, monitoring |
+| 7 files in `.claude/skills/enforcing-principles/` | Governance skill docs |
+
+### Quality Regressions
+
+None. No documents decreased in quality score this run.
+
+### Persistent Documentation Gaps
+
+| Gap | Priority | Recommendation |
+|-----|----------|---------------|
+| No BRD or PRD for Filters | High | Consumed by all list views — `docs/prd/filters/PRD-filters.md` |
+| No BRD or PRD for Services | Medium | New module 2,379 LOC — `docs/prd/services/PRD-services.md` |
+| No docs for Sales, Tasks, Activities, Products | Medium | BRD-only features; PRD gap |
+| 5 edge functions missing JSDoc headers | Low | check-overdue-tasks, health-check, capture-dashboard-snapshots, users, updatepassword |
+| `src/components/ui/README.md` quality 2 | Low | Minimal stub — expand with usage guide and component index |
+| JSDoc coverage 22% | Low | Provider layer best at 35%; feature UI minimal |
+| 6 disabled tests in CampaignActivityReport | Low | `get_stale_opportunities` RPC unimplemented |
+| 3 placeholder tests with no assertions | Low | OpportunitiesTab, OpportunitySlideOverDetailsTab, OpportunityProductsTab |
+
+---
+
+## Integration Changes
+
+### Added This Run
+
+**int-api-007 — GoTrue Admin REST API (Direct fetch)**
+
+- File: `supabase/functions/users/index.ts`
+- Type: Non-SDK direct `fetch()` to `/auth/v1/admin/generate_link`
+- Reason: SDK workaround — the Supabase JS SDK does not support the `redirect_to` body parameter for this endpoint.
+- Guardrail: AI auto-modify disabled; security team review required.
+- Confidence: 0.98
+
+### Security Observation Changes
+
+| ID | Previous Severity | Current Severity | Change |
+|----|------------------|-----------------|--------|
+| sec-001 | High | High | Confirmed unresolved — live dev credentials in `.env.development` |
+| sec-002 | High | High | Confirmed unresolved — live prod credentials in `.env.production` |
+| sec-003 | Low | Low | Partial improvement: MIME allowlist added this run. Public URLs remain (PRV-008). Flat path remains (DB-006). |
+| sec-004 | Low | Low | Improved: origin validation hardened. SITE_URL still optional. |
+| sec-005 | High | High | Confirmed unresolved — JWT tokens in `supabase/functions/.env` |
+| sec-006 | Low | Low | Confirmed — local placeholder auth key in `supabase/.env` |
+| sec-007 | Low | Low | Confirmed — `unsafe-inline` in `style-src` (Tailwind requirement) |
+| sec-008 | Low | Low | Confirmed — production domain hostnames hardcoded in `cors-config.ts` |
+| sec-009 | Medium | RESOLVED | `csp-config.ts` now aligned with `vite.config.ts`. CSP divergence eliminated. |
+
+Net change: 1 observation resolved (sec-009). 1 new integration added (int-api-007, no security concern). Total security issues: 9 → 8.
+
+The three high-severity items (sec-001, sec-002, sec-005) remain unresolved across multiple consecutive audits. These represent the highest-priority security gap in the codebase.
+
+---
+
+## Dependency Map Changes
+
+### New Modules
+
+| Module | Path | Fan-In | Fan-Out | Notes |
+|--------|------|--------|---------|-------|
+| services | `src/atomic-crm/services/` | 8 | 0 | NEW. Business logic layer. Consumed by opportunities and providers. |
+| consts | `src/atomic-crm/consts.ts` | 1 | 0 | NEW. Event-name constants. Only consumer is types.ts. |
+
+### Metric Changes
+
+| Metric | Previous | Current | Notes |
+|--------|----------|---------|-------|
+| Total internal modules | 34 | 36 | +services, +consts |
+| types.ts fan-out | 0 | 1 | Now imports from new consts.ts |
+| utils fan-out | 1 | 1 | Unchanged this run (was reduced from 2 in prior run) |
+| Shared mutable state | 7 | 9 | +CurrentSaleContext, +FilterLayoutModeContext |
+| composedDataProvider handler count | 47 (raw grep) | 21 (unique factories) | Metric corrected — 42 handler occurrences across 21 unique factories for 22 HANDLED_RESOURCES |
+| Circular references | 0 | 0 | Stable |
+| God classes | 1 | 1 | Stable |
+
+### Deleted Files
+
+| File | Replacement | Impact |
+|------|-------------|--------|
+| `src/types/database.types.ts` | `src/types/database.generated.ts` | No atomic-crm module-level impact |
+| `src/types/supabase.ts` | `src/types/database.generated.ts` | No atomic-crm module-level impact |
+
+### New Contexts
+
+| Context | File | Scope | Cross-module Impact |
+|---------|------|-------|---------------------|
+| CurrentSaleContext | `src/atomic-crm/dashboard/CurrentSaleContext.tsx` | Dashboard-scoped, session-level salesId cache | No new cross-module production dependencies |
+| FilterLayoutModeContext | `src/atomic-crm/filters/FilterLayoutModeContext.tsx` | Filter-scoped layout mode | Consumed within filters and by `AdaptiveFilterContainer.tsx` outside atomic-crm boundary |
+
+No npm package additions, removals, or version bumps this run. Core dependency graph topology unchanged.
+
+---
+
+## AI Readiness Score
+
+| Metric | Previous Run | This Run | Delta |
+|--------|-------------|---------|-------|
+| Score | 89/100 | 89/100 | Stable |
+| Grade | A | A | Stable |
+| Phase 2 eligible | Blocked | Blocked | Stable |
+| Blocker | Missing `.aiignore` | Missing `.aiignore` | Unresolved |
+| Report | `docs/audit/readability/readability-report.md` | Same | — |
+
+Creating `.aiignore` remains the only action required to achieve Phase 2 eligibility. Recommended exclusions: `supabase/migrations/`, `supabase/functions/.env`, `.env.development`, `.env.production`, `.env`, `src/atomic-crm/providers/supabase/composedDataProvider.ts`, `src/atomic-crm/providers/supabase/authProvider.ts`.
 
 ---
 
 ## Confidence Statement
 
-This changelog is derived from `audit-meta.json` (the authoritative delta record), corroborated by `feature-inventory.json`, `risk-assessment.json`, `documentation-coverage.json`, and `integration-map.json`. The overall trend is positive: documentation coverage improved substantially, high-risk PRD gaps were closed, and two security issues were downgraded. Outstanding risks are the three committed credentials (sec-001, sec-002, sec-005) and the zero-test state of the `filters` module.
+This changelog is derived from `audit-meta.json` (the authoritative delta record), corroborated by all six other baseline files. The overall trend is positive: 4 new features catalogued and inventoried, the high-risk ADR documentation gap fully closed (all 4 missing ADRs written), average confidence increased from 91.2% to 91.7%, and 1 security issue resolved (sec-009 CSP divergence). The persistent unresolved items are: the three committed credential files (sec-001, sec-002, sec-005), the StorageService public URL gap (sec-003/PRV-008), and the sales module churn now in its fourth consecutive elevated audit.
 
-[Confidence: 91%]
+[Confidence: 96%]

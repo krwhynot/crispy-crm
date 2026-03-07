@@ -1,0 +1,109 @@
+{
+  "category": "context_files",
+  "generated_at": "2026-03-06",
+  "checks": [
+    {
+      "id": "2.1",
+      "name": "Claude Code context file exists",
+      "status": "pass",
+      "points": 2,
+      "max": 2,
+      "critical_gate": true,
+      "evidence": "CLAUDE.md found at project root (C:/Users/NewAdmin/Projects/crispy-crm/CLAUDE.md). .claude/ directory present with rules/, commands/, agents/, skills/, hooks/ subdirectories and settings.json."
+    },
+    {
+      "id": "2.2",
+      "name": "Context file quality",
+      "status": "pass",
+      "points": 2,
+      "max": 2,
+      "critical_gate": false,
+      "evidence": "CLAUDE.md (109 lines) contains five well-structured sections: Architecture & Structure (directory map, data-access boundary), Engineering Principles (Fail Fast, form mode, Zod rules, strict bans), Design System (Tailwind v4 semantic tokens, component patterns), Testing & Database (npm test, Vitest, pgTAP), and Business Domain (entity model, pipeline stages, user roles). Sections use imperative language (NEVER, NO, MUST) with concrete file paths and code examples."
+    },
+    {
+      "id": "2.3",
+      "name": "Modular rules exist",
+      "status": "pass",
+      "points": 2,
+      "max": 2,
+      "critical_gate": false,
+      "evidence": "12 rule files in .claude/rules/: AGENT_ROUTING.md, CODE_QUALITY.md, CORE_CONSTRAINTS.md, DATABASE_LAYER.md, DOMAIN_INTEGRITY.md, MODULE_CHECKLIST.md, PROVIDER_RULES.md, RULE_COMMANDS.md, RULE_INDEX.md, RULE_PRECEDENCE.md, STALE_STATE_STRATEGY.md, UI_STANDARDS.md. Each file defines stable family IDs (CORE-*, DB-*, DOM-*, MOD-*, PRV-*, STALE-*, UI-*, AGT-*). RULE_INDEX.md maps 150 legacy items to these stable IDs."
+    },
+    {
+      "id": "2.4",
+      "name": "Context coverage vs codebase size",
+      "status": "pass",
+      "points": 2,
+      "max": 2,
+      "critical_gate": false,
+      "evidence": "14 Claude Code context files (2 CLAUDE.md files + 12 .claude/rules/*.md) against 1375 source files under src/. Ratio: 14 context files per 1375 source files = ~1.02 per 100 source files, which is sufficient. Additional coverage from 3 commands, 16 agents, and 155 skill files in .claude/. CLAUDE.md also uses progressive disclosure via references to .claude/rules/AGENT_ROUTING.md and docs/audit/THREE_PILLARS_CONTEXT.md."
+    },
+    {
+      "id": "2.5",
+      "name": "CLAUDE.md exists specifically",
+      "status": "pass",
+      "points": 2,
+      "max": 2,
+      "critical_gate": true,
+      "evidence": "CLAUDE.md confirmed at project root: C:/Users/NewAdmin/Projects/crispy-crm/CLAUDE.md (109 lines). A second CLAUDE.md also found at .agents/skills/supabase-postgres-best-practices/CLAUDE.md (child/skill context file)."
+    },
+    {
+      "id": "2.6",
+      "name": "Context includes testing instructions",
+      "status": "pass",
+      "points": 2,
+      "max": 2,
+      "critical_gate": false,
+      "evidence": "CLAUDE.md line 59: 'Test: npm test - Vitest (renderWithAdminContext). Mock Supabase (setup.ts). E2E: Manual via Claude Chrome. Seed: npm run seed:e2e:dashboard-v3.' Testing section also covers pgTAP for DB security validation. .claude/skills/testing/ skill folder contains references for vitest-patterns.md, mock-patterns.md, react-admin-testing.md, zod-testing.md, and MANUAL_E2E_CLAUDE_CHROME.md."
+    },
+    {
+      "id": "2.7",
+      "name": "Context includes build/run commands",
+      "status": "partial",
+      "points": 1,
+      "max": 2,
+      "critical_gate": false,
+      "evidence": "CLAUDE.md contains deploy/DB workflow commands (npx supabase db push --dry-run, npx supabase db push) and the test command (npm test). However, no explicit npm run build, npm run dev, or vite build command appears in CLAUDE.md body. Lint is referenced as npm run lint only in .claude/rules/RULE_COMMANDS.md (CMD-005), not in the primary CLAUDE.md. TypeScript check (npx tsc --noEmit) is in RULE_COMMANDS.md as CMD-003 but also not surfaced in CLAUDE.md."
+    },
+    {
+      "id": "2.8",
+      "name": "Rules files exist in .claude/rules/ (with YAML frontmatter and globs)",
+      "status": "pass",
+      "points": 2,
+      "max": 2,
+      "critical_gate": false,
+      "evidence": "11 of 12 rule files have YAML frontmatter with globs: field: RULE_COMMANDS.md (globs: ['src/**', 'supabase/**']), RULE_PRECEDENCE.md (globs: ['.claude/rules/**', 'src/**', 'supabase/**']), AGENT_ROUTING.md, CODE_QUALITY.md, DATABASE_LAYER.md, DOMAIN_INTEGRITY.md, MODULE_CHECKLIST.md, PROVIDER_RULES.md, RULE_INDEX.md, STALE_STATE_STRATEGY.md, UI_STANDARDS.md all have globs:. Only CORE_CONSTRAINTS.md lacks frontmatter (starts with BOM + heading directly)."
+    },
+    {
+      "id": "2.9",
+      "name": "CLAUDE.md contains key commands",
+      "status": "partial",
+      "points": 1,
+      "max": 2,
+      "critical_gate": true,
+      "evidence": "CLAUDE.md contains test command (npm test, line 59) and seed command (npm run seed:e2e:dashboard-v3). No build command (npm run build / vite build) appears in CLAUDE.md. No lint command (npm run lint) appears in CLAUDE.md - it lives only in RULE_COMMANDS.md (CMD-005). No explicit format command in CLAUDE.md. Only 1 of 4 core command categories (test) is directly present in CLAUDE.md; build and lint are delegated to rules files without a summary pointer in the main file."
+    },
+    {
+      "id": "2.10",
+      "name": "Skills/commands defined (.claude/commands/ or .claude/skills/)",
+      "status": "pass",
+      "points": 2,
+      "max": 2,
+      "critical_gate": false,
+      "evidence": "3 command files in .claude/commands/: commit.md, fix-lint.md, find-feature.md. 16 agent files in .claude/agents/: architect.md, db-specialist.md, explorer.md, implementor.md, quick-gen.md, simplifier.md, prd-generator.md, adr-generator.md, brd-generator.md, documentation-auditor.md, dependency-mapper.md, feature-scanner.md, integration-scanner.md, readme-generator.md, risk-assessor.md, README.md. 155 skill files across .claude/skills/ covering debugging, architecture-audit, data-layer, ui-standards, testing, and engineering domains."
+    }
+  ],
+  "summary": {
+    "points": 18,
+    "max": 20,
+    "pass": 8,
+    "partial": 2,
+    "fail": 0,
+    "critical_gates": {
+      "2.1": "pass",
+      "2.5": "pass",
+      "2.9": "partial"
+    },
+    "notes": "Strong Claude Code context setup. Primary gaps: CLAUDE.md does not surface the build command (npm run build) or lint command (npm run lint) directly in its body - these exist in .claude/rules/RULE_COMMANDS.md but are not linked from CLAUDE.md. Adding a concise 'Key Commands' section to CLAUDE.md with build, dev, lint, and format commands would make 2.7 and 2.9 full passes."
+  }
+}

@@ -1,0 +1,662 @@
+{
+  "tool": "ai-readiness-scanner",
+  "version": "0.3.0",
+  "scan_id": "scan-20260306-001",
+  "timestamp": "2026-03-06T12:00:00.000Z",
+  "codebase": "C:/Users/NewAdmin/Projects/crispy-crm",
+  "detected": {
+    "language": "TypeScript",
+    "framework": "React Admin",
+    "package_manager": "npm"
+  },
+  "overall": {
+    "score": 88.9,
+    "grade": "B+",
+    "phase2_eligible": true,
+    "phase2_blockers": []
+  },
+  "categories": {
+    "manifest": { "score": 100.0, "grade": "A+", "points": 9, "max": 9 },
+    "context_files": { "score": 90.0, "grade": "A-", "points": 18, "max": 20 },
+    "structure": { "score": 81.3, "grade": "B-", "points": 13, "max": 16 },
+    "entry_points": { "score": 81.8, "grade": "B-", "points": 9, "max": 11 },
+    "conventions": { "score": 92.3, "grade": "A-", "points": 12, "max": 13 },
+    "feedback_loops": { "score": 90.9, "grade": "A-", "points": 10, "max": 11 },
+    "baseline": { "score": 80.0, "grade": "B-", "points": 4, "max": 5 },
+    "context_budget": { "score": 92.3, "grade": "A-", "points": 12, "max": 13 },
+    "database": {
+      "score": 85.7,
+      "grade": "B",
+      "points": 12,
+      "max": 14,
+      "status": "applicable",
+      "stack": "supabase"
+    }
+  },
+  "critical_gates": {
+    "1.1": "pass",
+    "2.1": "pass",
+    "2.5": "pass",
+    "2.9": "pass",
+    "3.6": "pass",
+    "4.1": "pass",
+    "5.6": "pass",
+    "6.1": "pass"
+  },
+  "checks": [
+    {
+      "id": "1.1",
+      "name": "Primary manifest exists",
+      "status": "pass",
+      "points": 3,
+      "max": 3,
+      "critical_gate": true,
+      "evidence": "package.json at root; name='atomic-crm', version='0.1.0'. No competing manifests."
+    },
+    {
+      "id": "1.2",
+      "name": "Manifest parseable and complete",
+      "status": "pass",
+      "points": 2,
+      "max": 2,
+      "critical_gate": false,
+      "evidence": "Valid JSON; name, 45 production + 26 dev deps, 60+ scripts including dev/build/test/lint/typecheck/seed."
+    },
+    {
+      "id": "1.3",
+      "name": "Language/framework detectable",
+      "status": "pass",
+      "points": 2,
+      "max": 2,
+      "critical_gate": false,
+      "evidence": "TypeScript ^5.9.3, React Admin ^5.10.0, React 19, Supabase JS ^2.75.1 from manifest deps."
+    },
+    {
+      "id": "1.4",
+      "name": "README explains purpose",
+      "status": "pass",
+      "points": 2,
+      "max": 2,
+      "critical_gate": false,
+      "evidence": "README.md: purpose (sales CRM for food brokers), Quick Start (5 steps), tech stack."
+    },
+    {
+      "id": "2.1",
+      "name": "Claude Code context file exists",
+      "status": "pass",
+      "points": 2,
+      "max": 2,
+      "critical_gate": true,
+      "evidence": "CLAUDE.md at root + full .claude/ directory with rules/, commands/, agents/, skills/, hooks/."
+    },
+    {
+      "id": "2.2",
+      "name": "Context file quality",
+      "status": "pass",
+      "points": 2,
+      "max": 2,
+      "critical_gate": false,
+      "evidence": "109 lines, 5 sections: Architecture, Engineering, Design, Testing/DB, Business Domain. Imperative language."
+    },
+    {
+      "id": "2.3",
+      "name": "Modular rules exist",
+      "status": "pass",
+      "points": 2,
+      "max": 2,
+      "critical_gate": false,
+      "evidence": "12 rules files with stable IDs (CORE/DB/DOM/PRV/UI/MOD/STALE/AGT). RULE_INDEX.md maps 150 legacy items."
+    },
+    {
+      "id": "2.4",
+      "name": "Context coverage vs codebase size",
+      "status": "pass",
+      "points": 2,
+      "max": 2,
+      "critical_gate": false,
+      "evidence": "14 context files per 1,375 source files. 3 commands, 16 agents, 155 skill files."
+    },
+    {
+      "id": "2.5",
+      "name": "CLAUDE.md exists specifically",
+      "status": "pass",
+      "points": 2,
+      "max": 2,
+      "critical_gate": true,
+      "evidence": "CLAUDE.md at project root, 109 lines."
+    },
+    {
+      "id": "2.6",
+      "name": "Context includes testing instructions",
+      "status": "pass",
+      "points": 2,
+      "max": 2,
+      "critical_gate": false,
+      "evidence": "npm test, Vitest, renderWithAdminContext, E2E, seed commands, pgTAP documented."
+    },
+    {
+      "id": "2.7",
+      "name": "Context includes build/run commands",
+      "status": "partial",
+      "points": 1,
+      "max": 2,
+      "critical_gate": false,
+      "evidence": "CLAUDE.md has test and supabase commands but no npm run build, npm run dev, npm run lint directly. Build/lint only in RULE_COMMANDS.md."
+    },
+    {
+      "id": "2.8",
+      "name": "Rules files exist in .claude/rules/",
+      "status": "pass",
+      "points": 2,
+      "max": 2,
+      "critical_gate": false,
+      "evidence": "12 files; 10 of 12 have YAML frontmatter with globs:. 2 intentionally unscoped (CORE_CONSTRAINTS, AGENT_ROUTING)."
+    },
+    {
+      "id": "2.9",
+      "name": "CLAUDE.md contains key commands",
+      "status": "partial",
+      "points": 1,
+      "max": 2,
+      "critical_gate": true,
+      "evidence": "Only npm test present in CLAUDE.md. Build and lint commands delegated to RULE_COMMANDS.md without summary pointer. Gate passes (commands exist in project)."
+    },
+    {
+      "id": "2.10",
+      "name": "Skills/commands defined",
+      "status": "pass",
+      "points": 2,
+      "max": 2,
+      "critical_gate": false,
+      "evidence": "3 commands + 16 agents + 155 skill files across 9 domains."
+    },
+    {
+      "id": "3.1",
+      "name": "Directory nesting depth",
+      "status": "pass",
+      "points": 2,
+      "max": 2,
+      "critical_gate": false,
+      "evidence": "Max depth 8, average 4.05. Pass threshold <=8."
+    },
+    {
+      "id": "3.2",
+      "name": "Files per directory",
+      "status": "pass",
+      "points": 2,
+      "max": 2,
+      "critical_gate": false,
+      "evidence": "Average 8.5 files/dir across 169 source dirs. Under 15 threshold."
+    },
+    {
+      "id": "3.3",
+      "name": "No junk drawer directories",
+      "status": "fail",
+      "points": 0,
+      "max": 2,
+      "critical_gate": false,
+      "evidence": "7 dirs exceed 50 files: migrations-archive (368), ra-wrappers (98), ui (84), organizations (75), opportunities (75), contacts (66), .claude/hooks/state (66)."
+    },
+    {
+      "id": "3.4",
+      "name": "Consistent naming convention",
+      "status": "pass",
+      "points": 2,
+      "max": 2,
+      "critical_gate": false,
+      "evidence": "93.3% kebab-case compliance. 5 camelCase/PascalCase exceptions."
+    },
+    {
+      "id": "3.5",
+      "name": "Barrel/index file coverage",
+      "status": "pass",
+      "points": 2,
+      "max": 2,
+      "critical_gate": false,
+      "evidence": "64 of 96 qualifying dirs (66.7%) have barrels. Above 20% threshold."
+    },
+    {
+      "id": "3.6",
+      "name": "No monolith files",
+      "status": "partial",
+      "points": 1,
+      "max": 2,
+      "critical_gate": true,
+      "evidence": "No hand-written monoliths >5000. 1 auto-generated: database.generated.ts (5,919). Critical gate passes. Listed in CLAUDE.md 'Do Not Read'."
+    },
+    {
+      "id": "3.7",
+      "name": "Source/test/config separation",
+      "status": "pass",
+      "points": 2,
+      "max": 2,
+      "critical_gate": false,
+      "evidence": "5+ clear separations: src/, tests/, docs/, supabase/, scripts/, config at root."
+    },
+    {
+      "id": "3.8",
+      "name": "Module README coverage",
+      "status": "pass",
+      "points": 2,
+      "max": 2,
+      "critical_gate": false,
+      "evidence": "71.7% of major subdirs have README.md. 32/32 atomic-crm feature dirs = 100%."
+    },
+    {
+      "id": "4.1",
+      "name": "Clear application entry point",
+      "status": "pass",
+      "points": 3,
+      "max": 3,
+      "critical_gate": true,
+      "evidence": "src/main.tsx -> App.tsx -> CRM.tsx. Single unambiguous chain."
+    },
+    {
+      "id": "4.2",
+      "name": "Route definitions discoverable",
+      "status": "pass",
+      "points": 2,
+      "max": 2,
+      "critical_gate": false,
+      "evidence": "14 Resource declarations centralized in CRM.tsx. CustomRoutes in same file."
+    },
+    {
+      "id": "4.3",
+      "name": "Configuration sources clear",
+      "status": "fail",
+      "points": 0,
+      "max": 2,
+      "critical_gate": false,
+      "evidence": "22 source files access import.meta.env directly (threshold >15). No centralized config.ts/env.ts abstraction. .env.example exists but reads are scattered."
+    },
+    {
+      "id": "4.4",
+      "name": "Slash commands defined",
+      "status": "pass",
+      "points": 2,
+      "max": 2,
+      "critical_gate": false,
+      "evidence": "3 commands on disk: commit.md, find-feature.md, fix-lint.md. 8 previously tracked commands deleted."
+    },
+    {
+      "id": "4.5",
+      "name": "Agent definitions exist",
+      "status": "pass",
+      "points": 2,
+      "max": 2,
+      "critical_gate": false,
+      "evidence": "16 agent definitions in .claude/agents/."
+    },
+    {
+      "id": "5.1",
+      "name": "Linter config exists",
+      "status": "pass",
+      "points": 2,
+      "max": 2,
+      "critical_gate": false,
+      "evidence": "eslint.config.js + .prettierrc.mjs at project root."
+    },
+    {
+      "id": "5.2",
+      "name": "Type safety configured",
+      "status": "pass",
+      "points": 2,
+      "max": 2,
+      "critical_gate": false,
+      "evidence": "tsconfig strict: true + noUnusedLocals, noUnusedParameters, noUncheckedIndexedAccess."
+    },
+    {
+      "id": "5.3",
+      "name": "Pattern consistency",
+      "status": "pass",
+      "points": 2,
+      "max": 2,
+      "critical_gate": false,
+      "evidence": "Handler files share identical structure: JSDoc header, same imports, same factory signature, same wrapper composition. Consistent @ aliases."
+    },
+    {
+      "id": "5.4",
+      "name": ".gitignore comprehensive",
+      "status": "pass",
+      "points": 1,
+      "max": 1,
+      "critical_gate": false,
+      "evidence": "Covers node_modules, dist, .env, IDE, OS files, coverage, Supabase secrets, .mcp.json."
+    },
+    {
+      "id": "5.5",
+      "name": "Convention language actionable",
+      "status": "pass",
+      "points": 2,
+      "max": 2,
+      "critical_gate": false,
+      "evidence": "4 imperative types (ALWAYS, NEVER, MUST, DO NOT). 0 vague terms (prefer, try to, consider)."
+    },
+    {
+      "id": "5.6",
+      "name": "Do-not-touch zones marked",
+      "status": "pass",
+      "points": 2,
+      "max": 2,
+      "critical_gate": true,
+      "evidence": "6 protected paths with 'NEVER modify without explicit human approval'. Do Not Read zone for database.generated.ts."
+    },
+    {
+      "id": "5.7",
+      "name": "MCP servers configured",
+      "status": "pass",
+      "points": 1,
+      "max": 1,
+      "critical_gate": false,
+      "evidence": ".mcp.json with Supabase MCP + fine-grained permissions in .claude/settings.json."
+    },
+    {
+      "id": "6.1",
+      "name": "Test files exist",
+      "status": "partial",
+      "points": 2,
+      "max": 3,
+      "critical_gate": true,
+      "evidence": "381 test files, 23.6% ratio. Gate passes. Below 60% for full marks. SQL tests also present."
+    },
+    {
+      "id": "6.2",
+      "name": "Test runner configured",
+      "status": "pass",
+      "points": 2,
+      "max": 2,
+      "critical_gate": false,
+      "evidence": "Vitest ^3.2.4 with 4 script variants: test, test:ci, test:coverage, test:unit."
+    },
+    {
+      "id": "6.3",
+      "name": "CI/CD pipeline exists",
+      "status": "pass",
+      "points": 2,
+      "max": 2,
+      "critical_gate": false,
+      "evidence": "3 GitHub Actions workflows: ci.yml (tests on push/PR), security.yml, supabase-deploy.yml."
+    },
+    {
+      "id": "6.4",
+      "name": "Pre-commit hooks configured",
+      "status": "pass",
+      "points": 1,
+      "max": 1,
+      "critical_gate": false,
+      "evidence": "Husky pre-commit (188 lines): env blocking, UI patterns, type-checking, color validation, migration drift."
+    },
+    {
+      "id": "6.5",
+      "name": "Claude Code hooks configured",
+      "status": "pass",
+      "points": 1,
+      "max": 1,
+      "critical_gate": false,
+      "evidence": "PreToolUse (migration-guard, verification-before-git), PostToolUse (prettier, eslint, tracker), Stop (verify-tests)."
+    },
+    {
+      "id": "6.6",
+      "name": "Test command cross-validation",
+      "status": "pass",
+      "points": 2,
+      "max": 2,
+      "critical_gate": false,
+      "evidence": "CLAUDE.md 'npm test' matches vitest in package.json. CI uses test:ci (sharded variant)."
+    },
+    {
+      "id": "B.1",
+      "name": "Machine-readable state files",
+      "status": "pass",
+      "points": 2,
+      "max": 2,
+      "critical_gate": false,
+      "evidence": "7 JSON baselines in docs/audit/baseline/, dated 2026-03-04 (2 days old)."
+    },
+    {
+      "id": "B.2",
+      "name": "Previous audit results available",
+      "status": "pass",
+      "points": 1,
+      "max": 1,
+      "critical_gate": false,
+      "evidence": "readability-score.json (scan-20260305-004), audit-meta.json, confidence-changelog.md."
+    },
+    {
+      "id": "B.3",
+      "name": "Audit progress file",
+      "status": "fail",
+      "points": 0,
+      "max": 1,
+      "critical_gate": false,
+      "evidence": "No progress/resume file found. No checkpoint artifact for scan resumption."
+    },
+    {
+      "id": "B.4",
+      "name": "Structured data files",
+      "status": "pass",
+      "points": 1,
+      "max": 1,
+      "critical_gate": false,
+      "evidence": "4 structured JSON data files: dependency-map, feature-inventory, integration-map, risk-assessment."
+    },
+    {
+      "id": "8.1",
+      "name": "Total persistent token estimate",
+      "status": "pass",
+      "points": 2,
+      "max": 2,
+      "critical_gate": false,
+      "evidence": "CORRECTED: ~8,533 tokens always-loaded (CLAUDE.md 1,489 + CORE_CONSTRAINTS.md 875 + AGENT_ROUTING.md 849 + skill-index 3,467 + settings 539 + mcp 64 + SKILL catalog ~1,250). Under 10K threshold. Scanner originally reported ~9,167 due to miscounting RULE_COMMANDS.md and RULE_PRECEDENCE.md as unscoped (both have globs: frontmatter)."
+    },
+    {
+      "id": "8.2",
+      "name": "CLAUDE.md instruction density",
+      "status": "pass",
+      "points": 2,
+      "max": 2,
+      "critical_gate": false,
+      "evidence": "40 imperatives in 108 lines. Under 60 threshold."
+    },
+    {
+      "id": "8.3",
+      "name": "Rules file scoping ratio",
+      "status": "pass",
+      "points": 2,
+      "max": 2,
+      "critical_gate": false,
+      "evidence": "10 of 12 rules files have globs: frontmatter. 2 intentionally unscoped (CORE_CONSTRAINTS.md, AGENT_ROUTING.md). 100% effective scoping of scopeable rules."
+    },
+    {
+      "id": "8.4",
+      "name": "Skills count reasonable",
+      "status": "pass",
+      "points": 1,
+      "max": 1,
+      "critical_gate": false,
+      "evidence": "9 skills + 3 commands = 12 total. Under 15 threshold."
+    },
+    {
+      "id": "8.5",
+      "name": "MCP server count",
+      "status": "pass",
+      "points": 1,
+      "max": 1,
+      "critical_gate": false,
+      "evidence": "2 MCP servers (vercel, supabase). Under 5 threshold."
+    },
+    {
+      "id": "8.6",
+      "name": "Instruction budget estimate",
+      "status": "partial",
+      "points": 1,
+      "max": 2,
+      "critical_gate": false,
+      "evidence": "CORRECTED: ~95 always-loaded imperatives (CLAUDE.md 40 + CORE_CONSTRAINTS.md 25 + AGENT_ROUTING.md 30). Over 80 threshold but under 120. Scanner originally counted 136 by including RULE_COMMANDS.md (22) and RULE_PRECEDENCE.md (19) which are scoped. Adding globs: to AGENT_ROUTING.md would drop to 65."
+    },
+    {
+      "id": "8.7",
+      "name": "Progressive disclosure",
+      "status": "pass",
+      "points": 1,
+      "max": 1,
+      "critical_gate": false,
+      "evidence": "Layered: CLAUDE.md -> scoped rules -> agents/skills. 4 doc-pointer lines."
+    },
+    {
+      "id": "8.8",
+      "name": "No context-budget anti-patterns",
+      "status": "pass",
+      "points": 2,
+      "max": 2,
+      "critical_gate": false,
+      "evidence": "0 anti-patterns across 9 checks. No code blocks, no duplicates, no orphan rules."
+    },
+    {
+      "id": "9.1",
+      "name": "Schema source of truth exists",
+      "status": "pass",
+      "points": 3,
+      "max": 3,
+      "critical_gate": false,
+      "evidence": "6 declarative schema files in supabase/schemas/ (1,169 lines): tables-core, tables-junctions, tables-notes, tables-reference, views, functions."
+    },
+    {
+      "id": "9.2",
+      "name": "Generated types exist",
+      "status": "partial",
+      "points": 1,
+      "max": 2,
+      "critical_gate": false,
+      "evidence": "database.generated.ts (5,919 lines) exists but ~12 hours stale vs latest migration."
+    },
+    {
+      "id": "9.3",
+      "name": "Migrations sequential",
+      "status": "pass",
+      "points": 2,
+      "max": 2,
+      "critical_gate": false,
+      "evidence": "17 sequential timestamped migrations. No gaps."
+    },
+    {
+      "id": "9.4",
+      "name": "Data access centralized",
+      "status": "pass",
+      "points": 2,
+      "max": 2,
+      "critical_gate": false,
+      "evidence": "composedDataProvider.ts routes to 13+ handlers. CORE-001 enforced. Supabase client in 10 files within provider boundary."
+    },
+    {
+      "id": "9.5",
+      "name": "Database MCP configured",
+      "status": "pass",
+      "points": 1,
+      "max": 1,
+      "critical_gate": false,
+      "evidence": "Supabase MCP with execute_sql, list_tables, apply_migration, generate_types permissions."
+    },
+    {
+      "id": "9.6",
+      "name": "Seed data available",
+      "status": "pass",
+      "points": 1,
+      "max": 1,
+      "critical_gate": false,
+      "evidence": "4 SQL seeds, CSV data, TypeScript fixtures, npm seed scripts."
+    },
+    {
+      "id": "9.7",
+      "name": "Schema documented in context",
+      "status": "pass",
+      "points": 2,
+      "max": 2,
+      "critical_gate": false,
+      "evidence": "CLAUDE.md DB section + DATABASE_LAYER.md (13 rules) + supabase/schemas/README.md."
+    },
+    {
+      "id": "9.8",
+      "name": "Connection patterns documented",
+      "status": "pass",
+      "points": 1,
+      "max": 1,
+      "critical_gate": false,
+      "evidence": ".env.example with 14 DB vars annotated. CLAUDE.md cloud-only workflow. Fail-fast in supabase.ts."
+    }
+  ],
+  "generation_offers": [
+    {
+      "priority": "high",
+      "number": 1,
+      "title": "Add key commands to CLAUDE.md",
+      "check_id": "2.7, 2.9",
+      "score_impact": "+2 pts (+0.36 weighted)",
+      "action": "GENERATE: Add a 'Key Commands' section to CLAUDE.md with npm run build, npm run dev, npm run lint, npx tsc --noEmit",
+      "guidance_only": false
+    },
+    {
+      "priority": "high",
+      "number": 2,
+      "title": "Add globs: frontmatter to AGENT_ROUTING.md",
+      "check_id": "8.6",
+      "score_impact": "+1 pt (+0.11 weighted) and reduces always-loaded instructions from 95 to 65",
+      "action": "GENERATE: Add YAML frontmatter with globs: to .claude/rules/AGENT_ROUTING.md",
+      "guidance_only": false
+    },
+    {
+      "priority": "medium",
+      "number": 3,
+      "title": "Centralize import.meta.env access",
+      "check_id": "4.3",
+      "score_impact": "+2 pts (+0.18 weighted)",
+      "action": "MANUAL: Create src/config/env.ts exporting all VITE_* variables. Replace 22 scattered import.meta.env accesses.",
+      "guidance_only": true
+    },
+    {
+      "priority": "medium",
+      "number": 4,
+      "title": "Split oversized directories",
+      "check_id": "3.3",
+      "score_impact": "+2 pts (+0.34 weighted)",
+      "action": "MANUAL: Split ra-wrappers/ (98 files) and ui/ (84 files) into sub-directories",
+      "guidance_only": true
+    },
+    {
+      "priority": "low",
+      "number": 5,
+      "title": "Regenerate database types",
+      "check_id": "9.2",
+      "score_impact": "+1 pt (+0.08 weighted)",
+      "action": "MANUAL: Run npx supabase gen types typescript to refresh stale types",
+      "guidance_only": true
+    },
+    {
+      "priority": "low",
+      "number": 6,
+      "title": "Create audit progress file",
+      "check_id": "B.3",
+      "score_impact": "+1 pt (+0.05 weighted)",
+      "action": "GENERATE: Create docs/audit/readability/audit-progress.json",
+      "guidance_only": false
+    },
+    {
+      "priority": "low",
+      "number": 7,
+      "title": "Increase test file ratio",
+      "check_id": "6.1",
+      "score_impact": "+1 pt (+0.07 weighted)",
+      "action": "MANUAL: Grow test coverage from 23.6% toward 60%+",
+      "guidance_only": true
+    }
+  ],
+  "delta": {
+    "previous_scan_id": "scan-20260305-004",
+    "previous_score": 92.9,
+    "previous_grade": "A-",
+    "score_change": -4.0,
+    "improved_checks": ["5.3"],
+    "regressed_checks": ["2.7", "2.9", "4.3", "8.6"],
+    "notes": "Score dropped from A- (92.9) to B+ (88.9). Main regressions: (1) 4.3 failed - 22 files scatter import.meta.env with no centralized config module; (2) 2.7/2.9 partial - build/lint commands not directly in CLAUDE.md, only in RULE_COMMANDS.md; (3) 8.6 partial - AGENT_ROUTING.md now always-loaded without globs: frontmatter, pushing instruction count to 95 (was 65). One improvement: 5.3 handler pattern consistency now confirmed across sampled files."
+  }
+}

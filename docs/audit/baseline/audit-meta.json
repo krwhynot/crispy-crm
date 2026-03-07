@@ -1,57 +1,81 @@
 {
-  "run_timestamp": "2026-03-03T23:00:00Z",
+  "run_timestamp": "2026-03-04T17:00:00Z",
   "run_type": "incremental",
-  "previous_run": "2026-03-03T20:00:00Z",
+  "previous_run": "2026-03-04T12:00:00Z",
   "agents_deployed": 5,
   "agents_succeeded": 5,
   "agents_failed": 0,
-  "baselines_written": 6,
-  "baselines_valid": 6,
+  "baselines_written": 7,
+  "baselines_valid": 7,
   "confidence_deltas": {
     "feature_inventory": {
-      "previous_avg": 0.922,
-      "current_avg": 0.912,
-      "new_features": 7,
+      "previous_avg": 0.912,
+      "current_avg": 0.917,
+      "previous_total": 18,
+      "current_total": 22,
+      "new_features": 4,
       "decayed": 0,
-      "note": "7 new infrastructure features added (Hooks, Constants, Root, AppLayout, Utils, Contexts, SharedComponents). Total features 25→32. Avg confidence stable at 0.912."
+      "note": "4 new features catalogued (Provider feat-prv-001, Services feat-svc-001, Pages feat-pag-001, Admin feat-adm-001). Total 18→22. Timeline upgraded to full test coverage. Avg confidence 0.912→0.917."
     },
     "risk_assessment": {
-      "modules_added": 5,
-      "modules_total": 33,
+      "modules_added": 2,
+      "modules_total": 36,
       "high_risk_count": 8,
-      "medium_risk_count": 12,
-      "low_risk_count": 13,
-      "note": "filters module promoted to regression priority 5 (0→16 commits, 0 tests). 5 new modules tracked (admin, config, root, shared, tests). sales and src/components above CI/CD threshold for 3rd consecutive audit."
+      "medium_risk_count": 13,
+      "low_risk_count": 15,
+      "note": "consts module added (trivially low risk). services module tracked (medium risk, 2379 LOC). opportunities risk increased 82→85 (14480 LOC confirmed). supabase_functions risk reduced 78→75 (11 pgTAP tests). Phase boundaries: 15 low / 13 medium / 8 high."
     },
     "dependency_map": {
       "npm_packages": 115,
-      "internal_modules": 34,
+      "internal_modules": 36,
       "circular_references": 0,
       "god_classes": 1,
-      "note": "No structural changes. authProvider.ts recovery link hardened. Module dependency graph unchanged."
+      "shared_mutable_state": 9,
+      "note": "consts.ts added (fan_in=1). CurrentSaleContext and FilterLayoutModeContext added as dashboard/filter-scoped contexts. database.types.ts and supabase.ts deleted → database.generated.ts. God class handler count corrected: 21 unique factories (was keyword-grep 47)."
     },
     "documentation_coverage": {
-      "previous_total": 64,
-      "current_total": 175,
-      "previous_avg_quality": 3.7,
-      "current_avg_quality": 4.2,
-      "note": "Major improvement: 37 READMEs added, 3 PRDs added, ~70 skill docs added. All high-risk modules now documented."
+      "previous_total": 228,
+      "current_total": 238,
+      "previous_avg_quality": 4.3,
+      "current_avg_quality": 4.3,
+      "adr_count_previous": 4,
+      "adr_count_current": 8,
+      "jsdoc_coverage_pct": 22,
+      "note": "4 new ADRs (005-008) for all 4 highest-risk features. supabase/schemas/ reference layer added (6 SQL files + README). three-pillars-report.md added. .env.example added. ADR gap for high-risk features now fully closed."
     },
     "integration_map": {
-      "total_integrations": 21,
-      "security_issues": 8,
-      "note": "sec-003 and sec-004 severity downgraded. New sec-008 (hardcoded prod domains). sec-007 scoped to style-src only."
+      "total_integrations": 22,
+      "security_issues_previous": 9,
+      "security_issues_current": 8,
+      "note": "sec-009 (CSP divergence) RESOLVED — csp-config.ts now aligned with vite.config.ts. All other 8 security observations confirmed unresolved. sec-001/sec-002 (committed .env files) remain highest priority."
+    },
+    "document_linkage": {
+      "features_with_brd": 8,
+      "features_with_prd": 8,
+      "features_with_adr": 4,
+      "features_fully_documented": 4,
+      "features_missing_all_docs": 10,
+      "note": "4 new features added to linkage. Provider has PRD+ADR via infrastructure docs. 10 features still have no BRD/PRD/ADR — all are low/medium risk."
     }
   },
   "synthesis_cross_references": {
     "high_coupling_high_risk": [
-      "validation (fan_in=91, high risk)",
-      "providers (fan_in=N/A but god-class, high risk)",
-      "opportunities (fan_in=19, high risk)"
+      "providers (god-class composedDataProvider, risk=90, 21 handlers)",
+      "opportunities (fan_in=19, fan_out=10, risk=85, 14480 LOC)",
+      "validation (fan_in=91, risk=80, highest fan-in module)"
     ],
-    "high_risk_no_prd": ["dashboard", "validation", "providers", "src/components", "supabase"],
-    "high_coupling_no_adr": ["opportunities", "contacts"],
-    "new_regression_priority": "filters (0→16 commits, 0 tests, consumed by all list views)",
+    "high_risk_no_adr": [],
+    "high_risk_no_prd": [],
+    "elevated_churn_watch": [
+      "sales (4th consecutive audit above churn threshold)",
+      "supabase_migrations (472 commits in 6mo, highest change-frequency layer)"
+    ],
+    "new_features_this_audit": [
+      "Provider (feat-prv-001) — 21 handler factories, full test coverage",
+      "Services (feat-svc-001) — junctions/segments/storage, 5 test files",
+      "Pages (feat-pag-001) — WhatsNew.tsx 518 LOC, no tests",
+      "Admin (feat-adm-001) — HealthDashboard 357 LOC, no tests"
+    ],
     "undocumented_high_risk_count": 0
   }
 }

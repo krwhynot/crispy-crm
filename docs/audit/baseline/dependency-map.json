@@ -4,11 +4,11 @@
     "total_npm_packages": 115,
     "total_npm_prod_packages": 67,
     "total_npm_dev_packages": 48,
-    "total_internal_modules": 34,
+    "total_internal_modules": 36,
     "total_project_references": 0,
     "circular_references": 0,
     "god_classes": 1,
-    "shared_mutable_state_count": 7,
+    "shared_mutable_state_count": 9,
     "most_coupled_modules": [
       {
         "module": "validation",
@@ -44,14 +44,50 @@
     ],
     "changes_since_last_audit": [
       {
-        "type": "bug_fix",
+        "type": "new_module",
+        "module": "consts",
+        "description": "New src/atomic-crm/consts.ts with five event-name constants. Imported only by types.ts.",
+        "file": "src/atomic-crm/consts.ts"
+      },
+      {
+        "type": "dependency_added",
+        "module": "types",
+        "description": "types.ts now imports from new consts.ts. fan_out updated 0 to 1.",
+        "file": "src/atomic-crm/types.ts"
+      },
+      {
+        "type": "new_context",
+        "module": "dashboard",
+        "description": "CurrentSaleContext added as internal dashboard context for session-level salesId caching. No new cross-module atomic-crm production dependencies.",
+        "file": "src/atomic-crm/dashboard/CurrentSaleContext.tsx"
+      },
+      {
+        "type": "new_context",
+        "module": "filters",
+        "description": "FilterLayoutModeContext added. Consumed within filters and by AdaptiveFilterContainer.tsx outside atomic-crm boundary.",
+        "file": "src/atomic-crm/filters/FilterLayoutModeContext.tsx"
+      },
+      {
+        "type": "file_deleted",
+        "module": "types",
+        "description": "src/types/database.types.ts and src/types/supabase.ts deleted. Replaced by src/types/database.generated.ts. No atomic-crm module-level impact.",
+        "files_deleted": ["src/types/database.types.ts", "src/types/supabase.ts"],
+        "file_added": "src/types/database.generated.ts"
+      },
+      {
+        "type": "new_directory",
+        "module": "supabase",
+        "description": "supabase/schemas/ added with SQL schema docs. No TypeScript dependency graph impact.",
+        "path": "supabase/schemas/"
+      },
+      {
+        "type": "god_class_metric_update",
         "module": "providers",
-        "description": "authProvider.ts: hardened recovery link redirect. Hash check now also passes when URL contains type=recovery and access_token tokens. No new module imports added; module dependency graph unchanged.",
-        "file": "src/atomic-crm/providers/supabase/authProvider.ts",
-        "commit_range": "HEAD~3..HEAD"
+        "description": "composedDataProvider.ts: 21 unique handler factories (42 occurrences). HANDLED_RESOURCES has 22 entries. Line count 260 unchanged. Prior audit used keyword grep count of 47.",
+        "file": "src/atomic-crm/providers/supabase/composedDataProvider.ts"
       }
     ],
-    "last_audit": "2026-03-03T12:00:00.000Z"
+    "last_audit": "2026-03-04T12:00:00.000Z"
   },
   "npm_packages": {
     "prod": [
@@ -537,16 +573,8 @@
       "file_count": 24,
       "fan_out": 5,
       "fan_in": 1,
-      "references": [
-        "constants",
-        "layout",
-        "types",
-        "utils",
-        "validation"
-      ],
-      "referenced_by": [
-        "timeline"
-      ],
+      "references": ["constants", "layout", "types", "utils", "validation"],
+      "referenced_by": ["timeline"],
       "npm_dependencies": []
     },
     {
@@ -556,9 +584,7 @@
       "file_count": 2,
       "fan_out": 1,
       "fan_in": 0,
-      "references": [
-        "constants"
-      ],
+      "references": ["constants"],
       "referenced_by": [],
       "npm_dependencies": []
     },
@@ -569,19 +595,8 @@
       "file_count": 7,
       "fan_out": 4,
       "fan_in": 7,
-      "references": [
-        "constants",
-        "queryKeys",
-        "utils",
-        "validation"
-      ],
-      "referenced_by": [
-        "contacts",
-        "opportunities",
-        "organizations",
-        "tags",
-        "tasks"
-      ],
+      "references": ["constants", "queryKeys", "utils", "validation"],
+      "referenced_by": ["contacts", "opportunities", "organizations", "tags", "tasks"],
       "npm_dependencies": []
     },
     {
@@ -594,6 +609,18 @@
       "references": [],
       "referenced_by": [],
       "npm_dependencies": []
+    },
+    {
+      "name": "consts",
+      "path": "src/atomic-crm/consts.ts",
+      "type": "typescript",
+      "file_count": 1,
+      "fan_out": 0,
+      "fan_in": 1,
+      "references": [],
+      "referenced_by": ["types"],
+      "npm_dependencies": [],
+      "notes": "NEW MODULE. Event-name constants only consumer is types.ts."
     },
     {
       "name": "constants",
@@ -662,32 +689,22 @@
       "file_count": 62,
       "fan_out": 6,
       "fan_in": 0,
-      "references": [
-        "constants",
-        "opportunities",
-        "queryKeys",
-        "tasks",
-        "utils",
-        "validation"
-      ],
+      "references": ["constants", "opportunities", "queryKeys", "tasks", "utils", "validation"],
       "referenced_by": [],
-      "npm_dependencies": []
+      "npm_dependencies": [],
+      "notes": "CurrentSaleContext and useCurrentSale added as internal context (session-level salesId cache). No new cross-module atomic-crm dependencies."
     },
     {
       "name": "filters",
       "path": "src/atomic-crm/filters/",
       "type": "typescript",
-      "file_count": 36,
+      "file_count": 40,
       "fan_out": 2,
       "fan_in": 1,
-      "references": [
-        "opportunities",
-        "validation"
-      ],
-      "referenced_by": [
-        "contacts"
-      ],
-      "npm_dependencies": []
+      "references": ["opportunities", "validation"],
+      "referenced_by": ["contacts"],
+      "npm_dependencies": [],
+      "notes": "FilterLayoutModeContext added. Consumed within filters and by AdaptiveFilterContainer.tsx. No new cross-module atomic-crm production dependencies."
     },
     {
       "name": "hooks",
@@ -696,16 +713,8 @@
       "file_count": 14,
       "fan_out": 1,
       "fan_in": 13,
-      "references": [
-        "constants"
-      ],
-      "referenced_by": [
-        "contacts",
-        "opportunities",
-        "organizations",
-        "settings",
-        "tags"
-      ],
+      "references": ["constants"],
+      "referenced_by": ["contacts", "opportunities", "organizations", "settings", "tags"],
       "npm_dependencies": []
     },
     {
@@ -716,9 +725,7 @@
       "fan_out": 0,
       "fan_in": 5,
       "references": [],
-      "referenced_by": [
-        "activities"
-      ],
+      "referenced_by": ["activities"],
       "npm_dependencies": []
     },
     {
@@ -729,10 +736,9 @@
       "fan_out": 0,
       "fan_in": 3,
       "references": [],
-      "referenced_by": [
-        "root"
-      ],
-      "npm_dependencies": []
+      "referenced_by": ["root"],
+      "npm_dependencies": [],
+      "notes": "New test file __tests__/StartPage.test.tsx added in commit 42121a816. Production dependency graph unchanged."
     },
     {
       "name": "notes",
@@ -741,9 +747,7 @@
       "file_count": 7,
       "fan_out": 1,
       "fan_in": 7,
-      "references": [
-        "constants"
-      ],
+      "references": ["constants"],
       "referenced_by": [],
       "npm_dependencies": []
     },
@@ -754,11 +758,10 @@
       "file_count": 4,
       "fan_out": 1,
       "fan_in": 3,
-      "references": [
-        "queryKeys"
-      ],
+      "references": ["queryKeys"],
       "referenced_by": [],
-      "npm_dependencies": []
+      "npm_dependencies": [],
+      "notes": "New test file __tests__/NotificationsList.test.tsx added in commit 42121a816. Production dependency graph unchanged."
     },
     {
       "name": "opportunities",
@@ -779,14 +782,7 @@
         "utils",
         "validation"
       ],
-      "referenced_by": [
-        "contacts",
-        "dashboard",
-        "filters",
-        "reports",
-        "root",
-        "utils"
-      ],
+      "referenced_by": ["contacts", "dashboard", "filters", "reports", "root", "utils"],
       "npm_dependencies": []
     },
     {
@@ -796,18 +792,8 @@
       "file_count": 97,
       "fan_out": 6,
       "fan_in": 3,
-      "references": [
-        "components",
-        "constants",
-        "hooks",
-        "queryKeys",
-        "utils",
-        "validation"
-      ],
-      "referenced_by": [
-        "contacts",
-        "opportunities"
-      ],
+      "references": ["components", "constants", "hooks", "queryKeys", "utils", "validation"],
+      "referenced_by": ["contacts", "opportunities"],
       "npm_dependencies": []
     },
     {
@@ -828,11 +814,10 @@
       "file_count": 12,
       "fan_out": 1,
       "fan_in": 11,
-      "references": [
-        "utils"
-      ],
+      "references": ["utils"],
       "referenced_by": [],
-      "npm_dependencies": []
+      "npm_dependencies": [],
+      "notes": "New test file __tests__/ProductDistributorList.test.tsx added in commit 42121a816. Production dependency graph unchanged."
     },
     {
       "name": "products",
@@ -841,12 +826,7 @@
       "file_count": 27,
       "fan_out": 4,
       "fan_in": 0,
-      "references": [
-        "constants",
-        "queryKeys",
-        "utils",
-        "validation"
-      ],
+      "references": ["constants", "queryKeys", "utils", "validation"],
       "referenced_by": [],
       "npm_dependencies": []
     },
@@ -857,20 +837,10 @@
       "file_count": 116,
       "fan_out": 4,
       "fan_in": 6,
-      "references": [
-        "services",
-        "types",
-        "utils",
-        "validation"
-      ],
-      "referenced_by": [
-        "opportunities",
-        "validation"
-      ],
-      "npm_dependencies": [
-        "@supabase/supabase-js",
-        "ra-supabase-core"
-      ]
+      "references": ["services", "types", "utils", "validation"],
+      "referenced_by": ["opportunities", "validation", "searchability"],
+      "npm_dependencies": ["@supabase/supabase-js", "ra-supabase-core"],
+      "notes": "composedDataProvider.ts routes 21 unique resource handlers across 22 HANDLED_RESOURCES entries. Line count 260 unchanged."
     },
     {
       "name": "queryKeys",
@@ -902,14 +872,7 @@
       "file_count": 58,
       "fan_out": 6,
       "fan_in": 5,
-      "references": [
-        "constants",
-        "opportunities",
-        "queryKeys",
-        "types",
-        "utils",
-        "validation"
-      ],
+      "references": ["constants", "opportunities", "queryKeys", "types", "utils", "validation"],
       "referenced_by": [],
       "npm_dependencies": []
     },
@@ -920,10 +883,7 @@
       "file_count": 6,
       "fan_out": 2,
       "fan_in": 6,
-      "references": [
-        "login",
-        "opportunities"
-      ],
+      "references": ["login", "opportunities"],
       "referenced_by": [],
       "npm_dependencies": []
     },
@@ -934,15 +894,21 @@
       "file_count": 20,
       "fan_out": 5,
       "fan_in": 0,
-      "references": [
-        "constants",
-        "queryKeys",
-        "types",
-        "utils",
-        "validation"
-      ],
+      "references": ["constants", "queryKeys", "types", "utils", "validation"],
       "referenced_by": [],
       "npm_dependencies": []
+    },
+    {
+      "name": "searchability",
+      "path": "src/atomic-crm/searchability.ts",
+      "type": "typescript",
+      "file_count": 1,
+      "fan_out": 1,
+      "fan_in": 0,
+      "references": ["providers"],
+      "referenced_by": [],
+      "npm_dependencies": [],
+      "notes": "NEW MODULE. Thin adapter exposing isResourceSearchable() by delegating to providers/supabase/resources. Zero atomic-crm consumers; consumed only by src/components/layouts/ListPageLayout.tsx outside the atomic-crm boundary."
     },
     {
       "name": "services",
@@ -952,10 +918,7 @@
       "fan_out": 0,
       "fan_in": 8,
       "references": [],
-      "referenced_by": [
-        "opportunities",
-        "providers"
-      ],
+      "referenced_by": ["opportunities", "providers"],
       "npm_dependencies": []
     },
     {
@@ -965,13 +928,10 @@
       "file_count": 13,
       "fan_out": 3,
       "fan_in": 0,
-      "references": [
-        "constants",
-        "hooks",
-        "queryKeys"
-      ],
+      "references": ["constants", "hooks", "queryKeys"],
       "referenced_by": [],
-      "npm_dependencies": []
+      "npm_dependencies": [],
+      "notes": "New test file __tests__/Settings.test.tsx added in commit 42121a816. Production dependency graph unchanged."
     },
     {
       "name": "shared",
@@ -991,12 +951,7 @@
       "file_count": 18,
       "fan_out": 4,
       "fan_in": 0,
-      "references": [
-        "components",
-        "constants",
-        "hooks",
-        "queryKeys"
-      ],
+      "references": ["components", "constants", "hooks", "queryKeys"],
       "referenced_by": [],
       "npm_dependencies": []
     },
@@ -1007,16 +962,8 @@
       "file_count": 29,
       "fan_out": 5,
       "fan_in": 3,
-      "references": [
-        "components",
-        "constants",
-        "queryKeys",
-        "utils",
-        "validation"
-      ],
-      "referenced_by": [
-        "dashboard"
-      ],
+      "references": ["components", "constants", "queryKeys", "utils", "validation"],
+      "referenced_by": ["dashboard"],
       "npm_dependencies": []
     },
     {
@@ -1037,12 +984,8 @@
       "file_count": 5,
       "fan_out": 1,
       "fan_in": 5,
-      "references": [
-        "utils"
-      ],
-      "referenced_by": [
-        "activities"
-      ],
+      "references": ["utils"],
+      "referenced_by": ["activities"],
       "npm_dependencies": []
     },
     {
@@ -1050,17 +993,12 @@
       "path": "src/atomic-crm/types.ts",
       "type": "typescript",
       "file_count": 1,
-      "fan_out": 0,
+      "fan_out": 1,
       "fan_in": 34,
-      "references": [],
-      "referenced_by": [
-        "activities",
-        "opportunities",
-        "providers",
-        "reports",
-        "sales"
-      ],
-      "npm_dependencies": []
+      "references": ["consts", "validation"],
+      "referenced_by": ["activities", "opportunities", "providers", "reports", "sales"],
+      "npm_dependencies": [],
+      "notes": "Now imports from new consts.ts module for event-name constants. fan_out updated from 0 to 1."
     },
     {
       "name": "utils",
@@ -1069,9 +1007,7 @@
       "file_count": 37,
       "fan_out": 1,
       "fan_in": 73,
-      "references": [
-        "constants"
-      ],
+      "references": ["constants"],
       "referenced_by": [
         "activities",
         "components",
@@ -1094,10 +1030,7 @@
       "file_count": 96,
       "fan_out": 2,
       "fan_in": 91,
-      "references": [
-        "opportunities",
-        "providers"
-      ],
+      "references": ["opportunities", "providers"],
       "referenced_by": [
         "activities",
         "components",
@@ -1112,9 +1045,7 @@
         "sales",
         "tasks"
       ],
-      "npm_dependencies": [
-        "zod"
-      ]
+      "npm_dependencies": ["zod"]
     }
   ],
   "circular_references": [],
@@ -1124,8 +1055,10 @@
       "file_path": "src/atomic-crm/providers/supabase/composedDataProvider.ts",
       "lines": 260,
       "import_count": 4,
-      "handler_references": 48,
-      "dependency_count": 48,
+      "handler_count_unique": 21,
+      "handler_occurrences": 42,
+      "handled_resources": 22,
+      "dependency_count": 21,
       "reason": "Central handler routing hub for all resource CRUD. Every feature module write passes through this single file. Designated Caution Zone in CLAUDE.md."
     }
   ],
@@ -1171,6 +1104,18 @@
       "class_name": "ConfigurationContext",
       "file_path": "src/atomic-crm/root/ConfigurationContext.tsx",
       "description": "Root-level React context distributing global app configuration to all children."
+    },
+    {
+      "type": "context_provider",
+      "class_name": "CurrentSaleContext",
+      "file_path": "src/atomic-crm/dashboard/CurrentSaleContext.tsx",
+      "description": "NEW. Dashboard-scoped React context caching salesId for session lifetime."
+    },
+    {
+      "type": "context_provider",
+      "class_name": "FilterLayoutModeContext",
+      "file_path": "src/atomic-crm/filters/FilterLayoutModeContext.tsx",
+      "description": "NEW. Filter-scoped React context providing layout mode. Consumed within filters and by AdaptiveFilterContainer.tsx outside atomic-crm boundary."
     }
   ],
   "loosely_coupled": [
@@ -1180,6 +1125,13 @@
       "fan_in": 0,
       "fan_out": 0,
       "note": "Single file featureFlags.ts. No atomic-crm module imports from config."
+    },
+    {
+      "module": "consts",
+      "path": "src/atomic-crm/consts.ts",
+      "fan_in": 1,
+      "fan_out": 0,
+      "note": "NEW. Single-file event-name constants. Only one consumer: types.ts."
     },
     {
       "module": "admin",
@@ -1222,6 +1174,13 @@
       "fan_in": 0,
       "fan_out": 5,
       "note": "Zero internal consumers; leaf module."
+    },
+    {
+      "module": "searchability",
+      "path": "src/atomic-crm/searchability.ts",
+      "fan_in": 0,
+      "fan_out": 1,
+      "note": "NEW. Single-file adapter with one outbound dependency on providers. Zero atomic-crm consumers; consumed only by src/components/layouts/ListPageLayout.tsx outside the atomic-crm boundary."
     },
     {
       "module": "settings",

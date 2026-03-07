@@ -1,0 +1,79 @@
+{
+  "category": "conventions",
+  "checks": [
+    {
+      "id": "5.1",
+      "name": "Linter/formatter config exists",
+      "status": "pass",
+      "points": 2,
+      "max": 2,
+      "critical_gate": false,
+      "evidence": "Both linter and formatter configs present: eslint.config.js (ESLint linter) and .prettierrc.mjs (Prettier formatter) at project root.",
+      "remediation": "None required."
+    },
+    {
+      "id": "5.2",
+      "name": "Type safety indicators",
+      "status": "pass",
+      "points": 2,
+      "max": 2,
+      "critical_gate": false,
+      "evidence": "tsconfig.app.json has \"strict\": true plus noUnusedLocals, noUnusedParameters, noUncheckedIndexedAccess, and noFallthroughCasesInSwitch all enabled.",
+      "remediation": "None required."
+    },
+    {
+      "id": "5.3",
+      "name": "Consistent patterns within codebase",
+      "status": "pass",
+      "points": 2,
+      "max": 2,
+      "critical_gate": false,
+      "evidence": "Sampled 3 handler files: activitiesHandler.ts, contactsHandler.ts, notesHandler.ts. All share identical structure: JSDoc block header, same 3 import lines (react-admin, wrappers, callbacks), named create*Handler(baseProvider: DataProvider): DataProvider factory signature, and withErrorLogging(withLifecycleCallbacks(withSkipDelete(withValidation(baseProvider)), [...callbacks])) composition pattern.",
+      "remediation": "None required."
+    },
+    {
+      "id": "5.4",
+      "name": ".gitignore present and reasonable",
+      "status": "pass",
+      "points": 1,
+      "max": 1,
+      "critical_gate": false,
+      "evidence": ".gitignore at project root covers: /node_modules (dependencies), dist/ and /build (build artifacts), .env and .env.* (environment files), .idea/ and .vscode/ (IDE files), .DS_Store and Thumbs.db (OS files), /coverage (test output), supabase/.env and supabase/functions/.env (edge function secrets), and .mcp.json (API keys).",
+      "remediation": "None required."
+    },
+    {
+      "id": "5.5",
+      "name": "CLAUDE.md conventions actionable",
+      "status": "pass",
+      "points": 2,
+      "max": 2,
+      "critical_gate": false,
+      "evidence": "CLAUDE.md contains 4 imperative-language matches (ALWAYS, NEVER, MUST, DO NOT) and 0 vague-language matches (prefer/try to/consider/should/might). Examples: 'NEVER OMIT', 'NEVER modify without explicit human approval', 'DO NOT' declarations, 'MUST' in engineering principles.",
+      "remediation": "None required."
+    },
+    {
+      "id": "5.6",
+      "name": "Do-not-touch zones marked",
+      "status": "pass",
+      "points": 2,
+      "max": 2,
+      "critical_gate": true,
+      "evidence": "CLAUDE.md lines 63-80 contain explicit 'Protected Zones (NEVER modify without explicit human approval)' section listing 6 specific paths: supabase/migrations/, supabase/functions/, src/atomic-crm/providers/supabase/composedDataProvider.ts, src/atomic-crm/providers/supabase/authProvider.ts, .claude/rules/, and CLAUDE.md itself. Additional 'Do Not Read' zone for src/types/database.generated.ts.",
+      "remediation": "None required."
+    },
+    {
+      "id": "5.7",
+      "name": "MCP servers configured",
+      "status": "pass",
+      "points": 1,
+      "max": 1,
+      "critical_gate": false,
+      "evidence": ".mcp.json present at project root with full MCP configuration: MCP(supabase:*) permissions, mcp__supabase__execute_sql, mcp__supabase__list_tables, mcp__supabase__apply_migration, mcp__supabase__get_logs, mcp__supabase__generate_typescript_types, plus PreToolUse/PostToolUse/Stop hooks and enabledPlugins.",
+      "remediation": "None required."
+    }
+  ],
+  "summary": {
+    "points": 12,
+    "max": 13
+  }
+}

@@ -1,29 +1,31 @@
 {
   "summary": {
-    "total_integrations": 21,
+    "total_integrations": 22,
     "by_category": {
       "auth": 2,
-      "api": 5,
+      "api": 6,
       "database": 2,
       "edge_functions": 7,
       "monitoring": 2,
       "storage": 1,
       "cicd": 2
     },
-    "security_issues_count": 8,
-    "hardcoded_credentials_count": 3,
+    "security_issues_count": 9,
+    "hardcoded_credentials_count": 4,
     "changes_since_last_audit": [
-      "RESOLVED sec-003 (partial): StorageService now uses crypto.randomUUID() and enforces MIME allowlist. Public URLs still used instead of signed URLs — downgraded to low.",
-      "IMPROVED sec-004: users/index.ts origin validation hardened with fail-fast guard; severity downgraded to low.",
-      "NEW sec-008: Production domain hostnames hardcoded in version-controlled cors-config.ts.",
-      "NEW sec-009: csp-config.ts connectSrc missing https://*.sentry.io — diverges from enforced CSP in vite.config.ts.",
-      "UPDATED sec-007: Production script-src no longer uses unsafe-inline. unsafe-inline persists in style-src only.",
-      "UPDATED int-cicd-002: supabase-deploy.yml now deploys health-check function.",
-      "CONFIRMED sec-001: .env.development with live Supabase dev URL + anon key still committed.",
-      "CONFIRMED sec-002: .env.production with live Supabase production URL + anon key still committed.",
-      "CONFIRMED sec-005: supabase/functions/.env contains ES256 JWT tokens."
+      "NEW int-api-007: GoTrue Admin REST API direct fetch() in users/index.ts — SDK workaround for redirect_to body parameter",
+      "UPGRADED sec-009 (low→medium): csp-config.ts divergence now covers 3 gaps: missing *.sentry.io, missing *.supabase.in, missing gravatar.com in imgSrc",
+      "NEW sec-010 note: vite.config.ts enforced CSP now allows https://*.supabase.in and wss://*.supabase.in in connectSrc",
+      "CONFIRMED sec-001: .env.development with live Supabase dev URL + anon key still committed",
+      "CONFIRMED sec-002: .env.production with live Supabase production URL + anon key still committed",
+      "CONFIRMED sec-003: StorageService still uses getPublicUrl() not signed URLs (PRV-008 gap)",
+      "CONFIRMED sec-004: users/index.ts origin validation improved but SITE_URL still optional",
+      "CONFIRMED sec-005: supabase/functions/.env contains ES256 JWT tokens still committed",
+      "CONFIRMED sec-006: supabase/.env placeholder auth encryption key still committed",
+      "CONFIRMED sec-007: unsafe-inline persists in production style-src",
+      "CONFIRMED sec-008: Production domain hostnames hardcoded in cors-config.ts"
     ],
-    "last_audit": "2026-03-03T20:00:00.000Z"
+    "last_audit": "2026-03-04T00:00:00.000Z"
   },
   "integrations": [
     {
@@ -186,6 +188,15 @@
       "confidence": 0.92
     },
     {
+      "id": "int-api-007",
+      "category": "api",
+      "name": "GoTrue Admin REST API (Direct fetch)",
+      "provider": "Supabase GoTrue",
+      "files": ["supabase/functions/users/index.ts"],
+      "confidence": 0.98,
+      "notes": "Direct fetch() to /auth/v1/admin/generate_link bypassing SDK. SDK workaround for redirect_to body parameter behavior."
+    },
+    {
       "id": "int-cicd-001",
       "category": "cicd",
       "name": "GitHub Actions CI Pipeline",
@@ -230,7 +241,7 @@
       "severity": "low",
       "type": "unencrypted",
       "file_path": "src/atomic-crm/providers/supabase/services/StorageService.ts",
-      "description": "PARTIAL RESOLUTION: crypto.randomUUID() and MIME allowlist added. Public URLs still used instead of signed URLs (PRV-008 gap)."
+      "description": "PARTIAL RESOLUTION: crypto.randomUUID() and MIME allowlist added. Public URLs still used instead of signed URLs (PRV-008 gap). Flat path pattern instead of tenant-scoped (DB-006 gap)."
     },
     {
       "id": "sec-004",
@@ -258,14 +269,21 @@
       "severity": "low",
       "type": "misconfiguration",
       "file_path": "vite.config.ts",
-      "description": "unsafe-inline persists in production style-src. csp-config.ts diverges from enforced CSP in vite.config.ts."
+      "description": "unsafe-inline persists in production style-src (required for Tailwind CSS inline styles)."
     },
     {
       "id": "sec-008",
       "severity": "low",
       "type": "hardcoded_credential",
       "file_path": "supabase/functions/_shared/cors-config.ts",
-      "description": "Production domain hostnames hardcoded in version-controlled source file."
+      "description": "Production domain hostnames hardcoded in version-controlled source file. ALLOWED_ORIGINS env var available as override."
+    },
+    {
+      "id": "sec-009",
+      "severity": "medium",
+      "type": "misconfiguration",
+      "file_path": "src/config/csp-config.ts",
+      "description": "CSP divergence: csp-config.ts missing *.sentry.io, *.supabase.in in connectSrc, and gravatar.com in imgSrc vs enforced vite.config.ts CSP. Three-way divergence risks security review confusion."
     }
   ],
   "ai_guardrails": [
@@ -281,6 +299,11 @@
     },
     {
       "path": "supabase/functions/users/index.ts",
+      "review_required": "security_team",
+      "auto_modify": false
+    },
+    {
+      "path": "supabase/functions/updatepassword/index.ts",
       "review_required": "security_team",
       "auto_modify": false
     },
@@ -305,6 +328,7 @@
       "review_required": "security_team",
       "auto_modify": false
     },
+    { "path": "vite.config.ts", "review_required": "security_team", "auto_modify": false },
     {
       "path": ".github/workflows/supabase-deploy.yml",
       "review_required": "lead_engineer",

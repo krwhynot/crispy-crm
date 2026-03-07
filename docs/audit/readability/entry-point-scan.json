@@ -1,0 +1,59 @@
+{
+  "category": "entry_points",
+  "checks": [
+    {
+      "id": "4.1",
+      "name": "Clear application entry point",
+      "status": "pass",
+      "points": 3,
+      "max": 3,
+      "critical_gate": true,
+      "evidence": "src/main.tsx is the unambiguous entry point: calls createRoot() and imports App from ./App. Chain is src/main.tsx -> src/App.tsx -> src/atomic-crm/root/CRM.tsx. Vite config confirms no custom input override, so index.html -> src/main.tsx is the standard Vite SPA entry.",
+      "remediation": "None required."
+    },
+    {
+      "id": "4.2",
+      "name": "Route/endpoint discoverability",
+      "status": "pass",
+      "points": 2,
+      "max": 2,
+      "critical_gate": false,
+      "evidence": "All 14 React Admin <Resource> declarations are centralized in one file: src/atomic-crm/root/CRM.tsx (lines 265-278), covering opportunities, contacts, organizations, products, product_distributors, tasks, activities, contact_notes, opportunity_notes, organization_notes, sales, tags, segments, and notifications. CustomRoutes (reports, health, settings) are also declared in the same file.",
+      "remediation": "None required."
+    },
+    {
+      "id": "4.3",
+      "name": "Configuration entry points clear",
+      "status": "fail",
+      "points": 0,
+      "max": 2,
+      "critical_gate": false,
+      "evidence": "22 source files access import.meta.env directly (threshold is >15 with no centralized config wrapper). No centralized config.ts/env.ts/settings.ts abstraction layer was found. Files spreading env access include: src/main.tsx, src/atomic-crm/root/CRM.tsx, src/config/csp-config.ts, src/atomic-crm/providers/supabase/supabase.ts, src/atomic-crm/config/featureFlags.ts, src/lib/logger.ts, src/lib/devLogger.ts, src/middleware/securityHeaders.ts, src/components/ErrorBoundary.tsx, src/components/ResourceErrorBoundary.tsx, src/components/TabErrorBoundary.tsx, and 11 others. .env.example, .env.development, and .env.production exist at project root, but no single module centralizes env reads.",
+      "remediation": "Create src/config/env.ts that reads and exports all VITE_* variables with type annotations. Replace all direct import.meta.env accesses in feature/provider code with imports from that module. This reduces env scatter from 22 files to 1 authoritative source."
+    },
+    {
+      "id": "4.4",
+      "name": "Slash commands defined",
+      "status": "pass",
+      "points": 2,
+      "max": 2,
+      "critical_gate": false,
+      "evidence": "3 slash command files found in .claude/commands/: commit.md, find-feature.md, fix-lint.md. (Note: git status shows 8 previously tracked command files were deleted - audit.md, check-risk.md, create-adr.md, create-brd.md, create-prd.md, create-readme.md, generate-reports.md, trace-dependency.md - those are not present on disk and are not counted.)",
+      "remediation": "None required for current score. Consider restoring or recreating the 8 deleted commands to improve coverage."
+    },
+    {
+      "id": "4.5",
+      "name": "Agent definitions exist",
+      "status": "pass",
+      "points": 2,
+      "max": 2,
+      "critical_gate": false,
+      "evidence": "16 agent definition files found in .claude/agents/: adr-generator.md, architect.md, brd-generator.md, db-specialist.md, dependency-mapper.md, documentation-auditor.md, explorer.md, feature-scanner.md, implementor.md, integration-scanner.md, prd-generator.md, quick-gen.md, readme-generator.md, README.md, risk-assessor.md, simplifier.md.",
+      "remediation": "None required."
+    }
+  ],
+  "summary": {
+    "points": 9,
+    "max": 11
+  }
+}

@@ -1,0 +1,120 @@
+{
+  "scanner": "database-scanner",
+  "version": "0.3.0",
+  "timestamp": "2026-03-06T00:00:00.000Z",
+  "category": "Database Readability",
+  "category_id": 9,
+  "category_status": "applicable",
+  "db_indicators": [
+    "Supabase dir: ./supabase (migrations, schemas, functions, seed files)",
+    "Migration dir: ./supabase/migrations (17 SQL migration files)",
+    "DB package in package.json: supabase",
+    "DB env var in .env.example: VITE_SUPABASE_URL, SUPABASE_PROJECT_REF, SUPABASE_SERVICE_ROLE_KEY, SUPABASE_DB_PASSWORD",
+    "416 .sql files found across repo"
+  ],
+  "detected_stack": "supabase",
+  "points_earned": 12,
+  "max_points": 14,
+  "checks": [
+    {
+      "id": "9.1",
+      "name": "Schema source of truth exists",
+      "priority": "critical",
+      "status": "pass",
+      "score": 3,
+      "max_score": 3,
+      "confidence": "high",
+      "evidence": "6 declarative schema files in supabase/schemas/: tables-core.sql (261 lines), tables-junctions.sql (159 lines), tables-notes.sql (66 lines), tables-reference.sql (88 lines), views.sql (321 lines), functions.sql (274 lines). Total: 1,169 lines of schema-as-code.",
+      "details": "The project uses Supabase declarative schemas. An AI coding agent can read supabase/schemas/ and understand the full database schema including all tables, columns, relationships, views, and stored functions without needing to reconstruct from migration history.",
+      "remediation": "None required. Schema source of truth is excellent."
+    },
+    {
+      "id": "9.2",
+      "name": "Generated types or typed models exist",
+      "priority": "important",
+      "status": "partial",
+      "score": 1,
+      "max_score": 2,
+      "confidence": "high",
+      "evidence": "src/types/database.generated.ts exists (5,919 lines). STALE: generated file mtime is 44,352s (~12.3 hours) older than latest migration 20260303120000_fix_admin_restore_sale_metadata.sql. git status shows src/types/database.types.ts as deleted (recent rename or restructure).",
+      "details": "Generated types are comprehensive but stale. An AI agent reading these types would miss fields added in the final migration. Score is partial (1/2) due to staleness.",
+      "remediation": "Run npx supabase gen types typescript --project-id <ref> > src/types/database.generated.ts after each migration. Consider adding to CI or a post-migration script."
+    },
+    {
+      "id": "9.3",
+      "name": "Migration history present and sequential",
+      "priority": "important",
+      "status": "pass",
+      "score": 2,
+      "max_score": 2,
+      "confidence": "high",
+      "evidence": "17 migration files in supabase/migrations/ using timestamped naming (YYYYMMDDHHMMSS_description.sql). Oldest: 20260214003329_remote_schema.sql. Newest: 20260303120000_fix_admin_restore_sale_metadata.sql. No gaps detected across 17 days of schema evolution.",
+      "details": "Migration files follow strict sequential timestamp convention with descriptive names. History is complete and traceable. An AI agent can reconstruct full schema evolution and understand the rationale for each change.",
+      "remediation": "None required. Migration history is well-structured and sequential."
+    },
+    {
+      "id": "9.4",
+      "name": "Data access layer identifiable",
+      "priority": "important",
+      "status": "pass",
+      "score": 2,
+      "max_score": 2,
+      "confidence": "high",
+      "evidence": "32 files in src/atomic-crm/providers/supabase/handlers/ (activitiesHandler.ts, contactsHandler.ts, opportunitiesHandler.ts, organizationsHandler.ts, etc.). All routed through src/atomic-crm/providers/supabase/composedDataProvider.ts. CLAUDE.md explicitly enforces this pattern. Supabase client used in only 10 files, all within provider boundary.",
+      "details": "Exemplary data access architecture. Every resource has a dedicated handler file registered through composedDataProvider.ts. No scattered direct DB calls in feature components. An AI agent can immediately locate where any database query happens.",
+      "remediation": "None required. Data access layer is clearly structured and enforced."
+    },
+    {
+      "id": "9.5",
+      "name": "Database MCP server configured",
+      "priority": "bonus",
+      "status": "pass",
+      "score": 1,
+      "max_score": 1,
+      "confidence": "high",
+      "evidence": ".mcp.json configures Supabase MCP at https://mcp.supabase.com/mcp. .claude/settings.json allows: mcp__supabase__execute_sql, mcp__supabase__list_tables, mcp__supabase__apply_migration, mcp__supabase__get_logs, mcp__supabase__generate_typescript_types.",
+      "details": "Supabase MCP server is fully configured with fine-grained permissions. An AI agent can query live schema, execute SQL, inspect tables, apply migrations, and regenerate types via MCP protocol.",
+      "remediation": "None required. Database MCP is fully configured with appropriate permissions."
+    },
+    {
+      "id": "9.6",
+      "name": "Seed data or fixtures exist",
+      "priority": "bonus",
+      "status": "pass",
+      "score": 1,
+      "max_score": 1,
+      "confidence": "high",
+      "evidence": "supabase/seed.sql, supabase/seed-e2e.sql, supabase/seed-complete-flow.sql, supabase/seed-sample-opportunity.sql. CSV fixtures: tests/fixtures/contacts-valid.csv, contacts-invalid.csv, contacts-formula-injection.csv. Data files: data/production-data/seed_contacts.csv, seed_organizations.csv. TypeScript fixtures in handlers/__tests__/fixtures/opportunities.ts. npm scripts: seed:e2e:dashboard-v3, generate:seed.",
+      "details": "Exceptionally rich seed data setup covering SQL seeds for multiple scenarios, CSV fixtures for import testing, TypeScript fixtures for unit testing, and npm convenience scripts.",
+      "remediation": "None required. Seed data coverage is comprehensive."
+    },
+    {
+      "id": "9.7",
+      "name": "Schema documented in AI context files",
+      "priority": "important",
+      "status": "pass",
+      "score": 2,
+      "max_score": 2,
+      "confidence": "high",
+      "evidence": "CLAUDE.md has dedicated Testing and Database section with 27 total DB mentions (Postgres 17, RLS 100%, soft deletes via deleted_at, edge functions). .claude/rules/DATABASE_LAYER.md provides 13 DB rules (DB-001 through DB-013). 14 rule files total reference database concepts. Schema-specific references in .claude/skills/engineering/supabase-postgres-best-practices/references/.",
+      "details": "Database documentation in AI context files is excellent. CLAUDE.md documents the DB stack, security model, soft-delete contract, and dev workflow. DATABASE_LAYER.md provides detailed rules for modifying the DB layer.",
+      "remediation": "None required. Consider adding a brief table inventory to CLAUDE.md listing entity tables and their business purpose."
+    },
+    {
+      "id": "9.8",
+      "name": "Database connection patterns documented",
+      "priority": "bonus",
+      "status": "pass",
+      "score": 1,
+      "max_score": 1,
+      "confidence": "high",
+      "evidence": ".env.example contains 14 database-related variables: VITE_SUPABASE_URL, VITE_SUPABASE_ANON_KEY, SUPABASE_PROJECT_REF, SUPABASE_SERVICE_ROLE_KEY, SUPABASE_DB_PASSWORD, with comments explaining CLI vs runtime vs edge function usage. README.md mentions connection patterns. CLAUDE.md documents cloud-only dev workflow.",
+      "details": ".env.example is thorough with all required credentials documented and annotated. An AI agent can immediately identify all required connection credentials and understand when each is used.",
+      "remediation": "None required. Connection patterns are well-documented."
+    }
+  ],
+  "summary": {
+    "points": 12,
+    "max": 14
+  }
+}

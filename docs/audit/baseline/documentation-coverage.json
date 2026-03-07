@@ -1,30 +1,58 @@
 {
   "summary": {
-    "total_doc_files": 175,
-    "projects_with_readme": 37,
-    "projects_without_readme": 4,
-    "jsdoc_coverage_pct": 20,
-    "avg_quality_score": 4.2,
+    "total_doc_files": 228,
+    "projects_with_readme": 40,
+    "projects_without_readme": 2,
+    "jsdoc_coverage_pct": 22,
+    "avg_quality_score": 4.3,
     "claude_md_exists": true,
     "adr_count": 4,
     "improvements_since_last_audit": [
-      "37 new module READMEs added across src/atomic-crm/ and src/components/",
-      "supabase/README.md added — covers schema, edge functions, security-sensitive RPCs, migration workflow",
-      "3 PRDs added: docs/prd/contacts/, docs/prd/organizations/, docs/prd/opportunities/",
-      "projects_with_readme increased from 9 to 37 — near-complete module coverage achieved",
-      "avg_quality_score improved from 3.7 to 4.2 — new READMEs are consistently quality 4-5",
-      "~70 new .claude/skills markdown documents added",
-      "JSDoc density in provider handlers improved from minimal to light (112 JSDoc blocks across 31 handler files)",
-      "total_doc_files increased from 64 to 175"
+      "5 new PRDs added: dashboard, validation, providers, components, supabase — high_risk_no_prd list now empty",
+      "6 new audit reports added to docs/audit/reports/",
+      "1 new AI readiness report: docs/audit/readability/readability-report.md (89/100, grade A)",
+      "Root README.md now exists — human onboarding gap closed",
+      "SEARCH_ARCHITECTURE.md added to providers/supabase",
+      "opportunities/__tests__/README.md added — documents test conventions",
+      "src/components/ui/README.md added — minimal but present",
+      "2 new AI-readiness commands added",
+      "~35 new .agents/skills/supabase-postgres-best-practices reference docs",
+      "7 new .claude/skills/enforcing-principles/ reference docs",
+      "contacts/README.md, organizations/README.md, dashboard/README.md re-rated 4 (up from 3)",
+      "TODO/FIXME count decreased from 21 to 18 (net -3)",
+      "total_doc_files increased from 175 to 228",
+      "JSDoc coverage estimated up from 20% to 22%"
     ],
-    "last_audit": "2026-03-03T20:00:00.000Z"
+    "last_audit": "2026-03-04T00:00:00.000Z"
   },
   "documents": [
+    {
+      "type": "readme",
+      "file_path": "README.md",
+      "project": "root",
+      "quality": 3,
+      "coverage": "partial",
+      "notes": "Human-facing quick-start README. Covers stack, setup steps, test command. Does not cover architecture, contributing guide, or env var descriptions."
+    },
     {
       "type": "claude_md",
       "file_path": "CLAUDE.md",
       "project": "root",
       "quality": 5,
+      "coverage": "full"
+    },
+    {
+      "type": "claude_md",
+      "file_path": ".claude/skills/ui-ux-design-principles/CLAUDE.md",
+      "project": ".claude/skills",
+      "quality": 4,
+      "coverage": "full"
+    },
+    {
+      "type": "claude_md",
+      "file_path": ".agents/skills/supabase-postgres-best-practices/CLAUDE.md",
+      "project": ".agents/skills",
+      "quality": 4,
       "coverage": "full"
     },
     {
@@ -54,6 +82,14 @@
       "project": "src/atomic-crm/providers/supabase",
       "quality": 5,
       "coverage": "full"
+    },
+    {
+      "type": "markdown",
+      "file_path": "docs/adr/TEMPLATE.md",
+      "project": "docs/adr",
+      "quality": 3,
+      "coverage": "full",
+      "notes": "ADR template — structural scaffold, not content."
     },
     {
       "type": "markdown",
@@ -133,11 +169,109 @@
       "coverage": "full"
     },
     {
+      "type": "markdown",
+      "file_path": "docs/prd/dashboard/PRD-dashboard.md",
+      "project": "src/atomic-crm/dashboard",
+      "quality": 4,
+      "coverage": "full",
+      "notes": "Reverse-engineered PRD, confidence 95%. Added 2026-03-03."
+    },
+    {
+      "type": "markdown",
+      "file_path": "docs/prd/validation/PRD-validation.md",
+      "project": "src/atomic-crm/validation",
+      "quality": 4,
+      "coverage": "full",
+      "notes": "Reverse-engineered PRD, confidence 90%. Added 2026-03-03."
+    },
+    {
+      "type": "markdown",
+      "file_path": "docs/prd/providers/PRD-providers.md",
+      "project": "src/atomic-crm/providers",
+      "quality": 4,
+      "coverage": "full",
+      "notes": "Reverse-engineered PRD, confidence 90%. Added 2026-03-03."
+    },
+    {
+      "type": "markdown",
+      "file_path": "docs/prd/components/PRD-components.md",
+      "project": "src/components",
+      "quality": 4,
+      "coverage": "full",
+      "notes": "Reverse-engineered PRD, confidence 85%. Added 2026-03-03."
+    },
+    {
+      "type": "markdown",
+      "file_path": "docs/prd/supabase/PRD-supabase.md",
+      "project": "supabase",
+      "quality": 4,
+      "coverage": "full",
+      "notes": "Reverse-engineered PRD, confidence 90%. Added 2026-03-03."
+    },
+    {
+      "type": "markdown",
+      "file_path": "docs/audit/reports/audit-summary.md",
+      "project": "docs/audit",
+      "quality": 5,
+      "coverage": "full"
+    },
+    {
+      "type": "markdown",
+      "file_path": "docs/audit/reports/risk-report.md",
+      "project": "docs/audit",
+      "quality": 4,
+      "coverage": "full"
+    },
+    {
+      "type": "markdown",
+      "file_path": "docs/audit/reports/dependency-report.md",
+      "project": "docs/audit",
+      "quality": 4,
+      "coverage": "full"
+    },
+    {
+      "type": "markdown",
+      "file_path": "docs/audit/reports/documentation-gaps.md",
+      "project": "docs/audit",
+      "quality": 5,
+      "coverage": "full"
+    },
+    {
+      "type": "markdown",
+      "file_path": "docs/audit/reports/security-report.md",
+      "project": "docs/audit",
+      "quality": 4,
+      "coverage": "full"
+    },
+    {
+      "type": "markdown",
+      "file_path": "docs/audit/reports/confidence-changelog.md",
+      "project": "docs/audit",
+      "quality": 4,
+      "coverage": "full"
+    },
+    {
+      "type": "markdown",
+      "file_path": "docs/audit/readability/readability-report.md",
+      "project": "docs/audit",
+      "quality": 5,
+      "coverage": "full",
+      "notes": "AI readiness report. Score: 89/100 (grade A)."
+    },
+    {
       "type": "readme",
       "file_path": "src/atomic-crm/providers/supabase/README.md",
       "project": "src/atomic-crm/providers/supabase",
       "quality": 5,
       "coverage": "full"
+    },
+    {
+      "type": "markdown",
+      "file_path": "src/atomic-crm/providers/supabase/SEARCH_ARCHITECTURE.md",
+      "project": "src/atomic-crm/providers/supabase",
+      "quality": 4,
+      "coverage": "full",
+      "notes": "Documents the runtime filter/search processing flow for getList."
     },
     {
       "type": "readme",
@@ -227,22 +361,25 @@
       "type": "readme",
       "file_path": "src/atomic-crm/contacts/README.md",
       "project": "src/atomic-crm/contacts",
-      "quality": 3,
-      "coverage": "partial"
+      "quality": 4,
+      "coverage": "full",
+      "notes": "Re-rated 4 (was 3). Covers architecture, data flow, testing."
     },
     {
       "type": "readme",
       "file_path": "src/atomic-crm/organizations/README.md",
       "project": "src/atomic-crm/organizations",
-      "quality": 3,
-      "coverage": "partial"
+      "quality": 4,
+      "coverage": "full",
+      "notes": "Re-rated 4 (was 3). Covers hierarchy, authorization, duplicate detection."
     },
     {
       "type": "readme",
       "file_path": "src/atomic-crm/dashboard/README.md",
       "project": "src/atomic-crm/dashboard",
-      "quality": 3,
-      "coverage": "partial"
+      "quality": 4,
+      "coverage": "full",
+      "notes": "Re-rated 4 (was 3). Covers V3/V4, perf optimizations, data flow."
     },
     {
       "type": "readme",
@@ -372,6 +509,13 @@
     },
     {
       "type": "readme",
+      "file_path": "src/components/ra-wrappers/Readme.md",
+      "project": "src/components/ra-wrappers",
+      "quality": 4,
+      "coverage": "full"
+    },
+    {
+      "type": "readme",
       "file_path": "src/atomic-crm/reports/README.md",
       "project": "src/atomic-crm/reports",
       "quality": 5,
@@ -383,16 +527,357 @@
       "project": "src/atomic-crm/filters",
       "quality": 5,
       "coverage": "full"
+    },
+    {
+      "type": "readme",
+      "file_path": "src/components/ui/README.md",
+      "project": "src/components/ui",
+      "quality": 2,
+      "coverage": "minimal",
+      "notes": "Minimal stub. Lists shadcn/ui as source but no usage guidance."
+    },
+    {
+      "type": "readme",
+      "file_path": "src/atomic-crm/opportunities/__tests__/README.md",
+      "project": "src/atomic-crm/opportunities",
+      "quality": 5,
+      "coverage": "full",
+      "notes": "Test organization doc. Explains .test.tsx vs .spec.tsx, mock path conventions."
+    },
+    {
+      "type": "markdown",
+      "file_path": "src/middleware/CSP_UPGRADE_INSTRUCTIONS.md",
+      "project": "src/middleware",
+      "quality": 3,
+      "coverage": "partial"
+    },
+    {
+      "type": "markdown",
+      "file_path": "scripts/supabase/IMPLEMENTATION-SUMMARY.md",
+      "project": "scripts/supabase",
+      "quality": 4,
+      "coverage": "full"
+    },
+    {
+      "type": "markdown",
+      "file_path": "scripts/supabase/storage-fix-investigation.md",
+      "project": "scripts/supabase",
+      "quality": 3,
+      "coverage": "partial"
+    },
+    {
+      "type": "readme",
+      "file_path": "scripts/supabase/README.md",
+      "project": "scripts/supabase",
+      "quality": 3,
+      "coverage": "partial"
+    },
+    {
+      "type": "markdown",
+      "file_path": "tests/integration/RLS-TEST-FINDINGS.md",
+      "project": "tests/integration",
+      "quality": 4,
+      "coverage": "full"
+    },
+    {
+      "type": "markdown",
+      "file_path": "data/GRAND_RAPIDS_IMPORT_CHEATSHEET.md",
+      "project": "data",
+      "quality": 3,
+      "coverage": "partial"
+    },
+    {
+      "type": "markdown",
+      "file_path": "data/GRAND_RAPIDS_IMPORT_INSTRUCTIONS.md",
+      "project": "data",
+      "quality": 3,
+      "coverage": "partial"
+    },
+    {
+      "type": "markdown",
+      "file_path": "research/click-to-filter-badge-ux-pattern.md",
+      "project": "research",
+      "quality": 3,
+      "coverage": "partial"
+    },
+    {
+      "type": "markdown",
+      "file_path": "research/react-admin-store-invalidation-pattern.md",
+      "project": "research",
+      "quality": 3,
+      "coverage": "partial"
+    },
+    {
+      "type": "markdown",
+      "file_path": "eslint-local-rules/README.md",
+      "project": "eslint-local-rules",
+      "quality": 3,
+      "coverage": "partial"
+    },
+    {
+      "type": "markdown",
+      "file_path": ".claude/rules/CORE_CONSTRAINTS.md",
+      "project": ".claude/rules",
+      "quality": 5,
+      "coverage": "full"
+    },
+    {
+      "type": "markdown",
+      "file_path": ".claude/rules/DATABASE_LAYER.md",
+      "project": ".claude/rules",
+      "quality": 5,
+      "coverage": "full"
+    },
+    {
+      "type": "markdown",
+      "file_path": ".claude/rules/DOMAIN_INTEGRITY.md",
+      "project": ".claude/rules",
+      "quality": 5,
+      "coverage": "full"
+    },
+    {
+      "type": "markdown",
+      "file_path": ".claude/rules/MODULE_CHECKLIST.md",
+      "project": ".claude/rules",
+      "quality": 5,
+      "coverage": "full"
+    },
+    {
+      "type": "markdown",
+      "file_path": ".claude/rules/PROVIDER_RULES.md",
+      "project": ".claude/rules",
+      "quality": 5,
+      "coverage": "full"
+    },
+    {
+      "type": "markdown",
+      "file_path": ".claude/rules/UI_STANDARDS.md",
+      "project": ".claude/rules",
+      "quality": 5,
+      "coverage": "full"
+    },
+    {
+      "type": "markdown",
+      "file_path": ".claude/rules/STALE_STATE_STRATEGY.md",
+      "project": ".claude/rules",
+      "quality": 5,
+      "coverage": "full"
+    },
+    {
+      "type": "markdown",
+      "file_path": ".claude/rules/CODE_QUALITY.md",
+      "project": ".claude/rules",
+      "quality": 4,
+      "coverage": "full"
+    },
+    {
+      "type": "markdown",
+      "file_path": ".claude/rules/RULE_COMMANDS.md",
+      "project": ".claude/rules",
+      "quality": 5,
+      "coverage": "full"
+    },
+    {
+      "type": "markdown",
+      "file_path": ".claude/rules/RULE_INDEX.md",
+      "project": ".claude/rules",
+      "quality": 4,
+      "coverage": "full"
+    },
+    {
+      "type": "markdown",
+      "file_path": ".claude/rules/RULE_PRECEDENCE.md",
+      "project": ".claude/rules",
+      "quality": 4,
+      "coverage": "full"
+    },
+    {
+      "type": "markdown",
+      "file_path": ".claude/commands/ (13 command files)",
+      "project": ".claude/commands",
+      "quality": 4,
+      "coverage": "full",
+      "notes": "13 command files including 2 new: ai-readiness-scan.md, ai-readiness-generate.md"
+    },
+    {
+      "type": "markdown",
+      "file_path": ".claude/skills/ (multiple skill directories)",
+      "project": ".claude/skills",
+      "quality": 4,
+      "coverage": "full",
+      "notes": "~70 skill docs across crispy-data-provider, ui-ux-design-principles, fail-fast-debugging, verification, enforcing-principles, testing-patterns, troubleshooting, data-integrity-guards, cache-invalidation-audit, release-notes, soft-delete-rls-audit, three-tier-architecture-audit, vercel-react-best-practices"
+    },
+    {
+      "type": "markdown",
+      "file_path": ".agents/skills/supabase-postgres-best-practices/ (~35 files)",
+      "project": ".agents/skills",
+      "quality": 4,
+      "coverage": "full",
+      "notes": "~35 reference docs covering connection pooling, indexing, RLS, locking, monitoring, query optimization, schema design"
+    },
+    {
+      "type": "jsdoc",
+      "file_path": "supabase/functions/daily-digest/index.ts",
+      "project": "supabase/functions/daily-digest",
+      "quality": 4,
+      "coverage": "full",
+      "notes": "Quality JSDoc header documenting V3.0 architecture and fail-fast strategy."
+    },
+    {
+      "type": "jsdoc",
+      "file_path": "src/atomic-crm/providers/supabase (aggregate)",
+      "project": "src/atomic-crm/providers/supabase",
+      "quality": 3,
+      "coverage": "partial",
+      "notes": "488 JSDoc blocks across 111 provider files. Density varies."
+    },
+    {
+      "type": "jsdoc",
+      "file_path": "src/atomic-crm (feature tsx aggregate)",
+      "project": "src/atomic-crm",
+      "quality": 2,
+      "coverage": "minimal",
+      "notes": "667 JSDoc blocks across 282 tsx files — avg ~2/file but concentrated in few files."
+    },
+    {
+      "type": "markdown",
+      "file_path": "src/components/ui (23 Storybook stories)",
+      "project": "src/components/ui",
+      "quality": 3,
+      "coverage": "partial",
+      "notes": "23 Storybook story files serve as living component documentation but lack narrative descriptions."
+    }
+  ],
+  "per_project": [
+    {
+      "project": "root",
+      "has_readme": true,
+      "jsdoc_coverage_pct": 0,
+      "inline_comment_density": "low",
+      "overall_quality": 4,
+      "gap_description": "Root README.md now exists (gap closed). CLAUDE.md is exemplary. README is partial (quality 3)."
+    },
+    {
+      "project": "src/atomic-crm/contacts",
+      "has_readme": true,
+      "jsdoc_coverage_pct": 10,
+      "inline_comment_density": "low",
+      "overall_quality": 4,
+      "gap_description": "README quality 4. BRD and PRD present. No ADR (recommended given 10 fan-out)."
+    },
+    {
+      "project": "src/atomic-crm/organizations",
+      "has_readme": true,
+      "jsdoc_coverage_pct": 10,
+      "inline_comment_density": "low",
+      "overall_quality": 4,
+      "gap_description": "README quality 4. BRD and PRD present. No ADR (recommended for hierarchy/auth)."
+    },
+    {
+      "project": "src/atomic-crm/opportunities",
+      "has_readme": true,
+      "jsdoc_coverage_pct": 15,
+      "inline_comment_density": "medium",
+      "overall_quality": 4,
+      "gap_description": "README quality 5. BRD and PRD present. No ADR (gap — 19 fan-in, 7-stage pipeline)."
+    },
+    {
+      "project": "src/atomic-crm/dashboard",
+      "has_readme": true,
+      "jsdoc_coverage_pct": 15,
+      "inline_comment_density": "medium",
+      "overall_quality": 4,
+      "gap_description": "README quality 4. BRD and PRD present. No ADR (recommended for V3/V4 strategy)."
+    },
+    {
+      "project": "src/atomic-crm/validation",
+      "has_readme": true,
+      "jsdoc_coverage_pct": 5,
+      "inline_comment_density": "low",
+      "overall_quality": 4,
+      "gap_description": "README quality 5. PRD and ADR present. Zod schemas self-documenting."
+    },
+    {
+      "project": "src/atomic-crm/providers/supabase",
+      "has_readme": true,
+      "jsdoc_coverage_pct": 35,
+      "inline_comment_density": "medium",
+      "overall_quality": 5,
+      "gap_description": "Best-documented module. README, PRD, ADR, SEARCH_ARCHITECTURE.md all present."
+    },
+    {
+      "project": "src/atomic-crm/activities",
+      "has_readme": true,
+      "jsdoc_coverage_pct": 5,
+      "inline_comment_density": "low",
+      "overall_quality": 4,
+      "gap_description": "README quality 5. BRD present. No PRD or ADR."
+    },
+    {
+      "project": "src/atomic-crm/sales",
+      "has_readme": true,
+      "jsdoc_coverage_pct": 5,
+      "inline_comment_density": "low",
+      "overall_quality": 4,
+      "gap_description": "README quality 5. BRD present. No PRD or ADR."
+    },
+    {
+      "project": "src/atomic-crm/tasks",
+      "has_readme": true,
+      "jsdoc_coverage_pct": 5,
+      "inline_comment_density": "low",
+      "overall_quality": 4,
+      "gap_description": "README quality 5. BRD present. No PRD or ADR."
+    },
+    {
+      "project": "src/atomic-crm/products",
+      "has_readme": true,
+      "jsdoc_coverage_pct": 10,
+      "inline_comment_density": "low",
+      "overall_quality": 4,
+      "gap_description": "README quality 4. BRD present. No PRD or ADR."
+    },
+    {
+      "project": "src/atomic-crm/filters",
+      "has_readme": true,
+      "jsdoc_coverage_pct": 10,
+      "inline_comment_density": "medium",
+      "overall_quality": 4,
+      "gap_description": "README quality 5. 78 unit tests added. No BRD or PRD. Consumed by all list views."
+    },
+    {
+      "project": "src/components",
+      "has_readme": true,
+      "jsdoc_coverage_pct": 5,
+      "inline_comment_density": "low",
+      "overall_quality": 4,
+      "gap_description": "README quality 5. PRD and ADR present. 23 Storybook stories."
+    },
+    {
+      "project": "src/components/ui",
+      "has_readme": true,
+      "jsdoc_coverage_pct": 2,
+      "inline_comment_density": "low",
+      "overall_quality": 3,
+      "gap_description": "README minimal (quality 2). 23 Storybook stories compensate."
+    },
+    {
+      "project": "supabase",
+      "has_readme": true,
+      "jsdoc_coverage_pct": 15,
+      "inline_comment_density": "medium",
+      "overall_quality": 4,
+      "gap_description": "README quality 5. PRD and ADR present. Only daily-digest has JSDoc header."
     }
   ],
   "coverage_gaps": [
-    "No root-level README.md for human onboarding (CLAUDE.md serves AI only)",
-    "JSDoc coverage ~20% on UI components and feature TypeScript files",
-    "timeline, notes, contexts, shared, admin, config modules have no test coverage",
-    "TODO/FIXME count stable at 21 — 6 disabled tests in CampaignActivityReport",
-    "contacts/README.md, organizations/README.md, dashboard/README.md shorter than peers (quality 3)",
-    "No per-function README for supabase edge functions",
-    "No migration index document"
+    "No ADRs for opportunities (19 fan-in, 7-stage pipeline), contacts (CSV import, junction strategy), dashboard (V3/V4 strategy)",
+    "5 edge functions (check-overdue-tasks, health-check, capture-dashboard-snapshots, users, updatepassword) have no JSDoc header",
+    "Missing .aiignore file — sole Phase 2 AI readiness blocker (score 89/100)",
+    "src/components/ui/README.md quality 2 — minimal stub",
+    "JSDoc coverage at 22% — provider layer best (35%), feature UI components minimal",
+    "6 disabled tests in CampaignActivityReport — get_stale_opportunities RPC unimplemented",
+    "3 placeholder tests with no assertions (OpportunitiesTab, OpportunitySlideOverDetailsTab, OpportunityProductsTab)"
   ],
-  "todo_fixme_count": 21
+  "todo_fixme_count": 18
 }

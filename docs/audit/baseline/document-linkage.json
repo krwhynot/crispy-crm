@@ -1,340 +1,251 @@
 {
   "summary": {
-    "total_features": 32,
+    "total_features": 22,
     "features_with_brd": 8,
-    "features_with_prd": 7,
-    "features_with_adr": 4,
-    "features_with_readme": 30,
-    "features_missing_all_docs": 0,
-    "coverage_improvement": "README coverage jumped from 9 to 37 projects. All 8 high-risk modules now have READMEs. Providers PRD added 2026-03-03. Supabase infrastructure PRD added 2026-03-03."
+    "features_with_prd": 9,
+    "features_with_adr": 5,
+    "infrastructure_prds": 4,
+    "infrastructure_adrs": 4,
+    "features_fully_documented": 4,
+    "features_missing_all_docs": 10,
+    "high_risk_missing_adr": 0,
+    "last_audit": "2026-03-05T00:00:00.000Z"
   },
-  "linkage": [
+  "feature_linkage": [
     {
       "feature": "Contacts",
-      "domain": "contacts",
+      "feature_id": "feat-cnt-001",
       "risk": "high",
+      "fan_in": 0,
+      "fan_out": 10,
       "brd": "docs/brd/contacts.md",
       "prd": "docs/prd/contacts/PRD-contacts.md",
-      "adr": null,
-      "readme": "src/atomic-crm/contacts/README.md"
+      "adr": "docs/adr/006-contacts-data-architecture.md"
     },
     {
       "feature": "Organizations",
-      "domain": "organizations",
+      "feature_id": "feat-org-001",
       "risk": "high",
+      "fan_in": 0,
+      "fan_out": 10,
       "brd": "docs/brd/organizations.md",
       "prd": "docs/prd/organizations/PRD-organizations.md",
-      "adr": null,
-      "readme": "src/atomic-crm/organizations/README.md"
+      "adr": "docs/adr/007-organizations-hierarchy-architecture.md"
     },
     {
       "feature": "Opportunities",
-      "domain": "opportunities",
+      "feature_id": "feat-opp-001",
       "risk": "high",
+      "fan_in": 19,
+      "fan_out": 10,
       "brd": "docs/brd/opportunities.md",
       "prd": "docs/prd/opportunities/PRD-opportunities.md",
-      "adr": null,
-      "readme": "src/atomic-crm/opportunities/README.md"
-    },
-    {
-      "feature": "Sales",
-      "domain": "sales",
-      "risk": "medium",
-      "brd": "docs/brd/sales.md",
-      "prd": null,
-      "adr": null,
-      "readme": "src/atomic-crm/sales/README.md"
-    },
-    {
-      "feature": "Tasks",
-      "domain": "tasks",
-      "risk": "medium",
-      "brd": "docs/brd/tasks.md",
-      "prd": null,
-      "adr": null,
-      "readme": "src/atomic-crm/tasks/README.md"
-    },
-    {
-      "feature": "Activities",
-      "domain": "activities",
-      "risk": "medium",
-      "brd": "docs/brd/activities.md",
-      "prd": null,
-      "adr": null,
-      "readme": "src/atomic-crm/activities/README.md"
-    },
-    {
-      "feature": "Products",
-      "domain": "products",
-      "risk": "medium",
-      "brd": "docs/brd/products.md",
-      "prd": null,
-      "adr": null,
-      "readme": "src/atomic-crm/products/README.md"
+      "adr": "docs/adr/005-opportunities-pipeline-architecture.md"
     },
     {
       "feature": "Dashboard",
-      "domain": "dashboard",
+      "feature_id": "feat-dsh-001",
       "risk": "high",
+      "fan_in": 0,
+      "fan_out": 8,
       "brd": "docs/brd/dashboard.md",
       "prd": "docs/prd/dashboard/PRD-dashboard.md",
-      "adr": null,
-      "readme": "src/atomic-crm/dashboard/README.md",
-      "gaps": [
-        "ADR needed: document V3 vs V4 version strategy and pipeline caching decisions"
-      ]
+      "adr": "docs/adr/008-dashboard-architecture.md"
     },
     {
-      "feature": "Reports",
-      "domain": "reports",
+      "feature": "Sales",
+      "feature_id": "feat-sal-001",
       "risk": "medium",
-      "brd": null,
-      "prd": null,
-      "adr": null,
-      "readme": "src/atomic-crm/reports/README.md"
+      "brd": "docs/brd/sales.md",
+      "prd": "docs/prd/sales/PRD-user-creation-password-management.md",
+      "adr": "docs/adr/009-user-management-edge-function-architecture.md",
+      "adrs": ["docs/adr/009-user-management-edge-function-architecture.md"]
     },
     {
-      "feature": "Settings",
-      "domain": "settings",
-      "risk": "low",
-      "brd": null,
-      "prd": null,
-      "adr": null,
-      "readme": "src/atomic-crm/settings/README.md"
-    },
-    {
-      "feature": "Notifications",
-      "domain": "notifications",
-      "risk": "low",
-      "brd": null,
-      "prd": null,
-      "adr": null,
-      "readme": "src/atomic-crm/notifications/README.md"
-    },
-    {
-      "feature": "Tags",
-      "domain": "tags",
-      "risk": "low",
-      "brd": null,
-      "prd": null,
-      "adr": null,
-      "readme": "src/atomic-crm/tags/README.md"
-    },
-    {
-      "feature": "Login",
-      "domain": "login",
-      "risk": "low",
-      "brd": null,
-      "prd": null,
-      "adr": null,
-      "readme": "src/atomic-crm/login/README.md"
-    },
-    {
-      "feature": "Segments",
-      "domain": "segments",
-      "risk": "low",
-      "brd": null,
-      "prd": null,
-      "adr": null,
-      "readme": null
-    },
-    {
-      "feature": "Timeline",
-      "domain": "timeline",
+      "feature": "Tasks",
+      "feature_id": "feat-tsk-001",
       "risk": "medium",
-      "brd": null,
+      "brd": "docs/brd/tasks.md",
       "prd": null,
-      "adr": null,
-      "readme": "src/atomic-crm/timeline/README.md"
+      "adr": null
     },
     {
-      "feature": "Filters",
-      "domain": "filters",
+      "feature": "Activities",
+      "feature_id": "feat-act-001",
       "risk": "medium",
-      "brd": null,
+      "brd": "docs/brd/activities.md",
       "prd": null,
-      "adr": null,
-      "readme": "src/atomic-crm/filters/README.md"
+      "adr": null
+    },
+    {
+      "feature": "Products",
+      "feature_id": "feat-prd-001",
+      "risk": "medium",
+      "brd": "docs/brd/products.md",
+      "prd": null,
+      "adr": null
     },
     {
       "feature": "Notes",
-      "domain": "notes",
+      "feature_id": "feat-not-001",
+      "risk": "low",
+      "brd": null,
+      "prd": null,
+      "adr": null
+    },
+    {
+      "feature": "ProductDistributors",
+      "feature_id": "feat-pdi-001",
+      "risk": "medium",
+      "brd": null,
+      "prd": null,
+      "adr": null
+    },
+    {
+      "feature": "Reports",
+      "feature_id": "feat-rpt-001",
+      "risk": "medium",
+      "brd": null,
+      "prd": null,
+      "adr": null
+    },
+    {
+      "feature": "Settings",
+      "feature_id": "feat-set-001",
+      "risk": "low",
+      "brd": null,
+      "prd": null,
+      "adr": null
+    },
+    {
+      "feature": "Notifications",
+      "feature_id": "feat-ntf-001",
+      "risk": "low",
+      "brd": null,
+      "prd": null,
+      "adr": null
+    },
+    {
+      "feature": "Tags",
+      "feature_id": "feat-tag-001",
+      "risk": "low",
+      "brd": null,
+      "prd": null,
+      "adr": null
+    },
+    {
+      "feature": "Login",
+      "feature_id": "feat-lgn-001",
+      "risk": "low",
+      "brd": null,
+      "prd": null,
+      "adr": "docs/adr/009-user-management-edge-function-architecture.md",
+      "adrs": ["docs/adr/009-user-management-edge-function-architecture.md"]
+    },
+    {
+      "feature": "Segments",
+      "feature_id": "feat-seg-001",
+      "risk": "low",
+      "brd": null,
+      "prd": null,
+      "adr": null
+    },
+    {
+      "feature": "Filters",
+      "feature_id": "feat-flt-001",
+      "risk": "medium",
+      "brd": null,
+      "prd": null,
+      "adr": null,
+      "notes": "78 unit tests. Consumed by all list views."
+    },
+    {
+      "feature": "Timeline",
+      "feature_id": "feat-tln-001",
       "risk": "low",
       "brd": null,
       "prd": null,
       "adr": null,
-      "readme": "src/atomic-crm/notes/README.md"
+      "notes": "Full test coverage confirmed this run."
     },
     {
-      "feature": "ProductDistributors",
-      "domain": "productDistributors",
-      "risk": "medium",
+      "feature": "Admin",
+      "feature_id": "feat-adm-001",
+      "risk": "low",
       "brd": null,
       "prd": null,
       "adr": null,
-      "readme": "src/atomic-crm/productDistributors/README.md"
+      "notes": "New feature. HealthDashboard at /admin/health route. No test coverage."
     },
     {
-      "feature": "Validation",
-      "domain": "validation",
-      "risk": "high",
-      "brd": null,
-      "prd": "docs/prd/validation/PRD-validation.md",
-      "adr": "docs/adr/004-validation-at-provider-boundary.md",
-      "readme": "src/atomic-crm/validation/README.md",
-      "gaps": [
-        "BRD needed: business context missing \u00e2\u20ac\u201d this is a system-layer module; a lightweight architecture note capturing why specific business rules (required fields, enum values) were chosen may be more appropriate than a full BRD"
-      ]
-    },
-    {
-      "feature": "Services",
-      "domain": "services",
-      "risk": "medium",
-      "brd": null,
-      "prd": "docs/prd/providers/PRD-providers.md",
-      "adr": null,
-      "readme": "src/atomic-crm/services/README.md",
-      "gaps": [
-        "BRD needed: business context missing \u00e2\u20ac\u201d this is a system-layer module; a lightweight architecture note may be more appropriate than a full BRD",
-        "ADR needed: document architectural decisions specific to the service layer (constructor injection pattern, zero-npm-dep contract)"
-      ]
-    },
-    {
-      "feature": "Providers",
-      "domain": "providers",
+      "feature": "Provider",
+      "feature_id": "feat-prv-001",
       "risk": "high",
       "brd": null,
       "prd": "docs/prd/providers/PRD-providers.md",
       "adr": "docs/adr/001-supabase-provider-pattern.md",
-      "readme": "src/atomic-crm/providers/README.md",
-      "gaps": [
-        "BRD needed: business context missing \u00e2\u20ac\u201d this is a system-layer module; a lightweight architecture note capturing rationale for the composed provider pattern is more appropriate than a full BRD",
-        "ADR needed: document architectural decisions for authProvider caching strategy and StorageService signed URL gap (sec-003)"
-      ]
+      "notes": "New catalogued feature. Infrastructure layer — 21 handler factories."
     },
     {
-      "feature": "Components",
-      "domain": "components",
-      "risk": "high",
-      "brd": null,
-      "prd": "docs/prd/components/PRD-components.md",
-      "adr": "docs/adr/003-three-tier-ui-architecture.md",
-      "readme": "src/components/README.md",
-      "gaps": [
-        "BRD needed: system-layer module \u00e2\u20ac\u201d a lightweight architecture note capturing tier-separation rationale is more appropriate than a full BRD"
-      ]
-    },
-    {
-      "feature": "Supabase",
-      "domain": "supabase",
-      "risk": "high",
-      "brd": null,
-      "prd": "docs/prd/supabase/PRD-supabase.md",
-      "adr": "docs/adr/002-soft-delete-convention.md",
-      "readme": "supabase/README.md",
-      "gaps": [
-        "BRD needed: system-layer module \u2014 a lightweight architecture note capturing data-retention and tenant-isolation rationale is more appropriate than a full BRD",
-        "ADR needed: document architectural decisions for storage RLS policy gaps (sec-003 equivalent), SECURITY DEFINER RPC inventory, and pg_cron scheduling strategy"
-      ]
-    },
-    {
-      "feature": "Hooks",
-      "domain": "hooks",
+      "feature": "Services",
+      "feature_id": "feat-svc-001",
       "risk": "medium",
       "brd": null,
       "prd": null,
       "adr": null,
-      "readme": "src/atomic-crm/hooks/README.md"
+      "notes": "New catalogued feature. Business logic layer — junctions, segments, etc."
     },
     {
-      "feature": "Constants",
-      "domain": "constants",
-      "risk": "medium",
-      "brd": null,
-      "prd": null,
-      "adr": null,
-      "readme": "src/atomic-crm/constants/README.md"
-    },
-    {
-      "feature": "Utils",
-      "domain": "utils",
-      "risk": "medium",
-      "brd": null,
-      "prd": null,
-      "adr": null,
-      "readme": "src/atomic-crm/utils/README.md"
-    },
-    {
-      "feature": "Root",
-      "domain": "root",
+      "feature": "Pages",
+      "feature_id": "feat-pag-001",
       "risk": "low",
       "brd": null,
       "prd": null,
       "adr": null,
-      "readme": "src/atomic-crm/root/README.md"
-    },
-    {
-      "feature": "AppLayout",
-      "domain": "layout",
-      "risk": "low",
-      "brd": null,
-      "prd": null,
-      "adr": null,
-      "readme": "src/atomic-crm/layout/README.md"
-    },
-    {
-      "feature": "Contexts",
-      "domain": "contexts",
-      "risk": "low",
-      "brd": null,
-      "prd": null,
-      "adr": null,
-      "readme": "src/atomic-crm/contexts/README.md"
-    },
-    {
-      "feature": "Admin",
-      "domain": "admin",
-      "risk": "low",
-      "brd": null,
-      "prd": null,
-      "adr": null,
-      "readme": "src/atomic-crm/admin/README.md"
-    },
-    {
-      "feature": "SharedComponents",
-      "domain": "shared",
-      "risk": "low",
-      "brd": null,
-      "prd": null,
-      "adr": null,
-      "readme": "src/atomic-crm/shared/README.md"
-    },
-    {
-      "feature": "FormWizard",
-      "domain": "onboarding",
-      "risk": "low",
-      "brd": null,
-      "prd": null,
-      "adr": null,
-      "readme": null
+      "notes": "New catalogued feature. WhatsNew.tsx (518 LOC). No test coverage."
     }
   ],
-  "cross_references": {
-    "high_risk_undocumented_gaps": [],
-    "high_coupling_no_adr": [
-      "opportunities (fan_in=19, no ADR)",
-      "contacts (fan_out=10, no ADR)"
+  "infrastructure_docs": [
+    {
+      "module": "providers",
+      "risk": "high",
+      "prd": "docs/prd/providers/PRD-providers.md",
+      "adr": "docs/adr/001-supabase-provider-pattern.md"
+    },
+    {
+      "module": "validation",
+      "risk": "high",
+      "prd": "docs/prd/validation/PRD-validation.md",
+      "adr": "docs/adr/004-validation-at-provider-boundary.md"
+    },
+    {
+      "module": "src/components",
+      "risk": "medium",
+      "prd": "docs/prd/components/PRD-components.md",
+      "adr": "docs/adr/003-three-tier-ui-architecture.md"
+    },
+    {
+      "module": "supabase",
+      "risk": "high",
+      "prd": "docs/prd/supabase/PRD-supabase.md",
+      "adr": "docs/adr/002-soft-delete-convention.md"
+    }
+  ],
+  "cross_reference_findings": {
+    "high_coupling_high_risk": [
+      "providers (god-class composedDataProvider, risk=90, 21 handlers)",
+      "opportunities (fan_in=19, fan_out=10, risk=85, 14480 LOC)",
+      "validation (fan_in=91, risk=80, highest fan-in module)"
     ],
-    "high_risk_no_prd": [],
-    "medium_risk_no_brd": [
-      "reports",
-      "filters",
-      "timeline",
-      "services",
-      "hooks",
-      "constants",
-      "utils",
-      "productDistributors"
+    "high_risk_no_adr": [],
+    "undocumented_high_risk": [],
+    "elevated_churn_watch": [
+      "sales (4th consecutive audit above churn threshold)",
+      "supabase_migrations (472 commits in 6mo, highest change-frequency layer)"
+    ],
+    "new_regression_priorities": [
+      "Provider layer (newly catalogued — 21 handlers, full test coverage present)",
+      "Services layer (newly catalogued — 5 test files, partial coverage)"
     ]
   }
 }

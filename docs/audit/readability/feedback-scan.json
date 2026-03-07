@@ -1,0 +1,69 @@
+{
+  "category": "feedback_loops",
+  "checks": [
+    {
+      "id": "6.1",
+      "name": "Test files exist",
+      "status": "partial",
+      "points": 2,
+      "max": 3,
+      "critical_gate": true,
+      "evidence": "381 test files found (*.test.ts, *.test.tsx, *.spec.tsx patterns). 1617 total source files (*.ts, *.tsx, *.js). Ratio: 23.6% — above 10% threshold but below 60% full-marks threshold. Test directories include src/atomic-crm/activities/__tests__/, src/atomic-crm/contacts/__tests__/, src/atomic-crm/dashboard/__tests__/, src/atomic-crm/providers/supabase/__tests__/, and 10+ others. SQL tests also present at supabase/tests/database/.",
+      "remediation": "Increase test coverage to reach the 60%+ ratio (>970 test files) for full marks. Focus on untested feature modules and provider handlers."
+    },
+    {
+      "id": "6.2",
+      "name": "Test runner configured",
+      "status": "pass",
+      "points": 2,
+      "max": 2,
+      "critical_gate": false,
+      "evidence": "Vitest configured in package.json. Scripts: \"test\": \"node --max-old-space-size=4096 node_modules/vitest/vitest.mjs\", \"test:ci\": \"node scripts/test-sharded.mjs\", \"test:coverage\": vitest run --coverage, \"test:unit\": vitest run src/**/*.test.{ts,tsx}. vitest@^3.2.4 and @vitest/coverage-v8@^3.2.4 present in devDependencies. vite.config.ts also exists for test configuration.",
+      "remediation": null
+    },
+    {
+      "id": "6.3",
+      "name": "CI/CD pipeline exists",
+      "status": "pass",
+      "points": 2,
+      "max": 2,
+      "critical_gate": false,
+      "evidence": "GitHub Actions workflows found at .github/workflows/: ci.yml, security.yml, supabase-deploy.yml. ci.yml has a dedicated 'Tests' job (line 94-108) running 'npm run test:ci' on ubuntu-latest, triggered on push to main and all pull_requests. Also includes Quality job (lint, tsc, UI pattern compliance) and Build job.",
+      "remediation": null
+    },
+    {
+      "id": "6.4",
+      "name": "Pre-commit hooks configured",
+      "status": "pass",
+      "points": 1,
+      "max": 1,
+      "critical_gate": false,
+      "evidence": "Husky pre-commit hook present at .husky/pre-commit (188 lines). Enforces: .env file blocking, UI pattern compliance (native select, hardcoded colors), TypeScript incremental type-check, semantic color validation, and SQL migration validation. husky@^9.1.7 in devDependencies. 'prepare' script in package.json installs husky on npm install.",
+      "remediation": null
+    },
+    {
+      "id": "6.5",
+      "name": "Claude Code hooks configured",
+      "status": "pass",
+      "points": 1,
+      "max": 1,
+      "critical_gate": false,
+      "evidence": ".claude/settings.json contains both PreToolUse and PostToolUse hooks. PreToolUse: migration-guard.ts on Edit/Write, verification-before-git.ts and supabase-cli-guard.ts on Bash. PostToolUse: prettier-format.ts, eslint-check.ts, post-tool-use-tracker.ts on Edit/Write, track-test-run.ts on Bash. Stop hook: verify-tests-before-stop.ts.",
+      "remediation": null
+    },
+    {
+      "id": "6.6",
+      "name": "Test command cross-validation",
+      "status": "pass",
+      "points": 2,
+      "max": 2,
+      "critical_gate": false,
+      "evidence": "CLAUDE.md (line: '**Test:** `npm test` — Vitest') specifies 'npm test'. package.json \"test\" script runs vitest via 'node --max-old-space-size=4096 node_modules/vitest/vitest.mjs'. Commands are consistent: both reference npm test invoking vitest. CI uses 'npm run test:ci' (sharded variant) which is a documented CI-specific alias.",
+      "remediation": null
+    }
+  ],
+  "summary": {
+    "points": 10,
+    "max": 11
+  }
+}

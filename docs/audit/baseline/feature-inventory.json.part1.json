@@ -1,0 +1,45 @@
+{
+  "id": "feat-cnt-001",
+  "domain": "Contacts",
+  "name": "Contact Management",
+  "namespace": "src/atomic-crm/contacts",
+  "entry_points": [
+    "src/atomic-crm/contacts/index.tsx",
+    "src/atomic-crm/contacts/resource.tsx",
+    "src/atomic-crm/contacts/ContactList.tsx",
+    "src/atomic-crm/contacts/ContactCreate.tsx",
+    "src/atomic-crm/contacts/ContactEdit.tsx",
+    "src/atomic-crm/contacts/ContactShow.tsx",
+    "src/atomic-crm/contacts/ContactSlideOver.tsx"
+  ],
+  "db_tables": ["contacts", "contacts_summary", "contact_organization_details"],
+  "external_deps": ["papaparse", "react-dropzone"],
+  "test_coverage": "full",
+  "dead_code": false,
+  "status": "verified",
+  "confidence": 0.95,
+  "confidence_history": [
+    {
+      "date": "2026-03-02",
+      "score": 0.95,
+      "source": "initial-audit"
+    },
+    {
+      "date": "2026-03-04",
+      "score": 0.95,
+      "source": "incremental-audit"
+    }
+  ],
+  "assumptions": [
+    "db_tables inferred from RESOURCE_MAPPING in resources.ts and handler file names",
+    "contact_organization_details is a summary view confirmed in resources.ts"
+  ],
+  "requires_review": [],
+  "last_verified": "2026-03-04",
+  "linked_docs": {
+    "brd": "docs/brd/contacts.md",
+    "prd": "docs/prd/contacts/PRD-contacts.md",
+    "adrs": []
+  },
+  "description": "Full CRUD management of sales contacts. Includes list, create, edit, show, slide-over detail panel, CSV import wizard, CSV export, bulk actions, organization picker, opportunity linking/unlinking, tag management, and FTS-enabled search."
+}

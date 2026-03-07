@@ -1,0 +1,77 @@
+{
+  "scanner": "manifest-scanner",
+  "version": "0.3.0",
+  "timestamp": "2026-03-06T00:00:00.000Z",
+  "codebase_path": "C:/Users/NewAdmin/Projects/crispy-crm",
+  "detected": {
+    "language": "TypeScript",
+    "framework": "React Admin",
+    "package_manager": "npm",
+    "manifest_file": "package.json"
+  },
+  "checks": [
+    {
+      "id": "1.1",
+      "name": "Primary manifest exists",
+      "status": "pass",
+      "score": 3,
+      "max_score": 3,
+      "confidence": "high",
+      "evidence": "package.json found at repo root with name 'atomic-crm', version '0.1.0'",
+      "details": {
+        "manifest_path": "C:/Users/NewAdmin/Projects/crispy-crm/package.json",
+        "all_manifests_found": ["C:/Users/NewAdmin/Projects/crispy-crm/package.json"]
+      },
+      "remediation": null
+    },
+    {
+      "id": "1.2",
+      "name": "Manifest parseable and complete",
+      "status": "pass",
+      "score": 2,
+      "max_score": 2,
+      "confidence": "high",
+      "evidence": "Valid JSON with name ('atomic-crm'), 45 production dependencies, 26 devDependencies, and 60+ scripts including dev, build, test, lint, typecheck, seed, db, and guardrail commands",
+      "details": {
+        "has_name": true,
+        "has_deps": true,
+        "has_scripts": true
+      },
+      "remediation": null
+    },
+    {
+      "id": "1.3",
+      "name": "Language and framework determinable",
+      "status": "pass",
+      "score": 2,
+      "max_score": 2,
+      "confidence": "high",
+      "evidence": "Language TypeScript confirmed by devDependency 'typescript ^5.9.3' and presence of .ts/.tsx source files; framework React Admin confirmed by dependency 'react-admin ^5.10.0' and 'ra-core ^5.10.0'; React 19 via 'react ^19.1.0'; Supabase backend via '@supabase/supabase-js ^2.75.1'",
+      "details": {
+        "language": "TypeScript",
+        "framework": "React Admin",
+        "method": "manifest+deps"
+      },
+      "remediation": null
+    },
+    {
+      "id": "1.4",
+      "name": "README explains purpose",
+      "status": "pass",
+      "score": 2,
+      "max_score": 2,
+      "confidence": "high",
+      "evidence": "README.md at repo root describes purpose ('Sales CRM for food brokers replacing Excel-based workflows'), lists tech stack, and provides a 5-step Quick Start covering install, env setup, DB push, seed, and dev server run",
+      "details": {
+        "readme_path": "C:/Users/NewAdmin/Projects/crispy-crm/README.md",
+        "has_description": true,
+        "has_setup": true,
+        "has_run": true
+      },
+      "remediation": null
+    }
+  ],
+  "category_score": 9,
+  "category_max": 9,
+  "category_percentage": 100.0
+}

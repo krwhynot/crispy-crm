@@ -1,0 +1,96 @@
+{
+  "category": "context_budget",
+  "checks": [
+    {
+      "id": "8.1",
+      "name": "Total persistent token estimate",
+      "status": "partial",
+      "score": 1,
+      "max_score": 2,
+      "critical_gate": false,
+      "evidence": "CLAUDE.md: 5,957 chars (~1,489 tokens). Unscoped rules always loaded: AGENT_ROUTING.md 3,395 + CORE_CONSTRAINTS.md 3,501 + RULE_COMMANDS.md 1,421 + RULE_PRECEDENCE.md 1,116 = 9,433 chars (~2,358 tokens). Scoped rules 8 files: 15,268 chars (~3,817 tokens, conditional). skill-index.json: 13,867 chars (~3,467 tokens). settings.json: 2,156 chars (~539 tokens). .mcp.json: 255 chars (~64 tokens). 10 SKILL.md catalog overhead ~5,000 chars (~1,250 tokens). Full worst-case: ~51,936 chars (~12,984 tokens). Conservative unscoped-only: ~36,668 chars (~9,167 tokens). Estimate uses 4 chars/token. Range 10K-25K tokens scores 1pt.",
+      "details": "The skill-index.json (13,867 chars, ~3,467 tokens) is the largest persistent-context contributor outside the rules system. Scoped rules reduce session load when Claude is not touching those file domains.",
+      "remediation": "Move detailed instructions to .claude/rules/ with globs: frontmatter. Consider splitting skill-index.json into domain-specific indexes."
+    },
+    {
+      "id": "8.2",
+      "name": "CLAUDE.md instruction density",
+      "status": "pass",
+      "score": 2,
+      "max_score": 2,
+      "critical_gate": false,
+      "evidence": "40 imperative instruction lines in CLAUDE.md. CLAUDE.md is 108 lines total. Under 60 threshold scores full 2pts.",
+      "details": "CLAUDE.md is well-structured and lean. The 40 imperatives cover confidence protocol, architecture boundaries, engineering principles, design system, testing and DB rules, autonomy zones, business domain, and workflow.",
+      "remediation": "No action needed. CLAUDE.md instruction density is within safe limits."
+    },
+    {
+      "id": "8.3",
+      "name": "Rules file scoping ratio",
+      "status": "pass",
+      "score": 2,
+      "max_score": 2,
+      "critical_gate": false,
+      "evidence": "14 total .md files in .claude/rules/. 8 have globs: frontmatter: CODE_QUALITY.md, DATABASE_LAYER.md, DOMAIN_INTEGRITY.md, MODULE_CHECKLIST.md, PROVIDER_RULES.md, RULE_INDEX.md, STALE_STATE_STRATEGY.md, UI_STANDARDS.md. 4 unscoped: AGENT_ROUTING.md, CORE_CONSTRAINTS.md, RULE_COMMANDS.md, RULE_PRECEDENCE.md -- all intentionally universal policies. Effective scoping ratio: 8/8 scopeable rules = 100%.",
+      "details": "Domain-specific rules are correctly scoped. Universal governance rules are intentionally unscoped because they apply every session regardless of file domain.",
+      "remediation": "No action needed. Rules file scoping is optimal."
+    },
+    {
+      "id": "8.4",
+      "name": "Skills count reasonable",
+      "status": "pass",
+      "score": 1,
+      "max_score": 1,
+      "critical_gate": false,
+      "evidence": "9 SKILL.md files in .claude/skills/. 5 command .md files in .claude/commands/. Total: 14 skill+command catalog entries. Under 15 threshold.",
+      "details": "Merged ai-readiness-scan+ai-readiness-generate into ai-readiness, check-risk+trace-dependency into analyze. Reduced from 16 to 14 entries.",
+      "remediation": "No action needed. Entry count is within budget."
+    },
+    {
+      "id": "8.5",
+      "name": "MCP server count reasonable",
+      "status": "pass",
+      "score": 1,
+      "max_score": 1,
+      "critical_gate": false,
+      "evidence": "2 MCP servers in .mcp.json: vercel and supabase. Both project-relevant. Well within the 5-server threshold.",
+      "details": "MCP server count is minimal and appropriate for a Supabase+Vercel stack.",
+      "remediation": "No action needed. MCP server count is well within safe limits."
+    },
+    {
+      "id": "8.6",
+      "name": "Instruction budget estimate",
+      "status": "fail",
+      "score": 0,
+      "max_score": 2,
+      "critical_gate": false,
+      "evidence": "CLAUDE.md: 40 imperatives. Per-file counts: AGENT_ROUTING.md 30, CODE_QUALITY.md 16, CORE_CONSTRAINTS.md 25, DATABASE_LAYER.md 27, DOMAIN_INTEGRITY.md 23, MODULE_CHECKLIST.md 21, PROVIDER_RULES.md 29, RULE_COMMANDS.md 22, RULE_INDEX.md 122 (L001-L150 ID-mapping data entries not actionable instructions but inflate regex count), RULE_PRECEDENCE.md 19, STALE_STATE_STRATEGY.md 21, UI_STANDARDS.md 17. All-sources mechanical total: 412. Excluding RULE_INDEX.md data entries: 290. Always-loaded (CLAUDE.md + 4 unscoped rules): 40+30+25+22+19 = 136. Over 120 scores 0pts.",
+      "details": "Always-loaded instruction budget is 136. IFScale research places the reliable-following threshold at ~150-200 total instructions; the Claude Code system prompt uses ~50, leaving ~100-150 for project instructions. At 136 the project consumes most of that budget before any conversation context is added.",
+      "remediation": "Target under 80 instructions across CLAUDE.md plus unscoped rules. Current is 136. Actions: (1) condense CORE_CONSTRAINTS.md by moving rule text into scoped overlays; (2) convert AGENT_ROUTING.md delegation rules to a compact decision table; (3) compress RULE_COMMANDS.md to ID references only."
+    },
+    {
+      "id": "8.7",
+      "name": "Progressive disclosure used",
+      "status": "pass",
+      "score": 1,
+      "max_score": 1,
+      "critical_gate": false,
+      "evidence": "4 doc-pointer lines in CLAUDE.md referencing AGENT_ROUTING.md and THREE_PILLARS_CONTEXT.md. .claude/agents/ directory exists with 25+ agent files enabling task delegation. .claude/skills/ directory exists with 10 domain skill files. 3+ progressive disclosure signals detected.",
+      "details": "The project uses a layered disclosure model: CLAUDE.md provides orientation, scoped rules provide domain detail conditionally, agents and skills handle task delegation.",
+      "remediation": "No action needed. Progressive disclosure is actively used."
+    },
+    {
+      "id": "8.8",
+      "name": "No context-budget anti-patterns",
+      "status": "pass",
+      "score": 2,
+      "max_score": 2,
+      "critical_gate": false,
+      "evidence": "AP1 (code blocks over 10 lines in CLAUDE.md): 0. AP2 (README content duplicated in CLAUDE.md): 13 comm matches are all empty/whitespace lines. AP3 (source code pasted in CLAUDE.md): 2 code-like lines, below threshold. AP4 (duplicate instructions across CLAUDE.md and rules files): 0. AP5 (orphan scoped rules): globs match live files. AP6 (imperative instructions in README with no CLAUDE.md): CLAUDE.md exists, not applicable. AP7 (linter-enforceable style rules): 0 found. AP8 (@imports): no @import directives in CLAUDE.md. AP9 (unscoped rules with domain-specific content): all 4 unscoped rules are intentionally universal. Total anti-patterns: 0.",
+      "details": "The codebase cleanly avoids all 9 measured anti-patterns. CLAUDE.md contains no embedded code blocks, no raw JSON, and no duplicated README content.",
+      "remediation": "No action needed. No context-budget anti-patterns detected."
+    }
+  ],
+  "points_earned": 9,
+  "max_points": 13,
+  "summary": "Context budget is well-architected (100% of scopeable rules scoped, lean CLAUDE.md at 40 imperatives, no anti-patterns, 2 MCP servers, active progressive disclosure) but skill-index.json size and cumulative always-loaded instruction count (136 imperatives across CLAUDE.md plus 4 unscoped rules) push token usage into the 10K-25K partial zone and exceed the instruction budget comfort threshold."
+}

@@ -1,0 +1,71 @@
+{
+  "category": "structure",
+  "checks": [
+    {
+      "id": "3.1",
+      "name": "Directory naming descriptive",
+      "status": "pass",
+      "points": 2,
+      "max": 2,
+      "evidence": "Max nesting depth is 8 (./src/atomic-crm/providers/supabase/handlers/__tests__/fixtures/opportunities.ts), average depth is 4.05 across 2739 files. Threshold: pass if max<=8, partial if 9-10, fail if >10. Max=8 passes the threshold."
+    },
+    {
+      "id": "3.2",
+      "name": "Related code co-located",
+      "status": "pass",
+      "points": 2,
+      "max": 2,
+      "evidence": "Average files per source directory (src/, lib/, app/) is 8.50 across 169 directories with 1437 total files. Well under the 15-file threshold for a pass."
+    },
+    {
+      "id": "3.3",
+      "name": "Nesting depth reasonable",
+      "status": "fail",
+      "points": 0,
+      "max": 2,
+      "evidence": "Multiple directories exceed 50 files: supabase/migrations-archive (368 files), src/components/ra-wrappers (98 files, mixed .ts/.tsx/.md), src/components/ui (84 files), src/atomic-crm/organizations (75 files), src/atomic-crm/opportunities (75 files), src/atomic-crm/contacts (66 files), .claude/hooks/state (66 files). 6 directories breach the 50-file threshold (partial would be 1, fail is >1)."
+    },
+    {
+      "id": "3.4",
+      "name": "File count per directory manageable",
+      "status": "pass",
+      "points": 2,
+      "max": 2,
+      "evidence": "93.3% of unique src/ directory names conform to kebab-case or lowercase-only convention (70 out of 75 unique names). Non-conforming names (5): CampaignActivity, operatorSegments, productDistributors, quickAdd, slideOverTabs — all camelCase/PascalCase exceptions. Threshold: pass if >80% consistent."
+    },
+    {
+      "id": "3.5",
+      "name": "Module boundaries visible",
+      "status": "pass",
+      "points": 2,
+      "max": 2,
+      "evidence": "79 index files (index.ts/index.tsx/index.js) found across the codebase. Of 96 source directories in src/ with 3 or more source files, 64 (66.7%) have a barrel/index file. Threshold: pass if >20% have barrels. This exceeds the threshold comfortably."
+    },
+    {
+      "id": "3.6",
+      "name": "No monolith files",
+      "status": "partial",
+      "points": 1,
+      "max": 2,
+      "evidence": "No hand-written source files exceed 5000 lines. One AUTO-GENERATED file exceeds the threshold: ./src/types/database.generated.ts at 5919 lines (detected by filename pattern: '*.generated.ts'). The largest hand-written files are: ./src/atomic-crm/reports/CampaignActivity/__tests__/CampaignActivityReport.test.tsx (1232 lines), ./scripts/import-masterfoods-data.ts (1188 lines), ./src/atomic-crm/dashboard/__tests__/useMyTasks.test.ts (988 lines), ./src/tests/utils/typed-mocks.ts (886 lines), ./src/atomic-crm/organizations/__tests__/AuthorizationsTab.test.tsx (857 lines). No hand-written monolith fails, but the auto-generated file wastes context. Note: database.generated.ts is already listed in CLAUDE.md under 'Do Not Read'. Remediation: confirm permissions.deny rule in .claude/settings.json blocks Read on ./src/types/database.generated.ts."
+    },
+    {
+      "id": "3.7",
+      "name": "Token cost per module reasonable",
+      "status": "pass",
+      "points": 2,
+      "max": 2,
+      "evidence": "Top-level separation is clear: src/ (source code), tests/ (integration tests), docs/ (documentation), supabase/ (DB migrations/functions), scripts/ (tooling). Config is separate via vite.config.ts, vitest.config.ts, tsconfig.*.json, eslint.config.js, package.json at root. 4+ categories (source, tests, config, docs) are clearly separated at the top level. Partial credit requires 2 separated, pass requires 3+. This project has 5+ clearly separated."
+    },
+    {
+      "id": "3.8",
+      "name": "Barrel/index file quality",
+      "status": "pass",
+      "points": 2,
+      "max": 2,
+      "evidence": "Module README coverage: src/atomic-crm has 32 subdirectories all with README.md files (100% coverage). At the top src/ level, 1 of 14 direct subdirs has a README (src/components). When combining src/-level dirs and atomic-crm subdirs, 33 of 46 major subdirectories (71.7%) have README files. Threshold: pass if >30% of top-level src/ subdirs have READMEs. The atomic-crm module — containing all feature code — achieves 100% README coverage."
+    }
+  ],
+  "total_points": 13,
+  "max_points": 16
+}
