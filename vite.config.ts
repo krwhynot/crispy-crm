@@ -5,6 +5,7 @@ import react from "@vitejs/plugin-react";
 import { visualizer } from "rollup-plugin-visualizer";
 import createHtmlPlugin from "vite-plugin-simple-html";
 import { sentryVitePlugin } from "@sentry/vite-plugin";
+import { productionCSP, developmentCSP, buildCSPMetaTag } from "./src/config/csp-config";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
@@ -92,35 +93,8 @@ export default defineConfig(({ mode }) => ({
             tag: "meta",
             attrs: {
               "http-equiv": "Content-Security-Policy",
-              content:
-                mode === "production"
-                  ? // Production: Stricter security (includes Sentry + Google Fonts)
-                    // Note: 'wasm-unsafe-eval' required for Vite's dynamic import() used by React.lazy()
-                    // Note: blob: required for Sentry Session Replay worker
-                    "default-src 'self'; " +
-                    "script-src 'self' 'wasm-unsafe-eval' blob:; " +
-                    "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; " +
-                    "img-src 'self' data: blob: https:; " +
-                    "font-src 'self' data: https://fonts.gstatic.com; " +
-                    "connect-src 'self' https://*.supabase.co https://*.supabase.in wss://*.supabase.co wss://*.supabase.in https://*.sentry.io; " +
-                    "worker-src 'self' blob:; " +
-                    "child-src 'self' blob:; " +
-                    "frame-src 'none'; " +
-                    "object-src 'none'; " +
-                    "base-uri 'none'; " +
-                    "form-action 'self';"
-                  : // Development: Allow Vite HMR and inline scripts
-                    "default-src 'self'; " +
-                    "script-src 'self' 'unsafe-inline' 'unsafe-eval'; " +
-                    "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; " +
-                    "img-src 'self' data: https:; " +
-                    "font-src 'self' data: https://fonts.gstatic.com; " +
-                    "connect-src 'self' http://localhost:* http://127.0.0.1:* ws://localhost:* ws://127.0.0.1:* https://*.supabase.co https://*.supabase.in wss://*.supabase.co wss://*.supabase.in; " +
-                    "child-src 'self' blob:; " +
-                    "frame-src 'none'; " +
-                    "object-src 'none'; " +
-                    "base-uri 'none'; " +
-                    "form-action 'self';",
+              // CSP directives defined in src/config/csp-config.ts (single source of truth)
+              content: buildCSPMetaTag(mode === "production" ? productionCSP : developmentCSP),
             },
           },
         ],

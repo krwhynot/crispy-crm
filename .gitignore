@@ -30,6 +30,7 @@ $RECYCLE.BIN/
 # Environment files
 .env
 .env.*
+!.env.example
 .env-archive/
 # Supabase configuration
 supabase/.env

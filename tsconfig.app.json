@@ -25,7 +25,7 @@
     "noUncheckedSideEffectImports": true,
     "noUncheckedIndexedAccess": true,
 
-    "types": ["vitest/globals", "faker"],
+    "types": ["vitest/globals"],
 
     // Shadcn
     "baseUrl": ".",
