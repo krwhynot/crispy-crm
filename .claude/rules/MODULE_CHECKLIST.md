@@ -1,4 +1,8 @@
-﻿# Feature Module Overlay
+---
+globs: ["src/atomic-crm/**"]
+---
+
+# Feature Module Overlay
 
 Scope: feature-module file layout and UI/data access conventions for `src/atomic-crm/*` resources.
 

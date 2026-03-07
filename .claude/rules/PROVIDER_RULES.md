@@ -1,4 +1,8 @@
-﻿# Provider Rules Overlay
+---
+globs: ["src/atomic-crm/providers/**"]
+---
+
+# Provider Rules Overlay
 
 Scope: composed Supabase provider handlers, validation/lifecycle wrappers, storage side-effects, and hierarchy safeguards.
 

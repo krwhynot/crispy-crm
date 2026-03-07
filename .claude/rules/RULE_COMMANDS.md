@@ -1,4 +1,9 @@
-﻿# Rule Commands Appendix
+﻿---
+description: Shared verification and audit command definitions
+globs: ["src/**", "supabase/**"]
+---
+
+# Rule Commands Appendix
 
 Shared command catalog referenced by rule IDs. Keep command definitions here and reference by command ID from overlays.
 

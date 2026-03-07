@@ -1,4 +1,8 @@
-﻿# Database Layer Overlay
+---
+globs: ["supabase/**"]
+---
+
+# Database Layer Overlay
 
 Scope: RLS, SQL view strategy, soft-delete enforcement, FK/index conventions, and storage-table security.
 

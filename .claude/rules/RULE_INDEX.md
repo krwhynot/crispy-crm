@@ -1,3 +1,10 @@
+---
+description: Legacy-to-stable rule ID mapping for traceability scripts
+globs:
+  - ".claude/rules/**"
+  - "scripts/rules/**"
+---
+
 # Rule Index
 
 This index maps every legacy rule item (`L001`..`L150`) to exactly one stable Rule ID.

@@ -1,4 +1,9 @@
-﻿# Rule Precedence
+﻿---
+description: Rule evaluation order and conflict resolution
+globs: [".claude/rules/**", "src/**", "supabase/**"]
+---
+
+# Rule Precedence
 
 Defines deterministic conflict resolution across always-loaded `.claude/rules/*.md` files.
 
@@ -12,8 +17,9 @@ Defines deterministic conflict resolution across always-loaded `.claude/rules/*.
 6. `MODULE_CHECKLIST.md`
 7. `CODE_QUALITY.md`
 8. `STALE_STATE_STRATEGY.md`
-9. `RULE_COMMANDS.md`
-10. `RULE_INDEX.md`
+9. `AGENT_ROUTING.md`
+10. `RULE_COMMANDS.md`
+11. `RULE_INDEX.md`
 
 ## Conflict Resolution
 
@@ -27,4 +33,4 @@ Defines deterministic conflict resolution across always-loaded `.claude/rules/*.
 
 - Add new global constraints to `CORE_CONSTRAINTS.md`.
 - Keep overlays delta-only; avoid copying core text.
-- Every new overlay rule needs a stable family ID (`DB-*`, `DOM-*`, `MOD-*`, `PRV-*`, `STALE-*`, `UI-*`).
+- Every new overlay rule needs a stable family ID (`AGT-*`, `DB-*`, `DOM-*`, `MOD-*`, `PRV-*`, `STALE-*`, `UI-*`).

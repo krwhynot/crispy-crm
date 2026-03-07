@@ -1,4 +1,8 @@
-﻿# Stale State Strategy Overlay
+---
+globs: ["src/**/*.ts", "src/**/*.tsx"]
+---
+
+# Stale State Strategy Overlay
 
 Scope: query key design, targeted invalidation, stale-time policy, and anti-pattern prevention.
 

@@ -1,742 +1,355 @@
 {
-  "version": "1.1",
-  "description": "Lightweight skill activation index - full definitions in SKILL.md folders. Built-in skills (vercel-react-best-practices) are system-level and not indexed here.",
+  "version": "2.0",
+  "description": "Domain-based skill activation index. Skills are organized by domain with thin dispatchers routing to resources/. Old skill names map to new domains.",
+  "skillAliases": {
+    "fail-fast-debugging": "debugging",
+    "troubleshooting": "debugging",
+    "comprehensive-tracing": "debugging",
+    "cache-invalidation-audit": "architecture-audit",
+    "soft-delete-rls-audit": "architecture-audit",
+    "three-tier-architecture-audit": "architecture-audit",
+    "data-integrity-guards": "data-layer",
+    "crispy-data-provider": "data-layer",
+    "vercel-react-best-practices": "ui-standards",
+    "ui-ux-design-principles": "ui-standards",
+    "testing-patterns": "testing",
+    "verification-before-completion": "testing",
+    "enforcing-principles": "engineering",
+    "supabase-postgres-best-practices": "engineering",
+    "create-adr": "documentation",
+    "create-brd": "documentation",
+    "create-prd": "documentation",
+    "create-readme": "documentation",
+    "ai-readiness-scan": "ai-readiness",
+    "ai-readiness-generate": "ai-readiness",
+    "check-risk": "ai-readiness",
+    "trace-dependency": "ai-readiness",
+    "generate-reports": "audit",
+    "release-notes": "documentation"
+  },
   "skills": {
-    "verification-before-completion": {
+    "debugging": {
       "priority": "critical",
       "keywords": [
-        "done",
-        "complete",
-        "completed",
-        "finished",
-        "fixed",
-        "passes",
-        "passing",
-        "works",
-        "working",
-        "ready",
-        "ship it",
-        "good to go",
-        "all good",
-        "verified",
-        "commit",
-        "PR",
-        "pull request",
-        "push",
-        "merge",
-        "deploy"
-      ],
-      "intentPatterns": [
-        "(tests?|build|types?).*?(pass|passes|passing|succeed|succeeds|work|works)",
-        "(feature|task|bug|fix).*?(complete|done|finished|ready|works)",
-        "(ready|good).*?(to|for).*?(commit|push|PR|merge|deploy|review)",
-        "(should|probably|seems to).*?(work|pass|be fixed)",
-        "(i'm|we're).*?(done|finished|complete)",
-        "(it|this|that).*?(works|passes|is fixed|is ready)",
-        "ship.*?it",
-        "all.*?(good|done|set|ready)",
-        "(create|make|open).*?(commit|PR|pull request)",
-        "(push|merge|deploy).*?(changes|code|branch)"
-      ]
-    },
-    "enforcing-principles": {
-      "priority": "critical",
-      "keywords": [
-        "error handling",
-        "validation",
-        "defaults",
-        "zod",
-        "retry",
-        "circuit breaker",
-        "resilience",
-        "fallback",
-        "strictObject",
-        "strict object",
-        "string limit",
-        "max length",
-        "coerce",
-        "coercion",
-        "allowlist",
-        "enum",
-        "useWatch",
-        "watch",
-        "onSubmit",
-        "onBlur",
-        "onChange",
-        "validation mode",
-        "form mode"
-      ],
-      "intentPatterns": [
-        "(handle|add|implement).*?(error|resilience|retry|fallback)",
-        "(create|add|modify).*?(schema|validation|zod)",
-        "(set|define|add).*?(default|form)",
-        "how.*?(validate|handle error|create form)",
-        "(add|set|use).*?(string|length).*?(limit|max)",
-        "(use|create).*?strict.*?object",
-        "(form|input).*?(coerce|coercion|number|date)",
-        "(watch|useWatch).*?(form|value|field)",
-        "(validation|form).*?mode"
-      ]
-    },
-    "ui-ux-design-principles": {
-      "priority": "high",
-      "keywords": [
-        "design",
-        "UX",
-        "UI",
-        "user experience",
-        "usability",
-        "accessibility",
-        "a11y",
-        "color",
-        "contrast",
-        "touch target",
-        "44px",
-        "cognitive load",
-        "Hick's Law",
-        "Fitts's Law",
-        "Jakob's Law",
-        "Miller's Law",
-        "decision matrix",
-        "component",
-        "button",
-        "form",
-        "layout",
-        "responsive",
-        "mobile",
-        "tablet",
-        "desktop",
-        "WCAG",
-        "ARIA",
-        "semantic",
-        "spacing",
-        "typography",
-        "elevation",
-        "feedback",
-        "loading state",
-        "toast",
-        "aria-invalid",
-        "aria-describedby",
-        "role alert",
-        "screen reader",
-        "form error",
-        "validation error",
-        "error message",
-        "focus management",
-        "label",
-        "htmlFor"
-      ],
-      "intentPatterns": [
-        "(create|build|design|implement).*?(component|ui|interface|button|form|layout)",
-        "(audit|review|evaluate|assess).*?(ui|ux|design|usability|accessibility)",
-        "(improve|fix|optimize).*?(accessibility|usability|ux|ui)",
-        "(check|verify|ensure).*?(contrast|touch|target|accessible)",
-        "(style|styling|css|tailwind).*",
-        "how.*?(look|appear|design|accessible)",
-        "(tablet|ipad|mobile|responsive).*?(design|layout|view)",
-        "what.*?(color|spacing|size|font)",
-        "(form|input|field).*?(accessibility|accessible|aria|screen reader)",
-        "(error|validation).*?(message|display|announce|accessible)",
-        "(focus|keyboard).*?(management|navigation|trap)"
-      ]
-    },
-    "data-integrity-guards": {
-      "priority": "high",
-      "keywords": [
-        "data flow",
-        "integrity",
-        "guards",
-        "layers",
-        "defense in depth",
-        "multi-layer",
-        "form defaults",
-        "data corruption",
-        "sanitize",
-        "boundary",
-        "checkpoint",
-        "denylist"
-      ],
-      "intentPatterns": [
-        "(data|input).*?(flow|path|journey)",
-        "(prevent|stop|catch).*?(invalid|bad|corrupt).*?data",
-        "(ensure|guarantee|enforce).*?(integrity|valid|correct)",
-        "defense.*?in.*?depth",
-        "(multiple|multi).*?layer.*?(validation|check)"
-      ]
-    },
-    "fail-fast-debugging": {
-      "priority": "critical",
-      "keywords": [
-        "bug",
-        "error",
-        "failing",
-        "broken",
-        "fix",
-        "not working",
-        "crash",
-        "issue",
-        "debug",
-        "investigate",
-        "diagnose",
-        "trace",
-        "root cause",
-        "why is",
-        "undefined",
-        "null",
-        "infinite loop",
-        "exception",
-        "stack trace",
-        "doesn't work",
-        "stopped working",
-        "fails",
-        "throws",
-        "unexpected",
-        "wrong value",
-        "incorrect",
-        "test pollution",
-        "flaky test",
-        "test isolation",
-        "bisect"
+        "bug", "error", "failing", "broken", "fix", "not working", "crash", "issue",
+        "debug", "investigate", "diagnose", "trace", "root cause", "why is",
+        "undefined", "null", "infinite loop", "exception", "stack trace",
+        "doesn't work", "stopped working", "fails", "throws", "unexpected",
+        "wrong value", "incorrect", "test pollution", "flaky test", "bisect",
+        "build error", "build failure", "compile error", "TypeScript error",
+        "vite", "bundle", "dependency", "npm error", "performance", "slow",
+        "memory leak", "deployment", "deploy", "timeout", "CORS", "401", "403", "500 error",
+        "analyze", "workflow", "how does", "deep dive", "explain",
+        "data flow", "entry points", "who calls", "thorough analysis"
       ],
       "intentPatterns": [
         "(fix|debug|investigate|diagnose|trace).*?(bug|error|issue|problem|failure)",
         "(why|how come|what's wrong).*?(is|does|did).*?(fail|error|break|crash|not work)",
         "(not|isn't|doesn't|won't).*?(work|working|loading|rendering|showing)",
         "(getting|seeing|have|got).*?(error|exception|bug|issue)",
-        "(something|it).*?(broke|broken|wrong|incorrect)",
         "(null|undefined|NaN).*?(error|exception|value)",
-        "(stack|error).*?trace",
         "(root|underlying|real).*?cause",
-        "(investigate|look into|dig into|find).*?(why|what|cause)",
-        "quick.*?fix",
-        "just.*?try",
-        "maybe.*?(this|that).*?will",
-        "let me.*?(add|try|change)",
         "(test|spec).*?(pollution|polluter|isolation|flaky|intermittent)",
-        "(bisect|binary search).*?(test|failure)",
-        "(where|what|who).*?(calls?|sets?|creates?|passes?).*?this"
-      ]
-    },
-    "supabase-postgres-best-practices": {
-      "priority": "critical",
-      "keywords": [
-        "supabase",
-        "npx supabase",
-        "supabase start",
-        "supabase stop",
-        "supabase status",
-        "supabase link",
-        "db push",
-        "db pull",
-        "db reset",
-        "db diff",
-        "gen types",
-        "functions deploy",
-        "functions serve",
-        "functions new",
-        "edge function",
-        "edge functions",
-        "secrets set",
-        "config.toml",
-        "local development",
-        "local stack",
-        "database",
-        "query",
-        "RLS",
-        "migration",
-        "migrate",
-        "CREATE VIEW",
-        "ALTER TABLE",
-        "GRANT",
-        "RLS policy",
-        "database view",
-        "sql migration",
-        "row level security",
-        "permissions",
-        "postgres",
-        "postgresql",
-        "query optimization",
-        "indexes",
-        "schema design",
-        "connection pooling",
-        "locking",
-        "monitoring"
-      ],
-      "intentPatterns": [
-        "(run|execute|use).*?supabase.*?(cli|command)",
-        "supabase.*?(start|stop|status|init|link|login)",
-        "(push|pull|reset|diff).*?(database|db|migration)",
-        "(create|new|add).*?(migration|edge function|function)",
-        "(deploy|serve|test).*?(function|edge function)",
-        "(generate|gen).*?types?",
-        "(local|dev).*?(stack|environment|database)",
-        "config\\.toml",
-        "(create|build|write).*?(query|function|api|migration|schema|view|table|policy)",
-        "(database|backend|supabase).*",
-        "how.*?(query|fetch|insert|update|delete)",
-        "(create|write|refactor|update).*?(migration|schema|view|table)",
-        "(add|modify|update|fix).*?(table|view|policy|permission)",
-        "migration.*?(file|pattern|template|best practice)",
-        "(deploy|push|apply).*?(migration|schema)",
-        "(grant|revoke).*?(select|insert|update|delete)",
-        "(query|postgres|database).*?(optimization|performance|slow)",
-        "(index|schema|RLS).*?(design|optimization|tuning)"
-      ]
-    },
-"troubleshooting": {
-      "priority": "high",
-      "keywords": [
-        "build error",
-        "build failure",
-        "build failed",
-        "compile error",
-        "compilation error",
-        "TypeScript error",
-        "TS error",
-        "tsc error",
-        "webpack",
-        "vite",
-        "bundle",
-        "bundler",
-        "dependency",
-        "dependencies",
-        "npm error",
-        "npm install",
-        "package",
-        "performance",
-        "slow",
-        "latency",
-        "bottleneck",
-        "memory leak",
-        "memory",
-        "N+1",
-        "query slow",
-        "deployment",
-        "deploy",
-        "production",
-        "staging",
-        "Edge Function",
-        "edge function",
-        "environment",
-        "env var",
-        "service not starting",
-        "not starting",
-        "timeout",
-        "CORS",
-        "401",
-        "403",
-        "500 error",
-        "module not found",
-        "cannot find module",
-        "peer dependency",
-        "version mismatch",
-        "bundle size",
-        "chunk"
-      ],
-      "intentPatterns": [
         "(build|compile|bundle).*?(fail|error|broken|issue)",
-        "(npm|yarn|pnpm).*?(error|fail|issue|problem)",
-        "(TypeScript|tsc|TS).*?(error|fail|issue)",
         "(slow|performance|latency|bottleneck).*?(query|api|render|load)",
         "(deploy|deployment|production|staging).*?(fail|error|issue|problem)",
-        "(Edge Function|edge function|supabase function).*?(fail|error|timeout)",
-        "(environment|env|config).*?(missing|wrong|issue|mismatch)",
-        "(memory|heap).*?(leak|grow|issue)",
-        "(bundle|chunk).*?(size|large|too big)",
-        "why.*?(build|deploy|performance).*?(fail|slow|broken)",
-        "(service|app|function).*?(not starting|crash|timeout)",
-        "(module|dependency|package).*?(not found|missing|conflict)"
-      ]
-    },
-    "comprehensive-tracing": {
-      "priority": "high",
-      "keywords": [
-        "analyze",
-        "workflow",
-        "how does",
-        "trace",
-        "deep dive",
-        "explain",
-        "search_code",
-        "go_to_definition",
-        "find_references",
-        "data flow",
-        "entry points",
-        "who calls",
-        "what calls",
-        "where is this used",
-        "complete analysis",
-        "full analysis",
-        "thorough analysis"
-      ],
-      "intentPatterns": [
         "(understand|explain|analyze).*?how.*?works",
         "(find|trace|show).*?all.*?(entry|path|flow)",
-        "(trace|follow).*?(data|call|execution).*?flow",
-        "(who|what|where).*?(calls|uses|consumes|triggers)",
-        "(complete|full|thorough|comprehensive).*?(analysis|trace|review)",
-        "search.*?code.*?for",
-        "find.*?(definition|references)",
-        "go.*?to.*?definition"
+        "(trace|follow).*?(data|call|execution).*?flow"
       ]
     },
-    "crispy-data-provider": {
+    "architecture-audit": {
       "priority": "high",
       "keywords": [
-        "data provider",
-        "data handler",
-        "unifiedDataProvider",
-        "unified provider",
-        "composedDataProvider",
-        "composed provider",
-        "create handler",
-        "add handler",
-        "new resource",
-        "add resource",
-        "CRUD",
-        "getList",
-        "getOne",
-        "React Admin handler",
-        "react-admin handler",
-        "Supabase query",
-        "supabase handler",
-        "strangler fig",
-        "migration pattern",
-        "view table",
-        "view duality",
-        "read from view",
-        "write to table",
-        "computed fields",
-        "strip fields",
-        "service layer",
-        "soft delete",
-        "handler composition",
-        "withValidation",
-        "withErrorLogging",
-        "withLifecycleCallbacks",
-        "lifecycle callbacks",
-        "HttpError",
-        "data provider error"
+        "audit cache", "cache audit", "stale state", "query keys", "invalidation",
+        "refetch patterns", "cache strategy", "TanStack Query", "React Query",
+        "useQuery", "useMutation", "invalidateQueries", "refetchOnWindowFocus",
+        "staleTime", "query key factory", "cross-resource", "over-invalidation",
+        "N+1 query", "ReferenceField", "API storm",
+        "soft delete", "soft-delete", "RLS audit", "RLS policy", "row level security",
+        "deleted_at", "security audit", "data leak", "cross-tenant", "multi-tenant",
+        "tenant isolation", "policy audit", "hard delete", "cascade delete",
+        "supportsSoftDelete",
+        "tier audit", "UI audit", "architecture audit", "component layers",
+        "Tier 1", "Tier 2", "Tier 3", "atoms", "molecules", "organisms",
+        "shadcn", "ra-wrappers", "Datagrid", "PremiumDatagrid",
+        "DialogTitle", "prop leak", "import violation"
+      ],
+      "intentPatterns": [
+        "(audit|check|review|validate).*?(cache|stale|query.*?key|invalidation)",
+        "(audit|check|review|validate).*?(soft.*?delete|RLS|row.*?level.*?security|policy)",
+        "(audit|check|review|validate).*?(tier|UI.*?layer|component.*?architecture)",
+        "(find|detect).*?(stale.*?data|cache.*?issue|data.*?leak|cross.*?tenant)",
+        "(find|detect).*?(import.*?violation|prop.*?leak|raw.*?import)",
+        "(missing|check).*?(deleted_at|soft.*?delete|RLS.*?filter|DialogTitle)",
+        "(raw|direct).*?(Datagrid|shadcn|Tier 1)",
+        "(API|query).*?storm",
+        "(N\\+1|n\\+1|reference.*?field).*?(query|issue|problem)"
+      ]
+    },
+    "data-layer": {
+      "priority": "high",
+      "keywords": [
+        "data provider", "data handler", "composedDataProvider", "create handler",
+        "CRUD", "getList", "getOne", "React Admin handler", "Supabase query",
+        "strangler fig", "view table", "view duality", "computed fields",
+        "service layer", "withValidation", "withErrorLogging",
+        "data flow", "integrity", "guards", "defense in depth",
+        "form defaults", "sanitize", "boundary", "checkpoint"
       ],
       "intentPatterns": [
         "(create|add|implement|build).*?(data provider|handler|resource)",
         "(modify|update|change|fix).*?(data provider|unifiedDataProvider|handler)",
-        "(add|create|implement).*?(CRUD|getList|getOne|create|update|delete)",
-        "(migrate|move|extract).*?(resource|handler|provider)",
         "(read|query|fetch).*?(from|view|table)",
         "(write|insert|update).*?(to|table)",
-        "(strip|remove|clean).*?(computed|view).*?field",
-        "(compose|wrap|decorate).*?handler",
-        "(service|business).*?layer",
-        "(soft|hard).*?delete",
-        "how.*?(data provider|handler|resource).*?(work|implement|create)",
+        "(data|input).*?(flow|path|journey)",
+        "(prevent|stop|catch).*?(invalid|bad|corrupt).*?data",
+        "(ensure|guarantee|enforce).*?(integrity|valid|correct)",
+        "defense.*?in.*?depth",
         "(strangler|migration).*?(fig|pattern)",
         "(view|table).*?(duality|separation|pattern)"
       ]
     },
-    "testing-patterns": {
+    "ui-standards": {
       "priority": "high",
       "keywords": [
-        "test",
-        "tests",
-        "testing",
-        "TDD",
-        "test-driven",
-        "unit test",
-        "integration test",
-        "e2e",
-        "end-to-end",
-        "vitest",
-        "playwright",
-        "jest",
-        "coverage",
-        "mock",
-        "mocking",
-        "stub",
-        "spy",
-        "assertion",
-        "expect",
-        "describe",
-        "it",
-        "beforeEach",
-        "afterEach",
-        "test failure",
-        "test failing",
-        "test passes",
-        "red-green-refactor",
-        "pgTAP",
-        "database test",
-        "component test",
-        "render test",
-        "snapshot",
-        "test file",
-        "spec file",
-        "__tests__",
-        ".test.ts",
-        ".test.tsx",
-        ".spec.ts"
+        "design", "UX", "UI", "user experience", "usability",
+        "accessibility", "a11y", "color", "contrast", "touch target", "44px",
+        "WCAG", "ARIA", "semantic", "spacing", "typography", "elevation",
+        "aria-invalid", "aria-describedby", "role alert", "focus management",
+        "React performance", "bundle size", "re-render", "useMemo", "useCallback",
+        "barrel imports", "waterfalls", "lazy loading"
+      ],
+      "intentPatterns": [
+        "(create|build|design|implement).*?(component|ui|interface|button|form|layout)",
+        "(audit|review|evaluate|assess).*?(ui|ux|design|usability|accessibility)",
+        "(improve|fix|optimize).*?(accessibility|usability|ux|ui|performance|bundle)",
+        "(check|verify|ensure).*?(contrast|touch|target|accessible)",
+        "(form|input|field).*?(accessibility|accessible|aria|screen reader)",
+        "(error|validation).*?(message|display|announce|accessible)",
+        "(focus|keyboard).*?(management|navigation|trap)",
+        "(bundle|render|performance).*?(optimization|issue|slow)"
+      ]
+    },
+    "testing": {
+      "priority": "critical",
+      "keywords": [
+        "test", "tests", "testing", "TDD", "test-driven", "unit test",
+        "integration test", "e2e", "end-to-end", "vitest", "playwright",
+        "coverage", "mock", "mocking", "assertion", "expect",
+        "red-green-refactor", "pgTAP", "database test", "component test",
+        "done", "complete", "finished", "fixed", "passes", "works", "ready",
+        "ship it", "all good", "verified", "commit", "PR", "push", "merge"
       ],
       "intentPatterns": [
         "(write|create|add|implement).*?test",
         "(test|testing).*?(component|hook|schema|validation|form|feature)",
         "(run|execute|debug).*?test",
-        "(fix|debug|investigate).*?(test|spec).*?(fail|error|broken)",
         "(mock|stub|spy).*?(supabase|api|service|provider)",
-        "(setup|configure).*?(test|vitest|playwright|jest)",
         "TDD.*?(workflow|cycle|approach)",
-        "(red|green|refactor).*?(cycle|phase)",
-        "(coverage|cover).*?(code|test|report)",
-        "how.*?(test|mock|assert)",
-        "(renderWithAdminContext|render.*?admin)",
-        "(e2e|end-to-end|playwright).*?(test|scenario|journey)",
-        "(pgTAP|database).*?test",
-        "why.*?test.*?(fail|broken|error)",
-        "(implement|create|build).*?(without|skip|later).*?test",
-        "test.*?later",
-        "skip.*?test"
+        "(tests?|build|types?).*?(pass|passes|passing|succeed|work|works)",
+        "(feature|task|bug|fix).*?(complete|done|finished|ready|works)",
+        "(ready|good).*?(to|for).*?(commit|push|PR|merge|deploy|review)",
+        "(create|make|open).*?(commit|PR|pull request)"
       ]
     },
-    "cache-invalidation-audit": {
-      "priority": "high",
-      "keywords": [
-        "audit cache",
-        "cache audit",
-        "stale state",
-        "stale data",
-        "query keys",
-        "invalidation",
-        "refetch patterns",
-        "cache strategy",
-        "TanStack Query",
-        "React Query",
-        "useQuery",
-        "useMutation",
-        "invalidateQueries",
-        "refetchOnWindowFocus",
-        "staleTime",
-        "query key factory",
-        "cross-resource",
-        "over-invalidation",
-        "N+1 query",
-        "ReferenceField",
-        "API storm",
-        "cache compliance"
-      ],
-      "intentPatterns": [
-        "(audit|check|review|validate).*?(cache|stale|query.*?key|invalidation)",
-        "(find|detect).*?(stale.*?data|cache.*?issue|invalidation.*?problem)",
-        "(query|cache).*?(pattern|strategy|compliance)",
-        "(refetch|invalidate).*?(pattern|issue|violation)",
-        "STALE_STATE_STRATEGY",
-        "(API|query).*?storm",
-        "(N\\+1|n\\+1|reference.*?field).*?(query|issue|problem)",
-        "(cross-resource|cross resource).*?invalidation",
-        "(over-invalidation|over invalidation|nuclear.*?invalidation)",
-        "why.*?(stale|cache|refetch|invalidate)"
-      ]
-    },
-    "soft-delete-rls-audit": {
+    "engineering": {
       "priority": "critical",
       "keywords": [
-        "soft delete",
-        "soft-delete",
-        "RLS audit",
-        "RLS policy",
-        "row level security",
-        "deleted_at",
-        "security audit",
-        "data leak",
-        "cross-tenant",
-        "multi-tenant",
-        "tenant isolation",
-        "policy audit",
-        "deleted records",
-        "hard delete",
-        "cascade delete",
-        "company_id isolation",
-        "supportsSoftDelete"
+        "error handling", "validation", "defaults", "zod", "retry",
+        "circuit breaker", "resilience", "strictObject", "coerce",
+        "allowlist", "useWatch", "onSubmit", "onBlur", "form mode",
+        "supabase", "database", "query", "RLS", "migration",
+        "postgres", "query optimization", "indexes", "schema design",
+        "connection pooling", "edge function"
       ],
       "intentPatterns": [
-        "(audit|check|review|validate).*?(soft.*?delete|RLS|row.*?level.*?security|policy)",
-        "(find|detect).*?(data.*?leak|cross.*?tenant|deleted.*?record|hard.*?delete)",
-        "(missing|check).*?(deleted_at|soft.*?delete|RLS.*?filter)",
-        "(tenant|company).*?(isolation|leak|access)",
-        "(security|privacy).*?(audit|violation|issue)",
-        "(view|policy).*?(expose|show).*?(deleted|wrong.*?company)",
-        "why.*?(see.*?deleted|other.*?company|wrong.*?data)",
-        "(cascade|soft).*?delete",
-        "supportsSoftDelete"
+        "(handle|add|implement).*?(error|resilience|retry|fallback)",
+        "(create|add|modify).*?(schema|validation|zod)",
+        "(set|define|add).*?(default|form)",
+        "(create|build|write).*?(query|migration|schema|view|table|policy)",
+        "(query|postgres|database).*?(optimization|performance|slow)",
+        "(index|schema|RLS).*?(design|optimization|tuning)",
+        "(form|input).*?(coerce|coercion|number|date)",
+        "(validation|form).*?mode"
       ]
     },
-    "three-tier-architecture-audit": {
-      "priority": "high",
+    "documentation": {
+      "priority": "medium",
       "keywords": [
-        "tier audit",
-        "UI audit",
-        "architecture audit",
-        "component layers",
-        "Tier 1",
-        "Tier 2",
-        "Tier 3",
-        "atoms",
-        "molecules",
-        "organisms",
-        "shadcn",
-        "ui components",
-        "ra-wrappers",
-        "react-admin wrappers",
-        "Datagrid",
-        "PremiumDatagrid",
-        "DialogTitle",
-        "prop leak",
-        "import violation",
-        "business logic",
-        "presentation layer"
+        "ADR", "BRD", "PRD", "README",
+        "architecture decision", "business requirements", "product requirements",
+        "generate documentation", "create document",
+        "release notes", "changelog", "version notes", "what changed",
+        "release summary", "prepare release", "version history",
+        "release documentation", "deployment notes"
       ],
       "intentPatterns": [
-        "(audit|check|review|validate).*?(tier|UI.*?layer|component.*?architecture)",
-        "(Tier 1|Tier 2|Tier 3|tier.*?violation)",
-        "(find|detect).*?(import.*?violation|prop.*?leak|raw.*?import)",
-        "(raw|direct).*?(Datagrid|shadcn|Tier 1)",
-        "(missing|check).*?(DialogTitle|wrapper|ARIA)",
-        "(should.*?use|replace.*?with).*?(wrapper|PremiumDatagrid)",
-        "(business.*?logic|data.*?fetch).*?(Tier 1|presentation)",
-        "(import|using).*?(react-admin|supabase).*?(Tier 1|ui/)",
-        "PremiumDatagrid.*?(vs|instead|replace).*?Datagrid"
+        "(create|generate|write).*?(ADR|BRD|PRD|README|document)",
+        "(architecture|business|product).*?(decision|requirement|document)",
+        "document.*?(feature|module|project|domain)",
+        "(generate|create|write|prepare).*?(release.*?notes|changelog|version.*?notes)",
+        "(what|show).*?(changed|released|shipped|deployed)",
+        "(release|version).*?(summary|history|documentation|notes)"
+      ]
+    },
+    "ai-readiness": {
+      "priority": "medium",
+      "keywords": [
+        "ai readiness", "readability scan", "ai scan", "readiness score",
+        "generate artifacts", "ai-readiness", "composite grade"
+      ],
+      "intentPatterns": [
+        "(ai|AI).*?(readiness|readability|scan|score)",
+        "(scan|check|audit).*?(ai|readability|readiness)",
+        "(generate|create).*?(artifact|readability)"
+      ]
+    },
+    "audit": {
+      "priority": "medium",
+      "keywords": [
+        "three pillars", "codebase audit", "audit baseline",
+        "generate reports", "regenerate reports", "feature inventory",
+        "dependency map", "risk assessment"
+      ],
+      "intentPatterns": [
+        "(run|execute).*?(audit|three pillars)",
+        "(generate|regenerate).*?report",
+        "(codebase|full).*?audit"
       ]
     }
   },
   "keywordOwnership": {
     "postgres": {
-      "primary": "supabase-postgres-best-practices",
+      "primary": "engineering",
       "context": {
-        "optimization": "supabase-postgres-best-practices",
-        "EXPLAIN": "supabase-postgres-best-practices",
-        "index strategy": "supabase-postgres-best-practices",
-        "CRM": "supabase-postgres-best-practices",
-        "RLS": "supabase-postgres-best-practices",
-        "migration": "supabase-postgres-best-practices"
+        "optimization": "engineering",
+        "EXPLAIN": "engineering",
+        "index strategy": "engineering",
+        "CRM": "engineering",
+        "RLS": "engineering",
+        "migration": "engineering"
       }
     },
     "query optimization": {
-      "primary": "supabase-postgres-best-practices",
+      "primary": "engineering",
       "context": {
-        "CRM": "supabase-postgres-best-practices",
-        "data provider": "crispy-data-provider"
+        "CRM": "engineering",
+        "data provider": "data-layer"
       }
     },
     "schema": {
-      "primary": "enforcing-principles",
+      "primary": "engineering",
       "context": {
-        "migration": "supabase-postgres-best-practices",
-        "zod": "enforcing-principles",
-        "data provider": "crispy-data-provider"
+        "migration": "engineering",
+        "zod": "engineering",
+        "data provider": "data-layer"
       }
     },
     "validation": {
-      "primary": "enforcing-principles",
+      "primary": "engineering",
       "context": {
-        "data": "data-integrity-guards",
-        "props": "enforcing-principles",
-        "layer": "data-integrity-guards"
+        "data": "data-layer",
+        "props": "engineering",
+        "layer": "data-layer"
       }
     },
     "form": {
-      "primary": "ui-ux-design-principles",
+      "primary": "ui-standards",
       "context": {
-        "validation": "enforcing-principles",
-        "defaults": "data-integrity-guards",
-        "mode": "enforcing-principles"
+        "validation": "engineering",
+        "defaults": "data-layer",
+        "mode": "engineering"
       }
     },
     "component": {
-      "primary": "ui-ux-design-principles",
+      "primary": "ui-standards",
       "context": {
-        "test": "testing-patterns",
-        "props": "enforcing-principles"
+        "test": "testing",
+        "props": "engineering"
       }
     },
     "edge function": {
-      "primary": "supabase-postgres-best-practices",
+      "primary": "engineering",
       "context": {
-        "deploy": "troubleshooting"
+        "deploy": "debugging"
       }
     },
     "trace": {
-      "primary": "fail-fast-debugging",
+      "primary": "debugging",
       "context": {
-        "comprehensive": "comprehensive-tracing",
-        "data flow": "comprehensive-tracing",
-        "architecture": "comprehensive-tracing",
-        "flow": "comprehensive-tracing"
+        "comprehensive": "debugging",
+        "data flow": "debugging",
+        "architecture": "debugging",
+        "flow": "debugging"
       }
     },
     "cache": {
-      "primary": "cache-invalidation-audit",
+      "primary": "architecture-audit",
       "context": {
-        "audit": "cache-invalidation-audit",
-        "strategy": "cache-invalidation-audit",
-        "stale": "cache-invalidation-audit"
+        "audit": "architecture-audit",
+        "strategy": "architecture-audit",
+        "stale": "architecture-audit"
       }
     },
     "query keys": {
-      "primary": "cache-invalidation-audit",
+      "primary": "architecture-audit",
       "context": {
-        "factory": "cache-invalidation-audit",
-        "hardcoded": "cache-invalidation-audit"
+        "factory": "architecture-audit",
+        "hardcoded": "architecture-audit"
       }
     },
     "invalidation": {
-      "primary": "cache-invalidation-audit",
+      "primary": "architecture-audit",
       "context": {
-        "cross-resource": "cache-invalidation-audit",
-        "mutation": "cache-invalidation-audit"
+        "cross-resource": "architecture-audit",
+        "mutation": "architecture-audit"
       }
     },
     "soft delete": {
-      "primary": "soft-delete-rls-audit",
+      "primary": "architecture-audit",
       "context": {
-        "audit": "soft-delete-rls-audit",
-        "RLS": "soft-delete-rls-audit",
-        "cascade": "soft-delete-rls-audit"
+        "audit": "architecture-audit",
+        "RLS": "architecture-audit",
+        "cascade": "architecture-audit"
       }
     },
     "RLS": {
-      "primary": "soft-delete-rls-audit",
+      "primary": "architecture-audit",
       "context": {
-        "policy": "soft-delete-rls-audit",
-        "audit": "soft-delete-rls-audit",
-        "security": "soft-delete-rls-audit"
+        "policy": "architecture-audit",
+        "audit": "architecture-audit",
+        "security": "architecture-audit"
       }
     },
     "deleted_at": {
-      "primary": "soft-delete-rls-audit",
+      "primary": "architecture-audit",
       "context": {
-        "missing": "soft-delete-rls-audit",
-        "filter": "soft-delete-rls-audit"
+        "missing": "architecture-audit",
+        "filter": "architecture-audit"
       }
     },
     "tier": {
-      "primary": "three-tier-architecture-audit",
+      "primary": "architecture-audit",
       "context": {
-        "audit": "three-tier-architecture-audit",
-        "violation": "three-tier-architecture-audit",
-        "Tier 1": "three-tier-architecture-audit",
-        "Tier 2": "three-tier-architecture-audit"
+        "audit": "architecture-audit",
+        "violation": "architecture-audit",
+        "Tier 1": "architecture-audit",
+        "Tier 2": "architecture-audit"
       }
     },
     "Datagrid": {
-      "primary": "three-tier-architecture-audit",
+      "primary": "architecture-audit",
       "context": {
-        "raw": "three-tier-architecture-audit",
-        "PremiumDatagrid": "three-tier-architecture-audit"
+        "raw": "architecture-audit",
+        "PremiumDatagrid": "architecture-audit"
       }
     },
     "DialogTitle": {
-      "primary": "three-tier-architecture-audit",
+      "primary": "architecture-audit",
       "context": {
-        "missing": "three-tier-architecture-audit",
-        "Radix": "three-tier-architecture-audit"
+        "missing": "architecture-audit",
+        "Radix": "architecture-audit"
       }
     }
   }

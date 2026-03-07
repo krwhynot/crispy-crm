@@ -1,4 +1,8 @@
-﻿# Code Quality Overlay
+---
+globs: ["src/**/*.ts", "src/**/*.tsx"]
+---
+
+# Code Quality Overlay
 
 Scope: production cleanliness, type safety hygiene, React Admin resolver discipline, and accessibility enforcement for application code.
 

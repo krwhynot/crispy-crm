@@ -1,4 +1,8 @@
-﻿# UI Standards Overlay
+---
+globs: ["src/components/**"]
+---
+
+# UI Standards Overlay
 
 Scope: three-tier component boundaries, wrapper hygiene, and accessible UI composition.
 

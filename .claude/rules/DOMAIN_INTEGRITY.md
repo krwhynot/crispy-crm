@@ -1,4 +1,8 @@
-﻿# Domain Integrity Overlay
+---
+globs: ["src/atomic-crm/validation/**"]
+---
+
+# Domain Integrity Overlay
 
 Scope: entity schemas, derived types, update contracts, and typed testing boundaries.
 

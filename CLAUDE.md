@@ -55,6 +55,15 @@
 **Components:** List Shell, Slide-Over, Tabbed Forms.
 **Filters:** `src/components/admin/column-filters/`. Debounced text (300ms), Checkbox popovers. Use `useListContext`.
 
+## 🔧 Key Commands
+- **Dev:** `npm run dev`
+- **Build:** `npm run build`
+- **Test:** `npm test`
+- **Lint:** `npm run lint`
+- **Type check:** `npx tsc --noEmit`
+- **DB dry-run:** `npx supabase db push --dry-run`
+- **DB push:** `npx supabase db push`
+
 ## 🧪 Testing & Database
 **Test:** Vitest (`renderWithAdminContext`). Mock Supabase (`setup.ts`). E2E: Manual via Claude Chrome. Seed: `npm run seed:e2e:dashboard-v3`.
 **DB:** Postgres 17, RLS (100%), Soft deletes (`deleted_at`), Edge functions (digest/overdue).
@@ -62,7 +71,7 @@
 
 ## ⚠️ Caution & Autonomy Zones
 
-**Caution Zones (confirm before modifying):**
+**Protected Zones (NEVER modify without explicit human approval):**
 - `supabase/migrations/` — Production schema; requires `supabase db reset` to validate
 - `supabase/functions/` — Edge functions deployed to production
 - `src/atomic-crm/providers/supabase/composedDataProvider.ts` — Handler routing hub; change affects all resources
@@ -78,6 +87,9 @@
 - `src/components/ui/` — Tier 1 presentational components
 - `src/components/ra-wrappers/` — Tier 2 React Admin wrappers
 
+**Do Not Read (auto-generated, too large for context):**
+- `src/types/database.generated.ts` — Supabase generated types (5,919 lines). Use type imports only.
+
 ## 💼 Business Domain (MFB)
 **Model:** Principal (Manufacturer) → Distributor → Operator (Restaurant). Broker: MFB.
 **Entities:** Principal (9), Distributor (50+, Auth/Territory), Operator, Opportunity (Deal/Activities).
@@ -92,77 +104,11 @@
 
 **Protocol:** Use `ref` MCP. Ask multiple-choice if context missing.
 
- The Correct Workflow (Cloud-Only Dev):
-  1. Write migration SQL to supabase/migrations/ folder
-  2. Dry-run: `npx supabase db push --dry-run` to verify
-  3. Push to cloud: `npx supabase db push`
-  4. Verify in Supabase Studio or via the app
+**Cloud-Only Dev Workflow:** Write migration SQL → dry-run → push → verify in Studio. (See Key Commands above.)
 
 ## 🤖 Agent Routing
+See `.claude/rules/AGENT_ROUTING.md` (auto-loaded every session).
 
-<delegation>
-Before selecting a subagent, classify the task:
-- SQL/migration/RLS/query/index/view/trigger/schema -> db-specialist
-- Scaffolding/boilerplate/conversion/generation/CRUD template -> quick-gen
-- Architecture decision/tradeoff/blast radius/performance strategy -> architect
-- Dead code/simplify/cleanup/reduce complexity (NO behavior change) -> simplifier
-- Find/search/explore/trace/where is/how does -> explorer
-- None of the above -> implementor (fallback only)
-
-Overlap tiebreakers:
-- RLS security AUDIT (read-only analysis) -> architect
-- RLS policy CREATION (writing SQL) -> db-specialist
-- Bug fix that changes behavior -> implementor (NOT simplifier)
-- Scaffold that needs custom logic -> implementor (NOT quick-gen)
-- "Explain this code" (no file search needed) -> direct (NO subagent)
-</delegation>
-
-<single_writer_rule>
-At most ONE write-capable subagent may be active at a time.
-Write-capable agents: db-specialist, quick-gen, simplifier, implementor.
-Read-only agents: explorer, architect (can run in parallel with a writer).
-
-If a task requires multiple write agents (e.g., DB migration + UI change),
-run them SEQUENTIALLY, not in parallel. The first agent must complete and
-return its handoff before the next agent starts.
-
-File ownership: Each subagent owns the files it creates/modifies during
-its execution. No other subagent may touch those files until the handoff
-is returned to the main agent.
-</single_writer_rule>
-
-<multi_domain_split>
-When a task spans multiple domains (DB + provider + UI + tests),
-decompose in this order:
-
-1. db-specialist — migrations, views, RLS policies
-2. implementor — provider handlers, validation schemas, service layer
-3. implementor — UI components, forms, styling
-4. implementor — run verification (tsc, lint, tests)
-
-Each step receives the previous step's handoff as context.
-Do NOT parallelize cross-domain write steps.
-Read-only agents (explorer, architect) may run in parallel at any point.
-</multi_domain_split>
-
-<spawn_caps>
-Subagent spawn limits per task:
-- Simple task (single file, <50 lines changed): 0 subagents. Work directly.
-- Standard task (2-5 files, single domain): max 1 subagent.
-- Complex task (5+ files or multi-domain): max 2 subagents sequentially.
-- Justify in thinking before spawning >2 subagents for any task.
-
-</spawn_caps>
-
-<verification_protocol>
-Before claiming any task is complete, the main agent (not a subagent) must:
-1. Run `npx tsc --noEmit` — zero TypeScript errors
-2. Run `npm run lint` — zero lint errors
-3. Run relevant tests if they exist
-4. Verify zero `any` types added: `rg ": any|as any" src/ --type ts | grep -v " \* \| \*/"`
-5. Verify zero console statements added in production code
-
-Subagents do NOT run final verification. They return their handoff,
-and the main agent runs verification after all subagent work is integrated.
-Exception: db-specialist should verify SQL syntax with a dry-run if possible.
-</verification_protocol>
+## Three Pillars Audit
+See `docs/audit/THREE_PILLARS_CONTEXT.md` for baseline files, reports, and audit commands.
+Last audit: 2026-03-04 | 22 features | 91.7% avg confidence | 8 high-risk | 8 security issues.
