@@ -46,9 +46,11 @@ export const supabase = createClient(
 // When a user clicks a password reset link, Supabase auto-establishes a session
 // and fires PASSWORD_RECOVERY via setTimeout(0). This listener redirects them
 // to the set-password form instead of landing on the dashboard.
+// Skip redirect if already on /welcome (OTP-based setup handles its own flow).
 supabase.auth.onAuthStateChange((event) => {
   if (event === "PASSWORD_RECOVERY") {
-    if (!window.location.hash.includes("/set-password")) {
+    const hash = window.location.hash;
+    if (!hash.includes("/set-password") && !hash.includes("/welcome")) {
       window.location.hash = "/set-password?flow=recovery";
     }
   }

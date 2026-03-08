@@ -348,7 +348,11 @@ describe("SalesCreate", () => {
   });
 
   describe("recovery URL dialog", () => {
-    function getOnSuccess(): (result: { sale: unknown; recoveryUrl: string | null }) => void {
+    function getOnSuccess(): (result: {
+      sale: unknown;
+      recoveryUrl: string | null;
+      emailOtp: string | null;
+    }) => void {
       mockCanAccess.mockReturnValue({ isPending: false, canAccess: true });
       renderWithAdminContext(<SalesCreate />);
 
@@ -356,6 +360,7 @@ describe("SalesCreate", () => {
       const onSuccess = capturedMutationConfig.current?.onSuccess as (result: {
         sale: unknown;
         recoveryUrl: string | null;
+        emailOtp: string | null;
       }) => void;
       expect(typeof onSuccess).toBe("function");
       return onSuccess;
@@ -365,7 +370,11 @@ describe("SalesCreate", () => {
       const onSuccess = getOnSuccess();
 
       act(() => {
-        onSuccess({ sale: { id: 1 }, recoveryUrl: "https://example.com/recovery" });
+        onSuccess({
+          sale: { id: 1 },
+          recoveryUrl: "https://example.com/recovery",
+          emailOtp: "847293",
+        });
       });
 
       await waitFor(() => {
@@ -378,11 +387,11 @@ describe("SalesCreate", () => {
       const onSuccess = getOnSuccess();
 
       act(() => {
-        onSuccess({ sale: { id: 1 }, recoveryUrl: null });
+        onSuccess({ sale: { id: 1 }, recoveryUrl: null, emailOtp: null });
       });
 
       expect(mockNotify).toHaveBeenCalledWith(
-        "User created. Use 'Reset Password' on their profile to generate a login link.",
+        "User created. Use 'Generate Setup Code' on their profile to get a code.",
         { type: "success" }
       );
       expect(mockRedirect).toHaveBeenCalledWith("/sales");

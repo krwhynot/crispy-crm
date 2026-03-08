@@ -74,6 +74,9 @@ export const LoginPage = (props: { redirectTo?: string }) => {
             <Link to={"/forgot-password"} className="text-sm text-center hover:underline">
               Forgot your password?
             </Link>
+            <Link to={"/welcome"} className="text-sm text-center hover:underline">
+              First time? Set up your account
+            </Link>
           </div>
         </div>
       </div>
