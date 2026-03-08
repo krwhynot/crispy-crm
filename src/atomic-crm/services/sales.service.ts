@@ -1,7 +1,10 @@
 import type { DataProvider, Identifier } from "ra-core";
 import { HttpError } from "react-admin";
 import type { Sale, SalesFormData } from "../types";
-import type { SalesCreateResult } from "../providers/supabase/extensions/types";
+import type {
+  SalesCreateResult,
+  RegenerateCodeResult,
+} from "../providers/supabase/extensions/types";
 import { devError } from "@/lib/devLogger";
 import { getErrorMessage } from "@/lib/type-guards";
 
@@ -50,7 +53,7 @@ export class SalesService {
       const invitePayload = { first_name, last_name, email, role, disabled };
 
       const response = await this.dataProvider.invoke<
-        | { data: Sale; recoveryUrl?: string | null } // New format
+        | { data: Sale; recoveryUrl?: string | null; emailOtp?: string | null } // New format
         | Sale // Old format (backward compat)
       >("users", {
         method: "POST",
@@ -63,23 +66,31 @@ export class SalesService {
       }
 
       // Backward-compatible parsing: old Edge Function returns Sale directly,
-      // new Edge Function returns { data: Sale, recoveryUrl: string | null }
+      // new Edge Function returns { data: Sale, recoveryUrl, emailOtp }
       const isNewFormat =
         response && typeof response === "object" && "data" in response && "recoveryUrl" in response;
 
       if (isNewFormat) {
-        const typed = response as { data: Sale; recoveryUrl: string | null };
+        const typed = response as {
+          data: Sale;
+          recoveryUrl: string | null;
+          emailOtp: string | null;
+        };
         if (!typed.data) {
           devError("SalesService", "Create account manager returned no data in new format", {
             body,
           });
           throw new Error(`Sales creation failed: No data returned from Edge Function`);
         }
-        return { sale: typed.data, recoveryUrl: typed.recoveryUrl ?? null };
+        return {
+          sale: typed.data,
+          recoveryUrl: typed.recoveryUrl ?? null,
+          emailOtp: typed.emailOtp ?? null,
+        };
       }
 
       // Old format: response IS the Sale object
-      return { sale: response as Sale, recoveryUrl: null };
+      return { sale: response as Sale, recoveryUrl: null, emailOtp: null };
     } catch (error: unknown) {
       devError("SalesService", "Failed to create account manager", { body, error });
 
@@ -257,6 +268,44 @@ export class SalesService {
       });
       const message = error instanceof Error ? error.message : "Unknown error";
       throw new Error(`Admin password reset failed: ${message}`);
+    }
+  }
+
+  /**
+   * Generate a new setup code (OTP) for an existing user.
+   * Admin-only. The OTP can be shared with the user to set/reset their password
+   * via the /welcome page, bypassing enterprise email link-prefetch issues.
+   */
+  async regenerateSetupCode(targetEmail: string): Promise<RegenerateCodeResult> {
+    if (!this.dataProvider.invoke) {
+      devError("SalesService", "DataProvider missing invoke capability", {
+        operation: "regenerateSetupCode",
+        targetEmail,
+      });
+      throw new Error(
+        `Setup code generation failed: DataProvider does not support Edge Function operations`
+      );
+    }
+
+    try {
+      const response = await this.dataProvider.invoke<RegenerateCodeResult>("users", {
+        method: "PUT",
+        body: { email: targetEmail },
+      });
+
+      if (!response?.emailOtp) {
+        devError("SalesService", "Regenerate setup code returned no OTP", { targetEmail });
+        throw new Error("Setup code generation failed: No code returned");
+      }
+
+      return response;
+    } catch (error: unknown) {
+      devError("SalesService", "Failed to regenerate setup code", {
+        targetEmail,
+        error,
+      });
+      const message = error instanceof Error ? error.message : "Unknown error";
+      throw new Error(`Setup code generation failed: ${message}`);
     }
   }
 }

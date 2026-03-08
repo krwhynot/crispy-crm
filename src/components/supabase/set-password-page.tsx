@@ -90,21 +90,35 @@ export const SetPasswordPage = () => {
 
   // When arriving via PASSWORD_RECOVERY event (flow=recovery) or auth-callback (type=recovery)
   // without URL tokens, check if Supabase already established a session.
+  // Timeout after 5s to avoid stuck "Verifying" state if getSession() hangs.
   useEffect(() => {
     if ((isRecoveryFlow || isRecoveryType) && !hasTokens && sessionCheckState === "idle") {
       setSessionCheckState("checking");
+
+      const timedOut = { current: false };
+      const timeout = setTimeout(() => {
+        timedOut.current = true;
+        if (isMountedRef.current) {
+          setSessionCheckState("none");
+        }
+      }, 5000);
+
       supabase.auth
         .getSession()
         .then(({ data }) => {
-          if (isMountedRef.current) {
+          clearTimeout(timeout);
+          if (isMountedRef.current && !timedOut.current) {
             setSessionCheckState(data.session?.user ? "valid" : "none");
           }
         })
         .catch(() => {
-          if (isMountedRef.current) {
+          clearTimeout(timeout);
+          if (isMountedRef.current && !timedOut.current) {
             setSessionCheckState("none");
           }
         });
+
+      return () => clearTimeout(timeout);
     }
   }, [isRecoveryFlow, isRecoveryType, hasTokens, sessionCheckState]);
 

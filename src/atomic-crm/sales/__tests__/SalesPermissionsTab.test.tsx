@@ -280,6 +280,28 @@ describe("SalesPermissionsTab", () => {
       expect(screen.getByText("Send Reset Email")).toBeDefined();
       expect(screen.getByText("Password Management")).toBeDefined();
     });
+
+    test("generate setup code button visible for admin viewing non-self record", () => {
+      mockGetIdentity.mockReturnValue({
+        data: { id: 99, role: "admin" },
+        isPending: false,
+      });
+
+      renderWithAdminContext(<SalesPermissionsTab record={mockRecord} mode="view" />);
+
+      expect(screen.getByText("Generate Setup Code")).toBeDefined();
+    });
+
+    test("generate setup code button NOT visible for self-edit", () => {
+      mockGetIdentity.mockReturnValue({
+        data: { id: 2, role: "admin" },
+        isPending: false,
+      });
+
+      renderWithAdminContext(<SalesPermissionsTab record={mockRecord} mode="view" />);
+
+      expect(screen.queryByText("Generate Setup Code")).toBeNull();
+    });
   });
 
   // ===================================================================

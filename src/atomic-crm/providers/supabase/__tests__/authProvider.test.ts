@@ -122,7 +122,7 @@ describe("authProvider", () => {
 
     it("should allow access to public paths without session", async () => {
       // Test each public path — app uses hash routing (#/path)
-      const publicHashes = ["#/forgot-password", "#/set-password"];
+      const publicHashes = ["#/forgot-password", "#/set-password", "#/welcome"];
 
       for (const hash of publicHashes) {
         vi.clearAllMocks();

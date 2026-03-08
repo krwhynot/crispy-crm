@@ -78,6 +78,7 @@ export const authProvider: AuthProvider = {
     if (
       hash.includes("#/set-password") ||
       hash.includes("#/forgot-password") ||
+      hash.includes("#/welcome") ||
       (hash.includes("type=recovery") && hash.includes("access_token"))
     ) {
       return;
@@ -132,6 +133,7 @@ function isPublicPath(pathname: string): boolean {
     "/forgot-password",
     "/set-password", // Only accessible via email recovery link
     "/reset-password",
+    "/welcome", // OTP-based account setup for new users
   ];
   const hash = window.location.hash;
 

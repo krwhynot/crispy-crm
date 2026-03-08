@@ -66,6 +66,10 @@ const patchUserSchema = z
     return { ...rest, role };
   });
 
+const regenerateCodeSchema = z.strictObject({
+  email: z.string().email("Invalid email format").max(254, "Email too long"),
+});
+
 // Maximum request body size (1MB)
 const MAX_REQUEST_SIZE = 1048576;
 
@@ -286,6 +290,7 @@ async function inviteUser(
     // SDK sends redirect_to as a query param while GoTrue reads it from the
     // request body — causing the stored redirect to fall back to SITE_URL.
     let recoveryUrl: string | null = null;
+    let emailOtp: string | null = null;
     try {
       const redirectTo = new URL("/auth-callback.html", redirectOrigin).toString();
       const supabaseUrl = Deno.env.get("LOCAL_SUPABASE_URL") || Deno.env.get("SUPABASE_URL");
@@ -314,6 +319,7 @@ async function inviteUser(
       } else {
         const payload = await linkResponse.json();
         recoveryUrl = payload.action_link ?? payload.properties?.action_link ?? null;
+        emailOtp = payload.email_otp ?? null;
       }
     } catch (linkErr) {
       console.error("Error generating recovery link:", linkErr);
@@ -323,6 +329,7 @@ async function inviteUser(
       JSON.stringify({
         data: sale,
         recoveryUrl,
+        emailOtp,
       }),
       {
         headers: { "Content-Type": "application/json", ...corsHeaders },
@@ -472,6 +479,100 @@ async function patchUser(
   }
 }
 
+async function regenerateCode(
+  req: Request,
+  currentUserSale: Sale,
+  corsHeaders: Record<string, string>
+) {
+  // Only admins can regenerate setup codes
+  if (currentUserSale.role !== "admin") {
+    return createErrorResponse(403, "Not Authorized", corsHeaders);
+  }
+
+  // Validate request body
+  let validatedData;
+  try {
+    validatedData = await parseAndValidateBody(req, regenerateCodeSchema);
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "Invalid request";
+    return createErrorResponse(400, message, corsHeaders);
+  }
+
+  const { email } = validatedData;
+
+  // Verify target user exists in auth
+  const { data: listData, error: listError } = await supabaseAdmin.auth.admin.listUsers({
+    perPage: 1000,
+  });
+  if (listError) {
+    console.error("listUsers failed:", listError);
+    return createErrorResponse(500, "Failed to look up users", corsHeaders);
+  }
+  const targetUser = listData?.users?.find((u) => u.email === email);
+  if (!targetUser) {
+    return createErrorResponse(404, "No user found with that email", corsHeaders);
+  }
+
+  // Generate a new recovery link + OTP
+  try {
+    const supabaseUrl = Deno.env.get("LOCAL_SUPABASE_URL") || Deno.env.get("SUPABASE_URL");
+    const serviceKey =
+      Deno.env.get("LOCAL_SERVICE_ROLE_KEY") ||
+      Deno.env.get("SERVICE_ROLE_KEY") ||
+      Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
+
+    const requestOrigin = req.headers.get("origin");
+    const allowedOrigins = getAllowedOrigins();
+    const productionOrigins = allowedOrigins.filter(
+      (o) => !o.startsWith("http://localhost") && !o.startsWith("http://127.0.0.1")
+    );
+    const redirectOrigin =
+      requestOrigin && allowedOrigins.includes(requestOrigin)
+        ? requestOrigin
+        : (productionOrigins[0] ?? allowedOrigins[0]);
+    const redirectTo = new URL("/auth-callback.html", redirectOrigin).toString();
+
+    const linkResponse = await fetch(`${supabaseUrl}/auth/v1/admin/generate_link`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${serviceKey}`,
+        apikey: serviceKey!,
+      },
+      body: JSON.stringify({
+        type: "recovery",
+        email,
+        redirect_to: redirectTo,
+      }),
+    });
+
+    if (!linkResponse.ok) {
+      const errBody = await linkResponse.text();
+      console.error("Failed to generate recovery link:", errBody);
+      return createErrorResponse(
+        500,
+        "Failed to generate setup code. Please try again.",
+        corsHeaders
+      );
+    }
+
+    const payload = await linkResponse.json();
+    const emailOtp = payload.email_otp ?? null;
+    const recoveryUrl = payload.action_link ?? payload.properties?.action_link ?? null;
+
+    return new Response(JSON.stringify({ emailOtp, recoveryUrl }), {
+      headers: { "Content-Type": "application/json", ...corsHeaders },
+    });
+  } catch (err) {
+    console.error("Error generating setup code:", err);
+    return createErrorResponse(
+      500,
+      "Failed to generate setup code. Please try again.",
+      corsHeaders
+    );
+  }
+}
+
 Deno.serve(async (req: Request) => {
   const corsHeaders = createCorsHeaders(req.headers.get("origin"));
 
@@ -523,6 +624,10 @@ Deno.serve(async (req: Request) => {
 
   if (req.method === "PATCH") {
     return patchUser(req, currentUserSale, corsHeaders, supabaseClient);
+  }
+
+  if (req.method === "PUT") {
+    return regenerateCode(req, currentUserSale, corsHeaders);
   }
 
   return createErrorResponse(405, "Method Not Allowed", corsHeaders);

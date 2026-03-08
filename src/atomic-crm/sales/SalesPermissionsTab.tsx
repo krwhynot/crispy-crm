@@ -32,7 +32,17 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
-import { KeyRound, Trash2 } from "lucide-react";
+import { KeyRound, Trash2, ShieldCheck } from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import type { RegenerateCodeResult } from "@/atomic-crm/providers/supabase/extensions/types";
 // NOTE: Client-side validation removed (2025-12-12)
 // Edge Function /users PATCH handles validation with patchUserSchema
 // salesService.salesUpdate() filters empty strings before sending to Edge Function
@@ -75,8 +85,12 @@ export function SalesPermissionsTab({
   // FIX [WF-C04]: Show reassign dialog before disabling user
   const [showDisableDialog, setShowDisableDialog] = useState(false);
   const [isResettingPassword, setIsResettingPassword] = useState(false);
+  const [isGeneratingCode, setIsGeneratingCode] = useState(false);
+  const [setupCodeResult, setSetupCodeResult] = useState<RegenerateCodeResult | null>(null);
+  const [copiedOtp, setCopiedOtp] = useState(false);
   const dataProvider = useDataProvider() as ReturnType<typeof useDataProvider> & {
     resetUserPassword?: (targetEmail: string) => Promise<{ success: boolean }>;
+    regenerateSetupCode?: (targetEmail: string) => Promise<RegenerateCodeResult>;
   };
 
   // Form state
@@ -118,6 +132,31 @@ export function SalesPermissionsTab({
       notify(message, { type: "error" });
     } finally {
       setIsResettingPassword(false);
+    }
+  };
+
+  // Generate setup code (OTP) for user to set/reset password via /welcome page
+  const handleGenerateCode = async () => {
+    if (!record?.email || !dataProvider.regenerateSetupCode) return;
+
+    try {
+      setIsGeneratingCode(true);
+      const result = await dataProvider.regenerateSetupCode(record.email);
+      setSetupCodeResult(result);
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : "Failed to generate setup code";
+      notify(message, { type: "error" });
+    } finally {
+      setIsGeneratingCode(false);
+    }
+  };
+
+  const handleCopyOtp = () => {
+    if (setupCodeResult?.emailOtp) {
+      navigator.clipboard.writeText(setupCodeResult.emailOtp).then(() => {
+        setCopiedOtp(true);
+        setTimeout(() => setCopiedOtp(false), 2000);
+      });
     }
   };
 
@@ -382,49 +421,133 @@ export function SalesPermissionsTab({
         </div>
       )}
 
-      {/* Reset Password (admin only, not self, both view and edit modes) */}
+      {/* Password Management (admin only, not self, both view and edit modes) */}
       {!isSelfEdit && identity?.role === "admin" && (
         <div className="mt-6 pt-6 border-t border-border">
-          <div className="p-4 border border-border rounded-lg bg-muted/20">
-            <h3 className="text-sm font-semibold mb-2">Password Management</h3>
-            <p className="text-sm text-muted-foreground mb-4">
-              Send a password reset email to this user. They will receive a link to set a new
-              password.
-            </p>
-            <AlertDialog>
-              <AlertDialogTrigger asChild>
-                <AdminButton
-                  variant="outline"
-                  size="sm"
-                  disabled={isResettingPassword}
-                  isLoading={isResettingPassword}
-                  loadingText="Sending..."
-                  className="gap-2"
-                >
-                  <KeyRound className="h-4 w-4" />
-                  Send Reset Email
-                </AdminButton>
-              </AlertDialogTrigger>
-              <AlertDialogContent>
-                <AlertDialogHeader>
-                  <AlertDialogTitle>Send Password Reset Email</AlertDialogTitle>
-                  <AlertDialogDescription>
-                    Send a password reset email to{" "}
-                    <strong>
-                      {record?.first_name} {record?.last_name}
-                    </strong>{" "}
-                    ({record?.email})?
-                  </AlertDialogDescription>
-                </AlertDialogHeader>
-                <AlertDialogFooter>
-                  <AlertDialogCancel>Cancel</AlertDialogCancel>
-                  <AlertDialogAction onClick={handleResetPassword}>Send</AlertDialogAction>
-                </AlertDialogFooter>
-              </AlertDialogContent>
-            </AlertDialog>
+          <div className="p-4 border border-border rounded-lg bg-muted/20 space-y-4">
+            <h3 className="text-sm font-semibold">Password Management</h3>
+
+            {/* Generate Setup Code */}
+            <div>
+              <p className="text-sm text-muted-foreground mb-2">
+                Generate a setup code for this user to set or reset their password.
+              </p>
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <AdminButton
+                    variant="outline"
+                    size="sm"
+                    disabled={isGeneratingCode}
+                    isLoading={isGeneratingCode}
+                    loadingText="Generating..."
+                    className="gap-2"
+                  >
+                    <ShieldCheck className="h-4 w-4" />
+                    Generate Setup Code
+                  </AdminButton>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>Generate Setup Code</AlertDialogTitle>
+                    <AlertDialogDescription>
+                      Generate a new 6-digit setup code for{" "}
+                      <strong>
+                        {record?.first_name} {record?.last_name}
+                      </strong>{" "}
+                      ({record?.email})? Any previous code will be invalidated.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                    <AlertDialogAction onClick={handleGenerateCode}>Generate</AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
+            </div>
+
+            <div className="border-t border-border pt-4">
+              <p className="text-sm text-muted-foreground mb-2">
+                Or send a recovery email directly (may be blocked by email security).
+              </p>
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <AdminButton
+                    variant="outline"
+                    size="sm"
+                    disabled={isResettingPassword}
+                    isLoading={isResettingPassword}
+                    loadingText="Sending..."
+                    className="gap-2"
+                  >
+                    <KeyRound className="h-4 w-4" />
+                    Send Reset Email
+                  </AdminButton>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>Send Password Reset Email</AlertDialogTitle>
+                    <AlertDialogDescription>
+                      Send a password reset email to{" "}
+                      <strong>
+                        {record?.first_name} {record?.last_name}
+                      </strong>{" "}
+                      ({record?.email})?
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                    <AlertDialogAction onClick={handleResetPassword}>Send</AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
+            </div>
           </div>
         </div>
       )}
+
+      {/* Setup Code Dialog */}
+      <Dialog open={!!setupCodeResult} onOpenChange={(open) => !open && setSetupCodeResult(null)}>
+        <DialogContent className="sm:max-w-lg">
+          <DialogHeader>
+            <DialogTitle>Setup Code Generated</DialogTitle>
+            <DialogDescription>
+              Share this code with {record?.first_name} {record?.last_name} to set their password.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4 py-2">
+            <p className="text-sm text-muted-foreground">Setup code:</p>
+            <div className="flex items-center gap-3">
+              <div className="flex-1 rounded-md border border-input bg-muted px-4 py-3 text-center font-mono text-2xl tracking-[0.3em] select-all">
+                {setupCodeResult?.emailOtp}
+              </div>
+              <Button
+                type="button"
+                variant="outline"
+                className="shrink-0 cursor-pointer"
+                onClick={handleCopyOtp}
+              >
+                {copiedOtp ? "Copied!" : "Copy"}
+              </Button>
+            </div>
+            <p className="text-sm text-muted-foreground">
+              Setup URL:{" "}
+              <span className="font-mono text-foreground">{window.location.origin}/#/welcome</span>
+            </p>
+            <p className="text-xs text-muted-foreground">
+              Tell the user: &quot;Go to the URL above and enter your email with this code.&quot;
+            </p>
+          </div>
+          <DialogFooter>
+            <Button
+              type="button"
+              className="cursor-pointer"
+              onClick={() => setSetupCodeResult(null)}
+            >
+              Done
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
 
       {/* Danger Zone - Remove User (admin only, not self) */}
       {!isSelfEdit && identity?.role === "admin" && (

@@ -71,6 +71,7 @@ describe("SalesService", () => {
       mockDataProvider.invoke = vi.fn().mockResolvedValue({
         data: mockCreatedSale,
         recoveryUrl: "https://example.com/recovery-link",
+        emailOtp: "123456",
       });
 
       const result = await service.salesCreate(mockSalesFormData);
@@ -87,6 +88,7 @@ describe("SalesService", () => {
       });
       expect(result.sale).toEqual(mockCreatedSale);
       expect(result.recoveryUrl).toBe("https://example.com/recovery-link");
+      expect(result.emailOtp).toBe("123456");
     });
 
     test("should handle old Edge Function response format (backward compat)", async () => {
@@ -521,6 +523,70 @@ describe("SalesService", () => {
       expect(consoleErrorSpy).toHaveBeenCalledWith(
         "[SalesService]",
         "Failed to reset user password",
+        expect.objectContaining({
+          targetEmail: "user@example.com",
+          error: expect.any(Error),
+        })
+      );
+
+      consoleErrorSpy.mockRestore();
+    });
+  });
+
+  describe("regenerateSetupCode", () => {
+    test("should return emailOtp and recoveryUrl on success", async () => {
+      mockDataProvider.invoke = vi.fn().mockResolvedValue({
+        emailOtp: "654321",
+        recoveryUrl: "https://example.com/recovery",
+      });
+
+      const result = await service.regenerateSetupCode("user@example.com");
+
+      expect(mockDataProvider.invoke).toHaveBeenCalledWith("users", {
+        method: "PUT",
+        body: { email: "user@example.com" },
+      });
+      expect(result.emailOtp).toBe("654321");
+      expect(result.recoveryUrl).toBe("https://example.com/recovery");
+    });
+
+    test("should throw if dataProvider lacks invoke capability", async () => {
+      const providerWithoutInvoke: DataProviderWithInvoke = createMockDataProvider();
+      const serviceWithoutInvoke = new SalesService(providerWithoutInvoke);
+
+      await expect(serviceWithoutInvoke.regenerateSetupCode("user@example.com")).rejects.toThrow(
+        "DataProvider does not support Edge Function operations"
+      );
+    });
+
+    test("should throw when Edge Function returns error", async () => {
+      mockDataProvider.invoke = vi.fn().mockRejectedValue(new Error("User not found"));
+
+      await expect(service.regenerateSetupCode("user@example.com")).rejects.toThrow(
+        "Setup code generation failed: User not found"
+      );
+    });
+
+    test("should throw when no OTP in response", async () => {
+      mockDataProvider.invoke = vi.fn().mockResolvedValue({
+        emailOtp: null,
+        recoveryUrl: "https://example.com/recovery",
+      });
+
+      await expect(service.regenerateSetupCode("user@example.com")).rejects.toThrow(
+        "No code returned"
+      );
+    });
+
+    test("should log error details on failure", async () => {
+      const consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+      mockDataProvider.invoke = vi.fn().mockRejectedValue(new Error("Database error"));
+
+      await expect(service.regenerateSetupCode("user@example.com")).rejects.toThrow();
+
+      expect(consoleErrorSpy).toHaveBeenCalledWith(
+        "[SalesService]",
+        "Failed to regenerate setup code",
         expect.objectContaining({
           targetEmail: "user@example.com",
           error: expect.any(Error),

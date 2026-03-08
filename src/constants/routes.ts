@@ -8,6 +8,7 @@ export const ROUTES = {
   SETTINGS: "/settings",
   SET_PASSWORD: "set-password",
   FORGOT_PASSWORD: "forgot-password",
+  WELCOME: "welcome",
 } as const;
 
 export type RouteKey = keyof typeof ROUTES;

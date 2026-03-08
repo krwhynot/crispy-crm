@@ -40,7 +40,9 @@ export default function SalesCreate() {
 
   const [serverError, setServerError] = useState<ServerValidationError | null>(null);
   const [recoveryUrl, setRecoveryUrl] = useState<string | null>(null);
+  const [emailOtp, setEmailOtp] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
+  const [copiedOtp, setCopiedOtp] = useState(false);
 
   const { canAccess, isPending: isCheckingAccess } = useCanAccess({
     resource: "sales",
@@ -60,10 +62,11 @@ export default function SalesCreate() {
     },
     onSuccess: (result) => {
       queryClient.invalidateQueries({ queryKey: saleKeys.all });
-      if (result.recoveryUrl) {
+      if (result.emailOtp || result.recoveryUrl) {
+        setEmailOtp(result.emailOtp);
         setRecoveryUrl(result.recoveryUrl);
       } else {
-        notify("User created. Use 'Reset Password' on their profile to generate a login link.", {
+        notify("User created. Use 'Generate Setup Code' on their profile to get a code.", {
           type: "success",
         });
         redirect("/sales");
@@ -117,6 +120,15 @@ export default function SalesCreate() {
     mutate(data);
   };
 
+  const handleCopyOtp = () => {
+    if (emailOtp) {
+      navigator.clipboard.writeText(emailOtp).then(() => {
+        setCopiedOtp(true);
+        setTimeout(() => setCopiedOtp(false), 2000);
+      });
+    }
+  };
+
   const handleCopyLink = () => {
     if (recoveryUrl) {
       navigator.clipboard.writeText(recoveryUrl).then(() => {
@@ -128,8 +140,11 @@ export default function SalesCreate() {
 
   const handleDialogClose = () => {
     setRecoveryUrl(null);
+    setEmailOtp(null);
     redirect("/sales");
   };
+
+  const dialogOpen = !!(emailOtp || recoveryUrl);
 
   return (
     <>
@@ -146,36 +161,99 @@ export default function SalesCreate() {
         </SectionCard>
       </div>
 
-      <Dialog open={!!recoveryUrl} onOpenChange={(open) => !open && handleDialogClose()}>
+      <Dialog open={dialogOpen} onOpenChange={(open) => !open && handleDialogClose()}>
         <DialogContent className="sm:max-w-lg">
           <DialogHeader>
             <DialogTitle>User Created Successfully</DialogTitle>
             <DialogDescription>
-              Share this one-time link with the new user so they can set their password.
+              Share this setup code with the new user so they can set their password.
             </DialogDescription>
           </DialogHeader>
-          <div className="space-y-3 py-2">
-            <div className="flex gap-2">
-              <input
-                readOnly
-                value={recoveryUrl ?? ""}
-                className="flex-1 rounded-md border border-input bg-muted px-3 py-2 text-sm font-mono truncate"
-                onClick={(e) => (e.target as HTMLInputElement).select()}
-              />
-              <Button
-                type="button"
-                variant="outline"
-                className="shrink-0 cursor-pointer"
-                onClick={handleCopyLink}
-              >
-                {copied ? "Copied!" : "Copy"}
-              </Button>
-            </div>
-            <p className="text-xs text-muted-foreground">
-              Note: Some email or chat tools may consume the link when generating a preview. If the
-              link doesn&apos;t work, use &quot;Reset Password&quot; on the user&apos;s profile
-              page.
-            </p>
+          <div className="space-y-4 py-2">
+            {emailOtp ? (
+              <>
+                <p className="text-sm text-muted-foreground">
+                  Share this setup code with the new user:
+                </p>
+                <div className="flex items-center gap-3">
+                  <div className="flex-1 rounded-md border border-input bg-muted px-4 py-3 text-center font-mono text-2xl tracking-[0.3em] select-all">
+                    {emailOtp}
+                  </div>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className="shrink-0 cursor-pointer"
+                    onClick={handleCopyOtp}
+                  >
+                    {copiedOtp ? "Copied!" : "Copy"}
+                  </Button>
+                </div>
+                <p className="text-sm text-muted-foreground">
+                  Setup URL:{" "}
+                  <span className="font-mono text-foreground">
+                    {window.location.origin}/#/welcome
+                  </span>
+                </p>
+                <p className="text-xs text-muted-foreground">
+                  Tell the user: &quot;Go to the URL above and enter your email with this
+                  code.&quot;
+                </p>
+                {recoveryUrl && (
+                  <details className="text-sm">
+                    <summary className="cursor-pointer text-muted-foreground hover:text-foreground">
+                      Advanced: Show recovery link
+                    </summary>
+                    <div className="flex gap-2 mt-2">
+                      <input
+                        readOnly
+                        value={recoveryUrl}
+                        className="flex-1 rounded-md border border-input bg-muted px-3 py-2 text-sm font-mono truncate"
+                        onClick={(e) => (e.target as HTMLInputElement).select()}
+                      />
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        className="shrink-0 cursor-pointer"
+                        onClick={handleCopyLink}
+                      >
+                        {copied ? "Copied!" : "Copy"}
+                      </Button>
+                    </div>
+                  </details>
+                )}
+              </>
+            ) : recoveryUrl ? (
+              <>
+                <p className="text-sm text-muted-foreground">
+                  Share this recovery link with the new user:
+                </p>
+                <div className="flex gap-2">
+                  <input
+                    readOnly
+                    value={recoveryUrl}
+                    className="flex-1 rounded-md border border-input bg-muted px-3 py-2 text-sm font-mono truncate"
+                    onClick={(e) => (e.target as HTMLInputElement).select()}
+                  />
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    className="shrink-0 cursor-pointer"
+                    onClick={handleCopyLink}
+                  >
+                    {copied ? "Copied!" : "Copy"}
+                  </Button>
+                </div>
+              </>
+            ) : (
+              <div className="p-3 border border-warning bg-warning/10 rounded-md">
+                <p className="text-sm text-warning-foreground">
+                  Code generation failed. Use &quot;Generate Setup Code&quot; on the user&apos;s
+                  profile to get a code.
+                </p>
+              </div>
+            )}
           </div>
           <DialogFooter>
             <Button type="button" className="cursor-pointer" onClick={handleDialogClose}>

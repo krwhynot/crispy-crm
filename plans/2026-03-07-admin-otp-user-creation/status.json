@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "plan_name": "admin-otp-user-creation",
+  "plan_dir": "plans/2026-03-07-admin-otp-user-creation",
+  "created": "2026-03-07T00:00:00Z",
+  "current_phase": "audit",
+  "documents": {
+    "brainstorm": "plans/2026-03-07-admin-otp-user-creation/brainstorm.md",
+    "research_findings": "plans/2026-03-07-admin-otp-user-creation/research/findings.md",
+    "approach": "plans/2026-03-07-admin-otp-user-creation/approach.md",
+    "spec": "docs/specs/admin-otp-user-creation.md",
+    "audit": "docs/audit/plan-audit-admin-otp-user-creation.md"
+  },
+  "phases": {
+    "brainstorm": { "status": "complete" },
+    "research": { "status": "complete" },
+    "pre_plan": { "status": "complete" },
+    "plan": { "status": "complete" },
+    "audit": { "status": "complete", "score": 34, "rating": "GREEN" },
+    "build": { "status": "complete" },
+    "test": { "status": "not_started" },
+    "handoff": { "status": "not_started" }
+  }
+}

@@ -79,6 +79,7 @@ describe("extendWithCustomMethods", () => {
         salesUpdate: vi.fn(),
         updatePassword: vi.fn(),
         resetUserPassword: vi.fn(),
+        regenerateSetupCode: vi.fn(),
       },
       opportunities: {
         archiveOpportunity: vi.fn(),
@@ -235,6 +236,21 @@ describe("extendWithCustomMethods", () => {
 
       expect(mockServices.sales.resetUserPassword).toHaveBeenCalledWith("user@example.com");
       expect(result).toEqual({ success: true });
+    });
+
+    it("should delegate regenerateSetupCode to SalesService", async () => {
+      const extendedProvider = extendWithCustomMethods(config);
+      const expectedResult = {
+        emailOtp: "654321",
+        recoveryUrl: "https://example.com/recovery",
+      };
+
+      vi.mocked(mockServices.sales.regenerateSetupCode).mockResolvedValue(expectedResult);
+
+      const result = await extendedProvider.regenerateSetupCode("user@example.com");
+
+      expect(mockServices.sales.regenerateSetupCode).toHaveBeenCalledWith("user@example.com");
+      expect(result).toEqual(expectedResult);
     });
   });
 

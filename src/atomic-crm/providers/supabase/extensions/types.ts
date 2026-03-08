@@ -39,9 +39,16 @@ import type {
   LogActivityWithTaskResponse,
 } from "@/atomic-crm/validation/rpc";
 
-/** Result of salesCreate — includes recovery URL for new user onboarding */
+/** Result of salesCreate — includes recovery URL and OTP for new user onboarding */
 export interface SalesCreateResult {
   sale: Sale;
+  recoveryUrl: string | null;
+  emailOtp: string | null;
+}
+
+/** Result of regenerateSetupCode — returns a new OTP for an existing user */
+export interface RegenerateCodeResult {
+  emailOtp: string;
   recoveryUrl: string | null;
 }
 
@@ -160,6 +167,18 @@ export interface ExtendedDataProvider extends DataProvider {
    * ```
    */
   resetUserPassword(targetEmail: string): Promise<{ success: boolean }>;
+
+  /**
+   * Generate a new setup code (OTP) for an existing user
+   *
+   * Admin-only. Calls the users Edge Function with PUT to regenerate
+   * a 6-digit OTP that the user can enter on the /welcome page.
+   *
+   * @param targetEmail - Email of the user to generate code for
+   * @returns Object with emailOtp and optional recoveryUrl
+   * @throws Error if caller is not admin, user not found, or generation fails
+   */
+  regenerateSetupCode(targetEmail: string): Promise<RegenerateCodeResult>;
 
   // ==================== Opportunities Methods ====================
   // Delegate to OpportunitiesService

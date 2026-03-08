@@ -61,6 +61,11 @@ const ForgotPasswordPage = React.lazy(() =>
     default: m.ForgotPasswordPage,
   }))
 );
+const WelcomePage = React.lazy(() =>
+  import("@/components/supabase/welcome-page").then((m) => ({
+    default: m.WelcomePage,
+  }))
+);
 
 // Redirect component for /admin/users/:id to /sales?view=:id (consolidation)
 const AdminUserRedirect = () => {
@@ -236,6 +241,14 @@ export const CRM = ({
             element={
               <Suspense fallback={<AuthSkeleton />}>
                 <ForgotPasswordPage />
+              </Suspense>
+            }
+          />
+          <Route
+            path={ROUTES.WELCOME}
+            element={
+              <Suspense fallback={<AuthSkeleton />}>
+                <WelcomePage />
               </Suspense>
             }
           />

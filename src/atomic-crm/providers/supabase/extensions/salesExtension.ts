@@ -15,7 +15,7 @@
 import type { Identifier } from "ra-core";
 import type { ServiceContainer } from "../services";
 import type { SalesFormData } from "@/atomic-crm/types";
-import type { SalesCreateResult } from "./types";
+import type { SalesCreateResult, RegenerateCodeResult } from "./types";
 
 /**
  * Sales extension methods interface
@@ -25,6 +25,7 @@ export interface SalesExtension {
   salesUpdate(id: Identifier, data: Partial<SalesFormData>): Promise<Partial<SalesFormData>>;
   updatePassword(id: Identifier): Promise<boolean>;
   resetUserPassword(targetEmail: string): Promise<{ success: boolean }>;
+  regenerateSetupCode(targetEmail: string): Promise<RegenerateCodeResult>;
 }
 
 /**
@@ -83,6 +84,10 @@ export function createSalesExtension(services: ServiceContainer): SalesExtension
      */
     resetUserPassword: async (targetEmail: string): Promise<{ success: boolean }> => {
       return services.sales.resetUserPassword(targetEmail);
+    },
+
+    regenerateSetupCode: async (targetEmail: string): Promise<RegenerateCodeResult> => {
+      return services.sales.regenerateSetupCode(targetEmail);
     },
   };
 }
