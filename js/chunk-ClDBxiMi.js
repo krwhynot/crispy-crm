@@ -1,0 +1,1 @@
+var e=Object.defineProperty;const a=((a,n)=>e(a,"name",{value:n,configurable:!0}))(e=>e?.first_name||e?.last_name?`${e.first_name||""} ${e.last_name||""}`.trim():e?.email||"--","saleOptionRenderer");export{a as s};

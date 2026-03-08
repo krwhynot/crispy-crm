@@ -1,0 +1,1 @@
+var e=Object.defineProperty;import{j as r,aP as n}from"./chunk-YXXB1T-6.js";import{A as a}from"./chunk-BnKDJ20H.js";const s=((r,n)=>e(r,"name",{value:n,configurable:!0}))(e=>{const{children:a=t,...s}=e;return e.validate,r.jsx(n,{...s,children:a})},"ReferenceInput"),t=r.jsx(a,{});export{s as R};

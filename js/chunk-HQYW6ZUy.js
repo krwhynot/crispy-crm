@@ -1,0 +1,1 @@
+var e=Object.defineProperty;import{r}from"./chunk-B8nwfVCa.js";var a=((r,a)=>e(r,"name",{value:a,configurable:!0}))(function(e){var a,o=r.memo(e);return o.displayName=null===(a=e.displayName)||void 0===a?void 0:a.replace("Impl",""),o},"genericMemo");export{a as g};

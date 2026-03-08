@@ -1,0 +1,1 @@
+import{r}from"./chunk-B8nwfVCa.js";import{bw as e}from"../assets/index-CDfFcwKp.js";function s(){const s=r.useContext(e);if(!s)throw new Error("useFormProgress must be used within a FormProgressProvider");return s}(0,Object.defineProperty)(s,"name",{value:"useFormProgress",configurable:!0});export{s as u};

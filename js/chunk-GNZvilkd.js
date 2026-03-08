@@ -1,0 +1,1 @@
+import{bh as e}from"../assets/index-CDfFcwKp.js";function r(r,o){if("object"==typeof r&&null!==r&&"body"in r){const e=r.body;if(e?.errors&&"object"==typeof e.errors){const r=Object.entries(e.errors);if(r.length>0)return r.map(([,e])=>e).join(". ")}}return e(r,o)}(0,Object.defineProperty)(r,"name",{value:"extractProviderValidationMessage",configurable:!0});export{r as e};

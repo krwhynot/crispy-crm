@@ -9,7 +9,7 @@
         <meta name="theme-color" content="#000000" />
         <link rel="manifest" href="./manifest.json" />
         <link rel="shortcut icon" href="./favicon.ico" />
-        <title>Atomic CRM</title>
+        <title>Masterfoods CRM</title>
         <style>
             body {
                 margin: 0;
@@ -129,9 +129,12 @@
         };
 
         function interceptAuthCallback() {
-                const hash = window.location.hash;
                 const {access_token, refresh_token, type} = getUrlParams();
-                window.location.href = `./#/auth-callback?access_token=${access_token}&refresh_token=${refresh_token}&type=${type}`;
+                if (type === 'recovery') {
+                    window.location.href = `./#/set-password?access_token=${access_token}&refresh_token=${refresh_token}&type=${type}`;
+                } else {
+                    window.location.href = `./#/auth-callback?access_token=${access_token}&refresh_token=${refresh_token}&type=${type}`;
+                }
         }
     
         // Call the function to intercept the auth callback

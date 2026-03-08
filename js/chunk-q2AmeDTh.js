@@ -1,0 +1,1 @@
+var e=Object.defineProperty;import{r as s}from"./chunk-B8nwfVCa.js";import{bx as o}from"../assets/index-CDfFcwKp.js";const r=((s,o)=>e(s,"name",{value:o,configurable:!0}))(()=>s.useContext(o),"useFormOptions");export{r as u};

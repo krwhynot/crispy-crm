@@ -1,0 +1,1 @@
+var s=Object.defineProperty,a=(a,e)=>s(a,"name",{value:e,configurable:!0});import{bE as e,bD as r}from"../assets/index-CDfFcwKp.js";function n(s){const a=e[s];return a?a.cssClass:e.gray.cssClass}function o(s){return r.includes(s)?s:"gray"}a(n,"getTagColorClass"),a(o,"normalizeColorToSemantic");export{n as g,o as n};

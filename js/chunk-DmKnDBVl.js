@@ -1,0 +1,1 @@
+const l={always:{cellClassName:"",headerClassName:""},tabletUp:{cellClassName:"!hidden md:!table-cell",headerClassName:"!hidden md:!table-cell"},ipadPlus:{cellClassName:"!hidden lg:!table-cell",headerClassName:"!hidden lg:!table-cell"},desktopPlus:{cellClassName:"!hidden xl:!table-cell",headerClassName:"!hidden xl:!table-cell"}};export{l as C};
